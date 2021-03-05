@@ -11,4 +11,6 @@ public interface IMissable {
 public interface IChangable : IMissable
 {
     string Word {get; set; }
+    void setChange(ChangeType changeType);
+    // string[] AlternateWords { get; set; }
 }

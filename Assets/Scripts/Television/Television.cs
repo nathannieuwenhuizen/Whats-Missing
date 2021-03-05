@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public class Television : MonoBehaviour
 {
+
+    public ChangeType changeType = ChangeType.missing;
+    public bool isQUestion = true;
+    public bool isOn = false;
+    
     //ui elements
     [SerializeField]
     private Text questionText;
@@ -19,6 +24,9 @@ public class Television : MonoBehaviour
     [SerializeField]
     private string[] letters;
 
+    public string Word {
+        get { return answerText.text; }
+    }
     private List<Letter> letterObjects = new List<Letter>();
     private List<Letter> selectedLetterObjects = new List<Letter>();
     
@@ -50,7 +58,8 @@ public class Television : MonoBehaviour
         selectedLetterObjects.Add(letter);
     }
 
-    public void CheckAnswer()
+    //fires when the player wants to apply the question or sentence
+    public void Confirm()
     {
         AnswerIsFalse();
     }

@@ -9,6 +9,13 @@ public class ChangeableObject : MonoBehaviour, IChangable
         set {word = value;}
     }
 
+    public void setChange(ChangeType changeType) {
+        switch (changeType) {
+            case ChangeType.missing:
+                onMissing();
+                break;
+        }
+    }
     public void onAppearing()
     {
         throw new System.NotImplementedException();

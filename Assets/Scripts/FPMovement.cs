@@ -10,7 +10,7 @@ public class FPMovement : MonoBehaviour
     private Transform cameraPivot;
 
     private int walkSpeed = 5;
-    private int rotateSpeed = 10;
+    private int rotateSpeed = 5;
 
     private int verticalAngle = 80;
 
