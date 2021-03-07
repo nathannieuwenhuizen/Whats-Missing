@@ -11,6 +11,11 @@ public interface IMissable {
 public interface IChangable : IMissable
 {
     string Word {get; set; }
+    bool animated { get; set;}
     void setChange(ChangeType changeType);
-    // string[] AlternateWords { get; set; }
+}
+
+public class Change {
+    public Television television;
+    public string word;
 }

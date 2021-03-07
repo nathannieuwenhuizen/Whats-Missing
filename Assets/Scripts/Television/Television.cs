@@ -7,8 +7,32 @@ public class Television : MonoBehaviour
 {
 
     public ChangeType changeType = ChangeType.missing;
-    public bool isQUestion = true;
-    public bool isOn = false;
+    public bool isQuestion = true;
+    [SerializeField]
+    private bool isOn = false;
+
+    [SerializeField]
+    private string preAnswer;
+
+    public bool IsOn {
+        get { return isOn; }
+        set { 
+            isOn = value; 
+            if (value) {
+                ConfirmationSucceeded();
+            } else {
+                ConfirmationFailed();
+            }
+            //TODO: change ui image/sound etc...
+        }
+    }
+    private Room room;
+    public Room Room {
+        get { return room; }
+        set { 
+            room = value; 
+        }
+    }
     
     //ui elements
     [SerializeField]
@@ -30,8 +54,7 @@ public class Television : MonoBehaviour
     private List<Letter> letterObjects = new List<Letter>();
     private List<Letter> selectedLetterObjects = new List<Letter>();
     
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         answerText.text = "";
         InitializeLetters();
@@ -39,16 +62,23 @@ public class Television : MonoBehaviour
 
     void InitializeLetters()
     {
-        for(int i = 0; i < letters.Length; i++)
-        {
-            Letter newLetter = GameObject.Instantiate(letterPrefab).GetComponent<Letter>();
+        for(int i = 0; i < letters.Length; i++) InitializeLetter(letters[i]);
+        for(int i = 0; i < preAnswer.Length; i++) {
+            Letter answerLetter = InitializeLetter(preAnswer[i].ToString());
+            Debug.Log(answerLetter.LetterValue);
+            LetterClicked(answerLetter);
+        }
+        
+    }
+    Letter InitializeLetter(string val) {
+        Letter newLetter = GameObject.Instantiate(letterPrefab).GetComponent<Letter>();
             letterObjects.Add(newLetter);
             newLetter.onLetterClick += LetterClicked;
             newLetter.GetComponent<RectTransform>().SetParent(letterContainer);
-            newLetter.GetComponent<RectTransform>().localPosition = new Vector3(i * 50, 0, 0);
+            newLetter.GetComponent<RectTransform>().localPosition = new Vector3(letterObjects.Count * 50, 0, 0);
             newLetter.GetComponent<RectTransform>().localScale = new Vector3(.5f,.5f,.5f);
-            newLetter.LetterValue = letters[i];
-        }
+            newLetter.LetterValue = val;
+            return newLetter;
     }
 
     void LetterClicked(Letter letter)
@@ -61,17 +91,17 @@ public class Television : MonoBehaviour
     //fires when the player wants to apply the question or sentence
     public void Confirm()
     {
-        AnswerIsFalse();
+        if (isQuestion) room.ApplyQuestion(this);
+        else room.ApplyChange(this);
     }
 
-    void AnswerIsCorrect() {
-
-    }
-    void AnswerIsFalse() {
-        answerText.text = "";
+    public void ConfirmationFailed() {
+        //answerText.text = "";
         foreach(Letter letter in selectedLetterObjects) {
             letter.Show();
         }
         selectedLetterObjects = new List<Letter>();
+    }
+    public void ConfirmationSucceeded() {
     }
 }
