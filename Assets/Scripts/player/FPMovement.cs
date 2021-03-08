@@ -12,19 +12,37 @@ public class FPMovement : MonoBehaviour
     private int walkSpeed = 5;
     private int rotateSpeed = 5;
 
+    [SerializeField]
+    private float jumpForce = 200f;
+    private bool inAir = false;
     private int verticalAngle = 80;
 
     private Vector2 walkDelta = new Vector2();
+    private Vector2 mouseDelta = new Vector2();
     public void SetMovement(Vector2 delta)
     {
         walkDelta = delta;
     }
+    public void setMouseDelta(Vector2 delta)
+    {
+        mouseDelta = delta;
+    }
+
 
     /** Enables the cursor */
     private void EnableCursor(bool enabled = false)
     {
         Cursor.lockState = enabled ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = enabled;
+    }
+
+    public void Jump() {
+        if (inAir) return;
+        inAir = true;
+        rb.AddForce(new Vector3(0,jumpForce,0));
+    }
+    private void OnCollisionEnter(Collision other) {
+        inAir = false;
     }
 
 
@@ -38,10 +56,6 @@ public class FPMovement : MonoBehaviour
         UpdateMovement();
         UpdateRotation();
     }
-    private Vector2 getMouseDelta()
-    {
-        return new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-    }
 
     private void UpdateMovement()
     {
@@ -50,10 +64,10 @@ public class FPMovement : MonoBehaviour
     private void UpdateRotation()
     {
         //horizontal rotation
-        transform.Rotate(new Vector3(0, getMouseDelta().x * rotateSpeed, 0));
+        transform.Rotate(new Vector3(0, mouseDelta.x * rotateSpeed, 0));
 
         //vertical rotation
-        cameraPivot.Rotate(new Vector3(-getMouseDelta().y * rotateSpeed, 0, 0));
+        cameraPivot.Rotate(new Vector3(-mouseDelta.y * rotateSpeed, 0, 0));
 
 
         //setting max angle cap

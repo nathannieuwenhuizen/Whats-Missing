@@ -7,7 +7,7 @@ public class Room : MonoBehaviour
     
     private List<Television> allTelevisions;
     private List<IChangable> allObjects;
-    private List<Change> changes;
+    private List<Change> changes = new List<Change>();
     
     [SerializeField]
     private Door door;
