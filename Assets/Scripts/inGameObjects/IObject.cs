@@ -15,6 +15,12 @@ public interface IChangable : IMissable
     void setChange(ChangeType changeType);
 }
 
+public interface IPickable {
+    bool focused {get; set;}
+    Rigidbody rigidBody {get;}
+    
+}
+
 public class Change {
     public Television television;
     public string word;

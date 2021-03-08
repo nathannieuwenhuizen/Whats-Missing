@@ -5,32 +5,33 @@ using UnityEngine;
 public class PickupThrow : MonoBehaviour
 {
 
-    private Rigidbody holdingObject;
+    private IPickable holdingObject;
+    [SerializeField]
     private float pickupDIstance = 2;
 
     public void pickup() {
 
-        Rigidbody pickedObject = focussedObject();
-        if (pickedObject) {
-            pickedObject.isKinematic=  true;
-            pickedObject.transform.parent = transform;
+        IPickable pickedObject = focussedObject();
+        if (pickedObject != null) {
+            pickedObject.rigidBody.isKinematic = true;
+            pickedObject.rigidBody.transform.parent = transform;
             holdingObject = pickedObject;
         }
     }
 
 
     public void release() {
-        if (!holdingObject) return;
+        if (holdingObject == null) return;
 
-        holdingObject.isKinematic = false;
-        holdingObject.transform.parent = null; // maybe not null but previous parent?
+        holdingObject.rigidBody.isKinematic = false;
+        holdingObject.rigidBody.transform.parent = null; // maybe not null but previous parent?
         holdingObject = null;
     }
 
-    private Rigidbody focussedObject() {
+    private IPickable focussedObject() {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, pickupDIstance)) {
-            if (hit.rigidbody != null) return hit.rigidbody;
+            if (hit.rigidbody.gameObject.GetComponent<IPickable>() != null) return hit.rigidbody.gameObject.GetComponent<IPickable>();
         }
         return null;
     }

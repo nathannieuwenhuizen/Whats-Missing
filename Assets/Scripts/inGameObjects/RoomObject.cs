@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class ChangeableObject : MonoBehaviour, IChangable
+public class RoomObject : MonoBehaviour, IChangable
 {
     [SerializeField]
     private string word;

@@ -73,6 +73,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraPivot: {fileID: 1902171955380139430}
+  jumpForce: 400
 --- !u!114 &1902171954849214630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,6 +100,7 @@ GameObject:
   - component: {fileID: 1902171955380139425}
   - component: {fileID: 1902171955380139424}
   - component: {fileID: 852670305812894156}
+  - component: {fileID: 2981385594379438426}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -183,6 +185,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c0a56f371527149851f848cf9ff14a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickupDIstance: 2
+--- !u!114 &2981385594379438426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902171955380139427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e61247ae746edd845bd761a3beeacf06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  remoteDistance: 5
 --- !u!1 &8363543209541784163
 GameObject:
   m_ObjectHideFlags: 0

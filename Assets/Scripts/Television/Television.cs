@@ -11,6 +11,8 @@ public class Television : MonoBehaviour
     [SerializeField]
     private bool isOn = false;
 
+
+
     [SerializeField]
     private string preAnswer;
 
@@ -24,6 +26,15 @@ public class Television : MonoBehaviour
                 ConfirmationFailed();
             }
             //TODO: change ui image/sound etc...
+        }
+    }
+
+    private bool isInteractable = false;
+    public bool IsInteractable {
+        get { return isInteractable; }
+        set { 
+            isInteractable = value; 
+            GetComponentInChildren<GraphicRaycaster>().enabled = value;
         }
     }
     private Room room;
@@ -57,6 +68,7 @@ public class Television : MonoBehaviour
     void Awake()
     {
         answerText.text = "";
+        IsInteractable = false;
         InitializeLetters();
     }
 
