@@ -12,13 +12,18 @@ public interface IChangable : IMissable
 {
     string Word {get; set; }
     bool animated { get; set;}
-    void setChange(ChangeType changeType);
+    void SetChange(ChangeType changeType);
+    void RemoveChange(ChangeType changeType);
 }
 
 public interface IPickable {
-    bool focused {get; set;}
-    Rigidbody rigidBody {get;}
+    Rigidbody RigidBody { get; }
+    float Mass {get; set;}
     
+}
+public interface IInteractable {
+    bool Focused {get; set;}
+    void Interact();
 }
 
 public class Change {

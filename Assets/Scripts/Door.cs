@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour
+public class Door : MonoBehaviour, IInteractable
 {
     // Start is called before the first frame update
+
+    [HideInInspector]
+    public  Room room;
 
     private bool locked = true;
 
     private float openAngle = 20f;
+    private float wideAngle = 135f;
     private Quaternion startRotation;
     public bool Locked {
         get { return locked; }
@@ -21,6 +25,8 @@ public class Door : MonoBehaviour
             }
         }
     }
+
+    public bool Focused { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     void Close() {
         transform.rotation = Quaternion.Euler(startRotation.eulerAngles.x, startRotation.eulerAngles.y, startRotation.eulerAngles.z);
@@ -35,8 +41,13 @@ public class Door : MonoBehaviour
     }
 
     void Opening() {
-        if (locked) return;
         //TODO: Go to next room with player
+        transform.rotation = Quaternion.Euler(startRotation.eulerAngles.x, startRotation.eulerAngles.y + wideAngle, startRotation.eulerAngles.z);
     }
 
+    public void Interact()
+    {
+        if (locked) return;
+        Opening();
+    }
 }

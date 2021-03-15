@@ -10,12 +10,19 @@ public class PickupThrow : MonoBehaviour
     private float pickupDIstance = 2;
 
     public void pickup() {
-
-        IPickable pickedObject = focussedObject();
-        if (pickedObject != null) {
-            pickedObject.rigidBody.isKinematic = true;
-            pickedObject.rigidBody.transform.parent = transform;
+        //check stuff to pickup
+        IPickable pickedObject = focussedObject<IPickable>();
+        if (pickedObject != default(IPickable)) {
+            pickedObject.RigidBody.isKinematic = true;
+            pickedObject.RigidBody.transform.parent = transform;
             holdingObject = pickedObject;
+            return;
+        }
+
+        //check objects to interact with.
+        IInteractable interactableObj = focussedObject<IInteractable>();
+        if (interactableObj != default(IInteractable)) {
+            interactableObj.Interact();
         }
     }
 
@@ -23,17 +30,17 @@ public class PickupThrow : MonoBehaviour
     public void release() {
         if (holdingObject == null) return;
 
-        holdingObject.rigidBody.isKinematic = false;
-        holdingObject.rigidBody.transform.parent = null; // maybe not null but previous parent?
+        holdingObject.RigidBody.isKinematic = false;
+        holdingObject.RigidBody.transform.parent = null; // maybe not null but previous parent?
         holdingObject = null;
     }
 
-    private IPickable focussedObject() {
+    private T focussedObject<T>() {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, pickupDIstance)) {
-            if (hit.rigidbody.gameObject.GetComponent<IPickable>() != null) return hit.rigidbody.gameObject.GetComponent<IPickable>();
+            if (hit.collider.gameObject.GetComponent<T>() != null) return hit.collider.gameObject.GetComponent<T>();
         }
-        return null;
+        return default(T);
     }
 
 }

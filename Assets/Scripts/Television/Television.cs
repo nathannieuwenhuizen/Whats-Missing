@@ -108,11 +108,15 @@ public class Television : MonoBehaviour
     }
 
     public void ConfirmationFailed() {
-        //answerText.text = "";
+        Reset();
+    }
+    public void Reset() {
+        answerText.text = "";
         foreach(Letter letter in selectedLetterObjects) {
             letter.Show();
         }
         selectedLetterObjects = new List<Letter>();
+        room.RemoveChange(this);
     }
     public void ConfirmationSucceeded() {
     }

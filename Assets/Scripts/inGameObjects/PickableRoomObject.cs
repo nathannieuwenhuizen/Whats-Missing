@@ -2,22 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class PickableRoomObject : RoomObject, IPickable
 {
 
     private Rigidbody rb;
-    // Start is called before the first frame update
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
-    public bool focused { get; set;} = false;
-    public Rigidbody rigidBody { 
+    public Rigidbody RigidBody { 
         get {
             return rb;
         } 
     }
+
+    public override IEnumerator Appearing()
+    {
+        yield return base.Appearing();
+        rb = gameObject.AddComponent<Rigidbody>();
+    }
+
+    public override IEnumerator Dissappearing()
+    {
+        Destroy(rb);
+        yield return base.Dissappearing();
+
+    }
+
+    public float Mass { get { return mass; } set {mass = value; } }
+
+    private float mass = 0;
 
 
     // Update is called once per frame
