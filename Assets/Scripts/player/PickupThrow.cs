@@ -7,7 +7,7 @@ public class PickupThrow : MonoBehaviour
 
     private IPickable holdingObject;
     [SerializeField]
-    private float pickupDIstance = 2;
+    private float pickupDIstance = 3;
 
     public void pickup() {
         //check stuff to pickup

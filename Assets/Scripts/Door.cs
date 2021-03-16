@@ -9,10 +9,12 @@ public class Door : MonoBehaviour, IInteractable
     [HideInInspector]
     public  Room room;
 
+    public delegate void PassingDoorAction(Door door);
+    public static event PassingDoorAction OnPassingThrough;
     private bool locked = true;
 
-    private float openAngle = 20f;
-    private float wideAngle = 135f;
+    private float openAngle = -20f;
+    private float wideAngle = -135f;
     private Quaternion startRotation;
     public bool Locked {
         get { return locked; }
@@ -42,11 +44,13 @@ public class Door : MonoBehaviour, IInteractable
 
     void Opening() {
         //TODO: Go to next room with player
+        OnPassingThrough(this);
         transform.rotation = Quaternion.Euler(startRotation.eulerAngles.x, startRotation.eulerAngles.y + wideAngle, startRotation.eulerAngles.z);
     }
 
     public void Interact()
     {
+        Debug.Log("try to open");
         if (locked) return;
         Opening();
     }

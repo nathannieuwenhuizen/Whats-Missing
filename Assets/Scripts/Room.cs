@@ -1,23 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    [SerializeField]
-    private Room nextRoom;
     private List<Television> allTelevisions;
     private List<IChangable> allObjects;
     private List<Change> changes = new List<Change>();
     
     [SerializeField]
+    private Transform startPos;
+
+    public Transform getStartPos
+    {
+        get {return this.startPos;}
+    }
+
+
+    [SerializeField]
     private Door door;
 
-    private void Start() {
+    public bool Animated {
+        set { 
+            foreach (IChangable obj in allObjects) obj.animated = value;
+        }
+    }
+
+    private void Awake() {
         door.room = this;
         allObjects = GetAllObjectsInRoom<IChangable>();
-        allTelevisions = GetAllObjectsInRoom<Television>(); //TODO: sort by question
-        SetupChanges();
+        allTelevisions = GetAllObjectsInRoom<Television>().OrderBy( allObjects => !allObjects.isQuestion).ToList(); 
+        foreach(Television tv in allTelevisions) tv.Room = this;
     }
 
     public List<T> GetAllObjectsInRoom<T>() {
@@ -31,22 +45,30 @@ public class Room : MonoBehaviour
     }
 
     //prepare changes so that the room is already changedwhen player walks in.
-    public void SetupChanges(){
-        foreach (IChangable obj in allObjects) obj.animated = false;
+    public void ActivateChanges(){
+        Animated = false;
         
         foreach (Television tv in allTelevisions)
         {
-            tv.Room = this;
             if (tv.Word != "") {
-                if (tv.isQuestion) ApplyQuestion(tv);
-                else ApplyChange(tv);
+                if (tv.isQuestion) CheckQuestion(tv);
+                else AddTVChange(tv);
             }
         }
-        foreach (IChangable obj in allObjects) obj.animated = true;
+        Animated = true;
+    }
+    public void DeactivateChanges(){
+        Animated = false;
+        
+        for (int i = changes.Count - 1; i >= 0; i--)
+        {
+            RemoveChange(changes[i]);
+        }
+        Animated = true;
     }
 
     // Apply the change to the object 
-    public void ApplyChange(Television selectedTelevision) {
+    public void AddTVChange(Television selectedTelevision) {
         bool hasChangedSomething = false;
         foreach (IChangable obj in allObjects)
         {
@@ -63,34 +85,37 @@ public class Room : MonoBehaviour
             selectedTelevision.IsOn = false;
         }
     }
-    public void RemoveChange(Television removeTelevision) {
-        if (!removeTelevision.IsOn) return;
-        removeTelevision.IsOn = false;
+
+    //removes a tv change updating the room and tv
+    public void RemoveTVChange(Television selectedTelevision) {
+        if (!selectedTelevision.IsOn) return;
+        selectedTelevision.IsOn = false;
         CheckRoomCompletion();
-        
-        if (!removeTelevision.isQuestion) {
-            Change change = changes.Find(x => x.television == removeTelevision);
-            if (change == null) return;
-            changes.Remove(change);
-            foreach (IChangable obj in allObjects)
-            {
-                if (obj.Word == change.word) {
-                    obj.RemoveChange(change.television.changeType);
-                }
+        if (!selectedTelevision.isQuestion) RemoveChange(changes.Find(x => x.television == selectedTelevision));
+    }
+
+    //removes a change to the room updating the objects
+    private void RemoveChange(Change change) {
+        if (change == null) return;
+        changes.Remove(change);
+        foreach (IChangable obj in allObjects)
+        {
+            if (obj.Word == change.word) {
+                obj.RemoveChange(change.television.changeType);
             }
         }
     }
     
 
-    public void ApplyQuestion(Television television) {
+    public void CheckQuestion(Television selectedTelevision) {
         bool questionIsCorrect = false;
 
         foreach (Television tv in allTelevisions)
         {
             if (tv.IsOn && !tv.isQuestion) {
-                if (tv.Word == television.Word) {
+                if (tv.Word == selectedTelevision.Word) {
                     questionIsCorrect = true;
-                    television.IsOn = true;
+                    selectedTelevision.IsOn = true;
                     CheckRoomCompletion();
                     return;
                 }
@@ -98,7 +123,7 @@ public class Room : MonoBehaviour
         }
 
         if (!questionIsCorrect) {
-            television.IsOn = false;
+            selectedTelevision.IsOn = false;
         }
     }
     
@@ -119,10 +144,9 @@ public class Room : MonoBehaviour
     }
 
     public void OnRoomEnter() {
-        //SetupChanges();
-
+        ActivateChanges();
     }
     public void OnRoomLeave() {
-
+        DeactivateChanges();
     }
 }

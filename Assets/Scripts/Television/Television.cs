@@ -14,7 +14,7 @@ public class Television : MonoBehaviour
 
 
     [SerializeField]
-    private string preAnswer;
+    private string answer;
 
     public bool IsOn {
         get { return isOn; }
@@ -75,8 +75,8 @@ public class Television : MonoBehaviour
     void InitializeLetters()
     {
         for(int i = 0; i < letters.Length; i++) InitializeLetter(letters[i]);
-        for(int i = 0; i < preAnswer.Length; i++) {
-            Letter answerLetter = InitializeLetter(preAnswer[i].ToString());
+        for(int i = 0; i < answer.Length; i++) {
+            Letter answerLetter = InitializeLetter(answer[i].ToString());
             Debug.Log(answerLetter.LetterValue);
             LetterClicked(answerLetter);
         }
@@ -88,6 +88,7 @@ public class Television : MonoBehaviour
             newLetter.onLetterClick += LetterClicked;
             newLetter.GetComponent<RectTransform>().SetParent(letterContainer);
             newLetter.GetComponent<RectTransform>().localPosition = new Vector3(letterObjects.Count * 50, 0, 0);
+            newLetter.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
             newLetter.GetComponent<RectTransform>().localScale = new Vector3(.5f,.5f,.5f);
             newLetter.LetterValue = val;
             return newLetter;
@@ -103,8 +104,10 @@ public class Television : MonoBehaviour
     //fires when the player wants to apply the question or sentence
     public void Confirm()
     {
-        if (isQuestion) room.ApplyQuestion(this);
-        else room.ApplyChange(this);
+        if (isOn) return;
+
+        if (isQuestion) room.CheckQuestion(this);
+        else room.AddTVChange(this);
     }
 
     public void ConfirmationFailed() {
@@ -116,7 +119,7 @@ public class Television : MonoBehaviour
             letter.Show();
         }
         selectedLetterObjects = new List<Letter>();
-        room.RemoveChange(this);
+        room.RemoveTVChange(this);
     }
     public void ConfirmationSucceeded() {
     }
