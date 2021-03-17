@@ -7,6 +7,8 @@ public class Room : MonoBehaviour
 {
     private List<Television> allTelevisions;
     private List<IChangable> allObjects;
+
+    public List<IChangable> AllObjects {get { return allObjects;}}
     private List<Change> changes = new List<Change>();
     
     [SerializeField]
@@ -38,7 +40,9 @@ public class Room : MonoBehaviour
         List<T> result = new List<T>();
         for(int i = 0; i < transform.childCount; i++) {
             if (transform.GetChild(i).GetComponent<T>() != null) {
-                result.Add(transform.GetChild(i).GetComponent<T>());
+                if (transform.GetChild(i).GetComponent<T>().ToString() != "null") {
+                    result.Add(transform.GetChild(i).GetComponent<T>());
+                }
             }
         }
         return result;

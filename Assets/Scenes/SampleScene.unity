@@ -123,6 +123,25 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &442962316 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9205454399518043627, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+  m_PrefabInstance: {fileID: 8941945034651943461}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &442962318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 442962316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 342be9a89d2fc054e9a814bd36cf2317, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: gravity
+  room: {fileID: 1138830318}
 --- !u!1 &475026788
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,6 +558,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Room (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8941945033529911752, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8941945033529911754, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -717,15 +740,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2295833684024341179, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: isOn
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2295833684024341179, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: answer
-      value: cube
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2295833684024341179, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: preAnswer
       value: cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 3038603517403707059, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: word
+      value: gravity
       objectReference: {fileID: 0}
     - target: {fileID: 7338968946741502662, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: m_Enabled
@@ -737,11 +764,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7879164053197371631, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: answer
-      value: cube
+      value: gravity
       objectReference: {fileID: 0}
     - target: {fileID: 7879164053197371631, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: preAnswer
       value: cube
+      objectReference: {fileID: 0}
+    - target: {fileID: 7879164053197371631, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: letters.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7879164053197371631, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: letters.Array.data[4]
+      value: e
+      objectReference: {fileID: 0}
+    - target: {fileID: 7879164053197371631, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: letters.Array.data[5]
+      value: e
+      objectReference: {fileID: 0}
+    - target: {fileID: 7879164053197371631, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: letters.Array.data[6]
+      value: e
+      objectReference: {fileID: 0}
+    - target: {fileID: 7879164053197371631, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: letters.Array.data[7]
+      value: e
       objectReference: {fileID: 0}
     - target: {fileID: 8941945033529911752, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: m_Name

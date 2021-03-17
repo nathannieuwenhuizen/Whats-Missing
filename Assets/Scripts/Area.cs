@@ -15,9 +15,15 @@ public class Area : MonoBehaviour
     public Room CurrentRoom {
         get { return currentRoom; }
         set {
-            currentRoom?.OnRoomLeave();
+            if (currentRoom != null) {
+                currentRoom?.OnRoomLeave();
+                currentRoom.AllObjects.Remove(player);
+            }
             currentRoom = value;
             player.transform.position = currentRoom.getStartPos.position;
+            player.transform.parent = currentRoom.transform;
+            currentRoom.AllObjects.Add(player);
+
             currentRoom.OnRoomEnter();
         }
     }

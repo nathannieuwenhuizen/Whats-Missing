@@ -6,6 +6,8 @@ public class PickupThrow : MonoBehaviour
 {
 
     private IPickable holdingObject;
+    private Transform holidngObjectParent;
+
     [SerializeField]
     private float pickupDIstance = 3;
 
@@ -14,6 +16,7 @@ public class PickupThrow : MonoBehaviour
         IPickable pickedObject = focussedObject<IPickable>();
         if (pickedObject != default(IPickable)) {
             pickedObject.RigidBody.isKinematic = true;
+            holidngObjectParent = pickedObject.RigidBody.transform.parent;
             pickedObject.RigidBody.transform.parent = transform;
             holdingObject = pickedObject;
             return;
@@ -31,7 +34,7 @@ public class PickupThrow : MonoBehaviour
         if (holdingObject == null) return;
 
         holdingObject.RigidBody.isKinematic = false;
-        holdingObject.RigidBody.transform.parent = null; // maybe not null but previous parent?
+        holdingObject.RigidBody.transform.parent = holidngObjectParent;
         holdingObject = null;
     }
 

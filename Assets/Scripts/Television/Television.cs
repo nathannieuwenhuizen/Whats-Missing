@@ -77,7 +77,6 @@ public class Television : MonoBehaviour
         for(int i = 0; i < letters.Length; i++) InitializeLetter(letters[i]);
         for(int i = 0; i < answer.Length; i++) {
             Letter answerLetter = InitializeLetter(answer[i].ToString());
-            Debug.Log(answerLetter.LetterValue);
             LetterClicked(answerLetter);
         }
         
