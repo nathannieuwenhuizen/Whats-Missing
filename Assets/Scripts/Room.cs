@@ -36,14 +36,18 @@ public class Room : MonoBehaviour
         foreach(Television tv in allTelevisions) tv.Room = this;
     }
 
-    public List<T> GetAllObjectsInRoom<T>() {
+    public List<T> GetAllObjectsInRoom<T>(Transform tr = null) {
         List<T> result = new List<T>();
-        for(int i = 0; i < transform.childCount; i++) {
-            if (transform.GetChild(i).GetComponent<T>() != null) {
-                if (transform.GetChild(i).GetComponent<T>().ToString() != "null") {
-                    result.Add(transform.GetChild(i).GetComponent<T>());
+        if (tr == null) tr = transform;
+
+        for(int i = 0; i < tr.childCount; i++) {
+            if (tr.GetChild(i).GetComponent<T>() != null) {
+                if (tr.GetChild(i).GetComponent<T>().ToString() != "null") {
+                    result.Add(tr.GetChild(i).GetComponent<T>());
                 }
             }
+            List<T> childResult = GetAllObjectsInRoom<T>(tr.GetChild(i));
+            result = result.Concat(childResult).ToList();
         }
         return result;
     }

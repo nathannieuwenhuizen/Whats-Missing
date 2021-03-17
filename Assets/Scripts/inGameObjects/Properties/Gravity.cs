@@ -13,7 +13,6 @@ public class Gravity : Property
         base.onMissing();
         foreach(Rigidbody rb in room.GetAllObjectsInRoom<Rigidbody>()) {
             rb.useGravity = false;
-            Debug.Log(rb + rb.gameObject.name);
         }
     }
     public override void onAppearing()

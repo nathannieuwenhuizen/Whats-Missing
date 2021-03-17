@@ -59,7 +59,13 @@ public class FPMovement : MonoBehaviour
 
     private void UpdateMovement()
     {
-        rb.velocity = transform.TransformDirection(new Vector3(walkDelta.x * walkSpeed, rb.velocity.y, walkDelta.y * walkSpeed));
+        Vector3 dir = transform.TransformDirection(new Vector3(walkDelta.x * walkSpeed, rb.velocity.y, walkDelta.y * walkSpeed));
+        if (Time.timeScale == 1) {
+            rb.velocity = dir;
+        } else {
+            dir.y = 0;
+            transform.position += dir / 100;
+        }
     }
     private void UpdateRotation()
     {

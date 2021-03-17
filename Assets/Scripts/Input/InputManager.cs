@@ -22,7 +22,9 @@ public class InputManager : MonoBehaviour
         if (Input.GetButtonUp("Fire1")) pickupThrow.release();
 
         if (Input.GetKeyDown(KeyCode.Space)) movement.Jump();
-        movement.SetMovement(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+        if (Time.timeScale == 1) movement.SetMovement(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+        else movement.SetMovement(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
+        
         movement.setMouseDelta(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
     }
 }
