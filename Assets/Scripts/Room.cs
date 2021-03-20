@@ -8,6 +8,12 @@ public class Room : MonoBehaviour
     private List<Television> allTelevisions;
     private List<IChangable> allObjects;
 
+    private Player player;
+    public Player Player { 
+        get => player; 
+        set => player = value;
+    }
+
     public List<IChangable> AllObjects {get { return allObjects;}}
     private List<Change> changes = new List<Change>();
     

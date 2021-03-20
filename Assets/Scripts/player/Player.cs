@@ -5,4 +5,8 @@ using UnityEngine;
 public class Player : RoomObject
 {
 
+    [SerializeField]
+    private Camera playerCamera;
+
+    public Camera Camera { get => playerCamera;}
 }

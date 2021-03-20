@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Property : MonoBehaviour, IChangable
+public abstract class Property : MonoBehaviour, IChangable
 {
-    [SerializeField]    private string word;
+    [SerializeField]    protected string word;
     public string Word { get =>  word; set => word = value; }
 
     public bool animated { get; set; }

@@ -18,12 +18,13 @@ public class Area : MonoBehaviour
             if (currentRoom != null) {
                 currentRoom?.OnRoomLeave();
                 currentRoom.AllObjects.Remove(player);
+                currentRoom.Player = null;
             }
             currentRoom = value;
             player.transform.position = currentRoom.getStartPos.position;
             player.transform.parent = currentRoom.transform;
             currentRoom.AllObjects.Add(player);
-
+            currentRoom.Player = player;
             currentRoom.OnRoomEnter();
         }
     }
