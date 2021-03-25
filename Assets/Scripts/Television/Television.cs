@@ -91,7 +91,7 @@ public class Television : MonoBehaviour
             newLetter.GetComponent<RectTransform>().SetParent(letterContainer);
             newLetter.GetComponent<RectTransform>().localPosition = new Vector3(letterObjects.Count * 50, 0, 0);
             newLetter.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
-            newLetter.GetComponent<RectTransform>().localScale = new Vector3(1.5f,1.5f,1.5f);
+            newLetter.GetComponent<RectTransform>().localScale = Vector3.one;
             newLetter.LetterValue = val;
             return newLetter;
     }

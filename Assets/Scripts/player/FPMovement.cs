@@ -10,7 +10,7 @@ public class FPMovement : MonoBehaviour
     private Transform cameraPivot;
 
     private int walkSpeed = 5;
-    private int rotateSpeed = 5;
+    private int rotateSpeed = 2;
 
     [SerializeField]
     private float jumpForce = 200f;
