@@ -15,6 +15,10 @@ public class Letter : MonoBehaviour
     private Coroutine movingCoroutine;
     private float movingIndex;
 
+    private Coroutine hoverCoroutine;
+    private Vector3 normalScale = Vector3.one;
+    private Vector3 hoverScale = new Vector3(1.3f,1.3f,1.3f);
+    
     [SerializeField]
     private AnimationCurve slideAnimation;
 
@@ -43,8 +47,22 @@ public class Letter : MonoBehaviour
         button.onClick.AddListener(() => LetterIsClicked());
         text = GetComponent<Text>();
     }
+
+
+    public void OnHover() {
+        if (!canBeClicked) return;
+        if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
+        hoverCoroutine = StartCoroutine(ScaleAnimation(hoverScale));
+    }
+    public void OnUnhover() {
+        if (!canBeClicked) return;
+        if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
+        hoverCoroutine = StartCoroutine(ScaleAnimation(normalScale));
+    }
+
     public void Selected()
     {
+        OnUnhover();
         canBeClicked = false;
         spawnPosition = rt.localPosition;
     }
@@ -75,17 +93,27 @@ public class Letter : MonoBehaviour
         if (movingCoroutine != null) StopCoroutine(movingCoroutine);
         movingCoroutine =  StartCoroutine(Moving(pos));
     }
-    private IEnumerator Moving(Vector3 pos, float delay = 0) {
+    private IEnumerator Moving(Vector3 pos, float duration = .5f, float delay = 0) {
         movingIndex = 0;
         yield return new WaitForSeconds(delay);
         Vector3 begin = rt.localPosition;
-        float duration = .5f;
         while( movingIndex < duration) {
             movingIndex += Time.deltaTime;
             rt.localPosition = Vector3.LerpUnclamped(begin, pos, slideAnimation.Evaluate(movingIndex/ duration));
             yield return new WaitForFixedUpdate();
         }
         rt.localPosition = pos;
+    }
+
+    private IEnumerator ScaleAnimation(Vector3 endScale, float duration = .2f) {
+        float index = 0;
+        Vector3 begin = rt.localScale;
+        while( index < duration) {
+            index += Time.deltaTime;
+            rt.localScale = Vector3.LerpUnclamped(begin, endScale, slideAnimation.Evaluate(index/ duration));
+            yield return new WaitForFixedUpdate();
+        }
+        rt.localScale = endScale;
     }
 
 }
