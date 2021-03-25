@@ -10,6 +10,15 @@ public class Letter : MonoBehaviour
     private Button button;
     private Text text;
     private bool canBeClicked = true;
+    private RectTransform rt;
+
+    private Coroutine movingCoroutine;
+    private float movingIndex;
+
+    [SerializeField]
+    private AnimationCurve slideAnimation;
+
+    private Vector3 spawnPosition;
 
     private string letterValue;
 
@@ -19,6 +28,7 @@ public class Letter : MonoBehaviour
         set {
             letterValue = value;
             text.text = value;
+            //Debug.Log(size.width + " | " + size.height + " | rt width" + rt.rect.width);
         }
     }
 
@@ -29,19 +39,30 @@ public class Letter : MonoBehaviour
     void Awake()
     {
         button = GetComponent<Button>();
+        rt = GetComponent<RectTransform>();
         button.onClick.AddListener(() => LetterIsClicked());
         text = GetComponent<Text>();
     }
-    public void Hide()
+    public void Selected()
     {
         canBeClicked = false;
-        transform.localScale = new Vector3(0, 0, 0);
+        spawnPosition = rt.localPosition;
     }
 
-    public void Show()
+    public void Deselected()
     {
-        transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         canBeClicked = true;
+        MoveTo(spawnPosition);
+    }
+
+    public Size size {
+        get {
+            TextGenerator textGen = new TextGenerator();
+            TextGenerationSettings generationSettings = text.GetGenerationSettings(text.rectTransform.rect.size); 
+            float width = textGen.GetPreferredWidth(letterValue, generationSettings);
+            float height = textGen.GetPreferredHeight(letterValue, generationSettings);
+            return new Size() {width = width, height = height};
+        }
     }
 
     void LetterIsClicked()
@@ -50,4 +71,27 @@ public class Letter : MonoBehaviour
         onLetterClick?.Invoke(this);
     }
 
+    public void MoveTo( Vector3 pos) {
+        if (movingCoroutine != null) StopCoroutine(movingCoroutine);
+        movingCoroutine =  StartCoroutine(Moving(pos));
+    }
+    private IEnumerator Moving(Vector3 pos, float delay = 0) {
+        movingIndex = 0;
+        yield return new WaitForSeconds(delay);
+        Vector3 begin = rt.localPosition;
+        float duration = .5f;
+        while( movingIndex < duration) {
+            movingIndex += Time.deltaTime;
+            rt.localPosition = Vector3.LerpUnclamped(begin, pos, slideAnimation.Evaluate(movingIndex/ duration));
+            yield return new WaitForFixedUpdate();
+        }
+        rt.localPosition = pos;
+    }
+
+}
+
+[System.Serializable]
+public class Size {
+    public float width;
+    public float height;
 }
