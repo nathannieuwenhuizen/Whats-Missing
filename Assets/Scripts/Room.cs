@@ -20,9 +20,16 @@ public class Room : MonoBehaviour
     [SerializeField]
     private Transform startPos;
 
-    public Transform getStartPos
+    public Transform StartPos
     {
         get {return this.startPos;}
+    }
+
+    [SerializeField]
+    private Transform endPos;
+    public Transform EndPos
+    {
+        get {return this.endPos;}
     }
 
 

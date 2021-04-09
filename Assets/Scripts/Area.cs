@@ -11,6 +11,9 @@ public class Area : MonoBehaviour
     private Player player;
 
     [SerializeField]
+    private AnimationCurve walkingCurve;
+
+    [SerializeField]
     private Room currentRoom;
     public Room CurrentRoom {
         get { return currentRoom; }
@@ -21,18 +24,37 @@ public class Area : MonoBehaviour
                 currentRoom.Player = null;
             }
             currentRoom = value;
-            player.transform.position = currentRoom.getStartPos.position;
             player.transform.parent = currentRoom.transform;
             currentRoom.AllObjects.Add(player);
             currentRoom.Player = player;
             currentRoom.OnRoomEnter();
         }
     }
-    // Start is called before the first frame update
+    
     void Start()
     {
+        playerPos = currentRoom.StartPos.position;
         CurrentRoom = currentRoom;
     }
+
+    private Vector3 playerPos {
+        get => player.transform.position;
+        set {
+            player.transform.position = new Vector3(value.x, player.transform.position.y, value.z);
+        }
+    }
+
+    public IEnumerator Walking(Vector3 endPos, float duration, float delay = 0) {
+        float index = 0;
+        Vector3 begin = playerPos;
+        while (index < duration) {
+            index += Time.deltaTime;
+            playerPos = Vector3.LerpUnclamped(begin, endPos, walkingCurve.Evaluate(index / duration));
+            yield return new WaitForFixedUpdate();
+        }
+        playerPos = endPos;
+    }
+ 
 
     private void OnEnable() {
         Door.OnPassingThrough += OnPassingThroughDoor;
@@ -43,17 +65,19 @@ public class Area : MonoBehaviour
     }
 
     void OnPassingThroughDoor(Door door) {
-        Debug.Log("door" + door);
         int index = System.Array.IndexOf(rooms, door.room);
-
-        if (currentRoom == door.room) {
+        if (door.room == currentRoom) {
+            //next room
             if (index == rooms.Length - 1) {
                 Debug.Log("area finished!");
             } else {
                 CurrentRoom = rooms[index + 1];
+                StartCoroutine(Walking(CurrentRoom.StartPos.position, .5f, .2f));
             }
         } else {
+            //previous room
             CurrentRoom = rooms[index];
+            StartCoroutine(Walking(CurrentRoom.EndPos.position, .5f, .2f));
         }
     }
 
