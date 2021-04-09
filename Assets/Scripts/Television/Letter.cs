@@ -50,14 +50,12 @@ public class Letter : MonoBehaviour
 
     public void OnHover() {
         if (!canBeClicked) return;
-        Debug.Log("hover");
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(hoverScale));
     }
     public void OnUnhover() {
         if (!canBeClicked) return;
 
-        Debug.Log("unhover");
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(normalScale));
     }

@@ -12,6 +12,8 @@ public interface IChangable : IMissable
 {
     string Word {get; set; }
     bool animated { get; set;}
+    bool InSpace {get; }
+    Transform Transform {get; }
     void SetChange(ChangeType changeType);
     void RemoveChange(ChangeType changeType);
 }

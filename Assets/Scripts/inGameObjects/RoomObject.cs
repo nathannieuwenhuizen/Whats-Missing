@@ -8,9 +8,12 @@ public class RoomObject : MonoBehaviour, IChangable
 
 
     private Vector3 currentScale;
-    private Quaternion currentRotation;
-    private Quaternion missingRotation;
 
+    [SerializeField]
+    private AnimationClip appearing;
+    [SerializeField]
+    private AnimationClip disAppearing;
+    private Animation anim;
 
     public string Word {
         get { return word;}
@@ -20,6 +23,11 @@ public class RoomObject : MonoBehaviour, IChangable
     public bool animated { 
         get; set; 
     }
+
+    private bool inSpace = true;
+    public bool InSpace { get => inSpace; }
+
+    public Transform Transform => transform;
 
     public void SetChange(ChangeType changeType) {
         switch (changeType) {
@@ -35,6 +43,10 @@ public class RoomObject : MonoBehaviour, IChangable
                 break;
         }
     }
+
+    protected void Awake() {
+        anim = GetComponent<Animation>();
+    }
     public void onAppearing()
     {
         gameObject.SetActive(true);
@@ -44,39 +56,55 @@ public class RoomObject : MonoBehaviour, IChangable
     public void onMissing()
     {
         currentScale = transform.localScale;
-        currentRotation = transform.rotation;
-        missingRotation = Quaternion.Euler(currentRotation.eulerAngles.x + 45, currentRotation.eulerAngles.y + 90, currentRotation.eulerAngles.z);
         StartCoroutine(Dissappearing());
     }
     public virtual IEnumerator Dissappearing() {
 
         if (animated) {
-            AnimationCurve curve = AnimationCurve.EaseInOut(0,1,3,0);
+            if(anim != null) yield return StartCoroutine(playAnimation(disAppearing));
+            else {
+                AnimationCurve curve = AnimationCurve.EaseInOut(0,1,3,0);
 
-            float timePassed = 0f;
-            while (transform.localScale.x > 0) {
-                yield return new WaitForFixedUpdate();
-                timePassed += Time.deltaTime;
-                transform.localScale = currentScale * curve.Evaluate(timePassed);
-                //transform.localRotation = Quaternion.Lerp(currentRotation, missingRotation, (1- curve.Evaluate(timePassed)));
+                float timePassed = 0f;
+                while (transform.localScale.x > 0) {
+                    yield return new WaitForFixedUpdate();
+                    timePassed += Time.deltaTime;
+                    transform.localScale = currentScale * curve.Evaluate(timePassed);
+                }
             }
         }
         transform.localScale = new Vector3(0,0,0);
         gameObject.SetActive(false);
+        
     }
+
+
     public virtual IEnumerator Appearing() {
-
         if (animated) {
-            AnimationCurve curve = AnimationCurve.EaseInOut(0,0,3,1);
+            if(anim != null) yield return StartCoroutine(playAnimation(appearing));
+            else {
+                AnimationCurve curve = AnimationCurve.EaseInOut(0,0,3,1);
 
-            float timePassed = 0f;
-            while (transform.localScale.x < currentScale.x) {
-                yield return new WaitForFixedUpdate();
-                timePassed += Time.deltaTime;
-                transform.localScale = currentScale * curve.Evaluate(timePassed);
-                //transform.localRotation = Quaternion.Lerp(currentRotation, missingRotation, (1- curve.Evaluate(timePassed)));
+                float timePassed = 0f;
+                while (transform.localScale.x < currentScale.x) {
+                    yield return new WaitForFixedUpdate();
+                    timePassed += Time.deltaTime;
+                    transform.localScale = currentScale * curve.Evaluate(timePassed);
+                }
+            }
+        } 
+        transform.localScale = currentScale;
+    }
+    public IEnumerator playAnimation(AnimationClip clip) {
+        if (anim != null && clip != null) {
+            clip.legacy = true;
+            anim.AddClip(clip, clip.name);
+            anim.clip = clip;
+            anim.Play();
+            while (anim.IsPlaying(clip.name))
+            {
+                yield return null;
             }
         }
-        transform.localScale = currentScale;
     }
 }

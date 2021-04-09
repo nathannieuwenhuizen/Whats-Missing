@@ -9,6 +9,11 @@ public abstract class Property : MonoBehaviour, IChangable
 
     public bool animated { get; set; }
 
+    private bool inSpace= false;
+    public bool InSpace => inSpace;
+
+    public Transform Transform => transform;
+
     public virtual void onAppearing()
     {
     }

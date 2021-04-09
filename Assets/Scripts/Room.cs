@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,14 +33,19 @@ public class Room : MonoBehaviour
         get {return this.endPos;}
     }
 
+    [SerializeField]
+    private GameObject partclePrefab;
 
     [SerializeField]
     private Door door;
 
+    private bool animated;
     public bool Animated {
         set { 
+            animated = value;
             foreach (IChangable obj in allObjects) obj.animated = value;
         }
+        get => animated;
     }
 
     private void Awake() {
@@ -78,6 +84,8 @@ public class Room : MonoBehaviour
         }
         Animated = true;
     }
+
+    //Deactivate all changes 
     public void DeactivateChanges(){
         Animated = false;
         
@@ -94,7 +102,12 @@ public class Room : MonoBehaviour
         foreach (IChangable obj in allObjects)
         {
             if (obj.Word == selectedTelevision.Word) {
-                obj.SetChange(selectedTelevision.changeType);
+                if (obj.animated) {
+                    StartCoroutine(AnimateChangeEffect(selectedTelevision, obj, 1f, () => {
+                        obj.SetChange(selectedTelevision.changeType);
+                    }));
+                } else obj.SetChange(selectedTelevision.changeType);
+
                 hasChangedSomething = true;
             }
         }
@@ -107,6 +120,7 @@ public class Room : MonoBehaviour
         }
     }
 
+    
     //removes a tv change updating the room and tv
     public void RemoveTVChange(Television selectedTelevision) {
         if (!selectedTelevision.IsOn) return;
@@ -122,10 +136,28 @@ public class Room : MonoBehaviour
         foreach (IChangable obj in allObjects)
         {
             if (obj.Word == change.word) {
-                obj.RemoveChange(change.television.changeType);
+                if (obj.animated) {
+                    StartCoroutine(AnimateChangeEffect(change.television, obj, 1f, () => {
+                        obj.RemoveChange(change.television.changeType);
+                    }));
+                } else obj.RemoveChange(change.television.changeType);
             }
         }
     }
+
+    public IEnumerator AnimateChangeEffect(Television tv, IChangable o, float duration, Action callback) {
+        float index = 0;
+        Vector3 begin = tv.transform.position;
+        AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
+        GameObject particle = Instantiate(partclePrefab, begin, Quaternion.identity);
+        while (index < duration) {
+            index += Time.deltaTime;
+            particle.transform.position = Vector3.LerpUnclamped(begin, o.Transform.position, curve.Evaluate(index / duration));
+            yield return new WaitForFixedUpdate();
+        }
+        callback();
+    }
+
     
 
     public void CheckQuestion(Television selectedTelevision) {

@@ -8,6 +8,7 @@ public class PickableRoomObject : RoomObject, IPickable
     private Rigidbody rb;
     void Awake()
     {
+        base.Awake();
         rb = GetComponent<Rigidbody>();
     }
     public Rigidbody RigidBody { 
