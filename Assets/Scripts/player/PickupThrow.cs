@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class PickupThrow : MonoBehaviour
 {
-
     private IPickable holdingObject;
     private Transform holidngObjectParent;
+    private Vector3 oldPos = new Vector3();
+    private Vector3 velocity = new Vector3();
 
     [SerializeField]
-    private float pickupDIstance = 3;
+    private float pickupDistance = 3;
+
+    private float maxThrowForce = .7f;
+    private float throwForceMultiplier = 10f;
 
     public void pickup() {
         //check stuff to pickup
@@ -19,6 +23,8 @@ public class PickupThrow : MonoBehaviour
             holidngObjectParent = pickedObject.RigidBody.transform.parent;
             pickedObject.RigidBody.transform.parent = transform;
             holdingObject = pickedObject;
+            oldPos = holdingObject.RigidBody.transform.position;
+            StartCoroutine(UpdateVelocity());
             return;
         }
 
@@ -29,18 +35,31 @@ public class PickupThrow : MonoBehaviour
         }
     }
 
-
+    //Releases the holding object
     public void release() {
         if (holdingObject == null) return;
 
         holdingObject.RigidBody.isKinematic = false;
         holdingObject.RigidBody.transform.parent = holidngObjectParent;
+        if (velocity.magnitude > maxThrowForce) {
+            velocity = velocity.normalized * maxThrowForce;
+        }
+        holdingObject.RigidBody.velocity =  velocity * throwForceMultiplier;
         holdingObject = null;
+    }
+
+    //updates the holding object velocity;
+    private IEnumerator UpdateVelocity() {
+        while (holdingObject != null) {
+            velocity = holdingObject.RigidBody.transform.position - oldPos;
+            oldPos = holdingObject.RigidBody.transform.position;
+            yield return new WaitForSeconds(.1f);
+        }
     }
 
     private T focussedObject<T>() {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, pickupDIstance)) {
+        if (Physics.Raycast(transform.position, transform.forward, out hit, pickupDistance)) {
             if (hit.collider.gameObject.GetComponent<T>() != null) return hit.collider.gameObject.GetComponent<T>();
         }
         return default(T);
