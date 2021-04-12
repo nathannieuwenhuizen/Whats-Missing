@@ -50,6 +50,8 @@ public class Television : MonoBehaviour
     private RectTransform answerText;
     [SerializeField]
     private RectTransform letterContainer;
+    private int containerColloms = 9;
+    private int containerRows = 3;
 
     [SerializeField]
     private GameObject letterPrefab;
@@ -86,14 +88,40 @@ public class Television : MonoBehaviour
     }
     Letter InitializeLetter(string val) {
         Letter newLetter = GameObject.Instantiate(letterPrefab).GetComponent<Letter>();
-            letterObjects.Add(newLetter);
             newLetter.onLetterClick += LetterClicked;
             newLetter.GetComponent<RectTransform>().SetParent(letterContainer);
-            newLetter.GetComponent<RectTransform>().localPosition = new Vector3(letterObjects.Count * 50, 0, 0);
+            newLetter.GetComponent<RectTransform>().localPosition = GetLetterPosBasedOnIndex(letterObjects.Count);
             newLetter.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
             newLetter.GetComponent<RectTransform>().localScale = Vector3.one;
             newLetter.LetterValue = val;
+            letterObjects.Add(newLetter);
             return newLetter;
+    }
+    Vector3 LetterPos(int xIndex, int yIndex) {
+
+        Vector3 result = new Vector3(0,0,0);
+
+        float width = letterContainer.rect.width;
+        float height = letterContainer.rect.height;
+        float cellSize = (height / (float)containerRows);
+        result.x = -width /2f + ((float)xIndex  / (float)containerColloms) * width + (width / (float)containerColloms) * .5f;
+        result.y = height /2f - ((float)yIndex  / (float)containerRows) * height  -  cellSize * .5f;
+        result.y += -Mathf.Sin(xIndex / (float)containerColloms * Mathf.PI) * cellSize * .3f;
+        return result;
+    }
+    Vector3 GetLetterPosBasedOnIndex(int index) {
+        int x =  Mathf.RoundToInt((float)containerColloms / 2f);
+        int delta = index % containerColloms;
+        if (delta != 0) {
+            if (delta % 2 == 0) {
+                x += Mathf.CeilToInt((float)delta / 2f);
+            } else {
+                x -= Mathf.CeilToInt((float)delta / 2f);
+            }
+        }
+        int y = Mathf.FloorToInt((float)index / (float)containerColloms);
+        // Debug.Log(x + " |  " + y);
+        return LetterPos(x,y);
     }
 
     void LetterClicked(Letter letter)
@@ -135,7 +163,7 @@ public class Television : MonoBehaviour
     //sets all the letters to their original place.
     public void Reset() {
         for(int i = 0; i < selectedLetterObjects.Count; i++) {
-            selectedLetterObjects[i].transform.parent = letterContainer.parent;
+            selectedLetterObjects[i].transform.parent = letterContainer;
             selectedLetterObjects[i].Deselected();
         }
         selectedLetterObjects = new List<Letter>();
