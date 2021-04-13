@@ -14,7 +14,7 @@ public class RoomTelevision : Television
 
     [SerializeField]
     private string preAnswer;
-    
+
     [SerializeField]
     protected string[] letters;
 
@@ -86,11 +86,19 @@ public class RoomTelevision : Television
         Reset();
     }
 
+    protected override void LetterClicked(Letter letter)
+    {
+        letterObjects.Remove(letter);
+        base.LetterClicked(letter);
+    }
+
+
     //sets all the letters to their original place.
     public void Reset() {
         for(int i = 0; i < selectedLetterObjects.Count; i++) {
             selectedLetterObjects[i].transform.parent = letterContainer;
             selectedLetterObjects[i].Deselected();
+            letterObjects.Add(selectedLetterObjects[i]);
         }
         selectedLetterObjects = new List<Letter>();
         room.RemoveTVChange(this);

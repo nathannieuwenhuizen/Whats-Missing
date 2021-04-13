@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -67,6 +68,34 @@ public class Television : MonoBehaviour
             selectedLetterObjects[i].MoveTo(answerText.localPosition + new Vector3(cPos, 0, 0));
             cPos += selectedLetterObjects[i].size.width / 2;
         }
+    }
+
+
+    private void Update() {
+        if (isInteractable)
+        {
+            CheckKeyboardInput();
+        }
+    }
+    private void CheckKeyboardInput() {
+        foreach( Letter letter in letterObjects) {
+            if (Input.GetKeyDown(GetKeyCode(letter.LetterValue[0]))) {
+                LetterClicked(letter);
+                return;
+            }
+        }
+    }
+    private readonly Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
+    private KeyCode GetKeyCode(char character)
+    {
+        // Get from cache if it was taken before to prevent unnecessary enum parse
+        KeyCode code;
+        if (_keycodeCache.TryGetValue(character, out code)) return code;
+        // Cast to it's integer value
+        int alphaValue = character;
+        code = (KeyCode)Enum.Parse(typeof(KeyCode), alphaValue.ToString());
+        _keycodeCache.Add(character, code);
+        return code;
     }
 
     protected Vector3 GetLetterPosition(int xIndex, int yIndex) {
