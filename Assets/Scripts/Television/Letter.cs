@@ -31,6 +31,7 @@ public class Letter : TelevisionButton
         set {
             letterValue = value;
             text.text = value;
+            rt.sizeDelta = new Vector2(size.width, size.height);
         }
     }
 
