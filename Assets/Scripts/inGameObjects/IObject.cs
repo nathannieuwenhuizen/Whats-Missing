@@ -29,6 +29,6 @@ public interface IInteractable {
 }
 
 public class Change {
-    public Television television;
+    public RoomTelevision television;
     public string word;
 }

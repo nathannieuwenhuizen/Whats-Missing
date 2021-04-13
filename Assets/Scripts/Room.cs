@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    private List<Television> allTelevisions;
+    private List<RoomTelevision> allTelevisions;
     private List<IChangable> allObjects;
 
     private Player player;
@@ -51,8 +51,8 @@ public class Room : MonoBehaviour
     private void Awake() {
         door.room = this;
         allObjects = GetAllObjectsInRoom<IChangable>();
-        allTelevisions = GetAllObjectsInRoom<Television>().OrderBy( allObjects => !allObjects.isQuestion).ToList(); 
-        foreach(Television tv in allTelevisions) tv.Room = this;
+        allTelevisions = GetAllObjectsInRoom<RoomTelevision>().OrderBy( allObjects => !allObjects.isQuestion).ToList(); 
+        foreach(RoomTelevision tv in allTelevisions) tv.Room = this;
     }
 
     public List<T> GetAllObjectsInRoom<T>(Transform tr = null) {
@@ -75,7 +75,7 @@ public class Room : MonoBehaviour
     public void ActivateChanges(){
         Animated = false;
         
-        foreach (Television tv in allTelevisions)
+        foreach (RoomTelevision tv in allTelevisions)
         {
             if (tv.Word != "") {
                 if (tv.isQuestion) CheckQuestion(tv);
@@ -97,7 +97,7 @@ public class Room : MonoBehaviour
     }
 
     // Apply the change to the object 
-    public void AddTVChange(Television selectedTelevision) {
+    public void AddTVChange(RoomTelevision selectedTelevision) {
         bool hasChangedSomething = false;
         foreach (IChangable obj in allObjects)
         {
@@ -122,7 +122,7 @@ public class Room : MonoBehaviour
 
     
     //removes a tv change updating the room and tv
-    public void RemoveTVChange(Television selectedTelevision) {
+    public void RemoveTVChange(RoomTelevision selectedTelevision) {
         if (!selectedTelevision.IsOn) return;
         selectedTelevision.IsOn = false;
         CheckRoomCompletion();
@@ -145,7 +145,7 @@ public class Room : MonoBehaviour
         }
     }
 
-    public IEnumerator AnimateChangeEffect(Television tv, IChangable o, float duration, Action callback) {
+    public IEnumerator AnimateChangeEffect(RoomTelevision tv, IChangable o, float duration, Action callback) {
         float index = 0;
         Vector3 begin = tv.transform.position;
         AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
@@ -160,10 +160,10 @@ public class Room : MonoBehaviour
 
     
 
-    public void CheckQuestion(Television selectedTelevision) {
+    public void CheckQuestion(RoomTelevision selectedTelevision) {
         bool questionIsCorrect = false;
 
-        foreach (Television tv in allTelevisions)
+        foreach (RoomTelevision tv in allTelevisions)
         {
             if (tv.IsOn && !tv.isQuestion) {
                 if (tv.Word == selectedTelevision.Word) {
@@ -189,7 +189,7 @@ public class Room : MonoBehaviour
     }
 
     private bool AllTelevisionsAreOn() {
-        foreach (Television tv in allTelevisions)
+        foreach (RoomTelevision tv in allTelevisions)
         {
             if (!tv.IsOn) return false;
         }
