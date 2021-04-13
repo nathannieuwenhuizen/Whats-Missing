@@ -13,8 +13,8 @@ public class Door : MonoBehaviour, IInteractable
     public static event PassingDoorAction OnPassingThrough;
     private bool locked = true;
 
-    private float openAngle = -20f;
-    private float wideAngle = -90f;
+    private float openAngle = 30f;
+    private float wideAngle = 90f;
     private float startRotation;
     private IEnumerator flipCoroutine;
 
@@ -86,7 +86,7 @@ public class Door : MonoBehaviour, IInteractable
 
         float index = 0;
         float begin = YRotation;
-        if (begin > 180) begin -= 360;
+        //if (begin > 180) begin -= 360;
         while (index < duration) {
             index += Time.deltaTime;
             YRotation = Mathf.LerpUnclamped(begin, endRotation, curve.Evaluate(index / duration));
