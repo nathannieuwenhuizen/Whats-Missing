@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickupThrow : MonoBehaviour
+public class Hands : MonoBehaviour
 {
     private IPickable holdingObject;
     private Transform holidngObjectParent;
@@ -15,7 +15,7 @@ public class PickupThrow : MonoBehaviour
     private float maxThrowForce = .7f;
     private float throwForceMultiplier = 10f;
 
-    public void pickup() {
+    public void Grab() {
         //check stuff to pickup
         IPickable pickedObject = focussedObject<IPickable>();
         if (pickedObject != default(IPickable)) {
@@ -36,7 +36,7 @@ public class PickupThrow : MonoBehaviour
     }
 
     //Releases the holding object
-    public void release() {
+    public void Release() {
         if (holdingObject == null) return;
 
         holdingObject.RigidBody.isKinematic = false;

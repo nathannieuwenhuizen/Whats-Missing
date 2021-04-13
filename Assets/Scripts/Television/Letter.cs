@@ -4,12 +4,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class Letter : MonoBehaviour
+public class Letter : TelevisionButton
 {
     
     private Button button;
     private Text text;
-    private bool canBeClicked = true;
     private RectTransform rt;
 
     private Coroutine movingCoroutine;
@@ -48,14 +47,15 @@ public class Letter : MonoBehaviour
     }
 
 
-    public void OnHover() {
+    public override void OnHover() {
+        base.OnHover();
         if (!canBeClicked) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(hoverScale));
     }
-    public void OnUnhover() {
+    public override void OnUnhover() {
+        base.OnUnhover();
         if (!canBeClicked) return;
-
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(normalScale));
     }
