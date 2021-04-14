@@ -24,6 +24,7 @@ public class Television : MonoBehaviour
         set { 
             isInteractable = value; 
             GetComponentInChildren<GraphicRaycaster>().enabled = value;
+            GetComponentInChildren<CanvasGroup>().alpha = value ? 1 : .8f;
         }
     }
     

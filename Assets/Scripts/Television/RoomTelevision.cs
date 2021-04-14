@@ -18,6 +18,13 @@ public class RoomTelevision : Television
     [SerializeField]
     protected string[] letters;
 
+    [Header("color indicator")]
+    [SerializeField]
+    private MeshRenderer mr;
+    [SerializeField]
+    private Color offColor = Color.red;
+    [SerializeField]
+    private Color onColor = Color.green;
 
     public bool IsOn {
         get { return isOn; }
@@ -28,7 +35,7 @@ public class RoomTelevision : Television
             } else {
                 ConfirmationFailed();
             }
-            //TODO: change ui image/sound etc...
+            updateIndicatorLight();
         }
     }
 
@@ -45,6 +52,13 @@ public class RoomTelevision : Television
     {
         base.Awake();
         InitializeLetters();
+        updateIndicatorLight();
+    }
+
+    void updateIndicatorLight() {
+        Color colour = isOn ? onColor : offColor;
+        colour *= 3.0f;
+        mr.material.SetColor("_EmissionColor", colour);
     }
 
     void InitializeLetters()

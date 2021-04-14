@@ -13,6 +13,7 @@ public class Letter : TelevisionButton
 
     private Coroutine movingCoroutine;
     private float movingIndex;
+    private Vector3 startMovePos;
 
     private Coroutine hoverCoroutine;
     private Vector3 normalScale = Vector3.one;
@@ -91,18 +92,24 @@ public class Letter : TelevisionButton
     }
 
     public void MoveTo( Vector3 pos) {
-        if (movingCoroutine != null) StopCoroutine(movingCoroutine);
+        if (movingCoroutine != null && movingIndex < 1) {
+            StopCoroutine(movingCoroutine);
+            movingCoroutine =  StartCoroutine(Moving(pos));
+            return;
+        }
+        movingIndex = 0;
+        startMovePos = rt.localPosition;
         movingCoroutine =  StartCoroutine(Moving(pos));
     }
     private IEnumerator Moving(Vector3 pos, float duration = .5f, float delay = 0) {
-        movingIndex = 0;
+        
         yield return new WaitForSeconds(delay);
-        Vector3 begin = rt.localPosition;
         while( movingIndex < duration) {
             movingIndex += Time.deltaTime;
-            rt.localPosition = Vector3.LerpUnclamped(begin, pos, slideAnimation.Evaluate(movingIndex/ duration));
+            rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, slideAnimation.Evaluate(movingIndex/ duration));
             yield return new WaitForFixedUpdate();
         }
+        movingIndex = 1;
         rt.localPosition = pos;
     }
 
