@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PickableRoomObject : RoomObject, IPickable
 {
 
     private Rigidbody rb;
-    void Awake()
+    protected override void Awake()
     {
         base.Awake();
         rb = GetComponent<Rigidbody>();

@@ -48,7 +48,7 @@ public class Room : MonoBehaviour
         get => animated;
     }
 
-    private void Awake() {
+    void Awake() {
         door.room = this;
         allObjects = GetAllObjectsInRoom<IChangable>();
         allTelevisions = GetAllObjectsInRoom<RoomTelevision>().OrderBy( allObjects => !allObjects.isQuestion).ToList(); 

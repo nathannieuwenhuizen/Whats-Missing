@@ -2,12 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SFXObject))]
 public class FPMovement : MonoBehaviour
 {
     private Rigidbody rb;
 
     [SerializeField]
     private Transform cameraPivot;
+
+    private SFXObject sfx;
+    private float walkSoundDistance = 1.5f;
+    [SerializeField]
+    private AudioClip[] footStepSounds;
+    [SerializeField]
+    private AudioClip jumpSound;
+    [SerializeField]
+    private AudioClip landingSound;
+
+    private Vector3 oldPos;
+
 
     private int walkSpeed = 5;
     private int rotateSpeed = 2;
@@ -39,17 +52,35 @@ public class FPMovement : MonoBehaviour
     public void Jump() {
         if (inAir) return;
         inAir = true;
+        sfx.Play(jumpSound, .1f);
         rb.AddForce(new Vector3(0,jumpForce,0));
     }
     private void OnCollisionEnter(Collision other) {
-        inAir = false;
+        if (inAir) {
+            inAir = false;
+            sfx.Play(landingSound);
+            oldPos = transform.position;
+        }
+    }
+
+    private void MakeWalkingSounds() {
+        if (inAir) return;
+        Vector3 delta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
+
+        if (delta.magnitude > walkSoundDistance){
+            oldPos = transform.position;
+            sfx.Play(footStepSounds[Mathf.FloorToInt(Random.Range(0, footStepSounds.Length))], .05f);
+        }
     }
 
 
     private void Start()
     {
+        sfx = GetComponent<SFXObject>();
         rb = GetComponent<Rigidbody>();
         EnableCursor(false);
+
+        oldPos = transform.position;
     }
     void Update()
     {
@@ -66,6 +97,7 @@ public class FPMovement : MonoBehaviour
             dir.y = 0;
             transform.position += dir / 100;
         }
+        MakeWalkingSounds();
     }
     private void UpdateRotation()
     {
@@ -84,6 +116,5 @@ public class FPMovement : MonoBehaviour
         {
             cameraPivot.localRotation = Quaternion.Euler(new Vector3(Mathf.Min(cameraPivot.rotation.eulerAngles.x, verticalAngle), 0, 0));
         }
-
     }
 }

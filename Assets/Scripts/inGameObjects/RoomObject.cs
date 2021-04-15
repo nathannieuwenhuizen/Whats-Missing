@@ -44,7 +44,7 @@ public class RoomObject : MonoBehaviour, IChangable
         }
     }
 
-    protected void Awake() {
+    protected virtual void Awake() {
         anim = GetComponent<Animation>();
     }
     public void onAppearing()
