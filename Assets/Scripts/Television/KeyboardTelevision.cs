@@ -39,6 +39,7 @@ public class KeyboardTelevision : Television
 
     protected override void LetterClicked(Letter letter)
     {
+        sfx.Play(letterClickSound);
         Letter newLetter = InitializeLetter(letter.LetterValue, letter.transform.localPosition);
         // newLetter.transform.localPosition = letter.transform.localPosition;
         base.LetterClicked(newLetter);

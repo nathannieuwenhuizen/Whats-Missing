@@ -14,6 +14,11 @@ public class Television : MonoBehaviour
     protected RectTransform letterContainer;
 
     [SerializeField]
+    protected SFXObject sfx;
+    [SerializeField]
+    protected AudioClip letterClickSound;
+
+    [SerializeField]
     protected Text questionText;
     [SerializeField]
     protected RectTransform answerText;
@@ -58,7 +63,6 @@ public class Television : MonoBehaviour
     protected void UpdateAnswerTextPosition() {
         float totalWidth = 0;
         foreach(Letter letter in selectedLetterObjects) {
-            Debug.Log("width: " + letter.size.width);
             totalWidth += letter.size.width;
         }
         float cPos = -(totalWidth - selectedLetterObjects[0].size.width) / 2;
@@ -125,6 +129,7 @@ public class Television : MonoBehaviour
     }
     protected virtual void LetterClicked(Letter letter)
     {
+
         selectedLetterObjects.Add(letter);
         letter.Selected();
         letter.transform.parent = answerText.transform;

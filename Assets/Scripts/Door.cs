@@ -7,7 +7,9 @@ public class Door : MonoBehaviour, IInteractable
     // Start is called before the first frame update
 
     [HideInInspector]
-    public  Room room;
+    public Room room;
+
+
 
     public delegate void PassingDoorAction(Door door);
     public static event PassingDoorAction OnPassingThrough;
@@ -27,9 +29,21 @@ public class Door : MonoBehaviour, IInteractable
     private AnimationCurve openCurve;
     [SerializeField]
     private AnimationCurve closeCurve;
+
+    [Header("Sounds")]
+    [SerializeField]
+    private SFXObject sfx;
+    [SerializeField]
+    private AudioClip squeekSound;
+    [SerializeField]
+    private AudioClip closeSound;
+    [SerializeField]
+    private AudioClip openSound;
+
     public bool Locked {
         get { return locked; }
         set {
+            if (locked == value) return;
             locked = value;
             if (locked) {
                 Close();
@@ -42,13 +56,16 @@ public class Door : MonoBehaviour, IInteractable
     public bool Focused { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     void Close() {
+        Debug.Log("close");
+        sfx.Play(closeSound);
         lightObject.SetActive(false);
         StartCoroutine(Flipping(startRotation, .5f, closeCurve));
     }
 
     void Open() {
+        sfx.Play(squeekSound, .2f);
         lightObject.SetActive(true);
-        StartCoroutine(Flipping(startRotation + openAngle, .5f, openCurve));
+        StartCoroutine(Flipping(startRotation + openAngle, 2f, openCurve));
     }
     void Start()
     {
@@ -59,6 +76,9 @@ public class Door : MonoBehaviour, IInteractable
     private void Update() {
         if (Input.GetKeyDown(KeyCode.O)) {
             Locked = !locked;
+        }
+        if (Input.GetKeyDown(KeyCode.P)) {
+            StartCoroutine(OpenAnimation());
         }
     }
 
@@ -96,7 +116,9 @@ public class Door : MonoBehaviour, IInteractable
     }
 
     public IEnumerator OpenAnimation() {
+        sfx.Play(openSound);
         yield return StartCoroutine(Flipping(startRotation + wideAngle, .8f, openCurve));
-        yield return StartCoroutine(Flipping(startRotation, .3f, closeCurve));
+        sfx.Play(closeSound);
+        yield return StartCoroutine(Flipping(startRotation, .5f, closeCurve));
     }
 }

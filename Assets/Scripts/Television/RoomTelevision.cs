@@ -25,6 +25,13 @@ public class RoomTelevision : Television
     private Color offColor = Color.red;
     [SerializeField]
     private Color onColor = Color.green;
+    
+
+    [Header("Sounds")]
+    [SerializeField]
+    private AudioClip succesSound;
+    [SerializeField]
+    private AudioClip failSound;
 
     public bool IsOn {
         get { return isOn; }
@@ -97,11 +104,13 @@ public class RoomTelevision : Television
     }
 
     public void ConfirmationFailed() {
+        if (room.Animated) sfx.Play(failSound);
         Reset();
     }
 
     protected override void LetterClicked(Letter letter)
     {
+        if ( room != null && room.Animated) sfx.Play(letterClickSound);
         letterObjects.Remove(letter);
         base.LetterClicked(letter);
     }
@@ -118,5 +127,6 @@ public class RoomTelevision : Television
         room.RemoveTVChange(this);
     }
     public void ConfirmationSucceeded() {
+        if (room.Animated) sfx.Play(succesSound);
     }
 }
