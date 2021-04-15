@@ -6,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class SFXObject : MonoBehaviour
 {
-
+    public static float SFXVolume = 1f;
     private AudioSource audioSource;
 
     void Awake()
@@ -24,7 +24,7 @@ public class SFXObject : MonoBehaviour
             return;
         }
 
-        audioSource.volume = volume;
+        audioSource.volume = volume * SFXObject.SFXVolume;
         audioSource.Play();
     }
 }
