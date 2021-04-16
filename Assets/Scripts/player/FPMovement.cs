@@ -21,7 +21,8 @@ public class FPMovement : MonoBehaviour
 
     private Vector3 oldPos;
 
-
+    public bool EnableWalk {get; set; } = true;
+    public bool EnableRotation {get; set; } = true;
     private int walkSpeed = 5;
     private int rotateSpeed = 2;
 
@@ -84,8 +85,8 @@ public class FPMovement : MonoBehaviour
     }
     void Update()
     {
-        UpdateMovement();
-        UpdateRotation();
+        if (EnableWalk) UpdateMovement();
+        if (EnableRotation) UpdateRotation();
     }
 
     private void UpdateMovement()
