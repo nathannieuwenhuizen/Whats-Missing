@@ -83,14 +83,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: d542d8b8b7b79f94183e36f3402f3db8, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
@@ -120,12 +120,14 @@ MonoBehaviour:
   letterClickSound: {fileID: 8300000, guid: 7d552ea355229174d82b907586e8f987, type: 3}
   questionText: {fileID: 2883981562355031769}
   answerText: {fileID: 4483153193682048586}
+  isInteractable: 0
   letterPrefab: {fileID: 548830241320449033, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
   centerText: {fileID: 5123769922699902844}
-  yesButton: {fileID: 0}
-  noButton: {fileID: 0}
-  comfirmButton: {fileID: 0}
-  resetButton: {fileID: 0}
+  beepSound: {fileID: 8300000, guid: ac256946e8fcc82479f62a3cbd6d504a, type: 3}
+  yesButton: {fileID: 1079284581}
+  noButton: {fileID: 1394871685}
+  comfirmButton: {fileID: 342667012708951670}
+  resetButton: {fileID: 2555428733629454401}
 --- !u!1001 &673191134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -136,6 +138,18 @@ PrefabInstance:
     - target: {fileID: 548830241320449033, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
       propertyPath: m_Name
       value: yes
+      objectReference: {fileID: 0}
+    - target: {fileID: 1673065743916123422, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0.5509434
+      objectReference: {fileID: 0}
+    - target: {fileID: 1673065743916123422, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1673065743916123422, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 0.72260505
       objectReference: {fileID: 0}
     - target: {fileID: 1673065743916123422, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -168,6 +182,30 @@ PrefabInstance:
     - target: {fileID: 1673065743916123422, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3567242858242957131, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1079284581}
+    - target: {fileID: 3567242858242957131, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1079284581}
+    - target: {fileID: 3567242858242957131, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnHover
+      objectReference: {fileID: 0}
+    - target: {fileID: 3567242858242957131, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnUnhover
+      objectReference: {fileID: 0}
+    - target: {fileID: 3567242858242957131, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TelevisionButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3567242858242957131, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TelevisionButton, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4973406381821611236, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
       propertyPath: m_Pivot.x
@@ -281,6 +319,18 @@ PrefabInstance:
       value: no
       objectReference: {fileID: 0}
     - target: {fileID: 1673065743916123422, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.b
+      value: 0.6264151
+      objectReference: {fileID: 0}
+    - target: {fileID: 1673065743916123422, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.g
+      value: 0.6264151
+      objectReference: {fileID: 0}
+    - target: {fileID: 1673065743916123422, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Colors.m_HighlightedColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1673065743916123422, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -315,6 +365,22 @@ PrefabInstance:
     - target: {fileID: 3567242858242957131, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
       propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3567242858242957131, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnHover
+      objectReference: {fileID: 0}
+    - target: {fileID: 3567242858242957131, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnUnhover
+      objectReference: {fileID: 0}
+    - target: {fileID: 3567242858242957131, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TelevisionButton, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3567242858242957131, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TelevisionButton, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4973406381821611236, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
       propertyPath: m_Pivot.x
@@ -435,6 +501,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1223948588933243672, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6337391998857976360, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -451,13 +521,25 @@ PrefabInstance:
       propertyPath: m_Text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7697049210073922968, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8251748349686924569, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8251748349686924569, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8251748349686924569, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResponseToName
+      objectReference: {fileID: 0}
+    - target: {fileID: 8251748349686924569, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: IntroSceneHandeler, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8251748350445221954, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_RootOrder
@@ -519,6 +601,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Keyboard TV Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 9063913204663602417, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7188971182575456744, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
@@ -532,6 +618,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8251748351396818495, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
   m_PrefabInstance: {fileID: 4815646020834337601}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &342667012708951670 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5050216745782494519, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
+  m_PrefabInstance: {fileID: 4815646020834337601}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f04c24c3024fbb47868e5d9d01b18e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2883981562355031769 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7697049210073922968, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
@@ -553,6 +650,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8999248243993425163, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
   m_PrefabInstance: {fileID: 4815646020834337601}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2555428733629454401 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7035230022949796608, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
+  m_PrefabInstance: {fileID: 4815646020834337601}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f04c24c3024fbb47868e5d9d01b18e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1710162387258536735 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6156186682595856478, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}

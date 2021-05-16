@@ -34,7 +34,8 @@ public class IntroSceneHandeler : MonoBehaviour
     public IEnumerator AfterPlayingGame(bool answer) {
         introTelevision.ToggleYesNoButtons(false);
         yield return StartCoroutine(introTelevision.Talking(answer ? IntroDialogue.responseToGame : IntroDialogue.responseToNoGame, introTelevision.Centertext, null));
-        yield return StartCoroutine(introTelevision.Talking(IntroDialogue.askForName, null, null));
+        introTelevision.Centertext.text = "";
+        yield return StartCoroutine(introTelevision.Talking(IntroDialogue.askForName, introTelevision.QuestionText, null));
         introTelevision.ToggleKeyboardButtons(true);
         introTelevision.InitializeKeyboard();
     }
@@ -43,6 +44,8 @@ public class IntroSceneHandeler : MonoBehaviour
     }
     public IEnumerator ReplyingToName() {
         string answer = introTelevision.Word;
+        PlayerData.PLAYER_NAME = answer;
+        introTelevision.QuestionText.text = "";
         introTelevision.ToggleKeyboardButtons(false);
         introTelevision.DestroyKeyboard();
         if (answer.Length < 3) {

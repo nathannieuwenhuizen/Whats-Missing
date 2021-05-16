@@ -51,6 +51,7 @@ public class Letter : TelevisionButton
 
     public override void OnHover() {
         base.OnHover();
+        Debug.Log("On hover!");
         if (!canBeClicked) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(hoverScale));

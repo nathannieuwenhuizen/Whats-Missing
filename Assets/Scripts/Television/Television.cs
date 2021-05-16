@@ -20,11 +20,14 @@ public class Television : MonoBehaviour
 
     [SerializeField]
     protected Text questionText;
+    public Text QuestionText { get => questionText; }
+
     [SerializeField]
     protected RectTransform answerText;
 
+    [SerializeField]
     private bool isInteractable = false;
-    public bool IsInteractable {
+public bool IsInteractable {
         get { return isInteractable; }
         set { 
             isInteractable = value; 
@@ -112,7 +115,7 @@ public class Television : MonoBehaviour
         float cellSize = (height / (float)containerRows);
         result.x = -width /2f + ((float)xIndex  / (float)containerColloms) * width + (width / (float)containerColloms) * .5f;
         result.y = height /2f - ((float)yIndex  / (float)containerRows) * height  -  cellSize * .5f;
-        result.y += -Mathf.Sin(xIndex / (float)containerColloms * Mathf.PI) * cellSize * .3f;
+        result.y += -Mathf.Sin(xIndex / (float)containerColloms * Mathf.PI) * cellSize * .1f;
         return result;
     }
     protected Letter InitializeLetter(string val, Vector3 pos) {

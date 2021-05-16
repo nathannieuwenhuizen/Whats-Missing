@@ -11,6 +11,9 @@ public class KeyboardTelevision : Television
     private Text centerText;
 
     [SerializeField]
+    private AudioClip beepSound;
+
+    [SerializeField]
     private TelevisionButton yesButton;
     [SerializeField]
     private TelevisionButton noButton;
@@ -90,13 +93,18 @@ public class KeyboardTelevision : Television
             questionText.text = "";
             centerText.text = "";
             int letterIndex = 0;
+            lines[lineIndex] = lines[lineIndex].Replace("[NAME]", PlayerData.PLAYER_NAME);
+            Debug.Log(lines[lineIndex]);
             while(letterIndex < lines[lineIndex].Length) {
                 speakText.text += lines[lineIndex][letterIndex];
-                yield return new WaitForSeconds(.05f);
+                letterIndex++;
+                sfx.Play(beepSound, .01f, false);
+                yield return new WaitForSeconds(.04f);
             }
             lineIndex++;
+            yield return null;
             yield return new WaitForSeconds(2f);
         }
-        callback();
+        callback?.Invoke();
     }
 }
