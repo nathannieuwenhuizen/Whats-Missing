@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour, IInteractable
+public class Door : InteractabelObject
 {
     // Start is called before the first frame update
 
@@ -53,8 +53,6 @@ public class Door : MonoBehaviour, IInteractable
         }
     }
 
-    public bool Focused { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
     void Close() {
         Debug.Log("close");
         sfx.Play(closeSound);
@@ -89,10 +87,16 @@ public class Door : MonoBehaviour, IInteractable
         //YRotation = startRotation + wideAngle;
     }
 
-    public void Interact()
+    public override void Interact()
     {
         if (locked) return;
         Opening();
+    }
+
+    protected override void OnFocus()
+    {
+        if (locked) return;
+        base.OnFocus();
     }
 
     public float YRotation {

@@ -11,6 +11,8 @@ public class Hands : MonoBehaviour
 
     [SerializeField]
     private float pickupDistance = 3;
+    [SerializeField]
+    private IInteractable currentInteractable;
 
     private float maxThrowForce = .7f;
     private float throwForceMultiplier = 10f;
@@ -55,6 +57,25 @@ public class Hands : MonoBehaviour
             velocity = holdingObject.RigidBody.transform.position - oldPos;
             oldPos = holdingObject.RigidBody.transform.position;
             yield return new WaitForSeconds(.1f);
+        }
+    }
+
+    private void Update() {
+        UpdateFocusedObject();
+    }
+    private void UpdateFocusedObject() {
+        IInteractable interactableObj = focussedObject<IInteractable>();
+        Debug.Log(interactableObj != default(IInteractable));
+        if (interactableObj != default(IInteractable)) {
+            if (interactableObj != currentInteractable) {
+                if (currentInteractable != default(IInteractable))
+                    currentInteractable.Focused = false;
+                interactableObj.Focused = true;
+                currentInteractable = interactableObj;
+            }
+        } else if (currentInteractable != null) {
+            currentInteractable.Focused = false;
+            currentInteractable = default(IInteractable);
         }
     }
 

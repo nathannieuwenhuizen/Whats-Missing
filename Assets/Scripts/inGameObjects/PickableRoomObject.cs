@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(InteractabelObject))]
 [RequireComponent(typeof(Rigidbody))]
 public class PickableRoomObject : RoomObject, IPickable
 {
@@ -33,12 +34,12 @@ public class PickableRoomObject : RoomObject, IPickable
 
     public float Mass { get { return mass; } set {mass = value; } }
 
+    public bool Focused { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
     private float mass = 0;
 
-
-    // Update is called once per frame
-    void Update()
+    public void Interact()
     {
-        
+        throw new System.NotImplementedException();
     }
 }

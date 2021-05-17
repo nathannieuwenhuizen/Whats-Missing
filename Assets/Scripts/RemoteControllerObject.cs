@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RemoteControllerObject : MonoBehaviour, IInteractable
+public class RemoteControllerObject : InteractabelObject
 {
 
     [SerializeField]
     private IntroSceneHandeler handeler;
 
-    public bool Focused { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-    public void Interact()
+    public override void Interact()
     {
+        base.Interact();
         handeler.PickUpRemote();
         gameObject.SetActive(false);
     }
