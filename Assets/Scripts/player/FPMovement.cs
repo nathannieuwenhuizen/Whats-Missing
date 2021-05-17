@@ -9,6 +9,8 @@ public class FPMovement : MonoBehaviour
 
     [SerializeField]
     private Transform cameraPivot;
+    [SerializeField]
+    private Collider topCollider;
 
     private SFXObject sfx;
     private float walkSoundDistance = 1.5f;
@@ -29,6 +31,7 @@ public class FPMovement : MonoBehaviour
     [SerializeField]
     private float jumpForce = 200f;
     private bool inAir = false;
+    private bool inCeiling = false;
     private int verticalAngle = 80;
 
     private Vector2 walkDelta = new Vector2();
@@ -54,13 +57,19 @@ public class FPMovement : MonoBehaviour
         if (inAir) return;
         inAir = true;
         sfx.Play(jumpSound, .1f);
-        rb.AddForce(new Vector3(0,jumpForce,0));
+        rb.AddForce(new Vector3(0,jumpForce * (inCeiling ? -1 : 1),0));
+
+        inCeiling = false;
     }
+
     private void OnCollisionEnter(Collision other) {
         if (inAir) {
             inAir = false;
             sfx.Play(landingSound);
             oldPos = transform.position;
+            if (other.contacts[0].thisCollider == topCollider) {
+                inCeiling = true;
+            }
         }
     }
 

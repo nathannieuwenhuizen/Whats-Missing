@@ -20,7 +20,6 @@ public class Hands : MonoBehaviour
     public void Grab() {
         //check stuff to pickup
         IPickable pickedObject = focussedObject<IPickable>();
-        Debug.Log("grab" + (pickedObject != default(IPickable)));
         if (pickedObject != default(IPickable)) {
             pickedObject.RigidBody.isKinematic = true;
             holidngObjectParent = pickedObject.RigidBody.transform.parent;

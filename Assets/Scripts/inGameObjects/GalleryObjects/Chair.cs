@@ -13,6 +13,7 @@ public class Chair : PickableRoomObject
         sfx = GetComponent<SFXObject>();
     }
     private void OnCollisionEnter(Collision other) {
-        sfx.Play(hitSound, .2f, false);
+        Debug.Log(RigidBody.velocity.magnitude / 5f);
+        sfx.Play(hitSound, .2f *Mathf.Min(1, RigidBody.velocity.magnitude / 5f), false);
     }
 }

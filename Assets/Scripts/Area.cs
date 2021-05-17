@@ -30,11 +30,23 @@ public class Area : MonoBehaviour
             currentRoom.OnRoomEnter();
         }
     }
+
+    private void Awake() {
+        PositionAllRooms();
+    }
     
     void Start()
     {
         playerPos = currentRoom.StartPos.position;
         CurrentRoom = currentRoom;
+    }
+
+    private void PositionAllRooms() {
+        Vector3 pos = Vector3.zero;
+        foreach (Room room in rooms) {
+            room.transform.position = pos + (room.transform.position - room.StartPos.position) + new Vector3(0,0,2.3f);
+            pos = room.EndPos.position;
+        }
     }
 
     private Vector3 playerPos {
