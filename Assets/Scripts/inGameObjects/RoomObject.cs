@@ -61,7 +61,7 @@ public class RoomObject : MonoBehaviour, IChangable
     public virtual IEnumerator Dissappearing() {
 
         if (animated) {
-            if(anim != null) yield return StartCoroutine(playAnimation(disAppearing));
+            if(anim != null && disAppearing != null) yield return StartCoroutine(playAnimation(disAppearing));
             else {
                 AnimationCurve curve = AnimationCurve.EaseInOut(0,1,3,0);
 
@@ -81,7 +81,11 @@ public class RoomObject : MonoBehaviour, IChangable
 
     public virtual IEnumerator Appearing() {
         if (animated) {
-            if(anim != null) yield return StartCoroutine(playAnimation(appearing));
+            Debug.Log(anim != null);
+            if(anim != null && appearing != null) {
+                transform.localScale = currentScale;
+                yield return StartCoroutine(playAnimation(appearing));
+            }
             else {
                 AnimationCurve curve = AnimationCurve.EaseInOut(0,0,3,1);
 
@@ -97,6 +101,7 @@ public class RoomObject : MonoBehaviour, IChangable
     }
     public IEnumerator playAnimation(AnimationClip clip) {
         if (anim != null && clip != null) {
+            Debug.Log("animate!");
             clip.legacy = true;
             anim.AddClip(clip, clip.name);
             anim.clip = clip;
@@ -105,6 +110,7 @@ public class RoomObject : MonoBehaviour, IChangable
             {
                 yield return null;
             }
+            clip.legacy = false;
         }
     }
 }

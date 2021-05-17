@@ -34,7 +34,9 @@ public class Room : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject partclePrefab;
+    private GameObject particlePrefab;
+    [SerializeField]
+    private GameObject plopParticle;
 
     [SerializeField]
     private Door door;
@@ -149,12 +151,13 @@ public class Room : MonoBehaviour
         float index = 0;
         Vector3 begin = tv.transform.position;
         AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
-        GameObject particle = Instantiate(partclePrefab, begin, Quaternion.identity);
+        GameObject particle = Instantiate(particlePrefab, begin, Quaternion.identity);
         while (index < duration) {
             index += Time.deltaTime;
             particle.transform.position = Vector3.LerpUnclamped(begin, o.Transform.position, curve.Evaluate(index / duration));
             yield return new WaitForFixedUpdate();
         }
+        GameObject plop = Instantiate(plopParticle, o.Transform.position, Quaternion.identity);
         callback();
     }
 

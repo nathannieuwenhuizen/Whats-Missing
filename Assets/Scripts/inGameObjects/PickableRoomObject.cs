@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//cant require rigdibody because then it cant be deleted when it gets disappeared.
 [RequireComponent(typeof(InteractabelObject))]
-[RequireComponent(typeof(Rigidbody))]
 public class PickableRoomObject : RoomObject, IPickable
 {
-
     private Rigidbody rb;
     protected override void Awake()
     {
@@ -27,6 +26,7 @@ public class PickableRoomObject : RoomObject, IPickable
 
     public override IEnumerator Dissappearing()
     {
+
         Destroy(rb);
         yield return base.Dissappearing();
 

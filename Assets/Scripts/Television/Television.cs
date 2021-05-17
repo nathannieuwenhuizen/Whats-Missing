@@ -137,7 +137,6 @@ public bool IsInteractable {
         letter.Selected();
         letter.transform.parent = answerText.transform;
         UpdateAnswerTextPosition();
-        Debug.Log(selectedLetterObjects.Count);
     }
 
 
