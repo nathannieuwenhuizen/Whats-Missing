@@ -24,7 +24,6 @@ public class Door : InteractabelObject
     private GameObject lightObject;
     [SerializeField]
     private Transform doorPivot;
-
     [SerializeField]
     private AnimationCurve openCurve;
     [SerializeField]

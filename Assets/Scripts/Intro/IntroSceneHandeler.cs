@@ -15,6 +15,10 @@ public class IntroSceneHandeler : MonoBehaviour
     [SerializeField]
     private TutorialIndicator tutorialIndicator;
 
+
+    [SerializeField]
+    private SceneLoader sceneLoader;
+
     void Start()
     {
         movement.EnableWalk = false;
@@ -23,6 +27,18 @@ public class IntroSceneHandeler : MonoBehaviour
         introTelevision.ToggleKeyboardButtons(false);
         introTelevision.ToggleYesNoButtons(false);
         StartCoroutine(tutorialIndicator.WaitForMouseClick());
+    }
+
+    private void OnEnable() {
+        Door.OnPassingThrough += GoToNextScene;
+    }
+
+    private void OnDisable() {
+        Door.OnPassingThrough -= GoToNextScene;
+    }
+
+    private void GoToNextScene(Door door) {
+        sceneLoader.LoadNextScene();
     }
 
     public void PickUpRemote() {
