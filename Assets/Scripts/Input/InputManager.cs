@@ -5,43 +5,46 @@ using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField]
-    private FPMovement movement;
+    public delegate void ClickAction();
+    public static event ClickAction OnClickDown;
+    public static event ClickAction OnClickUp;
+    public static event ClickAction OnJump;
+    public delegate void AxisAction( Vector2 delta);
 
-    [SerializeField]
-    private Hands hands;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
+    public static event AxisAction OnMove;
+    public static event AxisAction OnRotate;
 
     // Update is called once per frame
     void Update()
     {
         //mouse
         if (Input.GetButtonDown("Fire1")) {
-            hands.Grab();
+            OnClickDown?.Invoke();
         }
         if (Input.GetButtonUp("Fire1"))  {
-            hands.Release();
+            OnClickUp?.Invoke();
         }
 
 
         //controller
         if (Input.GetButtonDown("Fire1 Controller")) {
-            hands.Grab();
+            OnClickDown?.Invoke();
         }
         if (Input.GetButtonUp("Fire1 Controller"))  {
-            hands.Release();
+            OnClickUp?.Invoke();
             if (TelevisionButton.SELECTED_BUTTON != null) TelevisionButton.SELECTED_BUTTON.gameObject.GetComponent<Button>().onClick.Invoke();
         }
         
         //movement
-        if (Input.GetButtonDown("Jump")) movement.Jump();
-        if (Time.timeScale == 1) movement.SetMovement(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
-        else movement.SetMovement(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
-        
-        movement.setMouseDelta(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
+        if (Input.GetButtonDown("Jump")) {
+            OnJump?.Invoke();
+        }
+        if (Time.timeScale == 1) {
+            OnMove?.Invoke(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+        }
+        else {
+            OnMove?.Invoke(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
+        }
+        OnRotate?.Invoke(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
     }
 }

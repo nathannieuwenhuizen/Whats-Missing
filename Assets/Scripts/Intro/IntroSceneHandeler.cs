@@ -12,6 +12,9 @@ public class IntroSceneHandeler : MonoBehaviour
     [SerializeField]
     private Door door;
 
+    [SerializeField]
+    private TutorialIndicator tutorialIndicator;
+
     void Start()
     {
         movement.EnableWalk = false;
@@ -19,6 +22,7 @@ public class IntroSceneHandeler : MonoBehaviour
         introTelevision.Centertext.text = "";
         introTelevision.ToggleKeyboardButtons(false);
         introTelevision.ToggleYesNoButtons(false);
+        StartCoroutine(tutorialIndicator.WaitForMouseClick());
     }
 
     public void PickUpRemote() {
@@ -34,6 +38,7 @@ public class IntroSceneHandeler : MonoBehaviour
     public IEnumerator AfterPlayingGame(bool answer) {
         introTelevision.ToggleYesNoButtons(false);
         yield return StartCoroutine(introTelevision.Talking(answer ? IntroDialogue.responseToGame : IntroDialogue.responseToNoGame, introTelevision.Centertext, null));
+        yield return new WaitForSeconds(2f);
         introTelevision.Centertext.text = "";
         yield return StartCoroutine(introTelevision.Talking(IntroDialogue.askForName, introTelevision.QuestionText, null));
         introTelevision.ToggleKeyboardButtons(true);
@@ -55,8 +60,10 @@ public class IntroSceneHandeler : MonoBehaviour
         } else {
             yield return StartCoroutine(introTelevision.Talking( IntroDialogue.responceofNormalName, introTelevision.Centertext, null));
         }
+        yield return new WaitForSeconds(2f);
         door.Locked = false;
         yield return StartCoroutine(introTelevision.Talking( IntroDialogue.goToNextRoom, introTelevision.Centertext, null));
+        StartCoroutine(tutorialIndicator.WaitForMove());
         movement.EnableWalk = true;
 
     }

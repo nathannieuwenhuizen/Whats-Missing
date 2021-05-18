@@ -83,6 +83,18 @@ public class FPMovement : MonoBehaviour
         }
     }
 
+    private void OnEnable() {
+        InputManager.OnMove += SetMovement;
+        InputManager.OnRotate += setMouseDelta;
+        InputManager.OnJump += Jump;
+    }
+
+    private void OnDisable() {
+        InputManager.OnMove -= SetMovement;
+        InputManager.OnRotate -= setMouseDelta;
+        InputManager.OnJump -= Jump;
+    }
+
 
     private void Start()
     {

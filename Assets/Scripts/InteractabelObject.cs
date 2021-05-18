@@ -34,8 +34,10 @@ public class InteractabelObject : MonoBehaviour, IInteractable
     }
     protected virtual void OnBlur() {
         if (outline != null) {
-            if (focusedCoroutine != null) StopCoroutine(focusedCoroutine);
-            focusedCoroutine = StartCoroutine(AnimateOutline(0, true)); 
+            if (focusedCoroutine != null) 
+                StopCoroutine(focusedCoroutine);
+            if (gameObject.activeSelf)
+                focusedCoroutine = StartCoroutine(AnimateOutline(0, true)); 
         }
     }
 

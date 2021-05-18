@@ -103,7 +103,7 @@ public class KeyboardTelevision : Television
             }
             lineIndex++;
             yield return null;
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(lineIndex == lines.Length ? 0f : 2f);
         }
         callback?.Invoke();
     }

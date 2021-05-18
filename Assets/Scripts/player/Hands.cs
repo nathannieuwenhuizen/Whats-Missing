@@ -37,6 +37,16 @@ public class Hands : MonoBehaviour
         }
     }
 
+    private void OnEnable() {
+        InputManager.OnClickDown += Grab;
+        InputManager.OnClickUp += Release;
+    }
+
+    private void OnDisable() {
+        InputManager.OnClickDown -= Grab;
+        InputManager.OnClickUp -= Release;
+    }
+
     //Releases the holding object
     public void Release() {
         if (holdingObject == null) return;

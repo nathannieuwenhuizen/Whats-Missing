@@ -82,7 +82,7 @@ public class Door : InteractabelObject
 
     void Opening() {
         //TODO: Go to next room with player
-        OnPassingThrough(this);
+        OnPassingThrough?.Invoke(this);
         StartCoroutine(OpenAnimation());
         //YRotation = startRotation + wideAngle;
     }
