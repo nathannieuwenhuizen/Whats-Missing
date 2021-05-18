@@ -43,7 +43,6 @@ public class TutorialIndicator : MonoBehaviour
     private void EnableMove(Vector2 delta) {
         if (delta.magnitude != 0)
         {
-            Debug.Log("moved!");
             moved = true;
         }
     }
