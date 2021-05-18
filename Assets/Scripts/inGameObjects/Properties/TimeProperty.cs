@@ -8,7 +8,7 @@ public class TimeProperty : Property
     public override void onMissing()
     {
         base.onMissing();
-        Time.timeScale = 0;
+        Time.timeScale = 0f;
     }
     public override void onAppearing()
     {

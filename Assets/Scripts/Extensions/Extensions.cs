@@ -11,7 +11,7 @@ public static class Extensions
         float begin = group.alpha;
          while (index < duration) {
              yield return new WaitForEndOfFrame();
-             index += Time.deltaTime;
+             index += Time.unscaledDeltaTime;
              group.alpha = Mathf.Lerp(begin, end, index / duration);
          }
         group.alpha = end;

@@ -45,7 +45,7 @@ public class InteractabelObject : MonoBehaviour, IInteractable
         float index = 0;
         float start = outline.OutlineWidth;
         while (index < duration) {
-            index += Time.deltaTime;
+            index += Time.unscaledDeltaTime;
             outline.OutlineWidth = Mathf.Lerp(start, val, index / duration);
             yield return new WaitForEndOfFrame();
         }
@@ -56,8 +56,8 @@ public class InteractabelObject : MonoBehaviour, IInteractable
 
     public virtual void Interact()
     {
-        if (GetComponent<PickableRoomObject>() != null) {
+        // if (GetComponent<PickableRoomObject>() != null) {
             
-        }
+        // }
     }
 }

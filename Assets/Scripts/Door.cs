@@ -112,9 +112,9 @@ public class Door : InteractabelObject
         float begin = YRotation;
         //if (begin > 180) begin -= 360;
         while (index < duration) {
-            index += Time.deltaTime;
+            index += Time.unscaledDeltaTime;
             YRotation = Mathf.LerpUnclamped(begin, endRotation, curve.Evaluate(index / duration));
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
         YRotation = endRotation;
     }

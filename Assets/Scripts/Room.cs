@@ -153,9 +153,9 @@ public class Room : MonoBehaviour
         AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
         GameObject particle = Instantiate(particlePrefab, begin, Quaternion.identity);
         while (index < duration) {
-            index += Time.deltaTime;
+            index += Time.unscaledDeltaTime;
             particle.transform.position = Vector3.LerpUnclamped(begin, o.Transform.position, curve.Evaluate(index / duration));
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
         GameObject plop = Instantiate(plopParticle, o.Transform.position, Quaternion.identity);
         callback();

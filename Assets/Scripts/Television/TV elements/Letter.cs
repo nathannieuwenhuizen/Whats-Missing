@@ -103,12 +103,11 @@ public class Letter : TelevisionButton
         movingCoroutine =  StartCoroutine(Moving(pos));
     }
     private IEnumerator Moving(Vector3 pos, float duration = .5f, float delay = 0) {
-        
         yield return new WaitForSeconds(delay);
         while( movingIndex < duration) {
-            movingIndex += Time.deltaTime;
+            movingIndex += Time.unscaledDeltaTime;
             rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, slideAnimation.Evaluate(movingIndex/ duration));
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
         movingIndex = 1;
         rt.localPosition = pos;
@@ -118,9 +117,9 @@ public class Letter : TelevisionButton
         float index = 0;
         Vector3 begin = rt.localScale;
         while( index < duration) {
-            index += Time.deltaTime;
+            index += Time.unscaledDeltaTime;
             rt.localScale = Vector3.LerpUnclamped(begin, endScale, slideAnimation.Evaluate(index/ duration));
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
         rt.localScale = endScale;
     }

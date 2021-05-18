@@ -114,10 +114,14 @@ public class FPMovement : MonoBehaviour
     {
         Vector3 dir = transform.TransformDirection(new Vector3(walkDelta.x * walkSpeed, rb.velocity.y, walkDelta.y * walkSpeed));
         if (Time.timeScale == 1) {
+            rb.isKinematic = false;
+
             rb.velocity = dir;
         } else {
+            rb.isKinematic = true;
             dir.y = 0;
             transform.position += dir / 100;
+            // rb.MovePosition(transform.position + dir);
         }
         MakeWalkingSounds();
     }

@@ -49,12 +49,12 @@ public class Area : MonoBehaviour
     }
 
     private void Awake() {
-        InitializeAllRooms();
+        // InitializeAllRooms();
     }
     
     void Start()
     {
-        CurrentRoom = rooms[startingRoomIndex];
+        CurrentRoom =roomPrefabs[0];// rooms[startingRoomIndex];
         playerPos = currentRoom.StartPos.position;
     }
 
@@ -82,7 +82,7 @@ public class Area : MonoBehaviour
         float index = 0;
         Vector3 begin = playerPos;
         while (index < duration) {
-            index += Time.deltaTime;
+            index += Time.unscaledDeltaTime;
             playerPos = Vector3.LerpUnclamped(begin, endPos, walkingCurve.Evaluate(index / duration));
             yield return new WaitForFixedUpdate();
         }

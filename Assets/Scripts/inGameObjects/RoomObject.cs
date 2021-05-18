@@ -61,14 +61,14 @@ public class RoomObject : MonoBehaviour, IChangable
     public virtual IEnumerator Dissappearing() {
 
         if (animated) {
-            if(anim != null && disAppearing != null) yield return StartCoroutine(playAnimation(disAppearing));
+            if(anim != null && disAppearing != null && Time.timeScale != 0) yield return StartCoroutine(playAnimation(disAppearing));
             else {
                 AnimationCurve curve = AnimationCurve.EaseInOut(0,1,3,0);
 
                 float timePassed = 0f;
                 while (transform.localScale.x > 0) {
-                    yield return new WaitForFixedUpdate();
-                    timePassed += Time.deltaTime;
+                    yield return new WaitForEndOfFrame();
+                    timePassed += Time.unscaledDeltaTime;
                     transform.localScale = currentScale * curve.Evaluate(timePassed);
                 }
             }
@@ -82,7 +82,7 @@ public class RoomObject : MonoBehaviour, IChangable
     public virtual IEnumerator Appearing() {
         if (animated) {
             Debug.Log(anim != null);
-            if(anim != null && appearing != null) {
+            if(anim != null && appearing != null && Time.timeScale != 0) {
                 transform.localScale = currentScale;
                 yield return StartCoroutine(playAnimation(appearing));
             }
@@ -91,8 +91,8 @@ public class RoomObject : MonoBehaviour, IChangable
 
                 float timePassed = 0f;
                 while (transform.localScale.x < currentScale.x) {
-                    yield return new WaitForFixedUpdate();
-                    timePassed += Time.deltaTime;
+                    yield return new WaitForEndOfFrame();
+                    timePassed += Time.unscaledDeltaTime;
                     transform.localScale = currentScale * curve.Evaluate(timePassed);
                 }
             }
@@ -108,7 +108,7 @@ public class RoomObject : MonoBehaviour, IChangable
             anim.Play();
             while (anim.IsPlaying(clip.name))
             {
-                yield return null;
+                yield return new WaitForEndOfFrame();
             }
             clip.legacy = false;
         }

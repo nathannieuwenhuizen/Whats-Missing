@@ -51,6 +51,9 @@ public class Hands : MonoBehaviour
     public void Release() {
         if (holdingObject == null) return;
 
+        if (Time.timeScale == 0) {
+            StartCoroutine(UpdatePhysics());
+        }
         holdingObject.RigidBody.isKinematic = false;
         holdingObject.RigidBody.transform.parent = holidngObjectParent;
         if (velocity.magnitude > maxThrowForce) {
@@ -67,6 +70,20 @@ public class Hands : MonoBehaviour
             oldPos = holdingObject.RigidBody.transform.position;
             yield return new WaitForSeconds(.1f);
         }
+    }
+
+    //TODO: needs a way better fix than this!
+    private IEnumerator UpdatePhysics() {
+        Time.timeScale = 1f;
+        holdingObject.RigidBody.isKinematic = true;
+        Physics.Simulate(1f);
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        // holdingObject.RigidBody.isKinematic = false;
+
+        Time.timeScale = 0;
+        
     }
 
     private void Update() {
