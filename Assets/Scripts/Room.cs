@@ -101,20 +101,21 @@ public class Room : MonoBehaviour
     // Apply the change to the object 
     public void AddTVChange(RoomTelevision selectedTelevision) {
         bool hasChangedSomething = false;
+        Change newChange = new Change(){word = selectedTelevision.Word, television = selectedTelevision};
         foreach (IChangable obj in allObjects)
         {
             if (obj.Word == selectedTelevision.Word) {
-                if (obj.animated) {
+                if (obj.animated && obj.Transform.GetComponent<Property>() == null) {
                     StartCoroutine(AnimateChangeEffect(selectedTelevision, obj, 1f, () => {
-                        obj.SetChange(selectedTelevision.changeType);
+                        obj.SetChange(newChange);
                     }));
-                } else obj.SetChange(selectedTelevision.changeType);
+                } else obj.SetChange(newChange);
 
                 hasChangedSomething = true;
             }
         }
         if (hasChangedSomething) {
-            changes.Add(new Change(){word = selectedTelevision.Word, television = selectedTelevision});
+            changes.Add(newChange);
             selectedTelevision.IsOn = true;
             CheckRoomCompletion();
         } else {
@@ -134,17 +135,17 @@ public class Room : MonoBehaviour
     //removes a change to the room updating the objects
     private void RemoveChange(Change change) {
         if (change == null) return;
-        changes.Remove(change);
         foreach (IChangable obj in allObjects)
         {
             if (obj.Word == change.word) {
-                if (obj.animated) {
+                if (obj.animated && obj.Transform.GetComponent<Property>() == null) {
                     StartCoroutine(AnimateChangeEffect(change.television, obj, 1f, () => {
-                        obj.RemoveChange(change.television.changeType);
+                        obj.RemoveChange(change);
                     }));
-                } else obj.RemoveChange(change.television.changeType);
+                } else obj.RemoveChange(change);
             }
         }
+        changes.Remove(change);
     }
 
     public IEnumerator AnimateChangeEffect(RoomTelevision tv, IChangable o, float duration, Action callback) {

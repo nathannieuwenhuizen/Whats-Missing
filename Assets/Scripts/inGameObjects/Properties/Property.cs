@@ -14,6 +14,8 @@ public abstract class Property : MonoBehaviour, IChangable
 
     public Transform Transform => transform;
 
+    protected Change currentChange;
+
     public virtual void onAppearing()
     {
     }
@@ -22,18 +24,19 @@ public abstract class Property : MonoBehaviour, IChangable
     {
     }
 
-    public void RemoveChange(ChangeType changeType)
+    public void RemoveChange(Change change)
     {
-        switch (changeType) {
+        switch (change.television.changeType) {
             case ChangeType.missing:
                 onAppearing();
                 break;
         }
     }
 
-    public void SetChange(ChangeType changeType)
+    public void SetChange(Change change)
     {
-        switch (changeType) {
+        currentChange = change;
+        switch (change.television.changeType) {
             case ChangeType.missing:
                 onMissing();
                 break;

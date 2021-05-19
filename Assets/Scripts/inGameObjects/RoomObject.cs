@@ -29,15 +29,15 @@ public class RoomObject : MonoBehaviour, IChangable
 
     public Transform Transform => transform;
 
-    public void SetChange(ChangeType changeType) {
-        switch (changeType) {
+    public void SetChange(Change change) {
+        switch (change.television.changeType) {
             case ChangeType.missing:
                 onMissing();
                 break;
         }
     }
-    public void RemoveChange(ChangeType changeType) {
-        switch (changeType) {
+    public void RemoveChange(Change change) {
+        switch (change.television.changeType) {
             case ChangeType.missing:
                 onAppearing();
                 break;

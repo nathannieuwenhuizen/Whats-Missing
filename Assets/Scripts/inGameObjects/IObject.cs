@@ -14,8 +14,8 @@ public interface IChangable : IMissable
     bool animated { get; set;}
     bool InSpace {get; }
     Transform Transform {get; }
-    void SetChange(ChangeType changeType);
-    void RemoveChange(ChangeType changeType);
+    void SetChange(Change changeType);
+    void RemoveChange(Change changeType);
 }
 
 public interface IPickable {

@@ -420,15 +420,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7188971182575456744, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: letters.Array.data[1]
-      value: h
+      value: o
       objectReference: {fileID: 0}
     - target: {fileID: 7188971182575456744, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: letters.Array.data[2]
-      value: a
+      value: l
       objectReference: {fileID: 0}
     - target: {fileID: 7188971182575456744, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: letters.Array.data[3]
-      value: i
+      value: o
       objectReference: {fileID: 0}
     - target: {fileID: 7188971182575456744, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: letters.Array.data[4]
@@ -496,6 +496,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
+--- !u!1 &1084174697 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1902171955380139427, guid: 216e0ff172dfc6f48a2b8b4a6e5efc3d, type: 3}
+  m_PrefabInstance: {fileID: 1902171954728507602}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &1084174698 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 1902171955380139425, guid: 216e0ff172dfc6f48a2b8b4a6e5efc3d, type: 3}
+  m_PrefabInstance: {fileID: 1902171954728507602}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1084174699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084174697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afa76772a74a800488b87d1207e37393, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 3c407c3646a083e469737363c81a418d, type: 2}
+  spherePosition: {x: -12.294133, y: 0, z: 1.7412338}
+  radius: 0
+  softness: 0.1
+  on: 0
+  camera: {fileID: 1084174698}
 --- !u!1 &1099564700
 GameObject:
   m_ObjectHideFlags: 0
@@ -774,7 +802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2295833684024341179, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: preAnswer
-      value: time
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2295833684024341179, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: isInteractable
@@ -790,20 +818,44 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2295833684024341179, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: letters.Array.data[1]
-      value: h
+      value: o
       objectReference: {fileID: 0}
     - target: {fileID: 2295833684024341179, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: letters.Array.data[2]
-      value: a
+      value: l
       objectReference: {fileID: 0}
     - target: {fileID: 2295833684024341179, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: letters.Array.data[3]
-      value: i
+      value: o
       objectReference: {fileID: 0}
     - target: {fileID: 2295833684024341179, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: letters.Array.data[4]
       value: r
       objectReference: {fileID: 0}
+    - target: {fileID: 2379530923685953151, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: on
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2379530923685953151, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 1084174698}
+    - target: {fileID: 2379530923685953151, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: radius
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2379530923685953151, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: material
+      value: 
+      objectReference: {fileID: 2100000, guid: 77f1708d6656aa94db5653d0986c97bf, type: 2}
+    - target: {fileID: 2379530923685953151, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: spherePosition.x
+      value: -12.678751
+      objectReference: {fileID: 0}
+    - target: {fileID: 3310996298776145607, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
+      propertyPath: maskPPController
+      value: 
+      objectReference: {fileID: 1084174699}
     - target: {fileID: 3531882471716472880, guid: 01b5867fa5f8c8f4191a95b8b82b24ac, type: 3}
       propertyPath: word
       value: i
