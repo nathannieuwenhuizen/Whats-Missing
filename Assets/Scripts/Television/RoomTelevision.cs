@@ -62,13 +62,13 @@ public class RoomTelevision : Television
         updateIndicatorLight();
     }
 
-    void updateIndicatorLight() {
+    private void updateIndicatorLight() {
         Color colour = isOn ? onColor : offColor;
         colour *= 3.0f;
         mr.material.SetColor("_EmissionColor", colour);
     }
 
-    void InitializeLetters()
+    private void InitializeLetters()
     {
         for(int i = 0; i < letters.Length; i++) {
             InitializeLetter(letters[i], GetLetterPosBasedOnIndex(letterObjects.Count));
@@ -77,10 +77,9 @@ public class RoomTelevision : Television
             Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(letterObjects.Count));
             LetterClicked(answerLetter);
         }
-        
     }
 
-    Vector3 GetLetterPosBasedOnIndex(int index) {
+    private Vector3 GetLetterPosBasedOnIndex(int index) {
         int x =  Mathf.RoundToInt((float)containerColloms / 2f);
         int delta = index % containerColloms;
         if (delta != 0) {

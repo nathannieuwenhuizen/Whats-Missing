@@ -5,7 +5,6 @@ using UnityEngine.Rendering.PostProcessing;
 public class ColorProperty : Property
 {
 
-    [SerializeField]
     private SphericalMaskPPController maskPPController;
     [SerializeField]
     private Material colorMaterial;
@@ -20,6 +19,7 @@ public class ColorProperty : Property
 
     public override void onMissing()
     {
+        Debug.Log("on missing!" + animated);
         base.onMissing();
         if (animated) {
             StopAllCoroutines();
@@ -38,6 +38,8 @@ public class ColorProperty : Property
     }
 
     public IEnumerator IncreaseMask(bool toColor) {
+        maskPPController = room.Player.Camera.GetComponent<SphericalMaskPPController>();
+        maskPPController.Camera = room.Player.Camera;
         maskPPController.spherePosition = currentChange.television.transform.position;
         maskPPController.enabled = true;
         maskPPController.on = true;

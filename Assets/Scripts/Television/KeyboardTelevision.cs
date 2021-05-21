@@ -8,12 +8,6 @@ public class KeyboardTelevision : Television
 {
 
     [SerializeField]
-    private Text centerText;
-
-    [SerializeField]
-    private AudioClip beepSound;
-
-    [SerializeField]
     private TelevisionButton yesButton;
     [SerializeField]
     private TelevisionButton noButton;
@@ -24,8 +18,6 @@ public class KeyboardTelevision : Television
     private TelevisionButton resetButton;
 
     
-    public Text Centertext { get => centerText; }
-
     private string[] upRowLetters = new string[] {"q", "w" , "e", "r", "t", "y", "u", "i", "o", "p"};
     private string[] middleRowLetters = new string[] {"a", "s" , "d", "f", "g", "h", "j", "k", "l"};
     private string[] bottomRowLetters = new string[] {"z", "x" , "c", "v", "b", "n", "m"};
@@ -79,32 +71,5 @@ public class KeyboardTelevision : Television
         sfx.Play(letterClickSound);
         Letter newLetter = InitializeLetter(letter.LetterValue, letter.transform.localPosition);
         base.LetterClicked(newLetter);
-    }
-
-    public void Talk(string[] lines, Text speakText, Action callback) {
-        if (speakText == null) speakText = questionText;
-        StartCoroutine(Talking(lines, speakText, callback));
-    }
-
-    public IEnumerator Talking(string[] lines, Text speakText, Action callback) {
-        yield return null;
-        int lineIndex = 0;
-        while (lineIndex < lines.Length) {
-            questionText.text = "";
-            centerText.text = "";
-            int letterIndex = 0;
-            lines[lineIndex] = lines[lineIndex].Replace("[NAME]", PlayerData.PLAYER_NAME);
-            Debug.Log(lines[lineIndex]);
-            while(letterIndex < lines[lineIndex].Length) {
-                speakText.text += lines[lineIndex][letterIndex];
-                letterIndex++;
-                sfx.Play(beepSound, .01f, false);
-                yield return new WaitForSeconds(.04f);
-            }
-            lineIndex++;
-            yield return null;
-            yield return new WaitForSeconds(lineIndex == lines.Length ? 0f : 2f);
-        }
-        callback?.Invoke();
     }
 }

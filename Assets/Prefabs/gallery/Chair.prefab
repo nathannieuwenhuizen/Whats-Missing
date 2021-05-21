@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 9053609635709682999}
   - component: {fileID: 771781700693459052}
   - component: {fileID: 1065836226936435945}
+  - component: {fileID: 7550062025349703832}
   m_Layer: 0
   m_Name: Chair
   m_TagString: Untagged
@@ -203,8 +204,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   word: chair
-  appearing: {fileID: 0}
-  disAppearing: {fileID: 0}
+  appearing: {fileID: 7400000, guid: 178d7a25db7a861408d98663cfc06824, type: 2}
+  disAppearing: {fileID: 7400000, guid: 49d07049cae449c448905122f1e4b7e9, type: 2}
   hitSound: {fileID: 8300000, guid: 67a7abd6683bd7447b67aca1b96e9fc0, type: 3}
 --- !u!114 &771781700693459052
 MonoBehaviour:
@@ -226,7 +227,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5548861434174184534}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 11bd06ac7baa97d4fa5ffadb0db7abe2, type: 2}
   m_CullingMode: 0
@@ -237,6 +238,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &7550062025349703832
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5548861434174184534}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.8604915, z: 0.1}
+  m_Center: {x: 0, y: 0.9664234, z: -0.19}
 --- !u!1 &8568647880779503471
 GameObject:
   m_ObjectHideFlags: 0

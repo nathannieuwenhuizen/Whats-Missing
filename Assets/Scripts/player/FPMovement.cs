@@ -67,9 +67,11 @@ public class FPMovement : MonoBehaviour
             inAir = false;
             sfx.Play(landingSound);
             oldPos = transform.position;
-            if (other.contacts[0].thisCollider == topCollider) {
-                inCeiling = true;
-            }
+        }
+        if (other.contacts[0].thisCollider == topCollider) {
+            inCeiling = true;
+        } else {
+            inCeiling = false;
         }
     }
 

@@ -3,9 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Room : MonoBehaviour
 {
+    
+    [SerializeField]
+    private UnityEvent roomFinishedEvent;
+    [SerializeField]
+    private UnityEvent roomEnterEvent;
+
+    private bool revealChangeAfterCompletion = true;
+
     private List<RoomTelevision> allTelevisions;
     private List<IChangable> allObjects;
 
@@ -88,14 +97,15 @@ public class Room : MonoBehaviour
     }
 
     //Deactivate all changes 
-    public void DeactivateChanges(){
-        Animated = false;
+    public void DeactivateChanges(bool animated = false){
+        bool oldAnimated = Animated;
+        Animated = animated;
         
         for (int i = changes.Count - 1; i >= 0; i--)
         {
             RemoveChange(changes[i]);
         }
-        Animated = true;
+        Animated = oldAnimated;
     }
 
     // Apply the change to the object 
@@ -187,6 +197,10 @@ public class Room : MonoBehaviour
     private void CheckRoomCompletion() {
         if (AllTelevisionsAreOn()) {
             door.Locked = false;
+            roomFinishedEvent?.Invoke();
+            if (revealChangeAfterCompletion) {
+                DeactivateChanges(true);
+            }
         } else {
             door.Locked = true;
         }
@@ -202,6 +216,7 @@ public class Room : MonoBehaviour
 
     public void OnRoomEnter() {
         ActivateChanges();
+        roomEnterEvent?.Invoke();
     }
     public void OnRoomLeave() {
         DeactivateChanges();

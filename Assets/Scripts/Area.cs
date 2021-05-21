@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Area : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class Area : MonoBehaviour
     [SerializeField]
     private int startingRoomIndex = 0;
 
+    [SerializeField]
+    private UnityEvent areaFinishedEvent;
+
 
     private Room currentRoom;
     public Room CurrentRoom {
@@ -29,11 +33,11 @@ public class Area : MonoBehaviour
                 currentRoom.Player = null;
             }
             currentRoom = value;
+            UpdateRoomActiveStates();
             player.transform.parent = currentRoom.transform;
             currentRoom.AllObjects.Add(player);
             currentRoom.Player = player;
             currentRoom.OnRoomEnter();
-            UpdateRoomActiveStates();
         }
     }
 
@@ -49,12 +53,12 @@ public class Area : MonoBehaviour
     }
 
     private void Awake() {
-        // InitializeAllRooms();
+        InitializeAllRooms();
     }
     
     void Start()
     {
-        CurrentRoom =roomPrefabs[0];// rooms[startingRoomIndex];
+        CurrentRoom = rooms[startingRoomIndex];
         playerPos = currentRoom.StartPos.position;
     }
 
@@ -84,7 +88,7 @@ public class Area : MonoBehaviour
         while (index < duration) {
             index += Time.unscaledDeltaTime;
             playerPos = Vector3.LerpUnclamped(begin, endPos, walkingCurve.Evaluate(index / duration));
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
         playerPos = endPos;
     }
@@ -103,6 +107,7 @@ public class Area : MonoBehaviour
         if (door.room == currentRoom) {
             //next room
             if (index == rooms.Count - 1) {
+                areaFinishedEvent?.Invoke();
                 Debug.Log("area finished!");
             } else {
                 CurrentRoom = rooms[index + 1];

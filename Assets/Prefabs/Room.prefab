@@ -267,7 +267,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   word: color
-  maskPPController: {fileID: 0}
   colorMaterial: {fileID: 2100000, guid: 77f1708d6656aa94db5653d0986c97bf, type: 2}
   greyMaterial: {fileID: 2100000, guid: 3c407c3646a083e469737363c81a418d, type: 2}
   room: {fileID: 8941945033529911755}
@@ -5546,10 +5545,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0396396e914ab354d9cda6dda1b8913e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomFinishedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  roomEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
   startPos: {fileID: 6383790609957719143}
   endPos: {fileID: 9196701192030723904}
-  particlePrefab: {fileID: 0}
-  plopParticle: {fileID: 0}
+  particlePrefab: {fileID: 350342542648601978, guid: 32cfcf884eb709d4298261a699397281, type: 3}
+  plopParticle: {fileID: 9184769355248782121, guid: 027000b751effa744bf3b96e08b6096e, type: 3}
   door: {fileID: 420830002172442845}
 --- !u!1 &9138754118256156067
 GameObject:
@@ -5712,7 +5717,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7188971182575456744, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: letters.Array.size
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7188971182575456744, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: letters.Array.data[0]
@@ -6081,7 +6086,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7188971182575456744, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: preAnswer
-      value: moon
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7188971182575456744, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: isQuestion
@@ -6097,23 +6102,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8251748350445221954, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.68257034
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8251748350445221954, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.68257034
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8251748350445221954, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.68257034
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8251748350445221954, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.86
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 8251748350445221954, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.56
+      value: -1.63
       objectReference: {fileID: 0}
     - target: {fileID: 8251748350445221954, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_LocalPosition.z

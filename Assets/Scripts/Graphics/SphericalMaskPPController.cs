@@ -15,15 +15,18 @@ public class SphericalMaskPPController : MonoBehaviour {
 
     public bool on = false;
     
-    [SerializeField]
-    private Camera camera;
+
+    private Camera cam;
+    public Camera Camera {
+        set => cam = value;
+    }
     void OnEnable () {
-        if (camera != null)
-            camera.depthTextureMode = DepthTextureMode.Depth;
+        if (cam != null) 
+            cam.depthTextureMode = DepthTextureMode.Depth;
     }
  
     void OnRenderImage (RenderTexture src, RenderTexture dest) {
-        if (material == null || camera == null) {
+        if (material == null || cam == null) {
             this.enabled = false;
             return;
         }
@@ -32,10 +35,10 @@ public class SphericalMaskPPController : MonoBehaviour {
             return;
         }
 
-        var p = GL.GetGPUProjectionMatrix (camera.projectionMatrix, false);
+        var p = GL.GetGPUProjectionMatrix (cam.projectionMatrix, false);
         p[2, 3] = p[3, 2] = 0.0f;
         p[3, 3] = 1.0f;
-        var clipToWorld = Matrix4x4.Inverse (p * camera.worldToCameraMatrix) * Matrix4x4.TRS (new Vector3 (0, 0, -p[2, 2]), Quaternion.identity, Vector3.one);
+        var clipToWorld = Matrix4x4.Inverse (p * cam.worldToCameraMatrix) * Matrix4x4.TRS (new Vector3 (0, 0, -p[2, 2]), Quaternion.identity, Vector3.one);
         material.SetMatrix ("_ClipToWorld", clipToWorld);
         material.SetVector ("_Position", spherePosition);
         material.SetFloat ("_Radius", radius);

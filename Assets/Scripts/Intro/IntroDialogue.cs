@@ -12,6 +12,7 @@ public class IntroDialogue : MonoBehaviour
     public static string[] responceofTooLongName = {"There's no way I can remember that, I'll just cal you [NAME]."};
     public static string[] responceofNormalName = {"Nice to meet you [NAME]"};
     public static string[] goToNextRoom = {"Let's begin, go through the door on your left"};
-    public static string[] firstRoom = {"Look at the painting you see, memorize it well!"};
-    public static string[] secondRoom = {"Now tell me: What's missing?"};
+
+    public static string[] firstRoom = {"Look at the painting you see, memorize it well!", "Alright, go to the next room."};
+    public static string[] secondRoom = {"Now tell me:" , "What's missing?"};
 }

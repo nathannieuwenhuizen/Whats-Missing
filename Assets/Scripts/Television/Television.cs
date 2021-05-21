@@ -13,6 +13,10 @@ public class Television : MonoBehaviour
     [SerializeField]
     protected RectTransform letterContainer;
 
+    public RectTransform LetterContainer {
+        get => letterContainer;
+    }
+
     [SerializeField]
     protected SFXObject sfx;
     [SerializeField]
@@ -24,6 +28,14 @@ public class Television : MonoBehaviour
 
     [SerializeField]
     protected RectTransform answerText;
+
+    [SerializeField]
+    private AudioClip beepSound;
+
+    [SerializeField]
+    private Text centerText;
+    public Text Centertext { get => centerText; }
+
 
     [SerializeField]
     private bool isInteractable = false;
@@ -139,6 +151,32 @@ public bool IsInteractable {
         UpdateAnswerTextPosition();
     }
 
+    public void Talk(string[] lines, Text speakText, Action callback) {
+        if (speakText == null) speakText = questionText;
+        StartCoroutine(Talking(lines, speakText, callback));
+    }
+
+    public IEnumerator Talking(string[] lines, Text speakText, Action callback) {
+        yield return null;
+        int lineIndex = 0;
+        while (lineIndex < lines.Length) {
+            questionText.text = "";
+            centerText.text = "";
+            int letterIndex = 0;
+            lines[lineIndex] = lines[lineIndex].Replace("[NAME]", PlayerData.PLAYER_NAME);
+            Debug.Log(lines[lineIndex]);
+            while(letterIndex < lines[lineIndex].Length) {
+                speakText.text += lines[lineIndex][letterIndex];
+                letterIndex++;
+                sfx.Play(beepSound, .01f, false);
+                yield return new WaitForSeconds(.04f);
+            }
+            lineIndex++;
+            yield return null;
+            yield return new WaitForSeconds(lineIndex == lines.Length ? 0f : 2f);
+        }
+        callback?.Invoke();
+    }
 
 
 }
