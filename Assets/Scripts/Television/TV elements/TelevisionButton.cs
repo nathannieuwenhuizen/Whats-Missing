@@ -15,7 +15,6 @@ public class TelevisionButton : MonoBehaviour
     protected RectTransform rt;
 
     public virtual void OnHover() {
-        Debug.Log("on hover");
         if (!canBeClicked) return;
         TelevisionButton.SELECTED_BUTTON = this;
     }

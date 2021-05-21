@@ -12,6 +12,7 @@ public class SecondLevelEncounter : MonoBehaviour
         StartCoroutine(WaitingForEncounter());
     }
     private IEnumerator WaitingForEncounter() {
+        tv.QuestionText.text = "";
         yield return new WaitForSeconds(.1f);
         tv.LetterContainer.gameObject.SetActive(false);
         yield return new WaitForSeconds(2f);

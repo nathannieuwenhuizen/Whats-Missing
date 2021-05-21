@@ -66,10 +66,11 @@ public class RoomObject : MonoBehaviour, IChangable
                 AnimationCurve curve = AnimationCurve.EaseInOut(0,1,3,0);
 
                 float timePassed = 0f;
+                float duration = .5f;
                 while (transform.localScale.x > 0) {
                     yield return new WaitForEndOfFrame();
                     timePassed += Time.unscaledDeltaTime;
-                    transform.localScale = currentScale * curve.Evaluate(timePassed);
+                    transform.localScale = currentScale * curve.Evaluate(timePassed / duration);
                 }
             }
         }
@@ -90,10 +91,11 @@ public class RoomObject : MonoBehaviour, IChangable
                 AnimationCurve curve = AnimationCurve.EaseInOut(0,0,3,1);
 
                 float timePassed = 0f;
+                float duration = .5f;
                 while (transform.localScale.x < currentScale.x) {
                     yield return new WaitForEndOfFrame();
                     timePassed += Time.unscaledDeltaTime;
-                    transform.localScale = currentScale * curve.Evaluate(timePassed);
+                    transform.localScale = currentScale * curve.Evaluate(timePassed / duration);
                 }
             }
         } 

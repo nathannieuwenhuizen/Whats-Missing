@@ -737,6 +737,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cdbafe87b0cf8243b4dcff9bc66bc3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1577749887 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1902171954849214625, guid: 216e0ff172dfc6f48a2b8b4a6e5efc3d, type: 3}
+  m_PrefabInstance: {fileID: 1902171954728507602}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89f50a841ffe4224da803e7c75c8f171, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1904930565
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,6 +861,7 @@ MonoBehaviour:
   - {fileID: 1964124205470205569, guid: 5d895f6460c587f469bfe9185ebc6e93, type: 3}
   - {fileID: 4685738864225624951, guid: b0e2cc2b333ba8044a31f16ce0f6db99, type: 3}
   - {fileID: 6418752486724412291, guid: 542096f9d0e85184da8e2645274b950c, type: 3}
+  - {fileID: 9133364653754360092, guid: 84af2d0c6281306488053025b7f24ebd, type: 3}
   - {fileID: 67141867490160341, guid: ae1ebd905fcbca14f905343770a2c4f2, type: 3}
   - {fileID: 1186914509512375333, guid: c3d5810b2b73bfd46a1aff2d58124eaa, type: 3}
   player: {fileID: 1391388559}
@@ -877,7 +889,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  startingRoomIndex: 8
+  startingRoomIndex: 0
   areaFinishedEvent:
     m_PersistentCalls:
       m_Calls:
@@ -894,6 +906,18 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 1153756678}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1577749887}
         m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
         m_MethodName: set_enabled
         m_Mode: 6

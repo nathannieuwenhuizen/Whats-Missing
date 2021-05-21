@@ -13,6 +13,6 @@ public class IntroDialogue : MonoBehaviour
     public static string[] responceofNormalName = {"Nice to meet you [NAME]!"};
     public static string[] goToNextRoom = {"Let's begin, go through the door on your right ->"};
 
-    public static string[] firstRoom = {"Look at the painting you see", "Memorize it well!", "Alright, go to the next room."};
+    public static string[] firstRoom = {"Look at the painting.", "Memorize it well!", "Alright, go to the next room."};
     public static string[] secondRoom = {"Now tell me..." , "What's missing?"};
 }

@@ -53,7 +53,6 @@ public class Door : InteractabelObject
     }
 
     void Close() {
-        Debug.Log("close");
         sfx.Play(closeSound);
         lightObject.SetActive(false);
         StartCoroutine(Flipping(startRotation, .5f, closeCurve));
@@ -122,6 +121,6 @@ public class Door : InteractabelObject
         sfx.Play(openSound);
         yield return StartCoroutine(Flipping(startRotation + wideAngle, .8f, openCurve));
         sfx.Play(closeSound);
-        yield return StartCoroutine(Flipping(startRotation, .5f, closeCurve));
+        Close();
     }
 }

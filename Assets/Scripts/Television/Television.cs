@@ -105,9 +105,10 @@ public bool IsInteractable {
             }
         }
         if (Input.GetKeyDown(KeyCode.Backspace)) {
+            sfx.Play(letterClickSound);
             RemoveSelectedLetter(selectedLetterObjects.Count - 1);
         }
-        if (Input.GetKeyDown(KeyCode.KeypadEnter)) {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)) {
             Confirm();
         }
     }
@@ -182,11 +183,11 @@ public bool IsInteractable {
                 speakText.text += lines[lineIndex][letterIndex];
                 letterIndex++;
                 sfx.Play(beepSound, .01f, false);
-                // yield return new WaitForSeconds(.04f);
+                yield return new WaitForSeconds(.04f);
             }
             lineIndex++;
             yield return null;
-            // yield return new WaitForSeconds(lineIndex == lines.Length ? 0f : 2f);
+            yield return new WaitForSeconds(lineIndex == lines.Length ? 0f : 2f);
         }
         callback?.Invoke();
     }

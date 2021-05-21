@@ -68,7 +68,8 @@ public class Hands : MonoBehaviour
         while (holdingObject != null) {
             velocity = holdingObject.RigidBody.transform.position - oldPos;
             oldPos = holdingObject.RigidBody.transform.position;
-            yield return new WaitForSeconds(.1f);
+            Debug.Log("wait time");
+            yield return new WaitForSecondsRealtime(.1f);
         }
     }
 

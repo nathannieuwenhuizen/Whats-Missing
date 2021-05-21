@@ -84,7 +84,6 @@ public class Room : MonoBehaviour
 
     //prepare changes so that the room is already changedwhen player walks in.
     public void ActivateChanges(){
-        Animated = false;
         
         foreach (RoomTelevision tv in allTelevisions)
         {
@@ -93,19 +92,14 @@ public class Room : MonoBehaviour
                 else AddTVChange(tv);
             }
         }
-        Animated = true;
     }
 
     //Deactivate all changes 
-    public void DeactivateChanges(bool animated = false){
-        bool oldAnimated = Animated;
-        Animated = animated;
-        
+    public void DeactivateChanges(){
         for (int i = changes.Count - 1; i >= 0; i--)
         {
             RemoveChange(changes[i]);
         }
-        Animated = oldAnimated;
     }
 
     // Apply the change to the object 
@@ -199,10 +193,13 @@ public class Room : MonoBehaviour
             door.Locked = false;
             roomFinishedEvent?.Invoke();
             if (revealChangeAfterCompletion) {
-                DeactivateChanges(true);
+                DeactivateChanges();
             }
-        } else {
+        } else if (door.Locked == false) {
             door.Locked = true;
+            if (revealChangeAfterCompletion) {
+                ActivateChanges();
+            }
         }
     }
 
@@ -215,10 +212,13 @@ public class Room : MonoBehaviour
     }
 
     public void OnRoomEnter() {
+        Animated = false;
         ActivateChanges();
+        Animated = true;
         roomEnterEvent?.Invoke();
     }
     public void OnRoomLeave() {
+        Animated = false;
         DeactivateChanges();
     }
 }
