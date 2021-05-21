@@ -94,8 +94,10 @@ public class RoomTelevision : Television
     }
 
     //fires when the player wants to apply the question or sentence
-    public void Confirm()
+    public override void Confirm()
     {
+        base.Confirm();
+
         if (isOn) return;
 
         if (isQuestion) room.CheckQuestion(this);
@@ -114,18 +116,31 @@ public class RoomTelevision : Television
         base.LetterClicked(letter);
     }
 
+    protected override void RemoveSelectedLetter(int index)
+    {
+        base.RemoveSelectedLetter(index);
+        if (index < 0) return;
+        selectedLetterObjects[index].Color = Color.white;
+        selectedLetterObjects[index].transform.parent = letterContainer;
+        selectedLetterObjects[index].Deselected();
+        letterObjects.Add(selectedLetterObjects[index]);
+        selectedLetterObjects.Remove(selectedLetterObjects[index]);
+    }
+
 
     //sets all the letters to their original place.
     public void Reset() {
-        for(int i = 0; i < selectedLetterObjects.Count; i++) {
-            selectedLetterObjects[i].transform.parent = letterContainer;
-            selectedLetterObjects[i].Deselected();
-            letterObjects.Add(selectedLetterObjects[i]);
+        for(int i = selectedLetterObjects.Count - 1; i >= 0; i--) {
+            RemoveSelectedLetter(i);
         }
         selectedLetterObjects = new List<Letter>();
         room.RemoveTVChange(this);
     }
     public void ConfirmationSucceeded() {
         if (room.Animated) sfx.Play(succesSound);
+
+        foreach(Letter letter in selectedLetterObjects) {
+            letter.Color = new Color(.8f, 1f, .8f);
+        }
     }
 }

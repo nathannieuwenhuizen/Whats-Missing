@@ -71,12 +71,12 @@ public class Door : InteractabelObject
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.O)) {
-            Locked = !locked;
-        }
-        if (Input.GetKeyDown(KeyCode.P)) {
-            StartCoroutine(OpenAnimation());
-        }
+        // if (Input.GetKeyDown(KeyCode.O)) {
+        //     Locked = !locked;
+        // }
+        // if (Input.GetKeyDown(KeyCode.P)) {
+        //     StartCoroutine(OpenAnimation());
+        // }
     }
 
     void Opening() {

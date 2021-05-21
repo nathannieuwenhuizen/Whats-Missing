@@ -104,6 +104,12 @@ public bool IsInteractable {
                 return;
             }
         }
+        if (Input.GetKeyDown(KeyCode.Backspace)) {
+            RemoveSelectedLetter(selectedLetterObjects.Count - 1);
+        }
+        if (Input.GetKeyDown(KeyCode.KeypadEnter)) {
+            Confirm();
+        }
     }
     private readonly Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
     private KeyCode GetKeyCode(char character)
@@ -142,6 +148,9 @@ public bool IsInteractable {
             letterObjects.Add(newLetter);
             return newLetter;
     }
+    protected virtual void RemoveSelectedLetter(int index) {
+
+    }
     protected virtual void LetterClicked(Letter letter)
     {
 
@@ -149,6 +158,10 @@ public bool IsInteractable {
         letter.Selected();
         letter.transform.parent = answerText.transform;
         UpdateAnswerTextPosition();
+    }
+
+    public virtual void Confirm() {
+
     }
 
     public void Talk(string[] lines, Text speakText, Action callback) {
@@ -169,11 +182,11 @@ public bool IsInteractable {
                 speakText.text += lines[lineIndex][letterIndex];
                 letterIndex++;
                 sfx.Play(beepSound, .01f, false);
-                yield return new WaitForSeconds(.04f);
+                // yield return new WaitForSeconds(.04f);
             }
             lineIndex++;
             yield return null;
-            yield return new WaitForSeconds(lineIndex == lines.Length ? 0f : 2f);
+            // yield return new WaitForSeconds(lineIndex == lines.Length ? 0f : 2f);
         }
         callback?.Invoke();
     }

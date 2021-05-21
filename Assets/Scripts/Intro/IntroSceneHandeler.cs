@@ -64,7 +64,8 @@ public class IntroSceneHandeler : MonoBehaviour
         StartCoroutine(ReplyingToName());
     }
     public IEnumerator ReplyingToName() {
-        string answer = introTelevision.Word;
+        string answer = UppercaseFirst(introTelevision.Word);
+        
         PlayerData.PLAYER_NAME = answer;
         introTelevision.QuestionText.text = "";
         introTelevision.ToggleKeyboardButtons(false);
@@ -83,5 +84,16 @@ public class IntroSceneHandeler : MonoBehaviour
         movement.EnableWalk = true;
 
     }
+
+    string UppercaseFirst(string s){
+    if (string.IsNullOrEmpty(s))
+        {
+            return string.Empty;
+        }
+        char[] a = s.ToCharArray();
+        a[0] = char.ToUpper(a[0]);
+        return new string(a);
+    }
+
 
 }

@@ -9,18 +9,14 @@ public class Letter : TelevisionButton
     
     private Button button;
     private Text text;
-    private RectTransform rt;
 
     private Coroutine movingCoroutine;
     private float movingIndex;
     private Vector3 startMovePos;
 
     private Coroutine hoverCoroutine;
-    private Vector3 normalScale = Vector3.one;
     private Vector3 hoverScale = new Vector3(1.3f,1.3f,1.3f);
     
-    [SerializeField]
-    private AnimationCurve slideAnimation;
 
     private Vector3 spawnPosition;
 
@@ -39,18 +35,12 @@ public class Letter : TelevisionButton
     public delegate void LetterClickedEvent(Letter letter);
     public event LetterClickedEvent onLetterClick;
 
-    // Start is called before the first frame update
-    void Awake()
+    public override void Awake()
     {
+        base.Awake();
         button = GetComponent<Button>();
-        rt = GetComponent<RectTransform>();
         button.onClick.AddListener(() => LetterIsClicked());
         text = GetComponent<Text>();
-    }
-
-    private void OnEnable() {
-        rt.localScale = Vector3.zero;
-        StartCoroutine(ScaleAnimation(normalScale, 1f));
     }
 
 
@@ -70,6 +60,7 @@ public class Letter : TelevisionButton
     public void Selected()
     {
         OnUnhover();
+        button.interactable = false;
         canBeClicked = false;
         spawnPosition = rt.localPosition;
     }
@@ -77,6 +68,7 @@ public class Letter : TelevisionButton
     public void Deselected()
     {
         canBeClicked = true;
+        button.interactable = true;
         MoveTo(spawnPosition);
     }
 
@@ -88,6 +80,11 @@ public class Letter : TelevisionButton
             float height = textGen.GetPreferredHeight(letterValue, generationSettings);
             return new Size() {width = width, height = height};
         }
+    }
+
+    public Color Color {
+        get => text.color;
+        set => text.color = value;
     }
 
     void LetterIsClicked()
@@ -116,18 +113,6 @@ public class Letter : TelevisionButton
         movingIndex = 1;
         rt.localPosition = pos;
     }
-
-    private IEnumerator ScaleAnimation(Vector3 endScale, float duration = .2f) {
-        float index = 0;
-        Vector3 begin = rt.localScale;
-        while( index < duration) {
-            index += Time.unscaledDeltaTime;
-            rt.localScale = Vector3.LerpUnclamped(begin, endScale, slideAnimation.Evaluate(index/ duration));
-            yield return new WaitForEndOfFrame();
-        }
-        rt.localScale = endScale;
-    }
-
 }
 
 [System.Serializable]

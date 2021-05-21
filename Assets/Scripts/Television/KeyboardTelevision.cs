@@ -56,12 +56,20 @@ public class KeyboardTelevision : Television
         }
         letterObjects = new List<Letter>();
     }
+    protected override void RemoveSelectedLetter(int index)
+    {
+        base.RemoveSelectedLetter(index);
+        if (index < 0) return;
+        Destroy(selectedLetterObjects[index].gameObject);
+        letterObjects.Remove(selectedLetterObjects[index]);
+        selectedLetterObjects.Remove(selectedLetterObjects[index]);
+
+    }
 
     //deletes all the letters selected
     public void Reset() {
-        for(int i = 0; i < selectedLetterObjects.Count; i++) {
-            Destroy(selectedLetterObjects[i].gameObject);
-            letterObjects.Remove(selectedLetterObjects[i]);
+        for(int i = selectedLetterObjects.Count - 1; i >= 0; i--) {
+            RemoveSelectedLetter(i);
         }
         selectedLetterObjects = new List<Letter>();
     }
