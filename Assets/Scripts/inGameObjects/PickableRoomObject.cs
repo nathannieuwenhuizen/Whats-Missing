@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //cant require rigdibody because then it cant be deleted when it gets disappeared.
-[RequireComponent(typeof(InteractabelObject))]
-public class PickableRoomObject : RoomObject, IPickable
+public class PickableRoomObject : InteractabelObject, IPickable
 {
     private Rigidbody rb;
     protected override void Awake()
@@ -26,20 +25,29 @@ public class PickableRoomObject : RoomObject, IPickable
 
     public override IEnumerator Dissappearing()
     {
-
         Destroy(rb);
         yield return base.Dissappearing();
+    }
 
+    protected override void OnFocus()
+    {
+        //todo: check if mass isnt too high with what the player can handle.
+        base.OnFocus();
+    }
+
+    protected override void OnBlur()
+    {
+        base.OnBlur();
     }
 
     public float Mass { get { return mass; } set {mass = value; } }
 
-    public bool Focused { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     private float mass = 0;
 
-    public void Interact()
+    public override void Interact()
     {
-        throw new System.NotImplementedException();
+        base.Interact();
+        // throw new System.NotImplementedException();
     }
 }

@@ -17,33 +17,34 @@ public class Hands : MonoBehaviour
     private float maxThrowForce = .7f;
     private float throwForceMultiplier = 10f;
 
-    public void Grab() {
-        //check stuff to pickup
-        IPickable pickedObject = focussedObject<IPickable>();
-        if (pickedObject != default(IPickable)) {
-            pickedObject.RigidBody.isKinematic = true;
-            holidngObjectParent = pickedObject.RigidBody.transform.parent;
-            pickedObject.RigidBody.transform.parent = transform;
-            holdingObject = pickedObject;
-            oldPos = holdingObject.RigidBody.transform.position;
-            StartCoroutine(UpdateVelocity());
-            return;
-        }
-
+    public void OnClick() {
         //check objects to interact with.
-        IInteractable interactableObj = focussedObject<IInteractable>();
+        IInteractable interactableObj = FocussedObject<IInteractable>();
+        
         if (interactableObj != default(IInteractable)) {
-            interactableObj.Interact();
+            if (interactableObj.Gameobject.GetComponent<IPickable>() != default(IPickable)) {
+                Grab(interactableObj.Gameobject.GetComponent<IPickable>());
+            } else {
+                interactableObj.Interact();
+            }
         }
+    }
+    private void Grab(IPickable obj) {
+        obj.RigidBody.isKinematic = true;
+        holidngObjectParent = obj.RigidBody.transform.parent;
+        obj.RigidBody.transform.parent = transform;
+        holdingObject = obj;
+        oldPos = holdingObject.RigidBody.transform.position;
+        StartCoroutine(UpdateVelocity());
     }
 
     private void OnEnable() {
-        InputManager.OnClickDown += Grab;
+        InputManager.OnClickDown += OnClick;
         InputManager.OnClickUp += Release;
     }
 
     private void OnDisable() {
-        InputManager.OnClickDown -= Grab;
+        InputManager.OnClickDown -= OnClick;
         InputManager.OnClickUp -= Release;
     }
 
@@ -91,7 +92,7 @@ public class Hands : MonoBehaviour
         UpdateFocusedObject();
     }
     private void UpdateFocusedObject() {
-        IInteractable interactableObj = focussedObject<IInteractable>();
+        IInteractable interactableObj = FocussedObject<IInteractable>();
         if (interactableObj != default(IInteractable)) {
             if (interactableObj != currentInteractable) {
                 if (currentInteractable != default(IInteractable))
@@ -105,7 +106,9 @@ public class Hands : MonoBehaviour
         }
     }
 
-    private T focussedObject<T>() {
+
+    //raycast froward from the camera to any object that has the component T with it.
+    private T FocussedObject<T>() {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, pickupDistance)) {
             if (hit.collider.gameObject.GetComponent<T>() != null) return hit.collider.gameObject.GetComponent<T>();

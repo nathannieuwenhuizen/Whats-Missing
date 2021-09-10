@@ -11,7 +11,8 @@ public interface IMissable {
 public interface IChangable : IMissable
 {
     string Word {get; set; }
-    bool animated { get; set;}
+    string[] AlternativeWords {get; set; }
+    bool Animated { get; set;}
     bool InSpace {get; }
     Transform Transform {get; }
     void SetChange(Change changeType);
@@ -25,10 +26,14 @@ public interface IPickable {
 }
 public interface IInteractable {
     bool Focused {get; set;}
+    GameObject Gameobject { get; }
     void Interact();
 }
 
+[System.Serializable]
 public class Change {
     public RoomTelevision television;
     public string word;
+    public string[] AlternativeWords;
+
 }

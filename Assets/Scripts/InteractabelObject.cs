@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractabelObject : MonoBehaviour, IInteractable
+public class InteractabelObject : RoomObject, IInteractable
 {
     private bool focused;
     private Outline outline;
@@ -23,6 +23,7 @@ public class InteractabelObject : MonoBehaviour, IInteractable
             }
         } 
     }
+    public GameObject Gameobject { get => gameObject; }
 
     protected virtual void OnFocus() {
         if (outline == null) {
@@ -56,8 +57,5 @@ public class InteractabelObject : MonoBehaviour, IInteractable
 
     public virtual void Interact()
     {
-        // if (GetComponent<PickableRoomObject>() != null) {
-            
-        // }
     }
 }

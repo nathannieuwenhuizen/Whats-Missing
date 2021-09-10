@@ -6,6 +6,8 @@ public class RoomObject : MonoBehaviour, IChangable
     [SerializeField]
     private string word;
 
+    [SerializeField]
+    private string[] alternateWords;
 
     private Vector3 currentScale;
 
@@ -20,7 +22,7 @@ public class RoomObject : MonoBehaviour, IChangable
         set {word = value;}
     }
 
-    public bool animated { 
+    public bool Animated { 
         get; set; 
     }
 
@@ -28,6 +30,8 @@ public class RoomObject : MonoBehaviour, IChangable
     public bool InSpace { get => inSpace; }
 
     public Transform Transform => transform;
+
+    public string[] AlternativeWords { get => alternateWords; set => alternateWords = value; }
 
     public void SetChange(Change change) {
         switch (change.television.changeType) {
@@ -60,7 +64,7 @@ public class RoomObject : MonoBehaviour, IChangable
     }
     public virtual IEnumerator Dissappearing() {
 
-        if (animated) {
+        if (Animated) {
             if(anim != null && disAppearing != null && Time.timeScale != 0) yield return StartCoroutine(playAnimation(disAppearing));
             else {
                 AnimationCurve curve = AnimationCurve.EaseInOut(0,1,3,0);
@@ -81,7 +85,7 @@ public class RoomObject : MonoBehaviour, IChangable
 
 
     public virtual IEnumerator Appearing() {
-        if (animated) {
+        if (Animated) {
             Debug.Log(anim != null);
             if(anim != null && appearing != null && Time.timeScale != 0) {
                 transform.localScale = currentScale;

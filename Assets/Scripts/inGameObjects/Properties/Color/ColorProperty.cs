@@ -19,9 +19,9 @@ public class ColorProperty : Property
 
     public override void onMissing()
     {
-        Debug.Log("on missing!" + animated);
+        Debug.Log("on missing!" + Animated);
         base.onMissing();
-        if (animated) {
+        if (Animated) {
             StopAllCoroutines();
             StartCoroutine(IncreaseMask(false));
         } else 
@@ -30,7 +30,7 @@ public class ColorProperty : Property
     public override void onAppearing()
     {
         base.onAppearing();
-        if (animated) {
+        if (Animated) {
             StopAllCoroutines();
             StartCoroutine(IncreaseMask(true));
         } else

@@ -6,8 +6,11 @@ public abstract class Property : MonoBehaviour, IChangable
 {
     [SerializeField]    protected string word;
     public string Word { get =>  word; set => word = value; }
+    [SerializeField]
+    private string[] alternateWords;
+    public string[] AlternativeWords { get => alternateWords; set => alternateWords = value; }
 
-    public bool animated { get; set; }
+    public bool Animated { get; set; }
 
     private bool inSpace= false;
     public bool InSpace => inSpace;

@@ -25,6 +25,7 @@ public class Room : MonoBehaviour
     }
 
     public List<IChangable> AllObjects {get { return allObjects;}}
+    [SerializeField]
     private List<Change> changes = new List<Change>();
     
     [SerializeField]
@@ -54,7 +55,7 @@ public class Room : MonoBehaviour
     public bool Animated {
         set { 
             animated = value;
-            foreach (IChangable obj in allObjects) obj.animated = value;
+            foreach (IChangable obj in allObjects) obj.Animated = value;
         }
         get => animated;
     }
@@ -108,13 +109,13 @@ public class Room : MonoBehaviour
         Change newChange = new Change(){word = selectedTelevision.Word, television = selectedTelevision};
         foreach (IChangable obj in allObjects)
         {
-            if (obj.Word == selectedTelevision.Word) {
-                if (obj.animated && obj.Transform.GetComponent<Property>() == null) {
+            if (obj.Word == selectedTelevision.Word || obj.AlternativeWords.Contains(selectedTelevision.Word)) {
+                if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
                     StartCoroutine(AnimateChangeEffect(selectedTelevision, obj, 1f, () => {
                         obj.SetChange(newChange);
                     }));
                 } else obj.SetChange(newChange);
-
+                newChange.AlternativeWords = obj.AlternativeWords;
                 hasChangedSomething = true;
             }
         }
@@ -141,8 +142,8 @@ public class Room : MonoBehaviour
         if (change == null) return;
         foreach (IChangable obj in allObjects)
         {
-            if (obj.Word == change.word) {
-                if (obj.animated && obj.Transform.GetComponent<Property>() == null) {
+            if (obj.Word == change.word ||  obj.AlternativeWords.Contains(change.word)) {
+                if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
                     StartCoroutine(AnimateChangeEffect(change.television, obj, 1f, () => {
                         obj.RemoveChange(change);
                     }));
@@ -169,23 +170,15 @@ public class Room : MonoBehaviour
     
 
     public void CheckQuestion(RoomTelevision selectedTelevision) {
-        bool questionIsCorrect = false;
-
-        foreach (RoomTelevision tv in allTelevisions)
+        foreach (Change change in changes)
         {
-            if (tv.IsOn && !tv.isQuestion) {
-                if (tv.Word == selectedTelevision.Word) {
-                    questionIsCorrect = true;
-                    selectedTelevision.IsOn = true;
-                    CheckRoomCompletion();
-                    return;
-                }
+            if (change.word == selectedTelevision.Word || change.AlternativeWords.Contains(selectedTelevision.Word)) {
+                selectedTelevision.IsOn = true;
+                CheckRoomCompletion();
+                return;
             }
         }
-
-        if (!questionIsCorrect) {
-            selectedTelevision.IsOn = false;
-        }
+        selectedTelevision.IsOn = false;
     }
     
     private void CheckRoomCompletion() {
