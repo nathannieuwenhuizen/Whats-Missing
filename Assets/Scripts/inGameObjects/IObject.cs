@@ -7,7 +7,6 @@ public interface IMissable {
     void onAppearing();
 }
 
-
 public interface IChangable : IMissable
 {
     string Word {get; set; }
@@ -30,10 +29,3 @@ public interface IInteractable {
     void Interact();
 }
 
-[System.Serializable]
-public class Change {
-    public RoomTelevision television;
-    public string word;
-    public string[] AlternativeWords;
-
-}
