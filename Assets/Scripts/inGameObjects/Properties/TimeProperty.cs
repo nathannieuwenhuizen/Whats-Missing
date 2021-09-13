@@ -13,8 +13,8 @@ public class TimeProperty : Property
     {
         base.onMissing();
         Time.timeScale = 0f;
-        MusicObject.INSTANCE.Volume = 1f;
-        MusicObject.INSTANCE.Pitch = .2f;
+        AudioHandler.Instance.MusicSource.volume = 1f;
+        AudioHandler.Instance.MusicSource.pitch = .2f;
         room.Player.Camera.gameObject.gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<Vignette>().enabled.value = true;
 
     }
@@ -22,8 +22,8 @@ public class TimeProperty : Property
     {
         base.onAppearing();
         Time.timeScale = 1;
-        MusicObject.INSTANCE.Volume = MusicObject.INSTANCE.startVolume;
-        MusicObject.INSTANCE.Pitch = 1f;
+        AudioHandler.Instance.MusicSource.volume = 1f;
+        AudioHandler.Instance.MusicSource.pitch = AudioHandler.Instance.MusicVolume;
         room.Player.Camera.gameObject.gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<Vignette>().enabled.value = false;
 
 

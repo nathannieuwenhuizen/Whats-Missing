@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SFXObject))]
 public class FPMovement : MonoBehaviour
 {
     private Rigidbody rb;
@@ -12,14 +11,7 @@ public class FPMovement : MonoBehaviour
     [SerializeField]
     private Collider topCollider;
 
-    private SFXObject sfx;
     private float walkSoundDistance = 1.5f;
-    [SerializeField]
-    private AudioClip[] footStepSounds;
-    [SerializeField]
-    private AudioClip jumpSound;
-    [SerializeField]
-    private AudioClip landingSound;
 
     private Vector3 oldPos;
 
@@ -56,7 +48,7 @@ public class FPMovement : MonoBehaviour
     public void Jump() {
         if (inAir) return;
         inAir = true;
-        sfx.Play(jumpSound, .1f);
+        AudioHandler.Instance?.PlaySound(SFXFiles.player_jump, .1f);
         rb.AddForce(new Vector3(0,jumpForce * (inCeiling ? -1 : 1),0));
 
         inCeiling = false;
@@ -65,7 +57,7 @@ public class FPMovement : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         if (inAir) {
             inAir = false;
-            sfx.Play(landingSound);
+            AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
             oldPos = transform.position;
         }
         if (other.contacts[0].thisCollider == topCollider) {
@@ -81,7 +73,7 @@ public class FPMovement : MonoBehaviour
 
         if (delta.magnitude > walkSoundDistance){
             oldPos = transform.position;
-            sfx.Play(footStepSounds[Mathf.FloorToInt(Random.Range(0, footStepSounds.Length))], .05f);
+            AudioHandler.Instance?.PlaySound(SFXFiles.player_footstep, .05f);
         }
     }
 
@@ -100,7 +92,6 @@ public class FPMovement : MonoBehaviour
 
     private void Start()
     {
-        sfx = GetComponent<SFXObject>();
         rb = GetComponent<Rigidbody>();
         EnableCursor(false);
 

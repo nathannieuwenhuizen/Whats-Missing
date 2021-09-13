@@ -29,16 +29,6 @@ public class Door : InteractabelObject
     [SerializeField]
     private AnimationCurve closeCurve;
 
-    [Header("Sounds")]
-    [SerializeField]
-    private SFXObject sfx;
-    [SerializeField]
-    private AudioClip squeekSound;
-    [SerializeField]
-    private AudioClip closeSound;
-    [SerializeField]
-    private AudioClip openSound;
-
     public bool Locked {
         get { return locked; }
         set {
@@ -53,13 +43,13 @@ public class Door : InteractabelObject
     }
 
     void Close() {
-        sfx.Play(closeSound);
+        AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
         lightObject.SetActive(false);
         StartCoroutine(Flipping(startRotation, .5f, closeCurve));
     }
 
     void Open() {
-        sfx.Play(squeekSound, .2f);
+        AudioHandler.Instance?.PlaySound(SFXFiles.door_squeek, .2f);
         lightObject.SetActive(true);
         StartCoroutine(Flipping(startRotation + openAngle, 2f, openCurve));
     }
@@ -118,9 +108,9 @@ public class Door : InteractabelObject
     }
 
     public IEnumerator OpenAnimation() {
-        sfx.Play(openSound);
+        AudioHandler.Instance?.PlaySound(SFXFiles.door_open);
         yield return StartCoroutine(Flipping(startRotation + wideAngle, .8f, openCurve));
-        sfx.Play(closeSound);
+        AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
         Close();
     }
 }

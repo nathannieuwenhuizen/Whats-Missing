@@ -58,6 +58,7 @@ public class Area : MonoBehaviour
     
     void Start()
     {
+        AudioHandler.Instance.PlayMusic(MusicFiles.gallery, 1f);
         CurrentRoom = rooms[startingRoomIndex];
         playerPos = currentRoom.StartPos.position;
     }

@@ -105,13 +105,17 @@ public class RoomTelevision : Television
     }
 
     public void ConfirmationFailed() {
-        if (room.Animated) sfx.Play(failSound);
+        if (room.Animated)         
+            AudioHandler.Instance?.PlaySound(SFXFiles.tv_false);
+
         Reset();
     }
 
     protected override void LetterClicked(Letter letter)
     {
-        if ( room != null && room.Animated) sfx.Play(letterClickSound);
+        if ( room != null && room.Animated) 
+            AudioHandler.Instance?.PlaySound(SFXFiles.letter_click);
+        
         letterObjects.Remove(letter);
         base.LetterClicked(letter);
     }
@@ -137,7 +141,9 @@ public class RoomTelevision : Television
         room.RemoveTVChange(this);
     }
     public void ConfirmationSucceeded() {
-        if (room.Animated) sfx.Play(succesSound);
+        if (room.Animated)
+            AudioHandler.Instance?.PlaySound(SFXFiles.tv_true);
+
 
         foreach(Letter letter in selectedLetterObjects) {
             letter.Color = new Color(.8f, 1f, .8f);

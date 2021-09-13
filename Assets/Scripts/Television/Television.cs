@@ -18,11 +18,6 @@ public class Television : MonoBehaviour
     }
 
     [SerializeField]
-    protected SFXObject sfx;
-    [SerializeField]
-    protected AudioClip letterClickSound;
-
-    [SerializeField]
     protected Text questionText;
     public Text QuestionText { get => questionText; }
 
@@ -105,7 +100,7 @@ public bool IsInteractable {
             }
         }
         if (Input.GetKeyDown(KeyCode.Backspace)) {
-            sfx.Play(letterClickSound);
+            AudioHandler.Instance?.PlaySound(SFXFiles.letter_click);
             RemoveSelectedLetter(selectedLetterObjects.Count - 1);
         }
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)) {
@@ -182,7 +177,7 @@ public bool IsInteractable {
             while(letterIndex < lines[lineIndex].Length) {
                 speakText.text += lines[lineIndex][letterIndex];
                 letterIndex++;
-                sfx.Play(beepSound, .01f, false);
+                AudioHandler.Instance?.PlaySound(SFXFiles.tv_beep);
                 yield return new WaitForSeconds(.04f);
             }
             lineIndex++;
