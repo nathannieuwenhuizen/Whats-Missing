@@ -97,7 +97,7 @@ public class AudioHandler : Singleton<AudioHandler>
         selectedAudio.AudioSource.gameObject.SetActive(true);
         selectedAudio.AudioSource.spatialBlend = 0;
         selectedAudio.AudioSource.clip = selectedAudio.GetClip;
-        selectedAudio.AudioSource.volume = volume * SoundSetting.SFX;
+        selectedAudio.AudioSource.volume = volume * AudioSetting.SFX;
         selectedAudio.AudioSource.pitch = pitch;
         selectedAudio.AudioSource.loop = loop;
         selectedAudio.AudioSource.Play();
@@ -119,12 +119,12 @@ public class AudioHandler : Singleton<AudioHandler>
         if (selectedAudio == null) return;
         MusicSource.clip = selectedAudio.Clip;
         musicVolume = volume;
-        MusicSource.volume = musicVolume * SoundSetting.MUSIC;
+        MusicSource.volume = musicVolume * AudioSetting.MUSIC;
         MusicSource.Play();
     }
 
     public void UpdateMusicVolume() {
-        MusicSource.volume = musicVolume * SoundSetting.MUSIC;
+        MusicSource.volume = musicVolume * AudioSetting.MUSIC;
     }
 
     public void StopMusic()
@@ -134,7 +134,7 @@ public class AudioHandler : Singleton<AudioHandler>
 
     public void ChangeMusicVolume(float volume)
     {
-        MusicSource.volume = volume * SoundSetting.MUSIC;
+        MusicSource.volume = volume * AudioSetting.MUSIC;
     }
     public void FadeMusic(MusicFiles newMusic, float duration)
     {
@@ -144,7 +144,7 @@ public class AudioHandler : Singleton<AudioHandler>
     private IEnumerator FadingMusic(MusicFiles music, float duration)
     {
         musicIsFading = true;
-        float volume = MusicSource.volume * SoundSetting.MUSIC;
+        float volume = MusicSource.volume * AudioSetting.MUSIC;
         yield return StartCoroutine(ChangeVolume(MusicSource.volume, 0, duration / 2f));
         MusicInstance selectedMusic = musicClips.Find(x => x.Music == music);
 
@@ -165,10 +165,10 @@ public class AudioHandler : Singleton<AudioHandler>
         while (index < duration)
         {
             index += Time.deltaTime;
-            MusicSource.volume = Mathf.Lerp(begin, end * SoundSetting.MUSIC, index / duration);
+            MusicSource.volume = Mathf.Lerp(begin, end * AudioSetting.MUSIC, index / duration);
             yield return new WaitForFixedUpdate();
         }
-        MusicSource.volume = end * SoundSetting.MUSIC;
+        MusicSource.volume = end * AudioSetting.MUSIC;
     }
 }
 

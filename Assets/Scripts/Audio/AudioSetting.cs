@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-    public class SoundSetting: MonoBehaviour {
+    public class AudioSetting: MonoBehaviour {
 
     private float steps = 10;
 
@@ -58,8 +58,8 @@ using UnityEngine.UI;
     private void OnEnable() 
     {
         // SetMute(MUTE);
-        SFXSlider.value = SoundSetting.SFX * steps;
-        musicSlider.value = SoundSetting.MUSIC * steps;
+        SFXSlider.value = AudioSetting.SFX * steps;
+        musicSlider.value = AudioSetting.MUSIC * steps;
     }
     // public void SetMute(bool val) {
     //     MUTE = val;
@@ -69,7 +69,7 @@ using UnityEngine.UI;
 
     public void SetSFX(float value) 
     {
-        SoundSetting.SFX = value / steps;
+        AudioSetting.SFX = value / steps;
         if (AudioHandler.Instance) {
             // AudioHandler.Instance.PlaySound(SFXFiles.plop, .5f);
         }
@@ -77,7 +77,7 @@ using UnityEngine.UI;
     }
     public void SetMusic(float value) 
     {
-        SoundSetting.MUSIC = value / steps;
+        AudioSetting.MUSIC = value / steps;
         if (AudioHandler.Instance)
             AudioHandler.Instance.UpdateMusicVolume();
     }
