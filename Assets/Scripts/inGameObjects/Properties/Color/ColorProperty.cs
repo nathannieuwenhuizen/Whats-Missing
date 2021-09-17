@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering.Universal;
 public class ColorProperty : Property
 {
 
@@ -17,13 +19,15 @@ public class ColorProperty : Property
     [SerializeField]
     private Room room;
 
+    private ColorAdjustments colorAdjustments;
+
     public override void onMissing()
     {
         Debug.Log("on missing!" + Animated);
         base.onMissing();
         if (Animated) {
             StopAllCoroutines();
-            StartCoroutine(IncreaseMask(false));
+            StartCoroutine(AnimateSaturation(false));
         } else 
             saturation = -100f;
     }
@@ -32,7 +36,7 @@ public class ColorProperty : Property
         base.onAppearing();
         if (Animated) {
             StopAllCoroutines();
-            StartCoroutine(IncreaseMask(true));
+            StartCoroutine(AnimateSaturation(true));
         } else
             saturation = 0;
     }
@@ -57,11 +61,31 @@ public class ColorProperty : Property
         maskPPController.on = false;
         saturation = toColor ? 0 : -100f;
     }
+    public IEnumerator AnimateSaturation(bool toColor) {
+
+        float start = 0;
+        float end = -100f;
+        if (toColor) {
+            start = -100f;
+            end = 0f;
+        }
+        saturation = start;
+        float index = 0;
+        while ( index < animationDuration) {
+            index += Time.unscaledDeltaTime;
+            saturation = Mathf.Lerp(start, end, index / animationDuration);
+            yield return new WaitForEndOfFrame();
+        }
+        saturation = end;
+    }
 
 
     public float saturation {
         set {
-            room.Player.Camera.gameObject.gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<ColorGrading>().saturation.value = value;
+            if (colorAdjustments == null)
+                room.Player.Volume.profile.TryGet<ColorAdjustments>(out colorAdjustments);
+            colorAdjustments.saturation.value = value;
+            // room.Player.Camera.gameObject.gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<ColorGrading>().saturation.value = value;
         }
     }
 }
