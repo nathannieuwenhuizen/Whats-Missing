@@ -50,7 +50,7 @@ public class Blit : ScriptableRendererFeature {
         blitMaterial.SetVector ("_Position", spherePosition);
         blitMaterial.SetFloat ("_Radius", radius);
         blitMaterial.SetFloat ("_Softness", softness);
-            Debug.Log("blit");
+            // Debug.Log("blit");
 
             // Can't read and write to same color target, use a TemporaryRT
             if (destination == RenderTargetHandle.CameraTarget) {
