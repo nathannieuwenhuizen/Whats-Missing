@@ -14,7 +14,7 @@ public class CustomInputModule : StandaloneInputModule
         _currentLockState = Cursor.lockState;
 
         //TODO: in edit mode lockmode is contained
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Confined;
 
         base.Process();
 

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.Rendering.Universal;
 public class ColorProperty : Property
 {
@@ -23,7 +22,7 @@ public class ColorProperty : Property
 
     public override void onMissing()
     {
-        Debug.Log("on missing!" + Animated);
+        Debug.Log("color is missing!" + Animated);
         base.onMissing();
         if (Animated) {
             StopAllCoroutines();

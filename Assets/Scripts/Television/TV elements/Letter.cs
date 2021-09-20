@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-
+using TMPro;
 public class Letter : TelevisionButton
 {
     
     private Button button;
-    private Text text;
 
     private Coroutine movingCoroutine;
     private float movingIndex;
     private Vector3 startMovePos;
+    [SerializeField]
+    private TMP_Text text; 
 
     private Coroutine hoverCoroutine;
     private Vector3 hoverScale = new Vector3(1.3f,1.3f,1.3f);
@@ -28,7 +29,7 @@ public class Letter : TelevisionButton
         set {
             letterValue = value;
             text.text = value;
-            rt.sizeDelta = new Vector2(size.width, size.height);
+            //rt.sizeDelta = new Vector2(size.width, size.height);
         }
     }
 
@@ -40,22 +41,25 @@ public class Letter : TelevisionButton
         base.Awake();
         button = GetComponent<Button>();
         button.onClick.AddListener(() => LetterIsClicked());
-        text = GetComponent<Text>();
+        // text = GetComponent<TMP_Text>();
     }
 
 
     public override void OnHover() {
         base.OnHover();
+        Debug.Log("hover: " + LetterValue);
         if (!canBeClicked) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(hoverScale));
     }
     public override void OnUnhover() {
         base.OnUnhover();
+        Debug.Log("unhover: " + LetterValue);
         if (!canBeClicked) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(normalScale));
     }
+
 
     public void Selected()
     {
@@ -74,11 +78,13 @@ public class Letter : TelevisionButton
 
     public Size size {
         get {
-            TextGenerator textGen = new TextGenerator();
-            TextGenerationSettings generationSettings = text.GetGenerationSettings(text.rectTransform.rect.size); 
-            float width = textGen.GetPreferredWidth(letterValue, generationSettings);
-            float height = textGen.GetPreferredHeight(letterValue, generationSettings);
-            return new Size() {width = width, height = height};
+            return new Size() {width = text.GetRenderedValues(true).x, height = text.GetRenderedValues(true).y};
+
+            // TextGenerator textGen = new TextGenerator();
+            // TextGenerationSettings generationSettings = text.GetGenerationSettings(text.rectTransform.rect.size); 
+            // float width = textGen.GetPreferredWidth(letterValue, generationSettings);
+            // float height = textGen.GetPreferredHeight(letterValue, generationSettings);
+            // return new Size() {width = width, height = height};
         }
     }
 
