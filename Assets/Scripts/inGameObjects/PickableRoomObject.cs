@@ -5,16 +5,23 @@ using UnityEngine;
 //cant require rigdibody because then it cant be deleted when it gets disappeared.
 public class PickableRoomObject : InteractabelObject, IPickable
 {
-    private Rigidbody rb;
+    private Rigidbody rb; 
+    [SerializeField]   
+    private float mass = 1;
+
     protected override void Awake()
     {
         base.Awake();
         rb = GetComponent<Rigidbody>();
+        rb.mass = mass;
     }
     public Rigidbody RigidBody { 
         get {
             return rb;
         } 
+        set {
+            rb = value;
+        }
     }
 
     public override IEnumerator Appearing()
@@ -43,11 +50,26 @@ public class PickableRoomObject : InteractabelObject, IPickable
     public float Mass { get { return mass; } set {mass = value; } }
 
 
-    private float mass = 0;
 
     public override void Interact()
     {
         base.Interact();
-        // throw new System.NotImplementedException();
+    }
+
+    public void Grab()
+    {
+        Destroy(rb);
+    }
+
+    public void Release()
+    {
+        if (rb == null) {
+            rb = GetComponent<Rigidbody>();
+            if (rb == null) {
+                rb = gameObject.AddComponent<Rigidbody>();
+            }
+            rb.mass = mass;
+        }
+        rb.isKinematic = false;
     }
 }

@@ -30,11 +30,12 @@ public class Hands : MonoBehaviour
         }
     }
     private void Grab(IPickable obj) {
-        obj.RigidBody.isKinematic = true;
+        // obj.RigidBody.isKinematic = true;
         holidngObjectParent = obj.RigidBody.transform.parent;
         obj.RigidBody.transform.parent = transform;
         holdingObject = obj;
         oldPos = holdingObject.RigidBody.transform.position;
+        obj.Grab();
         StartCoroutine(UpdateVelocity());
     }
 
@@ -48,15 +49,18 @@ public class Hands : MonoBehaviour
         InputManager.OnClickUp -= Release;
     }
 
+
+    
+
     //Releases the holding object
     public void Release() {
         if (holdingObject == null) return;
 
         if (Time.timeScale == 0) {
-            StartCoroutine(UpdatePhysics());
+            StartCoroutine(UpdatePhysics()); 
         }
-        holdingObject.RigidBody.isKinematic = false;
-        holdingObject.RigidBody.transform.parent = holidngObjectParent;
+        holdingObject.Release();
+        holdingObject.gameObject.transform.parent = holidngObjectParent;
         if (velocity.magnitude > maxThrowForce) {
             velocity = velocity.normalized * maxThrowForce;
         }
@@ -67,8 +71,8 @@ public class Hands : MonoBehaviour
     //updates the holding object velocity;
     private IEnumerator UpdateVelocity() {
         while (holdingObject != null) {
-            velocity = holdingObject.RigidBody.transform.position - oldPos;
-            oldPos = holdingObject.RigidBody.transform.position;
+            velocity = holdingObject.gameObject.transform.position - oldPos;
+            oldPos = holdingObject.gameObject.transform.position;
             Debug.Log("wait time");
             yield return new WaitForSecondsRealtime(.1f);
         }

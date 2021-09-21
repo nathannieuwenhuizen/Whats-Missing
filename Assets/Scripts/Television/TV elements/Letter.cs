@@ -47,14 +47,12 @@ public class Letter : TelevisionButton
 
     public override void OnHover() {
         base.OnHover();
-        Debug.Log("hover: " + LetterValue);
         if (!canBeClicked) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(hoverScale));
     }
     public override void OnUnhover() {
         base.OnUnhover();
-        Debug.Log("unhover: " + LetterValue);
         if (!canBeClicked) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(normalScale));

@@ -152,7 +152,7 @@ public bool IsInteractable {
 
         selectedLetterObjects.Add(letter);
         letter.Selected();
-        letter.transform.parent = answerText.transform;
+        letter.transform.SetParent(answerText.transform);
         UpdateAnswerTextPosition();
     }
 

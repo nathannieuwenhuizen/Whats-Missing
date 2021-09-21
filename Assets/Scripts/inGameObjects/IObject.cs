@@ -19,8 +19,11 @@ public interface IChangable : IMissable
 }
 
 public interface IPickable {
-    Rigidbody RigidBody { get; }
-    float Mass {get; set;}
+    void Grab();
+    void Release();
+    GameObject gameObject {get; }
+    Rigidbody RigidBody { get; set; }
+    float Mass {get; set;} 
     
 }
 public interface IInteractable {
