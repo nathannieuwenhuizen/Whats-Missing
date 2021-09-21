@@ -17,6 +17,7 @@ public class FPMovement : MonoBehaviour
 
     public bool EnableWalk {get; set; } = true;
     public bool EnableRotation {get; set; } = true;
+    [SerializeField]
     private int walkSpeed = 5;
     private int rotateSpeed = 2;
 
