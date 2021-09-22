@@ -21,5 +21,6 @@ public enum SFXFiles {
 }
 
 public enum MusicFiles {
-    gallery
+    gallery,
+    test
 }

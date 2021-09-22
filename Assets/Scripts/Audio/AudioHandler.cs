@@ -21,7 +21,7 @@ public class AudioHandler : Singleton<AudioHandler>
         get => musicVolume;
         set {
             musicVolume = value;
-            MusicSource.volume = value;
+            MusicSource.volume = value * AudioSetting.MUSIC;
         }
     }
     private float musicVolume = 1f;
@@ -89,6 +89,10 @@ public class AudioHandler : Singleton<AudioHandler>
         }
     }
 
+
+    /// <summary>
+    ///Plays a 2D sound in the game.
+    ///</summary>
     public void PlaySound(SFXFiles audioEffect, float volume = 1f, float pitch = 1f, bool loop = false)
     {
         SFXInstance selectedAudio = soundEffectInstances.Find(x => x.AudioEffect == audioEffect);
@@ -103,6 +107,9 @@ public class AudioHandler : Singleton<AudioHandler>
         selectedAudio.AudioSource.Play();
     }
 
+    ///<summary>
+    ///Stops the 2D sound
+    ///</summary>
     public void StopSound(SFXFiles audioEffect)
     {
         SFXInstance selectedAudio = soundEffectInstances.Find(x => x.AudioEffect == audioEffect);
@@ -110,7 +117,9 @@ public class AudioHandler : Singleton<AudioHandler>
             return;
         selectedAudio.AudioSource.Stop();
     }
-
+    ///<summary>
+    ////Plays music that loops.
+    ///</summary>
     public void PlayMusic(MusicFiles music, float volume = 1f)
     {
         if (mute) 
@@ -122,53 +131,70 @@ public class AudioHandler : Singleton<AudioHandler>
         MusicSource.volume = musicVolume * AudioSetting.MUSIC;
         MusicSource.Play();
     }
-
-    public void UpdateMusicVolume() {
-        MusicSource.volume = musicVolume * AudioSetting.MUSIC;
-    }
-
+    ///<summary>
+    ////Stops the music
+    ///</summary>
     public void StopMusic()
     {
         MusicSource.Stop();
     }
 
-    public void ChangeMusicVolume(float volume)
-    {
-        MusicSource.volume = volume * AudioSetting.MUSIC;
-    }
-    public void FadeMusic(MusicFiles newMusic, float duration)
+
+    ///<summary>
+    ///Fades one music to 0 and after that fades the new music in with the same volume.
+    ///</summary>
+    public void FadeMusic(MusicFiles newMusic, float duration, bool waitForOtherMusictoFadeOut = false)
     {
         StopAllCoroutines();
-        StartCoroutine(FadingMusic(newMusic, duration));
+        StartCoroutine(FadingMusic(newMusic, duration, waitForOtherMusictoFadeOut));
     }
-    private IEnumerator FadingMusic(MusicFiles music, float duration)
+    private IEnumerator FadingMusic(MusicFiles music, float totalDuration, bool waitForOtherMusictoFadeOut = false)
     {
         musicIsFading = true;
         float volume = MusicSource.volume * AudioSetting.MUSIC;
-        yield return StartCoroutine(ChangeVolume(MusicSource.volume, 0, duration / 2f));
-        MusicInstance selectedMusic = musicClips.Find(x => x.Music == music);
+        AudioSource tempSource = default(AudioSource);
+        if (waitForOtherMusictoFadeOut) yield return StartCoroutine(FadeVolume(MusicSource, MusicSource.volume, 0, totalDuration / 2f));
+        else {
+            StartCoroutine(FadeVolume(MusicSource, MusicSource.volume, 0, totalDuration / 2f));
+        }
+            
 
+        MusicInstance selectedMusic = musicClips.Find(x => x.Music == music);
         if (selectedMusic != null)
         {
-            MusicSource.clip = selectedMusic.Clip;
-            MusicSource.Play();
-            yield return StartCoroutine(ChangeVolume(0, volume, duration / 2f));
+            if (!waitForOtherMusictoFadeOut) {
+                tempSource = gameObject.AddComponent<AudioSource>();
+                tempSource.loop = true;
+                tempSource.clip = selectedMusic.Clip;
+                tempSource.time = MusicSource.time;
+                tempSource.Play();
+                tempSource.time = MusicSource.time;
+                yield return StartCoroutine(FadeVolume(tempSource, 0, volume, totalDuration / 2f));
+                Destroy(MusicSource);
+                MusicSource = tempSource;
+            } else {
+                MusicSource.clip = selectedMusic.Clip;
+                MusicSource.Play();
+                yield return StartCoroutine(FadeVolume(MusicSource, 0, volume, totalDuration / 2f));
+            }
         }
         musicIsFading = false;
     }
 
-
-    private IEnumerator ChangeVolume(float begin, float end, float duration)
+    ///<summary>
+    ///Internal enumerator that fades a music clip.
+    ///</summary>
+    private IEnumerator FadeVolume(AudioSource audioS, float begin, float end, float duration)
     {
         float index = 0;
 
         while (index < duration)
         {
             index += Time.deltaTime;
-            MusicSource.volume = Mathf.Lerp(begin, end * AudioSetting.MUSIC, index / duration);
+            audioS.volume = Mathf.Lerp(begin, end * AudioSetting.MUSIC, index / duration);
             yield return new WaitForFixedUpdate();
         }
-        MusicSource.volume = end * AudioSetting.MUSIC;
+        audioS.volume = end * AudioSetting.MUSIC;
     }
 }
 

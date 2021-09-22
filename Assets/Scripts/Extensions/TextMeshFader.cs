@@ -82,7 +82,6 @@ public class TextMeshFader : MonoBehaviour
         mesh.gameObject.transform.position = startPos;
 
         SetAlpha(mesh, start);
-        Debug.Log(GetWidth(mesh));
         yield return new WaitForSeconds(delay);
         while (index < duration) {
 
@@ -102,7 +101,6 @@ public class TextMeshFader : MonoBehaviour
     public static float GetWidth(TextMesh mesh)
     {
         float width = 0;
-        Debug.Log(mesh.text);
         
         CharacterInfo info;
         mesh.font.RequestCharactersInTexture(mesh.text, mesh.fontSize,mesh.fontStyle); //add this
