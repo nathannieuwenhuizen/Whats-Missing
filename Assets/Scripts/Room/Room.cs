@@ -44,7 +44,8 @@ public class Room : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject particlePrefab;
+    private GameObject changeLineObject;
+
     [SerializeField]
     private GameObject plopParticle;
 
@@ -106,14 +107,16 @@ public class Room : MonoBehaviour
     // Apply the change to the object 
     public void AddTVChange(RoomTelevision selectedTelevision) {
         bool hasChangedSomething = false;
+        float delay = 0;
         Change newChange = new Change(){word = selectedTelevision.Word, television = selectedTelevision};
         foreach (IChangable obj in allObjects)
         {
             if (obj.Word == selectedTelevision.Word || obj.AlternativeWords.Contains(selectedTelevision.Word)) {
                 if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
-                    StartCoroutine(AnimateChangeEffect(selectedTelevision, obj, 1f, () => {
+                    StartCoroutine(AnimateChangeEffect(delay, selectedTelevision, obj, 1f, () => {
                         obj.SetChange(newChange);
                     }));
+                    delay += .5f;
                 } else obj.SetChange(newChange);
                 newChange.AlternativeWords = obj.AlternativeWords;
                 hasChangedSomething = true;
@@ -129,7 +132,9 @@ public class Room : MonoBehaviour
     }
 
     
-    //removes a tv change updating the room and tv
+    /// <summary> 
+    ///removes a tv change updating the room and tv
+    ///</summary>
     public void RemoveTVChange(RoomTelevision selectedTelevision) {
         if (!selectedTelevision.IsOn) return;
         selectedTelevision.IsOn = false;
@@ -139,30 +144,39 @@ public class Room : MonoBehaviour
 
     //removes a change to the room updating the objects
     private void RemoveChange(Change change) {
+
+        float delay = 0;
         if (change == null) return;
         foreach (IChangable obj in allObjects)
         {
             if (obj.Word == change.word ||  obj.AlternativeWords.Contains(change.word)) {
                 if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
-                    StartCoroutine(AnimateChangeEffect(change.television, obj, 1f, () => {
+                    StartCoroutine(AnimateChangeEffect(delay, change.television, obj, 1f, () => {
                         obj.RemoveChange(change);
                     }));
+                    delay += .5f;
                 } else obj.RemoveChange(change);
             }
         }
         changes.Remove(change);
     }
 
-    public IEnumerator AnimateChangeEffect(RoomTelevision tv, IChangable o, float duration, Action callback) {
-        float index = 0;
-        Vector3 begin = tv.transform.position;
-        AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
-        GameObject particle = Instantiate(particlePrefab, begin, Quaternion.identity);
-        while (index < duration) {
-            index += Time.unscaledDeltaTime;
-            particle.transform.position = Vector3.LerpUnclamped(begin, o.Transform.position, curve.Evaluate(index / duration));
-            yield return new WaitForEndOfFrame();
-        }
+    public IEnumerator AnimateChangeEffect(float delay, RoomTelevision tv, IChangable o, float duration, Action callback) {
+        yield return new WaitForSecondsRealtime(delay);
+        ChangeLine changeLine = Instantiate(changeLineObject).GetComponent<ChangeLine>();
+        changeLine.SetDestination(tv.transform.position, o.Transform.position);
+        yield return changeLine.MoveTowardsDestination();
+
+
+        // float index = 0;
+        // Vector3 begin = tv.transform.position;
+        // AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
+        // GameObject particle = Instantiate(particlePrefab, begin, Quaternion.identity);
+        // while (index < duration) {
+        //     index += Time.unscaledDeltaTime;
+        //     particle.transform.position = Vector3.LerpUnclamped(begin, o.Transform.position, curve.Evaluate(index / duration));
+        //     yield return new WaitForEndOfFrame();
+        // }
         GameObject plop = Instantiate(plopParticle, o.Transform.position, Quaternion.identity);
         callback();
     }
