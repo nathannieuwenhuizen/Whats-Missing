@@ -25,4 +25,8 @@ public class BlueProperty : Property
             room.Player.Camera.gameObject.gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<ColorGrading>().mixerBlueOutBlueIn.value = value;
         }
     }
+    private void Reset() {
+        Word = "blue";
+    }
+
 }

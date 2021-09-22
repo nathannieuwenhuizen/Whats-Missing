@@ -24,4 +24,10 @@ public class Player : RoomObject
         base.Awake();
         movement = GetComponent<FPMovement>();
     }
+
+    private void Reset() {
+        Word = "me";
+        AlternativeWords = new string[]{ "myself", "i", "player"};
+    }
+
 }

@@ -25,7 +25,9 @@ public class TimeProperty : Property
         AudioHandler.Instance.MusicSource.volume = 1f;
         AudioHandler.Instance.MusicSource.pitch = AudioHandler.Instance.MusicVolume;
         room.Player.Camera.gameObject.gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<Vignette>().enabled.value = false;
-
-
     }
+    private void Reset() {
+        Word = "time";
+    }
+
 }

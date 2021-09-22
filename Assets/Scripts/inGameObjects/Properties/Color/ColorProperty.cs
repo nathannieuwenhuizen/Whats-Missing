@@ -87,4 +87,9 @@ public class ColorProperty : Property
             // room.Player.Camera.gameObject.gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<ColorGrading>().saturation.value = value;
         }
     }
+    private void Reset() {
+        Word = "color";
+        AlternativeWords = new string[]{ "colour", "colors", "colours"};
+    }
+
 }

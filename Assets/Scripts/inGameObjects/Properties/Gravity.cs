@@ -21,6 +21,9 @@ public class Gravity : Property
         foreach(Rigidbody rb in room.GetAllObjectsInRoom<Rigidbody>()) {
             rb.useGravity = true;
         }
-
     }
+    private void Reset() {
+        Word = "gravity";
+    }
+
 }
