@@ -31,10 +31,10 @@ public class Hands : MonoBehaviour
     }
     private void Grab(IPickable obj) {
         // obj.RigidBody.isKinematic = true;
-        holidngObjectParent = obj.RigidBody.transform.parent;
-        obj.RigidBody.transform.parent = transform;
+        holidngObjectParent = obj.gameObject.transform.parent;
+        obj.gameObject.transform.parent = transform;
         holdingObject = obj;
-        oldPos = holdingObject.RigidBody.transform.position;
+        oldPos = holdingObject.gameObject.transform.position;
         obj.Grab();
         StartCoroutine(UpdateVelocity());
     }
@@ -59,12 +59,12 @@ public class Hands : MonoBehaviour
         if (Time.timeScale == 0) {
             StartCoroutine(UpdatePhysics()); 
         }
-        holdingObject.Release();
-        holdingObject.gameObject.transform.parent = holidngObjectParent;
         if (velocity.magnitude > maxThrowForce) {
             velocity = velocity.normalized * maxThrowForce;
-        }
-        holdingObject.RigidBody.velocity =  velocity * throwForceMultiplier;
+        }            
+        holdingObject.HoldVelocity = velocity * throwForceMultiplier;
+        holdingObject.Release();
+        holdingObject.gameObject.transform.parent = holidngObjectParent;
         holdingObject = null;
     }
 
@@ -80,7 +80,7 @@ public class Hands : MonoBehaviour
     //TODO: needs a way better fix than this!
     private IEnumerator UpdatePhysics() {
         Time.timeScale = 1f;
-        holdingObject.RigidBody.isKinematic = true;
+        // holdingObject.RigidBody.isKinematic = true;
         Physics.Simulate(1f);
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();

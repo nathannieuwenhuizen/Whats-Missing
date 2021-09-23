@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 public class Room : MonoBehaviour
 {
+    public static float TimeScale = 1f;
     
     [SerializeField]
     private UnityEvent roomFinishedEvent;
@@ -220,11 +221,12 @@ public class Room : MonoBehaviour
     }
 
     public void OnRoomEnter(Player _player) {
-        _player.transform.parent = transform;
-        AllObjects.Add(_player);
-        Player = _player;
+        player = _player;
+        player.transform.parent = transform;
+        AllObjects.Add(player);
 
         Animated = false;
+        Debug.Log("player" + Player);
         ActivateChanges();
         Animated = true;
         roomEnterEvent?.Invoke();

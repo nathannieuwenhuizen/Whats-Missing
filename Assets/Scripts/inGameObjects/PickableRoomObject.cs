@@ -5,12 +5,20 @@ using UnityEngine;
 //cant require rigdibody because then it cant be deleted when it gets disappeared.
 public class PickableRoomObject : InteractabelObject, IPickable
 {
-    private Rigidbody rb; 
+    protected Rigidbody rb; 
     [SerializeField]   
     private float mass = 1;
     public float Mass { get { return mass; } set {mass = value; } }
 
     private bool useGravity;
+
+    public Vector3 HoldVelocity {
+        get => holdVelocity;
+        set => holdVelocity = value;
+    }
+    private Vector3 holdVelocity;
+
+    
 
     protected override void Awake()
     {
@@ -37,16 +45,13 @@ public class PickableRoomObject : InteractabelObject, IPickable
     }
     public override void onAppearingFinish()
     {
-        rb = gameObject.AddComponent<Rigidbody>();
-        rb.mass = mass;
-        rb.useGravity = useGravity;
+        ActivateRigidBody();
         base.onAppearingFinish();
     }
 
     public override void onMissing()
     {
-        useGravity = rb.useGravity;
-        Destroy(rb);
+        DeactivateRigidBody();
         base.onMissing();
     }
 
@@ -69,21 +74,28 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     public void Grab()
     {
-        Debug.Log("grab" + rb.useGravity);
+        DeactivateRigidBody();
+    }
+
+    public void DeactivateRigidBody() {
+        if (rb == null) return;
         useGravity = rb.useGravity;
+        holdVelocity = rb.velocity;
         Destroy(rb);
+    }
+    public void ActivateRigidBody() {
+        if (rb == null) {
+            rb = gameObject.AddComponent<Rigidbody>();
+        }
+        rb.mass = mass;
+        rb.useGravity = useGravity;
+        rb.velocity = holdVelocity;
     }
 
     public void Release()
     {
-        if (rb == null) {
-            rb = GetComponent<Rigidbody>();
-            if (rb == null) {
-                rb = gameObject.AddComponent<Rigidbody>();
-                rb.useGravity = useGravity;
-            }
-            rb.mass = mass;
-        }
+        if (Room.TimeScale == 0) return;
+        ActivateRigidBody();
         rb.isKinematic = false;
     }
 }

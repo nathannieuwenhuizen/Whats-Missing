@@ -38,6 +38,7 @@ public interface IPickable {
     GameObject gameObject {get; }
     Rigidbody RigidBody { get; set; }
     float Mass {get; set;} 
+    Vector3 HoldVelocity {get; set;}
     
 }
 public interface IInteractable {

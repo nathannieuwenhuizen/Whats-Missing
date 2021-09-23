@@ -2,19 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnscaledParticleSystem : MonoBehaviour
+public class RoomParticleSystem : MonoBehaviour
 {
     private ParticleSystem ps;
 
     private void Awake() {
         ps = GetComponent<ParticleSystem>();
+        // ps.playOnAwake = false;
+        ps.Pause();
     }
     // Update is called once per frame
      void Update()
      {
-         if (Time.timeScale < 0.01f)
-         {
-             ps.Simulate(Time.unscaledDeltaTime, true, false);
-         }
+        ps.Simulate(Time.deltaTime * Room.TimeScale, true, false);
      }
 }
