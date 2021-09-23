@@ -27,6 +27,7 @@ public class Room : MonoBehaviour
     public List<IChangable> AllObjects {get { return allObjects;}}
     [SerializeField]
     private List<Change> changes = new List<Change>();
+    public List<Change> Changes { get => changes; }
     
     [SerializeField]
     private Transform startPos;
@@ -218,13 +219,20 @@ public class Room : MonoBehaviour
         return true;
     }
 
-    public void OnRoomEnter() {
+    public void OnRoomEnter(Player _player) {
+        _player.transform.parent = transform;
+        AllObjects.Add(_player);
+        Player = _player;
+
         Animated = false;
         ActivateChanges();
         Animated = true;
         roomEnterEvent?.Invoke();
     }
     public void OnRoomLeave() {
+        AllObjects.Remove(Player);
+        Player = null;
+
         Animated = false;
         DeactivateChanges();
     }

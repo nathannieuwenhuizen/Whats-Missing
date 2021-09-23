@@ -18,12 +18,12 @@ public class TutorialIndicator : MonoBehaviour
         mouseClicked = false;
         yield return new WaitForSeconds(2);
         if (!mouseClicked) {
-            fadeCoroutine = StartCoroutine(mouseUI.Fade(1f, 1f));
+            fadeCoroutine = StartCoroutine(mouseUI.FadeCanvasGroup(1f, 1f));
             while (!mouseClicked) {
                 yield return new WaitForEndOfFrame();
             }
             StopAllCoroutines();
-            fadeCoroutine = StartCoroutine(mouseUI.Fade(0f, 1f));
+            fadeCoroutine = StartCoroutine(mouseUI.FadeCanvasGroup(0f, 1f));
         }
     }
 
@@ -52,12 +52,12 @@ public class TutorialIndicator : MonoBehaviour
         moved = false;
         yield return new WaitForSeconds(2);
         if (!moved) {
-            fadeCoroutine = StartCoroutine(keyboardUI.Fade(1f, 1f));
+            fadeCoroutine = StartCoroutine(keyboardUI.FadeCanvasGroup(1f, 1f));
             while (!moved) {
                 yield return new WaitForEndOfFrame();
             }
             StopAllCoroutines();
-            fadeCoroutine = StartCoroutine(keyboardUI.Fade(0f, 1f));
+            fadeCoroutine = StartCoroutine(keyboardUI.FadeCanvasGroup(0f, 1f));
         }
     }
 }

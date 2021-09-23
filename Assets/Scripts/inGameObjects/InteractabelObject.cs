@@ -55,6 +55,11 @@ public class InteractabelObject : RoomObject, IInteractable
             outline.enabled = false;
     }
 
+    public override void onMissing()
+    {
+        base.onMissing();
+    }
+
     public virtual void Interact()
     {
     }

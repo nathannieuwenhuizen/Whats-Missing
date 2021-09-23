@@ -29,15 +29,10 @@ public class Area : MonoBehaviour
         set {
             if (currentRoom != null) {
                 currentRoom?.OnRoomLeave();
-                currentRoom.AllObjects.Remove(player);
-                currentRoom.Player = null;
             }
             currentRoom = value;
             UpdateRoomActiveStates();
-            player.transform.parent = currentRoom.transform;
-            currentRoom.AllObjects.Add(player);
-            currentRoom.Player = player;
-            currentRoom.OnRoomEnter();
+            currentRoom.OnRoomEnter(player);
         }
     }
 

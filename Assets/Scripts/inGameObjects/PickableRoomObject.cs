@@ -8,6 +8,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
     private Rigidbody rb; 
     [SerializeField]   
     private float mass = 1;
+    public float Mass { get { return mass; } set {mass = value; } }
+
+    private bool useGravity;
 
     protected override void Awake()
     {
@@ -17,6 +20,10 @@ public class PickableRoomObject : InteractabelObject, IPickable
     }
     public Rigidbody RigidBody { 
         get {
+            if (rb == null) {
+                Debug.LogError("Rigibody of pickable object called while it doesn't exist.");
+                return default(Rigidbody);
+            }
             return rb;
         } 
         set {
@@ -24,16 +31,23 @@ public class PickableRoomObject : InteractabelObject, IPickable
         }
     }
 
-    public override IEnumerator Appearing()
+    public override void onAppearing()
     {
-        yield return base.Appearing();
+        base.onAppearing();
+    }
+    public override void onAppearingFinish()
+    {
         rb = gameObject.AddComponent<Rigidbody>();
+        rb.mass = mass;
+        rb.useGravity = useGravity;
+        base.onAppearingFinish();
     }
 
-    public override IEnumerator Dissappearing()
+    public override void onMissing()
     {
+        useGravity = rb.useGravity;
         Destroy(rb);
-        yield return base.Dissappearing();
+        base.onMissing();
     }
 
     protected override void OnFocus()
@@ -47,9 +61,6 @@ public class PickableRoomObject : InteractabelObject, IPickable
         base.OnBlur();
     }
 
-    public float Mass { get { return mass; } set {mass = value; } }
-
-
 
     public override void Interact()
     {
@@ -58,6 +69,8 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     public void Grab()
     {
+        Debug.Log("grab" + rb.useGravity);
+        useGravity = rb.useGravity;
         Destroy(rb);
     }
 
@@ -67,6 +80,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
             rb = GetComponent<Rigidbody>();
             if (rb == null) {
                 rb = gameObject.AddComponent<Rigidbody>();
+                rb.useGravity = useGravity;
             }
             rb.mass = mass;
         }

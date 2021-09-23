@@ -11,6 +11,7 @@ public class RoomObject : MonoBehaviour, IChangable
 
     private Vector3 currentScale;
 
+
     [SerializeField]
     private AnimationClip appearing;
     [SerializeField]
@@ -33,6 +34,10 @@ public class RoomObject : MonoBehaviour, IChangable
 
     public string[] AlternativeWords { get => alternateWords; set => alternateWords = value; }
 
+    [SerializeField]
+    private MissingChangeEffect missingChangeEffect = MissingChangeEffect.scale;
+    public MissingChangeEffect MissingChangeEffect => missingChangeEffect;
+
     public void SetChange(Change change) {
         switch (change.television.changeType) {
             case ChangeType.missing:
@@ -48,63 +53,114 @@ public class RoomObject : MonoBehaviour, IChangable
         }
     }
 
+    
     protected virtual void Awake() {
         anim = GetComponent<Animation>();
     }
-    public void onAppearing()
+
+    #region  missing changes
+    ///<summary>
+    /// Fires when the object starts to appear, here it will also chick if it has to animate or not.
+    ///</summary>
+    public virtual void onAppearing()
     {
         gameObject.SetActive(true);
-        StartCoroutine(Appearing());
+        if (Animated) {
+            StartCoroutine(AnimateAppearing());
+        } else {
+            onAppearingFinish();
+        }
     }
 
-    public void onMissing()
+    ///<summary>
+    /// Fires when the object starts to disappear, here it will also chick if it has to animate or not.
+    ///</summary>
+    public virtual void onMissing()
     {
         currentScale = transform.localScale;
-        StartCoroutine(Dissappearing());
-    }
-    public virtual IEnumerator Dissappearing() {
-
         if (Animated) {
-            if(anim != null && disAppearing != null && Time.timeScale != 0) yield return StartCoroutine(playAnimation(disAppearing));
-            else {
-                AnimationCurve curve = AnimationCurve.EaseInOut(0,1,3,0);
-
-                float timePassed = 0f;
-                float duration = .5f;
-                while (transform.localScale.x > 0) {
-                    yield return new WaitForEndOfFrame();
-                    timePassed += Time.unscaledDeltaTime;
-                    transform.localScale = currentScale * curve.Evaluate(timePassed / duration);
-                }
-            }
+            StartCoroutine(AnimateMissing());
+        } else {
+            onMissingFinish();
         }
-        transform.localScale = new Vector3(0,0,0);
-        gameObject.SetActive(false);
-        
     }
 
+    ///<summary>
+    /// Coroutine that animates the roomobject into oblivion. 
+    ///</summary>
+    public virtual IEnumerator AnimateMissing() {
 
-    public virtual IEnumerator Appearing() {
-        if (Animated) {
-            Debug.Log(anim != null);
-            if(anim != null && appearing != null && Time.timeScale != 0) {
-                transform.localScale = currentScale;
-                yield return StartCoroutine(playAnimation(appearing));
-            }
-            else {
-                AnimationCurve curve = AnimationCurve.EaseInOut(0,0,3,1);
 
-                float timePassed = 0f;
-                float duration = .5f;
-                while (transform.localScale.x < currentScale.x) {
-                    yield return new WaitForEndOfFrame();
-                    timePassed += Time.unscaledDeltaTime;
-                    transform.localScale = currentScale * curve.Evaluate(timePassed / duration);
+        switch(MissingChangeEffect) {
+            case MissingChangeEffect.none:
+            break;
+            case MissingChangeEffect.scale:
+                AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
+                yield return transform.AnimatingScale(Vector3.zero, curve, .5f);
+                transform.localScale = Vector3.zero;
+            break;
+            case MissingChangeEffect.dissolve:
+                Material mat = GetComponent<MeshRenderer>().material;
+                yield return mat.AnimatingDissolveMaterial(0, 1, AnimationCurve.EaseInOut(0,0,1,1), 1f);
+
+            break;
+            case MissingChangeEffect.animation:
+                if(anim != null && disAppearing != null && Time.timeScale != 0) {
+                    yield return StartCoroutine(playAnimation(disAppearing));
+                } else {
+                    Debug.LogWarning("Animation has not been asigned or time is 0");
                 }
-            }
-        } 
+                break;
+        }
+        onMissingFinish();
+    }
+
+    ///<summary>
+    /// Coroutine that animates the roomobject into existing. 
+    ///</summary>
+    public virtual IEnumerator AnimateAppearing() {
+
+        switch(MissingChangeEffect) {
+            case MissingChangeEffect.none:
+            break;
+            case MissingChangeEffect.scale:
+                transform.localScale = Vector3.zero;
+                AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
+                yield return transform.AnimatingScale(currentScale, curve, .5f);
+            break;
+            case MissingChangeEffect.dissolve:
+                Material mat = GetComponent<MeshRenderer>().material;
+                yield return mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), 1f);
+            break;
+            case MissingChangeEffect.animation:
+                if(anim != null && appearing != null && Time.timeScale != 0) {
+                    yield return StartCoroutine(playAnimation(appearing));
+                } else {
+                    Debug.LogWarning("Animation has not been asigned or time is 0");
+                }
+                break;
+        }
+        onAppearingFinish();
+    }
+
+    ///<summary>
+    /// Function that fires when the animation has finished. It makes the snap changes the object needs to be missing.
+    ///</summary>
+    public virtual void onMissingFinish()
+    {
+        gameObject.SetActive(false);
+    }
+
+    ///<summary>
+    /// Function that fires when the animation has finished. It makes the snap changes the object needs to be appearing.
+    ///</summary>
+    public virtual void onAppearingFinish()
+    {
         transform.localScale = currentScale;
     }
+
+    #endregion
+
     public IEnumerator playAnimation(AnimationClip clip) {
         if (anim != null && clip != null) {
             Debug.Log("animate!");

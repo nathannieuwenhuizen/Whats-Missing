@@ -21,7 +21,7 @@ public static class Extensions
     }
 
 
-    public static IEnumerator Fade( this CanvasGroup group, float end, float duration) {
+    public static IEnumerator FadeCanvasGroup( this CanvasGroup group, float end, float duration) {
         float index = 0;
         float begin = group.alpha;
          while (index < duration) {
@@ -30,5 +30,29 @@ public static class Extensions
              group.alpha = Mathf.Lerp(begin, end, index / duration);
          }
         group.alpha = end;
+    }
+
+    public static  IEnumerator AnimatingScale(this Transform transform, Vector3 endScale,  AnimationCurve curve, float duration = .5f) {
+        float timePassed = 0f;
+        Vector3 beginScale = transform.localScale;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.unscaledDeltaTime;
+            transform.localScale = Vector3.LerpUnclamped(beginScale, endScale , curve.Evaluate(timePassed / duration));
+        }
+        transform.localScale = endScale;
+
+    }
+
+    public static  IEnumerator AnimatingDissolveMaterial(this Material mat, float beginVal, float endVal,  AnimationCurve curve, float duration = .5f) {
+        mat.SetFloat("EdgeWidth", .1f);
+        float timePassed = 0f;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.unscaledDeltaTime;
+            mat.SetFloat("Dissolve", Mathf.LerpUnclamped(beginVal, endVal , curve.Evaluate(timePassed / duration)));
+        }
+        mat.SetFloat("Dissolve", endVal);
+        mat.SetFloat("EdgeWidth", 0);
     }
 }

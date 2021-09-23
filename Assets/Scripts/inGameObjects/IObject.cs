@@ -2,9 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+public enum MissingChangeEffect {
+    none,
+    scale,
+    dissolve,
+    animation
+}
 public interface IMissable {
+    MissingChangeEffect MissingChangeEffect {get; }
     void onMissing();
+    IEnumerator AnimateMissing();
+    void onMissingFinish();
     void onAppearing();
+    IEnumerator AnimateAppearing();
+    void onAppearingFinish();
+
 }
 
 public interface IChangable : IMissable

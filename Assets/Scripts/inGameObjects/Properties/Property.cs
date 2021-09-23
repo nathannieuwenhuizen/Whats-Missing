@@ -17,6 +17,8 @@ public abstract class Property : MonoBehaviour, IChangable
 
     public Transform Transform => transform;
 
+    public MissingChangeEffect MissingChangeEffect => throw new System.NotImplementedException();
+
     protected Change currentChange;
 
     public virtual void onAppearing()
@@ -44,5 +46,25 @@ public abstract class Property : MonoBehaviour, IChangable
                 onMissing();
                 break;
         }
+    }
+
+    public virtual IEnumerator AnimateMissing()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void onMissingFinish()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual IEnumerator AnimateAppearing()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void onAppearingFinish()
+    {
+        throw new System.NotImplementedException();
     }
 }
