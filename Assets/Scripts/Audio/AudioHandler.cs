@@ -197,30 +197,3 @@ public class AudioHandler : Singleton<AudioHandler>
         audioS.volume = end * AudioSetting.MUSIC;
     }
 }
-
-public enum AudioEffect
-{
-    click,
-    colorSelect,
-    footSteps,
-    buildingAppear,
-    buildingDisappear,
-    minigame_bedShine,
-    minigame_bedSlide,
-    minigame_canHit,
-    minigame_canThrow,
-    minigame_lockersDrawing,
-    minigame_popcornCatch,
-    minigame_ropePull,
-    minigame_roseCatch,
-    minigame_treeCatMeow,
-    minigame_treeShake,
-    minigame_weightliftingPush,
-    UI_Popup
-}
-public enum Music
-{
-    menu,
-    question,
-    result
-}
