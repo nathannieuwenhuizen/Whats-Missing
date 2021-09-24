@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FPMovement : MonoBehaviour
 {
+
+    private ControlSettings controlSettings;
     private Rigidbody rb;
 
     [SerializeField]
@@ -90,6 +92,9 @@ public class FPMovement : MonoBehaviour
         InputManager.OnJump -= Jump;
     }
 
+    private void Awake() {
+        controlSettings = Settings.GetSettings().controlSettings;
+    }
 
     private void Start()
     {
@@ -115,11 +120,14 @@ public class FPMovement : MonoBehaviour
     }
     private void UpdateRotation()
     {
+        float inversionX = (controlSettings.Camera_x_invert ? -1 : 1);
         //horizontal rotation
-        transform.Rotate(new Vector3(0, mouseDelta.x * rotateSpeed, 0));
+        transform.Rotate(new Vector3(0, mouseDelta.x * rotateSpeed * controlSettings.Camera_sensetivity * inversionX , 0));
+
+        float inversionY = (controlSettings.Camera_y_invert ? -1 : 1);
 
         //vertical rotation
-        cameraPivot.Rotate(new Vector3(-mouseDelta.y * rotateSpeed, 0, 0));
+        cameraPivot.Rotate(new Vector3(-mouseDelta.y * rotateSpeed * controlSettings.Camera_sensetivity * inversionY, 0, 0));
 
 
         //setting max angle cap

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class DepthOfFieldHandler : MonoBehaviour
+public class DynamicDepthOfField : MonoBehaviour
 {
     private Ray ray;
     private RaycastHit hit;
@@ -19,6 +19,7 @@ public class DepthOfFieldHandler : MonoBehaviour
 
     private void Start() {
         volume.profile.TryGet<DepthOfField>(out depthOfField);
+        depthOfField.active = Settings.GetSettings().cameraSettings.Depth_of_field_enabled;
     }
     private void Update() {
         ray = new Ray(transform.position, transform.forward * 100);
