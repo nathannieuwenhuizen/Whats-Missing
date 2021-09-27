@@ -81,13 +81,11 @@ public interface IChangable : IMissable
 }
 
 public interface IPickable {
-    void Grab();
+    void Grab(Rigidbody connectedRB);
     void Release();
     GameObject gameObject {get; }
     Rigidbody RigidBody { get; set; }
-    float Mass {get; set;} 
-    Vector3 HoldVelocity {get; set;}
-    
+    RigidBodyInfo RigidBodyInfo { get;set;}    
 }
 public interface IInteractable {
     bool Focused {get; set;}

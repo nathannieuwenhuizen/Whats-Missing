@@ -130,6 +130,7 @@ public class FPMovement : MonoBehaviour
         if (delta.magnitude > walkSoundDistance){
             oldPos = transform.position;
             AudioHandler.Instance?.PlaySound(footstepFile, footstepFile == SFXFiles.player_footstep ? .05f : 1f);
+            AudioHandler.Instance?.Player3DSound(footstepFile, transform, footstepFile == SFXFiles.player_footstep ? .05f : 1f, 1, false, true, 50);
         }
     }
 

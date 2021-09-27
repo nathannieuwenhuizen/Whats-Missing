@@ -29,6 +29,7 @@ public class TimeProperty : Property
         base.onAppearing();
         Room.TimeScale = 1f;
         foreach(PickableRoomObject obj in room.GetAllObjectsInRoom<PickableRoomObject>()) {
+            obj.RigidBodyInfo.UseGravity = true;
             obj.ActivateRigidBody();
         }
 

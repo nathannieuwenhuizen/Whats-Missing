@@ -2,32 +2,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 ///<summary>
+/// Holds the values of the rigidbody and saves it when the rigidbody gets deleted for later use.
+///</summary>
+[System.Serializable]
+public class RigidBodyInfo {
+    public float Drag = 0f;
+    public float AngularDrag = 0.05f;
+    public float Mass = 1;
+    public RigidbodyConstraints RigidbodyConstraints = RigidbodyConstraints.None;
+    public Vector3 Holdvelocity = Vector3.zero;
+    public bool UseGravity = true;
+    public void Save(Rigidbody rb) {
+        Drag = rb.drag;
+        AngularDrag = rb.angularDrag;
+        Mass = rb.mass;
+        RigidbodyConstraints = rb.constraints;
+        Holdvelocity = rb.velocity;
+        UseGravity = rb.useGravity;
+    }
+    public void Load(Rigidbody rb) {
+        rb.drag = Drag;
+        rb.angularDrag = AngularDrag;
+        rb.mass = Mass;
+        rb.constraints = RigidbodyConstraints;
+        rb.velocity = Holdvelocity;
+    }
+}
+
+///<summary>
 /// A physical object inside of the room that can be picked and has a rigidbody.
 /// The rigidbody isn't always available because it gets deleted when grabbed.
 ///</summary>
-
 public class PickableRoomObject : InteractabelObject, IPickable
 {
+    private SpringJoint joint; 
     protected Rigidbody rb; 
-    [SerializeField]   
-    private float mass = 1;
-    public float Mass { get { return mass; } set {mass = value; } }
-
-    private bool useGravity;
-
-    public Vector3 HoldVelocity {
-        get => holdVelocity;
-        set => holdVelocity = value;
-    }
-    private Vector3 holdVelocity;
-
     
 
     protected override void Awake()
     {
         base.Awake();
         rb = GetComponent<Rigidbody>();
-        rb.mass = mass;
+        RigidBodyInfo.Save(rb);
     }
     public Rigidbody RigidBody { 
         get {
@@ -41,6 +57,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
             rb = value;
         }
     }
+    [SerializeField]
+    private RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
+    public RigidBodyInfo RigidBodyInfo { get => rigidBodyInfo; set => rigidBodyInfo = value; }
 
     public override void onAppearing()
     {
@@ -75,18 +94,33 @@ public class PickableRoomObject : InteractabelObject, IPickable
         base.Interact();
     }
 
-    public void Grab()
+    public void Grab(Rigidbody connectedRigidBody)
     {
-        DeactivateRigidBody();
+        //create spring
+        joint = gameObject.AddComponent<SpringJoint>();
+        joint.connectedBody = connectedRigidBody;
+        joint.anchor = new Vector3(.5f,.5f,.5f);
+        joint.spring = 1000;
+        joint.connectedAnchor = connectedRigidBody.transform.InverseTransformDirection(transform.position- connectedRigidBody.transform.position);
+        
+
+        if (Room.TimeScale == 0) {
+            ActivateRigidBody();
+        }
+        RigidBodyInfo.Save(rb);
+        rb.drag = 1000f;
+        rb.angularDrag = 10f;
+        // rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     ///<summary>
     /// Deletes the rigidbody while saving its values inside this class.
     ///</summary>
-    public void DeactivateRigidBody() {
+    public void DeactivateRigidBody(bool saveInfo = true) {
+        Debug.Log("deactivate rb" + rb == null);
         if (rb == null) return;
-        useGravity = rb.useGravity;
-        holdVelocity = rb.velocity;
+
+        if (saveInfo) RigidBodyInfo.Save(rb);
         Destroy(rb);
     }
     ///<summary>
@@ -94,19 +128,29 @@ public class PickableRoomObject : InteractabelObject, IPickable
     ///</summary>
     public void ActivateRigidBody() {
         if (rb == null) {
-            rb = gameObject.AddComponent<Rigidbody>();
+            if (GetComponent<Rigidbody>() != null) {
+                rb = GetComponent<Rigidbody>();
+            } else 
+                rb = gameObject.AddComponent<Rigidbody>();
         }
-        rb.mass = mass;
-        rb.useGravity = useGravity;
-        rb.velocity = holdVelocity;
+        Debug.Log("rb " + rb);
+        RigidBodyInfo.Load(rb);
     }
     ///<summary>
     /// Releases the object activating the body only when the timescale of the room isn't 0.
     ///</summary>
     public void Release()
     {
-        if (Room.TimeScale == 0) return;
-        ActivateRigidBody();
-        rb.isKinematic = false;
+
+        joint.connectedBody = null;
+        joint.breakForce = 0;
+
+        if (Room.TimeScale == 0) {
+            Destroy(joint);
+            DeactivateRigidBody(false);
+        } else {
+            ActivateRigidBody();
+            rb.isKinematic = false;
+        }
     }
 }

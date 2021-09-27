@@ -94,9 +94,8 @@ public class AudioHandler : Singleton<AudioHandler>
     ///</summary>
     public void PlaySound(SFXFiles audioEffect, float volume = 1f, float pitch = 1f, bool loop = false)
     {
-        SFXInstance selectedAudio = soundEffectInstances.Find(x => x.AudioEffect == audioEffect);
-        if (selectedAudio == null || mute) return;
-        if (selectedAudio.AudioSource == null) return;
+        SFXInstance selectedAudio = GetSFXInstance(audioEffect);
+        if (selectedAudio == default(SFXInstance)) return;
         selectedAudio.AudioSource.gameObject.SetActive(true);
         selectedAudio.AudioSource.spatialBlend = 0;
         selectedAudio.AudioSource.clip = selectedAudio.GetClip;
@@ -104,6 +103,50 @@ public class AudioHandler : Singleton<AudioHandler>
         selectedAudio.AudioSource.pitch = pitch;
         selectedAudio.AudioSource.loop = loop;
         selectedAudio.AudioSource.Play();
+    }
+
+    private SFXInstance GetSFXInstance(SFXFiles audioEffect) {
+        SFXInstance selectedAudio = soundEffectInstances.Find(x => x.AudioEffect == audioEffect);
+        if (selectedAudio == null || mute) {
+            Debug.LogWarning("AudioEffect of type" + audioEffect + " is null or mute");
+            return default(SFXInstance);
+        }
+        if (selectedAudio.AudioSource == null) {
+            Debug.LogError("AudioSource of the audioeffect" + audioEffect + " is null");
+            return default(SFXInstance);
+        }
+        return selectedAudio;
+    }
+    public SFXInstance Player3DSound(SFXFiles audioEffect, Transform parent, float volume = 1f, float pitch = 1f, bool loop = false, bool asInstance = true, float soundMaxDistance = 100f) {
+        SFXInstance selectedAudio = GetSFXInstance(audioEffect);
+        if (selectedAudio == default(SFXInstance)) return selectedAudio;
+        
+        GameObject instance;
+        if (asInstance) {
+            instance = Instantiate(selectedAudio.AudioSource.gameObject);
+        } else {
+            instance = selectedAudio.AudioSource.gameObject;
+        }
+        SFXInstance newSFWIncstance = new SFXInstance() {AudioSource = instance.GetComponent<AudioSource>(), AudioEffect = audioEffect};
+
+        newSFWIncstance.AudioSource.gameObject.SetActive(true);
+        newSFWIncstance.AudioSource.spatialBlend = 0;
+        newSFWIncstance.AudioSource.clip = selectedAudio.GetClip;
+        newSFWIncstance.AudioSource.volume = volume * AudioSetting.SFX;
+        newSFWIncstance.AudioSource.pitch = pitch;
+        newSFWIncstance.AudioSource.loop = loop;
+        newSFWIncstance.AudioSource.Play();
+
+        instance.transform.SetParent(parent); 
+        instance.transform.localPosition = Vector3.zero;
+        newSFWIncstance.AudioSource.spatialBlend= 1f;
+        newSFWIncstance.AudioSource.maxDistance= soundMaxDistance;
+        newSFWIncstance.AudioSource.rolloffMode = AudioRolloffMode.Linear;
+
+        if (asInstance && !loop) {
+            Destroy(instance,newSFWIncstance.AudioSource.clip.length);
+        }
+        return newSFWIncstance;
     }
 
     ///<summary>
