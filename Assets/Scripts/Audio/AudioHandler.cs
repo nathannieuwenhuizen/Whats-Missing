@@ -60,7 +60,6 @@ public class AudioHandler : Singleton<AudioHandler>
 
         foreach(AudioLibrary libary in libraries) {
             
-            Debug.Log(libary);
             foreach (SFXInstance sfx in libary.soundEffectInstances)
             {
                 InitializeAudioSource(sfx);

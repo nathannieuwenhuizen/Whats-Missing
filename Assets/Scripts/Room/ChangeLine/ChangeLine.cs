@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+///<summary>
+/// A particle effect that goes towardsa destination to create a cool effect.
+///</summary>
 [RequireComponent(typeof(ParticleSystem))]
 public class ChangeLine : MonoBehaviour
 {
@@ -23,10 +26,13 @@ public class ChangeLine : MonoBehaviour
         point1 = begin + ((end - begin) / 2f) + new Vector3(0,5,0);
     }
 
+    ///<summary>
+    /// Moves the position of the changeline towards the destination.
+    ///</summary>
     public IEnumerator MoveTowardsDestination() {
         float index = 0;
         while (index < duration) {
-            index += Time.unscaledDeltaTime;
+            index += Time.deltaTime;
             transform.position = Extensions.CalculateQuadraticBezierPoint(curve.Evaluate(index / duration), point0, point1, point2);
             yield return new WaitForEndOfFrame();
         }
@@ -53,6 +59,9 @@ public class ChangeLine : MonoBehaviour
         }
     }
 
+    ///<summary>
+    /// Returns a Vector3 point based on the three points of the bezier curve.
+    ///</summary>
     private Vector3 CalculateSpiralBezierCurve(float t, Vector3 point0, Vector3 point1, Vector3 point2) {
         Vector3 pointa = Extensions.CalculateQuadraticBezierPoint(t, point0, point1, point2);
         Vector3 pointb = Extensions.CalculateQuadraticBezierPoint(t + 0.01f, point0, point1, point2);

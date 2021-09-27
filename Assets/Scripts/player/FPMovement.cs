@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+///<summary>
+/// First person movement controlling a rigidbody and a camera.
+/// Alos handles the footstep sounds and other particles based on the movement.
+///</summary>
 public class FPMovement : MonoBehaviour
 {
 
@@ -25,6 +29,7 @@ public class FPMovement : MonoBehaviour
     [SerializeField]
     private int walkSpeed = 5;
     private int rotateSpeed = 2;
+    
 
     [SerializeField]
     private float jumpForce = 200f;
@@ -50,6 +55,7 @@ public class FPMovement : MonoBehaviour
     /** Enables the cursor */
     private void EnableCursor(bool enabled = false)
     {
+        
         Cursor.lockState = enabled ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = enabled;
     }
@@ -90,8 +96,16 @@ public class FPMovement : MonoBehaviour
         AudioHandler.Instance.StopSound(SFXFiles.wind_fall);
     }
 
+    protected void DisableMovment() {
+        EnableWalk = false;
+        EnableRotation = false;
+    }
+    protected void EnableMovment() {
+        EnableWalk = true;
+        EnableRotation = true;
+    }
+
     private void OnCollisionEnter(Collision other) {
-        Debug.Log(other.gameObject.tag);
         footstepFile = other.gameObject.tag == "Stairs" ? SFXFiles.stairs_footstep : SFXFiles.player_footstep;
 
         if (inAir) {
@@ -123,12 +137,16 @@ public class FPMovement : MonoBehaviour
         InputManager.OnMove += SetMovement;
         InputManager.OnRotate += setMouseDelta;
         InputManager.OnJump += Jump;
+        PauseScreen.OnPause += DisableMovment;
+        PauseScreen.OnResume += EnableMovment;
     }
 
     private void OnDisable() {
         InputManager.OnMove -= SetMovement;
         InputManager.OnRotate -= setMouseDelta;
         InputManager.OnJump -= Jump;
+        PauseScreen.OnPause -= DisableMovment;
+        PauseScreen.OnResume -= EnableMovment;
     }
 
     private void Awake() {

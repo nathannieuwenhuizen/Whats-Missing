@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+///<summary>
+/// A non-physical object inside the room.
+///</summary>
 public abstract class Property : MonoBehaviour, IChangable
 {
     [SerializeField]    protected string word;

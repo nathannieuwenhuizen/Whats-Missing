@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
+///<summary>
+/// A physical object inside the room that can be changed. 
+///</summary>
 public class RoomObject : MonoBehaviour, IChangable
 {
     [SerializeField]

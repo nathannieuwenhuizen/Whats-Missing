@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+///<summary>
+/// A physical object inside of the room that can be picked and has a rigidbody.
+/// The rigidbody isn't always available because it gets deleted when grabbed.
+///</summary>
 
-//cant require rigdibody because then it cant be deleted when it gets disappeared.
 public class PickableRoomObject : InteractabelObject, IPickable
 {
     protected Rigidbody rb; 
@@ -77,12 +80,18 @@ public class PickableRoomObject : InteractabelObject, IPickable
         DeactivateRigidBody();
     }
 
+    ///<summary>
+    /// Deletes the rigidbody while saving its values inside this class.
+    ///</summary>
     public void DeactivateRigidBody() {
         if (rb == null) return;
         useGravity = rb.useGravity;
         holdVelocity = rb.velocity;
         Destroy(rb);
     }
+    ///<summary>
+    /// Makes a new rigidbody and sets its data to that of the values stored inside this class.
+    ///</summary>
     public void ActivateRigidBody() {
         if (rb == null) {
             rb = gameObject.AddComponent<Rigidbody>();
@@ -91,7 +100,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
         rb.useGravity = useGravity;
         rb.velocity = holdVelocity;
     }
-
+    ///<summary>
+    /// Releases the object activating the body only when the timescale of the room isn't 0.
+    ///</summary>
     public void Release()
     {
         if (Room.TimeScale == 0) return;

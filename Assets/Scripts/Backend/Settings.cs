@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+///<summary>
+/// Struct for holding the user settings in plater prefs.
+///</summary>
 public struct Settings
 {
-
+    ///<summary>
+    /// Returns a setting class while it automaticly loads the user data.
+    ///</summary>
     public static Settings GetSettings() {
         Settings settings = new Settings();
         settings.Load();
@@ -13,6 +18,9 @@ public struct Settings
 
     public ControlSettings controlSettings;
     public CameraSettings cameraSettings;
+    ///<summary>
+    /// Loads the settings into the game.
+    ///</summary>
     public void Load() {
         controlSettings = new ControlSettings(){
             Camera_sensetivity = PlayerPrefs.GetFloat("Camera_sensetivity", 1f),
@@ -24,6 +32,9 @@ public struct Settings
             Motion_blur_enabled = PlayerPrefs.GetInt("Motion_blur_enabled", 1) == 1
         };
     }
+    ///<summary>
+    /// Saves the settings into the playerprefs
+    ///</summary>
     public void Save() {
         Debug.Log("save" + controlSettings.Camera_sensetivity);
         PlayerPrefs.SetFloat("Camera_sensetivity", controlSettings.Camera_sensetivity);
@@ -35,12 +46,18 @@ public struct Settings
     }
 }
 
+///<summary>
+/// Holds the data on how the camera should work based on the user settings.
+///</summary>
 public struct ControlSettings {
     public float Camera_sensetivity;
     public bool Camera_y_invert;
     public bool Camera_x_invert;
 }
 
+///<summary>
+/// The post processing user serttings.
+///</summary>
 public struct CameraSettings {
     public bool Depth_of_field_enabled;
     public bool Motion_blur_enabled;

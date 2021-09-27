@@ -30,6 +30,10 @@ public class Clock : RoomObject
         animating = true;
         while(running) {
             yield return new WaitForSeconds(1f);
+            while (Room.TimeScale == 0)
+            {
+                 yield return new WaitForEndOfFrame();
+            }
             Seconds++;
         }
     }

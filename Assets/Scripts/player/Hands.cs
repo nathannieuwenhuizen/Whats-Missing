@@ -16,8 +16,12 @@ public class Hands : MonoBehaviour
 
     private float maxThrowForce = .7f;
     private float throwForceMultiplier = 10f;
+    
+    private bool isEnabled = true;
 
     public void OnClick() {
+        if (!isEnabled) return;
+        
         //check objects to interact with.
         IInteractable interactableObj = FocussedObject<IInteractable>();
         
@@ -42,11 +46,22 @@ public class Hands : MonoBehaviour
     private void OnEnable() {
         InputManager.OnClickDown += OnClick;
         InputManager.OnClickUp += Release;
+        PauseScreen.OnPause += DisableClick;
+        PauseScreen.OnResume += EnableClick;
     }
 
     private void OnDisable() {
         InputManager.OnClickDown -= OnClick;
         InputManager.OnClickUp -= Release;
+        PauseScreen.OnPause -= DisableClick;
+        PauseScreen.OnResume -= EnableClick;
+    }
+
+    private void EnableClick() {
+        isEnabled = true;
+    }
+    private void DisableClick() {
+        isEnabled = false;
     }
 
 

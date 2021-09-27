@@ -18,7 +18,7 @@ public class Constilation : RoomObject
     }
     void Update()
     {
-        pivot.Rotate(rotationVector * Time.deltaTime);
+        pivot.Rotate(rotationVector * Time.deltaTime * Room.TimeScale);
     }
 
     private void Reset() {
