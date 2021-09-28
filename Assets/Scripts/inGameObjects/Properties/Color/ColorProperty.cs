@@ -12,7 +12,7 @@ public class ColorProperty : Property
     [SerializeField]
     private Material greyMaterial;
 
-    private float animationDuration = 3f;
+    private float animationDuration = 1f;
     private float sphereSize = 20f;
 
     [SerializeField]

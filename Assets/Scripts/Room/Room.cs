@@ -7,6 +7,10 @@ using UnityEngine.Events;
 
 public class Room : MonoBehaviour
 {
+
+    public delegate void MakeRoomAction(Room _room, Change _change, bool _changeIsAdded, string previousWord = "");
+    public static MakeRoomAction OnMakeRoomAction;
+
     public static float TimeScale = 1f;
     
     [SerializeField]
@@ -92,8 +96,8 @@ public class Room : MonoBehaviour
         foreach (RoomTelevision tv in allTelevisions)
         {
             if (tv.Word != "") {
-                if (tv.isQuestion) CheckQuestion(tv);
-                else AddTVChange(tv);
+                if (tv.isQuestion) CheckQuestion(tv, false);
+                else AddTVChange(tv, false);
             }
         }
     }
@@ -106,60 +110,65 @@ public class Room : MonoBehaviour
         }
     }
 
-    // Apply the change to the object 
-    public void AddTVChange(RoomTelevision selectedTelevision) {
+    ///<summary>
+    /// Apply the change to the room 
+    ///</summary>
+    public void AddTVChange(RoomTelevision selectedTelevision, bool undoAble = true) {
         bool hasChangedSomething = false;
-        float delay = 0;
+        // float delay = 0;
         Change newChange = new Change(){word = selectedTelevision.Word, television = selectedTelevision};
-        foreach (IChangable obj in allObjects)
-        {
-            if (obj.Word == selectedTelevision.Word || obj.AlternativeWords.Contains(selectedTelevision.Word)) {
-                if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
-                    StartCoroutine(AnimateChangeEffect(delay, selectedTelevision, obj, 1f, () => {
-                        obj.SetChange(newChange);
-                    }));
-                    delay += .5f;
-                } else obj.SetChange(newChange);
-                newChange.AlternativeWords = obj.AlternativeWords;
-                hasChangedSomething = true;
-            }
+
+        if (ToggleChangeAllObjects(newChange, (IChangable obj) => { obj.SetChange(newChange); newChange.AlternativeWords = obj.AlternativeWords; })) {
+            hasChangedSomething = true;
         }
         if (hasChangedSomething) {
             changes.Add(newChange);
             selectedTelevision.IsOn = true;
+            if (undoAble) OnMakeRoomAction?.Invoke(this, newChange, true);
             CheckRoomCompletion();
         } else {
             selectedTelevision.IsOn = false;
         }
     }
 
+    ///<summary>
+    /// Checks in all object if it has the sme word as the change. If so it will change or its change will be removed. Also returns true if any objects has the word.
+    ///</summary>
+    private bool ToggleChangeAllObjects(Change change, Action<IChangable> callBack) {
+        bool result = false;
+        float delay = 0;
+        foreach (IChangable obj in allObjects)
+        {
+            if (obj.Word == change.word || obj.AlternativeWords.Contains(change.word)) {
+                result = true;
+                if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
+                    StartCoroutine(AnimateChangeEffect(delay, change.television, obj, 1f, () => {
+                        callBack(obj);
+                    }));
+                    delay += .5f;
+                } else callBack(obj);
+            }
+        }
+        return result;
+    }
+
     
     /// <summary> 
     ///removes a tv change updating the room and tv
     ///</summary>
-    public void RemoveTVChange(RoomTelevision selectedTelevision) {
+    public void RemoveTVChange(RoomTelevision selectedTelevision, bool undoAble = true) {
         if (!selectedTelevision.IsOn) return;
         selectedTelevision.IsOn = false;
         CheckRoomCompletion();
-        if (!selectedTelevision.isQuestion) RemoveChange(changes.Find(x => x.television == selectedTelevision));
+        Change removedChange = changes.Find(x => x.television == selectedTelevision);
+        if (undoAble) OnMakeRoomAction?.Invoke(this, removedChange, false);
+        if (!selectedTelevision.isQuestion) RemoveChange(removedChange);
+
     }
 
     //removes a change to the room updating the objects
     private void RemoveChange(Change change) {
-
-        float delay = 0;
-        if (change == null) return;
-        foreach (IChangable obj in allObjects)
-        {
-            if (obj.Word == change.word ||  obj.AlternativeWords.Contains(change.word)) {
-                if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
-                    StartCoroutine(AnimateChangeEffect(delay, change.television, obj, 1f, () => {
-                        obj.RemoveChange(change);
-                    }));
-                    delay += .5f;
-                } else obj.RemoveChange(change);
-            }
-        }
+        ToggleChangeAllObjects(change, (IChangable obj) => { obj.RemoveChange(change); });
         changes.Remove(change);
     }
 
@@ -169,23 +178,20 @@ public class Room : MonoBehaviour
         changeLine.SetDestination(tv.transform.position, o.Transform.position);
         yield return changeLine.MoveTowardsDestination();
 
-
-        // float index = 0;
-        // Vector3 begin = tv.transform.position;
-        // AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
-        // GameObject particle = Instantiate(particlePrefab, begin, Quaternion.identity);
-        // while (index < duration) {
-        //     index += Time.unscaledDeltaTime;
-        //     particle.transform.position = Vector3.LerpUnclamped(begin, o.Transform.position, curve.Evaluate(index / duration));
-        //     yield return new WaitForEndOfFrame();
-        // }
         GameObject plop = Instantiate(plopParticle, o.Transform.position, Quaternion.identity);
         callback();
     }
 
     
 
-    public void CheckQuestion(RoomTelevision selectedTelevision) {
+    public void CheckQuestion(RoomTelevision selectedTelevision, bool undoAble = true) {
+        // Debug.Log("check question " + selectedTelevision.Word);
+        // Debug.Log("changes length: " + changes.Count);
+        if (undoAble) {
+            OnMakeRoomAction?.Invoke(this, new Change() {word = selectedTelevision.Word, television = selectedTelevision}, false, selectedTelevision.PreviousWord);
+            selectedTelevision.PreviousWord = selectedTelevision.Word;
+        }
+        // Debug.Log("changes length: " + changes.Count);
         foreach (Change change in changes)
         {
             if (change.word == selectedTelevision.Word || change.AlternativeWords.Contains(selectedTelevision.Word)) {
@@ -195,6 +201,7 @@ public class Room : MonoBehaviour
             }
         }
         selectedTelevision.IsOn = false;
+        CheckRoomCompletion();
     }
     
     private void CheckRoomCompletion() {
@@ -205,6 +212,7 @@ public class Room : MonoBehaviour
                 DeactivateChanges();
             }
         } else if (door.Locked == false) {
+            Debug.Log("locked");
             door.Locked = true;
             if (revealChangeAfterCompletion) {
                 ActivateChanges();
@@ -226,7 +234,6 @@ public class Room : MonoBehaviour
         AllObjects.Add(player);
 
         Animated = false;
-        Debug.Log("player" + Player);
         ActivateChanges();
         Animated = true;
         roomEnterEvent?.Invoke();

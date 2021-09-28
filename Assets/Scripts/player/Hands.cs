@@ -28,7 +28,6 @@ public class Hands : MonoBehaviour
         
         //check objects to interact with.
         IInteractable interactableObj = FocussedObject<IInteractable>();
-        Debug.Log(interactableObj != default(IInteractable));
         if (interactableObj != default(IInteractable)) {
             if (interactableObj.Gameobject.GetComponent<IPickable>() != default(IPickable)) {
                 Grab(interactableObj.Gameobject.GetComponent<IPickable>());

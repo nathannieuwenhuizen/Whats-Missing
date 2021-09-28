@@ -5,6 +5,8 @@ using UnityEngine.Events;
 
 public class Area : MonoBehaviour
 {
+    public delegate void UndoActionEvent(Room _room);
+    public static UndoActionEvent OnUndo;
 
     [SerializeField]
     private Room[] roomPrefabs;
@@ -54,8 +56,8 @@ public class Area : MonoBehaviour
     void Start()
     {
         AudioHandler.Instance.PlayMusic(MusicFiles.gallery, 1f);
+        playerPos = rooms[startingRoomIndex].StartPos.position;
         CurrentRoom = rooms[startingRoomIndex];
-        playerPos = currentRoom.StartPos.position;
     }
 
     private void InitializeAllRooms() {
@@ -92,10 +94,17 @@ public class Area : MonoBehaviour
 
     private void OnEnable() {
         Door.OnPassingThrough += OnPassingThroughDoor;
+        InputManager.OnUndo += UndoAction;
     }
 
     private void OnDisable() {
         Door.OnPassingThrough -= OnPassingThroughDoor;
+        InputManager.OnUndo -= UndoAction;
+
+    }
+
+    private void UndoAction() {
+        OnUndo?.Invoke(currentRoom);
     }
 
     void OnPassingThroughDoor(Door door) {

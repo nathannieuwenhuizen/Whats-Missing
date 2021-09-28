@@ -117,7 +117,6 @@ public class PickableRoomObject : InteractabelObject, IPickable
     /// Deletes the rigidbody while saving its values inside this class.
     ///</summary>
     public void DeactivateRigidBody(bool saveInfo = true) {
-        Debug.Log("deactivate rb" + rb == null);
         if (rb == null) return;
 
         if (saveInfo) RigidBodyInfo.Save(rb);
@@ -133,7 +132,6 @@ public class PickableRoomObject : InteractabelObject, IPickable
             } else 
                 rb = gameObject.AddComponent<Rigidbody>();
         }
-        Debug.Log("rb " + rb);
         RigidBodyInfo.Load(rb);
     }
     ///<summary>

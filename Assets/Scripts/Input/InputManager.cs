@@ -10,10 +10,13 @@ public class InputManager : MonoBehaviour
     public static event ClickAction OnClickUp;
     public static event ClickAction OnJump;
     public static event ClickAction OnCancel;
+    public static event ClickAction OnUndo;
+    
     public delegate void AxisAction( Vector2 delta);
 
     public static event AxisAction OnMove;
     public static event AxisAction OnRotate;
+
 
     // Update is called once per frame
     void Update()
@@ -52,6 +55,11 @@ public class InputManager : MonoBehaviour
         //Cancel
         if (Input.GetButtonDown("Cancel")) {
             OnCancel?.Invoke();
+        }
+        
+        //Undo
+        if (Input.GetKeyDown(KeyCode.Z)) {
+            OnUndo?.Invoke();
         }
     }
 }
