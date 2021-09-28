@@ -20,7 +20,8 @@ public enum SFXFiles {
     tv_false,
 
     wind_fall,
-    stairs_footstep
+    stairs_footstep,
+    fire_crackling
 }
 
 public enum MusicFiles {

@@ -130,7 +130,6 @@ public class AudioHandler : Singleton<AudioHandler>
         SFXInstance newSFWIncstance = new SFXInstance() {AudioSource = instance.GetComponent<AudioSource>(), AudioEffect = audioEffect};
 
         newSFWIncstance.AudioSource.gameObject.SetActive(true);
-        newSFWIncstance.AudioSource.spatialBlend = 0;
         newSFWIncstance.AudioSource.clip = selectedAudio.GetClip;
         newSFWIncstance.AudioSource.volume = volume * AudioSetting.SFX;
         newSFWIncstance.AudioSource.pitch = pitch;
@@ -139,7 +138,7 @@ public class AudioHandler : Singleton<AudioHandler>
 
         instance.transform.SetParent(parent); 
         instance.transform.localPosition = Vector3.zero;
-        newSFWIncstance.AudioSource.spatialBlend= 1f;
+        newSFWIncstance.AudioSource.spatialBlend= .9f;
         newSFWIncstance.AudioSource.maxDistance= soundMaxDistance;
         newSFWIncstance.AudioSource.rolloffMode = AudioRolloffMode.Linear;
 
@@ -147,6 +146,10 @@ public class AudioHandler : Singleton<AudioHandler>
             Destroy(instance,newSFWIncstance.AudioSource.clip.length);
         }
         return newSFWIncstance;
+    }
+    public void Stop3DSound(SFXInstance instance, bool destroy = true) {
+        instance.AudioSource.Stop();
+        if (destroy) Destroy(instance.AudioSource.gameObject);
     }
 
     ///<summary>
