@@ -26,6 +26,8 @@ public class RoomTelevision : Television
     [SerializeField]
     private Color onColor = Color.green;
 
+    public int id {get; set; }
+
     private string previousWord = "";
     public string PreviousWord {
         get { return previousWord;}

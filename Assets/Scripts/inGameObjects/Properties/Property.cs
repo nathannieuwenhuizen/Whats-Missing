@@ -22,6 +22,8 @@ public abstract class Property : MonoBehaviour, IChangable
 
     public MissingChangeEffect MissingChangeEffect => throw new System.NotImplementedException();
 
+    public int id { get; set; }
+
     protected Change currentChange;
 
     public virtual void onAppearing()

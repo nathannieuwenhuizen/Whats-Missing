@@ -100,6 +100,9 @@ public class Area : MonoBehaviour
     private void OnDisable() {
         Door.OnPassingThrough -= OnPassingThroughDoor;
         InputManager.OnUndo -= UndoAction;
+    }
+
+    public void SaveProgress() {
 
     }
 

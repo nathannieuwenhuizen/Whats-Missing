@@ -16,27 +16,9 @@ public struct RoomAction
 }
 
 ///<summary>
-/// State of the room. Used for saving the game.
-///</summary>
-public struct SaveState
-{
-    public int roomIndex;
-    public TVState[] tvStates;
-    public PickableRoomObjectCordinates[] cordinates;
-    public PickableRoomObjectCordinates playerCordinates;
-}
-
-public struct  TVState
-{
-    public RoomTelevision television;
-    public bool isOn;
-    public string word;
-}
-
-
-///<summary>
 /// Cordinate of a pickable room object.
 ///</summary>
+[System.Serializable]
 public struct PickableRoomObjectCordinates
 {
     public int id;

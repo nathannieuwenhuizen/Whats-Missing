@@ -70,8 +70,18 @@ public class Room : MonoBehaviour
     void Awake() {
         door.room = this;
         allObjects = GetAllObjectsInRoom<IChangable>();
+
+        for (int i = 0; i < allObjects.Count; i++)
+        {
+            allObjects[i].id = i;
+        }
+
         allTelevisions = GetAllObjectsInRoom<RoomTelevision>().OrderBy( allObjects => !allObjects.isQuestion).ToList(); 
-        foreach(RoomTelevision tv in allTelevisions) tv.Room = this;
+        for (int i = 0; i < allTelevisions.Count; i++)
+        {
+            allTelevisions[i].id = i;
+            allTelevisions[i].Room = this;
+        }
     }
 
     public List<T> GetAllObjectsInRoom<T>(Transform tr = null) {

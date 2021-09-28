@@ -58,6 +58,8 @@ public interface IChangable : IMissable
     /// Array of alternate words. Example (color, colour)
     ///</summary>
     string[] AlternativeWords {get; set; }
+
+    int id {get;set;}
     ///<summary>
     /// If the entity sets it changes to be animated.
     ///</summary>

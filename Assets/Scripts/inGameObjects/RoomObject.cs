@@ -41,6 +41,8 @@ public class RoomObject : MonoBehaviour, IChangable
     private MissingChangeEffect missingChangeEffect = MissingChangeEffect.scale;
     public MissingChangeEffect MissingChangeEffect => missingChangeEffect;
 
+    public int id {get; set; }
+
     public void SetChange(Change change) {
         switch (change.television.changeType) {
             case ChangeType.missing:

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
     private SpringJoint joint; 
     protected Rigidbody rb; 
     
+    
+    public int gameObjectID;
+
 
     protected override void Awake()
     {
