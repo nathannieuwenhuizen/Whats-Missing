@@ -76,6 +76,7 @@ public class Letter : TelevisionButton
 
     public Size size {
         get {
+            text.ForceMeshUpdate();
             return new Size() {width = text.GetRenderedValues(true).x, height = text.GetRenderedValues(true).y};
 
             // TextGenerator textGen = new TextGenerator();

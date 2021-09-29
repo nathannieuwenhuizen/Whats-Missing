@@ -5,5 +5,8 @@ using UnityEngine;
 
 public enum ChangeType
 {
-    missing
+    missing,
+    tooBig,
+    tooSmall,
+    reverse
 }

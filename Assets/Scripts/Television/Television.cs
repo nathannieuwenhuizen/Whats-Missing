@@ -80,7 +80,7 @@ public bool IsInteractable {
         IsInteractable = false;
     }
 
-    protected void UpdateAnswerTextPosition() {
+    public void UpdateAnswerTextPosition() {
         float totalWidth = 0;
         foreach(Letter letter in selectedLetterObjects) {
             totalWidth += letter.size.width;

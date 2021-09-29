@@ -16,7 +16,7 @@ public class UndoHandeler : MonoBehaviour
         RoomAction newAction = new RoomAction() {
             change = _change,
             changeIsAdded = _changeIsAdded,
-            cordinates = GetAllPickableRoomCordinates(_room),
+            cordinates = UndoHandeler.GetAllPickableRoomCordinates(_room),
             playerCordinates = _playerCordinates,
             previousWord = _previousWord
         };
@@ -24,14 +24,27 @@ public class UndoHandeler : MonoBehaviour
         Debug.Log("actiod added: " + newAction.change.television);
     }
 
-    private PickableRoomObjectCordinates[] GetAllPickableRoomCordinates(Room room) {
+    public static PickableRoomObjectCordinates[] GetAllPickableRoomCordinates(Room room) {
         List<PickableRoomObjectCordinates> result = new List<PickableRoomObjectCordinates>();
         foreach (PickableRoomObject item in room.GetAllObjectsInRoom<PickableRoomObject>())
         {
             PickableRoomObjectCordinates cordinates = new PickableRoomObjectCordinates() {
                 position = item.transform.position,
                 rotation = item.transform.rotation,
-                id = item.gameObject.GetInstanceID()
+                id = item.id
+            };
+            result.Add(cordinates);
+        }
+        return result.ToArray();
+    }
+    public static TVState[] GetAllTVStates(Room room) {
+        List<TVState> result = new List<TVState>();
+        foreach (RoomTelevision item in room.AllTelevisions)
+        {
+            TVState cordinates = new TVState() {
+                id = item.id,
+                isOn = item.IsOn,
+                word = item.Word
             };
             result.Add(cordinates);
         }
@@ -62,7 +75,7 @@ public class UndoHandeler : MonoBehaviour
 
         foreach (PickableRoomObject item in room.GetAllObjectsInRoom<PickableRoomObject>())
         {
-            PickableRoomObjectCordinates cordinate = new List<PickableRoomObjectCordinates>(currentAction.cordinates).Find(x => x.id == item.gameObject.GetInstanceID());
+            PickableRoomObjectCordinates cordinate = new List<PickableRoomObjectCordinates>(currentAction.cordinates).Find(x => x.id == item.id);
             item.transform.position = cordinate.position;
             item.transform.rotation = cordinate.rotation;
         }
@@ -79,11 +92,13 @@ public class UndoHandeler : MonoBehaviour
 
     private void OnEnable() {
         Room.OnMakeRoomAction += AddAction;
+        Area.OnNewRoomEnter += ResetActions;
         Area.OnUndo += UndoAction;
     }
 
     private void OnDisable() {
         Room.OnMakeRoomAction -= AddAction;
-        Area.OnUndo += UndoAction;
+        Area.OnNewRoomEnter -= ResetActions;
+        Area.OnUndo -= UndoAction;
     }
 }

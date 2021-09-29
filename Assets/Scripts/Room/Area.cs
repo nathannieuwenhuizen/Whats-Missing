@@ -7,6 +7,8 @@ public class Area : MonoBehaviour
 {
     public delegate void UndoActionEvent(Room _room);
     public static UndoActionEvent OnUndo;
+    public delegate void NewRoomEvent();
+    public static NewRoomEvent OnNewRoomEnter;
 
     [SerializeField]
     private Room[] roomPrefabs;
@@ -24,6 +26,7 @@ public class Area : MonoBehaviour
     [SerializeField]
     private UnityEvent areaFinishedEvent;
 
+    private bool loadRoomState = false;
 
     private Room currentRoom;
     public Room CurrentRoom {
@@ -34,7 +37,8 @@ public class Area : MonoBehaviour
             }
             currentRoom = value;
             UpdateRoomActiveStates();
-            currentRoom.OnRoomEnter(player);
+            currentRoom.OnRoomEnter(player, loadRoomState);
+            loadRoomState = false;
         }
     }
 
@@ -51,6 +55,7 @@ public class Area : MonoBehaviour
 
     private void Awake() {
         InitializeAllRooms();
+        LoadProgress();
     }
     
     void Start()
@@ -103,7 +108,24 @@ public class Area : MonoBehaviour
     }
 
     public void SaveProgress() {
+        SaveData.current.roomIndex = rooms.IndexOf(currentRoom);
+        SaveData.current.Save(currentRoom);
+        SerializationManager.Save("test", SaveData.current);
+    }
 
+    private void OnDestroy() {
+        SaveProgress();
+    }
+
+    public void LoadProgress() {
+        object data = SerializationManager.Load(SerializationManager.filePath + "/test.save");
+        Debug.Log("load pos"+ data);
+        if (data != null) {
+
+            SaveData.current = data as SaveData;
+            startingRoomIndex = SaveData.current.roomIndex;
+            loadRoomState = true;
+        }
     }
 
     private void UndoAction() {
@@ -111,6 +133,7 @@ public class Area : MonoBehaviour
     }
 
     void OnPassingThroughDoor(Door door) {
+        OnNewRoomEnter?.Invoke();
         int index = rooms.IndexOf(door.room); // System.Array.IndexOf(roomPrefabs, door.room);
         if (door.room == currentRoom) {
             //next room

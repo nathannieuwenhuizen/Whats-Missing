@@ -76,8 +76,9 @@ public class RoomTelevision : Television
         }
         for(int i = 0; i < preAnswer.Length; i++) {
             Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(letterObjects.Count));
-            LetterClicked(answerLetter);
+            //LetterClicked(answerLetter);
         }
+        Word = preAnswer;
     }
 
     private Vector3 GetLetterPosBasedOnIndex(int index) {
@@ -99,10 +100,9 @@ public class RoomTelevision : Television
     {
         base.Confirm();
 
-        if (isOn) return;
 
         if (isQuestion) room.CheckQuestion(this);
-        else room.AddTVChange(this);
+        else if (isOn == false) room.AddTVChange(this);
     }
 
     public void ConfirmationFailed() {

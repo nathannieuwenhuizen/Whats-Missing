@@ -24,14 +24,15 @@ public class TelevisionButton : MonoBehaviour
     }
     public virtual void Awake() {
         rt = GetComponent<RectTransform>();
-        rt.localScale = Vector3.zero;
+        // rt.localScale = Vector3.zero;
     }
     public virtual void Start() {
-        rt.localScale = Vector3.zero;
+        // rt.localScale = Vector3.zero;
     }
     public virtual void OnEnable() {
-        rt.localScale = Vector3.zero;
-        StartCoroutine(ScaleAnimation(normalScale, 1f));
+        // rt.localScale = Vector3.one;
+        // rt.localScale = Vector3.zero;
+        // StartCoroutine(ScaleAnimation(normalScale, 1f));
     }
     protected IEnumerator ScaleAnimation(Vector3 endScale, float duration = .2f) {
         float index = 0;
