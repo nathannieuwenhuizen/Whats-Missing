@@ -104,7 +104,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
         joint = gameObject.AddComponent<SpringJoint>();
         joint.connectedBody = connectedRigidBody;
         joint.anchor = new Vector3(.5f,.5f,.5f);
-        joint.spring = 1000;
+        joint.spring = 500;
         joint.connectedAnchor = connectedRigidBody.transform.InverseTransformDirection(transform.position- connectedRigidBody.transform.position);
         
 
@@ -112,9 +112,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
             ActivateRigidBody();
         }
         RigidBodyInfo.Save(rb);
-        rb.drag = 1000f;
+        rb.drag = 100f;
         rb.angularDrag = 10f;
-        // rb.constraints = RigidbodyConstraints.FreezeRotation;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
     ///<summary>

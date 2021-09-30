@@ -86,26 +86,26 @@ public class Clock : RoomObject
     public void UpdateArrow(Transform arrow, int val) {
         float total = arrow == hourArrow ? 12f : 60f;
         float precentage = (float)val / total;
-        float rotation = -90 + (360 * precentage);
+        float rotation =  (360 * precentage);
         if (!animating) {
-            arrow.transform.rotation = Quaternion.Euler(rotation, 0,0);
+            arrow.transform.localRotation = Quaternion.Euler(rotation, 0,0);
         } else {
             StartCoroutine(TickAnimation(arrow, rotation));
         }
     }
 
     private IEnumerator TickAnimation(Transform arrow, float val) {
-        Quaternion start = arrow.transform.rotation;
+        Quaternion start = arrow.transform.localRotation;
         Quaternion end = Quaternion.Euler(val, 0,0);
 
         Debug.Log("start: " + start + " | end: " + val);
         float index = 0;
         while (index < tickDuration) {
-            arrow.transform.rotation = Quaternion.SlerpUnclamped(start, end, tickAnimationCurve.Evaluate(index/ tickDuration));
+            arrow.transform.localRotation = Quaternion.SlerpUnclamped(start, end, tickAnimationCurve.Evaluate(index/ tickDuration));
             yield return new WaitForEndOfFrame();
             index += Time.deltaTime;
         }
-        arrow.transform.rotation = Quaternion.Euler(val, 0,0);
+        arrow.transform.localRotation = Quaternion.Euler(val, 0,0);
     }
 
     private void Reset() {

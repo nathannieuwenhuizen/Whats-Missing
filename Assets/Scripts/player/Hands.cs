@@ -130,7 +130,12 @@ public class Hands : MonoBehaviour
     private T FocussedObject<T>() {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, pickupDistance)) {
-            if (hit.collider.gameObject.GetComponent<T>() != null) return hit.collider.gameObject.GetComponent<T>();
+            if (hit.collider.gameObject.GetComponent<T>() != null) {
+                return hit.collider.gameObject.GetComponent<T>();
+            } else if (hit.collider.transform.parent != null) {
+                if (hit.collider.transform.parent.GetComponent<T>() != null) 
+                    return hit.collider.transform.parent.GetComponent<T>();
+            }
         }
         return default(T);
     }

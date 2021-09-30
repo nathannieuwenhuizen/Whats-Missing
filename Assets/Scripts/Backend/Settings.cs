@@ -28,8 +28,8 @@ public struct Settings
             Camera_y_invert = PlayerPrefs.GetInt("Camera_y_invert", 0) == 1
         };
         cameraSettings = new CameraSettings() {
-            Depth_of_field_enabled = PlayerPrefs.GetInt("Depth_of_field_enabled", 1) == 1,
-            Motion_blur_enabled = PlayerPrefs.GetInt("Motion_blur_enabled", 1) == 1
+            Depth_of_field_enabled = PlayerPrefs.GetInt("Depth_of_field_enabled", 0) == 0,
+            Motion_blur_enabled = PlayerPrefs.GetInt("Motion_blur_enabled", 0) == 0
         };
     }
     ///<summary>
