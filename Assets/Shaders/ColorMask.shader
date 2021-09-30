@@ -1,10 +1,12 @@
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+
 Shader "Mask/SphericalMaskPP"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
         _Position("Position", vector) = (0,0,0,0)
-        _Radius("Radius", float) = 0.5
+        _Radius("Radius", float) = 10
         _Softness("Softness", float) = 0.5
     }
     SubShader
@@ -19,7 +21,7 @@ Shader "Mask/SphericalMaskPP"
             #pragma fragment frag
              
             #include "UnityCG.cginc"
- 
+            #define UNITY_MATRIX_MVP mul(unity_MatrixVP, unity_ObjectToWorld)
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -30,6 +32,7 @@ Shader "Mask/SphericalMaskPP"
             {
                 float2 uv : TEXCOORD0;
                 float3 worldDirection : TEXCOORD1;
+                float3 wpos : TEXCOORD2;
                 float4 vertex : SV_POSITION;
             };
              
@@ -42,7 +45,7 @@ Shader "Mask/SphericalMaskPP"
                 o.uv = v.uv;
  
                 float4 clip = float4(o.vertex.xy, 0.0, 1.0);
-                o.worldDirection = mul(_ClipToWorld, clip) - _WorldSpaceCameraPos;
+                o.worldDirection = mul(_ClipToWorld, clip) + _WorldSpaceCameraPos;
                 return o;
             }
              
@@ -66,10 +69,10 @@ Shader "Mask/SphericalMaskPP"
                 fixed4 colGray = fixed4(lum,lum,lum,1);
  
                 //Calculate world position and distance from the spherical mask
-                float3 wpos = i.worldDirection * depth + _WorldSpaceCameraPos;
+                float3 wpos = i.worldDirection *  depth - _WorldSpaceCameraPos;
                 half d = distance(_Position, wpos);
-                half sum = saturate(( _Radius - d) / _Softness);
-                fixed4 finalColor = lerp(colGray, col, sum);
+                half sum = saturate(( 10 - d) / _Softness);
+                fixed4 finalColor = lerp(colGray, col, sum);                 
  
                 return finalColor;
             }

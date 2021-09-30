@@ -123,8 +123,8 @@ public class Area : MonoBehaviour
         if (data != null) {
 
             SaveData.current = data as SaveData;
-            startingRoomIndex = SaveData.current.roomIndex;
-            loadRoomState = true;
+            //startingRoomIndex = SaveData.current.roomIndex;
+            //loadRoomState = true;
         }
     }
 
