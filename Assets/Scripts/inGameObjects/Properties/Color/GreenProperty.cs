@@ -26,4 +26,8 @@ public class GreenProperty : Property
             room.Player.Camera.gameObject.gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<ColorGrading>().mixerGreenOutGreenIn.value = value;
         }
     }
+    private void Reset() {
+        Word = "green";
+    }
+
 }

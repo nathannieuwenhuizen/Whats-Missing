@@ -25,13 +25,14 @@ public class RoomTelevision : Television
     private Color offColor = Color.red;
     [SerializeField]
     private Color onColor = Color.green;
-    
 
-    [Header("Sounds")]
-    [SerializeField]
-    private AudioClip succesSound;
-    [SerializeField]
-    private AudioClip failSound;
+    public int id {get; set; }
+
+    private string previousWord = "";
+    public string PreviousWord {
+        get { return previousWord;}
+        set { previousWord = value; }
+    }
 
     public bool IsOn {
         get { return isOn; }
@@ -75,8 +76,9 @@ public class RoomTelevision : Television
         }
         for(int i = 0; i < preAnswer.Length; i++) {
             Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(letterObjects.Count));
-            LetterClicked(answerLetter);
+            //LetterClicked(answerLetter);
         }
+        Word = preAnswer;
     }
 
     private Vector3 GetLetterPosBasedOnIndex(int index) {
@@ -98,17 +100,16 @@ public class RoomTelevision : Television
     {
         base.Confirm();
 
-        if (isOn) return;
 
         if (isQuestion) room.CheckQuestion(this);
-        else room.AddTVChange(this);
+        else if (isOn == false) room.AddTVChange(this);
     }
 
     public void ConfirmationFailed() {
         if (room.Animated)         
             AudioHandler.Instance?.PlaySound(SFXFiles.tv_false);
 
-        Reset();
+        DeselectLetters();
     }
 
     protected override void LetterClicked(Letter letter)
@@ -131,19 +132,27 @@ public class RoomTelevision : Television
         selectedLetterObjects.Remove(selectedLetterObjects[index]);
     }
 
-
-    //sets all the letters to their original place.
-    public void Reset() {
+    ///<summary>
+    /// sets all the letters to their original place.
+    ///</summary>
+    public void DeselectLetters() {
         for(int i = selectedLetterObjects.Count - 1; i >= 0; i--) {
             RemoveSelectedLetter(i);
         }
         selectedLetterObjects = new List<Letter>();
-        room.RemoveTVChange(this);
+         
+    }
+    ///<summary>
+    /// Resets the letters and removes the change or question check.
+    ///</summary>
+    public void ResetTV() {
+        DeselectLetters();
+        if (!isQuestion) room.RemoveTVChange(this, true);
+        else room.CheckQuestion(this);
     }
     public void ConfirmationSucceeded() {
         if (room.Animated)
             AudioHandler.Instance?.PlaySound(SFXFiles.tv_true);
-
 
         foreach(Letter letter in selectedLetterObjects) {
             letter.Color = new Color(.8f, 1f, .8f);

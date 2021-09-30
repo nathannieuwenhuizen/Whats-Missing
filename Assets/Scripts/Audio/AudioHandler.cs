@@ -21,7 +21,7 @@ public class AudioHandler : Singleton<AudioHandler>
         get => musicVolume;
         set {
             musicVolume = value;
-            MusicSource.volume = value;
+            MusicSource.volume = value * AudioSetting.MUSIC;
         }
     }
     private float musicVolume = 1f;
@@ -60,7 +60,6 @@ public class AudioHandler : Singleton<AudioHandler>
 
         foreach(AudioLibrary libary in libraries) {
             
-            Debug.Log(libary);
             foreach (SFXInstance sfx in libary.soundEffectInstances)
             {
                 InitializeAudioSource(sfx);
@@ -89,11 +88,14 @@ public class AudioHandler : Singleton<AudioHandler>
         }
     }
 
+
+    /// <summary>
+    ///Plays a 2D sound in the game.
+    ///</summary>
     public void PlaySound(SFXFiles audioEffect, float volume = 1f, float pitch = 1f, bool loop = false)
     {
-        SFXInstance selectedAudio = soundEffectInstances.Find(x => x.AudioEffect == audioEffect);
-        if (selectedAudio == null || mute) return;
-        if (selectedAudio.AudioSource == null) return;
+        SFXInstance selectedAudio = GetSFXInstance(audioEffect);
+        if (selectedAudio == default(SFXInstance)) return;
         selectedAudio.AudioSource.gameObject.SetActive(true);
         selectedAudio.AudioSource.spatialBlend = 0;
         selectedAudio.AudioSource.clip = selectedAudio.GetClip;
@@ -103,6 +105,56 @@ public class AudioHandler : Singleton<AudioHandler>
         selectedAudio.AudioSource.Play();
     }
 
+    private SFXInstance GetSFXInstance(SFXFiles audioEffect) {
+        SFXInstance selectedAudio = soundEffectInstances.Find(x => x.AudioEffect == audioEffect);
+        if (selectedAudio == null || mute) {
+            Debug.LogWarning("AudioEffect of type" + audioEffect + " is null or mute");
+            return default(SFXInstance);
+        }
+        if (selectedAudio.AudioSource == null) {
+            Debug.LogError("AudioSource of the audioeffect" + audioEffect + " is null");
+            return default(SFXInstance);
+        }
+        return selectedAudio;
+    }
+    public SFXInstance Player3DSound(SFXFiles audioEffect, Transform parent, float volume = 1f, float pitch = 1f, bool loop = false, bool asInstance = true, float soundMaxDistance = 100f) {
+        SFXInstance selectedAudio = GetSFXInstance(audioEffect);
+        if (selectedAudio == default(SFXInstance)) return selectedAudio;
+        
+        GameObject instance;
+        if (asInstance) {
+            instance = Instantiate(selectedAudio.AudioSource.gameObject);
+        } else {
+            instance = selectedAudio.AudioSource.gameObject;
+        }
+        SFXInstance newSFWIncstance = new SFXInstance() {AudioSource = instance.GetComponent<AudioSource>(), AudioEffect = audioEffect};
+
+        newSFWIncstance.AudioSource.gameObject.SetActive(true);
+        newSFWIncstance.AudioSource.clip = selectedAudio.GetClip;
+        newSFWIncstance.AudioSource.volume = volume * AudioSetting.SFX;
+        newSFWIncstance.AudioSource.pitch = pitch;
+        newSFWIncstance.AudioSource.loop = loop;
+        newSFWIncstance.AudioSource.Play();
+
+        instance.transform.SetParent(parent); 
+        instance.transform.localPosition = Vector3.zero;
+        newSFWIncstance.AudioSource.spatialBlend= .9f;
+        newSFWIncstance.AudioSource.maxDistance= soundMaxDistance;
+        newSFWIncstance.AudioSource.rolloffMode = AudioRolloffMode.Linear;
+
+        if (asInstance && !loop) {
+            Destroy(instance,newSFWIncstance.AudioSource.clip.length);
+        }
+        return newSFWIncstance;
+    }
+    public void Stop3DSound(SFXInstance instance, bool destroy = true) {
+        instance.AudioSource.Stop();
+        if (destroy) Destroy(instance.AudioSource.gameObject);
+    }
+
+    ///<summary>
+    ///Stops the 2D sound
+    ///</summary>
     public void StopSound(SFXFiles audioEffect)
     {
         SFXInstance selectedAudio = soundEffectInstances.Find(x => x.AudioEffect == audioEffect);
@@ -110,7 +162,9 @@ public class AudioHandler : Singleton<AudioHandler>
             return;
         selectedAudio.AudioSource.Stop();
     }
-
+    ///<summary>
+    ////Plays music that loops.
+    ///</summary>
     public void PlayMusic(MusicFiles music, float volume = 1f)
     {
         if (mute) 
@@ -122,79 +176,69 @@ public class AudioHandler : Singleton<AudioHandler>
         MusicSource.volume = musicVolume * AudioSetting.MUSIC;
         MusicSource.Play();
     }
-
-    public void UpdateMusicVolume() {
-        MusicSource.volume = musicVolume * AudioSetting.MUSIC;
-    }
-
+    ///<summary>
+    ////Stops the music
+    ///</summary>
     public void StopMusic()
     {
         MusicSource.Stop();
     }
 
-    public void ChangeMusicVolume(float volume)
-    {
-        MusicSource.volume = volume * AudioSetting.MUSIC;
-    }
-    public void FadeMusic(MusicFiles newMusic, float duration)
+
+    ///<summary>
+    ///Fades one music to 0 and after that fades the new music in with the same volume.
+    ///</summary>
+    public void FadeMusic(MusicFiles newMusic, float duration, bool waitForOtherMusictoFadeOut = false)
     {
         StopAllCoroutines();
-        StartCoroutine(FadingMusic(newMusic, duration));
+        StartCoroutine(FadingMusic(newMusic, duration, waitForOtherMusictoFadeOut));
     }
-    private IEnumerator FadingMusic(MusicFiles music, float duration)
+    private IEnumerator FadingMusic(MusicFiles music, float totalDuration, bool waitForOtherMusictoFadeOut = false)
     {
         musicIsFading = true;
         float volume = MusicSource.volume * AudioSetting.MUSIC;
-        yield return StartCoroutine(ChangeVolume(MusicSource.volume, 0, duration / 2f));
-        MusicInstance selectedMusic = musicClips.Find(x => x.Music == music);
+        AudioSource tempSource = default(AudioSource);
+        if (waitForOtherMusictoFadeOut) yield return StartCoroutine(FadeVolume(MusicSource, MusicSource.volume, 0, totalDuration / 2f));
+        else {
+            StartCoroutine(FadeVolume(MusicSource, MusicSource.volume, 0, totalDuration / 2f));
+        }
+            
 
+        MusicInstance selectedMusic = musicClips.Find(x => x.Music == music);
         if (selectedMusic != null)
         {
-            MusicSource.clip = selectedMusic.Clip;
-            MusicSource.Play();
-            yield return StartCoroutine(ChangeVolume(0, volume, duration / 2f));
+            if (!waitForOtherMusictoFadeOut) {
+                tempSource = gameObject.AddComponent<AudioSource>();
+                tempSource.loop = true;
+                tempSource.clip = selectedMusic.Clip;
+                tempSource.time = MusicSource.time;
+                tempSource.Play();
+                tempSource.time = MusicSource.time;
+                yield return StartCoroutine(FadeVolume(tempSource, 0, volume, totalDuration / 2f));
+                Destroy(MusicSource);
+                MusicSource = tempSource;
+            } else {
+                MusicSource.clip = selectedMusic.Clip;
+                MusicSource.Play();
+                yield return StartCoroutine(FadeVolume(MusicSource, 0, volume, totalDuration / 2f));
+            }
         }
         musicIsFading = false;
     }
 
-
-    private IEnumerator ChangeVolume(float begin, float end, float duration)
+    ///<summary>
+    ///Internal enumerator that fades a music clip.
+    ///</summary>
+    private IEnumerator FadeVolume(AudioSource audioS, float begin, float end, float duration)
     {
         float index = 0;
 
         while (index < duration)
         {
             index += Time.deltaTime;
-            MusicSource.volume = Mathf.Lerp(begin, end * AudioSetting.MUSIC, index / duration);
+            audioS.volume = Mathf.Lerp(begin, end * AudioSetting.MUSIC, index / duration);
             yield return new WaitForFixedUpdate();
         }
-        MusicSource.volume = end * AudioSetting.MUSIC;
+        audioS.volume = end * AudioSetting.MUSIC;
     }
-}
-
-public enum AudioEffect
-{
-    click,
-    colorSelect,
-    footSteps,
-    buildingAppear,
-    buildingDisappear,
-    minigame_bedShine,
-    minigame_bedSlide,
-    minigame_canHit,
-    minigame_canThrow,
-    minigame_lockersDrawing,
-    minigame_popcornCatch,
-    minigame_ropePull,
-    minigame_roseCatch,
-    minigame_treeCatMeow,
-    minigame_treeShake,
-    minigame_weightliftingPush,
-    UI_Popup
-}
-public enum Music
-{
-    menu,
-    question,
-    result
 }

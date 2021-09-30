@@ -58,6 +58,16 @@ public bool IsInteractable {
                 temp += letter.LetterValue;
             }
             return temp; 
+        } set {
+            for (int i = 0; i < value.Length; i++)
+            {
+                Letter letter = letterObjects.Find(x => x.LetterValue[0] == value[i]);
+                if (letter != null)
+                    LetterClicked(letter);
+                else {
+                    Debug.LogError("TV doesn't contain the letter: " + value[i] + " for the word: " + value);
+                }
+            }
         }
     }
     protected List<Letter> letterObjects = new List<Letter>();
@@ -70,7 +80,7 @@ public bool IsInteractable {
         IsInteractable = false;
     }
 
-    protected void UpdateAnswerTextPosition() {
+    public void UpdateAnswerTextPosition() {
         float totalWidth = 0;
         foreach(Letter letter in selectedLetterObjects) {
             totalWidth += letter.size.width;

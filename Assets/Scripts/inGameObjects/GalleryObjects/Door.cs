@@ -29,6 +29,7 @@ public class Door : InteractabelObject
     [SerializeField]
     private AnimationCurve closeCurve;
 
+
     public bool Locked {
         get { return locked; }
         set {
@@ -45,12 +46,14 @@ public class Door : InteractabelObject
     void Close() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
         lightObject.SetActive(false);
+        StopAllCoroutines();
         StartCoroutine(Flipping(startRotation, .5f, closeCurve));
     }
 
     void Open() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_squeek, .2f);
         lightObject.SetActive(true);
+        StopAllCoroutines();
         StartCoroutine(Flipping(startRotation + openAngle, 2f, openCurve));
     }
     void Start()
@@ -71,6 +74,7 @@ public class Door : InteractabelObject
     void Opening() {
         //TODO: Go to next room with player
         OnPassingThrough?.Invoke(this);
+        StopAllCoroutines();
         StartCoroutine(OpenAnimation());
         //YRotation = startRotation + wideAngle;
     }

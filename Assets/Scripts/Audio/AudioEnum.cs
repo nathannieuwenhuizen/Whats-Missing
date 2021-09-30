@@ -17,9 +17,14 @@ public enum SFXFiles {
     letter_click,
     tv_beep,
     tv_true,
-    tv_false
+    tv_false,
+
+    wind_fall,
+    stairs_footstep,
+    fire_crackling
 }
 
 public enum MusicFiles {
-    gallery
+    gallery,
+    test
 }

@@ -25,4 +25,8 @@ public class RedProperty : Property
             room.Player.Camera.gameObject.gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<ColorGrading>().mixerRedOutRedIn.value = value;
         }
     }
+    private void Reset() {
+        Word = "red";
+    }
+
 }

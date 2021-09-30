@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Hands : MonoBehaviour
 {
     private IPickable holdingObject;
@@ -14,13 +15,19 @@ public class Hands : MonoBehaviour
     [SerializeField]
     private IInteractable currentInteractable;
 
+    private Rigidbody rigidbody;
+    private Vector3 localPos;
+
     private float maxThrowForce = .7f;
     private float throwForceMultiplier = 10f;
+    
+    private bool isEnabled = true;
 
     public void OnClick() {
+        if (!isEnabled) return;
+        
         //check objects to interact with.
         IInteractable interactableObj = FocussedObject<IInteractable>();
-        
         if (interactableObj != default(IInteractable)) {
             if (interactableObj.Gameobject.GetComponent<IPickable>() != default(IPickable)) {
                 Grab(interactableObj.Gameobject.GetComponent<IPickable>());
@@ -31,25 +38,41 @@ public class Hands : MonoBehaviour
     }
     private void Grab(IPickable obj) {
         // obj.RigidBody.isKinematic = true;
-        holidngObjectParent = obj.RigidBody.transform.parent;
-        obj.RigidBody.transform.parent = transform;
+        // holidngObjectParent = obj.gameObject.transform.parent;
+        // obj.gameObject.transform.parent = transform;
         holdingObject = obj;
-        oldPos = holdingObject.RigidBody.transform.position;
-        obj.Grab();
+        oldPos = holdingObject.gameObject.transform.position;
+        obj.Grab(rigidbody);
         StartCoroutine(UpdateVelocity());
+        StartCoroutine(UpdatePhysics()); 
     }
 
     private void OnEnable() {
         InputManager.OnClickDown += OnClick;
         InputManager.OnClickUp += Release;
+        PauseScreen.OnPause += DisableClick;
+        PauseScreen.OnResume += EnableClick;
     }
 
     private void OnDisable() {
         InputManager.OnClickDown -= OnClick;
         InputManager.OnClickUp -= Release;
+        PauseScreen.OnPause -= DisableClick;
+        PauseScreen.OnResume -= EnableClick;
+    }
+
+    private void EnableClick() {
+        isEnabled = true;
+    }
+    private void DisableClick() {
+        isEnabled = false;
     }
 
 
+    private void Awake() {
+        localPos = transform.localPosition;
+        rigidbody = GetComponent<Rigidbody>();
+    }
     
 
     //Releases the holding object
@@ -57,14 +80,13 @@ public class Hands : MonoBehaviour
         if (holdingObject == null) return;
 
         if (Time.timeScale == 0) {
-            StartCoroutine(UpdatePhysics()); 
         }
-        holdingObject.Release();
-        holdingObject.gameObject.transform.parent = holidngObjectParent;
         if (velocity.magnitude > maxThrowForce) {
             velocity = velocity.normalized * maxThrowForce;
-        }
-        holdingObject.RigidBody.velocity =  velocity * throwForceMultiplier;
+        }            
+        holdingObject.RigidBodyInfo.Holdvelocity = velocity * throwForceMultiplier;
+        holdingObject.Release();
+        // holdingObject.gameObject.transform.parent = holidngObjectParent;
         holdingObject = null;
     }
 
@@ -79,16 +101,10 @@ public class Hands : MonoBehaviour
 
     //TODO: needs a way better fix than this!
     private IEnumerator UpdatePhysics() {
-        Time.timeScale = 1f;
-        holdingObject.RigidBody.isKinematic = true;
-        Physics.Simulate(1f);
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForEndOfFrame();
-        // holdingObject.RigidBody.isKinematic = false;
+        while (holdingObject != null) {
 
-        Time.timeScale = 0;
-        
+            yield return new WaitForEndOfFrame();
+        }   
     }
 
     private void Update() {

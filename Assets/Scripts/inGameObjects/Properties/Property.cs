@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+///<summary>
+/// A non-physical object inside the room.
+///</summary>
 public abstract class Property : MonoBehaviour, IChangable
 {
     [SerializeField]    protected string word;
@@ -16,6 +19,10 @@ public abstract class Property : MonoBehaviour, IChangable
     public bool InSpace => inSpace;
 
     public Transform Transform => transform;
+
+    public MissingChangeEffect MissingChangeEffect => throw new System.NotImplementedException();
+
+    public int id { get; set; }
 
     protected Change currentChange;
 
@@ -44,5 +51,25 @@ public abstract class Property : MonoBehaviour, IChangable
                 onMissing();
                 break;
         }
+    }
+
+    public virtual IEnumerator AnimateMissing()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void onMissingFinish()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual IEnumerator AnimateAppearing()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public virtual void onAppearingFinish()
+    {
+        throw new System.NotImplementedException();
     }
 }

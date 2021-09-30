@@ -5,6 +5,10 @@ using UnityEngine.Events;
 
 public class Area : MonoBehaviour
 {
+    public delegate void UndoActionEvent(Room _room);
+    public static UndoActionEvent OnUndo;
+    public delegate void NewRoomEvent();
+    public static NewRoomEvent OnNewRoomEnter;
 
     [SerializeField]
     private Room[] roomPrefabs;
@@ -22,6 +26,7 @@ public class Area : MonoBehaviour
     [SerializeField]
     private UnityEvent areaFinishedEvent;
 
+    private bool loadRoomState = false;
 
     private Room currentRoom;
     public Room CurrentRoom {
@@ -29,15 +34,11 @@ public class Area : MonoBehaviour
         set {
             if (currentRoom != null) {
                 currentRoom?.OnRoomLeave();
-                currentRoom.AllObjects.Remove(player);
-                currentRoom.Player = null;
             }
             currentRoom = value;
             UpdateRoomActiveStates();
-            player.transform.parent = currentRoom.transform;
-            currentRoom.AllObjects.Add(player);
-            currentRoom.Player = player;
-            currentRoom.OnRoomEnter();
+            currentRoom.OnRoomEnter(player, loadRoomState);
+            loadRoomState = false;
         }
     }
 
@@ -54,13 +55,14 @@ public class Area : MonoBehaviour
 
     private void Awake() {
         InitializeAllRooms();
+        LoadProgress();
     }
     
     void Start()
     {
         AudioHandler.Instance.PlayMusic(MusicFiles.gallery, 1f);
+        playerPos = rooms[startingRoomIndex].StartPos.position;
         CurrentRoom = rooms[startingRoomIndex];
-        playerPos = currentRoom.StartPos.position;
     }
 
     private void InitializeAllRooms() {
@@ -97,13 +99,47 @@ public class Area : MonoBehaviour
 
     private void OnEnable() {
         Door.OnPassingThrough += OnPassingThroughDoor;
+        InputManager.OnUndo += UndoAction;
+        InputManager.OnReset += ResetRoom;
+
     }
 
     private void OnDisable() {
         Door.OnPassingThrough -= OnPassingThroughDoor;
+        InputManager.OnUndo -= UndoAction;
+        InputManager.OnReset -= ResetRoom;
+    }
+
+    public void ResetRoom() {
+        CurrentRoom.ResetRoom();
+    }
+
+    public void SaveProgress() {
+        SaveData.current.roomIndex = rooms.IndexOf(currentRoom);
+        SaveData.current = SaveData.GetStateOfRoom(currentRoom);
+        SerializationManager.Save("test", SaveData.current);
+    }
+
+    private void OnDestroy() {
+        SaveProgress();
+    }
+
+    public void LoadProgress() {
+        object data = SerializationManager.Load(SerializationManager.filePath + "/test.save");
+        if (data != null) {
+
+            SaveData.current = data as SaveData;
+            //startingRoomIndex = SaveData.current.roomIndex;
+            //loadRoomState = true;
+        }
+    }
+
+    private void UndoAction() {
+        OnUndo?.Invoke(currentRoom);
     }
 
     void OnPassingThroughDoor(Door door) {
+        OnNewRoomEnter?.Invoke();
         int index = rooms.IndexOf(door.room); // System.Array.IndexOf(roomPrefabs, door.room);
         if (door.room == currentRoom) {
             //next room

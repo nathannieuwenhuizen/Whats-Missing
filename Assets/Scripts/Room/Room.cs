@@ -7,6 +7,13 @@ using UnityEngine.Events;
 
 public class Room : MonoBehaviour
 {
+    [SerializeField]
+    private SaveData beginState;
+
+    public delegate void MakeRoomAction(Room _room, Change _change, bool _changeIsAdded, string previousWord = "");
+    public static MakeRoomAction OnMakeRoomAction;
+
+    public static float TimeScale = 1f;
     
     [SerializeField]
     private UnityEvent roomFinishedEvent;
@@ -25,8 +32,10 @@ public class Room : MonoBehaviour
     }
 
     public List<IChangable> AllObjects {get { return allObjects;}}
+    public List<RoomTelevision> AllTelevisions {get { return allTelevisions;}}
     [SerializeField]
     private List<Change> changes = new List<Change>();
+    public List<Change> Changes { get => changes; }
     
     [SerializeField]
     private Transform startPos;
@@ -44,7 +53,8 @@ public class Room : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject particlePrefab;
+    private GameObject changeLineObject;
+
     [SerializeField]
     private GameObject plopParticle;
 
@@ -63,10 +73,23 @@ public class Room : MonoBehaviour
     void Awake() {
         door.room = this;
         allObjects = GetAllObjectsInRoom<IChangable>();
-        allTelevisions = GetAllObjectsInRoom<RoomTelevision>().OrderBy( allObjects => !allObjects.isQuestion).ToList(); 
-        foreach(RoomTelevision tv in allTelevisions) tv.Room = this;
+
+        for (int i = 0; i < allObjects.Count; i++)
+        {
+            allObjects[i].id = i;
+        }
+
+        allTelevisions = GetAllObjectsInRoom<RoomTelevision>().OrderBy( allObjects => allObjects.isQuestion).ToList(); 
+        for (int i = 0; i < allTelevisions.Count; i++)
+        {
+            allTelevisions[i].id = i;
+            allTelevisions[i].Room = this;
+        }
     }
 
+    ///<summary>
+    /// Finds all object with a transform propery in the room up to two children levels deep.
+    ///</summary>
     public List<T> GetAllObjectsInRoom<T>(Transform tr = null) {
         List<T> result = new List<T>();
         if (tr == null) tr = transform;
@@ -83,19 +106,23 @@ public class Room : MonoBehaviour
         return result;
     }
 
-    //prepare changes so that the room is already changedwhen player walks in.
+    ///<summary>
+    /// prepare changes so that the room is already changedwhen player walks in.
+    ///</summary>
     public void ActivateChanges(){
-        
+        Debug.Log("activate changes!");
         foreach (RoomTelevision tv in allTelevisions)
         {
+            Debug.Log("activate " + tv.Word + " with isQuestion: " + tv.isQuestion);
             if (tv.Word != "") {
-                if (tv.isQuestion) CheckQuestion(tv);
-                else AddTVChange(tv);
+                if (tv.isQuestion) CheckQuestion(tv, false);
+                else AddTVChange(tv, false);
             }
         }
     }
-
-    //Deactivate all changes 
+    ///<summary>
+    /// Deactivate all changes. Called when the player leaves the room or a question-lvl has been cleared
+    ///</summary>
     public void DeactivateChanges(){
         for (int i = changes.Count - 1; i >= 0; i--)
         {
@@ -103,84 +130,117 @@ public class Room : MonoBehaviour
         }
     }
 
-    // Apply the change to the object 
-    public void AddTVChange(RoomTelevision selectedTelevision) {
+    ///<summary>
+    /// Apply the change to the room 
+    ///</summary>
+    public void AddTVChange(RoomTelevision selectedTelevision, bool undoAble = true) {
         bool hasChangedSomething = false;
+        // float delay = 0;
         Change newChange = new Change(){word = selectedTelevision.Word, television = selectedTelevision};
-        foreach (IChangable obj in allObjects)
-        {
-            if (obj.Word == selectedTelevision.Word || obj.AlternativeWords.Contains(selectedTelevision.Word)) {
-                if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
-                    StartCoroutine(AnimateChangeEffect(selectedTelevision, obj, 1f, () => {
-                        obj.SetChange(newChange);
-                    }));
-                } else obj.SetChange(newChange);
-                newChange.AlternativeWords = obj.AlternativeWords;
-                hasChangedSomething = true;
-            }
+
+        if (ToggleChangeAllObjects(newChange, (IChangable obj) => { obj.SetChange(newChange); newChange.AlternativeWords = obj.AlternativeWords; })) {
+            hasChangedSomething = true;
         }
+        Debug.Log("has changed something: " + changes.Count);
         if (hasChangedSomething) {
             changes.Add(newChange);
+            Debug.Log("has REALLY changed something: " + changes.Count);
+
             selectedTelevision.IsOn = true;
+            if (undoAble) OnMakeRoomAction?.Invoke(this, newChange, true);
             CheckRoomCompletion();
+            Debug.Log("has REALLY changed something: " + changes.Count);
+
         } else {
             selectedTelevision.IsOn = false;
         }
+        Debug.Log("has changed something: " + changes.Count);
+    }
+
+    ///<summary>
+    /// Checks in all object if it has the sme word as the change. If so it will change or its change will be removed. Also returns true if any objects has the word.
+    ///</summary>
+    private bool ToggleChangeAllObjects(Change change, Action<IChangable> callBack) {
+        bool result = false;
+        float delay = 0;
+        foreach (IChangable obj in allObjects)
+        {
+            if (obj.Word == change.word || obj.AlternativeWords.Contains(change.word)) {
+                result = true;
+                if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
+                    StartCoroutine(AnimateChangeEffect(delay, change.television, obj, 1f, () => {
+                        callBack(obj);
+                    }));
+                    delay += .5f;
+                } else callBack(obj);
+            }
+        }
+        return result;
     }
 
     
-    //removes a tv change updating the room and tv
-    public void RemoveTVChange(RoomTelevision selectedTelevision) {
+    /// <summary> 
+    ///removes a tv change updating the room and tv
+    ///</summary>
+    public void RemoveTVChange(RoomTelevision selectedTelevision, bool undoAble = true) {
         if (!selectedTelevision.IsOn) return;
         selectedTelevision.IsOn = false;
         CheckRoomCompletion();
-        if (!selectedTelevision.isQuestion) RemoveChange(changes.Find(x => x.television == selectedTelevision));
+        Change removedChange = changes.Find(x => x.television == selectedTelevision);
+        if (undoAble) OnMakeRoomAction?.Invoke(this, removedChange, false);
+        if (!selectedTelevision.isQuestion) RemoveChange(removedChange);
+
     }
 
-    //removes a change to the room updating the objects
+    ///<summary>
+    /// removes a change to the room updating the objects
+    ///</summary>
     private void RemoveChange(Change change) {
-        if (change == null) return;
-        foreach (IChangable obj in allObjects)
-        {
-            if (obj.Word == change.word ||  obj.AlternativeWords.Contains(change.word)) {
-                if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
-                    StartCoroutine(AnimateChangeEffect(change.television, obj, 1f, () => {
-                        obj.RemoveChange(change);
-                    }));
-                } else obj.RemoveChange(change);
-            }
-        }
+        ToggleChangeAllObjects(change, (IChangable obj) => { obj.RemoveChange(change); });        
+        change.television.IsOn = false;
+
         changes.Remove(change);
     }
 
-    public IEnumerator AnimateChangeEffect(RoomTelevision tv, IChangable o, float duration, Action callback) {
-        float index = 0;
-        Vector3 begin = tv.transform.position;
-        AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
-        GameObject particle = Instantiate(particlePrefab, begin, Quaternion.identity);
-        while (index < duration) {
-            index += Time.unscaledDeltaTime;
-            particle.transform.position = Vector3.LerpUnclamped(begin, o.Transform.position, curve.Evaluate(index / duration));
-            yield return new WaitForEndOfFrame();
-        }
+    ///<summary>
+    /// Spawns a changeline and waits for it to finish to implement the change.
+    ///</summary>
+    public IEnumerator AnimateChangeEffect(float delay, RoomTelevision tv, IChangable o, float duration, Action callback) {
+        yield return new WaitForSecondsRealtime(delay);
+        ChangeLine changeLine = Instantiate(changeLineObject).GetComponent<ChangeLine>();
+        changeLine.SetDestination(tv.transform.position, o.Transform.position);
+        yield return changeLine.MoveTowardsDestination();
+
         GameObject plop = Instantiate(plopParticle, o.Transform.position, Quaternion.identity);
         callback();
     }
 
     
-
-    public void CheckQuestion(RoomTelevision selectedTelevision) {
+    ///<summary>
+    /// Checks if a tv question is correct with the changes that exist inside the room.
+    ///</summary>
+    public void CheckQuestion(RoomTelevision selectedTelevision, bool undoAble = true) {
+        if (undoAble) {
+            OnMakeRoomAction?.Invoke(this, new Change() {word = selectedTelevision.Word, television = selectedTelevision}, false, selectedTelevision.PreviousWord);
+            selectedTelevision.PreviousWord = selectedTelevision.Word;
+        }
         foreach (Change change in changes)
         {
             if (change.word == selectedTelevision.Word || change.AlternativeWords.Contains(selectedTelevision.Word)) {
+                Debug.Log("tv is correct");
                 selectedTelevision.IsOn = true;
                 CheckRoomCompletion();
                 return;
             }
         }
+        Debug.Log("tv is false!");
         selectedTelevision.IsOn = false;
+        CheckRoomCompletion();
     }
-    
+
+    ///<summary>
+    /// Handles if the door should be open or not. 
+    ///</summary>
     private void CheckRoomCompletion() {
         if (AllTelevisionsAreOn()) {
             door.Locked = false;
@@ -189,6 +249,7 @@ public class Room : MonoBehaviour
                 DeactivateChanges();
             }
         } else if (door.Locked == false) {
+            Debug.Log("locked");
             door.Locked = true;
             if (revealChangeAfterCompletion) {
                 ActivateChanges();
@@ -204,14 +265,70 @@ public class Room : MonoBehaviour
         return true;
     }
 
-    public void OnRoomEnter() {
+    public void OnRoomEnter(Player _player, bool loadSaveData = false) {
+        player = _player;
+        player.transform.parent = transform;
+        AllObjects.Add(player);
+
         Animated = false;
+
+        if (loadSaveData) {
+            LoadState(SaveData.current);
+        }
         ActivateChanges();
+        beginState = SaveData.GetStateOfRoom(this);
+        
         Animated = true;
         roomEnterEvent?.Invoke();
     }
+
     public void OnRoomLeave() {
+        AllObjects.Remove(Player);
+        Player = null;
+
         Animated = false;
         DeactivateChanges();
+    }
+
+
+    ///<summary>
+    /// Resets the room by deactivation all the changes and returns the room state and activates the changes 
+    ///</summary>
+    public void ResetRoom() {
+        DeactivateChanges();
+        foreach (RoomTelevision tv in allTelevisions)
+        {
+            tv.IsOn = false;
+        }
+        LoadState(beginState);
+        ActivateChanges();
+    }
+
+
+    ///<summary>
+    /// Loads the savedata with all the television states and the cordinates of the roomobjects
+    ///</summary>
+    public void LoadState(SaveData data) {
+        Debug.Log(player);
+        Debug.Log(data);
+        player.transform.position = data.playerCordinates.position;
+        player.transform.rotation = data.playerCordinates.rotation;
+        List<PickableRoomObjectCordinates> cordinates = data.cordinates.ToList<PickableRoomObjectCordinates>();
+        List<TVState> tvStates = data.tvStates.ToList<TVState>();
+        foreach (PickableRoomObject item in GetAllObjectsInRoom<PickableRoomObject>())
+        {
+            // Debug.Log("item id" + item.id);
+            PickableRoomObjectCordinates itemCordinate = cordinates.Find(x => x.id == item.id);
+            item.transform.position = itemCordinate.position;
+            item.transform.rotation = itemCordinate.rotation;
+        }
+        foreach (RoomTelevision tv in allTelevisions)
+        {
+            TVState tvState = tvStates.Find(x => x.id == tv.id);
+            tv.DeselectLetters();
+            Debug.Log("tv word = "+ tvState.word);
+            tv.Word = tvState.word;
+            // tv.UpdateAnswerTextPosition();
+        }
     }
 }

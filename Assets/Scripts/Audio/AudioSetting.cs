@@ -79,7 +79,7 @@ using UnityEngine.UI;
     {
         AudioSetting.MUSIC = value / steps;
         if (AudioHandler.Instance)
-            AudioHandler.Instance.UpdateMusicVolume();
+            AudioHandler.Instance.MusicVolume = AudioHandler.Instance.MusicVolume;
     }
 
     // public void ToggleMute() {

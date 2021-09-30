@@ -11,9 +11,13 @@ public class RemoteController : MonoBehaviour
     private Television focusedTelevision;
 
     private Television oldTelevision;
+
+    private bool isEnabled = true;
+
     // Update is called once per frame
     void Update()
     {
+        if (!isEnabled) return;
 
         focusedTelevision = FocussedTelevision();
         if (focusedTelevision == null) {
@@ -27,6 +31,28 @@ public class RemoteController : MonoBehaviour
         oldTelevision = focusedTelevision;
 
     }
+    private void OnEnable() {
+        PauseScreen.OnPause += DisableClick;
+        PauseScreen.OnResume += EnableClick;
+    }
+
+    private void OnDisable() {
+        PauseScreen.OnPause -= DisableClick;
+        PauseScreen.OnResume -= EnableClick;
+    }
+
+    private void EnableClick() {
+        isEnabled = true;
+    }
+    private void DisableClick() {
+        isEnabled = false;
+        oldTelevision = null;
+        if (focusedTelevision != null) {
+            focusedTelevision.IsInteractable = false;
+            focusedTelevision = null;
+        }
+    }
+
 
     private Television FocussedTelevision() {
         RaycastHit hit;

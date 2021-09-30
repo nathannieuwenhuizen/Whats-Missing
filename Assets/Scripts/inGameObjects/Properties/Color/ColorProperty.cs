@@ -12,7 +12,7 @@ public class ColorProperty : Property
     [SerializeField]
     private Material greyMaterial;
 
-    private float animationDuration = 3f;
+    private float animationDuration = 1f;
     private float sphereSize = 20f;
 
     [SerializeField]
@@ -87,4 +87,9 @@ public class ColorProperty : Property
             // room.Player.Camera.gameObject.gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<ColorGrading>().saturation.value = value;
         }
     }
+    private void Reset() {
+        Word = "color";
+        AlternativeWords = new string[]{ "colour", "colors", "colours"};
+    }
+
 }

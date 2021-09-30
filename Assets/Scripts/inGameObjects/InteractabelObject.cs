@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+///<summary>
+/// A physical object inside the room that the player can interact with.
+///It shows that it can be interacted by showing an outline arround the mesh.
+///</summary>
 public class InteractabelObject : RoomObject, IInteractable
 {
     private bool focused;
@@ -25,6 +29,9 @@ public class InteractabelObject : RoomObject, IInteractable
     }
     public GameObject Gameobject { get => gameObject; }
 
+    ///<summary>
+    /// When the cursor hovers over the mesh of the object. It makes the outline appear.
+    ///</summary>
     protected virtual void OnFocus() {
         if (outline == null) {
             outline = gameObject.AddComponent<Outline>();
@@ -33,6 +40,9 @@ public class InteractabelObject : RoomObject, IInteractable
         if (focusedCoroutine != null) StopCoroutine(focusedCoroutine);
         focusedCoroutine = StartCoroutine(AnimateOutline(outlineWidth, false)); 
     }
+    ///<summary>
+    /// When the cursor unhovers the emesh of the pbject. Making the outline disappear.
+    ///</summary>
     protected virtual void OnBlur() {
         if (outline != null) {
             if (focusedCoroutine != null) 
@@ -53,6 +63,11 @@ public class InteractabelObject : RoomObject, IInteractable
         outline.OutlineWidth = val;
         if (disableAfterAnimating)
             outline.enabled = false;
+    }
+
+    public override void onMissing()
+    {
+        base.onMissing();
     }
 
     public virtual void Interact()
