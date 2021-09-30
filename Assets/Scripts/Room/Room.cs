@@ -46,6 +46,14 @@ public class Room : MonoBehaviour
     }
 
     [SerializeField]
+    private Transform attachedPos;
+
+    public Transform AttachedPos
+    {
+        get {return this.attachedPos;}
+    }
+
+    [SerializeField]
     private Transform endPos;
     public Transform EndPos
     {

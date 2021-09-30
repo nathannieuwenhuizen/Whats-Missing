@@ -45,7 +45,7 @@ public class Area : MonoBehaviour
     private void UpdateRoomActiveStates() {
         int currentIndex = rooms.IndexOf(currentRoom);
         for (int i = 0; i < rooms.Count; i++) {
-            if (i == currentIndex || i == currentIndex - 1) {
+            if (i <= currentIndex + 1 && i >= currentIndex - 1) {
                 rooms[i].gameObject.SetActive(true);
             } else {
                 rooms[i].gameObject.SetActive(false);
@@ -61,19 +61,24 @@ public class Area : MonoBehaviour
     void Start()
     {
         AudioHandler.Instance.PlayMusic(MusicFiles.gallery, 1f);
-        playerPos = rooms[startingRoomIndex].StartPos.position;
+        player.transform.position = rooms[startingRoomIndex].StartPos.position;
+        player.transform.rotation = rooms[startingRoomIndex].StartPos.rotation;
+        //playerPos = rooms[startingRoomIndex].StartPos.position;
         CurrentRoom = rooms[startingRoomIndex];
     }
 
     private void InitializeAllRooms() {
         Vector3 pos = Vector3.zero;
+        Transform origin = transform;
+        
         foreach (Room prefab in roomPrefabs) {
             Room newRoom = Instantiate(prefab.gameObject, transform).GetComponent<Room>();
             newRoom.name = "Room #" + (rooms.Count + 1);
 
             //position room
-            newRoom.transform.position = pos + (newRoom.transform.position - newRoom.StartPos.position) + new Vector3(0,0,2.3f);
-            pos = newRoom.EndPos.position;
+            newRoom.transform.rotation = origin.rotation; 
+            newRoom.transform.position = origin.position + (newRoom.transform.position - newRoom.StartPos.position);
+            origin = newRoom.AttachedPos;
             rooms.Add(newRoom);
         }
     }
