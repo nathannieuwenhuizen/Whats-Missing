@@ -25,16 +25,17 @@ public class SaveData
     public PickableRoomObjectCordinates[] cordinates;
     public PickableRoomObjectCordinates playerCordinates;
 
-    public void Save(Room _room) {
-
-        tvStates = UndoHandeler.GetAllTVStates(_room);
-        cordinates = UndoHandeler.GetAllPickableRoomCordinates(_room);
-        Debug.Log(cordinates[0].position + " | " + cordinates[0].id);
+    public static SaveData GetStateOfRoom(Room _room) {
+        SaveData newState = new SaveData();
+        
+        newState.tvStates = UndoHandeler.GetAllTVStates(_room);
+        newState.cordinates = UndoHandeler.GetAllPickableRoomCordinates(_room);
         PickableRoomObjectCordinates _playerCordinates = new PickableRoomObjectCordinates() {
             position = _room.Player.transform.position,
             rotation = _room.Player.transform.rotation,
         };
-        playerCordinates = _playerCordinates;
+        newState.playerCordinates = _playerCordinates;
+        return newState;
     }
 }
 

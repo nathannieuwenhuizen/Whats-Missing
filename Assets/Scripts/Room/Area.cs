@@ -100,16 +100,23 @@ public class Area : MonoBehaviour
     private void OnEnable() {
         Door.OnPassingThrough += OnPassingThroughDoor;
         InputManager.OnUndo += UndoAction;
+        InputManager.OnReset += ResetRoom;
+
     }
 
     private void OnDisable() {
         Door.OnPassingThrough -= OnPassingThroughDoor;
         InputManager.OnUndo -= UndoAction;
+        InputManager.OnReset -= ResetRoom;
+    }
+
+    public void ResetRoom() {
+        CurrentRoom.ResetRoom();
     }
 
     public void SaveProgress() {
         SaveData.current.roomIndex = rooms.IndexOf(currentRoom);
-        SaveData.current.Save(currentRoom);
+        SaveData.current = SaveData.GetStateOfRoom(currentRoom);
         SerializationManager.Save("test", SaveData.current);
     }
 
@@ -119,7 +126,6 @@ public class Area : MonoBehaviour
 
     public void LoadProgress() {
         object data = SerializationManager.Load(SerializationManager.filePath + "/test.save");
-        Debug.Log("load pos"+ data);
         if (data != null) {
 
             SaveData.current = data as SaveData;

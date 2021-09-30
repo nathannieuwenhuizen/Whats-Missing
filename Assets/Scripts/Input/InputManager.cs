@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour
     public static event ClickAction OnJump;
     public static event ClickAction OnCancel;
     public static event ClickAction OnUndo;
+    public static event ClickAction OnReset;
     
     public delegate void AxisAction( Vector2 delta);
 
@@ -56,10 +57,16 @@ public class InputManager : MonoBehaviour
         if (Input.GetButtonDown("Cancel")) {
             OnCancel?.Invoke();
         }
-        
+    
         //Undo
         if (Input.GetKeyDown(KeyCode.Z)) {
             OnUndo?.Invoke();
         }
+
+        //reset
+        if (Input.GetKeyDown(KeyCode.R) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) {
+            OnReset?.Invoke();
+        }
+
     }
 }
