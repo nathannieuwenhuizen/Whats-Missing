@@ -7,6 +7,8 @@ using UnityEngine.Events;
 
 public class Room : MonoBehaviour
 {
+    [SerializeField]
+    private SaveData beginState;
 
     public delegate void MakeRoomAction(Room _room, Change _change, bool _changeIsAdded, string previousWord = "");
     public static MakeRoomAction OnMakeRoomAction;
@@ -108,7 +110,7 @@ public class Room : MonoBehaviour
     /// prepare changes so that the room is already changedwhen player walks in.
     ///</summary>
     public void ActivateChanges(){
-        
+        Debug.Log("activate changes!");
         foreach (RoomTelevision tv in allTelevisions)
         {
             Debug.Log("activate " + tv.Word + " with isQuestion: " + tv.isQuestion);
@@ -139,14 +141,20 @@ public class Room : MonoBehaviour
         if (ToggleChangeAllObjects(newChange, (IChangable obj) => { obj.SetChange(newChange); newChange.AlternativeWords = obj.AlternativeWords; })) {
             hasChangedSomething = true;
         }
+        Debug.Log("has changed something: " + changes.Count);
         if (hasChangedSomething) {
             changes.Add(newChange);
+            Debug.Log("has REALLY changed something: " + changes.Count);
+
             selectedTelevision.IsOn = true;
             if (undoAble) OnMakeRoomAction?.Invoke(this, newChange, true);
             CheckRoomCompletion();
+            Debug.Log("has REALLY changed something: " + changes.Count);
+
         } else {
             selectedTelevision.IsOn = false;
         }
+        Debug.Log("has changed something: " + changes.Count);
     }
 
     ///<summary>
@@ -188,7 +196,9 @@ public class Room : MonoBehaviour
     /// removes a change to the room updating the objects
     ///</summary>
     private void RemoveChange(Change change) {
-        ToggleChangeAllObjects(change, (IChangable obj) => { obj.RemoveChange(change); });
+        ToggleChangeAllObjects(change, (IChangable obj) => { obj.RemoveChange(change); });        
+        change.television.IsOn = false;
+
         changes.Remove(change);
     }
 
@@ -261,10 +271,13 @@ public class Room : MonoBehaviour
         AllObjects.Add(player);
 
         Animated = false;
+
         if (loadSaveData) {
-            LoadProgress(SaveData.current);
+            LoadState(SaveData.current);
         }
         ActivateChanges();
+        beginState = SaveData.GetStateOfRoom(this);
+        
         Animated = true;
         roomEnterEvent?.Invoke();
     }
@@ -279,11 +292,25 @@ public class Room : MonoBehaviour
 
 
     ///<summary>
+    /// Resets the room by deactivation all the changes and returns the room state and activates the changes 
+    ///</summary>
+    public void ResetRoom() {
+        DeactivateChanges();
+        foreach (RoomTelevision tv in allTelevisions)
+        {
+            tv.IsOn = false;
+        }
+        LoadState(beginState);
+        ActivateChanges();
+    }
+
+
+    ///<summary>
     /// Loads the savedata with all the television states and the cordinates of the roomobjects
     ///</summary>
-    public void LoadProgress(SaveData data) {
-        // Animated = false;
-
+    public void LoadState(SaveData data) {
+        Debug.Log(player);
+        Debug.Log(data);
         player.transform.position = data.playerCordinates.position;
         player.transform.rotation = data.playerCordinates.rotation;
         List<PickableRoomObjectCordinates> cordinates = data.cordinates.ToList<PickableRoomObjectCordinates>();
@@ -301,10 +328,7 @@ public class Room : MonoBehaviour
             tv.DeselectLetters();
             Debug.Log("tv word = "+ tvState.word);
             tv.Word = tvState.word;
-            tv.UpdateAnswerTextPosition();
-            // tv.Confirm();
+            // tv.UpdateAnswerTextPosition();
         }
-
-        // Animated = true;
     }
 }
