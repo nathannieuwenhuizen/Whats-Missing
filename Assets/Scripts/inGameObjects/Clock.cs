@@ -43,8 +43,6 @@ public class Clock : RoomObject
         StartCoroutine(Ticking());
     }
     public void SetClockToNow() {
-        Debug.Log(System.DateTime.Now.ToString("HH:mm:ss")); 
-
         Seconds = System.DateTime.Now.Second;
         Minutes = System.DateTime.Now.Minute;
         Hours = System.DateTime.Now.Hour;
@@ -98,7 +96,6 @@ public class Clock : RoomObject
         Quaternion start = arrow.transform.localRotation;
         Quaternion end = Quaternion.Euler(val, 0,0);
 
-        Debug.Log("start: " + start + " | end: " + val);
         float index = 0;
         while (index < tickDuration) {
             arrow.transform.localRotation = Quaternion.SlerpUnclamped(start, end, tickAnimationCurve.Evaluate(index/ tickDuration));

@@ -45,6 +45,9 @@ public class Area : MonoBehaviour
     private void UpdateRoomActiveStates() {
         int currentIndex = rooms.IndexOf(currentRoom);
         for (int i = 0; i < rooms.Count; i++) {
+            if (i < rooms.IndexOf(currentRoom)) {
+                rooms[i].EndDoor.Locked = false;
+            }
             if (i <= currentIndex + 1 && i >= currentIndex - 1) {
                 rooms[i].gameObject.SetActive(true);
             } else {
@@ -61,8 +64,9 @@ public class Area : MonoBehaviour
     void Start()
     {
         AudioHandler.Instance.PlayMusic(MusicFiles.gallery, 1f);
-        player.transform.position = rooms[startingRoomIndex].StartPos.position;
-        player.transform.rotation = rooms[startingRoomIndex].StartPos.rotation;
+        player.transform.position = rooms[startingRoomIndex].StartDoor.StartPos();
+        player.transform.rotation = rooms[startingRoomIndex].StartDoor.transform.rotation;
+        player.transform.Rotate(0,-90,0);// = rooms[startingRoomIndex].StartDoor.transform.rotation;
         //playerPos = rooms[startingRoomIndex].StartPos.position;
         CurrentRoom = rooms[startingRoomIndex];
     }
@@ -72,13 +76,20 @@ public class Area : MonoBehaviour
         Transform origin = transform;
         
         foreach (Room prefab in roomPrefabs) {
+            //make new room
             Room newRoom = Instantiate(prefab.gameObject, transform).GetComponent<Room>();
             newRoom.name = "Room #" + (rooms.Count + 1);
 
             //position room
             newRoom.transform.rotation = origin.rotation; 
-            newRoom.transform.position = origin.position + (newRoom.transform.position - newRoom.StartPos.position);
-            origin = newRoom.AttachedPos;
+            newRoom.transform.Rotate(new Vector3(0,180,0));
+            newRoom.transform.position = origin.position + (newRoom.transform.position - newRoom.StartDoor.transform.position);
+            origin = newRoom.EndDoor.transform;
+
+            //deactivate the startdoor
+            newRoom.StartDoor.gameObject.SetActive(rooms.Count == 0);
+
+            //add to the list
             rooms.Add(newRoom);
         }
     }
@@ -153,12 +164,12 @@ public class Area : MonoBehaviour
                 Debug.Log("area finished!");
             } else {
                 CurrentRoom = rooms[index + 1];
-                StartCoroutine(Walking(CurrentRoom.StartPos.position, .5f, .2f));
+                StartCoroutine(Walking(CurrentRoom.StartDoor.StartPos(), .5f, .2f));
             }
         } else {
             //previous room
             CurrentRoom = rooms[index];
-            StartCoroutine(Walking(CurrentRoom.EndPos.position, .5f, .2f));
+            StartCoroutine(Walking(CurrentRoom.EndDoor.StartPos(), .5f, .2f));
         }
     }
 

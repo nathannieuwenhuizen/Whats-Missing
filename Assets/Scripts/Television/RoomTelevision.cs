@@ -101,7 +101,7 @@ public class RoomTelevision : Television
         base.Confirm();
 
 
-        if (isQuestion) room.CheckQuestion(this);
+        if (isQuestion) room.CheckTVQuestion(this);
         else if (isOn == false) room.AddTVChange(this);
     }
 
@@ -148,7 +148,7 @@ public class RoomTelevision : Television
     public void ResetTV() {
         DeselectLetters();
         if (!isQuestion) room.RemoveTVChange(this, true);
-        else room.CheckQuestion(this);
+        else room.CheckTVQuestion(this);
     }
     public void ConfirmationSucceeded() {
         if (room.Animated)

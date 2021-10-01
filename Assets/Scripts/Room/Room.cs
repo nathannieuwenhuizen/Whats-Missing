@@ -38,36 +38,21 @@ public class Room : MonoBehaviour
     public List<Change> Changes { get => changes; }
     
     [SerializeField]
-    private Transform startPos;
-
-    public Transform StartPos
-    {
-        get {return this.startPos;}
-    }
-
-    [SerializeField]
-    private Transform attachedPos;
-
-    public Transform AttachedPos
-    {
-        get {return this.attachedPos;}
-    }
-
-    [SerializeField]
-    private Transform endPos;
-    public Transform EndPos
-    {
-        get {return this.endPos;}
-    }
-
-    [SerializeField]
     private GameObject changeLineObject;
 
     [SerializeField]
     private GameObject plopParticle;
 
     [SerializeField]
-    private Door door;
+    private Door endDoor;
+    [SerializeField]
+    private Door startDoor;
+    public Door StartDoor {
+        get { return startDoor;}
+    }
+    public Door EndDoor {
+        get { return endDoor;}
+    }
 
     private bool animated;
     public bool Animated {
@@ -79,7 +64,8 @@ public class Room : MonoBehaviour
     }
 
     void Awake() {
-        door.room = this;
+        endDoor.room = this;
+        startDoor.room = this;
         allObjects = GetAllObjectsInRoom<IChangable>();
 
         for (int i = 0; i < allObjects.Count; i++)
@@ -123,7 +109,7 @@ public class Room : MonoBehaviour
         {
             Debug.Log("activate " + tv.Word + " with isQuestion: " + tv.isQuestion);
             if (tv.Word != "") {
-                if (tv.isQuestion) CheckQuestion(tv, false);
+                if (tv.isQuestion) CheckTVQuestion(tv, false);
                 else AddTVChange(tv, false);
             }
         }
@@ -139,7 +125,7 @@ public class Room : MonoBehaviour
     }
 
     ///<summary>
-    /// Apply the change to the room 
+    /// Checks and apply the change to the room 
     ///</summary>
     public void AddTVChange(RoomTelevision selectedTelevision, bool undoAble = true) {
         bool hasChangedSomething = false;
@@ -203,10 +189,8 @@ public class Room : MonoBehaviour
     ///<summary>
     /// removes a change to the room updating the objects
     ///</summary>
-    private void RemoveChange(Change change) {
-        ToggleChangeAllObjects(change, (IChangable obj) => { obj.RemoveChange(change); });        
-        change.television.IsOn = false;
-
+    private void RemoveChange(Change change, bool deactivateTV = false) {
+        ToggleChangeAllObjects(change, (IChangable obj) => { obj.RemoveChange(change); });  
         changes.Remove(change);
     }
 
@@ -227,7 +211,7 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Checks if a tv question is correct with the changes that exist inside the room.
     ///</summary>
-    public void CheckQuestion(RoomTelevision selectedTelevision, bool undoAble = true) {
+    public void CheckTVQuestion(RoomTelevision selectedTelevision, bool undoAble = true) {
         if (undoAble) {
             OnMakeRoomAction?.Invoke(this, new Change() {word = selectedTelevision.Word, television = selectedTelevision}, false, selectedTelevision.PreviousWord);
             selectedTelevision.PreviousWord = selectedTelevision.Word;
@@ -235,13 +219,11 @@ public class Room : MonoBehaviour
         foreach (Change change in changes)
         {
             if (change.word == selectedTelevision.Word || change.AlternativeWords.Contains(selectedTelevision.Word)) {
-                Debug.Log("tv is correct");
                 selectedTelevision.IsOn = true;
                 CheckRoomCompletion();
                 return;
             }
         }
-        Debug.Log("tv is false!");
         selectedTelevision.IsOn = false;
         CheckRoomCompletion();
     }
@@ -251,14 +233,13 @@ public class Room : MonoBehaviour
     ///</summary>
     private void CheckRoomCompletion() {
         if (AllTelevisionsAreOn()) {
-            door.Locked = false;
+            endDoor.Locked = false;
             roomFinishedEvent?.Invoke();
             if (revealChangeAfterCompletion) {
                 DeactivateChanges();
             }
-        } else if (door.Locked == false) {
-            Debug.Log("locked");
-            door.Locked = true;
+        } else if (endDoor.Locked == false) {
+            endDoor.Locked = true;
             if (revealChangeAfterCompletion) {
                 ActivateChanges();
             }

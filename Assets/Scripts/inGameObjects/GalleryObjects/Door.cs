@@ -17,7 +17,8 @@ public class Door : InteractabelObject
 
     private float openAngle = 30f;
     private float wideAngle = 90f;
-    private float startRotation;
+    private float startAngle;
+
     private IEnumerator flipCoroutine;
 
     [SerializeField]
@@ -29,6 +30,8 @@ public class Door : InteractabelObject
     [SerializeField]
     private AnimationCurve closeCurve;
 
+    [SerializeField]
+    private float walkDistance = 4f;
 
     public bool Locked {
         get { return locked; }
@@ -47,19 +50,19 @@ public class Door : InteractabelObject
         AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
         lightObject.SetActive(false);
         StopAllCoroutines();
-        StartCoroutine(Flipping(startRotation, .5f, closeCurve));
+        StartCoroutine(Flipping(startAngle, .5f, closeCurve));
     }
 
     void Open() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_squeek, .2f);
         lightObject.SetActive(true);
         StopAllCoroutines();
-        StartCoroutine(Flipping(startRotation + openAngle, 2f, openCurve));
+        StartCoroutine(Flipping(startAngle + openAngle, 2f, openCurve));
     }
     void Start()
     {
         lightObject.SetActive(false);
-        startRotation = doorPivot.eulerAngles.y;
+        startAngle = YRotation;
     }
 
     private void Update() {
@@ -92,8 +95,8 @@ public class Door : InteractabelObject
     }
 
     public float YRotation {
-        get => doorPivot.eulerAngles.y;
-        set => doorPivot.rotation = Quaternion.Euler(doorPivot.eulerAngles.x, value, doorPivot.eulerAngles.z);
+        get => doorPivot.localRotation.eulerAngles.y;
+        set => doorPivot.localRotation = Quaternion.Euler(doorPivot.localRotation.eulerAngles.x, value, doorPivot.localRotation.eulerAngles.z);
 
     }
 
@@ -113,8 +116,24 @@ public class Door : InteractabelObject
 
     public IEnumerator OpenAnimation() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_open);
-        yield return StartCoroutine(Flipping(startRotation + wideAngle, .8f, openCurve));
+        yield return StartCoroutine(Flipping(startAngle + wideAngle, .8f, openCurve));
         AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
         Close();
+    }
+
+    public Vector3 StartPos() {
+        return transform.position - transform.right * walkDistance - transform.forward * 1f;
+    }
+    public Vector3 EndPos() {
+        return transform.position + transform.right * walkDistance - transform.forward * 1f;
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(StartPos(), .5f);
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(EndPos(), .5f);
+
+        Debug.DrawLine(StartPos(), EndPos(), Color.white);
     }
 }

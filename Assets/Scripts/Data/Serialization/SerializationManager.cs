@@ -12,7 +12,6 @@ public class SerializationManager : MonoBehaviour
     public static bool Save(string saveName, object saveData) {
 
         BinaryFormatter fromatter = GetBinaryFormatter();
-        Debug.Log("file path: " + filePath);
 
         if (!Directory.Exists(filePath)) {
             Debug.Log("create path!");
@@ -20,7 +19,6 @@ public class SerializationManager : MonoBehaviour
         }
 
         string path = filePath + "/" + saveName + ".save";
-        Debug.Log("path: " + path);
         FileStream file = File.Create(path);
         fromatter.Serialize(file, saveData);
         file.Close();

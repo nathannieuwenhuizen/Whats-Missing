@@ -21,7 +21,7 @@ public class UndoHandeler : MonoBehaviour
             previousWord = _previousWord
         };
         actions.Add(newAction);
-        Debug.Log("actiod added: " + newAction.change.television);
+        Debug.Log("action added: " + newAction.change.television);
     }
 
     public static PickableRoomObjectCordinates[] GetAllPickableRoomCordinates(Room room) {
@@ -61,7 +61,7 @@ public class UndoHandeler : MonoBehaviour
         if (currentAction.change.television.isQuestion) {
             currentAction.change.television.DeselectLetters();
             currentAction.change.television.Word = currentAction.previousWord;
-            room.CheckQuestion(currentAction.change.television, false);
+            room.CheckTVQuestion(currentAction.change.television, false);
         } else {
             if (currentAction.changeIsAdded) {
                 room.RemoveTVChange(currentAction.change.television, false);

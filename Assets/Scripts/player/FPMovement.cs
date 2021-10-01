@@ -20,7 +20,7 @@ public class FPMovement : MonoBehaviour
     private ParticleSystem windParticles;
     private SFXFiles footstepFile = SFXFiles.player_footstep;
 
-    private float walkSoundDistance = 1.5f;
+    private float walkSoundDistance = 3f;
 
     private Vector3 oldPos;
 

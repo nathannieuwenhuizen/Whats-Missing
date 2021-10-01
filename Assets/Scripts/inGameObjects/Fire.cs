@@ -9,7 +9,7 @@ public class Fire : RoomObject
     void Start()
     {
         Instance =  AudioHandler.Instance.Player3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 20);
-        StartCoroutine(test());
+        // StartCoroutine(test());
     }
 
     public IEnumerator test() {
