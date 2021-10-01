@@ -23,8 +23,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 233718600693624779}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.06679649, y: 0.008932526, z: -0.0019018352}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5635284968169104064}
@@ -39,7 +39,7 @@ Transform:
   - {fileID: 3462224178155556993}
   - {fileID: 4526083348773320808}
   - {fileID: 957193278980540030}
-  m_Father: {fileID: 4922156204399467260}
+  m_Father: {fileID: 3347556556835797304}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1928791477952456011
@@ -141,7 +141,7 @@ MonoBehaviour:
   - star
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2
 --- !u!1 &2785213623887316684
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +241,7 @@ MonoBehaviour:
   - planets
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2
 --- !u!1 &2810583923713615561
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,7 +341,7 @@ MonoBehaviour:
   - star
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2
 --- !u!1 &3083026832272731197
 GameObject:
   m_ObjectHideFlags: 0
@@ -441,7 +441,7 @@ MonoBehaviour:
   - planets
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2
 --- !u!1 &3512823055396094391
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,7 +541,7 @@ MonoBehaviour:
   - star
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2
 --- !u!1 &4699331971575119994
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,6 +570,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children:
+  - {fileID: 6658018652042206409}
   - {fileID: 4922156204399467260}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -593,7 +594,7 @@ MonoBehaviour:
   disAppearing: {fileID: 0}
   missingChangeEffect: 1
   pivot: {fileID: 6658018652042206409}
-  rotationSpeed: 3
+  rotationSpeed: 5
   mainPivot: {fileID: 4922156204399467260}
   mainRotationSpeed: 2
 --- !u!1 &4948991654831532845
@@ -607,6 +608,7 @@ GameObject:
   - component: {fileID: 4922156204399467260}
   - component: {fileID: 7818854543172566717}
   - component: {fileID: 6807690803452168626}
+  - component: {fileID: 1644247475881535115}
   m_Layer: 0
   m_Name: Constellation_Planent
   m_TagString: Untagged
@@ -624,10 +626,9 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.06679649, y: 0.008932527, z: -0.0019018352}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 6658018652042206409}
+  m_Children: []
   m_Father: {fileID: 3347556556835797304}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7818854543172566717
 MeshFilter:
@@ -678,6 +679,23 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1644247475881535115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4948991654831532845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: planet
+  alternateWords: []
+  appearing: {fileID: 0}
+  disAppearing: {fileID: 0}
+  missingChangeEffect: 2
 --- !u!1 &5338624563346886007
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,7 +795,7 @@ MonoBehaviour:
   - planets
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2
 --- !u!1 &7251473141582093035
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,7 +895,7 @@ MonoBehaviour:
   - planets
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2
 --- !u!1 &7659741694498465577
 GameObject:
   m_ObjectHideFlags: 0
@@ -977,7 +995,7 @@ MonoBehaviour:
   - star
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2
 --- !u!1 &7937607053734477480
 GameObject:
   m_ObjectHideFlags: 0
@@ -1077,7 +1095,7 @@ MonoBehaviour:
   - star
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2
 --- !u!1 &7960862485967808690
 GameObject:
   m_ObjectHideFlags: 0
@@ -1177,7 +1195,7 @@ MonoBehaviour:
   - star
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2
 --- !u!1 &8065718529842937464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1277,7 +1295,7 @@ MonoBehaviour:
   - planets
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2
 --- !u!1 &9035214776589160327
 GameObject:
   m_ObjectHideFlags: 0
@@ -1377,4 +1395,4 @@ MonoBehaviour:
   - star
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
-  missingChangeEffect: 1
+  missingChangeEffect: 2

@@ -73,9 +73,9 @@ public class Room : MonoBehaviour
         endDoor.room = this;
         startDoor.room = this;
         allObjects = GetAllObjectsInRoom<IChangable>();
-
         for (int i = 0; i < allObjects.Count; i++)
         {
+            Debug.Log(allObjects[i].Transform.gameObject.name);
             allObjects[i].id = i;
         }
 
@@ -153,17 +153,25 @@ public class Room : MonoBehaviour
     private bool DoesObjectWordMatch(Change change, Action<IChangable> callBack) {
         bool result = false;
         float delay = 0;
+        float totalTime = 1f;
+        List<IChangable> foundObjects = new List<IChangable>();
+
         foreach (IChangable obj in allObjects)
         {
             if (obj.Word == change.word || obj.AlternativeWords.Contains(change.word)) {
+                foundObjects.Add(obj);
                 result = true;
-                if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
+            }
+        }
+
+        foreach (IChangable obj in foundObjects)
+        {
+            if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
                     StartCoroutine(AnimateChangeEffect(delay, change.television, obj, 1f, () => {
                         callBack(obj);
                     }));
-                    delay += .5f;
-                } else callBack(obj);
-            }
+                    delay += (totalTime / (float)foundObjects.Count);
+            } else callBack(obj);
         }
         return result;
     }

@@ -105,9 +105,10 @@ public class RoomObject : MonoBehaviour, IChangable
                 transform.localScale = Vector3.zero;
             break;
             case MissingChangeEffect.dissolve:
-                Material mat = GetComponent<MeshRenderer>().material;
-                yield return mat.AnimatingDissolveMaterial(0, 1, AnimationCurve.EaseInOut(0,0,1,1), 1f);
-
+                foreach (Material mat in getMaterials())
+                {
+                    yield return mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), 3f);
+                }
             break;
             case MissingChangeEffect.animation:
                 if(anim != null && disAppearing != null && Time.timeScale != 0) {
@@ -118,6 +119,10 @@ public class RoomObject : MonoBehaviour, IChangable
                 break;
         }
         onMissingFinish();
+    }
+
+    private Material[] getMaterials() {
+        return GetComponentInChildren<MeshRenderer>().materials;
     }
 
     ///<summary>
@@ -134,8 +139,10 @@ public class RoomObject : MonoBehaviour, IChangable
                 yield return transform.AnimatingScale(currentScale, curve, .5f);
             break;
             case MissingChangeEffect.dissolve:
-                Material mat = GetComponent<MeshRenderer>().material;
-                yield return mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), 1f);
+                foreach (Material mat in getMaterials())
+                {
+                    yield return mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), 3f);
+                }
             break;
             case MissingChangeEffect.animation:
                 if(anim != null && appearing != null && Time.timeScale != 0) {

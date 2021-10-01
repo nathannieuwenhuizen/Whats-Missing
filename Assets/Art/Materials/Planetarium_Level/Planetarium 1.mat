@@ -7,34 +7,20 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Planetarium
-  m_Shader: {fileID: -6465566751694194690, guid: caffbf1ac959d7f41b62e2e4b0cdc4a0, type: 3}
+  m_Name: Planetarium 1
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_22589d2ff7534ee6b9e5f5fb96739d52:
-        m_Texture: {fileID: 2800000, guid: e3761b2d06d7dbe419dfe337fd1ac599, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Texture2D_bd0225cc901d41079877ce6b99c55b73:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Texture2D_e0a5c549eea44cdd855bcb229ab7b9b9:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Texture2D_e3eb00d33e744c4697f71d5c3c6cf63d:
-        m_Texture: {fileID: 2800000, guid: 6480f1912f2dac9448a418a2cca4479a, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 6480f1912f2dac9448a418a2cca4479a, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -92,10 +78,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - BOOLEAN_D69A0F7C6C4C46778A16907524561A25: 0
-    - Dissolve: 0
-    - EdgeWidth: 0.035
-    - Vector1_57d5dbd69a914683960b090e3dcda66c: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -105,7 +87,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -118,14 +100,11 @@ Material:
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Surface: 0
+    - _SrcBlend: 5
+    - _Surface: 1
     - _WorkflowMode: 1
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
-    - Color_81ede9b3f09b459da05a0cbbcc685235: {r: 1, g: 1, b: 1, a: 1}
-    - Color_8d87e6b6d601431095e6568d61177791: {r: 1.509434, g: 1.0436562, b: 0.76041293, a: 1}
-    - Color_e197b5f2599347c4bce05f5c405f82b2: {r: 0, g: 4, b: 3.356863, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1.4142135, g: 0.87758666, b: 0.62038606, a: 1}

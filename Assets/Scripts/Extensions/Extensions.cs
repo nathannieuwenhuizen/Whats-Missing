@@ -46,7 +46,9 @@ public static class Extensions
 
     public static  IEnumerator AnimatingDissolveMaterial(this Material mat, float beginVal, float endVal,  AnimationCurve curve, float duration = .5f) {
         mat.SetFloat("EdgeWidth", .1f);
+        mat.SetFloat("Dissolve", beginVal);
         float timePassed = 0f;
+
         while (timePassed < duration) {
             yield return new WaitForEndOfFrame();
             timePassed += Time.unscaledDeltaTime;
