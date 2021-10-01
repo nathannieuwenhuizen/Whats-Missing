@@ -64,9 +64,9 @@ public class Area : MonoBehaviour
     void Start()
     {
         AudioHandler.Instance.PlayMusic(MusicFiles.gallery, 1f);
-        player.transform.position = rooms[startingRoomIndex].StartDoor.StartPos();
+        player.transform.position = rooms[startingRoomIndex].StartDoor.EndPos();
         player.transform.rotation = rooms[startingRoomIndex].StartDoor.transform.rotation;
-        player.transform.Rotate(0,-90,0);// = rooms[startingRoomIndex].StartDoor.transform.rotation;
+        player.transform.Rotate(0,90,0);// = rooms[startingRoomIndex].StartDoor.transform.rotation;
         //playerPos = rooms[startingRoomIndex].StartPos.position;
         CurrentRoom = rooms[startingRoomIndex];
     }
@@ -154,7 +154,9 @@ public class Area : MonoBehaviour
         OnUndo?.Invoke(currentRoom);
     }
 
-    void OnPassingThroughDoor(Door door) {
+    private void OnPassingThroughDoor(Door door) {
+        float duration = 1.5f;
+        float delay = 0f;
         OnNewRoomEnter?.Invoke();
         int index = rooms.IndexOf(door.room); // System.Array.IndexOf(roomPrefabs, door.room);
         if (door.room == currentRoom) {
@@ -164,12 +166,12 @@ public class Area : MonoBehaviour
                 Debug.Log("area finished!");
             } else {
                 CurrentRoom = rooms[index + 1];
-                StartCoroutine(Walking(CurrentRoom.StartDoor.StartPos(), .5f, .2f));
+                StartCoroutine(Walking(CurrentRoom.StartDoor.EndPos(), duration, delay));
             }
         } else {
             //previous room
             CurrentRoom = rooms[index];
-            StartCoroutine(Walking(CurrentRoom.EndDoor.StartPos(), .5f, .2f));
+            StartCoroutine(Walking(CurrentRoom.EndDoor.StartPos(), duration, delay));
         }
     }
 

@@ -14,6 +14,12 @@ public class Room : MonoBehaviour
     public static MakeRoomAction OnMakeRoomAction;
 
     public static float TimeScale = 1f;
+
+    private bool firstTimeEntering = true;
+    public bool FirstTimeEntering {
+        get { return firstTimeEntering;}
+        set { firstTimeEntering = value; }
+    }
     
     [SerializeField]
     private UnityEvent roomFinishedEvent;
@@ -101,26 +107,25 @@ public class Room : MonoBehaviour
     }
 
     ///<summary>
-    /// prepare changes so that the room is already changedwhen player walks in.
+    /// Activate the existing changes in the room.
     ///</summary>
     public void ActivateChanges(){
         Debug.Log("activate changes!");
-        foreach (RoomTelevision tv in allTelevisions)
+        for (int i = changes.Count - 1; i >= 0; i--)
         {
-            Debug.Log("activate " + tv.Word + " with isQuestion: " + tv.isQuestion);
-            if (tv.Word != "") {
-                if (tv.isQuestion) CheckTVQuestion(tv, false);
-                else AddTVChange(tv, false);
-            }
+            AddChangeInRoomObjects(changes[i]);
+            changes[i].active = true;
         }
+        
     }
     ///<summary>
-    /// Deactivate all changes. Called when the player leaves the room or a question-lvl has been cleared
+    /// Deactivate all existing changes. Called when the player leaves the room or a question-lvl has been cleared. The changes are still in the list.
     ///</summary>
     public void DeactivateChanges(){
         for (int i = changes.Count - 1; i >= 0; i--)
         {
-            RemoveChange(changes[i]);
+            RemoveChangeInRoomObjects(changes[i]);
+            changes[i].active = false;
         }
     }
 
@@ -128,33 +133,24 @@ public class Room : MonoBehaviour
     /// Checks and apply the change to the room 
     ///</summary>
     public void AddTVChange(RoomTelevision selectedTelevision, bool undoAble = true) {
-        bool hasChangedSomething = false;
-        // float delay = 0;
-        Change newChange = new Change(){word = selectedTelevision.Word, television = selectedTelevision};
+        Change newChange = CreateChange(selectedTelevision);
 
-        if (ToggleChangeAllObjects(newChange, (IChangable obj) => { obj.SetChange(newChange); newChange.AlternativeWords = obj.AlternativeWords; })) {
-            hasChangedSomething = true;
-        }
-        Debug.Log("has changed something: " + changes.Count);
-        if (hasChangedSomething) {
+        if (newChange != null) {
+            AddChangeInRoomObjects(newChange);
             changes.Add(newChange);
-            Debug.Log("has REALLY changed something: " + changes.Count);
-
             selectedTelevision.IsOn = true;
             if (undoAble) OnMakeRoomAction?.Invoke(this, newChange, true);
             CheckRoomCompletion();
-            Debug.Log("has REALLY changed something: " + changes.Count);
 
         } else {
             selectedTelevision.IsOn = false;
         }
-        Debug.Log("has changed something: " + changes.Count);
     }
 
     ///<summary>
-    /// Checks in all object if it has the sme word as the change. If so it will change or its change will be removed. Also returns true if any objects has the word.
+    /// Checks in all object if it has the sme word as the change. If so it will send a callback with the Ichangable. Also returns true if any objects has the word.
     ///</summary>
-    private bool ToggleChangeAllObjects(Change change, Action<IChangable> callBack) {
+    private bool DoesObjectWordMatch(Change change, Action<IChangable> callBack) {
         bool result = false;
         float delay = 0;
         foreach (IChangable obj in allObjects)
@@ -182,16 +178,25 @@ public class Room : MonoBehaviour
         CheckRoomCompletion();
         Change removedChange = changes.Find(x => x.television == selectedTelevision);
         if (undoAble) OnMakeRoomAction?.Invoke(this, removedChange, false);
-        if (!selectedTelevision.isQuestion) RemoveChange(removedChange);
+        if (!selectedTelevision.isQuestion) {
+            RemoveChangeInRoomObjects(removedChange);
+            changes.Remove(removedChange);
+        }
 
     }
 
     ///<summary>
     /// removes a change to the room updating the objects
     ///</summary>
-    private void RemoveChange(Change change, bool deactivateTV = false) {
-        ToggleChangeAllObjects(change, (IChangable obj) => { obj.RemoveChange(change); });  
-        changes.Remove(change);
+    private void RemoveChangeInRoomObjects(Change change) {
+        DoesObjectWordMatch(change, (IChangable obj) => { obj.RemoveChange(change); });  
+    }
+
+    ///<summary>
+    /// adds the change to the room updating the objects
+    ///</summary>
+    private void AddChangeInRoomObjects(Change change) {
+        DoesObjectWordMatch(change, (IChangable obj) => { obj.AddChange(change); });  
     }
 
     ///<summary>
@@ -216,16 +221,25 @@ public class Room : MonoBehaviour
             OnMakeRoomAction?.Invoke(this, new Change() {word = selectedTelevision.Word, television = selectedTelevision}, false, selectedTelevision.PreviousWord);
             selectedTelevision.PreviousWord = selectedTelevision.Word;
         }
-        foreach (Change change in changes)
-        {
-            if (change.word == selectedTelevision.Word || change.AlternativeWords.Contains(selectedTelevision.Word)) {
+        if (TVQuestionIsInchanges(selectedTelevision)) {
                 selectedTelevision.IsOn = true;
                 CheckRoomCompletion();
                 return;
-            }
         }
+        
         selectedTelevision.IsOn = false;
         CheckRoomCompletion();
+    }
+
+    private bool TVQuestionIsInchanges(RoomTelevision selectedTelevision) {
+        foreach (Change change in changes)
+        {
+            if (change.word == selectedTelevision.Word || change.alternativeWords.Contains(selectedTelevision.Word)) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
     ///<summary>
@@ -264,7 +278,21 @@ public class Room : MonoBehaviour
         if (loadSaveData) {
             LoadState(SaveData.current);
         }
-        ActivateChanges();
+        if (firstTimeEntering) {
+            firstTimeEntering = false;
+            changes = LoadChanges();
+            ActivateChanges();
+            UpdateTVStates();
+            CheckRoomCompletion();
+        } else {
+            if (revealChangeAfterCompletion) {
+                if (AllTelevisionsAreOn() == false)
+                    ActivateChanges();
+            } else 
+                ActivateChanges();
+        }
+
+
         beginState = SaveData.GetStateOfRoom(this);
         
         Animated = true;
@@ -279,6 +307,50 @@ public class Room : MonoBehaviour
         DeactivateChanges();
     }
 
+    ///<summary>
+    /// Returns the list of all changes that the room has with the televisions at the time of the call.
+    ///</summary>
+    public List<Change> LoadChanges() {
+        List<Change> result = new List<Change>();
+        foreach (RoomTelevision tv in allTelevisions)
+        {
+            if (!tv.isQuestion) {
+                Change newChange = CreateChange(tv);
+                if (newChange != null) {
+                    result.Add(newChange);
+                }
+            }
+        }
+        return result;
+    }
+
+    ///<summary>
+    /// Creates a tv change and returns null if the change doesn't find any objects with the word.
+    ///</summary>
+    public Change CreateChange(RoomTelevision selectedTelevision) {
+        Change newChange = new Change(){word = selectedTelevision.Word, television = selectedTelevision};
+
+        if (DoesObjectWordMatch(newChange, (IChangable obj) => {newChange.alternativeWords = obj.AlternativeWords; })) {
+            return newChange;
+        } else {
+            return null;
+        }
+    }
+
+    ///<summary>
+    /// Updates the tv.ison states with the existing changes.
+    ///</summary>
+    public void UpdateTVStates() {
+        foreach (RoomTelevision tv in allTelevisions)
+        {
+            if (!tv.isQuestion) {
+                tv.IsOn = changes.Find(c => c.television = tv) != null;
+            } else {
+                tv.IsOn = TVQuestionIsInchanges(tv);
+            }
+        }
+    }
+
 
     ///<summary>
     /// Resets the room by deactivation all the changes and returns the room state and activates the changes 
@@ -290,6 +362,7 @@ public class Room : MonoBehaviour
             tv.IsOn = false;
         }
         LoadState(beginState);
+        changes = LoadChanges();
         ActivateChanges();
     }
 

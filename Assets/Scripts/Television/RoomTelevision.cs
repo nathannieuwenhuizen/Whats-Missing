@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class RoomTelevision : Television
 {
     [Header("Room TV settings")]
-
     public ChangeType changeType = ChangeType.missing;
     public bool isQuestion = true;
     [SerializeField]
@@ -99,7 +98,6 @@ public class RoomTelevision : Television
     public override void Confirm()
     {
         base.Confirm();
-
 
         if (isQuestion) room.CheckTVQuestion(this);
         else if (isOn == false) room.AddTVChange(this);

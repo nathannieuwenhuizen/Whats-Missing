@@ -43,7 +43,7 @@ public class RoomObject : MonoBehaviour, IChangable
 
     public int id {get; set; }
 
-    public void SetChange(Change change) {
+    public void AddChange(Change change) {
         switch (change.television.changeType) {
             case ChangeType.missing:
                 onMissing();

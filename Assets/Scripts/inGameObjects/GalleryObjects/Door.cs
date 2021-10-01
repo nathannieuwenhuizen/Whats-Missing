@@ -30,6 +30,8 @@ public class Door : InteractabelObject
     [SerializeField]
     private AnimationCurve closeCurve;
 
+    private bool flipped = false;
+
     [SerializeField]
     private float walkDistance = 4f;
 
@@ -46,14 +48,14 @@ public class Door : InteractabelObject
         }
     }
 
-    void Close() {
+    private void Close() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
         lightObject.SetActive(false);
         StopAllCoroutines();
         StartCoroutine(Flipping(startAngle, .5f, closeCurve));
     }
 
-    void Open() {
+    private void Open() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_squeek, .2f);
         lightObject.SetActive(true);
         StopAllCoroutines();
@@ -73,10 +75,19 @@ public class Door : InteractabelObject
         //     StartCoroutine(OpenAnimation());
         // }
     }
+    private void CheckAngle() {
+        if (room.Player != null) {
+            float angle =  Vector3.Dot(transform.right, room.Player.transform.position - transform.position);
+            Debug.Log("angle: "+ angle);
+            flipped = angle < 0;
+        }
+    }
 
-    void Opening() {
+    private void Opening() {
         //TODO: Go to next room with player
+        CheckAngle();
         OnPassingThrough?.Invoke(this);
+        CheckAngle();
         StopAllCoroutines();
         StartCoroutine(OpenAnimation());
         //YRotation = startRotation + wideAngle;
@@ -108,7 +119,7 @@ public class Door : InteractabelObject
         //if (begin > 180) begin -= 360;
         while (index < duration) {
             index += Time.unscaledDeltaTime;
-            YRotation = Mathf.LerpUnclamped(begin, endRotation, curve.Evaluate(index / duration));
+            YRotation = Mathf.LerpUnclamped(begin, endRotation * (flipped ? - 1 : 1), curve.Evaluate(index / duration));
             yield return new WaitForEndOfFrame();
         }
         YRotation = endRotation;
@@ -116,7 +127,7 @@ public class Door : InteractabelObject
 
     public IEnumerator OpenAnimation() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_open);
-        yield return StartCoroutine(Flipping(startAngle + wideAngle, .8f, openCurve));
+        yield return StartCoroutine(Flipping(startAngle + wideAngle, 1.3f, openCurve));
         AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
         Close();
     }

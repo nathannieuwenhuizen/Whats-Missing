@@ -5,5 +5,6 @@
 public class Change {
     public RoomTelevision television;
     public string word;
-    public string[] AlternativeWords;
+    public string[] alternativeWords;
+    public bool active = true;
 }

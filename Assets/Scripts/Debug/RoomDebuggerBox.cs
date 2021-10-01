@@ -42,7 +42,7 @@ public class RoomDebuggerBox
 
             Handles.BeginGUI();
 
-            GUI.color = Color.green;
+            GUI.color = Color.white;
             GUI.skin.box.fontStyle = FontStyle.Bold;
             GUI.Box(new Rect(pos.x, pos.y, size.x, size.y), "Room changes");
             GUI.color = Color.white;
@@ -52,7 +52,7 @@ public class RoomDebuggerBox
             if (currentRoom == null) return;
             
             foreach(Change change in currentRoom.Changes) {
-                GUI.color = Color.white;
+                GUI.color = change.active ? Color.green : Color.red;
                 currentPos += 30;
                 GUI.skin.label.fontStyle = FontStyle.Bold;
                 GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.word + " | " + change.television.changeType, style);

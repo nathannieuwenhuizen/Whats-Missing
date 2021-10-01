@@ -43,7 +43,7 @@ public abstract class Property : MonoBehaviour, IChangable
         }
     }
 
-    public void SetChange(Change change)
+    public void AddChange(Change change)
     {
         currentChange = change;
         switch (change.television.changeType) {

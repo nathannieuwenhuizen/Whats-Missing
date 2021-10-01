@@ -73,9 +73,9 @@ public interface IChangable : IMissable
     ///</summary>
     Transform Transform {get; }
     ///<summary>
-    /// Sets the change of the entity.
+    /// Adds the change of the entity.
     ///</summary>
-    void SetChange(Change changeType);
+    void AddChange(Change changeType);
     ///<summary>
     /// Removes the change of the entity.
     ///</summary>
