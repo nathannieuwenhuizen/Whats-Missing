@@ -1,21 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class TextMeshFader : MonoBehaviour
 {
     [SerializeField]
-    private TextMesh mesh;
-    private List<TextMesh> meshes = new List<TextMesh>();
+    private TMP_Text mesh;
+
+    private List<TMP_Text> meshes = new List<TMP_Text>();
 
     [SerializeField]
     private AnimationCurve animCurve = AnimationCurve.EaseInOut(0,0, 1, 1);
 
     [SerializeField]
-    private float duration = 2f;
+    protected float duration = 2f;
 
     [SerializeField]
-    private float totalDelay = 1f;
+    protected float totalDelay = 1f;
 
     [SerializeField]
     private float offSetDistance;
@@ -36,17 +38,16 @@ public class TextMeshFader : MonoBehaviour
 
     }
     private void InitializeLetters() {
-        float offset = 0;
         for (int i = 0; i < mesh.text.Length; i++)
         {
             GameObject go = Instantiate(mesh.gameObject, mesh.transform.position, mesh.transform.rotation);
             go.name = mesh.text[i].ToString();
-            TextMesh newMesh = go.GetComponent<TextMesh>();
+            TMP_Text newMesh = go.GetComponent<TMP_Text>();
             newMesh.text = go.name;
             go.transform.SetParent(transform);
-            go.transform.position += transform.right * offset;
-            // Debug.Log(GetWidth(newMesh));
-            offset += GetWidth(newMesh);
+            go.transform.position = GetPositionOfCharacter(mesh, i);
+
+            Debug.Log(GetPositionOfCharacter(mesh, i));
             meshes.Add(newMesh);
         }
         mesh.gameObject.SetActive(false);
@@ -65,7 +66,7 @@ public class TextMeshFader : MonoBehaviour
         }
     }
 
-    private IEnumerator FadeLetter(TextMesh mesh, float delay, bool fadeIn = false) {
+    private IEnumerator FadeLetter(TMP_Text mesh, float delay, bool fadeIn = false) {
         float index = 0;
         float start = fadeIn ? 0 : 1;
         float end = fadeIn ? 1 : 0;
@@ -98,20 +99,24 @@ public class TextMeshFader : MonoBehaviour
 
     }
 
-    public static float GetWidth(TextMesh mesh)
+    public Vector3 GetPositionOfCharacter(TMP_Text tmp_text, int index)
     {
-        float width = 0;
-        
-        CharacterInfo info;
-        mesh.font.RequestCharactersInTexture(mesh.text, mesh.fontSize,mesh.fontStyle); //add this
-        if (mesh.font.GetCharacterInfo(mesh.text[0], out info, mesh.fontSize))
-        {
-            width += info.width;
-        }
-        
-        return width * mesh.characterSize * 0.1f * mesh.transform.lossyScale.x;
+        tmp_text.ForceMeshUpdate();
+        Vector3[] vertices = tmp_text.mesh.vertices;
+        TMP_CharacterInfo charInfo = tmp_text.textInfo.characterInfo[index];
+        int vertexIndex = charInfo.vertexIndex;
+        Vector2 charMidTopLine = new Vector2((vertices[vertexIndex + 0].x + vertices[vertexIndex + 2].x) / 2, (charInfo.bottomLeft.y + charInfo.topLeft.y) / 2);
+        Vector3 worldPos = tmp_text.transform.TransformPoint(charMidTopLine);
+        return worldPos;
     }
-    public void SetAlpha(TextMesh mesh, float val)
+
+    public static Vector2 GetWidth(TMP_Text text)
+    {
+        text.ForceMeshUpdate();
+        Size size = new Size() {width = text.GetRenderedValues(false).x, height = text.GetRenderedValues(false).y};
+        return new Vector2(size.width, size.height);
+    }
+    public void SetAlpha(TMP_Text mesh, float val)
     {
         Color col = mesh.color;
         col.a = val;

@@ -75,7 +75,7 @@ public class Room : MonoBehaviour
         allObjects = GetAllObjectsInRoom<IChangable>();
         for (int i = 0; i < allObjects.Count; i++)
         {
-            Debug.Log(allObjects[i].Transform.gameObject.name);
+            // Debug.Log(allObjects[i].Transform.gameObject.name);
             allObjects[i].id = i;
         }
 
