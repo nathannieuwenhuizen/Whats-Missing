@@ -21,7 +21,9 @@ public enum SFXFiles {
 
     wind_fall,
     stairs_footstep,
-    fire_crackling
+    fire_crackling,
+
+    clock_ticking
 }
 
 public enum MusicFiles {

@@ -292,6 +292,11 @@ public class Room : MonoBehaviour
         if (loadSaveData) {
             LoadState(SaveData.current);
         }
+
+        foreach (IRoomObject item in GetAllObjectsInRoom<IRoomObject>())
+        {
+            item.OnRoomEnter();
+        }
         if (firstTimeEntering) {
             firstTimeEntering = false;
             changes = LoadChanges();
@@ -316,6 +321,11 @@ public class Room : MonoBehaviour
     public void OnRoomLeave() {
         AllObjects.Remove(Player);
         Player = null;
+
+        foreach (IRoomObject item in GetAllObjectsInRoom<IRoomObject>())
+        {
+            item.OnRoomEnter();
+        }
 
         Animated = false;
         DeactivateChanges();

@@ -4,7 +4,7 @@ using UnityEngine;
 ///<summary>
 /// A physical object inside the room that can be changed. 
 ///</summary>
-public class RoomObject : MonoBehaviour, IChangable
+public class RoomObject : MonoBehaviour, IChangable, IRoomObject
 {
     [SerializeField]
     private string word;
@@ -188,5 +188,15 @@ public class RoomObject : MonoBehaviour, IChangable
             }
             clip.legacy = false;
         }
+    }
+
+    public virtual void OnRoomEnter()
+    {
+
+    }
+
+    public virtual void OnRoomLeave()
+    {
+        
     }
 }

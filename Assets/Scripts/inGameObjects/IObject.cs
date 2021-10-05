@@ -45,6 +45,15 @@ public interface IMissable {
 
 }
 
+
+///<summary>
+/// Interface for an object inside a room
+///</summary>
+public interface IRoomObject {
+    void OnRoomEnter();
+    void OnRoomLeave();
+}
+
 ///<summary>
 /// The entity can actually change.
 ///</summary>

@@ -37,11 +37,11 @@ public class Clock : RoomObject
             Seconds++;
         }
     }
-    void Start()
-    {
-        SetClockToNow();
-        StartCoroutine(Ticking());
-    }
+    // void Start()
+    // {
+    //     SetClockToNow();
+    //     StartCoroutine(Ticking());
+    // }
     public void SetClockToNow() {
         Seconds = System.DateTime.Now.Second;
         Minutes = System.DateTime.Now.Minute;
@@ -88,6 +88,10 @@ public class Clock : RoomObject
         if (!animating) {
             arrow.transform.localRotation = Quaternion.Euler(rotation, 0,0);
         } else {
+            if (arrow == secondArrow) {
+                Debug.Log("play sound!");
+                AudioHandler.Instance.Player3DSound(SFXFiles.clock_ticking, transform, .5f, 1f, false, false, 40);
+            }
             StartCoroutine(TickAnimation(arrow, rotation));
         }
     }
@@ -103,6 +107,19 @@ public class Clock : RoomObject
             index += Time.deltaTime;
         }
         arrow.transform.localRotation = Quaternion.Euler(val, 0,0);
+    }
+
+    public override void OnRoomEnter()
+    {
+        SetClockToNow();
+        StartCoroutine(Ticking());
+        base.OnRoomEnter();
+    }
+
+    public override void OnRoomLeave()
+    {
+        StopAllCoroutines();
+        base.OnRoomLeave();
     }
 
     private void Reset() {
