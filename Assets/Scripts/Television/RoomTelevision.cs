@@ -15,7 +15,10 @@ public class RoomTelevision : Television
     private string preAnswer;
 
     [SerializeField]
-    protected string[] letters;
+    protected string letters;
+
+    [SerializeField]
+    private bool huzzleWords = true;
 
     [Header("color indicator")]
     [SerializeField]
@@ -71,7 +74,7 @@ public class RoomTelevision : Television
     private void InitializeLetters()
     {
         for(int i = 0; i < letters.Length; i++) {
-            InitializeLetter(letters[i], GetLetterPosBasedOnIndex(letterObjects.Count));
+            InitializeLetter(letters[i].ToString(), GetLetterPosBasedOnIndex(letterObjects.Count));
         }
         for(int i = 0; i < preAnswer.Length; i++) {
             Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(letterObjects.Count));
@@ -89,6 +92,9 @@ public class RoomTelevision : Television
             } else {
                 x -= Mathf.CeilToInt((float)delta / 2f);
             }
+        }
+        if (!huzzleWords) {
+            x = index;
         }
         int y = Mathf.FloorToInt((float)index / (float)containerColloms);
         return GetLetterPosition(x,y);

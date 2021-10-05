@@ -98,7 +98,14 @@ MonoBehaviour:
   appearing: {fileID: 0}
   disAppearing: {fileID: 0}
   missingChangeEffect: 1
-  mass: 1
+  gameObjectID: 0
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
 --- !u!1 &815385537146673697
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,24 +136,6 @@ Transform:
   m_Father: {fileID: 7132833592707749633}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &744068062680455653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6846436696884127689}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad6510b846e1583458dc3402e3f92faa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: chair
-  alternateWords: []
-  appearing: {fileID: 0}
-  disAppearing: {fileID: 0}
-  missingChangeEffect: 1
-  mass: 1
 --- !u!1 &1606219196067903141
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,6 +488,31 @@ Transform:
   m_Father: {fileID: 8941945033529911754}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &744068062680455653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6846436696884127689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6510b846e1583458dc3402e3f92faa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: chair
+  alternateWords: []
+  appearing: {fileID: 0}
+  disAppearing: {fileID: 0}
+  missingChangeEffect: 1
+  gameObjectID: 0
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
 --- !u!1 &7205487388092757693
 GameObject:
   m_ObjectHideFlags: 0
@@ -5686,6 +5700,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0396396e914ab354d9cda6dda1b8913e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  beginState:
+    roomIndex: 0
+    tvStates: []
+    cordinates: []
+    playerCordinates:
+      id: 0
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
   roomFinishedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -5693,11 +5715,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   changes: []
-  startPos: {fileID: 6383790609957719143}
-  endPos: {fileID: 9196701192030723904}
   changeLineObject: {fileID: 8114430392978959389, guid: 986f83105e3fbb14b82378dda8cb675e, type: 3}
   plopParticle: {fileID: 9184769355248782121, guid: 027000b751effa744bf3b96e08b6096e, type: 3}
-  door: {fileID: 420830002172442845}
+  endDoor: {fileID: 0}
+  startDoor: {fileID: 0}
 --- !u!1 &9138754118256156067
 GameObject:
   m_ObjectHideFlags: 0
@@ -6086,17 +6107,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c40fb0c9ab3315d429a2dab4ad76fbc2, type: 3}
---- !u!114 &420830002172442845 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2381721381141148530, guid: c40fb0c9ab3315d429a2dab4ad76fbc2, type: 3}
-  m_PrefabInstance: {fileID: 2655580419798223791}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95d4ef71986286644a6b60144c31455f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &5664487214475543219 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7658029555231279388, guid: c40fb0c9ab3315d429a2dab4ad76fbc2, type: 3}

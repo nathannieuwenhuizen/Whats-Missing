@@ -18,6 +18,10 @@ public abstract class Property : MonoBehaviour, IChangable
     private bool inSpace= false;
     public bool InSpace => inSpace;
 
+    public delegate void OnShockwave(Transform origin);
+    public static event OnShockwave onShockwave;
+
+
     public Transform Transform => transform;
 
     public MissingChangeEffect MissingChangeEffect => throw new System.NotImplementedException();
@@ -28,10 +32,22 @@ public abstract class Property : MonoBehaviour, IChangable
 
     public virtual void onAppearing()
     {
+        if (Animated) {
+            onShockwave?.Invoke(currentChange.television.transform);
+            StartCoroutine(AnimateAppearing());
+        } else {
+            onAppearingFinish();
+        }
     }
 
     public virtual void onMissing()
     {
+        if (Animated) {
+            onShockwave?.Invoke(currentChange.television.transform);
+            StartCoroutine(AnimateMissing());
+        } else {
+            onMissingFinish();
+        }
     }
 
     public void RemoveChange(Change change)
@@ -55,21 +71,22 @@ public abstract class Property : MonoBehaviour, IChangable
 
     public virtual IEnumerator AnimateMissing()
     {
-        throw new System.NotImplementedException();
+        yield return null;
+        onMissingFinish();
     }
 
     public virtual void onMissingFinish()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public virtual IEnumerator AnimateAppearing()
     {
-        throw new System.NotImplementedException();
+        yield return null;
+        onAppearingFinish();
     }
 
     public virtual void onAppearingFinish()
     {
-        throw new System.NotImplementedException();
     }
 }

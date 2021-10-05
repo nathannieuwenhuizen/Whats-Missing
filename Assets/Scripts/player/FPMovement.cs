@@ -65,7 +65,7 @@ public class FPMovement : MonoBehaviour
     ///</summary>
 
     public void Jump() {
-        if (inAir) return;
+        if (inAir && rb.useGravity == true) return;
         inAir = true;
         StartCoroutine(MakeWindNoices());
         AudioHandler.Instance?.PlaySound(SFXFiles.player_jump, .1f);
@@ -185,7 +185,7 @@ public class FPMovement : MonoBehaviour
     ///Checks if the player is above ground. If the distance is 0 or lower than 0, it sticks to the ground. If not it returns false.
     ///</summary>
     private bool CheckFloorCollision() {
-        if (inAir) return false;
+        if (inAir || rb.useGravity == false) return false;
         RaycastHit[] hit;
 
         float radius = transform.localScale.x / 2f;
@@ -206,7 +206,8 @@ public class FPMovement : MonoBehaviour
         if (_distance != 10f) {
             distance = _distance;
             rb.MovePosition(transform.position + new Vector3(0,-(distance - offset),0));
-            return true;;
+            inAir = false;
+            return true;
         } else {
             distance = 10f;
             return false;
@@ -217,9 +218,20 @@ public class FPMovement : MonoBehaviour
         if (CheckFloorCollision() == false) {
             inAir = true;
             StartCoroutine(MakeWindNoices());
+        }        
+    }
+    private void OnTriggerEnter(Collider other) {
+        AreaTextMeshFader text = other.gameObject.GetComponent<AreaTextMeshFader>();
+        if (text != null){
+            text.FadeIn();
         }
-        //check if the player really is in the air, by checking below the player.
-        
+    }
+
+    private void OnTriggerExit(Collider other) {
+        AreaTextMeshFader text = other.gameObject.GetComponent<AreaTextMeshFader>();
+        if (text != null){
+            text.FadeOut();
+        }
     }
     ///<summary>
     ///Updates the camera and player rotation based on the delta of input.

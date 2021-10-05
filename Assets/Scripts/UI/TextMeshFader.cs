@@ -22,9 +22,28 @@ public class TextMeshFader : MonoBehaviour
     [SerializeField]
     private float offSetDistance;
 
-    private void Start() {
+    [SerializeField]
+    protected bool visible = true;
+
+    protected bool active = true;
+    public bool Active {
+        get { return active;}
+        set {
+            active = value;
+            if (active == false) {
+                visible = false;
+            }
+            for (int i = 0; i < meshes.Count; i++)
+            {
+                meshes[i].gameObject.SetActive(value);
+            }
+        }
+    }
+
+
+    protected virtual void Start() {
         InitializeLetters();
-        StartCoroutine(Test());
+        // StartCoroutine(Test());
     }
 
     public IEnumerator Test() {
@@ -46,20 +65,33 @@ public class TextMeshFader : MonoBehaviour
             newMesh.text = go.name;
             go.transform.SetParent(transform);
             go.transform.position = GetPositionOfCharacter(mesh, i);
-
-            Debug.Log(GetPositionOfCharacter(mesh, i));
             meshes.Add(newMesh);
         }
         mesh.gameObject.SetActive(false);
     }
 
-    public void FadeIn() {
+    public void ResetPosition() {
+        for (int i = 0; i < meshes.Count; i++)
+        {
+            meshes[i].transform.position = GetPositionOfCharacter(mesh, i);
+        }
+    }
+
+    public virtual void FadeIn() {
+        if (visible) return;
+        visible = true;
+        Active = true;
+        StopAllCoroutines();
+        ResetPosition();
         for (int i = 0; i < meshes.Count; i++)
         {
             StartCoroutine(FadeLetter(meshes[i],  ((float)i / (float)meshes.Count) * totalDelay, true));
         }
     }
     public void FadeOut() {
+        if (!visible) return;
+        visible = false;
+        StopAllCoroutines();
         for (int i = 0; i < meshes.Count; i++)
         {
             StartCoroutine(FadeLetter(meshes[i],  ((float)i / (float)meshes.Count) * totalDelay, false));
@@ -92,12 +124,10 @@ public class TextMeshFader : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-
         mesh.gameObject.transform.position = fadeIn ?  endPos : startPos;
         SetAlpha(mesh, end);
-
-
     }
+
 
     public Vector3 GetPositionOfCharacter(TMP_Text tmp_text, int index)
     {

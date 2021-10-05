@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorialIndicator : MonoBehaviour
+public class TutorialIndicator : Singleton<AudioHandler>
 {
 
     [SerializeField]
@@ -28,11 +28,16 @@ public class TutorialIndicator : MonoBehaviour
     }
 
     private void OnEnable() {
+        Area.OnFirstRoomEnter += StartWaitingForMove;
+        AreaTextMeshFader.onTVTurialShow += StartWaitingForClick;
         InputManager.OnClickDown += EnableClick;
         InputManager.OnMove += EnableMove;
     }
 
+
     private void OnDisable() {
+        Area.OnFirstRoomEnter -= StartWaitingForMove;
+        AreaTextMeshFader.onTVTurialShow -= StartWaitingForClick;
         InputManager.OnClickDown -= EnableClick;
         InputManager.OnMove -= EnableMove;
     }
@@ -47,6 +52,12 @@ public class TutorialIndicator : MonoBehaviour
         }
     }
 
+    public void StartWaitingForMove() {
+        StartCoroutine(WaitForMove());
+    }
+    public void StartWaitingForClick() {
+        StartCoroutine(WaitForMouseClick());
+    }
     
     public IEnumerator WaitForMove() {
         moved = false;

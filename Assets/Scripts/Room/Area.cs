@@ -10,6 +10,8 @@ public class Area : MonoBehaviour
     public delegate void NewRoomEvent();
     public static NewRoomEvent OnNewRoomEnter;
 
+    public static NewRoomEvent OnFirstRoomEnter;
+
     [SerializeField]
     private Room[] roomPrefabs;
 
@@ -21,12 +23,13 @@ public class Area : MonoBehaviour
     private AnimationCurve walkingCurve;
 
     [SerializeField]
-    private int startingRoomIndex = 0;
+    private int loadRoomIndex = 0;
 
     [SerializeField]
     private UnityEvent areaFinishedEvent;
 
     private bool loadRoomState = false;
+
 
     private Room currentRoom;
     public Room CurrentRoom {
@@ -38,6 +41,9 @@ public class Area : MonoBehaviour
             currentRoom = value;
             UpdateRoomActiveStates();
             currentRoom.OnRoomEnter(player, loadRoomState);
+            if (rooms.IndexOf(currentRoom) == 0) {
+                OnFirstRoomEnter?.Invoke();
+            }
             loadRoomState = false;
         }
     }
@@ -64,11 +70,11 @@ public class Area : MonoBehaviour
     void Start()
     {
         AudioHandler.Instance.PlayMusic(MusicFiles.gallery, 1f);
-        player.transform.position = rooms[startingRoomIndex].StartDoor.EndPos();
-        player.transform.rotation = rooms[startingRoomIndex].StartDoor.transform.rotation;
+        player.transform.position = rooms[loadRoomIndex].StartDoor.EndPos();
+        player.transform.rotation = rooms[loadRoomIndex].StartDoor.transform.rotation;
         player.transform.Rotate(0,90,0);// = rooms[startingRoomIndex].StartDoor.transform.rotation;
         //playerPos = rooms[startingRoomIndex].StartPos.position;
-        CurrentRoom = rooms[startingRoomIndex];
+        CurrentRoom = rooms[loadRoomIndex];
     }
 
     private void InitializeAllRooms() {
