@@ -72,7 +72,7 @@ public class Area : MonoBehaviour
         AudioHandler.Instance.PlayMusic(MusicFiles.gallery, 1f);
         player.transform.position = rooms[loadRoomIndex].StartDoor.EndPos();
         player.transform.rotation = rooms[loadRoomIndex].StartDoor.transform.rotation;
-        player.transform.Rotate(0,90,0);// = rooms[startingRoomIndex].StartDoor.transform.rotation;
+        player.transform.Rotate(0,180,0);// = rooms[startingRoomIndex].StartDoor.transform.rotation;
         //playerPos = rooms[startingRoomIndex].StartPos.position;
         CurrentRoom = rooms[loadRoomIndex];
     }
@@ -88,7 +88,7 @@ public class Area : MonoBehaviour
 
             //position room
             newRoom.transform.rotation = origin.rotation; 
-            newRoom.transform.Rotate(new Vector3(0,180,0));
+            newRoom.transform.Rotate(new Vector3(0,-90,0));
             newRoom.transform.position = origin.position + (newRoom.transform.position - newRoom.StartDoor.transform.position);
             origin = newRoom.EndDoor.transform;
 

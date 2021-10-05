@@ -255,8 +255,7 @@ public class Room : MonoBehaviour
     ///</summary>
     private void CheckRoomCompletion() {
         if (AllTelevisionsAreOn()) {
-            endDoor.Locked = false;
-            roomFinishedEvent?.Invoke();
+            StartCoroutine(WaitBeforeOpeningDoor());
             if (revealChangeAfterCompletion) {
                 DeactivateChanges();
             }
@@ -265,6 +264,13 @@ public class Room : MonoBehaviour
             if (revealChangeAfterCompletion) {
                 ActivateChanges();
             }
+        }
+    }
+    private IEnumerator WaitBeforeOpeningDoor() {
+        yield return new WaitForSeconds(2f);
+        if (AllTelevisionsAreOn()){
+            roomFinishedEvent?.Invoke();
+            endDoor.Locked = false;
         }
     }
 

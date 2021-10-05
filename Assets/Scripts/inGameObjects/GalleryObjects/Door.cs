@@ -22,8 +22,6 @@ public class Door : InteractabelObject
     private IEnumerator flipCoroutine;
 
     [SerializeField]
-    private GameObject lightObject;
-    [SerializeField]
     private Transform doorPivot;
     [SerializeField]
     private AnimationCurve openCurve;
@@ -50,20 +48,17 @@ public class Door : InteractabelObject
 
     private void Close() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
-        lightObject.SetActive(false);
         StopAllCoroutines();
         StartCoroutine(Flipping(startAngle, .5f, closeCurve));
     }
 
     private void Open() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_squeek, .2f);
-        lightObject.SetActive(true);
         StopAllCoroutines();
         StartCoroutine(Flipping(startAngle + openAngle, 2f, openCurve));
     }
     void Start()
     {
-        lightObject.SetActive(false);
         startAngle = YRotation;
     }
 
@@ -77,9 +72,8 @@ public class Door : InteractabelObject
     }
     private void CheckAngle() {
         if (room.Player != null) {
-            float angle =  Vector3.Dot(transform.right, room.Player.transform.position - transform.position);
-            Debug.Log("angle: "+ angle);
-            flipped = angle < 0;
+            float angle =  Vector3.Dot(transform.forward, room.Player.transform.position - transform.position);
+            flipped = angle > 0;
         }
     }
 
@@ -113,16 +107,22 @@ public class Door : InteractabelObject
 
     public IEnumerator Flipping(float endRotation, float duration, AnimationCurve curve) {
 
+        CheckAngle();
 
         float index = 0;
-        float begin = YRotation;
+        // float begin = YRotation;
         //if (begin > 180) begin -= 360;
+        Quaternion start = doorPivot.localRotation;
+        Quaternion end = Quaternion.Euler(doorPivot.localRotation.x, endRotation  * (flipped ? - 1 : 1), doorPivot.localRotation.z);
         while (index < duration) {
             index += Time.unscaledDeltaTime;
-            YRotation = Mathf.LerpUnclamped(begin, endRotation * (flipped ? - 1 : 1), curve.Evaluate(index / duration));
+            doorPivot.localRotation = Quaternion.Slerp(start, end, curve.Evaluate(index / duration));
+            // YRotation = Mathf.LerpUnclamped(begin, endRotation * (flipped ? - 1 : 1), curve.Evaluate(index / duration));
             yield return new WaitForEndOfFrame();
         }
-        YRotation = endRotation;
+        doorPivot.localRotation = end;
+
+        // YRotation = endRotation;
     }
 
     public IEnumerator OpenAnimation() {
@@ -133,10 +133,10 @@ public class Door : InteractabelObject
     }
 
     public Vector3 StartPos() {
-        return transform.position - transform.right * walkDistance - transform.forward * 1f;
+        return transform.position + transform.forward * walkDistance - transform.right * 1f;
     }
     public Vector3 EndPos() {
-        return transform.position + transform.right * walkDistance - transform.forward * 1f;
+        return transform.position - transform.forward * walkDistance - transform.right * 1f;
     }
 
     private void OnDrawGizmos() {

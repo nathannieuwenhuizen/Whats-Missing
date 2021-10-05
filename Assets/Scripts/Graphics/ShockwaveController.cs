@@ -28,9 +28,9 @@ public class ShockwaveController : MonoBehaviour {
     private Material material;
 
     private void Update() {
-        if(Input.GetKeyDown(KeyCode.L)) {
-            StartShockwave(transform);
-        }
+        // if(Input.GetKeyDown(KeyCode.L)) {
+        //     StartShockwave(transform);
+        // }
     }
 
     private void Awake() {
@@ -86,7 +86,7 @@ public class ShockwaveController : MonoBehaviour {
     private void OnDisable() {
         Property.onShockwave -= StartShockwave;
     }
-    
+
     private IEnumerator AnimatingShockwave(Transform origin) {
         if(TryGetFeature(out var feature)) 
             feature.SetActive(true);
