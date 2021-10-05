@@ -4,20 +4,25 @@ using UnityEngine;
 
 public class Fire : RoomObject
 {
+
     SFXInstance Instance;
-    // Start is called before the first frame update
-    void Start()
+    public override void OnRoomEnter()
     {
-        Instance =  AudioHandler.Instance.Player3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
-        // StartCoroutine(test());
+        if (Instance == null) {
+            Instance =  AudioHandler.Instance.Player3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
+        }
+            Instance.AudioSource.Play();
     }
 
-    public IEnumerator test() {
-        yield return new WaitForSeconds(4f);
-        AudioHandler.Instance.Stop3DSound(Instance);
+    public override void OnRoomLeave()
+    {
+        if (Instance == null)
+            Instance.AudioSource.Stop();
     }
+
 
     private void Reset() {
         Word = "Fire";
+        AlternativeWords = new string[] {"Flame"};
     }
 }

@@ -14,6 +14,8 @@ public class Letter : TelevisionButton
     private Vector3 startMovePos;
     [SerializeField]
     private TMP_Text text; 
+    [SerializeField]
+    private ParticleSystem clickParticle;
 
     private Coroutine hoverCoroutine;
     private Vector3 hoverScale = new Vector3(1.3f,1.3f,1.3f);
@@ -96,6 +98,8 @@ public class Letter : TelevisionButton
     {
         if (!canBeClicked) return;
         onLetterClick?.Invoke(this);
+        clickParticle.Emit(20);
+
     }
 
     public void MoveTo( Vector3 pos) {
