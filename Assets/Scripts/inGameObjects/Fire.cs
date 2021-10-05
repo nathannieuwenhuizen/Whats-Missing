@@ -8,7 +8,7 @@ public class Fire : RoomObject
     // Start is called before the first frame update
     void Start()
     {
-        Instance =  AudioHandler.Instance.Player3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 20);
+        Instance =  AudioHandler.Instance.Player3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
         // StartCoroutine(test());
     }
 

@@ -15,9 +15,9 @@ public enum SFXFiles {
 
     tv_change_woosh,
     letter_click,
-    tv_beep,
-    tv_true,
-    tv_false,
+    tv_beep, //can be changed
+    mirror_true,
+    mirror_false,
 
     wind_fall,
     stairs_footstep,

@@ -138,7 +138,7 @@ public class AudioHandler : Singleton<AudioHandler>
 
         instance.transform.SetParent(parent); 
         instance.transform.localPosition = Vector3.zero;
-        newSFWIncstance.AudioSource.spatialBlend= .9f;
+        newSFWIncstance.AudioSource.spatialBlend= 1f;
         newSFWIncstance.AudioSource.maxDistance= soundMaxDistance;
         newSFWIncstance.AudioSource.rolloffMode = AudioRolloffMode.Linear;
 

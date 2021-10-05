@@ -155,6 +155,8 @@ public class RoomObject : MonoBehaviour, IChangable
         onAppearingFinish();
     }
 
+    
+
     ///<summary>
     /// Function that fires when the animation has finished. It makes the snap changes the object needs to be missing.
     ///</summary>

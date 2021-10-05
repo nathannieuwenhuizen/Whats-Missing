@@ -187,7 +187,7 @@ public bool IsInteractable {
             while(letterIndex < lines[lineIndex].Length) {
                 speakText.text += lines[lineIndex][letterIndex];
                 letterIndex++;
-                AudioHandler.Instance?.PlaySound(SFXFiles.tv_beep);
+                // AudioHandler.Instance?.PlaySound(SFXFiles.tv_beep);
                 yield return new WaitForSeconds(.04f);
             }
             lineIndex++;

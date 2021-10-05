@@ -111,15 +111,18 @@ public class RoomTelevision : Television
 
     public void ConfirmationFailed() {
         if (room.Animated)         
-            AudioHandler.Instance?.PlaySound(SFXFiles.tv_false);
+            AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);
 
         DeselectLetters();
     }
 
     protected override void LetterClicked(Letter letter)
     {
-        if ( room != null && room.Animated) 
-            AudioHandler.Instance?.PlaySound(SFXFiles.letter_click);
+        if ( room != null && room.Animated) {
+            AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .5f, 
+            .8f + (.4f * ((float)selectedLetterObjects.Count / (float)(letterObjects.Count + selectedLetterObjects.Count)))
+            );
+        }
         
         letterObjects.Remove(letter);
         base.LetterClicked(letter);
@@ -156,7 +159,7 @@ public class RoomTelevision : Television
     }
     public void ConfirmationSucceeded() {
         if (room.Animated)
-            AudioHandler.Instance?.PlaySound(SFXFiles.tv_true);
+            AudioHandler.Instance?.PlaySound(SFXFiles.mirror_true);
 
         foreach(Letter letter in selectedLetterObjects) {
             letter.Color = new Color(.8f, 1f, .8f);
