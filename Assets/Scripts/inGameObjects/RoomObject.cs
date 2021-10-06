@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 ///<summary>
@@ -107,8 +108,9 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials())
                 {
-                    yield return mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), 3f);
+                    StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), 3f));
                 }
+                yield return new WaitForSeconds(3f);
             break;
             case MissingChangeEffect.animation:
                 if(anim != null && disAppearing != null && Time.timeScale != 0) {
@@ -122,7 +124,12 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
     }
 
     private Material[] getMaterials() {
-        return GetComponentInChildren<MeshRenderer>().materials;
+        List<Material> materials = new List<Material>();
+        foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>())
+        {
+            materials.AddRange(item.materials);
+        } 
+        return materials.ToArray();
     }
 
     ///<summary>
@@ -141,8 +148,9 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials())
                 {
-                    yield return mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), 3f);
+                    StartCoroutine(mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), 3f));
                 }
+                yield return new WaitForSeconds(3f);
             break;
             case MissingChangeEffect.animation:
                 if(anim != null && appearing != null && Time.timeScale != 0) {

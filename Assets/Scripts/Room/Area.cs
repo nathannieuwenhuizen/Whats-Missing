@@ -13,7 +13,7 @@ public class Area : MonoBehaviour
     public static NewRoomEvent OnFirstRoomEnter;
 
     [SerializeField]
-    private Room[] roomPrefabs;
+    private RoomLevel[] roomLevels;
 
     private List<Room> rooms = new List<Room>();
     [SerializeField]
@@ -77,14 +77,29 @@ public class Area : MonoBehaviour
         CurrentRoom = rooms[loadRoomIndex];
     }
 
+    ///<summary>
+    /// Loads and initializes all rooms from the inspector values.
+    ///</summary>
     private void InitializeAllRooms() {
         Vector3 pos = Vector3.zero;
         Transform origin = transform;
         
-        foreach (Room prefab in roomPrefabs) {
+        foreach (RoomLevel prefab in roomLevels) {
             //make new room
-            Room newRoom = Instantiate(prefab.gameObject, transform).GetComponent<Room>();
+            Room newRoom = Instantiate(prefab.roomPrefab.gameObject, transform).GetComponent<Room>();
             newRoom.name = "Room #" + (rooms.Count + 1);
+            if (prefab.roomInfo != null) {
+                newRoom.RevealChangeAfterCompletion = prefab.roomInfo.revealChangesAfterFinish;
+                foreach (RoomTelevision tv in newRoom.GetAllObjectsInRoom<RoomTelevision>())
+                {
+                    if (tv.isQuestion) {
+                        tv.Letters = prefab.roomInfo.questionMirror.letters;
+                    } else {
+                        tv.PreAnswer = prefab.roomInfo.changeMirror.letters;
+                    }
+                }
+            }
+            newRoom.LoadTVs();
 
             //position room
             newRoom.transform.rotation = origin.rotation; 

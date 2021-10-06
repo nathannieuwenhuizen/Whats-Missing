@@ -18,7 +18,7 @@ public class TimeProperty : Property
             obj.DeactivateRigidBody();
         }
 
-        AudioHandler.Instance.MusicSource.volume = 1f;
+        AudioHandler.Instance.MusicSource.volume = 1f * AudioSetting.MUSIC;
         AudioHandler.Instance.MusicSource.pitch = .2f;
         // room.Player.Volume.profile.TryGet<Vignette>(out vignette);
         // vignette.enabled.value = true;
@@ -33,8 +33,7 @@ public class TimeProperty : Property
             obj.ActivateRigidBody();
         }
 
-        Time.timeScale = 1;
-        AudioHandler.Instance.MusicSource.volume = 1f;
+        AudioHandler.Instance.MusicSource.volume = 1f * AudioSetting.MUSIC;
         AudioHandler.Instance.MusicSource.pitch = AudioHandler.Instance.MusicVolume;
         // room.Player.Volume.profile.TryGet<Vignette>(out vignette);
         // vignette.enabled.value = true;

@@ -27,6 +27,10 @@ public class Room : MonoBehaviour
     private UnityEvent roomEnterEvent;
 
     private bool revealChangeAfterCompletion = true;
+    public bool RevealChangeAfterCompletion {
+        get { return revealChangeAfterCompletion;}
+        set { revealChangeAfterCompletion = value; }
+    }
 
     private List<RoomTelevision> allTelevisions;
     private List<IChangable> allObjects;
@@ -84,6 +88,14 @@ public class Room : MonoBehaviour
         {
             allTelevisions[i].id = i;
             allTelevisions[i].Room = this;
+        }
+    }
+
+    public void LoadTVs() {
+        for (int i = 0; i < allTelevisions.Count; i++)
+        {
+            allTelevisions[i].InitializeLetters();
+            allTelevisions[i].UpdateIndicatorLight();
         }
     }
 

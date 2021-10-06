@@ -34,7 +34,7 @@ public class Television : MonoBehaviour
 
     [SerializeField]
     private bool isInteractable = false;
-public bool IsInteractable {
+    public bool IsInteractable {
         get { return isInteractable; }
         set { 
             isInteractable = value; 
@@ -45,7 +45,7 @@ public bool IsInteractable {
     
     //ui elements
     protected int containerColloms = 9;
-    protected int containerRows = 3;
+    protected int containerRows = 2;
 
 
     [SerializeField]

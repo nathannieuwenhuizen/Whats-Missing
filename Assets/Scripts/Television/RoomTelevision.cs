@@ -13,9 +13,17 @@ public class RoomTelevision : Television
 
     [SerializeField]
     private string preAnswer;
+    public string PreAnswer {
+        get { return preAnswer;}
+        set { preAnswer = value; }
+    }
 
     [SerializeField]
     protected string letters;
+    public string Letters {
+        get { return letters; }
+        set { letters = value; }
+    }
 
     [SerializeField]
     private bool huzzleWords = true;
@@ -45,7 +53,7 @@ public class RoomTelevision : Television
             } else {
                 ConfirmationFailed();
             }
-            updateIndicatorLight();
+            UpdateIndicatorLight();
         }
     }
 
@@ -57,50 +65,54 @@ public class RoomTelevision : Television
             room = value; 
         }
     }
-    
-    protected override void Awake()
-    {
-        base.Awake();
-        InitializeLetters();
-        updateIndicatorLight();
-    }
 
-    private void updateIndicatorLight() {
+    ///<summary>
+    /// Updates the light indicator on whether the tv is on.
+    ///</summary>
+    public void UpdateIndicatorLight() {
         Color colour = isOn ? onColor : offColor;
         colour *= 3.0f;
         mr.material.SetColor("_EmissionColor", colour);
     }
 
-    private void InitializeLetters()
+    ///<summary>
+    /// Creates all the letters and sets the word to pre answer
+    ///</summary>
+    public void InitializeLetters()
     {
+        if (huzzleWords) {
+            Debug.Log(letters);
+            letters = Extensions.Shuffle(letters);
+            Debug.Log(letters);
+        }
         for(int i = 0; i < letters.Length; i++) {
-            InitializeLetter(letters[i].ToString(), GetLetterPosBasedOnIndex(letterObjects.Count));
+            InitializeLetter(letters[i].ToString(), GetLetterPosBasedOnIndex(i));
         }
         for(int i = 0; i < preAnswer.Length; i++) {
-            Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(letterObjects.Count));
-            //LetterClicked(answerLetter);
+            Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(i));
         }
         Word = preAnswer;
     }
 
     private Vector3 GetLetterPosBasedOnIndex(int index) {
-        int x =  Mathf.RoundToInt((float)containerColloms / 2f);
-        int delta = index % containerColloms;
-        if (delta != 0) {
-            if (delta % 2 == 0) {
-                x += Mathf.CeilToInt((float)delta / 2f);
-            } else {
-                x -= Mathf.CeilToInt((float)delta / 2f);
-            }
-        }
-        if (!huzzleWords) {
-            x = index;
-        }
+        //last row
         int y = Mathf.FloorToInt((float)index / (float)containerColloms);
+
+        int x;
+        if ((letters.Length - (y * containerColloms)) < containerColloms) {
+            x = ((containerColloms - (letters.Length % containerColloms))/ 2) + (index % containerColloms);
+            // Debug.Log("bottom row colloms: " + containerColloms + " |  index: " + index + " | x: " + x);
+            // Debug.Log("letters rest: " + (containerColloms - (letters.Length % containerColloms)) + " |  index rest: " + (index % containerColloms));
+        } else {
+            //toprows without the need to center
+            x = Mathf.FloorToInt((float)index % (float)containerColloms);
+        }
         return GetLetterPosition(x,y);
     }
 
-    //fires when the player wants to apply the question or sentence
+    ///<summary>
+    /// fires when the player wants to apply the question or sentence
+    ///</summary>
     public override void Confirm()
     {
         base.Confirm();

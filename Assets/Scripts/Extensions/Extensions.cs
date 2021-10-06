@@ -16,6 +16,24 @@ public static class Extensions
         return p;
     }
 
+    public static string Shuffle(string _list)  
+    {  
+        Random.InitState(_list.Length);
+        string result = "";
+        int rngIndex;
+        int test = 0;
+        List<char> chars = new List<char>(_list.ToCharArray());
+
+        while (chars.Count > 0 && test < 100) {  
+            test++;
+            rngIndex = Mathf.FloorToInt(Random.Range(0, chars.Count));
+            result += chars[rngIndex];
+            chars.RemoveAt(rngIndex);
+        } 
+        return result;
+    }
+
+
     public static Vector3 RandomVector(float maxValue) {
         return new Vector3(
             Random.Range(-maxValue, maxValue),
