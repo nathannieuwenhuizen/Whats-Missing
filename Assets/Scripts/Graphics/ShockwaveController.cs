@@ -60,7 +60,6 @@ public class ShockwaveController : MonoBehaviour {
 
     public void StartShockwave(Transform origin) {
         Vector2 screenPos = Camera.main.WorldToViewportPoint(origin.position);
-        Debug.Log("screenpos: "+ screenPos);
         StopAllCoroutines();
         StartCoroutine(AnimatingShockwave(origin));
     }

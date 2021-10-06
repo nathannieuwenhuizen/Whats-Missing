@@ -143,7 +143,7 @@ public class RoomTelevision : Television
     protected override void RemoveSelectedLetter(int index)
     {
         base.RemoveSelectedLetter(index);
-        if (index < 0) return;
+        // if (index < 0) return;
         selectedLetterObjects[index].Color = Color.white;
         selectedLetterObjects[index].transform.parent = letterContainer;
         selectedLetterObjects[index].Deselected();
@@ -155,10 +155,15 @@ public class RoomTelevision : Television
     /// sets all the letters to their original place.
     ///</summary>
     public void DeselectLetters() {
+        // RemoveSelectedLetter(0);
+        // while (selectedLetterObjects.Count > 0) {
+        //     RemoveSelectedLetter(selectedLetterObjects.Count - 1);
+        // }
         for(int i = selectedLetterObjects.Count - 1; i >= 0; i--) {
             RemoveSelectedLetter(i);
         }
-        selectedLetterObjects = new List<Letter>();
+        Debug.Log("after deselection: " + selectedLetterObjects.Count);
+        // selectedLetterObjects = new List<Letter>();
          
     }
     ///<summary>

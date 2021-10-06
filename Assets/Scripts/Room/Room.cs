@@ -271,7 +271,7 @@ public class Room : MonoBehaviour
             if (revealChangeAfterCompletion) {
                 DeactivateChanges();
             }
-        } else if (endDoor.Locked == false) {
+        } else {
             endDoor.Locked = true;
             if (revealChangeAfterCompletion) {
                 ActivateChanges();
@@ -424,7 +424,6 @@ public class Room : MonoBehaviour
         {
             TVState tvState = tvStates.Find(x => x.id == tv.id);
             tv.DeselectLetters();
-            Debug.Log("tv word = "+ tvState.word);
             tv.Word = tvState.word;
             // tv.UpdateAnswerTextPosition();
         }

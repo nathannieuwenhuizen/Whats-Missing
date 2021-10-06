@@ -21,7 +21,7 @@ public class UndoHandeler : MonoBehaviour
             previousWord = _previousWord
         };
         actions.Add(newAction);
-        Debug.Log("action added: " + newAction.change.television);
+        // Debug.Log("action added: " + newAction.change.television);
     }
 
     public static PickableRoomObjectCordinates[] GetAllPickableRoomCordinates(Room room) {
@@ -83,7 +83,7 @@ public class UndoHandeler : MonoBehaviour
         room.Player.transform.rotation = currentAction.playerCordinates.rotation;
 
         actions.Remove(currentAction);
-        Debug.Log("action removed");
+        // Debug.Log("action removed");
     }
 
     public void ResetActions() {

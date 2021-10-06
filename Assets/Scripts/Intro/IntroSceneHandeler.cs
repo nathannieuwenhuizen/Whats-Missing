@@ -64,19 +64,19 @@ public class IntroSceneHandeler : MonoBehaviour
         StartCoroutine(ReplyingToName());
     }
     public IEnumerator ReplyingToName() {
-        string answer = UppercaseFirst(introTelevision.Word);
+        // string answer = UppercaseFirst(introTelevision.Word);
         
-        PlayerData.PLAYER_NAME = answer;
-        introTelevision.QuestionText.text = "";
-        introTelevision.ToggleKeyboardButtons(false);
-        introTelevision.DestroyKeyboard();
-        if (answer.Length < 3) {
-            yield return StartCoroutine(introTelevision.Talking( IntroDialogue.responceofSmallName, introTelevision.Centertext, null));
-        } else if  ( answer.Length > 10) {
-            yield return StartCoroutine(introTelevision.Talking( IntroDialogue.responceofTooLongName, introTelevision.Centertext, null));
-        } else {
-            yield return StartCoroutine(introTelevision.Talking( IntroDialogue.responceofNormalName, introTelevision.Centertext, null));
-        }
+        // PlayerData.PLAYER_NAME = answer;
+        // introTelevision.QuestionText.text = "";
+        // introTelevision.ToggleKeyboardButtons(false);
+        // introTelevision.DestroyKeyboard();
+        // if (answer.Length < 3) {
+        //     yield return StartCoroutine(introTelevision.Talking( IntroDialogue.responceofSmallName, introTelevision.Centertext, null));
+        // } else if  ( answer.Length > 10) {
+        //     yield return StartCoroutine(introTelevision.Talking( IntroDialogue.responceofTooLongName, introTelevision.Centertext, null));
+        // } else {
+        //     yield return StartCoroutine(introTelevision.Talking( IntroDialogue.responceofNormalName, introTelevision.Centertext, null));
+        // }
         yield return new WaitForSeconds(2f);
         door.Locked = false;
         yield return StartCoroutine(introTelevision.Talking( IntroDialogue.goToNextRoom, introTelevision.Centertext, null));

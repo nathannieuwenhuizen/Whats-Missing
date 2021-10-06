@@ -24,8 +24,8 @@ public class ColorProperty : Property
     {
         Debug.Log("color is missing!" + Animated);
         base.onMissing();
+        StopAllCoroutines();
         if (Animated) {
-            StopAllCoroutines();
             StartCoroutine(AnimateSaturation(false));
         } else 
             saturation = -100f;
@@ -33,8 +33,8 @@ public class ColorProperty : Property
     public override void onAppearing()
     {
         base.onAppearing();
+        StopAllCoroutines();
         if (Animated) {
-            StopAllCoroutines();
             StartCoroutine(AnimateSaturation(true));
         } else
             saturation = 0;
