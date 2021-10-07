@@ -125,8 +125,10 @@ public class Room : MonoBehaviour
         Debug.Log("activate changes!");
         for (int i = changes.Count - 1; i >= 0; i--)
         {
-            AddChangeInRoomObjects(changes[i]);
-            changes[i].active = true;
+            if (changes[i].active == false) {
+                AddChangeInRoomObjects(changes[i]);
+                changes[i].active = true;
+            }
         }
         
     }
@@ -136,8 +138,10 @@ public class Room : MonoBehaviour
     public void DeactivateChanges(){
         for (int i = changes.Count - 1; i >= 0; i--)
         {
-            RemoveChangeInRoomObjects(changes[i]);
-            changes[i].active = false;
+            if (changes[i].active) {
+                RemoveChangeInRoomObjects(changes[i]);
+                changes[i].active = false;
+            }
         }
     }
 
@@ -229,6 +233,7 @@ public class Room : MonoBehaviour
         yield return changeLine.MoveTowardsDestination();
 
         GameObject plop = Instantiate(plopParticle, o.Transform.position, Quaternion.identity);
+        Destroy(plop, 5f);
         callback();
     }
 
@@ -415,8 +420,6 @@ public class Room : MonoBehaviour
     /// Loads the savedata with all the television states and the cordinates of the roomobjects
     ///</summary>
     public void LoadState(SaveData data) {
-        Debug.Log(player);
-        Debug.Log(data);
         player.transform.position = data.playerCordinates.position;
         player.transform.rotation = data.playerCordinates.rotation;
         List<PickableRoomObjectCordinates> cordinates = data.cordinates.ToList<PickableRoomObjectCordinates>();

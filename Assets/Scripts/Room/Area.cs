@@ -13,6 +13,9 @@ public class Area : MonoBehaviour
     public static NewRoomEvent OnFirstRoomEnter;
 
     [SerializeField]
+    private RoomDirectionalLight directionalLight;
+
+    [SerializeField]
     private RoomLevel[] roomLevels;
 
     private List<Room> rooms = new List<Room>();
@@ -41,6 +44,8 @@ public class Area : MonoBehaviour
             currentRoom = value;
             UpdateRoomActiveStates();
             currentRoom.OnRoomEnter(player, loadRoomState);
+            directionalLight.RotateToMatchRoon(currentRoom.transform);
+
             if (rooms.IndexOf(currentRoom) == 0) {
                 OnFirstRoomEnter?.Invoke();
             }
@@ -48,13 +53,13 @@ public class Area : MonoBehaviour
         }
     }
 
-    private void UpdateRoomActiveStates() {
+    private void UpdateRoomActiveStates(bool includingNextRoom = false) {
         int currentIndex = rooms.IndexOf(currentRoom);
         for (int i = 0; i < rooms.Count; i++) {
             if (i < rooms.IndexOf(currentRoom)) {
                 rooms[i].EndDoor.Locked = false;
             }
-            if (i <= currentIndex + 1 && i >= currentIndex - 1) {
+            if (i <= currentIndex + (includingNextRoom ? 1 : 0) && i >= currentIndex - 1) {
                 rooms[i].gameObject.SetActive(true);
             } else {
                 rooms[i].gameObject.SetActive(false);
@@ -74,7 +79,10 @@ public class Area : MonoBehaviour
         player.transform.rotation = rooms[loadRoomIndex].StartDoor.transform.rotation;
         player.transform.Rotate(0,180,0);// = rooms[startingRoomIndex].StartDoor.transform.rotation;
         //playerPos = rooms[startingRoomIndex].StartPos.position;
+        directionalLight.animating = false;
         CurrentRoom = rooms[loadRoomIndex];
+        directionalLight.animating = true;
+
     }
 
     ///<summary>
@@ -122,20 +130,28 @@ public class Area : MonoBehaviour
         }
     }
 
+
+    //Todo: Probably move this to the door class.
+    ///<summary>
+    /// Animates the player walking thuogh a door
+    ///</summary>
     public IEnumerator Walking(Vector3 endPos, float duration, float delay = 0) {
         float index = 0;
+        player.Movement.EnableWalk = false;
         Vector3 begin = playerPos;
         while (index < duration) {
             index += Time.unscaledDeltaTime;
             playerPos = Vector3.LerpUnclamped(begin, endPos, walkingCurve.Evaluate(index / duration));
             yield return new WaitForEndOfFrame();
         }
+        player.Movement.EnableWalk = true;
         playerPos = endPos;
     }
  
 
     private void OnEnable() {
         Door.OnPassingThrough += OnPassingThroughDoor;
+        Door.OnDoorOpen += ShowNextRoom;
         InputManager.OnUndo += UndoAction;
         InputManager.OnReset += ResetRoom;
 
@@ -143,6 +159,7 @@ public class Area : MonoBehaviour
 
     private void OnDisable() {
         Door.OnPassingThrough -= OnPassingThroughDoor;
+        Door.OnDoorOpen -= ShowNextRoom;
         InputManager.OnUndo -= UndoAction;
         InputManager.OnReset -= ResetRoom;
     }
@@ -173,6 +190,10 @@ public class Area : MonoBehaviour
 
     private void UndoAction() {
         OnUndo?.Invoke(currentRoom);
+    }
+
+    private void ShowNextRoom(Door door) {
+        UpdateRoomActiveStates(true);
     }
 
     private void OnPassingThroughDoor(Door door) {

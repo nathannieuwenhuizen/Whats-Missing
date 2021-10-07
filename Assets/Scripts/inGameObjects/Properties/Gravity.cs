@@ -10,8 +10,11 @@ public class Gravity : Property
     [SerializeField]
     private Material shockWaveMaterial;
 
+    public static OnPropertyToggle onGravityMissing;
+
     public override void onMissingFinish()
     {
+        onGravityMissing?.Invoke();
         base.onMissingFinish();
         foreach(Rigidbody rb in room.GetAllObjectsInRoom<Rigidbody>()) {
             rb.useGravity = false;

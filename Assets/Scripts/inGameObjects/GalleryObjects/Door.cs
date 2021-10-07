@@ -11,8 +11,9 @@ public class Door : InteractabelObject
 
 
 
-    public delegate void PassingDoorAction(Door door);
-    public static event PassingDoorAction OnPassingThrough;
+    public delegate void DoorAction(Door door);
+    public static event DoorAction OnPassingThrough;
+    public static event DoorAction OnDoorOpen;
     private bool locked = true;
 
     private float openAngle = 30f;
@@ -53,6 +54,7 @@ public class Door : InteractabelObject
     }
 
     private void Open() {
+        OnDoorOpen?.Invoke(this);
         AudioHandler.Instance?.PlaySound(SFXFiles.door_squeek, .2f);
         StopAllCoroutines();
         StartCoroutine(Flipping(startAngle + openAngle, 2f, openCurve));
