@@ -6,6 +6,9 @@ using UnityEngine.Rendering.PostProcessing;
 public class TimeProperty : Property
 {
 
+    public static OnPropertyToggle onTimeMissing;
+    public static OnPropertyToggle onTimeAppearing;
+
     [SerializeField]
     private Room room;
 
@@ -18,8 +21,11 @@ public class TimeProperty : Property
             obj.DeactivateRigidBody();
         }
 
-        AudioHandler.Instance.MusicSource.volume = 1f * AudioSetting.MUSIC;
+        onTimeMissing?.Invoke();
+
+        AudioHandler.Instance.MusicVolume = 1f;
         AudioHandler.Instance.MusicSource.pitch = .2f;
+        AudioHandler.Instance.pitchMultiplier = .5f;
         // room.Player.Volume.profile.TryGet<Vignette>(out vignette);
         // vignette.enabled.value = true;
 
@@ -33,8 +39,12 @@ public class TimeProperty : Property
             obj.ActivateRigidBody();
         }
 
-        AudioHandler.Instance.MusicSource.volume = 1f * AudioSetting.MUSIC;
+        onTimeAppearing?.Invoke();
+
+
+        AudioHandler.Instance.MusicVolume = 1f;
         AudioHandler.Instance.MusicSource.pitch = AudioHandler.Instance.MusicVolume;
+        AudioHandler.Instance.pitchMultiplier = 1f;
         // room.Player.Volume.profile.TryGet<Vignette>(out vignette);
         // vignette.enabled.value = true;
     }

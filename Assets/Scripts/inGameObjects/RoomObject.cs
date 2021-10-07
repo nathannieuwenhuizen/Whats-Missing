@@ -32,6 +32,9 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
     }
 
     private bool inSpace = true;
+    ///<summary>
+    /// Is true when the player is inside the same room as the object
+    ///</summary>
     public bool InSpace { get => inSpace; }
 
     public Transform Transform => transform;
@@ -200,11 +203,11 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnRoomEnter()
     {
-
+        inSpace = true;
     }
 
     public virtual void OnRoomLeave()
     {
-        
+        inSpace = false;
     }
 }

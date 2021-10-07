@@ -24,6 +24,7 @@ public class AudioHandler : Singleton<AudioHandler>
             MusicSource.volume = value * AudioSetting.MUSIC;
         }
     }
+    public float pitchMultiplier = 1f;
     private float musicVolume = 1f;
 
     private bool mute = false;
@@ -100,7 +101,7 @@ public class AudioHandler : Singleton<AudioHandler>
         selectedAudio.AudioSource.spatialBlend = 0;
         selectedAudio.AudioSource.clip = selectedAudio.GetClip;
         selectedAudio.AudioSource.volume = volume * AudioSetting.SFX;
-        selectedAudio.AudioSource.pitch = pitch;
+        selectedAudio.AudioSource.pitch = pitch * pitchMultiplier;
         selectedAudio.AudioSource.loop = loop;
         selectedAudio.AudioSource.Play();
     }
@@ -132,7 +133,7 @@ public class AudioHandler : Singleton<AudioHandler>
         newSFWIncstance.AudioSource.gameObject.SetActive(true);
         newSFWIncstance.AudioSource.clip = selectedAudio.GetClip;
         newSFWIncstance.AudioSource.volume = volume * AudioSetting.SFX;
-        newSFWIncstance.AudioSource.pitch = pitch;
+        newSFWIncstance.AudioSource.pitch = pitch * pitchMultiplier;
         newSFWIncstance.AudioSource.loop = loop;
         newSFWIncstance.AudioSource.Play();
 

@@ -7,6 +7,10 @@ using UnityEngine;
 ///</summary>
 public abstract class Property : MonoBehaviour, IChangable
 {
+
+    public delegate void OnPropertyToggle();
+
+
     [SerializeField]    protected string word;
     public string Word { get =>  word; set => word = value; }
     [SerializeField]

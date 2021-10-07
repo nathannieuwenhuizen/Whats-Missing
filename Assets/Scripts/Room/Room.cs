@@ -294,6 +294,10 @@ public class Room : MonoBehaviour
         return true;
     }
 
+
+    ///<summary>
+    /// Fire when the player goes into the room.
+    ///</summary>
     public void OnRoomEnter(Player _player, bool loadSaveData = false) {
         player = _player;
         player.transform.parent = transform;
@@ -330,6 +334,10 @@ public class Room : MonoBehaviour
         roomEnterEvent?.Invoke();
     }
 
+
+    ///<summary>
+    /// Fires whem the player leaves the room.
+    ///</summary>
     public void OnRoomLeave() {
         AllObjects.Remove(Player);
         Player = null;

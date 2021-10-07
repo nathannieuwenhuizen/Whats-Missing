@@ -12,13 +12,13 @@ public class ChangeLine : MonoBehaviour
     private Vector3 point0, point1, point2 = new Vector3();
     private float duration = 2f;
 
-    private ParticleSystem particleSystem;
+    private ParticleSystem ps;
 
     private AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
 
 
     private void Awake() {
-        particleSystem = GetComponent<ParticleSystem>();
+        ps = GetComponent<ParticleSystem>();
     }
     public void SetDestination( Vector3 begin, Vector3 end) {
         point0 = begin;
@@ -36,13 +36,13 @@ public class ChangeLine : MonoBehaviour
             transform.position = Extensions.CalculateQuadraticBezierPoint(curve.Evaluate(index / duration), point0, point1, point2);
             yield return new WaitForEndOfFrame();
         }
-        particleSystem.startSpeed = particleSystem.startSpeed * 2;
-        particleSystem.Emit(100);
+        ps.startSpeed = ps.startSpeed * 2;
+        ps.Emit(100);
         Destroy(gameObject, 2f);
     }
 
-    private int numberOfPoints = 50;
     private void OnDrawGizmos() {
+        int numberOfPoints = 50;
         Vector3 beginPos = point0;
         Gizmos.DrawWireSphere(point0, .5f);
         Gizmos.DrawWireSphere(point1, .5f);
