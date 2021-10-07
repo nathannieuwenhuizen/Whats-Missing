@@ -1471,6 +1471,7 @@ GameObject:
   m_Component:
   - component: {fileID: 705507995}
   - component: {fileID: 705507994}
+  - component: {fileID: 705507996}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1554,6 +1555,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &705507996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705507993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c196b9ae6f3622643952eb1f5f45faf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animating: 1
 --- !u!1 &712276930
 GameObject:
   m_ObjectHideFlags: 0
@@ -2130,6 +2144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ddb5dcab1fdeb4eaf48dacaa12f2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  directionalLight: {fileID: 705507996}
   roomLevels:
   - roomPrefab: {fileID: 6527485958438557257, guid: e770a3634265b984d8bf0a7486900627, type: 3}
     roomInfo: {fileID: 0}
@@ -2174,7 +2189,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  loadRoomIndex: 6
+  loadRoomIndex: 7
   areaFinishedEvent:
     m_PersistentCalls:
       m_Calls:
@@ -3388,6 +3403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37ddb5dcab1fdeb4eaf48dacaa12f2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  directionalLight: {fileID: 0}
   roomLevels: []
   player: {fileID: 1391388559}
   walkingCurve:

@@ -13,8 +13,9 @@ public class RoomDebuggerBox
         public GUIStyle style;
         public float horizontalOffset = 5;
 
+#if UNITY_EDITOR
         //to get the label and field next to each other
-        public float valueField(float yPos, string header, float val, float min, float max)
+        public float valueField(float yPos, string header, float val, float min, float max) 
         {
             GUI.Label(new Rect(pos.x + horizontalOffset, yPos, size.x - horizontalOffset * 2, 15), header + " ");
             float value = GUI.HorizontalSlider(new Rect(pos.x + horizontalOffset, yPos + 10, size.x - horizontalOffset * 2, 15), val, min, max);
@@ -30,10 +31,13 @@ public class RoomDebuggerBox
             EditorGUIUtility.AddCursorRect(new Rect(pos.x + horizontalOffset, yPos + 10, size.x - horizontalOffset * 2, 15), MouseCursor.Link);
             return value;
         }
+#endif
 
         //draw function of the box
         public void Draw(Room currentRoom)
         {
+#if UNITY_EDITOR
+
             style = new GUIStyle();
             style.normal.textColor = Color.white;
 
@@ -59,7 +63,7 @@ public class RoomDebuggerBox
                 GUI.skin.label.fontStyle = FontStyle.Normal;
             }
             Handles.EndGUI();
-
+#endif
         }
     }
     

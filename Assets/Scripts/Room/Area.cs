@@ -41,8 +41,15 @@ public class Area : MonoBehaviour
             if (currentRoom != null) {
                 currentRoom?.OnRoomLeave();
             }
+            int oldindex = rooms.IndexOf(currentRoom);
             currentRoom = value;
-            UpdateRoomActiveStates();
+
+            if (oldindex < rooms.IndexOf(value)) {
+                UpdateRoomActiveStates();
+            } else {
+                UpdateRoomActiveStates(true);
+            }
+
             currentRoom.OnRoomEnter(player, loadRoomState);
             directionalLight.RotateToMatchRoon(currentRoom.transform);
 
