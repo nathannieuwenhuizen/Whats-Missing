@@ -29,6 +29,8 @@ public class PauseScreen : MonoBehaviour
         if (paused) return;
         paused = true;
 
+        AudioHandler.Instance.FadeListener(.2f);
+
         SetGroupVisibility(true);
         Time.timeScale = 0;
         OnPause?.Invoke();
@@ -56,6 +58,8 @@ public class PauseScreen : MonoBehaviour
     {
         if (!paused) return;
         paused = false;
+
+        AudioHandler.Instance.FadeListener(1f);
 
         SetGroupVisibility(false);
         Time.timeScale = 1;

@@ -55,7 +55,6 @@ public class Television : MonoBehaviour
         get { 
             string temp = "";
             foreach(Letter letter in selectedLetterObjects) {
-                Debug.Log("letter value: " + letter.LetterValue);
                 temp += letter.LetterValue;
             }
             return temp; 

@@ -26,6 +26,9 @@ public class TextMeshFader : MonoBehaviour
     protected bool visible = true;
 
     protected bool active = true;
+    ///<summary>
+    /// If the text is active?. idk
+    ///</summary>
     public bool Active {
         get { return active;}
         set {
@@ -43,19 +46,11 @@ public class TextMeshFader : MonoBehaviour
 
     protected virtual void Start() {
         InitializeLetters();
-        // StartCoroutine(Test());
     }
 
-    public IEnumerator Test() {
-        while (true) {
-
-            FadeIn();
-            yield return new WaitForSeconds(5f);
-            FadeOut();
-            yield return new WaitForSeconds(5f);
-        }
-
-    }
+    ///<summary>
+    /// Creates all the letters from the mesh object.
+    ///</summary>
     private void InitializeLetters() {
         for (int i = 0; i < mesh.text.Length; i++)
         {
@@ -70,6 +65,9 @@ public class TextMeshFader : MonoBehaviour
         mesh.gameObject.SetActive(false);
     }
 
+    ///<summary>
+    /// Resets all the latters back to their spawn position.
+    ///</summary>
     public void ResetPosition() {
         for (int i = 0; i < meshes.Count; i++)
         {
@@ -77,6 +75,10 @@ public class TextMeshFader : MonoBehaviour
         }
     }
 
+
+    ///<summary>
+    /// Fades the whole text in
+    ///</summary>
     public virtual void FadeIn() {
         if (visible) return;
         visible = true;
@@ -88,6 +90,9 @@ public class TextMeshFader : MonoBehaviour
             StartCoroutine(FadeLetter(meshes[i],  ((float)i / (float)meshes.Count) * totalDelay, true));
         }
     }
+    ///<summary>
+    /// Fades the whole text out.
+    ///</summary>
     public void FadeOut() {
         if (!visible) return;
         visible = false;
@@ -98,6 +103,9 @@ public class TextMeshFader : MonoBehaviour
         }
     }
 
+    ///<summary>
+    /// Fades one letter in.
+    ///</summary>
     private IEnumerator FadeLetter(TMP_Text mesh, float delay, bool fadeIn = false) {
         float index = 0;
         float start = fadeIn ? 0 : 1;
@@ -128,24 +136,22 @@ public class TextMeshFader : MonoBehaviour
         SetAlpha(mesh, end);
     }
 
-
+    ///<summary>
+    /// Returns the world position of a charachter in the tmp tect mesh.
+    ///</summary>
     public Vector3 GetPositionOfCharacter(TMP_Text tmp_text, int index)
     {
         tmp_text.ForceMeshUpdate();
         Vector3[] vertices = tmp_text.mesh.vertices;
         TMP_CharacterInfo charInfo = tmp_text.textInfo.characterInfo[index];
         int vertexIndex = charInfo.vertexIndex;
+        float divider = (tmp_text.text[index].ToString() == "." ? .3f : 0);
         Vector2 charMidTopLine = new Vector2((vertices[vertexIndex + 0].x + vertices[vertexIndex + 2].x) / 2, (charInfo.bottomLeft.y + charInfo.topLeft.y) / 2);
+        charMidTopLine = new Vector2((vertices[vertexIndex + 0].x + vertices[vertexIndex + 2].x) / 2, (vertices[vertexIndex + 0].y + vertices[vertexIndex + 2].y) / 2 + divider);
         Vector3 worldPos = tmp_text.transform.TransformPoint(charMidTopLine);
         return worldPos;
     }
 
-    public static Vector2 GetWidth(TMP_Text text)
-    {
-        text.ForceMeshUpdate();
-        Size size = new Size() {width = text.GetRenderedValues(false).x, height = text.GetRenderedValues(false).y};
-        return new Vector2(size.width, size.height);
-    }
     public void SetAlpha(TMP_Text mesh, float val)
     {
         Color col = mesh.color;

@@ -81,9 +81,7 @@ public class RoomTelevision : Television
     public void InitializeLetters()
     {
         if (huzzleWords) {
-            Debug.Log(letters);
             letters = Extensions.Shuffle(letters);
-            Debug.Log(letters);
         }
         for(int i = 0; i < letters.Length; i++) {
             InitializeLetter(letters[i].ToString(), GetLetterPosBasedOnIndex(i));

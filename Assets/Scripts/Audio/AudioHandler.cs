@@ -6,6 +6,8 @@ using UnityEngine;
 public class AudioHandler : Singleton<AudioHandler>
 {
 
+    private Coroutine audioListenerCoroutine;
+
     [SerializeField]
     private AudioLibrary[] libraries;
     
@@ -43,17 +45,38 @@ public class AudioHandler : Singleton<AudioHandler>
     protected override void Awake()
     {
         base.Awake();
-        // #if UNITY_EDITOR    // library
-        //     libraries = new AudioLibrary[1] { UnityEditor.AssetDatabase.LoadAssetAtPath<AudioLibrary>("Assets/Audio.asset")};
-        // #endif // UNITY_EDITOR
-
         MusicSource = GetComponent<AudioSource>();
         MusicSource.loop = true;
 
-        // mute = SoundSetting.MUTE;
-
         Initialize();
     }
+
+    public float AudioListenerVolume {
+        get { return AudioListener.volume; }
+        set { AudioListener.volume = value; }
+    }
+
+    public void FadeListener(float val) {
+        if (audioListenerCoroutine != null) {
+            StopCoroutine(audioListenerCoroutine);
+        }
+        audioListenerCoroutine = StartCoroutine(FadingListener(val));
+    }
+    private IEnumerator FadingListener(float val) {
+        float start = AudioListenerVolume;
+        float index = 0;
+        float duration = .5f;
+        while ( index < duration) {
+            AudioListenerVolume = Mathf.Lerp(start, val , index / duration);
+            index += Time.unscaledDeltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        AudioListenerVolume = val;
+    }
+
+    ///<summary>
+    /// Initializes all the audioclips into child objects with audiosources.
+    ///</summary>
     private void Initialize()
     {
         soundEffectInstances = new List<SFXInstance>();
@@ -74,6 +97,9 @@ public class AudioHandler : Singleton<AudioHandler>
         }
     }
 
+    ///<summary>
+    /// Creates and induvidual audioSource and adds it to the list of the handler.
+    ///</summary>
     private void InitializeAudioSource(SFXInstance sfx) {
         // if (soundEffectInstances.Contains(sfx)) return;
 
@@ -93,7 +119,7 @@ public class AudioHandler : Singleton<AudioHandler>
     /// <summary>
     ///Plays a 2D sound in the game.
     ///</summary>
-    public void PlaySound(SFXFiles audioEffect, float volume = 1f, float pitch = 1f, bool loop = false)
+    public void PlaySound(SFXFiles audioEffect, float volume = 1f, float pitch = 1f, bool loop = false, bool ignoreListenerVolume = false)
     {
         SFXInstance selectedAudio = GetSFXInstance(audioEffect);
         if (selectedAudio == default(SFXInstance)) return;
@@ -103,6 +129,7 @@ public class AudioHandler : Singleton<AudioHandler>
         selectedAudio.AudioSource.volume = volume * AudioSetting.SFX;
         selectedAudio.AudioSource.pitch = pitch * pitchMultiplier;
         selectedAudio.AudioSource.loop = loop;
+        selectedAudio.AudioSource.ignoreListenerVolume = ignoreListenerVolume;
         selectedAudio.AudioSource.Play();
     }
 

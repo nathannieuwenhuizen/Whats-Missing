@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,25 +24,38 @@ public class Gravity : Property
 
     public override IEnumerator AnimateMissing()
     {
-        float totalTime = .5f;
-        List<Rigidbody> allRigidbodies = SortedByDistanceRigidBodies();
-        foreach(Rigidbody rb in allRigidbodies) {
+        yield return AnimatGravityToggle((rb) => {
             rb.useGravity = false;
             rb.AddForce(Extensions.RandomVector(5f));
             rb.angularVelocity = Extensions.RandomVector(5f);
-            yield return new WaitForSeconds(totalTime / (float)allRigidbodies.Count);
-        }
+        });
         yield return base.AnimateMissing();
+    }
+
+    public IEnumerator AnimatGravityToggle(Action<Rigidbody> callback) {
+        float totalTime = 1f;
+        List<Rigidbody> allRigidbodies = SortedByDistanceRigidBodies();
+        int steps = allRigidbodies.Count > 20 ? Mathf.CeilToInt(allRigidbodies.Count / 20) : 1;
+        for (int i = 0; i < allRigidbodies.Count; i += steps)
+        {
+            for (int j = 0; j < steps; j++)
+            {
+                if (i + j < allRigidbodies.Count) {
+                    Rigidbody rb = allRigidbodies[i + j];
+                    callback(rb);
+                }
+            }
+            yield return new WaitForSeconds(totalTime / ((float)allRigidbodies.Count / steps));
+        }
     }
 
     public override IEnumerator AnimateAppearing()
     {
-        float totalTime = .3f;
-        List<Rigidbody> allRigidbodies = SortedByDistanceRigidBodies();
-        foreach(Rigidbody rb in allRigidbodies) {
+        yield return AnimatGravityToggle((rb) => {
             rb.useGravity = true;
-            yield return new WaitForSeconds(totalTime / (float)allRigidbodies.Count);
-        }
+            rb.AddForce(Extensions.RandomVector(1f));
+            rb.angularVelocity = Extensions.RandomVector(2f);
+        });
         yield return base.AnimateAppearing();
     }
 
