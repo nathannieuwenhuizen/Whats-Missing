@@ -18,6 +18,8 @@ public class Gravity : Property
         onGravityMissing?.Invoke();
         base.onMissingFinish();
         foreach(Rigidbody rb in room.GetAllObjectsInRoom<Rigidbody>()) {
+            rb.AddForce(Extensions.RandomVector(1f));
+            rb.angularVelocity = Extensions.RandomVector(2f);
             rb.useGravity = false;
         }
     }
@@ -32,7 +34,7 @@ public class Gravity : Property
         yield return base.AnimateMissing();
     }
 
-    public IEnumerator AnimatGravityToggle(Action<Rigidbody> callback) {
+    private IEnumerator AnimatGravityToggle(Action<Rigidbody> callback) {
         float totalTime = 1f;
         List<Rigidbody> allRigidbodies = SortedByDistanceRigidBodies();
         int steps = allRigidbodies.Count > 20 ? Mathf.CeilToInt(allRigidbodies.Count / 20) : 1;
@@ -53,8 +55,6 @@ public class Gravity : Property
     {
         yield return AnimatGravityToggle((rb) => {
             rb.useGravity = true;
-            rb.AddForce(Extensions.RandomVector(1f));
-            rb.angularVelocity = Extensions.RandomVector(2f);
         });
         yield return base.AnimateAppearing();
     }
