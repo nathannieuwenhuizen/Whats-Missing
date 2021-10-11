@@ -103,12 +103,14 @@ public class Television : MonoBehaviour
         }
     }
     private void CheckKeyboardInput() {
+#if UNITY_EDITOR
         foreach( Letter letter in letterObjects) {
             if (Input.GetKeyDown(GetKeyCode(letter.LetterValue[0]))) {
                 LetterClicked(letter);
                 return;
             }
         }
+#endif
         if (Input.GetKeyDown(KeyCode.Backspace)) {
             AudioHandler.Instance?.PlaySound(SFXFiles.letter_click);
             RemoveSelectedLetter(selectedLetterObjects.Count - 1);
