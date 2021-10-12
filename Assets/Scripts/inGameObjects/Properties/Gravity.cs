@@ -13,6 +13,15 @@ public class Gravity : Property
 
     public static OnPropertyToggle onGravityMissing;
 
+    public override IEnumerator AnimateMissing()
+    {
+        yield return AnimatGravityToggle((rb) => {
+            rb.useGravity = false;
+            rb.AddForce(Extensions.RandomVector(5f));
+            rb.angularVelocity = Extensions.RandomVector(5f);
+        });
+        yield return base.AnimateMissing();
+    }
     public override void onMissingFinish()
     {
         onGravityMissing?.Invoke();
@@ -24,15 +33,6 @@ public class Gravity : Property
         }
     }
 
-    public override IEnumerator AnimateMissing()
-    {
-        yield return AnimatGravityToggle((rb) => {
-            rb.useGravity = false;
-            rb.AddForce(Extensions.RandomVector(5f));
-            rb.angularVelocity = Extensions.RandomVector(5f);
-        });
-        yield return base.AnimateMissing();
-    }
 
     private IEnumerator AnimatGravityToggle(Action<Rigidbody> callback) {
         float totalTime = 1f;
@@ -59,6 +59,14 @@ public class Gravity : Property
         yield return base.AnimateAppearing();
     }
 
+    public override void onAppearingFinish()
+    {
+        base.onAppearingFinish();
+        foreach(Rigidbody rb in room.GetAllObjectsInRoom<Rigidbody>()) {
+            rb.useGravity = true;
+        }
+    }
+    
     public List<Rigidbody> SortedByDistanceRigidBodies() {
         List<Rigidbody> allRigidbodies = room.GetAllObjectsInRoom<Rigidbody>();
         allRigidbodies.Sort(delegate(Rigidbody a, Rigidbody b) {
@@ -69,13 +77,6 @@ public class Gravity : Property
     }
 
 
-    public override void onAppearingFinish()
-    {
-        base.onAppearingFinish();
-        foreach(Rigidbody rb in room.GetAllObjectsInRoom<Rigidbody>()) {
-            rb.useGravity = true;
-        }
-    }
 
     private void Reset() {
         Word = "gravity";
