@@ -133,18 +133,26 @@ public class RoomTelevision : Television
             .8f + (.4f * ((float)selectedLetterObjects.Count / (float)(letterObjects.Count + selectedLetterObjects.Count)))
             );
         }
-        
-        letterObjects.Remove(letter);
         base.LetterClicked(letter);
+    }
+
+    protected override void AddLetterToAnswer(Letter letter) {
+        letterObjects.Remove(letter);
+        base.AddLetterToAnswer(letter);
+    }
+    protected override void RemoveLetterFromAnswer(Letter letter)
+    {
+        RemoveSelectedLetter(selectedLetterObjects.IndexOf(letter));
+        // base.RemoveLetterFromAnswer(letter);
     }
 
     protected override void RemoveSelectedLetter(int index)
     {
         base.RemoveSelectedLetter(index);
-        // if (index < 0) return;
+        if (index < 0) return;
         selectedLetterObjects[index].Color = Color.white;
         selectedLetterObjects[index].transform.parent = letterContainer;
-        selectedLetterObjects[index].Deselected();
+        selectedLetterObjects[index].Deselect();
         letterObjects.Add(selectedLetterObjects[index]);
         selectedLetterObjects.Remove(selectedLetterObjects[index]);
     }

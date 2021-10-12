@@ -9,6 +9,9 @@ using UnityEngine;
 public class FPMovement : MonoBehaviour
 {
 
+    public float gravityScale = 1.0f; 
+    public static float globalGravity = -9.81f;
+
     private ControlSettings controlSettings;
     private Rigidbody rb;
 
@@ -26,16 +29,21 @@ public class FPMovement : MonoBehaviour
 
     public bool EnableWalk {get; set; } = true;
     public bool EnableRotation {get; set; } = true;
-    [SerializeField]
-    private int walkSpeed = 5;
-    private int rotateSpeed = 2;
-    
 
+
+    //movement
+    [Header("Movement speeds")]
+    [SerializeField]
+    private float walkSpeed = 5;
+    [SerializeField]
+    private float runSpeed = 8;
     [SerializeField]
     private float jumpForce = 200f;
 
-    private bool inAir = false;
+    private int rotateSpeed = 2;
 
+    private bool isRunning = false;
+    private bool inAir = false;
     private bool inCeiling = false;
     private int verticalAngle = 80;
 
@@ -60,10 +68,17 @@ public class FPMovement : MonoBehaviour
         Cursor.visible = enabled;
     }
 
+    public void StartRun() {
+        Debug.Log("start run");
+        isRunning = true;
+    }
+    public void EndRun() {
+        isRunning = false;
+    }
+
     ///<summary>
     ///Makes the player jump
     ///</summary>
-
     public void Jump() {
         if (inAir && rb.useGravity == true) return;
         inAir = true;
@@ -81,7 +96,7 @@ public class FPMovement : MonoBehaviour
         bool windEffectEnabled = false;
         while (inAir)
         {
-            if (rb.velocity.y < -10f && windEffectEnabled == false){
+            if (rb.velocity.y < -20f && windEffectEnabled == false){
                 windEffectEnabled = true;
                 AudioHandler.Instance.PlaySound(SFXFiles.wind_fall, .5f, 1, true);
                 windParticles.Play();
@@ -120,6 +135,13 @@ public class FPMovement : MonoBehaviour
         }
     }
 
+    private void FixedUpdate() {
+        if (rb.useGravity){
+            Vector3 gravity = globalGravity * gravityScale * Vector3.up;
+            rb.AddForce(gravity, ForceMode.Acceleration);
+        }
+    }
+
     ///<summary>
     ///Checks on when to make footstep sounds
     ///</summary>
@@ -135,6 +157,8 @@ public class FPMovement : MonoBehaviour
     }
 
     private void OnEnable() {
+        InputManager.OnStartRunning += StartRun;
+        InputManager.OnEndRunning += EndRun;
         InputManager.OnMove += SetMovement;
         InputManager.OnRotate += setMouseDelta;
         InputManager.OnJump += Jump;
@@ -143,6 +167,8 @@ public class FPMovement : MonoBehaviour
     }
 
     private void OnDisable() {
+        InputManager.OnStartRunning -= StartRun;
+        InputManager.OnEndRunning -= EndRun;
         InputManager.OnMove -= SetMovement;
         InputManager.OnRotate -= setMouseDelta;
         InputManager.OnJump -= Jump;
@@ -173,11 +199,13 @@ public class FPMovement : MonoBehaviour
     ///</summary>
     private void UpdateMovement()
     {
-        Vector3 dir = transform.TransformDirection(new Vector3(walkDelta.x * walkSpeed, rb.velocity.y, walkDelta.y * walkSpeed));
-        if (Time.timeScale == 1) {
-            rb.isKinematic = false;
-            rb.velocity = dir;
-        }
+        Vector3 dir = transform.TransformDirection(
+            new Vector3(
+                walkDelta.x * (isRunning ? runSpeed : walkSpeed), 
+                rb.velocity.y, 
+                walkDelta.y * (isRunning ? runSpeed : walkSpeed)
+            ));
+        rb.velocity = dir;
         MakeWalkingSounds();
     }
 

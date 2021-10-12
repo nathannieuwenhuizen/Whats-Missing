@@ -90,9 +90,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6574889081164814062}
-  - component: {fileID: 5174876299367352837}
   - component: {fileID: 2425228483070819772}
   - component: {fileID: 8327450787018823726}
+  - component: {fileID: 2595667906907349564}
   m_Layer: 0
   m_Name: Plant
   m_TagString: Untagged
@@ -117,31 +117,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5174876299367352837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2800163849945558040}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27df562d2f5c3da4b8c9db3942e53ddd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: plant
-  alternateWords: []
-  appearing: {fileID: 0}
-  disAppearing: {fileID: 0}
-  missingChangeEffect: 1
-  gameObjectID: 0
-  rigidBodyInfo:
-    Drag: 0
-    AngularDrag: 0.05
-    Mass: 1
-    RigidbodyConstraints: 0
-    Holdvelocity: {x: 0, y: 0, z: 0}
-    UseGravity: 1
 --- !u!54 &2425228483070819772
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -171,6 +146,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.012894325, y: 0.016011605, z: 0.06775337}
   m_Center: {x: 0, y: 0, z: 0.032890297}
+--- !u!114 &2595667906907349564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2800163849945558040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: plant
+  alternateWords: []
+  appearing: {fileID: 0}
+  disAppearing: {fileID: 0}
+  missingChangeEffect: 1
 --- !u!1 &4207082995662327933
 GameObject:
   m_ObjectHideFlags: 0

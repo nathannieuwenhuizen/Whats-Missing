@@ -76,11 +76,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89f50a841ffe4224da803e7c75c8f171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravityScale: 2
   cameraPivot: {fileID: 3812016021841544903}
   topCollider: {fileID: 1960237811766317345}
   windParticles: {fileID: 873013475321371505}
   walkSpeed: 8
-  jumpForce: 500
+  runSpeed: 12
+  jumpForce: 800
 --- !u!114 &1902171954849214630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +185,7 @@ GameObject:
   - component: {fileID: 4417230856931389}
   - component: {fileID: 3043929140729003339}
   - component: {fileID: 1610776760616358174}
+  - component: {fileID: 3749391541489209700}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -359,6 +362,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3749391541489209700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6249880996764401898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 235271470872aaf40aeb2fa79fdb46e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6320804700262416266
 GameObject:
   m_ObjectHideFlags: 0
@@ -5253,7 +5268,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8363543209541784163}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 2cbb24047bcdef64c92673c7c919c9dc, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5

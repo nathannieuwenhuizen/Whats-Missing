@@ -9,7 +9,7 @@ public class Door : InteractabelObject
     [HideInInspector]
     public Room room;
 
-
+    private bool animating = false;
 
     public delegate void DoorAction(Door door);
     public static event DoorAction OnPassingThrough;
@@ -81,6 +81,7 @@ public class Door : InteractabelObject
 
     private void Opening() {
         //TODO: Go to next room with player
+        animating = true;
         CheckAngle();
         OnPassingThrough?.Invoke(this);
         CheckAngle();
@@ -91,13 +92,13 @@ public class Door : InteractabelObject
 
     public override void Interact()
     {
-        if (locked) return;
+        if (locked || animating) return;
         Opening();
     }
 
     protected override void OnFocus()
     {
-        if (locked) return;
+        if (locked || animating) return;
         base.OnFocus();
     }
 
@@ -132,6 +133,7 @@ public class Door : InteractabelObject
         yield return StartCoroutine(Flipping(startAngle + wideAngle, 1.3f, openCurve));
         AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
         Close();
+        animating = false;
     }
 
     public Vector3 StartPos() {

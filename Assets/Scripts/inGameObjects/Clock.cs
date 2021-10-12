@@ -111,6 +111,7 @@ public class Clock : RoomObject
     public override void OnRoomEnter()
     {
         SetClockToNow();
+        StopAllCoroutines();
         StartCoroutine(Ticking());
         base.OnRoomEnter();
     }

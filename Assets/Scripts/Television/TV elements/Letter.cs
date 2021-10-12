@@ -6,8 +6,14 @@ using UnityEngine.UI;
 using TMPro;
 public class Letter : TelevisionButton
 {
+    public delegate void LetterClickedEvent(Letter letter);
+    public event LetterClickedEvent onLetterClick;
+    public static event LetterClickedEvent OnLetterClickAction;
     
     private Button button;
+
+    private bool selected = false;
+    public bool Selected { get => selected; }
 
     private Coroutine movingCoroutine;
     private float movingIndex;
@@ -31,12 +37,9 @@ public class Letter : TelevisionButton
         set {
             letterValue = value;
             text.text = value;
-            //rt.sizeDelta = new Vector2(size.width, size.height);
         }
     }
 
-    public delegate void LetterClickedEvent(Letter letter);
-    public event LetterClickedEvent onLetterClick;
 
     public override void Awake()
     {
@@ -61,18 +64,20 @@ public class Letter : TelevisionButton
     }
 
 
-    public void Selected()
+    public void Select()
     {
         OnUnhover();
-        button.interactable = false;
-        canBeClicked = false;
+        selected = true;
+        // button.interactable = false;
+        // canBeClicked = false;
         spawnPosition = rt.localPosition;
     }
 
-    public void Deselected()
+    public void Deselect()
     {
-        canBeClicked = true;
-        button.interactable = true;
+        selected = false;
+        // canBeClicked = true;
+        // button.interactable = true;
         MoveTo(spawnPosition);
     }
 
@@ -80,12 +85,6 @@ public class Letter : TelevisionButton
         get {
             text.ForceMeshUpdate();
             return new Size() {width = text.GetRenderedValues(true).x, height = text.GetRenderedValues(true).y};
-
-            // TextGenerator textGen = new TextGenerator();
-            // TextGenerationSettings generationSettings = text.GetGenerationSettings(text.rectTransform.rect.size); 
-            // float width = textGen.GetPreferredWidth(letterValue, generationSettings);
-            // float height = textGen.GetPreferredHeight(letterValue, generationSettings);
-            // return new Size() {width = width, height = height};
         }
     }
 
@@ -97,6 +96,8 @@ public class Letter : TelevisionButton
     void LetterIsClicked()
     {
         if (!canBeClicked) return;
+        
+        OnLetterClickAction?.Invoke(this);
         onLetterClick?.Invoke(this);
         clickParticle.Emit(20);
 

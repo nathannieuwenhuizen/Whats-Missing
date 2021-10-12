@@ -12,6 +12,8 @@ public class InputManager : MonoBehaviour
     public static event ClickAction OnCancel;
     public static event ClickAction OnUndo;
     public static event ClickAction OnReset;
+    public static event ClickAction OnStartRunning;
+    public static event ClickAction OnEndRunning;
     
     public delegate void AxisAction( Vector2 delta);
 
@@ -50,6 +52,14 @@ public class InputManager : MonoBehaviour
         else {
             OnMove?.Invoke(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
         }
+        //running
+        if (Input.GetButtonDown("Run")) {
+            OnStartRunning?.Invoke();
+        }
+        if (Input.GetButtonUp("Run")) {
+            OnEndRunning?.Invoke();
+        }
+
         //rotate
         OnRotate?.Invoke(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
 

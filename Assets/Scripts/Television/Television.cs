@@ -81,17 +81,19 @@ public class Television : MonoBehaviour
     }
 
     public void UpdateAnswerTextPosition() {
-        float totalWidth = 0;
+        float padding = 15f;
+        if (selectedLetterObjects.Count == 0) return;
+        float totalWidth = -padding;
         foreach(Letter letter in selectedLetterObjects) {
-            totalWidth += letter.size.width;
+            totalWidth += letter.size.width + padding;
         }
-        float cPos = -(totalWidth - selectedLetterObjects[0].size.width) / 2;
+        float cPos = -(totalWidth + padding + selectedLetterObjects[0].size.width) * .5f;
         for(int i = 0; i < selectedLetterObjects.Count; i++) {
             if (i != 0) {
-                cPos += selectedLetterObjects[i].size.width / 2;
+                cPos += selectedLetterObjects[i].size.width *.5f + padding;
             }
             selectedLetterObjects[i].MoveTo(answerText.localPosition + new Vector3(cPos, 0, 0));
-            cPos += selectedLetterObjects[i].size.width / 2;
+            cPos += selectedLetterObjects[i].size.width *.5f + padding;
         }
     }
 
@@ -161,11 +163,23 @@ public class Television : MonoBehaviour
     }
     protected virtual void LetterClicked(Letter letter)
     {
+        if (!letter.Selected) {
+            AddLetterToAnswer(letter);
+        }
+        else {
+            RemoveLetterFromAnswer(letter);
 
-        selectedLetterObjects.Add(letter);
-        letter.Selected();
-        letter.transform.SetParent(answerText.transform);
+        }
         UpdateAnswerTextPosition();
+    }
+
+    protected virtual void AddLetterToAnswer(Letter letter) {
+        selectedLetterObjects.Add(letter);
+        letter.Select();
+        letter.transform.SetParent(answerText.transform);
+    }
+    protected virtual void  RemoveLetterFromAnswer(Letter letter) {
+        letter.Deselect();
     }
 
     public virtual void Confirm() {

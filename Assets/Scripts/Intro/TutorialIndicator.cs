@@ -18,7 +18,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
     private Coroutine fadeCoroutine;
 
     public IEnumerator WaitForMouseClick() {
-        mouseClicked = false;
+        // mouseClicked = false;
         yield return new WaitForSeconds(3);
         if (!mouseClicked) {
             fadeCoroutine = StartCoroutine(mouseUI.FadeCanvasGroup(1f, 1f));
@@ -33,9 +33,6 @@ public class TutorialIndicator : Singleton<AudioHandler>
     private void OnEnable() {
         Area.OnFirstRoomEnter += StartWaitingForMove;
         AreaTextMeshFader.onTVTurialShow += StartWaitingForClick;
-        InputManager.OnClickDown += EnableClick;
-        InputManager.OnMove += EnableMove;
-        InputManager.OnJump += EnableJump;
         Gravity.onGravityMissing += StartWaitingForJump;
     }
 
@@ -43,13 +40,13 @@ public class TutorialIndicator : Singleton<AudioHandler>
     private void OnDisable() {
         Area.OnFirstRoomEnter -= StartWaitingForMove;
         AreaTextMeshFader.onTVTurialShow -= StartWaitingForClick;
-        InputManager.OnClickDown -= EnableClick;
+        Letter.OnLetterClickAction -= EnableClick;
         InputManager.OnMove -= EnableMove;
         InputManager.OnJump -= EnableJump;
         Gravity.onGravityMissing -= StartWaitingForJump;
     }
 
-    private void EnableClick() {
+    private void EnableClick(Letter letter) {
         mouseClicked = true;
     }
     private void EnableMove(Vector2 delta) {
@@ -64,17 +61,20 @@ public class TutorialIndicator : Singleton<AudioHandler>
     }
 
     public void StartWaitingForMove() {
+        InputManager.OnMove += EnableMove;
         StartCoroutine(WaitForMove());
     }
     public void StartWaitingForClick() {
+        Letter.OnLetterClickAction += EnableClick;
         StartCoroutine(WaitForMouseClick());
     }
     public void StartWaitingForJump() {
+        InputManager.OnJump += EnableJump;
         StartCoroutine(WaitForJump());
     }
     
     public IEnumerator WaitForMove() {
-        moved = false;
+        // moved = false;
         yield return new WaitForSeconds(3);
         if (!moved) {
             fadeCoroutine = StartCoroutine(keyboardUI.FadeCanvasGroup(1f, 1f));
@@ -86,7 +86,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
         }
     }
     public IEnumerator WaitForJump() {
-        hasJumped = false;
+        // hasJumped = false;
         yield return new WaitForSeconds(5);
         if (!hasJumped) {
             fadeCoroutine = StartCoroutine(spacebarUI.FadeCanvasGroup(1f, 1f));
