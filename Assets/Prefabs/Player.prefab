@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1902171954849214625}
   - component: {fileID: 1902171954849214630}
   - component: {fileID: 8915916110670785176}
+  - component: {fileID: 1080875182671030980}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -114,6 +115,20 @@ MonoBehaviour:
   missingChangeEffect: 1
   playerCamera: {fileID: 5477545927992370412}
   volume: {fileID: 876360363103738011}
+--- !u!114 &1080875182671030980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902171954849214655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2482ffcab0071c44addc291c678e639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 8915916110670785176}
+  chokeIndex: 0
 --- !u!1 &3683881066749150874
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,7 +557,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 40
+      scalar: 30
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5301,7 +5316,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8665386832511106161}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.809622, y: 1.2065526, z: -7.1774483}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1902171954849214652}

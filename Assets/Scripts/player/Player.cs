@@ -7,6 +7,9 @@ using UnityEngine.Rendering.Universal;
 public class Player : RoomObject
 {
 
+    public delegate void DieEvent();
+    public static event DieEvent OnDie;
+
     [SerializeField]
     private Camera playerCamera;
 
@@ -25,13 +28,18 @@ public class Player : RoomObject
     {
         base.Awake();
         movement = GetComponent<FPMovement>();
+
+        //set motionblur to settings.
         volume.profile.TryGet<MotionBlur>(out motionBlur);
         motionBlur.active = Settings.GetSettings().cameraSettings.Motion_blur_enabled;
     }
 
     private void Reset() {
         Word = "me";
-        AlternativeWords = new string[]{ "myself", "i", "player"};
+        AlternativeWords = new string[]{ "myself", "i", "player", "edward"};
     }
 
+    public void Die() {
+        OnDie?.Invoke();
+    }
 }

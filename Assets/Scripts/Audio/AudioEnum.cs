@@ -23,7 +23,9 @@ public enum SFXFiles {
     stairs_footstep,
     fire_crackling,
 
-    clock_ticking
+    clock_ticking,
+    player_choking,
+    player_relief_gasp
 }
 
 public enum MusicFiles {
