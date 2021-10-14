@@ -12,6 +12,7 @@ public class Room : MonoBehaviour
     public ChangeHandler ChangeHandler {
         get { return changeHandler;}
     }
+    private RoomStateHandler roomstateHandler;
 
     [SerializeField]
     private SaveData beginState;
@@ -79,6 +80,8 @@ public class Room : MonoBehaviour
 
     void Awake() {
         changeHandler = new ChangeHandler(this);
+        roomstateHandler = new RoomStateHandler(this);
+
         endDoor.room = this;
         startDoor.room = this;
         allObjects = GetAllObjectsInRoom<IChangable>();
@@ -278,7 +281,7 @@ public class Room : MonoBehaviour
         Animated = false;
 
         if (loadSaveData) {
-            LoadState(SaveData.current);
+            roomstateHandler.LoadState(SaveData.current);
         }
 
         foreach (IRoomObject item in GetAllObjectsInRoom<IRoomObject>())
@@ -345,33 +348,8 @@ public class Room : MonoBehaviour
         changeHandler.DeactivateChanges();
         foreach (RoomTelevision tv in allTelevisions) tv.IsOn = false;
         
-        LoadState(beginState);
+        roomstateHandler.LoadState(beginState);
         changeHandler.LoadChanges();
         changeHandler.ActivateChanges();
-    }
-
-
-    ///<summary>
-    /// Loads the savedata with all the television states and the cordinates of the roomobjects
-    ///</summary>
-    public void LoadState(SaveData data) {
-        player.transform.position = data.playerCordinates.position;
-        player.transform.rotation = data.playerCordinates.rotation;
-        List<PickableRoomObjectCordinates> cordinates = data.cordinates.ToList<PickableRoomObjectCordinates>();
-        List<TVState> tvStates = data.tvStates.ToList<TVState>();
-        foreach (PickableRoomObject item in GetAllObjectsInRoom<PickableRoomObject>())
-        {
-            // Debug.Log("item id" + item.id);
-            PickableRoomObjectCordinates itemCordinate = cordinates.Find(x => x.id == item.id);
-            item.transform.position = itemCordinate.position;
-            item.transform.rotation = itemCordinate.rotation;
-        }
-        foreach (RoomTelevision tv in allTelevisions)
-        {
-            TVState tvState = tvStates.Find(x => x.id == tv.id);
-            tv.DeselectLetters();
-            tv.Word = tvState.word;
-            // tv.UpdateAnswerTextPosition();
-        }
     }
 }
