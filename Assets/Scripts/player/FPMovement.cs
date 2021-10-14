@@ -9,11 +9,29 @@ using UnityEngine;
 public class FPMovement : MonoBehaviour
 {
 
+    //camera movement offset values
+    private float cameraYOffset = 0.03f;
+    private float cameraStartYPos;
+    private float cameraYIndex = 0;
+    private float cameraZIndex = 0;
+    private bool cameraZRotationTilt = false;
+    public bool CameraZRotationTilt {
+        get { return cameraZRotationTilt;}
+        set { cameraZRotationTilt = value; }
+    }
+    private float cameraZRotationMagnitude = 10f;
+
+
+    //gravity
     public float gravityScale = 1.0f; 
     public static float globalGravity = -9.81f;
 
     private ControlSettings controlSettings;
+
     private Rigidbody rb;
+    public Rigidbody RB {
+        get { return rb;}
+    }
 
     [SerializeField]
     private Transform cameraPivot;
@@ -23,7 +41,7 @@ public class FPMovement : MonoBehaviour
     private ParticleSystem windParticles;
     private SFXFiles footstepFile = SFXFiles.player_footstep;
 
-    private float walkSoundDistance = 3f;
+    private float walkStepDistance = 4f;
 
     private Vector3 oldPos;
 
@@ -142,19 +160,6 @@ public class FPMovement : MonoBehaviour
         }
     }
 
-    ///<summary>
-    ///Checks on when to make footstep sounds
-    ///</summary>
-    private void MakeWalkingSounds() {
-        if (inAir) return;
-        Vector3 delta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
-
-        if (delta.magnitude > walkSoundDistance){
-            oldPos = transform.position;
-            AudioHandler.Instance?.PlaySound(footstepFile, footstepFile == SFXFiles.player_footstep ? .05f : 1f);
-            AudioHandler.Instance?.Player3DSound(footstepFile, transform, footstepFile == SFXFiles.player_footstep ? .05f : 1f, 1, false, true, 50);
-        }
-    }
 
     private void OnEnable() {
         InputManager.OnStartRunning += StartRun;
@@ -178,6 +183,7 @@ public class FPMovement : MonoBehaviour
 
     private void Awake() {
         controlSettings = Settings.GetSettings().controlSettings;
+        cameraStartYPos = cameraPivot.localPosition.y;
     }
 
     private void Start()
@@ -189,8 +195,8 @@ public class FPMovement : MonoBehaviour
     }
     void Update()
     {
-        if (EnableWalk) UpdateMovement();
         if (EnableRotation) UpdateRotation();
+        if (EnableWalk) UpdateMovement();
         CheckFloorCollision();
     }
 
@@ -206,7 +212,48 @@ public class FPMovement : MonoBehaviour
                 walkDelta.y * (isRunning ? runSpeed : walkSpeed)
             ));
         rb.velocity = dir;
-        MakeWalkingSounds();
+        UpdateWalking();
+    }
+
+    ///<summary>
+    ///Checks on when to make footstep sounds and tilt the camera
+    ///</summary>
+    private void UpdateWalking() {
+        if (inAir) return;
+        Vector3 delta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
+
+        UpdateCameraTilt(delta);
+
+        if (delta.magnitude > walkStepDistance){
+            oldPos = transform.position;
+            AudioHandler.Instance?.PlaySound(footstepFile, footstepFile == SFXFiles.player_footstep ? .05f : 1f);
+            AudioHandler.Instance?.Player3DSound(footstepFile, transform, footstepFile == SFXFiles.player_footstep ? .05f : 1f, 1, false, true, 50);
+        }
+    }
+
+
+    ///<summary>
+    /// Changes the camera offset and rotation to mimic the walking bounce.
+    ///</summary>
+    private void UpdateCameraTilt(Vector3 delta) {
+        cameraYIndex = (delta.magnitude / walkStepDistance) * (Mathf.PI * 2);
+        float currentCameraYpos = Mathf.Sin(cameraYIndex) * cameraYOffset;
+        cameraPivot.localPosition = new Vector3(
+            cameraPivot.localPosition.x, 
+            cameraStartYPos + currentCameraYpos, 
+            cameraPivot.localPosition.z 
+        );
+
+        cameraZIndex += Time.deltaTime;
+        float zRotation = 0;
+        if (cameraZRotationTilt) {
+            zRotation = Mathf.Sin(cameraZIndex) * cameraZRotationMagnitude;
+        } 
+        cameraPivot.localRotation = Quaternion.Euler( new Vector3(
+            cameraPivot.localRotation.eulerAngles.x,
+            cameraPivot.localRotation.eulerAngles.y,
+            zRotation
+        ));
     }
 
     ///<summary>

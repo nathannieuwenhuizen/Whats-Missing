@@ -11,6 +11,10 @@ public class SFXInstance
     public AudioSource AudioSource;
     public AudioClip[] Clip;
 
+    public float Volume {
+        get { return AudioSource.volume;}
+        set { AudioSource.volume = value * AudioSetting.SFX; }
+    }
     public AudioClip GetClip
     {
         get

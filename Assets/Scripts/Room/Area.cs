@@ -7,10 +7,10 @@ public class Area : MonoBehaviour
 {
     public delegate void UndoActionEvent(Room _room);
     public static UndoActionEvent OnUndo;
-    public delegate void NewRoomEvent();
-    public static NewRoomEvent OnNewRoomEnter;
-
-    public static NewRoomEvent OnFirstRoomEnter;
+    public delegate void RoomEvent();
+    public static RoomEvent OnNewRoomEnter;
+    public static RoomEvent OnFirstRoomEnter;
+    public static RoomEvent OnRespawn;
 
     [SerializeField]
     private RoomDirectionalLight directionalLight;
@@ -157,18 +157,40 @@ public class Area : MonoBehaviour
     }
  
 
+    ///<summary>
+    /// Fires when the palyer dies and has to respawn
+    ///</summary>
+    public void ResetPlayer() {
+        StartCoroutine(ResettingThePlayer());
+    }
+    private IEnumerator ResettingThePlayer() {
+        yield return new WaitForSeconds(2);
+
+        int index = rooms.IndexOf(currentRoom);
+        if(index == 0) {
+            CurrentRoom = rooms[0];
+            player.transform.position = CurrentRoom.StartDoor.EndPos();
+        } else {
+            CurrentRoom = rooms[index - 1];
+            player.transform.position = CurrentRoom.EndDoor.StartPos();
+        }
+        player.Respawn();
+        OnRespawn?.Invoke();
+    }
+
     private void OnEnable() {
         Door.OnPassingThrough += OnPassingThroughDoor;
         Door.OnDoorOpen += ShowNextRoom;
         InputManager.OnUndo += UndoAction;
+        Player.OnDie += ResetPlayer;
         InputManager.OnReset += ResetRoom;
-
     }
 
     private void OnDisable() {
         Door.OnPassingThrough -= OnPassingThroughDoor;
         Door.OnDoorOpen -= ShowNextRoom;
         InputManager.OnUndo -= UndoAction;
+        Player.OnDie -= ResetPlayer;
         InputManager.OnReset -= ResetRoom;
     }
 

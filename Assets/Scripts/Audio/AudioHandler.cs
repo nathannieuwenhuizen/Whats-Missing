@@ -145,7 +145,7 @@ public class AudioHandler : Singleton<AudioHandler>
         }
         return selectedAudio;
     }
-    public SFXInstance Player3DSound(SFXFiles audioEffect, Transform parent, float volume = 1f, float pitch = 1f, bool loop = false, bool asInstance = true, float soundMaxDistance = 100f) {
+    public SFXInstance Player3DSound(SFXFiles audioEffect, Transform parent, float volume = 1f, float pitch = 1f, bool loop = false, bool asInstance = true, float soundMaxDistance = 100f,  bool ignoreListenerVolume = false) {
         SFXInstance selectedAudio = GetSFXInstance(audioEffect);
         if (selectedAudio == default(SFXInstance)) return selectedAudio;
         
@@ -162,6 +162,7 @@ public class AudioHandler : Singleton<AudioHandler>
         newSFWIncstance.AudioSource.volume = volume * AudioSetting.SFX;
         newSFWIncstance.AudioSource.pitch = pitch * pitchMultiplier;
         newSFWIncstance.AudioSource.loop = loop;
+        newSFWIncstance.AudioSource.ignoreListenerVolume = ignoreListenerVolume;
         newSFWIncstance.AudioSource.Play();
 
         instance.transform.SetParent(parent); 

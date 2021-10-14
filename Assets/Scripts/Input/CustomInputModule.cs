@@ -43,10 +43,11 @@ public class CustomInputModule : StandaloneInputModule
     private void ShowMouse() {
         Cursor.lockState = CursorLockMode.None;
         mouseIsHidden = false;
+        Cursor.visible = true;
     }
     private void HideMouse() {
-    Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
         mouseIsHidden = true;
-
+        Cursor.visible = false;
     }
 }

@@ -25,7 +25,9 @@ public enum SFXFiles {
 
     clock_ticking,
     player_choking,
-    player_relief_gasp
+    player_relief_gasp,
+    choke_die,
+    heartbeat
 }
 
 public enum MusicFiles {

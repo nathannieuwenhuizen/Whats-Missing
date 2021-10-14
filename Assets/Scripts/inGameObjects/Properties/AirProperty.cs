@@ -14,8 +14,9 @@ public class AirProperty : Property
     public static OnPropertyToggle OnAirAppearing;
     public override void onMissing()
     {
-        StopAllCoroutines();
+        AudioHandler.Instance.MusicSource.Pause();
         base.onMissing();
+        OnAirMissing?.Invoke();
     }
     public override IEnumerator AnimateMissing()
     {
@@ -24,11 +25,11 @@ public class AirProperty : Property
 
     public override void onMissingFinish()
     {
-        OnAirMissing?.Invoke();
         base.onMissingFinish();
     }
 
     public override void onAppearing() {
+        AudioHandler.Instance.MusicSource.Play();
         OnAirAppearing?.Invoke();
         base.onAppearing();
     }

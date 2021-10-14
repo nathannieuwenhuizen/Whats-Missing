@@ -21,6 +21,8 @@ public class Player : RoomObject
 
     public Camera Camera { get => playerCamera;}
 
+    [SerializeField]
+    private Animator cameraAnimator;
 
     private FPMovement movement;
     public FPMovement Movement { get=> movement; }
@@ -28,6 +30,7 @@ public class Player : RoomObject
     {
         base.Awake();
         movement = GetComponent<FPMovement>();
+        cameraAnimator.enabled = false;
 
         //set motionblur to settings.
         volume.profile.TryGet<MotionBlur>(out motionBlur);
@@ -38,8 +41,30 @@ public class Player : RoomObject
         Word = "me";
         AlternativeWords = new string[]{ "myself", "i", "player", "edward"};
     }
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.D)) {
+            Die();
+        }
+    }
 
+    ///<summary>
+    /// Thep play dies and falls to the gorund
+    ///</summary>
     public void Die() {
+        cameraAnimator.enabled = true;
+        cameraAnimator.SetTrigger("Die");
+        Movement.EnableRotation = false;
+        Movement.RB.velocity = Vector3.zero;
+        Movement.EnableWalk = false;
         OnDie?.Invoke();
+    }
+    ///<summary>
+    /// Enables the movement and sets the camera animation to false.
+    ///</summary>
+    public void Respawn() {
+        cameraAnimator.enabled = false;
+        Movement.EnableRotation = true;
+        Movement.EnableWalk = true;
+
     }
 }
