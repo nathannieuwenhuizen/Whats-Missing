@@ -77,7 +77,11 @@ public class Lungs : MonoBehaviour
         EndChoking();
         currentVignette = startVignette;
         UpdateVignette();
-        AudioHandler.Instance.PlaySound(SFXFiles.player_relief_gasp, 1f);
+        StartCoroutine(GaspingAir());
+    }
+    private IEnumerator GaspingAir() {
+        yield return new WaitForSeconds(1f);
+        AudioHandler.Instance.PlaySound(SFXFiles.player_relief_gasp, 1f, 1.2f);
     }
 
 

@@ -13,12 +13,14 @@ public class RigidBodyInfo {
     public RigidbodyConstraints RigidbodyConstraints = RigidbodyConstraints.None;
     public Vector3 Holdvelocity = Vector3.zero;
     public bool UseGravity = true;
+    public string tag = "";
     public void Save(Rigidbody rb) {
         Drag = rb.drag;
         AngularDrag = rb.angularDrag;
         Mass = rb.mass;
         RigidbodyConstraints = rb.constraints;
         Holdvelocity = rb.velocity;
+        tag = rb.gameObject.tag;
         UseGravity = rb.useGravity;
     }
     public void Load(Rigidbody rb) {
@@ -27,6 +29,7 @@ public class RigidBodyInfo {
         rb.mass = Mass;
         rb.constraints = RigidbodyConstraints;
         rb.velocity = Holdvelocity;
+        rb.gameObject.tag = tag;
     }
 }
 
@@ -103,6 +106,8 @@ public class PickableRoomObject : InteractabelObject, IPickable
         //create spring
         joint = gameObject.AddComponent<SpringJoint>();
         joint.connectedBody = connectedRigidBody;
+        // joint.minDistance = 2f;
+        // joint.maxDistance = 2f;
         joint.anchor = new Vector3(.5f,.5f,.5f);
         joint.spring = 500;
         joint.connectedAnchor = connectedRigidBody.transform.InverseTransformDirection(transform.position- connectedRigidBody.transform.position);
@@ -113,8 +118,10 @@ public class PickableRoomObject : InteractabelObject, IPickable
         }
         RigidBodyInfo.Save(rb);
         rb.drag = 100f;
+        rb.mass = 0.1f;
         rb.angularDrag = 10f;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
+        gameObject.tag = Tags.Picked;
     }
 
     ///<summary>

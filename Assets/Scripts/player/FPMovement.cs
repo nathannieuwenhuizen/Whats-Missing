@@ -102,7 +102,7 @@ public class FPMovement : MonoBehaviour
         inAir = true;
         StartCoroutine(MakeWindNoices());
         AudioHandler.Instance?.PlaySound(SFXFiles.player_jump, .1f);
-        rb.AddForce(new Vector3(0,jumpForce * (inCeiling ? -1 : 1),0));
+        rb.velocity = new Vector3(rb.velocity.x, jumpForce * (inCeiling ? -1 : 1), rb.velocity.z);
 
         inCeiling = false;
     }
@@ -141,7 +141,7 @@ public class FPMovement : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         footstepFile = other.gameObject.tag == "Stairs" ? SFXFiles.stairs_footstep : SFXFiles.player_footstep;
 
-        if (inAir) {
+        if (inAir && other.gameObject.tag != Tags.Picked) {
             inAir = false;
             AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
             oldPos = transform.position;
