@@ -55,7 +55,7 @@ public class RoomDebuggerBox
 
             if (currentRoom == null) return;
             
-            foreach(Change change in currentRoom.Changes) {
+            foreach(Change change in currentRoom.ChangeHandler.Changes) {
                 GUI.color = change.active ? Color.green : Color.red;
                 currentPos += 30;
                 GUI.skin.label.fontStyle = FontStyle.Bold;

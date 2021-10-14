@@ -8,6 +8,12 @@ using UnityEngine.Events;
 public class Room : MonoBehaviour
 {
     [SerializeField]
+    private ChangeHandler changeHandler;
+    public ChangeHandler ChangeHandler {
+        get { return changeHandler;}
+    }
+
+    [SerializeField]
     private SaveData beginState;
 
     public delegate void MakeRoomAction(Room _room, Change _change, bool _changeIsAdded, string previousWord = "");
@@ -32,8 +38,8 @@ public class Room : MonoBehaviour
         set { revealChangeAfterCompletion = value; }
     }
 
-    private List<RoomTelevision> allTelevisions;
-    private List<IChangable> allObjects;
+    public List<RoomTelevision> allTelevisions;
+    public List<IChangable> allObjects;
 
     private Player player;
     public Player Player { 
@@ -43,9 +49,7 @@ public class Room : MonoBehaviour
 
     public List<IChangable> AllObjects {get { return allObjects;}}
     public List<RoomTelevision> AllTelevisions {get { return allTelevisions;}}
-    [SerializeField]
-    private List<Change> changes = new List<Change>();
-    public List<Change> Changes { get => changes; }
+
     
     [SerializeField]
     private GameObject changeLineObject;
@@ -74,12 +78,12 @@ public class Room : MonoBehaviour
     }
 
     void Awake() {
+        changeHandler = new ChangeHandler(this);
         endDoor.room = this;
         startDoor.room = this;
         allObjects = GetAllObjectsInRoom<IChangable>();
         for (int i = 0; i < allObjects.Count; i++)
         {
-            // Debug.Log(allObjects[i].Transform.gameObject.name);
             allObjects[i].id = i;
         }
 
@@ -118,56 +122,25 @@ public class Room : MonoBehaviour
         // }
         return result;
     }
-
+    
     ///<summary>
-    /// Activate the existing changes in the room.
+    /// Spawns a changeline and waits for it to finish to implement the change.
     ///</summary>
-    public void ActivateChanges(){
-        Debug.Log("activate changes!");
-        for (int i = changes.Count - 1; i >= 0; i--)
-        {
-            if (changes[i].active == false) {
-                AddChangeInRoomObjects(changes[i]);
-                changes[i].active = true;
-            }
-        }
-        
-    }
-    ///<summary>
-    /// Deactivate all existing changes. Called when the player leaves the room or a question-lvl has been cleared. The changes are still in the list.
-    ///</summary>
-    public void DeactivateChanges(){
-        for (int i = changes.Count - 1; i >= 0; i--)
-        {
-            if (changes[i].active) {
-                RemoveChangeInRoomObjects(changes[i]);
-                changes[i].active = false;
-            }
-        }
-    }
+    public IEnumerator AnimateChangeEffect(float delay, RoomTelevision tv, IChangable o, float duration, Action callback) {
+        yield return new WaitForSecondsRealtime(delay);
+        ChangeLine changeLine = Instantiate(changeLineObject).GetComponent<ChangeLine>();
+        changeLine.SetDestination(tv.transform.position, o.Transform.position);
+        yield return changeLine.MoveTowardsDestination();
 
-    ///<summary>
-    /// Checks and apply the change to the room 
-    ///</summary>
-    public void AddTVChange(RoomTelevision selectedTelevision, bool undoAble = true) {
-        Change newChange = CreateChange(selectedTelevision);
-
-        if (newChange != null) {
-            AddChangeInRoomObjects(newChange);
-            changes.Add(newChange);
-            selectedTelevision.IsOn = true;
-            if (undoAble) OnMakeRoomAction?.Invoke(this, newChange, true);
-            CheckRoomCompletion();
-
-        } else {
-            selectedTelevision.IsOn = false;
-        }
+        GameObject plop = Instantiate(plopParticle, o.Transform.position, Quaternion.identity);
+        Destroy(plop, 5f);
+        callback();
     }
 
     ///<summary>
     /// Checks in all object if it has the sme word as the change. If so it will send a callback with the Ichangable. Also returns true if any objects has the word.
     ///</summary>
-    private bool DoesObjectWordMatch(Change change, Action<IChangable> callBack) {
+    public bool DoesObjectWordMatch(Change change, Action<IChangable> callBack) {
         bool result = false;
         float delay = 0;
         float totalTime = 1f;
@@ -193,6 +166,24 @@ public class Room : MonoBehaviour
         return result;
     }
 
+    ///<summary>
+    /// Checks and apply the change to the room 
+    ///</summary>
+    public void AddTVChange(RoomTelevision selectedTelevision, bool undoAble = true) {
+        Change newChange = changeHandler.CreateChange(selectedTelevision);
+
+        if (newChange != null) {
+            AddChangeInRoomObjects(newChange);
+            changeHandler.Changes.Add(newChange);
+            selectedTelevision.IsOn = true;
+            if (undoAble) OnMakeRoomAction?.Invoke(this, newChange, true);
+            CheckRoomCompletion();
+
+        } else {
+            selectedTelevision.IsOn = false;
+        }
+    }
+
     
     /// <summary> 
     ///removes a tv change updating the room and tv
@@ -201,11 +192,11 @@ public class Room : MonoBehaviour
         if (!selectedTelevision.IsOn) return;
         selectedTelevision.IsOn = false;
         CheckRoomCompletion();
-        Change removedChange = changes.Find(x => x.television == selectedTelevision);
+        Change removedChange = changeHandler.Changes.Find(x => x.television == selectedTelevision);
         if (undoAble) OnMakeRoomAction?.Invoke(this, removedChange, false);
         if (!selectedTelevision.isQuestion) {
             RemoveChangeInRoomObjects(removedChange);
-            changes.Remove(removedChange);
+            changeHandler.Changes.Remove(removedChange);
         }
 
     }
@@ -213,31 +204,16 @@ public class Room : MonoBehaviour
     ///<summary>
     /// removes a change to the room updating the objects
     ///</summary>
-    private void RemoveChangeInRoomObjects(Change change) {
+    public void RemoveChangeInRoomObjects(Change change) {
         DoesObjectWordMatch(change, (IChangable obj) => { obj.RemoveChange(change); });  
     }
 
     ///<summary>
     /// adds the change to the room updating the objects
     ///</summary>
-    private void AddChangeInRoomObjects(Change change) {
+    public void AddChangeInRoomObjects(Change change) {
         DoesObjectWordMatch(change, (IChangable obj) => { obj.AddChange(change); });  
     }
-
-    ///<summary>
-    /// Spawns a changeline and waits for it to finish to implement the change.
-    ///</summary>
-    public IEnumerator AnimateChangeEffect(float delay, RoomTelevision tv, IChangable o, float duration, Action callback) {
-        yield return new WaitForSecondsRealtime(delay);
-        ChangeLine changeLine = Instantiate(changeLineObject).GetComponent<ChangeLine>();
-        changeLine.SetDestination(tv.transform.position, o.Transform.position);
-        yield return changeLine.MoveTowardsDestination();
-
-        GameObject plop = Instantiate(plopParticle, o.Transform.position, Quaternion.identity);
-        Destroy(plop, 5f);
-        callback();
-    }
-
     
     ///<summary>
     /// Checks if a tv question is correct with the changes that exist inside the room.
@@ -247,7 +223,7 @@ public class Room : MonoBehaviour
             OnMakeRoomAction?.Invoke(this, new Change() {word = selectedTelevision.Word, television = selectedTelevision}, false, selectedTelevision.PreviousWord);
             selectedTelevision.PreviousWord = selectedTelevision.Word;
         }
-        if (TVQuestionIsInchanges(selectedTelevision)) {
+        if (changeHandler.TVWordMatchesChanges(selectedTelevision)) {
                 selectedTelevision.IsOn = true;
                 CheckRoomCompletion();
                 return;
@@ -257,16 +233,6 @@ public class Room : MonoBehaviour
         CheckRoomCompletion();
     }
 
-    private bool TVQuestionIsInchanges(RoomTelevision selectedTelevision) {
-        foreach (Change change in changes)
-        {
-            if (change.word == selectedTelevision.Word || change.alternativeWords.Contains(selectedTelevision.Word)) {
-                return true;
-            }
-        }
-        return false;
-
-    }
 
     ///<summary>
     /// Handles if the door should be open or not. 
@@ -275,12 +241,12 @@ public class Room : MonoBehaviour
         if (AllTelevisionsAreOn()) {
             StartCoroutine(WaitBeforeOpeningDoor());
             if (revealChangeAfterCompletion) {
-                DeactivateChanges();
+                changeHandler.DeactivateChanges();
             }
         } else {
             endDoor.Locked = true;
             if (revealChangeAfterCompletion) {
-                ActivateChanges();
+                changeHandler.ActivateChanges();
             }
         }
     }
@@ -321,16 +287,16 @@ public class Room : MonoBehaviour
         }
         if (firstTimeEntering) {
             firstTimeEntering = false;
-            changes = LoadChanges();
-            ActivateChanges();
+            changeHandler.LoadChanges();
+            changeHandler.ActivateChanges();
             UpdateTVStates();
             CheckRoomCompletion();
         } else {
             if (revealChangeAfterCompletion) {
                 if (AllTelevisionsAreOn() == false)
-                    ActivateChanges();
+                    changeHandler.ActivateChanges();
             } else 
-                ActivateChanges();
+                changeHandler.ActivateChanges();
         }
 
 
@@ -354,37 +320,7 @@ public class Room : MonoBehaviour
         }
 
         Animated = false;
-        DeactivateChanges();
-    }
-
-    ///<summary>
-    /// Returns the list of all changes that the room has with the televisions at the time of the call.
-    ///</summary>
-    public List<Change> LoadChanges() {
-        List<Change> result = new List<Change>();
-        foreach (RoomTelevision tv in allTelevisions)
-        {
-            if (!tv.isQuestion) {
-                Change newChange = CreateChange(tv);
-                if (newChange != null) {
-                    result.Add(newChange);
-                }
-            }
-        }
-        return result;
-    }
-
-    ///<summary>
-    /// Creates a tv change and returns null if the change doesn't find any objects with the word.
-    ///</summary>
-    public Change CreateChange(RoomTelevision selectedTelevision) {
-        Change newChange = new Change(){word = selectedTelevision.Word, television = selectedTelevision};
-
-        if (DoesObjectWordMatch(newChange, (IChangable obj) => {newChange.alternativeWords = obj.AlternativeWords; })) {
-            return newChange;
-        } else {
-            return null;
-        }
+        changeHandler.DeactivateChanges();
     }
 
     ///<summary>
@@ -394,9 +330,9 @@ public class Room : MonoBehaviour
         foreach (RoomTelevision tv in allTelevisions)
         {
             if (!tv.isQuestion) {
-                tv.IsOn = changes.Find(c => c.television = tv) != null;
+                tv.IsOn = changeHandler.Changes.Find(c => c.television = tv) != null;
             } else {
-                tv.IsOn = TVQuestionIsInchanges(tv);
+                tv.IsOn = changeHandler.TVWordMatchesChanges(tv);
             }
         }
     }
@@ -406,14 +342,12 @@ public class Room : MonoBehaviour
     /// Resets the room by deactivation all the changes and returns the room state and activates the changes 
     ///</summary>
     public void ResetRoom() {
-        DeactivateChanges();
-        foreach (RoomTelevision tv in allTelevisions)
-        {
-            tv.IsOn = false;
-        }
+        changeHandler.DeactivateChanges();
+        foreach (RoomTelevision tv in allTelevisions) tv.IsOn = false;
+        
         LoadState(beginState);
-        changes = LoadChanges();
-        ActivateChanges();
+        changeHandler.LoadChanges();
+        changeHandler.ActivateChanges();
     }
 
 
