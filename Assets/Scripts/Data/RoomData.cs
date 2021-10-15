@@ -7,7 +7,7 @@ using UnityEngine;
 public class RoomLevel
 {
     [Header("Prefab of the room")]
-    public Room roomPrefab;
+    public Room prefab;
     [Header("Room info (can be null)")]
     public RoomData roomInfo;
 }
@@ -17,11 +17,12 @@ public class RoomLevel
 public class RoomData : ScriptableObject {
     public bool revealChangesAfterFinish = true;
     public MirrorData questionMirror;
-    public MirrorData changeMirror;
-
+    public MirrorData[] changeMirror;
 }
 
 [System.Serializable]
 public class MirrorData {
     public string letters;
+    [Range(-1,1)]
+    public int roomIndexoffset = 0;
 }

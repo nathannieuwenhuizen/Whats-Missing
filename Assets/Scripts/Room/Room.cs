@@ -7,6 +7,12 @@ using UnityEngine.Events;
 
 public class Room : MonoBehaviour
 {
+
+    private Area area;
+    public Area Area {
+        get { return area;}
+        set { area = value; }
+    }
     [SerializeField]
     private ChangeHandler changeHandler;
     public ChangeHandler ChangeHandler {
@@ -113,16 +119,6 @@ public class Room : MonoBehaviour
         List<T> result = new List<T>();
         if (tr == null) tr = transform;
         result = new List<T>(tr.GetComponentsInChildren<T>());
-
-        // for(int i = 0; i < tr.childCount; i++) {
-        //     if (tr.GetChild(i).GetComponent<T>() != null) {
-        //         if (tr.GetChild(i).GetComponent<T>().ToString() != "null") {
-        //             result.Add(tr.GetChild(i).GetComponent<T>());
-        //         }
-        //     }
-        //     List<T> childResult = GetAllObjectsInRoom<T>(tr.GetChild(i));
-        //     result = result.Concat(childResult).ToList();
-        // }
         return result;
     }
     
@@ -226,7 +222,12 @@ public class Room : MonoBehaviour
             OnMakeRoomAction?.Invoke(this, new Change() {word = selectedTelevision.Word, television = selectedTelevision}, false, selectedTelevision.PreviousWord);
             selectedTelevision.PreviousWord = selectedTelevision.Word;
         }
-        if (changeHandler.TVWordMatchesChanges(selectedTelevision)) {
+
+        ChangeHandler checkChangeHandler = changeHandler;
+        if (selectedTelevision.roomIndexoffset == -1) {
+            checkChangeHandler = area.Rooms[area.Rooms.IndexOf(this) - 1].ChangeHandler;
+        }
+        if (checkChangeHandler.TVWordMatchesChanges(selectedTelevision)) {
                 selectedTelevision.IsOn = true;
                 CheckRoomCompletion();
                 return;
@@ -244,7 +245,7 @@ public class Room : MonoBehaviour
         if (AllTelevisionsAreOn()) {
             StartCoroutine(WaitBeforeOpeningDoor());
             if (revealChangeAfterCompletion) {
-                changeHandler.DeactivateChanges();
+                changeHandler.DeactivateChanges(false);
             }
         } else {
             endDoor.Locked = true;
@@ -261,7 +262,7 @@ public class Room : MonoBehaviour
         }
     }
 
-    private bool AllTelevisionsAreOn() {
+    public bool AllTelevisionsAreOn() {
         foreach (RoomTelevision tv in allTelevisions)
         {
             if (!tv.IsOn) return false;
@@ -298,6 +299,8 @@ public class Room : MonoBehaviour
             if (revealChangeAfterCompletion) {
                 if (AllTelevisionsAreOn() == false)
                     changeHandler.ActivateChanges();
+                else 
+                    changeHandler.CheckAndActiveOtherRoomChanges();
             } else 
                 changeHandler.ActivateChanges();
         }

@@ -11,6 +11,9 @@ public class RoomTelevision : Television
     [SerializeField]
     private bool isOn = false;
 
+    [Range(-1,1)]
+    public int roomIndexoffset = 0;
+
     [SerializeField]
     private string preAnswer;
     public string PreAnswer {
@@ -90,6 +93,29 @@ public class RoomTelevision : Television
             Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(i));
         }
         Word = preAnswer;
+        UpdateHeaderText();
+    }
+    private void UpdateHeaderText() {
+        string header = "missing";
+        string roomText = "";
+        if (roomIndexoffset == -1) {
+            roomText = " in the <b>PREVIOUS</b> room";
+        }
+        switch (changeType) {
+            case ChangeType.missing:
+                header = "missing";
+                break;
+            case ChangeType.reverse:
+                header = "flipped";
+                break;
+            case ChangeType.tooBig:
+                header = "too big";
+                break;
+            case ChangeType.tooSmall:
+                header = "too small";
+                break;
+        }
+        headerText.text = "What's <b>" + header + "<b>" + roomText + "?";
     }
 
     private Vector3 GetLetterPosBasedOnIndex(int index) {

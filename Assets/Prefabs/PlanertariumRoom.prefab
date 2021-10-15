@@ -5748,6 +5748,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0396396e914ab354d9cda6dda1b8913e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  changeHandler:
+    changes: []
   beginState:
     roomIndex: 0
     tvStates: []
@@ -5762,7 +5764,7 @@ MonoBehaviour:
   roomEnterEvent:
     m_PersistentCalls:
       m_Calls: []
-  changes: []
+  allTelevisions: []
   changeLineObject: {fileID: 8114430392978959389, guid: 986f83105e3fbb14b82378dda8cb675e, type: 3}
   plopParticle: {fileID: 9184769355248782121, guid: 027000b751effa744bf3b96e08b6096e, type: 3}
   endDoor: {fileID: 4375229281297897525}
@@ -6737,7 +6739,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8251748350445222013, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_Name
-      value: Question TV
+      value: Question Mirror
       objectReference: {fileID: 0}
     - target: {fileID: 8987229251911427954, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_IsKinematic
@@ -8200,7 +8202,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8251748350445222013, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_Name
-      value: ChangeTV
+      value: Change Mirror
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8987229251911427954, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}

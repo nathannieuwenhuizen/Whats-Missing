@@ -19,6 +19,9 @@ public class Area : MonoBehaviour
     private RoomLevel[] roomLevels;
 
     private List<Room> rooms = new List<Room>();
+    public List<Room> Rooms {
+        get => rooms;
+    }
     [SerializeField]
     private Player player;
 
@@ -75,7 +78,7 @@ public class Area : MonoBehaviour
     }
 
     private void Awake() {
-        InitializeAllRooms();
+        InitializeRooms();
         LoadProgress();
     }
     
@@ -96,22 +99,27 @@ public class Area : MonoBehaviour
     ///<summary>
     /// Loads and initializes all rooms from the inspector values.
     ///</summary>
-    private void InitializeAllRooms() {
+    private void InitializeRooms() {
         Vector3 pos = Vector3.zero;
         Transform origin = transform;
         
-        foreach (RoomLevel prefab in roomLevels) {
+        foreach (RoomLevel roomLevel in roomLevels) {
             //make new room
-            Room newRoom = Instantiate(prefab.roomPrefab.gameObject, transform).GetComponent<Room>();
-            newRoom.name = "Room #" + (rooms.Count + 1);
-            if (prefab.roomInfo != null) {
-                newRoom.RevealChangeAfterCompletion = prefab.roomInfo.revealChangesAfterFinish;
+            Room newRoom = Instantiate(roomLevel.prefab.gameObject, transform).GetComponent<Room>();
+            newRoom.name = "Room: " + (roomLevel.roomInfo != null ? roomLevel.roomInfo.name : roomLevel.prefab.name);
+            newRoom.Area = this;
+            int changeMirrorIndex = 0;
+            if (roomLevel.roomInfo != null) {
+                newRoom.RevealChangeAfterCompletion = roomLevel.roomInfo.revealChangesAfterFinish;
                 foreach (RoomTelevision tv in newRoom.GetAllObjectsInRoom<RoomTelevision>())
                 {
                     if (tv.isQuestion) {
-                        tv.Letters = prefab.roomInfo.questionMirror.letters;
+                        tv.Letters = roomLevel.roomInfo.questionMirror.letters;
+                        tv.roomIndexoffset = roomLevel.roomInfo.questionMirror.roomIndexoffset;
                     } else {
-                        tv.PreAnswer = prefab.roomInfo.changeMirror.letters;
+                        tv.PreAnswer = roomLevel.roomInfo.changeMirror[changeMirrorIndex].letters;
+                        tv.roomIndexoffset = roomLevel.roomInfo.changeMirror[changeMirrorIndex].roomIndexoffset;
+                        changeMirrorIndex++;
                     }
                 }
             }

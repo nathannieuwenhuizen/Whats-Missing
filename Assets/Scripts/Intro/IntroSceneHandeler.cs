@@ -56,7 +56,7 @@ public class IntroSceneHandeler : MonoBehaviour
         yield return StartCoroutine(introTelevision.Talking(answer ? IntroDialogue.responseToGame : IntroDialogue.responseToNoGame, introTelevision.Centertext, null));
         yield return new WaitForSeconds(2f);
         introTelevision.Centertext.text = "";
-        yield return StartCoroutine(introTelevision.Talking(IntroDialogue.askForName, introTelevision.QuestionText, null));
+        yield return StartCoroutine(introTelevision.Talking(IntroDialogue.askForName, introTelevision.HeaderText, null));
         introTelevision.ToggleKeyboardButtons(true);
         introTelevision.InitializeKeyboard();
     }

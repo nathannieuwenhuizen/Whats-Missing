@@ -45,7 +45,11 @@ public class ChangeHandler
     /// Creates a tv change and returns null if the change doesn't find any objects with the word.
     ///</summary>
     public Change CreateChange(RoomTelevision selectedTelevision) {
-        Change newChange = new Change(){word = selectedTelevision.Word, television = selectedTelevision};
+        Change newChange = new Change(){
+            word = selectedTelevision.Word, 
+            television = selectedTelevision,
+            roomIndexOffset = selectedTelevision.roomIndexoffset
+            };
 
         if (room.DoesObjectWordMatch(newChange, (IChangable obj) => {newChange.alternativeWords = obj.AlternativeWords; })) {
             return newChange;
@@ -62,20 +66,54 @@ public class ChangeHandler
         for (int i = changes.Count - 1; i >= 0; i--)
         {
             if (changes[i].active == false) {
-                room.AddChangeInRoomObjects(changes[i]);
-                changes[i].active = true;
+                if (changes[i].roomIndexOffset == 0) {
+                    room.AddChangeInRoomObjects(changes[i]);
+                    changes[i].active = true;
+                } else if (ConnectedRoomIsComplete(changes[i]) == false) {
+                    room.AddChangeInRoomObjects(changes[i]);
+                    changes[i].active = true;
+                }
             }
         }
     }
+
+    ///<summary>
+    /// Activate the other changes if the room connected to it is not finished.
+    ///</summary>
+    public void CheckAndActiveOtherRoomChanges() {
+        for (int i = changes.Count - 1; i >= 0; i--)
+        {
+            if (changes[i].active == false) {
+                if (changes[i].roomIndexOffset != 0) {
+                    if (ConnectedRoomIsComplete(changes[i]) == false) {
+                        room.AddChangeInRoomObjects(changes[i]);
+                        changes[i].active = true;
+                    }
+                }
+            }
+        }
+    }
+
+    private bool ConnectedRoomIsComplete(Change change) {
+        return room.Area.Rooms[room.Area.Rooms.IndexOf(room) + change.roomIndexOffset].AllTelevisionsAreOn();
+    }
     ///<summary>
     /// Deactivate all existing changes. Called when the player leaves the room or a question-lvl has been cleared. The changes are still in the list.
+    /// If the force is false, the change can still be active if the roomoffset isnt 0 and the corresponding room isn't finished.
     ///</summary>
-    public void DeactivateChanges(){
+    public void DeactivateChanges(bool force = true){
         for (int i = changes.Count - 1; i >= 0; i--)
         {
             if (changes[i].active) {
-                room.RemoveChangeInRoomObjects(changes[i]);
-                changes[i].active = false;
+                if (force || changes[i].roomIndexOffset == 0) {
+                    room.RemoveChangeInRoomObjects(changes[i]);
+                    changes[i].active = false;
+                } else {
+                    if (ConnectedRoomIsComplete(changes[i])) {
+                        room.RemoveChangeInRoomObjects(changes[i]);
+                        changes[i].active = false;
+                    }
+                }
             }
         }
     }

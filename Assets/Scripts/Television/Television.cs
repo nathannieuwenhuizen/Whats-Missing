@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,8 +19,8 @@ public class Television : MonoBehaviour
     }
 
     [SerializeField]
-    protected Text questionText;
-    public Text QuestionText { get => questionText; }
+    protected TMP_Text headerText;
+    public TMP_Text HeaderText { get => headerText; }
 
     [SerializeField]
     protected RectTransform answerText;
@@ -28,8 +29,8 @@ public class Television : MonoBehaviour
     private AudioClip beepSound;
 
     [SerializeField]
-    private Text centerText;
-    public Text Centertext { get => centerText; }
+    private TMP_Text centerText;
+    public TMP_Text Centertext { get => centerText; }
 
 
     [SerializeField]
@@ -186,16 +187,16 @@ public class Television : MonoBehaviour
 
     }
 
-    public void Talk(string[] lines, Text speakText, Action callback) {
-        if (speakText == null) speakText = questionText;
+    public void Talk(string[] lines, TMP_Text speakText, Action callback) {
+        if (speakText == null) speakText = headerText;
         StartCoroutine(Talking(lines, speakText, callback));
     }
 
-    public IEnumerator Talking(string[] lines, Text speakText, Action callback) {
+    public IEnumerator Talking(string[] lines, TMP_Text speakText, Action callback) {
         yield return null;
         int lineIndex = 0;
         while (lineIndex < lines.Length) {
-            questionText.text = "";
+            headerText.text = "";
             centerText.text = "";
             int letterIndex = 0;
             lines[lineIndex] = lines[lineIndex].Replace("[NAME]", PlayerData.PLAYER_NAME);
