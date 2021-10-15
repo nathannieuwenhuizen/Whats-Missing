@@ -44,10 +44,10 @@ public class LightningProperty : Property
         };
     }
 
-    public override void onMissing()
+    public override void OnMissing()
     {
         StopAllCoroutines();
-        base.onMissing();
+        base.OnMissing();
     }
     public override IEnumerator AnimateMissing()
     {
@@ -61,9 +61,9 @@ public class LightningProperty : Property
         base.onMissingFinish();
     }
 
-    public override void onAppearing() {
+    public override void OnAppearing() {
         StopAllCoroutines();
-        base.onAppearing();
+        base.OnAppearing();
     }
     
 

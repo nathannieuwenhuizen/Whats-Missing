@@ -26,7 +26,7 @@ public class WarmthProperty : Property
     private float animationDuration = 3f;
     private float endOpacity = .8f;
 
-    public override void onMissing()
+    public override void OnMissing()
     {
         snowParticles.Play();
         OnWarmthMissing?.Invoke();
@@ -40,7 +40,7 @@ public class WarmthProperty : Property
             mr.UpdateGIMaterials();
         }
 
-        base.onMissing();
+        base.OnMissing();
     }
     public override IEnumerator AnimateMissing()
     {
@@ -88,11 +88,11 @@ public class WarmthProperty : Property
         }
     }
 
-    public override void onAppearing() {
+    public override void OnAppearing() {
         snowParticles.Stop();
         OnWarmthAppearing?.Invoke();
 
-        base.onAppearing();
+        base.OnAppearing();
     }
     
     public override IEnumerator AnimateAppearing()
@@ -122,7 +122,7 @@ public class WarmthProperty : Property
 
     private void Reset() {
         Word = "temperature";
-        AlternativeWords = new string[] { "warmth", "heat" };
+        AlternativeWords = new string[] { "warmth", "heat", "hot", "hotness", "warmness" };
     }
 
 }

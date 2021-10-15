@@ -43,14 +43,14 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
     public void AddChange(Change change) {
         switch (change.television.changeType) {
             case ChangeType.missing:
-                onMissing();
+                OnMissing();
                 break;
         }
     }
     public void RemoveChange(Change change) {
         switch (change.television.changeType) {
             case ChangeType.missing:
-                onAppearing();
+                OnAppearing();
                 break;
         }
     }
@@ -59,7 +59,7 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
     ///<summary>
     /// Fires when the object starts to appear, here it will also chick if it has to animate or not.
     ///</summary>
-    public virtual void onAppearing()
+    public virtual void OnAppearing()
     {
         gameObject.SetActive(true);
         if (Animated) {
@@ -72,7 +72,7 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
     ///<summary>
     /// Fires when the object starts to disappear, here it will also chick if it has to animate or not.
     ///</summary>
-    public virtual void onMissing()
+    public virtual void OnMissing()
     {
         currentScale = transform.localScale;
         if (Animated) {

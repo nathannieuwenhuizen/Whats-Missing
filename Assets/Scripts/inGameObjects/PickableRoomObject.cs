@@ -67,9 +67,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
     private RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
     public RigidBodyInfo RigidBodyInfo { get => rigidBodyInfo; set => rigidBodyInfo = value; }
 
-    public override void onAppearing()
+    public override void OnAppearing()
     {
-        base.onAppearing();
+        base.OnAppearing();
     }
     public override void onAppearingFinish()
     {
@@ -77,10 +77,10 @@ public class PickableRoomObject : InteractabelObject, IPickable
         base.onAppearingFinish();
     }
 
-    public override void onMissing()
+    public override void OnMissing()
     {
         DeactivateRigidBody();
-        base.onMissing();
+        base.OnMissing();
     }
 
     protected override void OnFocus()

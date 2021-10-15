@@ -13,9 +13,9 @@ public class TimeProperty : Property
     private Room room;
 
     private Vignette vignette;
-    public override void onMissing()
+    public override void OnMissing()
     {
-        base.onMissing();
+        base.OnMissing();
         Room.TimeScale = 0f;
         foreach(PickableRoomObject obj in room.GetAllObjectsInRoom<PickableRoomObject>()) {
             obj.DeactivateRigidBody();
@@ -30,9 +30,9 @@ public class TimeProperty : Property
         // vignette.enabled.value = true;
 
     }
-    public override void onAppearing()
+    public override void OnAppearing()
     {
-        base.onAppearing();
+        base.OnAppearing();
         Room.TimeScale = 1f;
         foreach(PickableRoomObject obj in room.GetAllObjectsInRoom<PickableRoomObject>()) {
             obj.RigidBodyInfo.UseGravity = true;

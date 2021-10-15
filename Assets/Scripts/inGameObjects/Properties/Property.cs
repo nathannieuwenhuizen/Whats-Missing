@@ -34,7 +34,7 @@ public abstract class Property : MonoBehaviour, IChangable
 
     protected Change currentChange;
 
-    public virtual void onAppearing()
+    public virtual void OnAppearing()
     {
         if (Animated) {
             onShockwave?.Invoke(currentChange.television.transform);
@@ -44,7 +44,7 @@ public abstract class Property : MonoBehaviour, IChangable
         }
     }
 
-    public virtual void onMissing()
+    public virtual void OnMissing()
     {
         if (Animated) {
             onShockwave?.Invoke(currentChange.television.transform);
@@ -58,7 +58,7 @@ public abstract class Property : MonoBehaviour, IChangable
     {
         switch (change.television.changeType) {
             case ChangeType.missing:
-                onAppearing();
+                OnAppearing();
                 break;
         }
     }
@@ -68,7 +68,7 @@ public abstract class Property : MonoBehaviour, IChangable
         currentChange = change;
         switch (change.television.changeType) {
             case ChangeType.missing:
-                onMissing();
+                OnMissing();
                 break;
         }
     }

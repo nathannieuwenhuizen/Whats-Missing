@@ -21,7 +21,7 @@ public interface IMissable {
     ///<summary>
     /// Fires when the object starts missing. Here it calls the animation if the object is set to animate.
     ///</summary>
-    void onMissing();
+    void OnMissing();
     ///<summary>
     /// The animation of the object when it goes missing.
     ///</summary>
@@ -33,7 +33,7 @@ public interface IMissable {
     ///<summary>
     /// Fires when the object starts un-missing/appearing. Here it calls the animation if the object is set to animate.
     ///</summary>
-    void onAppearing();
+    void OnAppearing();
     ///<summary>
     /// The animation of the object when it goes un-missing/appearing.
     ///</summary>

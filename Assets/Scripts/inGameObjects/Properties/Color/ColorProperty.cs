@@ -19,19 +19,19 @@ public class ColorProperty : Property
     private Room room;
     private ColorAdjustments colorAdjustments;
 
-    public override void onMissing()
+    public override void OnMissing()
     {
         Debug.Log("color is missing!" + Animated);
-        base.onMissing();
+        base.OnMissing();
         StopAllCoroutines();
         if (Animated) {
             StartCoroutine(AnimateSaturation(false));
         } else 
             saturation = -100f;
     }
-    public override void onAppearing()
+    public override void OnAppearing()
     {
-        base.onAppearing();
+        base.OnAppearing();
         StopAllCoroutines();
         if (Animated) {
             StartCoroutine(AnimateSaturation(true));

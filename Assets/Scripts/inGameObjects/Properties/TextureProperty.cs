@@ -15,7 +15,7 @@ public class TextureProperty : Property
     private Material noTextureMaterial;
 
 
-    public override void onMissing()
+    public override void OnMissing()
     {
         foreach(MeshRenderer mr in room.GetAllObjectsInRoom<MeshRenderer>()) {
             Material[] materials = mr.materials;
@@ -27,7 +27,7 @@ public class TextureProperty : Property
             mr.UpdateGIMaterials();
         }
 
-        base.onMissing();
+        base.OnMissing();
     }
     public override IEnumerator AnimateMissing()
     {

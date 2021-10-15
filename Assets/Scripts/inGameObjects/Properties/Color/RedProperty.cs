@@ -8,14 +8,14 @@ public class RedProperty : Property
     [SerializeField]
     private Room room;
 
-    public override void onMissing()
+    public override void OnMissing()
     {
-        base.onMissing();
+        base.OnMissing();
         redValue = 0;
     }
-    public override void onAppearing()
+    public override void OnAppearing()
     {
-        base.onAppearing();
+        base.OnAppearing();
         redValue = 100f;
 
     }
