@@ -66,13 +66,14 @@ public class Area : MonoBehaviour
     private void UpdateRoomActiveStates(bool includingNextRoom = false) {
         int currentIndex = rooms.IndexOf(currentRoom);
         for (int i = 0; i < rooms.Count; i++) {
-            if (i < rooms.IndexOf(currentRoom)) {
-                rooms[i].EndDoor.Locked = false;
-            }
             if (i <= currentIndex + (includingNextRoom ? 1 : 0) && i >= currentIndex - 1) {
                 rooms[i].gameObject.SetActive(true);
             } else {
                 rooms[i].gameObject.SetActive(false);
+            }
+            if (i < rooms.IndexOf(currentRoom)) {
+                if (rooms[i].gameObject.activeSelf)
+                    rooms[i].EndDoor.Locked = false;
             }
         }
     }

@@ -82,4 +82,15 @@ public static class Extensions
         mat.SetFloat("Dissolve", endVal);
         mat.SetFloat("EdgeWidth", 0);
     }
+    public static  IEnumerator AnimatingSnowMaterial(this Material mat, float beginVal, float endVal,  AnimationCurve curve, float duration = .5f) {
+        mat.SetFloat("Opacity", beginVal);
+        float timePassed = 0f;
+
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.unscaledDeltaTime;
+            mat.SetFloat("Opacity", Mathf.LerpUnclamped(beginVal, endVal , curve.Evaluate(timePassed / duration)));
+        }
+        mat.SetFloat("Opacity", endVal);
+    }
 }

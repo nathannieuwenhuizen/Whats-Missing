@@ -17,7 +17,6 @@ public class ColorProperty : Property
 
     [SerializeField]
     private Room room;
-
     private ColorAdjustments colorAdjustments;
 
     public override void onMissing()

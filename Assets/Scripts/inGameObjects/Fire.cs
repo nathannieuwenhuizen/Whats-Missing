@@ -8,6 +8,7 @@ public class Fire : RoomObject
     [SerializeField]
     private MeshRenderer mr;
     private Material material;
+    private SFXInstance fireSound;
 
     protected void Awake() {
         material = mr.material;
@@ -16,21 +17,41 @@ public class Fire : RoomObject
     private void OnEnable() {
         TimeProperty.onTimeMissing += CheckTimeScale;
         TimeProperty.onTimeAppearing += CheckTimeScale;
+        WarmthProperty.OnWarmthMissing += SetFireOff;
+        WarmthProperty.OnWarmthAppearing += SetFireOn;
     }
 
     private void OnDisable() {
         TimeProperty.onTimeMissing -= CheckTimeScale;
         TimeProperty.onTimeAppearing -= CheckTimeScale;
+        WarmthProperty.OnWarmthMissing -= SetFireOff;
+        WarmthProperty.OnWarmthAppearing -= SetFireOn;
     }
 
-    SFXInstance Instance;
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
-        if (Instance == null) {
-            Instance =  AudioHandler.Instance.Player3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
+        if (fireSound == null) {
+            fireSound =  AudioHandler.Instance.Player3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
         }
-        Instance.AudioSource.Play();
+        fireSound.AudioSource.Play();
+    }
+
+    private void SetFireOn() {
+        foreach(Transform go in transform.GetComponentInChildren<Transform>()) {
+            go.gameObject.SetActive(true);
+        }
+        if (fireSound != null)
+            fireSound.AudioSource.Pause();
+
+    }
+    private void SetFireOff() {
+        foreach(Transform go in transform.GetComponentInChildren<Transform>()) {
+            go.gameObject.SetActive(false);
+        }
+        if (fireSound != null)
+            fireSound.AudioSource.Play();
+
     }
 
 
@@ -38,8 +59,8 @@ public class Fire : RoomObject
         if (InSpace == false) return;
 
         material.SetFloat("_RoomTime", Room.TimeScale);
-        if (Instance != null){
-            Instance.AudioSource.mute = Room.TimeScale == 0;
+        if (fireSound != null){
+            fireSound.AudioSource.mute = Room.TimeScale == 0;
         }
     }
 
@@ -47,8 +68,8 @@ public class Fire : RoomObject
     {
         base.OnRoomLeave();
         StopAllCoroutines();
-        if (Instance == null)
-            Instance.AudioSource.Stop();
+        if (fireSound != null)
+            fireSound.AudioSource.Stop();
     }
 
 

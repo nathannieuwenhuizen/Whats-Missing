@@ -57,7 +57,7 @@ public class Door : InteractabelObject
         OnDoorOpen?.Invoke(this);
         AudioHandler.Instance?.PlaySound(SFXFiles.door_squeek, .2f);
         StopAllCoroutines();
-        StartCoroutine(Flipping(startAngle + openAngle, 2f, openCurve));
+        if (gameObject.activeSelf) StartCoroutine(Flipping(startAngle + openAngle, 2f, openCurve));
     }
     void Start()
     {
