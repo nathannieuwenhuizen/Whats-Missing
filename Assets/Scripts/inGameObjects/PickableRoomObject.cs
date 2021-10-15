@@ -46,9 +46,8 @@ public class PickableRoomObject : InteractabelObject, IPickable
     public int gameObjectID;
 
 
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         rb = GetComponent<Rigidbody>();
         RigidBodyInfo.Save(rb);
     }

@@ -9,8 +9,7 @@ public class Fire : RoomObject
     private MeshRenderer mr;
     private Material material;
 
-    protected override void Awake() {
-        base.Awake();
+    protected void Awake() {
         material = mr.material;
     }
 

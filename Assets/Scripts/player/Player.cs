@@ -22,13 +22,15 @@ public class Player : RoomObject
     public Camera Camera { get => playerCamera;}
 
     [SerializeField]
+    private MeshRenderer meshObject;
+
+    [SerializeField]
     private Animator cameraAnimator;
 
     private FPMovement movement;
     public FPMovement Movement { get=> movement; }
-    protected override void Awake()
+    protected void Awake()
     {
-        base.Awake();
         movement = GetComponent<FPMovement>();
         cameraAnimator.enabled = false;
 
@@ -58,6 +60,20 @@ public class Player : RoomObject
         Movement.EnableWalk = false;
         OnDie?.Invoke();
     }
+
+    public override void onMissingFinish()
+    {
+        //no base call!
+        meshObject.enabled = false;
+    }
+
+    public override void onAppearingFinish()
+    { 
+        //no base call!
+        meshObject.enabled = true;
+    }
+
+
     ///<summary>
     /// Enables the movement and sets the camera animation to false.
     ///</summary>

@@ -15,13 +15,6 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
 
     private Vector3 currentScale;
 
-
-    [SerializeField]
-    private AnimationClip appearing;
-    [SerializeField]
-    private AnimationClip disAppearing;
-    private Animation anim;
-
     public string Word {
         get { return word;}
         set {word = value;}
@@ -60,11 +53,6 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
                 onAppearing();
                 break;
         }
-    }
-
-    
-    protected virtual void Awake() {
-        anim = GetComponent<Animation>();
     }
 
     #region  missing changes
@@ -116,11 +104,11 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
                 yield return new WaitForSeconds(3f);
             break;
             case MissingChangeEffect.animation:
-                if(anim != null && disAppearing != null && Time.timeScale != 0) {
-                    yield return StartCoroutine(playAnimation(disAppearing));
-                } else {
-                    Debug.LogWarning("Animation has not been asigned or time is 0");
-                }
+                // if(anim != null && disAppearing != null && Time.timeScale != 0) {
+                //     yield return StartCoroutine(playAnimation(disAppearing));
+                // } else {
+                //     Debug.LogWarning("Animation has not been asigned or time is 0");
+                // }
                 break;
         }
         onMissingFinish();
@@ -156,11 +144,11 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
                 yield return new WaitForSeconds(3f);
             break;
             case MissingChangeEffect.animation:
-                if(anim != null && appearing != null && Time.timeScale != 0) {
-                    yield return StartCoroutine(playAnimation(appearing));
-                } else {
-                    Debug.LogWarning("Animation has not been asigned or time is 0");
-                }
+                // if(anim != null && appearing != null && Time.timeScale != 0) {
+                //     yield return StartCoroutine(playAnimation(appearing));
+                // } else {
+                //     Debug.LogWarning("Animation has not been asigned or time is 0");
+                // }
                 break;
         }
         onAppearingFinish();
@@ -186,20 +174,20 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
 
     #endregion
 
-    public IEnumerator playAnimation(AnimationClip clip) {
-        if (anim != null && clip != null) {
-            Debug.Log("animate!");
-            clip.legacy = true;
-            anim.AddClip(clip, clip.name);
-            anim.clip = clip;
-            anim.Play();
-            while (anim.IsPlaying(clip.name))
-            {
-                yield return new WaitForEndOfFrame();
-            }
-            clip.legacy = false;
-        }
-    }
+    // public IEnumerator playAnimation(AnimationClip clip) {
+    //     if (anim != null && clip != null) {
+    //         Debug.Log("animate!");
+    //         clip.legacy = true;
+    //         anim.AddClip(clip, clip.name);
+    //         anim.clip = clip;
+    //         anim.Play();
+    //         while (anim.IsPlaying(clip.name))
+    //         {
+    //             yield return new WaitForEndOfFrame();
+    //         }
+    //         clip.legacy = false;
+    //     }
+    // }
 
     public virtual void OnRoomEnter()
     {
