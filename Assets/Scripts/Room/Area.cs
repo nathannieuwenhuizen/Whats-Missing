@@ -107,7 +107,7 @@ public class Area : MonoBehaviour
         foreach (RoomLevel roomLevel in roomLevels) {
             //make new room
             Room newRoom = Instantiate(roomLevel.prefab.gameObject, transform).GetComponent<Room>();
-            newRoom.name = "Room: " + (roomLevel.roomInfo != null ? roomLevel.roomInfo.name : roomLevel.prefab.name);
+            newRoom.name = "Room: " + (roomLevel.roomInfo != null ? roomLevel.name : roomLevel.prefab.name);
             newRoom.Area = this;
             int changeMirrorIndex = 0;
             if (roomLevel.roomInfo != null) {

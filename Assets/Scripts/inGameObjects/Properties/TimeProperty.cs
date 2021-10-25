@@ -22,12 +22,7 @@ public class TimeProperty : Property
         }
 
         onTimeMissing?.Invoke();
-
-        // AudioHandler.Instance.MusicVolume = 1f;
-        // AudioHandler.Instance.MusicSource.pitch = .2f;
         AudioHandler.Instance.pitchMultiplier = .5f;
-        // room.Player.Volume.profile.TryGet<Vignette>(out vignette);
-        // vignette.enabled.value = true;
 
     }
     public override void OnAppearing()
@@ -40,16 +35,11 @@ public class TimeProperty : Property
         }
 
         onTimeAppearing?.Invoke();
-
-
-        // AudioHandler.Instance.MusicVolume = 1f;
-        // AudioHandler.Instance.MusicSource.pitch = AudioHandler.Instance.MusicVolume;
         AudioHandler.Instance.pitchMultiplier = 1f;
-        // room.Player.Volume.profile.TryGet<Vignette>(out vignette);
-        // vignette.enabled.value = true;
     }
     private void Reset() {
         Word = "time";
+        AlternativeWords = new string[] { "duration" };
     }
 
 }

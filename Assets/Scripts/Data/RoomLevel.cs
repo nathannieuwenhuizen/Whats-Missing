@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[System.Serializable]
-public class RoomLevel
+[CreateAssetMenu(menuName = "Scriptable/RoomLevel", order = 2)]
+public class RoomLevel : ScriptableObject
 {
     [Header("Prefab of the room")]
     public Room prefab;
@@ -12,9 +12,8 @@ public class RoomLevel
     public RoomData roomInfo;
 }
 
-
-[CreateAssetMenu(menuName = "Scriptable/RoomLevel", order = 2)]
-public class RoomData : ScriptableObject {
+[System.Serializable]
+public class RoomData {
     public bool revealChangesAfterFinish = true;
     public MirrorData questionMirror;
     public MirrorData[] changeMirror;
