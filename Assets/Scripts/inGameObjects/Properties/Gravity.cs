@@ -22,10 +22,10 @@ public class Gravity : Property
         });
         yield return base.AnimateMissing();
     }
-    public override void onMissingFinish()
+    public override void OnMissingFinish()
     {
         onGravityMissing?.Invoke();
-        base.onMissingFinish();
+        base.OnMissingFinish();
         foreach(Rigidbody rb in room.GetAllObjectsInRoom<Rigidbody>()) {
             rb.AddForce(Extensions.RandomVector(1f));
             rb.angularVelocity = Extensions.RandomVector(2f);
@@ -59,9 +59,9 @@ public class Gravity : Property
         yield return base.AnimateAppearing();
     }
 
-    public override void onAppearingFinish()
+    public override void OnAppearingFinish()
     {
-        base.onAppearingFinish();
+        base.OnAppearingFinish();
         foreach(Rigidbody rb in room.GetAllObjectsInRoom<Rigidbody>()) {
             rb.useGravity = true;
         }

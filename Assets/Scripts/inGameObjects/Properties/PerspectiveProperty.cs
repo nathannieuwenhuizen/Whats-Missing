@@ -10,86 +10,82 @@ public class PerspectiveProperty : Property
     private Camera m_camera;
 
 
-    private Matrix4x4 ortho,
-                        perspective;
-    public float fov = 60f,
-                        near = .1f,
-                        far = 1000f,
-                        orthographicSize = 5f;
+    private Matrix4x4 ortho, perspective;
+    private float fov = 60f,
+                 near = .1f,
+                 far = 1000f,
+                 orthographicSize = 5f;
+    private float orthoNear = -2f;
     private float aspect;
     private bool orthoOn = false;
 
-    private void Reset() {
-        Word = "perspective";
-        AlternativeWords = new string[] {"angle", "point of view", "view"};
-    }
-    public override void OnMissing()
-    {
-        room.Player.Movement.EnableRotation = false;
-        m_camera = room.Player.Camera;
-        // fieldOfView = cam.fieldOfView;
-        // farClipPlane = cam.farClipPlane;
-        base.OnMissing();
-    }
-
-
     public void CameraSetup() {
+        Debug.Log("camera setup");
         m_camera = room.Player.Camera;
+        fov = m_camera.fieldOfView;
 
         aspect = (float)Screen.width / (float)Screen.height;
-        ortho = Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize, orthographicSize, near, far);
+        ortho = Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize, orthographicSize, orthoNear, far);
         perspective = Matrix4x4.Perspective(fov, aspect, near, far);
-        // m_camera.projectionMatrix = perspective;
-        // orthoOn = false;
     }
 
+
+    #region  missing
+    public override void OnMissing()
+    {
+        m_camera.orthographic = true;
+        StopAllCoroutines();
+        base.OnMissing();
+    }
     public override IEnumerator AnimateMissing()
     {
-        // yield return StartCoroutine(AnimateOrthographic(0,1));
+        m_camera.projectionMatrix = perspective;
+        yield return StartCoroutine(BlendToMatrix(ortho, orthoNear, 1f, 8,true));
         yield return base.AnimateMissing();
     }
 
-    public override void onMissingFinish()
+    public override void OnMissingFinish()
     {
-        base.onMissingFinish();
+        m_camera.projectionMatrix = ortho;
+        m_camera.nearClipPlane = orthoNear;
+
+        base.OnMissingFinish();
     }
+    #endregion
 
 
-    void Update() {
-        if (room.Player != null) {
-            CameraSetup();
-        }
-    
-
-        if (Input.GetKeyDown(KeyCode.P)) {
-            if (room.Player != null) {
-                Debug.Log("switch!!!");
-                CameraSetup();
-                orthoOn = !orthoOn;
-                if (orthoOn)
-                {
-                    m_camera.orthographic = true;
-                    m_camera.projectionMatrix = perspective;
-
-                    BlendToMatrix(ortho, 1f, 8,true);
-                }
-                else
-                    BlendToMatrix(perspective, 1f, 8,false);
-            }
-        }
-    }
+    #region appearing
     
     public override void OnAppearing() {
-        // m_camera.orthographic = false;
+        StopAllCoroutines();
         base.OnAppearing();
     }
-
     public override IEnumerator AnimateAppearing()
     {
-        // yield return StartCoroutine(AnimateOrthographic(1,0));
+        yield return StartCoroutine(BlendToMatrix(perspective, near, 1f, 8,false));
         yield return base.AnimateAppearing();
     }
  
+    public override void OnAppearingFinish()
+    {
+        base.OnAppearingFinish();
+        m_camera.orthographic = false;
+        m_camera.projectionMatrix = perspective;
+        m_camera.nearClipPlane = near;
+    }
+    #endregion
+
+    // void Update() {
+    //     if (Input.GetKeyDown(KeyCode.L)) {
+    //         if (room.Player != null) {
+    //             orthoOn = !orthoOn;
+    //             if (orthoOn)
+    //                 OnMissing();
+    //             else
+    //                 OnAppearing();
+    //         }
+    //     }
+    // }
 
     public static Matrix4x4 MatrixLerp(Matrix4x4 from, Matrix4x4 to, float time) {
         Matrix4x4 ret = new Matrix4x4();
@@ -98,27 +94,34 @@ public class PerspectiveProperty : Property
         return ret;
     }
  
-    private IEnumerator LerpFromTo(Matrix4x4 src, Matrix4x4 dest, float duration, float ease, bool reverse) {
+    private IEnumerator LerpFromTo(Matrix4x4 src, Matrix4x4 dest, float srcNear, float destNear, float duration, float ease, bool reverse) {
         float startTime = Time.time;
         while (Time.time - startTime < duration) {
             float step;
             if (reverse)step = 1-Mathf.Pow(1-(Time.time - startTime) / duration, ease);
             else step = Mathf.Pow((Time.time - startTime) / duration, ease);
             m_camera.projectionMatrix = MatrixLerp(src, dest, step);
+            m_camera.nearClipPlane = Mathf.Lerp(srcNear, destNear, step);
             yield return 1;
         }
         m_camera.projectionMatrix = dest;
+        m_camera.nearClipPlane = destNear;
         // m_camera.orthographic = reverse;
     }
  
-    public Coroutine BlendToMatrix(Matrix4x4 targetMatrix, float duration, float ease, bool reverse) {
+    public IEnumerator BlendToMatrix(Matrix4x4 targetMatrix, float targetNear, float duration, float ease, bool reverse) {
         StopAllCoroutines();
-        return StartCoroutine(LerpFromTo(m_camera.projectionMatrix, targetMatrix, duration, ease, reverse));
+        yield return StartCoroutine(LerpFromTo(m_camera.projectionMatrix, targetMatrix, m_camera.nearClipPlane, targetNear, duration, ease, reverse));
     }
 
-    public override void onAppearingFinish()
-    {
-        room.Player.Movement.EnableRotation = true;
-        base.onAppearingFinish();
+    private void Reset() {
+        Word = "perspective";
+        AlternativeWords = new string[] {"angle", "point of view", "view"};
     }
+    public override void OnRoomEnter()
+    {
+        base.OnRoomEnter();
+        CameraSetup();
+    }
+
 }

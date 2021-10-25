@@ -25,9 +25,6 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
     }
 
     private bool inSpace = true;
-    ///<summary>
-    /// Is true when the player is inside the same room as the object
-    ///</summary>
     public bool InSpace { get => inSpace; }
 
     public Transform Transform => transform;
@@ -65,7 +62,7 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
         if (Animated) {
             StartCoroutine(AnimateAppearing());
         } else {
-            onAppearingFinish();
+            OnAppearingFinish();
         }
     }
 
@@ -78,7 +75,7 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
         if (Animated) {
             StartCoroutine(AnimateMissing());
         } else {
-            onMissingFinish();
+            OnMissingFinish();
         }
     }
 
@@ -111,7 +108,7 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
                 // }
                 break;
         }
-        onMissingFinish();
+        OnMissingFinish();
     }
 
     private Material[] getMaterials() {
@@ -151,7 +148,7 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
                 // }
                 break;
         }
-        onAppearingFinish();
+        OnAppearingFinish();
     }
 
     
@@ -159,7 +156,7 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
     ///<summary>
     /// Function that fires when the animation has finished. It makes the snap changes the object needs to be missing.
     ///</summary>
-    public virtual void onMissingFinish()
+    public virtual void OnMissingFinish()
     {
         gameObject.SetActive(false);
     }
@@ -167,7 +164,7 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
     ///<summary>
     /// Function that fires when the animation has finished. It makes the snap changes the object needs to be appearing.
     ///</summary>
-    public virtual void onAppearingFinish()
+    public virtual void OnAppearingFinish()
     {
         transform.localScale = currentScale;
     }

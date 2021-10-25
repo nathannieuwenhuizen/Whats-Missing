@@ -37,11 +37,11 @@ public class TextureProperty : Property
         yield return base.AnimateMissing();
     }
 
-    public override void onMissingFinish()
+    public override void OnMissingFinish()
     {
         noTextureMaterial.SetFloat("Dissolve", 0);
 
-        base.onMissingFinish();
+        base.OnMissingFinish();
 
     }
     
@@ -54,9 +54,9 @@ public class TextureProperty : Property
     }
 
 
-    public override void onAppearingFinish()
+    public override void OnAppearingFinish()
     {
-        base.onAppearingFinish();
+        base.OnAppearingFinish();
         foreach(MeshRenderer mr in room.GetAllObjectsInRoom<MeshRenderer>()) {
             Material[] materials = mr.materials;
             List<Material> temp = new List<Material>(materials);

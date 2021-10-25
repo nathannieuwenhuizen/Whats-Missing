@@ -322,7 +322,7 @@ public class Room : MonoBehaviour
 
         foreach (IRoomObject item in GetAllObjectsInRoom<IRoomObject>())
         {
-            item.OnRoomEnter();
+            item.OnRoomLeave();
         }
 
         Animated = false;

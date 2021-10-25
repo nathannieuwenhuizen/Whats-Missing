@@ -51,11 +51,11 @@ public class WarmthProperty : Property
         yield return base.AnimateMissing();
     }
 
-    public override void onMissingFinish()
+    public override void OnMissingFinish()
     {
         snowMaterial.SetFloat("Opacity", endOpacity);
 
-        base.onMissingFinish();
+        base.OnMissingFinish();
         temperature = -100;
 
     }
@@ -104,9 +104,9 @@ public class WarmthProperty : Property
     }
 
 
-    public override void onAppearingFinish()
+    public override void OnAppearingFinish()
     {
-        base.onAppearingFinish();
+        base.OnAppearingFinish();
         foreach(MeshRenderer mr in room.GetAllObjectsInRoom<MeshRenderer>()) {
             Material[] materials = mr.materials;
             List<Material> temp = new List<Material>(materials);

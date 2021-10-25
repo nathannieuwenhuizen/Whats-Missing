@@ -61,13 +61,13 @@ public class Player : RoomObject
         OnDie?.Invoke();
     }
 
-    public override void onMissingFinish()
+    public override void OnMissingFinish()
     {
         //no base call!
         meshObject.enabled = false;
     }
 
-    public override void onAppearingFinish()
+    public override void OnAppearingFinish()
     { 
         //no base call!
         meshObject.enabled = true;

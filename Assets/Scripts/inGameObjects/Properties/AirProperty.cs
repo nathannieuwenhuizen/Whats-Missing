@@ -23,9 +23,9 @@ public class AirProperty : Property
         yield return base.AnimateMissing();
     }
 
-    public override void onMissingFinish()
+    public override void OnMissingFinish()
     {
-        base.onMissingFinish();
+        base.OnMissingFinish();
     }
 
     public override void OnAppearing() {
@@ -37,9 +37,9 @@ public class AirProperty : Property
 
 
 
-    public override void onAppearingFinish()
+    public override void OnAppearingFinish()
     {
-        base.onAppearingFinish();
+        base.OnAppearingFinish();
     }
 
     private void Reset() {

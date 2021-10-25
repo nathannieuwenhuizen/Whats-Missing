@@ -71,10 +71,10 @@ public class PickableRoomObject : InteractabelObject, IPickable
     {
         base.OnAppearing();
     }
-    public override void onAppearingFinish()
+    public override void OnAppearingFinish()
     {
         ActivateRigidBody();
-        base.onAppearingFinish();
+        base.OnAppearingFinish();
     }
 
     public override void OnMissing()

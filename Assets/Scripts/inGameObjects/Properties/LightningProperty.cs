@@ -55,10 +55,10 @@ public class LightningProperty : Property
         yield return base.AnimateMissing();
     }
 
-    public override void onMissingFinish()
+    public override void OnMissingFinish()
     {
         SceneColors = blackColors;        
-        base.onMissingFinish();
+        base.OnMissingFinish();
     }
 
     public override void OnAppearing() {
@@ -93,10 +93,10 @@ public class LightningProperty : Property
     }
 
 
-    public override void onAppearingFinish()
+    public override void OnAppearingFinish()
     {
         SceneColors = startColors;
-        base.onAppearingFinish();
+        base.OnAppearingFinish();
     }
 
     private void Reset() {

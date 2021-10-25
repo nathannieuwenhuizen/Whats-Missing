@@ -5,7 +5,7 @@ using UnityEngine;
 ///<summary>
 /// A non-physical object inside the room.
 ///</summary>
-public abstract class Property : MonoBehaviour, IChangable
+public abstract class Property : MonoBehaviour, IChangable, IRoomObject
 {
 
     public delegate void OnPropertyToggle();
@@ -40,7 +40,7 @@ public abstract class Property : MonoBehaviour, IChangable
             onShockwave?.Invoke(currentChange.television.transform);
             StartCoroutine(AnimateAppearing());
         } else {
-            onAppearingFinish();
+            OnAppearingFinish();
         }
     }
 
@@ -50,7 +50,7 @@ public abstract class Property : MonoBehaviour, IChangable
             onShockwave?.Invoke(currentChange.television.transform);
             StartCoroutine(AnimateMissing());
         } else {
-            onMissingFinish();
+            OnMissingFinish();
         }
     }
 
@@ -76,10 +76,10 @@ public abstract class Property : MonoBehaviour, IChangable
     public virtual IEnumerator AnimateMissing()
     {
         yield return null;
-        onMissingFinish();
+        OnMissingFinish();
     }
 
-    public virtual void onMissingFinish()
+    public virtual void OnMissingFinish()
     {
         
     }
@@ -87,10 +87,21 @@ public abstract class Property : MonoBehaviour, IChangable
     public virtual IEnumerator AnimateAppearing()
     {
         yield return null;
-        onAppearingFinish();
+        OnAppearingFinish();
     }
 
-    public virtual void onAppearingFinish()
+    public virtual void OnAppearingFinish()
     {
     }
+
+    public virtual void OnRoomEnter()
+    {
+        inSpace = true;
+    }
+
+    public virtual void OnRoomLeave()
+    {
+        inSpace = false;
+    }
+
 }

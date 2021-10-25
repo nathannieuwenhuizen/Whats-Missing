@@ -29,7 +29,7 @@ public interface IMissable {
     ///<summary>
     /// Fired when the animation has finished. Or immediately when the animation is set to false. Here the changes are actually set.
     ///</summary>
-    void onMissingFinish();
+    void OnMissingFinish();
     ///<summary>
     /// Fires when the object starts un-missing/appearing. Here it calls the animation if the object is set to animate.
     ///</summary>
@@ -41,7 +41,7 @@ public interface IMissable {
     ///<summary>
     /// Fired when the animation has finished. Or immediately when the animation is set to false. Here the changes are actually rmeoved.
     ///</summary>
-    void onAppearingFinish();
+    void OnAppearingFinish();
 
 }
 
@@ -50,6 +50,10 @@ public interface IMissable {
 /// Interface for an object inside a room
 ///</summary>
 public interface IRoomObject {
+    ///<summary>
+    /// Is true when the player is inside the same room as the object
+    ///</summary>
+    bool InSpace {get; }
     void OnRoomEnter();
     void OnRoomLeave();
 }
