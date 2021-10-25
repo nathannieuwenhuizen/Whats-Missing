@@ -28,6 +28,7 @@ public class WarmthProperty : Property
 
     public override void OnMissing()
     {
+        snowParticles.gameObject.SetActive(true);
         snowParticles.Play();
         OnWarmthMissing?.Invoke();
         foreach(MeshRenderer mr in room.GetAllObjectsInRoom<MeshRenderer>()) {
@@ -90,8 +91,9 @@ public class WarmthProperty : Property
 
     public override void OnAppearing() {
         snowParticles.Stop();
-        OnWarmthAppearing?.Invoke();
+        snowParticles.gameObject.SetActive(false);
 
+        OnWarmthAppearing?.Invoke();
         base.OnAppearing();
     }
     
