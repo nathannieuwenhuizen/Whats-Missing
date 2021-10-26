@@ -46,7 +46,8 @@ public static class Extensions
     }
 
 
-    public static IEnumerator FadeCanvasGroup( this CanvasGroup group, float end, float duration) {
+    public static IEnumerator FadeCanvasGroup( this CanvasGroup group, float end, float duration, float delay = 0) {
+        yield return new WaitForSeconds(1f);
         float index = 0;
         float begin = group.alpha;
          while (index < duration) {

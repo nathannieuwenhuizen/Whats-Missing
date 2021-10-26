@@ -110,7 +110,7 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
         OnMissingFinish();
     }
 
-    private Material[] getMaterials() {
+    protected virtual Material[] getMaterials() {
         List<Material> materials = new List<Material>();
         foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>())
         {

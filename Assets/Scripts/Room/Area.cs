@@ -157,6 +157,7 @@ public class Area : MonoBehaviour
     public IEnumerator Walking(Vector3 endPos, float duration, float delay = 0) {
         float index = 0;
         player.Movement.EnableWalk = false;
+        player.Movement.CharacterAnimator.SetTrigger("openingDoor");
         Vector3 begin = playerPos;
         while (index < duration) {
             index += Time.unscaledDeltaTime;
@@ -175,7 +176,7 @@ public class Area : MonoBehaviour
         StartCoroutine(ResettingThePlayer());
     }
     private IEnumerator ResettingThePlayer() {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3.5f);
 
         int index = rooms.IndexOf(currentRoom);
         if(index == 0) {

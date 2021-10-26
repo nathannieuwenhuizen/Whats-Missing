@@ -111,7 +111,7 @@ MonoBehaviour:
   missingChangeEffect: 2
   playerCamera: {fileID: 5477545927992370412}
   volume: {fileID: 876360363103738011}
-  meshObject: {fileID: 5870472019323755555}
+  meshObject: {fileID: 7289321319831273154}
   cameraAnimator: {fileID: 1184534227679921356}
 --- !u!114 &1080875182671030980
 MonoBehaviour:
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 4442572733543545302}
   - component: {fileID: 5355460356370337559}
   - component: {fileID: 1960237811766317345}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: top_collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.6
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 2.44, z: 0}
@@ -293,7 +293,7 @@ Camera:
     y: 0
     width: 1.8
     height: 1
-  near clip plane: 0.7
+  near clip plane: 0.6
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -5254,7 +5254,7 @@ GameObject:
   - component: {fileID: 2379782474974440580}
   - component: {fileID: 5870472019323755555}
   - component: {fileID: 6613316824058611308}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5433,15 +5433,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -5759,6 +5759,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.0111728
       objectReference: {fileID: 0}
+    - target: {fileID: -5131445308505392996, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 81fd9300ecf59a64ca0f3c7369038296, type: 2}
+    - target: {fileID: -5051261307057296228, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 81fd9300ecf59a64ca0f3c7369038296, type: 2}
     - target: {fileID: -3746190272939815206, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0000000074505815
@@ -6589,7 +6597,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.007484333
+      value: -0.0074844332
       objectReference: {fileID: 0}
     - target: {fileID: 5465940246521907071, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6611,6 +6619,12 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 8c894d77a5e948d44a1c5031544fbdf9, type: 2}
+    - target: {fileID: 5866666021909216657, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tFrom animation clip 'Die'"
+      objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
@@ -6885,5 +6899,10 @@ Transform:
 --- !u!95 &982939402820218831 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
+  m_PrefabInstance: {fileID: 6687440294580179550}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &7289321319831273154 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -5051261307057296228, guid: a1e5d74b8a237a54187eb964d9fb05e8, type: 3}
   m_PrefabInstance: {fileID: 6687440294580179550}
   m_PrefabAsset: {fileID: 0}

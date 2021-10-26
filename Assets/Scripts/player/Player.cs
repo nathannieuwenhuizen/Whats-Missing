@@ -22,7 +22,7 @@ public class Player : RoomObject
     public Camera Camera { get => playerCamera;}
 
     [SerializeField]
-    private MeshRenderer meshObject;
+    private SkinnedMeshRenderer meshObject;
 
     [SerializeField]
     private Animator cameraAnimator;
@@ -39,9 +39,14 @@ public class Player : RoomObject
         motionBlur.active = Settings.GetSettings().cameraSettings.Motion_blur_enabled;
     }
 
+    protected override Material[] getMaterials() {
+        return meshObject.materials;
+    }
+
+
     private void Reset() {
         Word = "me";
-        AlternativeWords = new string[]{ "myself", "i", "player", "edward"};
+        AlternativeWords = new string[]{ "myself", "i", "player", "gregory"};
     }
     // private void Update() {
     //     if (Input.GetKeyDown(KeyCode.D)) {
@@ -55,6 +60,8 @@ public class Player : RoomObject
     public void Die() {
         cameraAnimator.enabled = true;
         cameraAnimator.SetTrigger("Die");
+        Movement.CharacterAnimator.SetBool("dead", true);
+        Movement.CharacterAnimator.SetTrigger("dying");
         Movement.EnableRotation = false;
         Movement.RB.velocity = Vector3.zero;
         Movement.EnableWalk = false;
@@ -67,10 +74,11 @@ public class Player : RoomObject
         meshObject.enabled = false;
     }
 
-    public override void OnAppearingFinish()
+    public override void OnAppearing()
     { 
         //no base call!
         meshObject.enabled = true;
+        base.OnAppearing();
     }
 
 
@@ -81,6 +89,8 @@ public class Player : RoomObject
         cameraAnimator.enabled = false;
         Movement.EnableRotation = true;
         Movement.EnableWalk = true;
+        Movement.CameraPivot.transform.localPosition = new Vector3(0,Movement.CameraPivot.transform.localPosition.y,0);
+        Movement.CharacterAnimator.SetBool("dead", false);
 
     }
 }

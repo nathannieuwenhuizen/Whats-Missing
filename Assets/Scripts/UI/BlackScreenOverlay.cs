@@ -21,9 +21,10 @@ public class BlackScreenOverlay : MonoBehaviour
         Area.OnRespawn -= RemoveBlack;
     }
     public void FadeToBlack() {
-        StartCoroutine(group.FadeCanvasGroup(1, 1.5f));
+        StartCoroutine(group.FadeCanvasGroup(1, 1.5f, 1.5f));
     }
     public void RemoveBlack() {
+        StopAllCoroutines();
         group.alpha = 0;
     }
 

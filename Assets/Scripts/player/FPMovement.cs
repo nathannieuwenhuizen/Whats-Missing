@@ -35,6 +35,9 @@ public class FPMovement : MonoBehaviour
 
     [SerializeField]
     private Transform cameraPivot;
+    public Transform CameraPivot {
+        get { return cameraPivot;}
+    }
     [SerializeField]
     private Collider topCollider;
     [SerializeField]
@@ -61,6 +64,9 @@ public class FPMovement : MonoBehaviour
     [SerializeField]
     private Animator characterAnimator;
 
+    public Animator CharacterAnimator {
+        get { return characterAnimator;}
+    }
     private int rotateSpeed = 2;
 
     private bool isRunning = false;
