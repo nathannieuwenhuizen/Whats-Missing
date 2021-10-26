@@ -42,12 +42,18 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
             case ChangeType.missing:
                 OnMissing();
                 break;
-        }
+            case ChangeType.tooSmall:
+                OnShrinking();
+                break;
+        }    
     }
     public void RemoveChange(Change change) {
         switch (change.television.changeType) {
             case ChangeType.missing:
                 OnAppearing();
+                break;
+            case ChangeType.tooSmall:
+                OnShrinkRevert();
                 break;
         }
     }
@@ -100,13 +106,6 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
                 }
                 yield return new WaitForSeconds(3f);
             break;
-            case MissingChangeEffect.animation:
-                // if(anim != null && disAppearing != null && Time.timeScale != 0) {
-                //     yield return StartCoroutine(playAnimation(disAppearing));
-                // } else {
-                //     Debug.LogWarning("Animation has not been asigned or time is 0");
-                // }
-                break;
         }
         OnMissingFinish();
     }
@@ -140,13 +139,6 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
                 }
                 yield return new WaitForSeconds(3f);
             break;
-            case MissingChangeEffect.animation:
-                // if(anim != null && appearing != null && Time.timeScale != 0) {
-                //     yield return StartCoroutine(playAnimation(appearing));
-                // } else {
-                //     Debug.LogWarning("Animation has not been asigned or time is 0");
-                // }
-                break;
         }
         OnAppearingFinish();
     }
@@ -171,23 +163,10 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
 
     #endregion
 
-    // public IEnumerator playAnimation(AnimationClip clip) {
-    //     if (anim != null && clip != null) {
-    //         Debug.Log("animate!");
-    //         clip.legacy = true;
-    //         anim.AddClip(clip, clip.name);
-    //         anim.clip = clip;
-    //         anim.Play();
-    //         while (anim.IsPlaying(clip.name))
-    //         {
-    //             yield return new WaitForEndOfFrame();
-    //         }
-    //         clip.legacy = false;
-    //     }
-    // }
 
     public virtual void OnRoomEnter()
     {
+        normalScale = transform.localScale;
         inSpace = true;
     }
 
@@ -195,4 +174,48 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
     {
         inSpace = false;
     }
+
+    #region  shrinking/enlarging
+    private Vector3 normalScale;
+    public void OnShrinking()
+    {
+        if (Animated) {
+            StartCoroutine(AnimateShrinking());
+        } else {
+            OnShrinkingFinish();
+        }
+    }
+
+    public IEnumerator AnimateShrinking()
+    {
+        yield return transform.AnimatingScale(normalScale * .5f, AnimationCurve.EaseInOut(0,0,1,1), 3f);
+        OnShrinkingFinish();
+    }
+
+    public void OnShrinkingFinish()
+    {
+        Debug.Log("on shrink finish");
+        transform.localScale = normalScale * .5f;
+    }
+
+    public void OnShrinkRevert()
+    {
+        if (Animated) {
+            StartCoroutine(AnimateShrinkRevert());
+        } else {
+            OnShrinkingRevertFinish();
+        }
+    }
+
+    public IEnumerator AnimateShrinkRevert()
+    {
+        yield return transform.AnimatingScale(normalScale, AnimationCurve.EaseInOut(0,0,1,1), 3f);
+        OnShrinkingRevertFinish();
+    }
+
+    public void OnShrinkingRevertFinish()
+    {
+        transform.localScale = normalScale;
+    }
+    #endregion
 }

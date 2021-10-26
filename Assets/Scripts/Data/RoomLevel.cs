@@ -24,4 +24,5 @@ public class MirrorData {
     public string letters;
     [Range(-1,1)]
     public int roomIndexoffset = 0;
+    public ChangeType changeType = ChangeType.missing;
 }

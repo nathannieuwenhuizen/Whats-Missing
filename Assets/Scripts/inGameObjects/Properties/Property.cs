@@ -60,6 +60,9 @@ public abstract class Property : MonoBehaviour, IChangable, IRoomObject
             case ChangeType.missing:
                 OnAppearing();
                 break;
+            case ChangeType.tooSmall:
+                OnShrinkRevert();
+                break;
         }
     }
 
@@ -69,6 +72,9 @@ public abstract class Property : MonoBehaviour, IChangable, IRoomObject
         switch (change.television.changeType) {
             case ChangeType.missing:
                 OnMissing();
+                break;
+            case ChangeType.tooSmall:
+                OnShrinking();
                 break;
         }
     }
@@ -103,5 +109,46 @@ public abstract class Property : MonoBehaviour, IChangable, IRoomObject
     {
         inSpace = false;
     }
+    
+    #region  shrinking/enlarging
+    public void OnShrinking()
+    {
+        if (Animated) {
+            onShockwave?.Invoke(currentChange.television.transform);
+            StartCoroutine(AnimateShrinking());
+        } else {
+            OnShrinkingFinish();
+        }
+    }
 
+    public IEnumerator AnimateShrinking()
+    {
+        yield return null;
+        OnShrinkingFinish();
+    }
+
+    public void OnShrinkingFinish()
+    {
+    }
+
+    public void OnShrinkRevert()
+    {
+        if (Animated) {
+            onShockwave?.Invoke(currentChange.television.transform);
+            StartCoroutine(AnimateShrinkRevert());
+        } else {
+            OnShrinkingRevertFinish();
+        }
+    }
+
+    public IEnumerator AnimateShrinkRevert()
+    {
+        yield return null;
+        OnShrinkingRevertFinish();
+    }
+
+    public void OnShrinkingRevertFinish()
+    {
+    }
+    #endregion
 }

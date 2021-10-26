@@ -116,9 +116,11 @@ public class Area : MonoBehaviour
                 {
                     if (tv.isQuestion) {
                         tv.Letters = roomLevel.roomInfo.questionMirror.letters;
+                        tv.changeType = roomLevel.roomInfo.questionMirror.changeType;
                         tv.roomIndexoffset = roomLevel.roomInfo.questionMirror.roomIndexoffset;
                     } else {
                         tv.PreAnswer = roomLevel.roomInfo.changeMirror[changeMirrorIndex].letters;
+                        tv.changeType = roomLevel.roomInfo.changeMirror[changeMirrorIndex].changeType;
                         tv.roomIndexoffset = roomLevel.roomInfo.changeMirror[changeMirrorIndex].roomIndexoffset;
                         changeMirrorIndex++;
                     }

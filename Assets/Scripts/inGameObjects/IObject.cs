@@ -8,8 +8,7 @@ using UnityEngine;
 public enum MissingChangeEffect {
     none,
     scale,
-    dissolve,
-    animation
+    dissolve
 }
 
 ///<summary>
@@ -42,7 +41,66 @@ public interface IMissable {
     /// Fired when the animation has finished. Or immediately when the animation is set to false. Here the changes are actually rmeoved.
     ///</summary>
     void OnAppearingFinish();
+}
 
+///<summary>
+/// An entity that can be shrunk.
+///</summary>
+public interface IShrinkable {
+    ///<summary>
+    /// Fires when the object starts shrinking. Here it calls the animation if the object is set to animate.
+    ///</summary>
+    void OnShrinking();
+    ///<summary>
+    /// The animation of the object when it shrinks.
+    ///</summary>
+    IEnumerator AnimateShrinking();
+    ///<summary>
+    /// Fired when the animation has finished. Or immediately when the animation is set to false. Here the changes are actually set.
+    ///</summary>
+    void OnShrinkingFinish();
+    ///<summary>
+    /// Fires when the object starts unshrinking. Here it calls the animation if the object is set to animate.
+    ///</summary>
+    void OnShrinkRevert();
+    ///<summary>
+    /// The animation of the object when it goes unshrinking.
+    ///</summary>
+    IEnumerator AnimateShrinkRevert();
+    ///<summary>
+    /// Fired when the animation has finished. Or immediately when the animation is set to false. Here the changes are actually rmeoved.
+    ///</summary>
+    void OnShrinkingRevertFinish();
+}
+
+///<summary>
+/// An entity that can be enlarged.
+///</summary>
+public interface IEnlargable {
+    ///<summary>
+    /// Fires when the object starts enlarging. Here it calls the animation if the object is set to animate.
+    ///</summary>
+    void OnEnlarge();
+    ///<summary>
+    /// The animation of the object when it enlarges.
+    ///</summary>
+    IEnumerator AnimateEnlarging();
+    ///<summary>
+    /// Fired when the animation has finished. Or immediately when the animation is set to false. Here the changes are actually set.
+    ///</summary>
+    void OnEnlargingFinish();
+    ///<summary>
+    /// Fires when the object starts becomming normal from being too big. Here it calls the animation if the object is set to animate.
+    ///</summary>
+    void OnEnlargeRevert();
+    ///<summary>
+    /// The animation of the object when it goes back to normal from being too big.
+    ///</summary>
+    IEnumerator AnimateEnlargeRevert();
+    ///<summary>
+    /// Fired when the animation has finished. Or immediately when the animation is set to false. Here the changes are actually rmeoved.
+    ///</summary>
+    void OnEnlargeRevertFinish();
 }
 
 
@@ -61,7 +119,7 @@ public interface IRoomObject {
 ///<summary>
 /// The entity can actually change.
 ///</summary>
-public interface IChangable : IMissable
+public interface IChangable : IMissable, IShrinkable
 {
     ///<summary>
     /// The word the tv searches for when the player checks the answer or sets a change.
