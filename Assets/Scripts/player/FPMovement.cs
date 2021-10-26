@@ -58,10 +58,21 @@ public class FPMovement : MonoBehaviour
     [SerializeField]
     private float jumpForce = 200f;
 
+    [SerializeField]
+    private Animator characterAnimator;
+
     private int rotateSpeed = 2;
 
     private bool isRunning = false;
     private bool inAir = false;
+    public bool InAir {
+        get { return inAir;}
+        set { 
+            inAir = value; 
+            characterAnimator.SetBool("inAir", inAir);
+        }
+    }
+
     private bool inCeiling = false;
     private int verticalAngle = 80;
 
@@ -99,7 +110,7 @@ public class FPMovement : MonoBehaviour
     ///</summary>
     public void Jump() {
         if (inAir && rb.useGravity == true) return;
-        inAir = true;
+        InAir = true;
         StartCoroutine(MakeWindNoices());
         AudioHandler.Instance?.PlaySound(SFXFiles.player_jump, .1f);
         rb.velocity = new Vector3(rb.velocity.x, jumpForce * (inCeiling ? -1 : 1), rb.velocity.z);
@@ -112,7 +123,7 @@ public class FPMovement : MonoBehaviour
     ///</summary>
     private IEnumerator MakeWindNoices() {
         bool windEffectEnabled = false;
-        while (inAir)
+        while (InAir)
         {
             if (rb.velocity.y < -20f && windEffectEnabled == false){
                 windEffectEnabled = true;
@@ -142,7 +153,7 @@ public class FPMovement : MonoBehaviour
         footstepFile = other.gameObject.tag == "Stairs" ? SFXFiles.stairs_footstep : SFXFiles.player_footstep;
 
         if (inAir && other.gameObject.tag != Tags.Picked) {
-            inAir = false;
+            InAir = false;
             AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
             oldPos = transform.position;
         }
@@ -198,6 +209,7 @@ public class FPMovement : MonoBehaviour
         if (EnableRotation) UpdateRotation();
         if (EnableWalk) UpdateMovement();
         CheckFloorCollision();
+        UpdateAnimator();
     }
 
     ///<summary>
@@ -213,6 +225,10 @@ public class FPMovement : MonoBehaviour
             ));
         rb.velocity = dir;
         UpdateWalking();
+    }
+    private void UpdateAnimator() {
+        characterAnimator.SetFloat("deltaX", walkDelta.x);
+        characterAnimator.SetFloat("deltaY", walkDelta.y);
     }
 
     ///<summary>
@@ -281,7 +297,7 @@ public class FPMovement : MonoBehaviour
         if (_distance != 10f) {
             distance = _distance;
             rb.MovePosition(transform.position + new Vector3(0,-(distance - offset),0));
-            inAir = false;
+            InAir = false;
             return true;
         } else {
             distance = 10f;
@@ -291,7 +307,7 @@ public class FPMovement : MonoBehaviour
 
     private void OnCollisionExit(Collision other) {
         if (CheckFloorCollision() == false) {
-            inAir = true;
+            InAir = true;
             StartCoroutine(MakeWindNoices());
         }        
     }
@@ -333,8 +349,9 @@ public class FPMovement : MonoBehaviour
         }
     }
 
+
     private void OnDrawGizmos() {
         Gizmos.DrawLine(transform.position, transform.position + new Vector3(0,-distance,0));
-        Gizmos.DrawSphere(transform.position + new Vector3(0,-distance + transform.localScale.x / 2f ,0), transform.localScale.x / 2f);
+        Gizmos.DrawSphere(transform.position + new Vector3(0,-distance + transform.localScale.x *.1f ,0), transform.localScale.x * .1f);
     }
 }
