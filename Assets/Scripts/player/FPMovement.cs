@@ -208,7 +208,7 @@ public class FPMovement : MonoBehaviour
     {
         if (EnableRotation) UpdateRotation();
         if (EnableWalk) UpdateMovement();
-        CheckFloorCollision();
+        //CheckFloorCollision();
         UpdateAnimator();
     }
 
@@ -227,8 +227,8 @@ public class FPMovement : MonoBehaviour
         UpdateWalking();
     }
     private void UpdateAnimator() {
-        characterAnimator.SetFloat("deltaX", walkDelta.x);
-        characterAnimator.SetFloat("deltaY", walkDelta.y);
+        characterAnimator.SetFloat("deltaX", walkDelta.x * (isRunning ? 1 : .5f));
+        characterAnimator.SetFloat("deltaY", walkDelta.y * (isRunning ? 1 : .5f));
     }
 
     ///<summary>
