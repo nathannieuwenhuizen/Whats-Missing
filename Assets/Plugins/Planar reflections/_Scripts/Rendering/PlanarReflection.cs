@@ -24,8 +24,12 @@
 
         private void Update()
         {
-            if (isReady)
+            if (isReady && mainCamera != null)
                 RenderReflection();
+            else {
+                mainCamera = Camera.main;
+                OnValidate();
+            }
         }
 
         private void RenderReflection()
@@ -55,6 +59,22 @@
             // apply direction and position to reflection camera
             reflectionCamTransform.position = cameraPositionWorldSpace;
             reflectionCamTransform.LookAt(cameraPositionWorldSpace + cameraDirectionWorldSpace, cameraUpWorldSpace);
+            SetNearClipPlane();
+            // reflectionCamera.nearClipPlane = Vector3.Distance(reflectionCamTransform.position, reflectionPlane.position);            
+        }
+
+        private void SetNearClipPlane() {
+            Transform clipPlane = transform;
+            int dot = System.Math.Sign(Vector3.Dot(clipPlane.forward, clipPlane.position - reflectionCamTransform.position));
+
+            Vector3 cameraSpacePos = reflectionCamera.worldToCameraMatrix.MultiplyPoint(clipPlane.position);
+            int revert = clipPlane.position.y < mainCamera.transform.position.y ? 1 : -1;
+            Vector3 cameraSpaceNormal = reflectionCamera.worldToCameraMatrix.MultiplyVector(clipPlane.up * revert) * dot;
+            float camSpaceDst = -Vector3.Dot(cameraSpacePos, cameraSpaceNormal);
+            Vector4 clipPlaneCameraSpace = new Vector4(cameraSpaceNormal.x, cameraSpaceNormal.y, cameraSpaceNormal.z, camSpaceDst);
+
+
+            reflectionCamera.projectionMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
         }
 
         private void OnValidate()

@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Custom.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RoomTelevision : Television
 {
+
+    [SerializeField]
+    private PlanarReflection planarReflection;
+
     [Header("Room TV settings")]
     public ChangeType changeType = ChangeType.missing;
     public bool isQuestion = true;
