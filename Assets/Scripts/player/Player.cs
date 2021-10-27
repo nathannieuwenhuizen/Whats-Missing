@@ -48,11 +48,11 @@ public class Player : RoomObject
         Word = "me";
         AlternativeWords = new string[]{ "myself", "i", "player", "gregory"};
     }
-    // private void Update() {
-    //     if (Input.GetKeyDown(KeyCode.D)) {
-    //         Die();
-    //     }
-    // }
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.D)) {
+            Die();
+        }
+    }
 
     ///<summary>
     /// Thep play dies and falls to the gorund
