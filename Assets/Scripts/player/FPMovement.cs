@@ -8,6 +8,7 @@ using UnityEngine;
 ///</summary>
 public class FPMovement : MonoBehaviour
 {
+    private Vector2 lerpedVelocity;
 
     //camera movement offset values
     private float cameraYOffset = 0.03f;
@@ -214,7 +215,7 @@ public class FPMovement : MonoBehaviour
     {
         if (EnableRotation) UpdateRotation();
         if (EnableWalk) UpdateMovement();
-        //CheckFloorCollision();
+        CheckFloorCollision();
         UpdateAnimator();
     }
 
@@ -233,8 +234,9 @@ public class FPMovement : MonoBehaviour
         UpdateWalking();
     }
     private void UpdateAnimator() {
-        characterAnimator.SetFloat("deltaX", walkDelta.x * (isRunning ? 1 : .5f));
-        characterAnimator.SetFloat("deltaY", walkDelta.y * (isRunning ? 1 : .5f));
+        lerpedVelocity = Vector2.Lerp(lerpedVelocity, walkDelta * (isRunning ? 1 : .5f), Time.deltaTime * 10f);
+        characterAnimator.SetFloat("deltaX", lerpedVelocity.x);
+        characterAnimator.SetFloat("deltaY", lerpedVelocity.y);
     }
 
     ///<summary>

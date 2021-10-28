@@ -4,11 +4,13 @@ using Custom.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomTelevision : Television
+public class RoomTelevision : Television, IRoomObject
 {
 
     [SerializeField]
     private PlanarReflection planarReflection;
+    [SerializeField]
+    private bool hidden = false;
 
     [Header("Room TV settings")]
     public ChangeType changeType = ChangeType.missing;
@@ -74,6 +76,9 @@ public class RoomTelevision : Television
         }
     }
 
+    private bool inSpace = true;
+    public bool InSpace { get => inSpace; }
+
     ///<summary>
     /// Updates the light indicator on whether the tv is on.
     ///</summary>
@@ -130,8 +135,6 @@ public class RoomTelevision : Television
         int x;
         if ((letters.Length - (y * containerColloms)) < containerColloms) {
             x = ((containerColloms - (letters.Length % containerColloms))/ 2) + (index % containerColloms);
-            // Debug.Log("bottom row colloms: " + containerColloms + " |  index: " + index + " | x: " + x);
-            // Debug.Log("letters rest: " + (containerColloms - (letters.Length % containerColloms)) + " |  index rest: " + (index % containerColloms));
         } else {
             //toprows without the need to center
             x = Mathf.FloorToInt((float)index % (float)containerColloms);
@@ -192,16 +195,11 @@ public class RoomTelevision : Television
     /// sets all the letters to their original place.
     ///</summary>
     public void DeselectLetters() {
-        // RemoveSelectedLetter(0);
-        // while (selectedLetterObjects.Count > 0) {
-        //     RemoveSelectedLetter(selectedLetterObjects.Count - 1);
-        // }
+
         for(int i = selectedLetterObjects.Count - 1; i >= 0; i--) {
             RemoveSelectedLetter(i);
         }
-        Debug.Log("after deselection: " + selectedLetterObjects.Count);
-        // selectedLetterObjects = new List<Letter>();
-         
+        Debug.Log("after deselection: " + selectedLetterObjects.Count);         
     }
     ///<summary>
     /// Resets the letters and removes the change or question check.
@@ -218,5 +216,21 @@ public class RoomTelevision : Television
         foreach(Letter letter in selectedLetterObjects) {
             letter.Color = new Color(.8f, 1f, .8f);
         }
+    }
+
+    public void OnRoomEnter()
+    {
+        inSpace = true;
+        if (!hidden) {
+            planarReflection.IsActive = true;
+        } else {
+            planarReflection.IsActive = false;
+        }
+    }
+
+    public void OnRoomLeave()
+    {
+        inSpace = false;
+        planarReflection.IsActive = false;
     }
 }

@@ -2,7 +2,7 @@
 {
     using UnityEngine;
 
-    [ExecuteAlways]
+    // [ExecuteAlways]
     public class PlanarReflection : MonoBehaviour
     {
         // referenses
@@ -16,14 +16,48 @@
         public float verticalOffset;
         private bool isReady;
 
+        private bool inView = false;
+        public bool InView {
+            get { return inView;}
+            set { 
+                inView = value; 
+                reflectionCamera.gameObject.SetActive(value);
+            }
+        }
+        private bool isActive = true;
+        public bool IsActive {
+            get { return isActive;}
+            set { 
+                isActive = value; 
+                if (value == false) {
+                    InView = false;
+                }
+            }
+        }
+
         // cache
         private Transform mainCamTransform;
         private Transform reflectionCamTransform;
 
+        private void Start() {
+            outputTexture = new RenderTexture(Screen.width, Screen.height, 16, RenderTextureFormat.ARGB32);
+            outputTexture.name = "my texture2";
+            outputTexture.Create();
+            reflectionCamera.targetTexture = outputTexture;
+            reflectionPlane.GetComponent<MeshRenderer>().material.SetTexture("_ReflectionTex", outputTexture);
+
+            IsActive = isActive;
+        }
 
 
         private void Update()
         {
+            if (!isActive) return;
+            
+            InView = IncameraRange();
+        
+            if (!InView) return;
+
             if (isReady && mainCamera != null)
                 RenderReflection();
             else {
@@ -75,6 +109,23 @@
 
 
             reflectionCamera.projectionMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
+        }
+
+
+        public bool IncameraRange() {
+
+            if (mainCamera == null) {
+                mainCamera = Camera.main;
+                OnValidate();
+            }
+
+            Renderer renderer = reflectionPlane.GetComponent<MeshRenderer>();
+            Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+            if(GeometryUtility.TestPlanesAABB(planes, renderer.bounds)){
+                return true;
+            } else {
+                return false;   
+            }
         }
 
         private void OnValidate()

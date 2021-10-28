@@ -34,7 +34,6 @@ Transform:
   m_LocalPosition: {x: -0.468, y: 0, z: -2.603}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 8506993216079228815}
   - {fileID: 6940687395146147711}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -176,8 +175,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   word: chair
   alternateWords: []
-  appearing: {fileID: 7400000, guid: 178d7a25db7a861408d98663cfc06824, type: 2}
-  disAppearing: {fileID: 7400000, guid: 49d07049cae449c448905122f1e4b7e9, type: 2}
   missingChangeEffect: 1
   gameObjectID: 0
   rigidBodyInfo:
@@ -187,6 +184,7 @@ MonoBehaviour:
     RigidbodyConstraints: 0
     Holdvelocity: {x: 0, y: 0, z: 0}
     UseGravity: 1
+    tag: 
 --- !u!95 &1065836226936435945
 Animator:
   serializedVersion: 3
@@ -235,123 +233,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1 &8568647880779503471
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8506993216079228815}
-  m_Layer: 0
-  m_Name: Obj
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &8506993216079228815
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8568647880779503471}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 140324477478964245}
-  m_Father: {fileID: 3563135595151776410}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &466176588225997822
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 8506993216079228815}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.3886656
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.38866556
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.3886656
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7918335002988649766, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: e1499534230011543b288fa5178bae6f, type: 2}
-    - target: {fileID: -7029948723529949830, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 65702495048144492, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-      propertyPath: m_Name
-      value: DesignChair1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
---- !u!4 &140324477478964245 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4893ad9c78085b549a0cab27185fa2cf, type: 3}
-  m_PrefabInstance: {fileID: 466176588225997822}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6082743331109843019
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -365,7 +246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3762890243592296244, guid: 4ddafb47ee55ab14587bda44a84a654a, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3762890243592296244, guid: 4ddafb47ee55ab14587bda44a84a654a, type: 3}
       propertyPath: m_LocalScale.x
