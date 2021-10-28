@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -263,9 +264,9 @@ public class FPMovement : MonoBehaviour
         cameraYIndex = (delta.magnitude / walkStepDistance) * (Mathf.PI * 2);
         float currentCameraYpos = Mathf.Sin(cameraYIndex) * cameraYOffset;
         cameraPivot.localPosition = new Vector3(
-            cameraPivot.localPosition.x, 
+            0, 
             cameraStartYPos + currentCameraYpos, 
-            cameraPivot.localPosition.z 
+            0 
         );
 
         cameraZIndex += Time.deltaTime;
@@ -356,7 +357,6 @@ public class FPMovement : MonoBehaviour
             cameraPivot.localRotation = Quaternion.Euler(new Vector3(Mathf.Min(cameraPivot.rotation.eulerAngles.x, verticalAngle), 0, 0));
         }
     }
-
 
     private void OnDrawGizmos() {
         Gizmos.DrawLine(transform.position, transform.position + new Vector3(0,-distance,0));

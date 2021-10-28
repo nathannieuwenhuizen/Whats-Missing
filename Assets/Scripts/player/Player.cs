@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,13 @@ public class Player : RoomObject
     public static event DieEvent OnDie;
 
     [SerializeField]
+    private Transform headModel;
+    [SerializeField]
+    private Transform animationView;
+
+    [SerializeField]
     private Camera playerCamera;
+    private float cameraClipPlane;
 
     [SerializeField]
     private Volume volume;
@@ -24,15 +31,13 @@ public class Player : RoomObject
     [SerializeField]
     private SkinnedMeshRenderer meshObject;
 
-    [SerializeField]
-    private Animator cameraAnimator;
 
     private FPMovement movement;
     public FPMovement Movement { get=> movement; }
     protected void Awake()
     {
         movement = GetComponent<FPMovement>();
-        cameraAnimator.enabled = false;
+        cameraClipPlane = playerCamera.nearClipPlane;
 
         //set motionblur to settings.
         volume.profile.TryGet<MotionBlur>(out motionBlur);
@@ -50,7 +55,9 @@ public class Player : RoomObject
     }
     private void Update() {
         if (Input.GetKeyDown(KeyCode.D)) {
-            Die();
+            // Die();
+            PlaycharacterAnimation("takingItem");
+
         }
     }
 
@@ -58,15 +65,25 @@ public class Player : RoomObject
     /// Thep play dies and falls to the gorund
     ///</summary>
     public void Die() {
-        cameraAnimator.enabled = true;
-        cameraAnimator.SetTrigger("Die");
         Movement.CharacterAnimator.SetBool("dead", true);
-        Movement.CharacterAnimator.SetTrigger("dying");
-        Movement.EnableRotation = false;
-        Movement.RB.velocity = Vector3.zero;
-        Movement.EnableWalk = false;
+
+        PlaycharacterAnimation("dying");
+
         OnDie?.Invoke();
     }
+
+    public void PlaycharacterAnimation(string trigger) {
+        Movement.EnableRotation = false;
+        Movement.EnableWalk = false;
+        Movement.RB.velocity = Vector3.zero;
+
+        playerCamera.transform.SetParent(headModel);
+        playerCamera.transform.localPosition = animationView.localPosition;
+        playerCamera.transform.localRotation = animationView.localRotation;
+        playerCamera.nearClipPlane = 0.01f;
+        Movement.CharacterAnimator.SetTrigger(trigger);
+    }
+
 
     public override void OnMissingFinish()
     {
@@ -86,7 +103,10 @@ public class Player : RoomObject
     /// Enables the movement and sets the camera animation to false.
     ///</summary>
     public void Respawn() {
-        cameraAnimator.enabled = false;
+        playerCamera.transform.SetParent(transform);
+        playerCamera.nearClipPlane = cameraClipPlane;
+
+
         Movement.EnableRotation = true;
         Movement.EnableWalk = true;
         Movement.CameraPivot.transform.localPosition = new Vector3(0,Movement.CameraPivot.transform.localPosition.y,0);
