@@ -9,7 +9,7 @@
         public Camera mainCamera;
         public Camera reflectionCamera;
         public Transform reflectionPlane;
-        public RenderTexture outputTexture;
+        private RenderTexture outputTexture;
 
         // parameters
         public bool copyCameraParamerers;

@@ -94,4 +94,28 @@ public static class Extensions
         }
         mat.SetFloat("Opacity", endVal);
     }
+
+    public static void SetNearClipPlane(this Camera reflectionCamera, Transform transform, Camera mainCamera) {
+        Transform clipPlane = transform; 
+        int dot = System.Math.Sign(Vector3.Dot(clipPlane.forward, clipPlane.position - reflectionCamera.transform.position));
+
+        Vector3 cameraSpacePos = reflectionCamera.worldToCameraMatrix.MultiplyPoint(clipPlane.position);
+        int revert = clipPlane.position.y < mainCamera.transform.position.y ? 1 : -1;
+        Vector3 cameraSpaceNormal = reflectionCamera.worldToCameraMatrix.MultiplyVector(clipPlane.up * revert) * dot;
+        float camSpaceDst = -Vector3.Dot(cameraSpacePos, cameraSpaceNormal);
+        Vector4 clipPlaneCameraSpace = new Vector4(cameraSpaceNormal.x, cameraSpaceNormal.y, cameraSpaceNormal.z, camSpaceDst);
+
+
+        reflectionCamera.projectionMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
+    }
+
+    public static bool IncameraRange(this Renderer renderer, Camera mainCamera) {
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+        if(GeometryUtility.TestPlanesAABB(planes, renderer.bounds)){
+            return true;
+        } else {
+            return false;   
+        }
+    }
+
 }
