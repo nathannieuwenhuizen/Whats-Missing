@@ -2,13 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class Portal : MonoBehaviour
 {
     // referenses
 
+    [SerializeField]
+    private Collider[] connectedColliders;
+
+    private bool insidePortal = false;
+
+    private Player player;
+    private static readonly Quaternion halfTurn = Quaternion.Euler(0.0f, 0.0f, 180.0f);
+
+    private float positionOffset  = .2f;
+
     public Portal connectedPortal;
     
-    public Camera mainCamera;
+    private Camera mainCamera;
     public Camera reflectionCamera;
     public Transform reflectionPlane;
     private RenderTexture outputTexture;
@@ -42,11 +53,12 @@ public class Portal : MonoBehaviour
     private Transform reflectionCamTransform;
 
     private void Start() {
-        outputTexture = new RenderTexture(Screen.width, Screen.height, 32, RenderTextureFormat.ARGB32);
-        outputTexture.depth = 32;
-        // outputTexture = new RenderTexture(Screen.width, Screen.height, 16, RenderTextureFormat.BGRA32);
-        outputTexture.name = "my texture2";
-        outputTexture.Create();
+        if (outputTexture == null) {
+            outputTexture = new RenderTexture(Screen.width, Screen.height, 32, RenderTextureFormat.ARGB64);
+            outputTexture.depth = 32;
+            outputTexture.name = "my texture2";
+            outputTexture.Create();
+        }
         reflectionCamera.targetTexture = outputTexture;
         reflectionPlane.GetComponent<MeshRenderer>().material.SetTexture("_ReflectionTex", outputTexture);
 
@@ -54,7 +66,7 @@ public class Portal : MonoBehaviour
     }
 
 
-    private void Update()
+    private void LateUpdate()
     {
         if (!isActive) return;
         
@@ -68,7 +80,59 @@ public class Portal : MonoBehaviour
             mainCamera = Camera.main;
             OnValidate();
         }
+        if (insidePortal && player != null) {
+            Vector3 objPos = transform.InverseTransformPoint(player.transform.position);
+            // objPos.y += .5f;
+            // Debug.Log("objposZ: " + objPos.y);
+            if (objPos.y < positionOffset)
+            {
+                Debug.Log("warp!?");
+                Teleport();
+            }
+        }
     }
+
+    public void OnPortalEnter(Player _player) {
+        player = _player;
+        player.Camera.nearClipPlane = 0.01f;;
+
+        insidePortal = true;
+        foreach (Collider coll in connectedColliders)
+        {
+            coll.enabled = false;
+        }
+    }
+
+    public void OnPortalLeave() {
+        player.Camera.nearClipPlane = .7f;;
+
+        insidePortal = false;
+        foreach (Collider coll in connectedColliders)
+        {
+            coll.enabled = true;
+        }
+    }
+
+    private void Teleport() {
+        OnPortalLeave();
+        connectedPortal.OnPortalEnter(player);
+
+        var inTransform = transform;
+        var outTransform = connectedPortal.transform;
+
+        // Update position of object.
+        Vector3 relativePos = inTransform.InverseTransformPoint(player.transform.position);
+        relativePos.y -= positionOffset;
+        relativePos = halfTurn * relativePos;
+        player.transform.position = outTransform.TransformPoint(relativePos);
+
+        // Update rotation of object.
+        Quaternion relativeRot = Quaternion.Inverse(inTransform.rotation) * player.transform.rotation;
+        relativeRot = halfTurn * relativeRot;
+        player.transform.rotation = outTransform.rotation * relativeRot;    
+    }
+
+    
 
     private void RenderReflection()
     {
@@ -84,7 +148,6 @@ public class Portal : MonoBehaviour
         Vector3 cameraUpPlaneSpace = reflectionPlane.InverseTransformDirection(cameraUpWorldSpace);
         Vector3 cameraPositionPlaneSpace = reflectionPlane.InverseTransformPoint(cameraPositionWorldSpace);
 
-        Debug.Log("Main cameraDeltaPos: " + cameraPositionPlaneSpace);
         // invert direction and position by reflection plane
         cameraDirectionPlaneSpace.y *= -1;
         cameraDirectionPlaneSpace.x *= -1;
@@ -110,12 +173,12 @@ public class Portal : MonoBehaviour
         int dot = System.Math.Sign(Vector3.Dot(clipPlane.forward, clipPlane.position - reflectionCamTransform.position));
 
         Vector3 cameraSpacePos = reflectionCamera.worldToCameraMatrix.MultiplyPoint(clipPlane.position);
-        int revert = clipPlane.position.y < mainCamera.transform.position.y ? 1 : -1;
+        int revert = transform.position.y < mainCamera.transform.position.y ? 1 : -1;
         Vector3 cameraSpaceNormal = reflectionCamera.worldToCameraMatrix.MultiplyVector(clipPlane.up * revert) * dot;
         float camSpaceDst = -Vector3.Dot(cameraSpacePos, cameraSpaceNormal);
         Vector4 clipPlaneCameraSpace = new Vector4(cameraSpaceNormal.x, cameraSpaceNormal.y, cameraSpaceNormal.z, camSpaceDst);
 
-
+        reflectionCamera.orthographic = true;
         reflectionCamera.projectionMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
     }
 

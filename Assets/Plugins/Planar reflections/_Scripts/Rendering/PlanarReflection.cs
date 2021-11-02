@@ -107,7 +107,7 @@
             float camSpaceDst = -Vector3.Dot(cameraSpacePos, cameraSpaceNormal);
             Vector4 clipPlaneCameraSpace = new Vector4(cameraSpaceNormal.x, cameraSpaceNormal.y, cameraSpaceNormal.z, camSpaceDst);
 
-
+            reflectionCamera.orthographic = true;
             reflectionCamera.projectionMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
         }
 

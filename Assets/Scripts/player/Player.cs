@@ -53,13 +53,13 @@ public class Player : RoomObject
         Word = "me";
         AlternativeWords = new string[]{ "myself", "i", "player", "gregory"};
     }
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.D)) {
-            // Die();
-            PlaycharacterAnimation("takingItem");
+    // private void Update() {
+    //     if (Input.GetKeyDown(KeyCode.D)) {
+    //         // Die();
+    //         PlaycharacterAnimation("takingItem");
 
-        }
-    }
+    //     }
+    // }
 
     ///<summary>
     /// Thep play dies and falls to the gorund
@@ -97,6 +97,18 @@ public class Player : RoomObject
         meshObject.enabled = true;
         base.OnAppearing();
     }
+    private void OnTriggerEnter(Collider other) {
+        if (other.GetComponent<Portal>() != null) {
+            other.GetComponent<Portal>().OnPortalEnter(this);
+        }
+    }
+
+    private void OnTriggerExit(Collider other) {
+        if (other.GetComponent<Portal>() != null) {
+            other.GetComponent<Portal>().OnPortalLeave();
+        }
+    }
+
 
 
     ///<summary>

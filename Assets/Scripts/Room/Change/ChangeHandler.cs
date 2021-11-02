@@ -38,6 +38,7 @@ public class ChangeHandler
         }
         return result;
     }
+    
     public void LoadChanges() {
         changes = LoadingChanges();
     }
@@ -97,6 +98,7 @@ public class ChangeHandler
     private bool ConnectedRoomIsComplete(Change change) {
         return room.Area.Rooms[room.Area.Rooms.IndexOf(room) + change.roomIndexOffset].AllTelevisionsAreOn();
     }
+    
     ///<summary>
     /// Deactivate all existing changes. Called when the player leaves the room or a question-lvl has been cleared. The changes are still in the list.
     /// If the force is false, the change can still be active if the roomoffset isnt 0 and the corresponding room isn't finished.
