@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Painting : RoomObject
+public class Painting : InteractabelObject
 {
 
     [SerializeField]
     private MeshRenderer meshObject;
+    [SerializeField]
+    private Collider coll;
     [SerializeField]
     private MeshRenderer button;
     [SerializeField]
     private Portal[] portals;
     [SerializeField]
     private GameObject hiddenRoom;
+    private Animator animator;
+    private bool open = false;
 
 
     private void Reset() {
@@ -21,6 +25,7 @@ public class Painting : RoomObject
     }
 
     protected void Awake() {
+        animator = GetComponent<Animator>();
         // SetPortalsActive(false);
     }
     public override void OnRoomEnter()
@@ -40,6 +45,16 @@ public class Painting : RoomObject
             portal.gameObject.SetActive(val);
     }
 
+    public override void Interact()
+    {
+        
+        open = !open;
+        animator.SetBool("open", open);
+        SetPortalsActive(true);
+
+        base.Interact();
+    }
+
     public override void OnMissing()
     {
         base.OnMissing();
@@ -49,6 +64,7 @@ public class Painting : RoomObject
     {
         //no base call!
         meshObject.enabled = false;
+        coll.enabled = false;
         button.enabled = false;
     }
 
@@ -56,6 +72,7 @@ public class Painting : RoomObject
     { 
         //no base call!
         meshObject.enabled = true;
+        coll.enabled = true;
         button.enabled = true;
         base.OnAppearing();
     }
@@ -63,7 +80,7 @@ public class Painting : RoomObject
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
-        SetPortalsActive(false);
+        if (!open) SetPortalsActive(false);
 
     }
 

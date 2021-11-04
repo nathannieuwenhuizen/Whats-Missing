@@ -37,7 +37,7 @@ public class AlchemyItem : InteractabelObject
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q)) {
-            StartCoroutine(room.Player.Camera.transform.Shake(5f, 10, 4));
+            // StartCoroutine(room.Player.Camera.transform.Shake(5f, 10, 4));
         } 
         if (!animate) return;
 

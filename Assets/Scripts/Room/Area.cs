@@ -246,8 +246,20 @@ public class Area : MonoBehaviour
         if (door.room == currentRoom) {
             //next room
             if (index == rooms.Count - 1) {
-                areaFinishedEvent?.Invoke();
-                Debug.Log("area finished!");
+                Vector3 localPos = CurrentRoom.EndDoor.transform.InverseTransformPoint(player.transform.position);
+                player.transform.position = rooms[index - 1].EndDoor.transform.TransformPoint(localPos);
+                // player.transform.rotation = rooms[index - 1].EndDoor.transform.rotation;
+                player.transform.Rotate(0,90,0);
+                directionalLight.animating = false;
+                directionalLight.RotateToMatchRoon(rooms[index - 1].transform);
+                directionalLight.animating = true;
+                
+                CurrentRoom = rooms[index];
+                StartCoroutine(Walking(CurrentRoom.StartDoor.EndPos(), duration, delay));
+
+
+                // areaFinishedEvent?.Invoke();
+                // Debug.Log("area finished!");
             } else {
                 CurrentRoom = rooms[index + 1];
                 StartCoroutine(Walking(CurrentRoom.StartDoor.EndPos(), duration, delay));

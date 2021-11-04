@@ -15,7 +15,7 @@ public class RoomDirectionalLight : MonoBehaviour
     }
 
     public void RotateToMatchRoon(Transform room) {
-        StartCoroutine(AnimateRotation(room));
+        StartCoroutine(AnimateRotation(room));        
     }
 
     private IEnumerator AnimateRotation(Transform room) {
