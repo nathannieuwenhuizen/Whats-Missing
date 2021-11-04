@@ -66,7 +66,7 @@ public class Player : RoomObject
     }
     private void Update() {
         if (Input.GetKeyDown(KeyCode.D)) {
-            Die();
+            // Die();
             // PlaycharacterAnimation("standingUp", true);
             // PlaycharacterAnimation("takingItem");
 

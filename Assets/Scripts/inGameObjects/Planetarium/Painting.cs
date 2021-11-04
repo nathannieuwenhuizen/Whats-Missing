@@ -11,6 +11,8 @@ public class Painting : RoomObject
     private MeshRenderer button;
     [SerializeField]
     private Portal[] portals;
+    [SerializeField]
+    private GameObject hiddenRoom;
 
 
     private void Reset() {
@@ -19,14 +21,21 @@ public class Painting : RoomObject
     }
 
     protected void Awake() {
+        // SetPortalsActive(false);
+    }
+    public override void OnRoomEnter()
+    {
+        base.OnRoomEnter();
         SetPortalsActive(false);
     }
 
+
     private void Start() {
         
-    }
+    }  
 
     private void SetPortalsActive(bool val) {
+        hiddenRoom.SetActive(val);
         foreach (Portal portal in portals)
             portal.gameObject.SetActive(val);
     }
