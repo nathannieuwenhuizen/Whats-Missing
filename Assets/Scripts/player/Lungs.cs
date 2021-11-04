@@ -11,7 +11,6 @@ public class Lungs : MonoBehaviour
     [SerializeField]
     private Player player;
 
-    [SerializeField]
     private float chokeIndex = 0;
     private float chokeDuration = 30;
     private Coroutine chokeCoroutine; 
@@ -20,6 +19,10 @@ public class Lungs : MonoBehaviour
     private VignetteData startVignette;
     private VignetteData currentVignette;
     private Vignette vignette;
+
+    private bool tooCold = false;
+    [SerializeField]
+    private ParticleSystem breathParticleSystem;
 
     private void UpdateVignette() {
         vignette.intensity.value = currentVignette.intensity;
@@ -41,6 +44,24 @@ public class Lungs : MonoBehaviour
         chokeCoroutine = StartCoroutine(Chocking());
         currentVignette.color = Color.red;
         currentVignette.smoothnes = 1;
+    }
+
+    private void StartColdBreathing() {
+        tooCold = true;
+        breathParticleSystem.Play();
+        StartCoroutine(ColdBreathing());
+    }
+    private void StopColdBreathing() {
+        tooCold = false;
+        breathParticleSystem.Stop();
+
+    }
+
+    private IEnumerator ColdBreathing() {
+        while(tooCold) {
+            yield return new WaitForSeconds(2f);
+            AudioHandler.Instance.PlaySound(SFXFiles.exhale, Random.Range(.1f, .3f), Random.Range(.8f, 1f));
+        }
     }
 
     private IEnumerator Chocking() {
@@ -86,10 +107,14 @@ public class Lungs : MonoBehaviour
 
 
     private void OnEnable() {
+        WarmthProperty.OnWarmthMissing += StartColdBreathing;
+        WarmthProperty.OnWarmthAppearing += StopColdBreathing;
         AirProperty.OnAirMissing += StartChoking;
         AirProperty.OnAirAppearing += GaspingForAir;
     }
     private void OnDisable() {
+        WarmthProperty.OnWarmthMissing -= StartColdBreathing;
+        WarmthProperty.OnWarmthAppearing -= StopColdBreathing;
         AirProperty.OnAirMissing -= StartChoking;
         AirProperty.OnAirAppearing -= GaspingForAir;
     }

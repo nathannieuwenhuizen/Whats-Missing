@@ -7,22 +7,19 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Floor 1
+  m_Name: Leafs+StairRailing 1
   m_Shader: {fileID: -6465566751694194690, guid: 7edc5c7663aec614ab6b6aa63971a687, type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: _ALPHATEST_ON _SPECULAR_SETUP
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_22589d2ff7534ee6b9e5f5fb96739d52:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - Texture2D_bd0225cc901d41079877ce6b99c55b73:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -32,11 +29,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_e3eb00d33e744c4697f71d5c3c6cf63d:
-        m_Texture: {fileID: 2800000, guid: d737bbbdd3d618c4abe8c23db9bbbc62, type: 3}
+        m_Texture: {fileID: 2800000, guid: f6cd26fa4081ce14b8e087713fbeab17, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: d737bbbdd3d618c4abe8c23db9bbbc62, type: 3}
+        m_Texture: {fileID: 2800000, guid: f6cd26fa4081ce14b8e087713fbeab17, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -60,7 +57,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: d737bbbdd3d618c4abe8c23db9bbbc62, type: 3}
+        m_Texture: {fileID: 2800000, guid: f6cd26fa4081ce14b8e087713fbeab17, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -92,22 +89,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - BOOLEAN_D69A0F7C6C4C46778A16907524561A25: 0
-    - Dissolve: 0
-    - EdgeWidth: 0
     - Vector1_57d5dbd69a914683960b090e3dcda66c: 0
-    - Vector1_ce5875eb109f45989a5bd7e54bdebbce: 0.1
-    - Vector1_f9f6d4e8408f4f07af7f31a3cdedde34: -0.09
-    - _AlphaClip: 0
+    - Vector1_ce5875eb109f45989a5bd7e54bdebbce: 0.05
+    - Vector1_f9f6d4e8408f4f07af7f31a3cdedde34: 0
+    - _AlphaClip: 1
     - _Blend: 0
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
-    - _Cull: 2
-    - _Cutoff: 0.5
+    - _Cull: 0
+    - _Cutoff: 0.65
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DstBlend: 0
+    - _DstBlend: 10
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -120,20 +114,19 @@ Material:
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Surface: 0
-    - _WorkflowMode: 1
-    - _ZWrite: 1
+    - _SrcBlend: 5
+    - _Surface: 1
+    - _WorkflowMode: 0
+    - _ZWrite: 0
     m_Colors:
     - Color_81ede9b3f09b459da05a0cbbcc685235: {r: 1, g: 1, b: 1, a: 0}
-    - Color_8d87e6b6d601431095e6568d61177791: {r: 0.7490196, g: 0.41960785, b: 0.22352941, a: 0}
-    - Color_e197b5f2599347c4bce05f5c405f82b2: {r: 0, g: 2.1185474, b: 1.7857913, a: 0}
+    - Color_e197b5f2599347c4bce05f5c405f82b2: {r: 0, g: 2.502628, b: 3.9999995, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 1.4142135, g: 0.87758666, b: 0.62038606, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &8319638933278872322
+--- !u!114 &7298281310949787790
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

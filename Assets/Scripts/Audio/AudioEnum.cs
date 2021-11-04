@@ -32,7 +32,9 @@ public enum SFXFiles {
     //hiddenroom
     rumble_ground,
     woosh,
-    grab_book
+    grab_book,
+
+    exhale
 }
 
 public enum MusicFiles {
