@@ -106,7 +106,6 @@ public class FPMovement : MonoBehaviour
     }
 
     public void StartRun() {
-        Debug.Log("start run");
         isRunning = true;
     }
     public void EndRun() {
@@ -236,14 +235,17 @@ public class FPMovement : MonoBehaviour
     }
 
     private Vector3 oldPosAnimation = Vector3.zero;
+    ///<summary>
+    /// Updates the walk animator based on what distance the rigigbody really made.
+    ///</summary>
     private void UpdateAnimator() {
 
-        Vector3 delta = oldPosAnimation - transform.position;
+        Vector3 delta = transform.InverseTransformDirection(transform.position - oldPosAnimation);
         oldPosAnimation = transform.position;
 
-        // Debug.Log("walk delta: " + walkDelta);
-        // Debug.Log("rb delta: " +  delta / (isRunning ? runSpeed : walkSpeed));
-        lerpedVelocity = Vector2.Lerp(lerpedVelocity, walkDelta * (isRunning ? 1 : .5f), Time.deltaTime * 10f);
+        delta /= isRunning ? .23f : .15f; // i know, magic numbers...
+        Vector2 animationDelta = new Vector2(delta.x, delta.z);
+        lerpedVelocity = Vector2.Lerp(lerpedVelocity, animationDelta * (isRunning ? 1 : .5f), Time.deltaTime * 10f);
         characterAnimator.SetFloat("deltaX", lerpedVelocity.x);
         characterAnimator.SetFloat("deltaY", lerpedVelocity.y);
     }
