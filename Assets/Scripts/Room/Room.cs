@@ -48,6 +48,7 @@ public class Room : MonoBehaviour
     public List<RoomTelevision> allTelevisions;
     public List<IChangable> allObjects;
 
+    [SerializeField]
     private Player player;
     public Player Player { 
         get => player; 

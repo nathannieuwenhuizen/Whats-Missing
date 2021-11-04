@@ -83,7 +83,6 @@ public class ColorProperty : Property
             if (colorAdjustments == null)
                 room.Player.Volume.profile.TryGet<ColorAdjustments>(out colorAdjustments);
             colorAdjustments.saturation.value = value;
-            // room.Player.Camera.gameObject.gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<ColorGrading>().saturation.value = value;
         }
     }
     private void Reset() {

@@ -27,7 +27,12 @@ public enum SFXFiles {
     player_choking,
     player_relief_gasp,
     choke_die,
-    heartbeat
+    heartbeat,
+
+    //hiddenroom
+    rumble_ground,
+    woosh,
+    grab_book
 }
 
 public enum MusicFiles {

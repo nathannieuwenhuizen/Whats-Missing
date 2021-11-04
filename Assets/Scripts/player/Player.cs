@@ -15,6 +15,17 @@ public class Player : RoomObject
     private Transform headModel;
     [SerializeField]
     private Transform animationView;
+    [SerializeField]
+    private Transform handsPosition;
+    public Transform HandsPosition {
+        get { return handsPosition;}
+    }
+
+    public delegate void CutSceneAction();
+    public static event CutSceneAction OnCutsceneStart;
+    public static event CutSceneAction OnCutsceneEnd;
+
+    
 
     [SerializeField]
     private Camera playerCamera;
@@ -53,13 +64,14 @@ public class Player : RoomObject
         Word = "me";
         AlternativeWords = new string[]{ "myself", "i", "player", "gregory"};
     }
-    // private void Update() {
-    //     if (Input.GetKeyDown(KeyCode.D)) {
-    //         // Die();
-    //         PlaycharacterAnimation("takingItem");
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.D)) {
+            Die();
+            // PlaycharacterAnimation("standingUp", true);
+            // PlaycharacterAnimation("takingItem");
 
-    //     }
-    // }
+        }
+    }
 
     ///<summary>
     /// Thep play dies and falls to the gorund
@@ -67,12 +79,13 @@ public class Player : RoomObject
     public void Die() {
         Movement.CharacterAnimator.SetBool("dead", true);
 
-        PlaycharacterAnimation("dying");
+        PlayCutSceneAnimation("dying");
 
         OnDie?.Invoke();
     }
 
-    public void PlaycharacterAnimation(string trigger) {
+    public void PlayCutSceneAnimation(string trigger, bool applyRoonAnimation = false) {
+        OnCutsceneStart?.Invoke();
         Movement.EnableRotation = false;
         Movement.EnableWalk = false;
         Movement.RB.velocity = Vector3.zero;
@@ -81,9 +94,10 @@ public class Player : RoomObject
         playerCamera.transform.localPosition = animationView.localPosition;
         playerCamera.transform.localRotation = animationView.localRotation;
         playerCamera.nearClipPlane = 0.01f;
+        StartCoroutine(playerCamera.AnimatingFieldOfView(80, AnimationCurve.EaseInOut(0,0,1,1), 2f));
         Movement.CharacterAnimator.SetTrigger(trigger);
+        Movement.CharacterAnimator.applyRootMotion = applyRoonAnimation;
     }
-
 
     public override void OnMissingFinish()
     {
@@ -109,19 +123,24 @@ public class Player : RoomObject
         }
     }
 
+    public void EndOfCutSceneAnimation() {
+        OnCutsceneEnd?.Invoke();
+        playerCamera.transform.SetParent(transform);
+        playerCamera.nearClipPlane = cameraClipPlane;
+        Movement.EnableRotation = true;
+        Movement.EnableWalk = true;
+        StartCoroutine(playerCamera.AnimatingFieldOfView(60, AnimationCurve.EaseInOut(0,0,1,1), .5f));
+        Movement.CameraPivot.transform.localPosition = new Vector3(0,Movement.CameraPivot.transform.localPosition.y,0);
+
+    }
+
 
 
     ///<summary>
     /// Enables the movement and sets the camera animation to false.
     ///</summary>
     public void Respawn() {
-        playerCamera.transform.SetParent(transform);
-        playerCamera.nearClipPlane = cameraClipPlane;
-
-
-        Movement.EnableRotation = true;
-        Movement.EnableWalk = true;
-        Movement.CameraPivot.transform.localPosition = new Vector3(0,Movement.CameraPivot.transform.localPosition.y,0);
+        EndOfCutSceneAnimation();
         Movement.CharacterAnimator.SetBool("dead", false);
 
     }

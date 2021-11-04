@@ -241,8 +241,8 @@ public class FPMovement : MonoBehaviour
         Vector3 delta = oldPosAnimation - transform.position;
         oldPosAnimation = transform.position;
 
-        Debug.Log("walk delta: " + walkDelta);
-        Debug.Log("rb delta: " +  delta / (isRunning ? runSpeed : walkSpeed));
+        // Debug.Log("walk delta: " + walkDelta);
+        // Debug.Log("rb delta: " +  delta / (isRunning ? runSpeed : walkSpeed));
         lerpedVelocity = Vector2.Lerp(lerpedVelocity, walkDelta * (isRunning ? 1 : .5f), Time.deltaTime * 10f);
         characterAnimator.SetFloat("deltaX", lerpedVelocity.x);
         characterAnimator.SetFloat("deltaY", lerpedVelocity.y);

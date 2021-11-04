@@ -9,6 +9,8 @@ public class Legenda : MonoBehaviour
     public static event FocusedAction OnFocus; 
     private Ray ray;
     private RaycastHit hit;
+    
+
 
     private float maxDistance = 100f;
     private string word = "";

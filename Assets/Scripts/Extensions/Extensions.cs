@@ -47,7 +47,7 @@ public static class Extensions
 
 
     public static IEnumerator FadeCanvasGroup( this CanvasGroup group, float end, float duration, float delay = 0) {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(delay);
         float index = 0;
         float begin = group.alpha;
          while (index < duration) {
@@ -63,12 +63,43 @@ public static class Extensions
         Vector3 beginScale = transform.localScale;
         while (timePassed < duration) {
             yield return new WaitForEndOfFrame();
-            timePassed += Time.unscaledDeltaTime;
+            timePassed += Time.deltaTime;
             transform.localScale = Vector3.LerpUnclamped(beginScale, endScale , curve.Evaluate(timePassed / duration));
         }
         transform.localScale = endScale;
 
     }
+    public static  IEnumerator AnimatingFieldOfView(this Camera camera, float endview,  AnimationCurve curve, float duration = .5f) {
+        float timePassed = 0f;
+        float beginView = camera.fieldOfView;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            camera.fieldOfView = Mathf.LerpUnclamped(beginView, endview , curve.Evaluate(timePassed / duration));
+        }
+        camera.fieldOfView = endview;
+    }
+
+    public static  IEnumerator Shake(this Transform transform, float magintude, float frequence, float duration = .5f) {
+        float timePassed = 0f;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            float currentMagnitude = Mathf.Sin(Mathf.PI * (timePassed / duration)) * magintude;
+            transform.localRotation = Quaternion.Euler(
+                transform.localRotation.x,
+                transform.localRotation.y,
+                Mathf.Sin((timePassed * frequence) * (Mathf.PI * 2)) * currentMagnitude
+            );
+        }
+        transform.localRotation = Quaternion.Euler(
+                transform.localRotation.x,
+                transform.localRotation.y,
+                0
+            );
+
+    }
+
 
     public static  IEnumerator AnimatingDissolveMaterial(this Material mat, float beginVal, float endVal,  AnimationCurve curve, float duration = .5f, float edgeWidth = .1f) {
         mat.SetFloat("EdgeWidth", edgeWidth);

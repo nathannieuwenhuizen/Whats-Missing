@@ -258,7 +258,7 @@ public class AudioHandler : Singleton<AudioHandler>
     ///<summary>
     ///Internal enumerator that fades a music clip.
     ///</summary>
-    private IEnumerator FadeVolume(AudioSource audioS, float begin, float end, float duration)
+    public IEnumerator FadeVolume(AudioSource audioS, float begin, float end, float duration)
     {
         float index = 0;
 
