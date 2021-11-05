@@ -20,6 +20,7 @@ public class AlchemyItem : InteractabelObject
 
     public delegate void AlchemyAction();
     public static event AlchemyAction OnPickingAlchemyItem;
+    public static event AlchemyAction OnAlchemyEndScene;
     public delegate void AlchemyPulse(Transform origin);
     public static event AlchemyPulse OnPulsing;
 
@@ -99,6 +100,7 @@ public class AlchemyItem : InteractabelObject
         yield return new WaitForSeconds(5f);
         AudioHandler.Instance.StopSound(SFXFiles.rumble_ground);
 
+        OnAlchemyEndScene?.Invoke();
     }
     public IEnumerator AnimateBloomIntensity(float animationDuration, float end) {
         float start = bloomIntensity;

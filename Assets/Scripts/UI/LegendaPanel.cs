@@ -10,12 +10,13 @@ public class LegendaPanel : MonoBehaviour
 
     private CanvasGroup group;
 
-
+    private Coroutine wordCoroutine;
     private void Awake() {
         group = GetComponent<CanvasGroup>();
     }
 
     private void HidePanel() {
+        Debug.Log("hide panel");
         StopAllCoroutines();
         StartCoroutine(group.FadeCanvasGroup(0, 1f, 0));
     }
@@ -25,9 +26,9 @@ public class LegendaPanel : MonoBehaviour
     }
     
     public void UpdateText(string word) {
-        StopAllCoroutines();
-        StartCoroutine(TransitionWord(word));
-        // text.text = word.ToLower();
+        if (wordCoroutine != null)
+            StopCoroutine(wordCoroutine);
+        wordCoroutine = StartCoroutine(TransitionWord(word));
     }
 
     private IEnumerator TransitionWord(string word) {

@@ -199,7 +199,7 @@ public class RoomTelevision : Television, IRoomObject
         for(int i = selectedLetterObjects.Count - 1; i >= 0; i--) {
             RemoveSelectedLetter(i);
         }
-        Debug.Log("after deselection: " + selectedLetterObjects.Count);         
+        // Debug.Log("after deselection: " + selectedLetterObjects.Count);         
     }
     ///<summary>
     /// Resets the letters and removes the change or question check.

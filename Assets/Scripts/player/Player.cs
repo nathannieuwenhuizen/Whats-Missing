@@ -147,7 +147,7 @@ public class Player : RoomObject
         // EndOfCutSceneAnimation();
         Movement.CharacterAnimator.SetBool("dead", false);
         PlayCutSceneAnimation("standingUp", true);
-        StartCoroutine(DelayEndOfAnimation(4.5f));
+        StartCoroutine(DelayEndOfAnimation(5f));
     }
 
     private IEnumerator DelayEndOfAnimation(float sec) {

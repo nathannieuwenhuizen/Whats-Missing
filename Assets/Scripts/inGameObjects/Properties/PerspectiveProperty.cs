@@ -20,7 +20,6 @@ public class PerspectiveProperty : Property
     private bool orthoOn = false;
 
     public void CameraSetup() {
-        Debug.Log("camera setup");
         m_camera = room.Player.Camera;
         fov = m_camera.fieldOfView;
 

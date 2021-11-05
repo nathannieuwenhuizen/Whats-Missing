@@ -72,6 +72,9 @@ public class Portal : MonoBehaviour
         
         InView = IncameraRange();
 
+    
+        if (!InView) return;
+        
         if (insidePortal && player != null) {
             Vector3 objPos = transform.InverseTransformPoint(player.transform.position);
             if (objPos.y < positionOffset)
@@ -81,8 +84,6 @@ public class Portal : MonoBehaviour
             } 
             player.Camera.nearClipPlane = objPos.y > 0 ? .01f : .7f;
         }
-    
-        if (!InView) return;
 
         if (isReady && mainCamera != null)
             RenderPortal();
@@ -192,7 +193,6 @@ public class Portal : MonoBehaviour
         Renderer renderer = reflectionPlane.GetComponent<MeshRenderer>();
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
         float offset = transform.InverseTransformPoint(Camera.main.transform.position).y;
-        Debug.Log("offset: " + offset);
         if(GeometryUtility.TestPlanesAABB(planes, renderer.bounds)){
             return true;
         } else {
