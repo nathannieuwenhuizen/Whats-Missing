@@ -295,7 +295,7 @@ public class FPMovement : MonoBehaviour
     ///Checks if the player is above ground. If the distance is 0 or lower than 0, it sticks to the ground. If not it returns false.
     ///</summary>
     private bool CheckFloorCollision() {
-        if (inAir || rb.useGravity == false) return false;
+        if (inAir || rb.useGravity == false || rb.velocity.magnitude < .1f) return false;
         RaycastHit[] hit;
 
         float radius = transform.localScale.x / 2f;
@@ -315,7 +315,7 @@ public class FPMovement : MonoBehaviour
         }
         if (_distance != 10f) {
             distance = _distance;
-            rb.MovePosition(transform.position + new Vector3(0,-(distance - offset),0));
+            rb.MovePosition(transform.position + new Vector3(0,-(distance - offset * 1.1f),0));
             InAir = false;
             return true;
         } else {
