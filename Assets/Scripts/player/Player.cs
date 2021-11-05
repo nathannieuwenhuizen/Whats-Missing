@@ -10,6 +10,7 @@ public class Player : RoomObject
 
     public delegate void DieEvent();
     public static event DieEvent OnDie;
+    public static event DieEvent Onrespawn;
 
     [SerializeField]
     private Transform headModel;
@@ -66,7 +67,7 @@ public class Player : RoomObject
     }
     private void Update() {
         if (Input.GetKeyDown(KeyCode.D)) {
-            // Die();
+            Die();
             // PlaycharacterAnimation("standingUp", true);
             // PlaycharacterAnimation("takingItem");
 
@@ -78,13 +79,11 @@ public class Player : RoomObject
     ///</summary>
     public void Die() {
         Movement.CharacterAnimator.SetBool("dead", true);
-
         PlayCutSceneAnimation("dying");
-
         OnDie?.Invoke();
     }
 
-    public void PlayCutSceneAnimation(string trigger, bool applyRoonAnimation = false) {
+    public void PlayCutSceneAnimation(string trigger, bool applyRoonAnimation = false, Action callback = null) {
         OnCutsceneStart?.Invoke();
         Movement.EnableRotation = false;
         Movement.EnableWalk = false;
@@ -97,6 +96,7 @@ public class Player : RoomObject
         StartCoroutine(playerCamera.AnimatingFieldOfView(80, AnimationCurve.EaseInOut(0,0,1,1), 2f));
         Movement.CharacterAnimator.SetTrigger(trigger);
         Movement.CharacterAnimator.applyRootMotion = applyRoonAnimation;
+
     }
 
     public override void OnMissingFinish()
@@ -131,6 +131,8 @@ public class Player : RoomObject
         Movement.EnableWalk = true;
         StartCoroutine(playerCamera.AnimatingFieldOfView(60, AnimationCurve.EaseInOut(0,0,1,1), .5f));
         Movement.CameraPivot.transform.localPosition = new Vector3(0,Movement.CameraPivot.transform.localPosition.y,0);
+        Movement.CharacterAnimator.applyRootMotion = false;
+        Movement.CharacterAnimator.transform.localPosition = Vector3.zero;
 
     }
 
@@ -140,8 +142,16 @@ public class Player : RoomObject
     /// Enables the movement and sets the camera animation to false.
     ///</summary>
     public void Respawn() {
-        EndOfCutSceneAnimation();
-        Movement.CharacterAnimator.SetBool("dead", false);
+        Onrespawn?.Invoke();
 
+        // EndOfCutSceneAnimation();
+        Movement.CharacterAnimator.SetBool("dead", false);
+        PlayCutSceneAnimation("standingUp", true);
+        StartCoroutine(DelayEndOfAnimation(4.5f));
+    }
+
+    private IEnumerator DelayEndOfAnimation(float sec) {
+        yield return new WaitForSeconds(sec);
+        EndOfCutSceneAnimation();
     }
 }
