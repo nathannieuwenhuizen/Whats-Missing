@@ -59,9 +59,13 @@ public class ShockwaveController : MonoBehaviour {
     }
 
     public void StartShockwave(Transform origin) {
-        Vector2 screenPos = Camera.main.WorldToViewportPoint(origin.position);
         StopAllCoroutines();
         StartCoroutine(AnimatingShockwave(origin));
+    }
+
+    public void StartSmallShockwave(Transform origin) {
+        StopAllCoroutines();
+        StartCoroutine(AnimatingShockwave(origin, true));
     }
 
     private Vector2 ShockwaveScreenPos {
@@ -77,25 +81,41 @@ public class ShockwaveController : MonoBehaviour {
         get => material.GetFloat("_Speed");
         set => material.SetFloat("_Speed", value);
     }
+    private float Magnitude {
+        get => material.GetFloat("_Magnification");
+        set => material.SetFloat("_Magnification", value);
+    }
 
     private void OnEnable() {
+        AlchemyItem.OnPulsing += StartSmallShockwave;
         Property.onShockwave += StartShockwave;
     }
 
     private void OnDisable() {
+        AlchemyItem.OnPulsing -= StartSmallShockwave;
         Property.onShockwave -= StartShockwave;
     }
 
-    private IEnumerator AnimatingShockwave(Transform origin) {
+    private IEnumerator AnimatingShockwave(Transform origin, bool decreasingMagnitude = false) {
         if(TryGetFeature(out var feature)) 
             feature.SetActive(true);
 
         Radius = 0;
+        Magnitude = .4f;
+        if (decreasingMagnitude) {
+            Magnitude = .2f;
+            Radius = .3f / Speed;
+        }
+
         while(Radius * Speed < 1) {
             yield return new WaitForEndOfFrame();
             Radius += Time.deltaTime;
             Vector2 screenPos = Camera.main.WorldToViewportPoint(origin.position);
             ShockwaveScreenPos = screenPos;
+
+            if (decreasingMagnitude) {
+                Magnitude = Mathf.Max(0, Magnitude - Time.deltaTime * 2f);
+            } 
         }
         EndShockwave();
     }

@@ -20,6 +20,8 @@ public class AlchemyItem : InteractabelObject
 
     public delegate void AlchemyAction();
     public static event AlchemyAction OnPickingAlchemyItem;
+    public delegate void AlchemyPulse(Transform origin);
+    public static event AlchemyPulse OnPulsing;
 
     private Bloom colorAdjustments;
     private ChromaticAberration chromaticAttribution;
@@ -31,6 +33,17 @@ public class AlchemyItem : InteractabelObject
     void Start()
     {
         startPos = transform.position;
+        StartCoroutine(Pulse());
+    }
+
+    private IEnumerator Pulse() {
+        while(animate) {
+            yield return new WaitForSeconds(3f);
+                Debug.Log("pulse! " + Vector3.Distance(room.Player.transform.position, transform.position));
+            if (Vector3.Distance(room.Player.transform.position, transform.position) < 10f && room.Player.transform.position.y < transform.position.y) {
+                OnPulsing?.Invoke(transform);
+            }
+        }
     }
 
     // Update is called once per frame

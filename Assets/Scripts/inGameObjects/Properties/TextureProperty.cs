@@ -14,16 +14,15 @@ public class TextureProperty : Property
     [SerializeField]
     private Material noTextureMaterial;
 
-
     public override void OnMissing()
     {
-        foreach(MeshRenderer mr in room.GetAllObjectsInRoom<MeshRenderer>()) {
-            Material[] materials = mr.materials;
+        foreach(Renderer mr in room.GetAllObjectsInRoom<Renderer>()) {
+            Material[] materials = mr.sharedMaterials;
             List<Material> temp = new List<Material>(materials);
             Material newMat = noTextureMaterial;
             temp.Add(newMat);
             materials = temp.ToArray();
-            mr.materials = materials;
+            mr.sharedMaterials = materials;
             mr.UpdateGIMaterials();
         }
 
@@ -40,9 +39,7 @@ public class TextureProperty : Property
     public override void OnMissingFinish()
     {
         noTextureMaterial.SetFloat("Dissolve", 0);
-
         base.OnMissingFinish();
-
     }
     
 
@@ -57,12 +54,12 @@ public class TextureProperty : Property
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
-        foreach(MeshRenderer mr in room.GetAllObjectsInRoom<MeshRenderer>()) {
-            Material[] materials = mr.materials;
+        foreach(Renderer mr in room.GetAllObjectsInRoom<Renderer>()) {
+            Material[] materials = mr.sharedMaterials;
             List<Material> temp = new List<Material>(materials);
             temp.RemoveAt(temp.Count - 1);
             materials = temp.ToArray();
-            mr.materials = materials;
+            mr.sharedMaterials = materials;
             mr.UpdateGIMaterials();
 
         }
@@ -72,5 +69,4 @@ public class TextureProperty : Property
         Word = "texture";
         AlternativeWords = new string[] { "textures" };
     }
-
 }

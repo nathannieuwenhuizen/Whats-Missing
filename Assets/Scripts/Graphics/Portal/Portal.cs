@@ -71,30 +71,29 @@ public class Portal : MonoBehaviour
         if (!isActive) return;
         
         InView = IncameraRange();
-    
-        if (!InView) return;
 
-        if (isReady && mainCamera != null)
-            RenderReflection();
-        else {
-            mainCamera = Camera.main;
-            OnValidate();
-        }
         if (insidePortal && player != null) {
             Vector3 objPos = transform.InverseTransformPoint(player.transform.position);
-            // objPos.y += .5f;
-            // Debug.Log("objposZ: " + objPos.y);
             if (objPos.y < positionOffset)
             {
                 Debug.Log("warp!?");
                 Teleport();
-            }
+            } 
+            player.Camera.nearClipPlane = objPos.y > 0 ? .01f : .7f;
+        }
+    
+        if (!InView) return;
+
+        if (isReady && mainCamera != null)
+            RenderPortal();
+        else {
+            mainCamera = Camera.main;
+            OnValidate();
         }
     }
 
     public void OnPortalEnter(Player _player) {
         player = _player;
-        player.Camera.nearClipPlane = 0.01f;;
 
         insidePortal = true;
         foreach (Collider coll in connectedColliders)
@@ -104,7 +103,7 @@ public class Portal : MonoBehaviour
     }
 
     public void OnPortalLeave() {
-        player.Camera.nearClipPlane = .7f;;
+        player.Camera.nearClipPlane = .7f;
 
         insidePortal = false;
         foreach (Collider coll in connectedColliders)
@@ -134,7 +133,7 @@ public class Portal : MonoBehaviour
 
     
 
-    private void RenderReflection()
+    private void RenderPortal()
     {
         // take main camera directions and position world space
         Vector3 cameraDirectionWorldSpace = mainCamTransform.forward;
@@ -192,6 +191,8 @@ public class Portal : MonoBehaviour
 
         Renderer renderer = reflectionPlane.GetComponent<MeshRenderer>();
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+        float offset = transform.InverseTransformPoint(Camera.main.transform.position).y;
+        Debug.Log("offset: " + offset);
         if(GeometryUtility.TestPlanesAABB(planes, renderer.bounds)){
             return true;
         } else {

@@ -119,7 +119,7 @@ public class Room : MonoBehaviour
     public List<T> GetAllObjectsInRoom<T>(Transform tr = null) {
         List<T> result = new List<T>();
         if (tr == null) tr = transform;
-        result = new List<T>(tr.GetComponentsInChildren<T>());
+        result = new List<T>(tr.GetComponentsInChildren<T>(false));
         return result;
     }
     
