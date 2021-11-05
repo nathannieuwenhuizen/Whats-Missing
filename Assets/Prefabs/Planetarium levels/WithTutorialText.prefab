@@ -194,14 +194,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1540840449}
-  m_LocalRotation: {x: -0.14683129, y: -0.691694, z: -0.14683129, w: 0.691694}
-  m_LocalPosition: {x: -2.82, y: 6.7, z: -0.22}
+  m_LocalRotation: {x: 0.18301274, y: -0.6830127, z: 0.18301274, w: 0.6830127}
+  m_LocalPosition: {x: -2.82, y: -6.16, z: -0.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 234176761055643903}
   m_Father: {fileID: 6527485958438557256}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: -23.969, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: -90, z: 0}
 --- !u!135 &1540840452
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -700,7 +700,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Right now "nothing" is missing.
+  m_text: '"nothing" is missing.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 569b02f613663c9409405a81549639a5, type: 2}
   m_sharedMaterial: {fileID: -5880444196584497782, guid: 569b02f613663c9409405a81549639a5, type: 2}
@@ -786,9 +786,13 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 881532957518935080, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1127223447417417354, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1210936059669864105, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: letters
@@ -852,7 +856,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1947060187526788772, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3620086347693686318, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: m_IsActive
@@ -868,11 +872,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4893392740938670282, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5699750875871225865, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: m_RootOrder
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7346456684260726106, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 8289509384805391908, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: m_Name
@@ -884,10 +892,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: roomFinishedEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: roomFinishedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
+      propertyPath: roomFinishedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
@@ -895,7 +907,15 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1563412339723634265}
     - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
+      propertyPath: roomFinishedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 8506756402838965776}
+    - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: roomFinishedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
+      propertyPath: roomFinishedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
@@ -903,11 +923,23 @@ PrefabInstance:
       value: FadeIn
       objectReference: {fileID: 0}
     - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
+      propertyPath: roomFinishedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: FadeOut
+      objectReference: {fileID: 0}
+    - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: roomFinishedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: AreaTextMeshFader, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
+      propertyPath: roomFinishedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: TextMeshFader, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: roomFinishedEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
+      propertyPath: roomFinishedEvent.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8289509384805391911, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}

@@ -340,7 +340,7 @@ public class FPMovement : MonoBehaviour
     private void OnTriggerExit(Collider other) {
         AreaTextMeshFader text = other.gameObject.GetComponent<AreaTextMeshFader>();
         if (text != null){
-            text.FadeOut();
+            // text.FadeOut();
         }
     }
     ///<summary>
