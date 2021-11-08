@@ -337,7 +337,7 @@ public class Room : MonoBehaviour
         foreach (RoomTelevision tv in allTelevisions)
         {
             if (!tv.isQuestion) {
-                tv.IsOn = changeHandler.Changes.Find(c => c.television = tv) != null;
+                tv.IsOn = changeHandler.Changes.Find(c => c.television == tv) != null;
             } else {
                 tv.IsOn = changeHandler.TVWordMatchesChanges(tv);
             }

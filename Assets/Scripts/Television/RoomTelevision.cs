@@ -4,8 +4,13 @@ using Custom.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomTelevision : Television, IRoomObject
+public class RoomTelevision: MonoBehaviour, IRoomObject
 {
+    [SerializeField]
+    private MirrorCanvas mirrorCanvas;
+    public MirrorCanvas MirrorCnvas {
+        get { return mirrorCanvas;}
+    }
 
     [SerializeField]
     private PlanarReflection planarReflection;
@@ -75,6 +80,11 @@ public class RoomTelevision : Television, IRoomObject
             room = value; 
         }
     }
+    public string Word {
+        get => mirrorCanvas.Word;
+        set => mirrorCanvas.Word = value;
+    }
+
 
     private bool inSpace = true;
     public bool InSpace { get => inSpace; }
@@ -97,58 +107,20 @@ public class RoomTelevision : Television, IRoomObject
             letters = Extensions.Shuffle(letters);
         }
         for(int i = 0; i < letters.Length; i++) {
-            InitializeLetter(letters[i].ToString(), GetLetterPosBasedOnIndex(i));
+            mirrorCanvas.InitializeLetter(letters[i].ToString(), mirrorCanvas.GetLetterPosBasedOnIndex(i, letters.Length));
         }
         for(int i = 0; i < preAnswer.Length; i++) {
-            Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(i));
+            Letter answerLetter = mirrorCanvas.InitializeLetter(preAnswer[i].ToString(), mirrorCanvas.GetLetterPosBasedOnIndex(i, letters.Length));
         }
-        Word = preAnswer;
-        UpdateHeaderText();
-    }
-    private void UpdateHeaderText() {
-        string header = "missing";
-        string roomText = "";
-        if (roomIndexoffset == -1) {
-            roomText = " in the <b>PREVIOUS</b> room";
-        }
-        switch (changeType) {
-            case ChangeType.missing:
-                header = "missing";
-                break;
-            case ChangeType.reverse:
-                header = "flipped";
-                break;
-            case ChangeType.tooBig:
-                header = "too big";
-                break;
-            case ChangeType.tooSmall:
-                header = "too small";
-                break;
-        }
-        HeaderText.text = "What's <b>" + header + "<b>" + roomText + "?";
-    }
-
-    private Vector3 GetLetterPosBasedOnIndex(int index) {
-        //last row
-        int y = Mathf.FloorToInt((float)index / (float)containerColloms);
-
-        int x;
-        if ((letters.Length - (y * containerColloms)) < containerColloms) {
-            x = ((containerColloms - (letters.Length % containerColloms))/ 2) + (index % containerColloms);
-        } else {
-            //toprows without the need to center
-            x = Mathf.FloorToInt((float)index % (float)containerColloms);
-        }
-        return GetLetterPosition(x,y);
+        mirrorCanvas.Word = preAnswer;
+        mirrorCanvas.UpdateHeaderText(changeType, roomIndexoffset);
     }
 
     ///<summary>
     /// fires when the player wants to apply the question or sentence
     ///</summary>
-    public override void Confirm()
+    public void Confirm()
     {
-        base.Confirm();
-
         if (isQuestion) room.CheckTVQuestion(this);
         else if (isOn == false) room.AddTVChange(this);
     }
@@ -160,46 +132,30 @@ public class RoomTelevision : Television, IRoomObject
         DeselectLetters();
     }
 
-    protected override void LetterClicked(Letter letter)
+    protected void LetterClicked(Letter letter)
     {
         if ( room != null && room.Animated) {
             AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .5f, 
-            .8f + (.4f * ((float)selectedLetterObjects.Count / (float)(letterObjects.Count + selectedLetterObjects.Count)))
+            .8f + (.4f * ((float)mirrorCanvas.selectedLetterObjects.Count / (float)(mirrorCanvas.letterObjects.Count + mirrorCanvas.selectedLetterObjects.Count)))
             );
         }
-        base.LetterClicked(letter);
+        mirrorCanvas.LetterClicked(letter);
     }
 
-    protected override void AddLetterToAnswer(Letter letter) {
-        letterObjects.Remove(letter);
-        base.AddLetterToAnswer(letter);
-    }
-    protected override void RemoveLetterFromAnswer(Letter letter)
+    private void RemoveLetterFromAnswer(Letter letter)
     {
-        RemoveSelectedLetter(selectedLetterObjects.IndexOf(letter));
+        mirrorCanvas.RemoveSelectedLetter(mirrorCanvas.selectedLetterObjects.IndexOf(letter));
         // base.RemoveLetterFromAnswer(letter);
     }
 
-    protected override void RemoveSelectedLetter(int index)
-    {
-        base.RemoveSelectedLetter(index);
-        if (index < 0) return;
-        selectedLetterObjects[index].Color = Color.white;
-        selectedLetterObjects[index].transform.parent = letterContainer;
-        selectedLetterObjects[index].Deselect();
-        letterObjects.Add(selectedLetterObjects[index]);
-        selectedLetterObjects.Remove(selectedLetterObjects[index]);
-    }
 
     ///<summary>
     /// sets all the letters to their original place.
     ///</summary>
     public void DeselectLetters() {
-
-        for(int i = selectedLetterObjects.Count - 1; i >= 0; i--) {
-            RemoveSelectedLetter(i);
+        for(int i = mirrorCanvas.selectedLetterObjects.Count - 1; i >= 0; i--) {
+            mirrorCanvas.RemoveSelectedLetter(i);
         }
-        // Debug.Log("after deselection: " + selectedLetterObjects.Count);         
     }
     ///<summary>
     /// Resets the letters and removes the change or question check.
@@ -213,7 +169,7 @@ public class RoomTelevision : Television, IRoomObject
         if (room.Animated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_true);
 
-        foreach(Letter letter in selectedLetterObjects) {
+        foreach(Letter letter in mirrorCanvas.selectedLetterObjects) {
             letter.Color = new Color(.8f, 1f, .8f);
         }
     }

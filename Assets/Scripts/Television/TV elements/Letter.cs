@@ -68,16 +68,12 @@ public class Letter : TelevisionButton
     {
         OnUnhover();
         selected = true;
-        // button.interactable = false;
-        // canBeClicked = false;
         spawnPosition = rt.localPosition;
     }
 
     public void Deselect()
     {
         selected = false;
-        // canBeClicked = true;
-        // button.interactable = true;
         MoveTo(spawnPosition);
     }
 

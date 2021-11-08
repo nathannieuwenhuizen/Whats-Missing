@@ -8,9 +8,9 @@ public class RemoteController : MonoBehaviour
     [SerializeField]
     private float remoteDistance = 5f;
 
-    private Television focusedTelevision;
+    private RoomTelevision focusedTelevision;
 
-    private Television oldTelevision;
+    private RoomTelevision oldTelevision;
 
     private bool isEnabled = true;
 
@@ -21,11 +21,11 @@ public class RemoteController : MonoBehaviour
 
         focusedTelevision = FocussedTelevision();
         if (focusedTelevision == null) {
-            if (oldTelevision) oldTelevision.IsInteractable = false;
+            if (oldTelevision) oldTelevision.MirrorCnvas.IsInteractable = false;
         } else {
             if (oldTelevision != focusedTelevision)  {
-                if (oldTelevision) oldTelevision.IsInteractable = false;
-                focusedTelevision.IsInteractable = true;
+                if (oldTelevision) oldTelevision.MirrorCnvas.IsInteractable = false;
+                focusedTelevision.MirrorCnvas.IsInteractable = true;
             }
         }
         oldTelevision = focusedTelevision;
@@ -48,16 +48,16 @@ public class RemoteController : MonoBehaviour
         isEnabled = false;
         oldTelevision = null;
         if (focusedTelevision != null) {
-            focusedTelevision.IsInteractable = false;
+            focusedTelevision.MirrorCnvas.IsInteractable = false;
             focusedTelevision = null;
         }
     }
 
 
-    private Television FocussedTelevision() {
+    private RoomTelevision FocussedTelevision() {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, remoteDistance)) {
-            if (hit.rigidbody) if (hit.rigidbody.gameObject.GetComponent<Television>() != null) return hit.rigidbody.gameObject.GetComponent<Television>();
+            if (hit.rigidbody) if (hit.rigidbody.gameObject.GetComponent<RoomTelevision>() != null) return hit.rigidbody.gameObject.GetComponent<RoomTelevision>();
         }
         return null;
     }

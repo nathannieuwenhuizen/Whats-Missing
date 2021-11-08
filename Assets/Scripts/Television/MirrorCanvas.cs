@@ -11,20 +11,23 @@ using UnityEngine.UI;
 ///</summary>
 public class MirrorCanvas : MonoBehaviour
 {
+    [SerializeField]
+    private RoomTelevision television;
+
     public List<Letter> letterObjects = new List<Letter>();
     public List<Letter> selectedLetterObjects = new List<Letter>();
 
     [SerializeField]
-    protected RectTransform letterContainer;
+    public RectTransform letterContainer;
 
     [SerializeField]
-    protected TMP_Text headerText;
+    private TMP_Text headerText;
     public TMP_Text HeaderText { get => headerText; }
 
     [SerializeField]
     private RectTransform answerText;
     [SerializeField]
-    protected GameObject letterPrefab;
+    private GameObject letterPrefab;
 
     [SerializeField]
     private bool isInteractable = false;
@@ -32,16 +35,14 @@ public class MirrorCanvas : MonoBehaviour
         get { return isInteractable; }
         set { 
             isInteractable = value; 
-            GetComponentInChildren<GraphicRaycaster>().enabled = value;
-            GetComponentInChildren<CanvasGroup>().alpha = value ? 1 : .8f;
+            GetComponent<GraphicRaycaster>().enabled = value;
+            GetComponent<CanvasGroup>().alpha = value ? 1 : .8f;
         }
     }
-    
+
     //ui elements
-    protected int containerColloms = 9;
-    protected int containerRows = 2;
-
-
+    private int containerColloms = 9;
+    private int containerRows = 2;
 
     public string Word {
         get { 
@@ -62,9 +63,30 @@ public class MirrorCanvas : MonoBehaviour
             }
         }
     }
+    public void UpdateHeaderText(ChangeType changeType, int roomIndexOffset = 0) {
+        string header = "missing";
+        string roomText = "";
+        if (roomIndexOffset == -1) {
+            roomText = " in the <b>PREVIOUS</b> room";
+        }
+        switch (changeType) {
+            case ChangeType.missing:
+                header = "missing";
+                break;
+            case ChangeType.reverse:
+                header = "flipped";
+                break;
+            case ChangeType.tooBig:
+                header = "too big";
+                break;
+            case ChangeType.tooSmall:
+                header = "too small";
+                break;
+        }
+        HeaderText.text = "What's <b>" + header + "<b>" + roomText + "?";
+    }
 
-
-    protected virtual void Awake() {
+    private void Awake() {
         IsInteractable = false;
     }
 
@@ -107,10 +129,10 @@ public class MirrorCanvas : MonoBehaviour
             RemoveSelectedLetter(selectedLetterObjects.Count - 1);
         }
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)) {
-            Confirm();
+            television.Confirm();
         }
     }
-    
+
     private readonly Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
     private KeyCode GetKeyCode(char character)
     {
@@ -124,7 +146,21 @@ public class MirrorCanvas : MonoBehaviour
         return code;
     }
 
-    protected Vector3 GetLetterPosition(int xIndex, int yIndex) {
+    public Vector3 GetLetterPosBasedOnIndex(int index, int length) {
+        //last row
+        int y = Mathf.FloorToInt((float)index / (float)containerColloms);
+
+        int x;
+        if ((length - (y * containerColloms)) < containerColloms) {
+            x = ((containerColloms - (length % containerColloms))/ 2) + (index % containerColloms);
+        } else {
+            //toprows without the need to center
+            x = Mathf.FloorToInt((float)index % (float)containerColloms);
+        }
+        return GetLetterPosition(x,y);
+    }
+
+    private Vector3 GetLetterPosition(int xIndex, int yIndex) {
 
         Vector3 result = new Vector3(0,0,0);
 
@@ -136,7 +172,7 @@ public class MirrorCanvas : MonoBehaviour
         result.y += -Mathf.Sin(xIndex / (float)containerColloms * Mathf.PI) * cellSize * .1f;
         return result;
     }
-    protected Letter InitializeLetter(string val, Vector3 pos) {
+    public Letter InitializeLetter(string val, Vector3 pos) {
         Letter newLetter = GameObject.Instantiate(letterPrefab).GetComponent<Letter>();
             
             newLetter.onLetterClick += LetterClicked;
@@ -148,31 +184,28 @@ public class MirrorCanvas : MonoBehaviour
             letterObjects.Add(newLetter);
             return newLetter;
     }
-    protected virtual void RemoveSelectedLetter(int index) {
 
-    }
-    protected virtual void LetterClicked(Letter letter)
+    public void RemoveSelectedLetter(int index)
     {
-        if (!letter.Selected) {
-            AddLetterToAnswer(letter);
-        }
-        else {
-            RemoveLetterFromAnswer(letter);
-
-        }
+        if (index < 0) return;
+        selectedLetterObjects[index].Color = Color.white;
+        selectedLetterObjects[index].transform.parent = letterContainer;
+        selectedLetterObjects[index].Deselect();
+        letterObjects.Add(selectedLetterObjects[index]);
+        selectedLetterObjects.Remove(selectedLetterObjects[index]);
+    }
+    public virtual void LetterClicked(Letter letter)
+    {
+        if (!letter.Selected) AddLetterToAnswer(letter);
+        else RemoveSelectedLetter(selectedLetterObjects.IndexOf(letter));
+        
         UpdateAnswerTextPosition();
     }
 
-    protected virtual void AddLetterToAnswer(Letter letter) {
+    public void AddLetterToAnswer(Letter letter) {
+        letterObjects.Remove(letter);
         selectedLetterObjects.Add(letter);
         letter.Select();
         letter.transform.SetParent(answerText.transform);
-    }
-    protected virtual void  RemoveLetterFromAnswer(Letter letter) {
-        letter.Deselect();
-    }
-
-    public virtual void Confirm() {
-
     }
 }

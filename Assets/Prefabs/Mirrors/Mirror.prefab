@@ -1318,13 +1318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7d5831800c4e240863d03fb3be04e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  letterContainer: {fileID: 3925191476114449787}
-  headerText: {fileID: 2118547333090414626}
-  answerText: {fileID: 8999248243993425163}
-  beepSound: {fileID: 8300000, guid: ac256946e8fcc82479f62a3cbd6d504a, type: 3}
-  centerText: {fileID: 0}
-  isInteractable: 0
-  letterPrefab: {fileID: 548830241320449033, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+  mirrorCanvas: {fileID: 6712448232541319356}
   planarReflection: {fileID: 1820861947487410686}
   hidden: 0
   changeType: 0
@@ -1366,6 +1360,7 @@ GameObject:
   - component: {fileID: 8251748351396818493}
   - component: {fileID: 8251748351396818492}
   - component: {fileID: 2223999672066723355}
+  - component: {fileID: 6712448232541319356}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -1472,6 +1467,26 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &6712448232541319356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8251748351396818494}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81efd6283affbb54a996cc3ec507f087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  television: {fileID: 7188971182575456744}
+  letterObjects: []
+  selectedLetterObjects: []
+  letterContainer: {fileID: 3925191476114449787}
+  headerText: {fileID: 2118547333090414626}
+  answerText: {fileID: 8999248243993425163}
+  letterPrefab: {fileID: 548830241320449033, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
+  isInteractable: 0
 --- !u!1001 &4911644815302392324
 PrefabInstance:
   m_ObjectHideFlags: 0
