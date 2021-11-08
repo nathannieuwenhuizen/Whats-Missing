@@ -5,23 +5,26 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Television class that holds the letter container and can be filled in
-/// </summary>
-public class Television : MonoBehaviour
+///<summary>
+/// Handles all the events that happens inside the canvas element of the mirror. 
+/// Such as holding the letters and firing canvas events.
+///</summary>
+public class MirrorCanvas : MonoBehaviour
 {
-    [Header("Base TV settings")]
+    public List<Letter> letterObjects = new List<Letter>();
+    public List<Letter> selectedLetterObjects = new List<Letter>();
+
     [SerializeField]
     protected RectTransform letterContainer;
-
 
     [SerializeField]
     protected TMP_Text headerText;
     public TMP_Text HeaderText { get => headerText; }
 
     [SerializeField]
-    protected RectTransform answerText;
-
+    private RectTransform answerText;
+    [SerializeField]
+    protected GameObject letterPrefab;
 
     [SerializeField]
     private bool isInteractable = false;
@@ -39,8 +42,6 @@ public class Television : MonoBehaviour
     protected int containerRows = 2;
 
 
-    [SerializeField]
-    protected GameObject letterPrefab;
 
     public string Word {
         get { 
@@ -61,10 +62,6 @@ public class Television : MonoBehaviour
             }
         }
     }
-    protected List<Letter> letterObjects = new List<Letter>();
-    protected List<Letter> selectedLetterObjects = new List<Letter>();
-
-
 
 
     protected virtual void Awake() {
@@ -95,7 +92,7 @@ public class Television : MonoBehaviour
             CheckKeyboardInput();
         }
     }
-    
+
     private void CheckKeyboardInput() {
 #if UNITY_EDITOR
         foreach( Letter letter in letterObjects) {
@@ -113,6 +110,7 @@ public class Television : MonoBehaviour
             Confirm();
         }
     }
+    
     private readonly Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
     private KeyCode GetKeyCode(char character)
     {

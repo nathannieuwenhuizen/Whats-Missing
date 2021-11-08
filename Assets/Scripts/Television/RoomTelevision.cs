@@ -125,7 +125,7 @@ public class RoomTelevision : Television, IRoomObject
                 header = "too small";
                 break;
         }
-        headerText.text = "What's <b>" + header + "<b>" + roomText + "?";
+        HeaderText.text = "What's <b>" + header + "<b>" + roomText + "?";
     }
 
     private Vector3 GetLetterPosBasedOnIndex(int index) {
