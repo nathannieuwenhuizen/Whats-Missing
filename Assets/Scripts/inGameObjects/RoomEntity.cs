@@ -103,7 +103,6 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     ///</summary>
     public virtual void OnMissingFinish()
     {
-        gameObject.SetActive(false);
     }
 
     ///<summary>

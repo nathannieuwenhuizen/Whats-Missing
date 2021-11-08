@@ -14,8 +14,12 @@ public class TextureProperty : Property
     [SerializeField]
     private Material noTextureMaterial;
 
+    private List<MaterialHolders> materialHolders;
+
     public override void OnMissing()
     {
+        materialHolders = new List<MaterialHolders>();
+
         foreach(Renderer mr in room.GetAllObjectsInRoom<Renderer>()) {
             Material[] materials = mr.sharedMaterials;
             List<Material> temp = new List<Material>(materials);
@@ -24,6 +28,7 @@ public class TextureProperty : Property
             materials = temp.ToArray();
             mr.sharedMaterials = materials;
             mr.UpdateGIMaterials();
+            materialHolders.Add (new MaterialHolders() {renderer = mr, materials = mr.sharedMaterials});
         }
 
         base.OnMissing();
@@ -38,10 +43,24 @@ public class TextureProperty : Property
 
     public override void OnMissingFinish()
     {
+        foreach(Renderer mr in room.GetAllObjectsInRoom<Renderer>()) {
+            Material newMat = noTextureMaterial;
+            mr.sharedMaterials = new Material[]{newMat};
+            mr.UpdateGIMaterials();
+        }
+
+
         noTextureMaterial.SetFloat("Dissolve", 0);
         base.OnMissingFinish();
     }
-    
+    public override void OnAppearing()
+    {
+        foreach(MaterialHolders holder in materialHolders) {
+            holder.renderer.sharedMaterials = holder.materials;
+            holder.renderer.UpdateGIMaterials();
+        }
+        base.OnAppearing();
+    }
 
     public override IEnumerator AnimateAppearing()
     {
@@ -69,4 +88,8 @@ public class TextureProperty : Property
         Word = "texture";
         AlternativeWords = new string[] { "textures" };
     }
+}
+public struct MaterialHolders {
+    public Renderer renderer;
+    public Material[] materials;
 }
