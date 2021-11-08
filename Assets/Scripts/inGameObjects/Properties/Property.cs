@@ -29,8 +29,8 @@ public abstract class Property : RoomEntity
     }
 
     public override void AddChange(Change change) {
-        base.AddChange(change);        
         currentChange = change;
+        base.AddChange(change);        
     }
 
     

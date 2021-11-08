@@ -33,11 +33,15 @@ public class CustomInputModule : StandaloneInputModule
         base.OnEnable();
         PauseScreen.OnPause += ShowMouse;
         PauseScreen.OnResume += HideMouse;
+        RoomDebugger.OnShow += ShowMouse;
+        RoomDebugger.OnHide += HideMouse;
     }
     protected override void OnDisable() {
         base.OnDisable();
         PauseScreen.OnPause -= ShowMouse;
-        PauseScreen.OnResume -= HideMouse;
+        PauseScreen.OnResume -= HideMouse;        
+        RoomDebugger.OnShow -= ShowMouse;
+        RoomDebugger.OnHide -= HideMouse;
 
     }
     private void ShowMouse() {

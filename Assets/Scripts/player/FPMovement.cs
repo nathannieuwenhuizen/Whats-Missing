@@ -188,6 +188,9 @@ public class FPMovement : MonoBehaviour
         InputManager.OnJump += Jump;
         PauseScreen.OnPause += DisableMovment;
         PauseScreen.OnResume += EnableMovment;
+        RoomDebugger.OnShow += DisableMovment;
+        RoomDebugger.OnHide += EnableMovment;
+
     }
 
     private void OnDisable() {
@@ -198,6 +201,8 @@ public class FPMovement : MonoBehaviour
         InputManager.OnJump -= Jump;
         PauseScreen.OnPause -= DisableMovment;
         PauseScreen.OnResume -= EnableMovment;
+        RoomDebugger.OnShow -= DisableMovment;
+        RoomDebugger.OnHide -= EnableMovment;
     }
 
     private void Awake() {
@@ -315,8 +320,8 @@ public class FPMovement : MonoBehaviour
         }
         if (_distance != 10f) {
             distance = _distance;
-            rb.MovePosition(transform.position + new Vector3(0,-(distance - offset * 1.1f),0));
-            InAir = false;
+            // rb.MovePosition(transform.position + new Vector3(0,-(distance - offset * 1.1f),0));
+            // InAir = false;
             return true;
         } else {
             distance = 10f;

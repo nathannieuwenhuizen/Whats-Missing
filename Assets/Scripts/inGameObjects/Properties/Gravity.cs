@@ -69,10 +69,11 @@ public class Gravity : Property
     
     public List<Rigidbody> SortedByDistanceRigidBodies() {
         List<Rigidbody> allRigidbodies = room.GetAllObjectsInRoom<Rigidbody>();
-        allRigidbodies.Sort(delegate(Rigidbody a, Rigidbody b) {
-            return Vector3.Distance(a.transform.position, currentChange.television.transform.position) >
-                   Vector3.Distance(b.transform.position, currentChange.television.transform.position) ? 1 : -1;
-        });
+        if (currentChange.television != null)
+            allRigidbodies.Sort(delegate(Rigidbody a, Rigidbody b) {
+                return Vector3.Distance(a.transform.position, currentChange.television.transform.position) >
+                    Vector3.Distance(b.transform.position, currentChange.television.transform.position) ? 1 : -1;
+            });
         return allRigidbodies;
     }
 
