@@ -5,92 +5,24 @@ using UnityEngine;
 ///<summary>
 /// A physical object inside the room that can be changed. 
 ///</summary>
-public class RoomObject : MonoBehaviour, IChangable, IRoomObject
+public class RoomObject : RoomEntity
 {
-    [SerializeField]
-    private string word;
-
-    [SerializeField]
-    private string[] alternateWords;
-
-    private Vector3 currentScale;
-
-    public string Word {
-        get { return word;}
-        set {word = value;}
-    }
-
-    public bool Animated { 
-        get; set; 
-    }
-
-    private bool inSpace = true;
-    public bool InSpace { get => inSpace; }
-
-    public Transform Transform => transform;
-
-    public string[] AlternativeWords { get => alternateWords; set => alternateWords = value; }
-
-    [SerializeField]
-    private MissingChangeEffect missingChangeEffect = MissingChangeEffect.scale;
-    public MissingChangeEffect MissingChangeEffect => missingChangeEffect;
-
-    public int id {get; set; }
-
-    public void AddChange(Change change) {
-        switch (change.television.changeType) {
-            case ChangeType.missing:
-                OnMissing();
-                break;
-            case ChangeType.tooSmall:
-                OnShrinking();
-                break;
-        }    
-    }
-    public void RemoveChange(Change change) {
-        switch (change.television.changeType) {
-            case ChangeType.missing:
-                OnAppearing();
-                break;
-            case ChangeType.tooSmall:
-                OnShrinkRevert();
-                break;
-        }
-    }
 
     #region  missing changes
     ///<summary>
     /// Fires when the object starts to appear, here it will also chick if it has to animate or not.
     ///</summary>
-    public virtual void OnAppearing()
+    public override void OnAppearing()
     {
         gameObject.SetActive(true);
-        if (Animated) {
-            StartCoroutine(AnimateAppearing());
-        } else {
-            OnAppearingFinish();
-        }
+        base.OnAppearing();
     }
 
-    ///<summary>
-    /// Fires when the object starts to disappear, here it will also chick if it has to animate or not.
-    ///</summary>
-    public virtual void OnMissing()
-    {
-        currentScale = transform.localScale;
-        if (Animated) {
-            StartCoroutine(AnimateMissing());
-        } else {
-            OnMissingFinish();
-        }
-    }
 
     ///<summary>
     /// Coroutine that animates the roomobject into oblivion. 
     ///</summary>
-    public virtual IEnumerator AnimateMissing() {
-
-
+    public override IEnumerator AnimateMissing() {
         switch(MissingChangeEffect) {
             case MissingChangeEffect.none:
             break;
@@ -122,7 +54,7 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
     ///<summary>
     /// Coroutine that animates the roomobject into existing. 
     ///</summary>
-    public virtual IEnumerator AnimateAppearing() {
+    public override IEnumerator AnimateAppearing() {
 
         switch(MissingChangeEffect) {
             case MissingChangeEffect.none:
@@ -148,72 +80,52 @@ public class RoomObject : MonoBehaviour, IChangable, IRoomObject
     ///<summary>
     /// Function that fires when the animation has finished. It makes the snap changes the object needs to be missing.
     ///</summary>
-    public virtual void OnMissingFinish()
+    public override void OnMissingFinish()
     {
+        base.OnMissingFinish();
         gameObject.SetActive(false);
     }
 
     ///<summary>
     /// Function that fires when the animation has finished. It makes the snap changes the object needs to be appearing.
     ///</summary>
-    public virtual void OnAppearingFinish()
+    public override void OnAppearingFinish()
     {
+        base.OnAppearingFinish();
         transform.localScale = currentScale;
     }
 
     #endregion
 
 
-    public virtual void OnRoomEnter()
+    public override void OnRoomEnter()
     {
+        base.OnRoomEnter();
         normalScale = transform.localScale;
-        inSpace = true;
     }
 
-    public virtual void OnRoomLeave()
-    {
-        inSpace = false;
-    }
 
     #region  shrinking/enlarging
     private Vector3 normalScale;
-    public void OnShrinking()
-    {
-        if (Animated) {
-            StartCoroutine(AnimateShrinking());
-        } else {
-            OnShrinkingFinish();
-        }
-    }
 
-    public IEnumerator AnimateShrinking()
+    public override IEnumerator AnimateShrinking()
     {
         yield return transform.AnimatingScale(normalScale * .5f, AnimationCurve.EaseInOut(0,0,1,1), 3f);
         OnShrinkingFinish();
     }
 
-    public void OnShrinkingFinish()
+    public override void OnShrinkingFinish()
     {
-        Debug.Log("on shrink finish");
         transform.localScale = normalScale * .5f;
     }
 
-    public void OnShrinkRevert()
-    {
-        if (Animated) {
-            StartCoroutine(AnimateShrinkRevert());
-        } else {
-            OnShrinkingRevertFinish();
-        }
-    }
-
-    public IEnumerator AnimateShrinkRevert()
+    public override IEnumerator AnimateShrinkRevert()
     {
         yield return transform.AnimatingScale(normalScale, AnimationCurve.EaseInOut(0,0,1,1), 3f);
         OnShrinkingRevertFinish();
     }
 
-    public void OnShrinkingRevertFinish()
+    public override void OnShrinkingRevertFinish()
     {
         transform.localScale = normalScale;
     }

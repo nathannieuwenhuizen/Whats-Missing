@@ -40,9 +40,10 @@ public class AlchemyItem : InteractabelObject
     private IEnumerator Pulse() {
         while(animate) {
             yield return new WaitForSeconds(3f);
-                Debug.Log("pulse! " + Vector3.Distance(room.Player.transform.position, transform.position));
-            if (Vector3.Distance(room.Player.transform.position, transform.position) < 10f && room.Player.transform.position.y < transform.position.y) {
-                OnPulsing?.Invoke(transform);
+            if (room.Player != null) {
+                if (Vector3.Distance(room.Player.transform.position, transform.position) < 10f && room.Player.transform.position.y < transform.position.y) {
+                    OnPulsing?.Invoke(transform);
+                }
             }
         }
     }

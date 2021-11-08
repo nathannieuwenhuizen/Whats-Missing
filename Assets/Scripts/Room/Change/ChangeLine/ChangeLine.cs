@@ -43,10 +43,10 @@ public class ChangeLine : MonoBehaviour
 
     private void OnDrawGizmos() {
         int numberOfPoints = 50;
-        Vector3 beginPos = point0;
         Gizmos.DrawWireSphere(point0, .5f);
         Gizmos.DrawWireSphere(point1, .5f);
         Gizmos.DrawWireSphere(point2, .5f);
+        Vector3 beginPos = point0;
         if (point0 != null && point1 != null && point2 != null) {
 
             for (int i = 1; i < numberOfPoints + 1; i++)
@@ -66,9 +66,12 @@ public class ChangeLine : MonoBehaviour
         Vector3 pointa = Extensions.CalculateQuadraticBezierPoint(t, point0, point1, point2);
         Vector3 pointb = Extensions.CalculateQuadraticBezierPoint(t + 0.01f, point0, point1, point2);
         Vector3 dir = pointb - pointa;
-        
-        return Extensions.CalculateQuadraticBezierPoint(t, point0, point1, point2);
+        Vector3 right = (Quaternion.AngleAxis(-180, dir) * dir);
+
+        return pointa + right * 30f;
+        // return Extensions.CalculateQuadraticBezierPoint(t, point0, point1, point2);
     }
+
 
 
 }

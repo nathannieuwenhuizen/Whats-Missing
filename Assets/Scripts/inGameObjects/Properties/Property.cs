@@ -5,150 +5,46 @@ using UnityEngine;
 ///<summary>
 /// A non-physical object inside the room.
 ///</summary>
-public abstract class Property : MonoBehaviour, IChangable, IRoomObject
+public abstract class Property : RoomEntity
 {
 
     public delegate void OnPropertyToggle();
-
-
-    [SerializeField]    protected string word;
-    public string Word { get =>  word; set => word = value; }
-    [SerializeField]
-    private string[] alternateWords;
-    public string[] AlternativeWords { get => alternateWords; set => alternateWords = value; }
-
-    public bool Animated { get; set; }
-
-    private bool inSpace= false;
-    public bool InSpace => inSpace;
 
     public delegate void OnShockwave(Transform origin);
     public static event OnShockwave onShockwave;
 
 
-    public Transform Transform => transform;
-
-    public MissingChangeEffect MissingChangeEffect => throw new System.NotImplementedException();
-
-    public int id { get; set; }
-
     protected Change currentChange;
 
-    public virtual void OnAppearing()
+    public override void OnAppearing()
     {
-        if (Animated) {
-            onShockwave?.Invoke(currentChange.television.transform);
-            StartCoroutine(AnimateAppearing());
-        } else {
-            OnAppearingFinish();
-        }
+        base.OnAppearing();
+        if (Animated) onShockwave?.Invoke(currentChange.television.transform);
     }
 
-    public virtual void OnMissing()
+    public override void OnMissing()
     {
-        if (Animated) {
-            onShockwave?.Invoke(currentChange.television.transform);
-            StartCoroutine(AnimateMissing());
-        } else {
-            OnMissingFinish();
-        }
+        base.OnMissing();
+        if (Animated) onShockwave?.Invoke(currentChange.television.transform);
     }
 
-    public void RemoveChange(Change change)
-    {
-        switch (change.television.changeType) {
-            case ChangeType.missing:
-                OnAppearing();
-                break;
-            case ChangeType.tooSmall:
-                OnShrinkRevert();
-                break;
-        }
-    }
-
-    public void AddChange(Change change)
-    {
+    public override void AddChange(Change change) {
+        base.AddChange(change);        
         currentChange = change;
-        switch (change.television.changeType) {
-            case ChangeType.missing:
-                OnMissing();
-                break;
-            case ChangeType.tooSmall:
-                OnShrinking();
-                break;
-        }
     }
 
-    public virtual IEnumerator AnimateMissing()
-    {
-        yield return null;
-        OnMissingFinish();
-    }
-
-    public virtual void OnMissingFinish()
-    {
-        
-    }
-
-    public virtual IEnumerator AnimateAppearing()
-    {
-        yield return null;
-        OnAppearingFinish();
-    }
-
-    public virtual void OnAppearingFinish()
-    {
-    }
-
-    public virtual void OnRoomEnter()
-    {
-        inSpace = true;
-    }
-
-    public virtual void OnRoomLeave()
-    {
-        inSpace = false;
-    }
     
     #region  shrinking/enlarging
-    public void OnShrinking()
+    public override void OnShrinking()
     {
-        if (Animated) {
-            onShockwave?.Invoke(currentChange.television.transform);
-            StartCoroutine(AnimateShrinking());
-        } else {
-            OnShrinkingFinish();
-        }
+        base.OnShrinking();
+        if (Animated) onShockwave?.Invoke(currentChange.television.transform);
     }
 
-    public IEnumerator AnimateShrinking()
+    public override void OnShrinkRevert()
     {
-        yield return null;
-        OnShrinkingFinish();
+        if (Animated) onShockwave?.Invoke(currentChange.television.transform);
     }
 
-    public void OnShrinkingFinish()
-    {
-    }
-
-    public void OnShrinkRevert()
-    {
-        if (Animated) {
-            onShockwave?.Invoke(currentChange.television.transform);
-            StartCoroutine(AnimateShrinkRevert());
-        } else {
-            OnShrinkingRevertFinish();
-        }
-    }
-
-    public IEnumerator AnimateShrinkRevert()
-    {
-        yield return null;
-        OnShrinkingRevertFinish();
-    }
-
-    public void OnShrinkingRevertFinish()
-    {
-    }
     #endregion
 }
