@@ -26,9 +26,6 @@ public class Area : MonoBehaviour
     private Player player;
 
     [SerializeField]
-    private AnimationCurve walkingCurve;
-
-    [SerializeField]
     private int loadRoomIndex = 0;
 
     [SerializeField]
@@ -142,33 +139,6 @@ public class Area : MonoBehaviour
         }
     }
 
-    private Vector3 playerPos {
-        get => player.transform.position;
-        set {
-            player.transform.position = new Vector3(value.x, player.transform.position.y, value.z);
-        }
-    }
-
-
-    //Todo: Probably move this to the door class.
-    ///<summary>
-    /// Animates the player walking thuogh a door
-    ///</summary>
-    public IEnumerator Walking(Vector3 endPos, float duration, float delay = 0) {
-        float index = 0;
-        player.Movement.EnableWalk = false;
-        player.Movement.CharacterAnimator.SetTrigger("openingDoor");
-        Vector3 begin = playerPos;
-        while (index < duration) {
-            index += Time.unscaledDeltaTime;
-            playerPos = Vector3.LerpUnclamped(begin, endPos, walkingCurve.Evaluate(index / duration));
-            yield return new WaitForEndOfFrame();
-        }
-        player.Movement.EnableWalk = true;
-        playerPos = endPos;
-    }
- 
-
     ///<summary>
     /// Fires when the palyer dies and has to respawn
     ///</summary>
@@ -255,19 +225,19 @@ public class Area : MonoBehaviour
                 directionalLight.animating = true;
                 
                 CurrentRoom = rooms[index];
-                StartCoroutine(Walking(CurrentRoom.StartDoor.EndPos(), duration, delay));
+                StartCoroutine(Door.Walking(CurrentRoom.StartDoor.EndPos(), duration, player));
 
 
                 // areaFinishedEvent?.Invoke();
                 // Debug.Log("area finished!");
             } else {
                 CurrentRoom = rooms[index + 1];
-                StartCoroutine(Walking(CurrentRoom.StartDoor.EndPos(), duration, delay));
+                StartCoroutine(Door.Walking(CurrentRoom.StartDoor.EndPos(), duration, player));
             }
         } else {
             //previous room
             CurrentRoom = rooms[index];
-            StartCoroutine(Walking(CurrentRoom.EndDoor.StartPos(), duration, delay));
+            StartCoroutine(Door.Walking(CurrentRoom.EndDoor.StartPos(), duration, player));
         }
     }
 

@@ -21,6 +21,7 @@ public class Door : InteractabelObject
     private float startAngle;
 
     private IEnumerator flipCoroutine;
+    private static AnimationCurve walkingCurve = AnimationCurve.EaseInOut(0,0,1,1);
 
     [SerializeField]
     private Transform doorPivot;
@@ -127,6 +128,28 @@ public class Door : InteractabelObject
 
         // YRotation = endRotation;
     }
+
+    ///<summary>
+    /// Animates the player walking through the door
+    ///</summary>
+    public static IEnumerator Walking(Vector3 endPos, float duration, Player player) {
+        float index = 0;
+        player.Movement.EnableWalk = false;
+        player.Movement.CharacterAnimator.SetTrigger("openingDoor");
+        Vector3 begin = player.transform.position;
+        while (index < duration) {
+            index += Time.unscaledDeltaTime;
+            SetPlayerPos(Vector3.LerpUnclamped(begin, endPos, walkingCurve.Evaluate(index / duration)), player);
+            yield return new WaitForEndOfFrame();
+        }
+        player.Movement.EnableWalk = true;
+        SetPlayerPos(endPos, player);
+    }
+
+    private static void SetPlayerPos(Vector3 value, Player player) {
+        player.transform.position = new Vector3(value.x, player.transform.position.y, value.z);
+    }
+ 
 
     public IEnumerator OpenAnimation() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_open);
