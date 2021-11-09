@@ -9,6 +9,9 @@ using UnityEngine.UI;
 public class SettingPanel : MonoBehaviour
 {
     private Settings settings;
+    public delegate void SettingsAction(Settings settings);
+    public static event SettingsAction OnSave;
+
 
     [SerializeField]
     private Slider cameraSensitivitySlider;
@@ -52,6 +55,7 @@ public class SettingPanel : MonoBehaviour
     
     public void Save() {
         settings.Save();
+        OnSave?.Invoke(settings);
     }
 
 }

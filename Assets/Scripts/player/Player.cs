@@ -51,9 +51,14 @@ public class Player : RoomObject
         movement = GetComponent<FPMovement>();
         cameraClipPlane = playerCamera.nearClipPlane;
 
+        ApplyCameraSettings(Settings.GetSettings());
+    }
+
+    private void ApplyCameraSettings(Settings settings) {
         //set motionblur to settings.
         volume.profile.TryGet<MotionBlur>(out motionBlur);
-        motionBlur.active = Settings.GetSettings().cameraSettings.Motion_blur_enabled;
+        motionBlur.active = settings.cameraSettings.Motion_blur_enabled;
+
     }
 
     protected override Material[] getMaterials() {
@@ -72,6 +77,13 @@ public class Player : RoomObject
             // PlaycharacterAnimation("takingItem");
 
         }
+    }
+
+    private void OnEnable() {
+        SettingPanel.OnSave += ApplyCameraSettings;
+    }
+    private void OnDisable() {
+        SettingPanel.OnSave -= ApplyCameraSettings;
     }
 
     ///<summary>

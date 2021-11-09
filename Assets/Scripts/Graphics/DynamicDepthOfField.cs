@@ -19,8 +19,20 @@ public class DynamicDepthOfField : MonoBehaviour
 
     private void Start() {
         volume.profile.TryGet<DepthOfField>(out depthOfField);
-        depthOfField.active = Settings.GetSettings().cameraSettings.Depth_of_field_enabled;
+        ApplyCameraSettings(Settings.GetSettings());
     }
+
+    private void ApplyCameraSettings(Settings settings) {
+        depthOfField.active = settings.cameraSettings.Depth_of_field_enabled;
+    }
+    
+    private void OnEnable() {
+        SettingPanel.OnSave += ApplyCameraSettings;
+    }
+    private void OnDisable() {
+        SettingPanel.OnSave -= ApplyCameraSettings;
+    }
+
     private void Update() {
         ray = new Ray(transform.position, transform.forward * 100);
         if (Physics.Raycast(ray, out hit, 100f))

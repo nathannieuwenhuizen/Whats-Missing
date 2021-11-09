@@ -190,6 +190,7 @@ public class FPMovement : MonoBehaviour
         PauseScreen.OnResume += EnableMovment;
         RoomDebugger.OnShow += DisableMovment;
         RoomDebugger.OnHide += EnableMovment;
+        SettingPanel.OnSave += ApplyMovementSettings;
 
     }
 
@@ -203,11 +204,16 @@ public class FPMovement : MonoBehaviour
         PauseScreen.OnResume -= EnableMovment;
         RoomDebugger.OnShow -= DisableMovment;
         RoomDebugger.OnHide -= EnableMovment;
+        SettingPanel.OnSave -= ApplyMovementSettings;
     }
 
     private void Awake() {
-        controlSettings = Settings.GetSettings().controlSettings;
+        ApplyMovementSettings(Settings.GetSettings());
         cameraStartYPos = cameraPivot.localPosition.y;
+    }
+
+    private void ApplyMovementSettings(Settings settings) {
+        controlSettings = settings.controlSettings;
     }
 
     private void Start()
