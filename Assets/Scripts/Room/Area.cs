@@ -109,16 +109,16 @@ public class Area : MonoBehaviour
             int changeMirrorIndex = 0;
             if (roomLevel.roomInfo != null) {
                 newRoom.RevealChangeAfterCompletion = roomLevel.roomInfo.revealChangesAfterFinish;
-                foreach (RoomTelevision tv in newRoom.GetAllObjectsInRoom<RoomTelevision>())
+                foreach (Mirror mirror in newRoom.GetAllObjectsInRoom<Mirror>())
                 {
-                    if (tv.isQuestion) {
-                        tv.Letters = roomLevel.roomInfo.questionMirror.letters;
-                        tv.changeType = roomLevel.roomInfo.questionMirror.changeType;
-                        tv.roomIndexoffset = roomLevel.roomInfo.questionMirror.roomIndexoffset;
+                    if (mirror.isQuestion) {
+                        mirror.Letters = roomLevel.roomInfo.questionMirror.letters;
+                        mirror.changeType = roomLevel.roomInfo.questionMirror.changeType;
+                        mirror.roomIndexoffset = roomLevel.roomInfo.questionMirror.roomIndexoffset;
                     } else {
-                        tv.PreAnswer = roomLevel.roomInfo.changeMirror[changeMirrorIndex].letters;
-                        tv.changeType = roomLevel.roomInfo.changeMirror[changeMirrorIndex].changeType;
-                        tv.roomIndexoffset = roomLevel.roomInfo.changeMirror[changeMirrorIndex].roomIndexoffset;
+                        mirror.PreAnswer = roomLevel.roomInfo.changeMirror[changeMirrorIndex].letters;
+                        mirror.changeType = roomLevel.roomInfo.changeMirror[changeMirrorIndex].changeType;
+                        mirror.roomIndexoffset = roomLevel.roomInfo.changeMirror[changeMirrorIndex].roomIndexoffset;
                         changeMirrorIndex++;
                     }
                 }

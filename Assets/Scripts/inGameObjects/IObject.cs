@@ -122,7 +122,7 @@ public interface IRoomObject {
 public interface IChangable : IMissable, IShrinkable
 {
     ///<summary>
-    /// The word the tv searches for when the player checks the answer or sets a change.
+    /// The word the mirror searches for when the player checks the answer or sets a change.
     ///</summary>
     string Word {get; set; }
     ///<summary>

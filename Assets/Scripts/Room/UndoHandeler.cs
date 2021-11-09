@@ -21,7 +21,6 @@ public class UndoHandeler : MonoBehaviour
             previousWord = _previousWord
         };
         actions.Add(newAction);
-        // Debug.Log("action added: " + newAction.change.television);
     }
 
     public static PickableRoomObjectCordinates[] GetAllPickableRoomCordinates(Room room) {
@@ -39,7 +38,7 @@ public class UndoHandeler : MonoBehaviour
     }
     public static TVState[] GetAllTVStates(Room room) {
         List<TVState> result = new List<TVState>();
-        foreach (RoomTelevision item in room.AllTelevisions)
+        foreach (Mirror item in room.Mirrors)
         {
             TVState cordinates = new TVState() {
                 id = item.id,
@@ -58,17 +57,17 @@ public class UndoHandeler : MonoBehaviour
 
 
         room.Animated = false;
-        if (currentAction.change.television.isQuestion) {
-            currentAction.change.television.MirrorCnvas.DeselectLetters();
-            currentAction.change.television.Word = currentAction.previousWord;
-            room.CheckTVQuestion(currentAction.change.television, false);
+        if (currentAction.change.mirror.isQuestion) {
+            currentAction.change.mirror.MirrorCnvas.DeselectLetters();
+            currentAction.change.mirror.Word = currentAction.previousWord;
+            room.CheckTVQuestion(currentAction.change.mirror, false);
         } else {
             if (currentAction.changeIsAdded) {
-                room.RemoveTVChange(currentAction.change.television, false);
+                room.RemoveMirrorChange(currentAction.change.mirror, false);
             } else {
-                currentAction.change.television.MirrorCnvas.DeselectLetters();
-                currentAction.change.television.Word = currentAction.change.word;
-                room.AddTVChange(currentAction.change.television, false);
+                currentAction.change.mirror.MirrorCnvas.DeselectLetters();
+                currentAction.change.mirror.Word = currentAction.change.word;
+                room.AddTVChange(currentAction.change.mirror, false);
             }
         }
         room.Animated = true;

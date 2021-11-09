@@ -56,7 +56,7 @@ public class RoomDebuggerBox
 
 
     //draw function of the box
-    public void Draw(Room currentRoom, RoomTelevision tv)
+    public void Draw(Room currentRoom, Mirror tv)
     {
 
         style = new GUIStyle();
@@ -78,7 +78,7 @@ public class RoomDebuggerBox
             foreach(Change change in currentRoom.ChangeHandler.Changes) {
                 GUI.color = change.active ? Color.green : Color.red;
                 GUI.skin.label.fontStyle = FontStyle.Bold;
-                GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.word + " | " + change.television.changeType, style);
+                GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.word + " | " + change.mirror.changeType, style);
                 GUI.skin.label.fontStyle = FontStyle.Normal;
                 currentPos += 30;
             }
@@ -91,7 +91,7 @@ public class RoomDebuggerBox
         {
             tv.changeType = (ChangeType)selectedChangeType;
             // tv.changeType = Enum.Parse(typeof(ChangeType), changeTypes[selectedChangeType]);// ChangeType.missing;
-            Change newChange = new Change() { word = word, television = tv, active = true};
+            Change newChange = new Change() { word = word, mirror = tv, active = true};
             currentRoom.AddChangeInRoomObjects(newChange);
             currentRoom.ChangeHandler.Changes.Add(newChange);
         }        

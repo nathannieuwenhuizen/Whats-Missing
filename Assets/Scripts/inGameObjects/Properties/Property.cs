@@ -19,13 +19,13 @@ public abstract class Property : RoomEntity
     public override void OnAppearing()
     {
         base.OnAppearing();
-        if (Animated) onShockwave?.Invoke(currentChange.television.transform);
+        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
     }
 
     public override void OnMissing()
     {
         base.OnMissing();
-        if (Animated) onShockwave?.Invoke(currentChange.television.transform);
+        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
     }
 
     public override void AddChange(Change change) {
@@ -38,12 +38,12 @@ public abstract class Property : RoomEntity
     public override void OnShrinking()
     {
         base.OnShrinking();
-        if (Animated) onShockwave?.Invoke(currentChange.television.transform);
+        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
     }
 
     public override void OnShrinkRevert()
     {
-        if (Animated) onShockwave?.Invoke(currentChange.television.transform);
+        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
     }
 
     #endregion

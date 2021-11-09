@@ -45,7 +45,7 @@ public class Room : MonoBehaviour
         set { revealChangeAfterCompletion = value; }
     }
 
-    public List<RoomTelevision> allTelevisions;
+    public List<Mirror> mirrors;
     public List<IChangable> allObjects;
 
     [SerializeField]
@@ -56,7 +56,7 @@ public class Room : MonoBehaviour
     }
 
     public List<IChangable> AllObjects {get { return allObjects;}}
-    public List<RoomTelevision> AllTelevisions {get { return allTelevisions;}}
+    public List<Mirror> Mirrors {get { return mirrors;}}
 
     
     [SerializeField]
@@ -97,19 +97,19 @@ public class Room : MonoBehaviour
             allObjects[i].id = i;
         }
 
-        allTelevisions = GetAllObjectsInRoom<RoomTelevision>().OrderBy( allObjects => allObjects.isQuestion).ToList(); 
-        for (int i = 0; i < allTelevisions.Count; i++)
+        mirrors = GetAllObjectsInRoom<Mirror>().OrderBy( allObjects => allObjects.isQuestion).ToList(); 
+        for (int i = 0; i < mirrors.Count; i++)
         {
-            allTelevisions[i].id = i;
-            allTelevisions[i].Room = this;
+            mirrors[i].id = i;
+            mirrors[i].Room = this;
         }
     }
 
     public void LoadTVs() {
-        for (int i = 0; i < allTelevisions.Count; i++)
+        for (int i = 0; i < mirrors.Count; i++)
         {
-            allTelevisions[i].SetupCanvas();
-            allTelevisions[i].UpdateIndicatorLight();
+            mirrors[i].SetupCanvas();
+            mirrors[i].UpdateIndicatorLight();
         }
     }
 
@@ -126,7 +126,7 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Spawns a changeline and waits for it to finish to implement the change.
     ///</summary>
-    public IEnumerator AnimateChangeEffect(float delay, RoomTelevision tv, IChangable o, float duration, Action callback) {
+    public IEnumerator AnimateChangeEffect(float delay, Mirror tv, IChangable o, float duration, Action callback) {
         yield return new WaitForSecondsRealtime(delay);
         ChangeLine changeLine = Instantiate(changeLineObject).GetComponent<ChangeLine>();
         changeLine.SetDestination(tv.transform.position, o.Transform.position);
@@ -157,7 +157,7 @@ public class Room : MonoBehaviour
         foreach (IChangable obj in foundObjects)
         {
             if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
-                    StartCoroutine(AnimateChangeEffect(delay, change.television, obj, 1f, () => {
+                    StartCoroutine(AnimateChangeEffect(delay, change.mirror, obj, 1f, () => {
                         callBack(obj);
                     }));
                     delay += (totalTime / (float)foundObjects.Count);
@@ -169,32 +169,32 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Checks and apply the change to the room 
     ///</summary>
-    public void AddTVChange(RoomTelevision selectedTelevision, bool undoAble = true) {
-        Change newChange = changeHandler.CreateChange(selectedTelevision);
+    public void AddTVChange(Mirror selectedMirror, bool undoAble = true) {
+        Change newChange = changeHandler.CreateChange(selectedMirror);
 
         if (newChange != null) {
             AddChangeInRoomObjects(newChange);
             changeHandler.Changes.Add(newChange);
-            selectedTelevision.IsOn = true;
+            selectedMirror.IsOn = true;
             if (undoAble) OnMakeRoomAction?.Invoke(this, newChange, true);
             CheckRoomCompletion();
 
         } else {
-            selectedTelevision.IsOn = false;
+            selectedMirror.IsOn = false;
         }
     }
 
     
     /// <summary> 
-    ///removes a tv change updating the room and tv
+    ///removes a mirror  change updating the room and mirror
     ///</summary>
-    public void RemoveTVChange(RoomTelevision selectedTelevision, bool undoAble = true) {
-        if (!selectedTelevision.IsOn) return;
-        selectedTelevision.IsOn = false;
+    public void RemoveMirrorChange(Mirror selectedMirror, bool undoAble = true) {
+        if (!selectedMirror.IsOn) return;
+        selectedMirror.IsOn = false;
         CheckRoomCompletion();
-        Change removedChange = changeHandler.Changes.Find(x => x.television == selectedTelevision);
+        Change removedChange = changeHandler.Changes.Find(x => x.mirror == selectedMirror);
         if (undoAble) OnMakeRoomAction?.Invoke(this, removedChange, false);
-        if (!selectedTelevision.isQuestion) {
+        if (!selectedMirror.isQuestion) {
             RemoveChangeInRoomObjects(removedChange);
             changeHandler.Changes.Remove(removedChange);
         }
@@ -216,25 +216,25 @@ public class Room : MonoBehaviour
     }
     
     ///<summary>
-    /// Checks if a tv question is correct with the changes that exist inside the room.
+    /// Checks if a mirror question is correct with the changes that exist inside the room.
     ///</summary>
-    public void CheckTVQuestion(RoomTelevision selectedTelevision, bool undoAble = true) {
+    public void CheckTVQuestion(Mirror selectedMirror, bool undoAble = true) {
         if (undoAble) {
-            OnMakeRoomAction?.Invoke(this, new Change() {word = selectedTelevision.Word, television = selectedTelevision}, false, selectedTelevision.PreviousWord);
-            selectedTelevision.PreviousWord = selectedTelevision.Word;
+            OnMakeRoomAction?.Invoke(this, new Change() {word = selectedMirror.Word, mirror = selectedMirror}, false, selectedMirror.PreviousWord);
+            selectedMirror.PreviousWord = selectedMirror.Word;
         }
 
         ChangeHandler checkChangeHandler = changeHandler;
-        if (selectedTelevision.roomIndexoffset == -1) {
+        if (selectedMirror.roomIndexoffset == -1) {
             checkChangeHandler = area.Rooms[area.Rooms.IndexOf(this) - 1].ChangeHandler;
         }
-        if (checkChangeHandler.TVWordMatchesChanges(selectedTelevision)) {
-                selectedTelevision.IsOn = true;
+        if (checkChangeHandler.WordMatchesChanges(selectedMirror)) {
+                selectedMirror.IsOn = true;
                 CheckRoomCompletion();
                 return;
         }
         
-        selectedTelevision.IsOn = false;
+        selectedMirror.IsOn = false;
         CheckRoomCompletion();
     }
 
@@ -243,7 +243,7 @@ public class Room : MonoBehaviour
     /// Handles if the door should be open or not. 
     ///</summary>
     private void CheckRoomCompletion() {
-        if (AllTelevisionsAreOn()) {
+        if (AllMirrorsAreOn()) {
             StartCoroutine(WaitBeforeOpeningDoor());
             if (revealChangeAfterCompletion) {
                 changeHandler.DeactivateChanges(false);
@@ -257,16 +257,16 @@ public class Room : MonoBehaviour
     }
     private IEnumerator WaitBeforeOpeningDoor() {
         yield return new WaitForSeconds(2f);
-        if (AllTelevisionsAreOn()){
+        if (AllMirrorsAreOn()){
             roomFinishedEvent?.Invoke();
             endDoor.Locked = false;
         }
     }
 
-    public bool AllTelevisionsAreOn() {
-        foreach (RoomTelevision tv in allTelevisions)
+    public bool AllMirrorsAreOn() {
+        foreach (Mirror mirror in mirrors)
         {
-            if (!tv.IsOn) return false;
+            if (!mirror.IsOn) return false;
         }
         return true;
     }
@@ -294,11 +294,11 @@ public class Room : MonoBehaviour
             firstTimeEntering = false;
             changeHandler.LoadChanges();
             changeHandler.ActivateChanges();
-            UpdateTVStates();
+            UpdateMirrorStates();
             CheckRoomCompletion();
         } else {
             if (revealChangeAfterCompletion) {
-                if (AllTelevisionsAreOn() == false)
+                if (AllMirrorsAreOn() == false)
                     changeHandler.ActivateChanges();
                 else 
                     changeHandler.CheckAndActiveOtherRoomChanges();
@@ -333,13 +333,13 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Updates the tv.ison states with the existing changes.
     ///</summary>
-    public void UpdateTVStates() {
-        foreach (RoomTelevision tv in allTelevisions)
+    public void UpdateMirrorStates() {
+        foreach (Mirror mirror in mirrors)
         {
-            if (!tv.isQuestion) {
-                tv.IsOn = changeHandler.Changes.Find(c => c.television == tv) != null;
+            if (!mirror.isQuestion) {
+                mirror.IsOn = changeHandler.Changes.Find(c => c.mirror == mirror) != null;
             } else {
-                tv.IsOn = changeHandler.TVWordMatchesChanges(tv);
+                mirror.IsOn = changeHandler.WordMatchesChanges(mirror);
             }
         }
     }
@@ -350,7 +350,7 @@ public class Room : MonoBehaviour
     ///</summary>
     public void ResetRoom() {
         changeHandler.DeactivateChanges();
-        foreach (RoomTelevision tv in allTelevisions) tv.IsOn = false;
+        foreach (Mirror mirror in mirrors) mirror.IsOn = false;
         
         roomstateHandler.LoadState(beginState);
         changeHandler.LoadChanges();

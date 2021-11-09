@@ -39,7 +39,7 @@ public class InputManager : MonoBehaviour
         }
         if (Input.GetButtonUp("Fire1 Controller"))  {
             OnClickUp?.Invoke();
-            if (TelevisionButton.SELECTED_BUTTON != null) TelevisionButton.SELECTED_BUTTON.gameObject.GetComponent<Button>().onClick.Invoke();
+            if (MirrorButton.SELECTED_BUTTON != null) MirrorButton.SELECTED_BUTTON.gameObject.GetComponent<Button>().onClick.Invoke();
         }
         
         //movement

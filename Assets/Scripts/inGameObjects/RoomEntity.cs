@@ -35,7 +35,7 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     public int id {get; set; }
 
     public virtual void AddChange(Change change) {
-        switch (change.television.changeType) {
+        switch (change.mirror.changeType) {
             case ChangeType.missing:
                 OnMissing();
                 break;
@@ -45,7 +45,7 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
         }    
     }
     public void RemoveChange(Change change) {
-        switch (change.television.changeType) {
+        switch (change.mirror.changeType) {
             case ChangeType.missing:
                 OnAppearing();
                 break;

@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TelevisionButton : MonoBehaviour
+public class MirrorButton : MonoBehaviour
 {
-    public static TelevisionButton SELECTED_BUTTON;
+    public static MirrorButton SELECTED_BUTTON;
     protected bool canBeClicked = true;
     protected Vector3 normalScale = Vector3.one;
 
-    [SerializeField]
-    protected AnimationCurve slideAnimation;
+    protected AnimationCurve scaleAnimation = AnimationCurve.EaseInOut(0,0,1,1);
 
     protected RectTransform rt;
 
     public virtual void OnHover() {
         if (!canBeClicked) return;
-        TelevisionButton.SELECTED_BUTTON = this;
+        MirrorButton.SELECTED_BUTTON = this;
     }
     public virtual void OnUnhover() {
         if (!canBeClicked) return;
-        if (TelevisionButton.SELECTED_BUTTON == this) TelevisionButton.SELECTED_BUTTON = null;
+        if (MirrorButton.SELECTED_BUTTON == this) MirrorButton.SELECTED_BUTTON = null;
     }
     public virtual void Awake() {
         rt = GetComponent<RectTransform>();
@@ -39,7 +38,7 @@ public class TelevisionButton : MonoBehaviour
         Vector3 begin = rt.localScale;
         while( index < duration) {
             index += Time.unscaledDeltaTime;
-            rt.localScale = Vector3.LerpUnclamped(begin, endScale, slideAnimation.Evaluate(index/ duration));
+            rt.localScale = Vector3.LerpUnclamped(begin, endScale, scaleAnimation.Evaluate(index/ duration));
             yield return new WaitForEndOfFrame();
         }
         rt.localScale = endScale;

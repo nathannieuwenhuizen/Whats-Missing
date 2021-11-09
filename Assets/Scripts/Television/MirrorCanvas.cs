@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class MirrorCanvas : MonoBehaviour
 {
     [SerializeField]
-    private RoomTelevision television;
+    private Mirror mirror;
 
     public List<Letter> letterObjects = new List<Letter>();
     public List<Letter> selectedLetterObjects = new List<Letter>();
@@ -58,7 +58,7 @@ public class MirrorCanvas : MonoBehaviour
                 if (letter != null)
                     LetterClicked(letter);
                 else {
-                    Debug.LogError("TV doesn't contain the letter: " + value[i] + " for the word: " + value);
+                    Debug.LogError("MirrorCanvas doesn't contain the letter: " + value[i] + " for the word: " + value);
                 }
             }
         }
@@ -129,7 +129,7 @@ public class MirrorCanvas : MonoBehaviour
             RemoveSelectedLetter(selectedLetterObjects.Count - 1);
         }
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)) {
-            television.Confirm();
+            mirror.Confirm();
         }
     }
 
@@ -214,7 +214,7 @@ public class MirrorCanvas : MonoBehaviour
     public virtual void LetterClicked(Letter letter)
     {
         if (!letter.Selected) {
-            if (television.Room != null && television.Room.Animated) {
+            if (mirror.Room != null && mirror.Room.Animated) {
                 AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .5f, 
                 .8f + (.4f * ((float)selectedLetterObjects.Count / (float)(letterObjects.Count + selectedLetterObjects.Count)))
                 );

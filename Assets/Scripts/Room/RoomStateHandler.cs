@@ -13,7 +13,7 @@ public class RoomStateHandler
     }
 
     ///<summary>
-    /// Loads the savedata with all the television states and the cordinates of the roomobjects
+    /// Loads the savedata with all the mirror states and the cordinates of the roomobjects
     ///</summary>
     public void LoadState(SaveData data) {
         room.Player.transform.position = data.playerCordinates.position;
@@ -27,11 +27,11 @@ public class RoomStateHandler
             item.transform.position = itemCordinate.position;
             item.transform.rotation = itemCordinate.rotation;
         }
-        foreach (RoomTelevision tv in room.allTelevisions)
+        foreach (Mirror mirror in room.mirrors)
         {
-            TVState tvState = tvStates.Find(x => x.id == tv.id);
-            tv.MirrorCnvas.DeselectLetters();
-            tv.Word = tvState.word;
+            TVState tvState = tvStates.Find(x => x.id == mirror.id);
+            mirror.MirrorCnvas.DeselectLetters();
+            mirror.Word = tvState.word;
             // tv.UpdateAnswerTextPosition();
         }
     }

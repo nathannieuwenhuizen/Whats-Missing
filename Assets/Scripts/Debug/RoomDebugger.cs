@@ -8,7 +8,7 @@ public class RoomDebugger : MonoBehaviour
     public delegate void DebuggerAction();
     public static event DebuggerAction OnShow;
     public static event DebuggerAction OnHide;
-    public RoomTelevision television;
+    public Mirror mirror;
 
     private RoomDebuggerBox debuggerBox = new RoomDebuggerBox();
     [SerializeField]
@@ -41,7 +41,7 @@ public class RoomDebugger : MonoBehaviour
         }
     }
     private void OnGUI() {
-        if (visible) debuggerBox.Draw(area.CurrentRoom, television);
+        if (visible) debuggerBox.Draw(area.CurrentRoom, mirror);
     }
     private void OnDisable() {
         visible = true;

@@ -42,7 +42,7 @@ public class ColorProperty : Property
     public IEnumerator IncreaseMask(bool toColor) {
         maskPPController = room.Player.Camera.GetComponent<SphericalMaskPPController>();
         maskPPController.Camera = room.Player.Camera;
-        maskPPController.spherePosition = currentChange.television.transform.position;
+        maskPPController.spherePosition = currentChange.mirror.transform.position;
         maskPPController.enabled = true;
         maskPPController.on = true;
         if (toColor) {

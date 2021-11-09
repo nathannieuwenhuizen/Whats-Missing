@@ -464,9 +464,9 @@ GameObject:
   - component: {fileID: 5844528026153053850}
   - component: {fileID: 8812403385356338648}
   - component: {fileID: 6337391998857976360}
-  - component: {fileID: 7035230022949796608}
   - component: {fileID: 1395530258152999936}
   - component: {fileID: 3370688448578112770}
+  - component: {fileID: 2609322187208885428}
   m_Layer: 0
   m_Name: Reset_Button
   m_TagString: Untagged
@@ -575,9 +575,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7188971182575456744}
-        m_TargetAssemblyTypeName: RoomTelevision, Assembly-CSharp
-        m_MethodName: ResetTV
+      - m_Target: {fileID: 6350651468716971040}
+        m_TargetAssemblyTypeName: Mirror, Assembly-CSharp
+        m_MethodName: ResetMirror
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -587,42 +587,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7035230022949796608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1267277894667929002}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f04c24c3024fbb47868e5d9d01b18e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slideAnimation:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &1395530258152999936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -640,8 +604,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 7035230022949796608}
-          m_TargetAssemblyTypeName: TelevisionButton, Assembly-CSharp
+        - m_Target: {fileID: 2609322187208885428}
+          m_TargetAssemblyTypeName: MirrorButton, Assembly-CSharp
           m_MethodName: OnHover
           m_Mode: 1
           m_Arguments:
@@ -656,8 +620,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 7035230022949796608}
-          m_TargetAssemblyTypeName: TelevisionButton, Assembly-CSharp
+        - m_Target: {fileID: 2609322187208885428}
+          m_TargetAssemblyTypeName: MirrorButton, Assembly-CSharp
           m_MethodName: OnUnhover
           m_Mode: 1
           m_Arguments:
@@ -682,6 +646,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 1
   m_AspectRatio: 1
+--- !u!114 &2609322187208885428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1267277894667929002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b924139dc2af44f8f447ed910d059c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1474046672073354185
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,85 +936,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!1 &7746956895331195567
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4437120638134578127}
-  - component: {fileID: 6606243566678790589}
-  - component: {fileID: 6963750405944145745}
-  m_Layer: 0
-  m_Name: CenterText
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &4437120638134578127
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7746956895331195567}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 8251748351396818495}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 499.69, y: 62.020004}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &6606243566678790589
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7746956895331195567}
-  m_CullTransparentMesh: 1
---- !u!114 &6963750405944145745
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7746956895331195567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: d542d8b8b7b79f94183e36f3402f3db8, type: 3}
-    m_FontSize: 14
-    m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: 
 --- !u!1 &8251748349686924571
 GameObject:
   m_ObjectHideFlags: 0
@@ -1051,9 +948,9 @@ GameObject:
   - component: {fileID: 8251748349686924575}
   - component: {fileID: 8251748349686924574}
   - component: {fileID: 8251748349686924569}
-  - component: {fileID: 5050216745782494519}
   - component: {fileID: 4369553016347541205}
   - component: {fileID: 4965497858820698415}
+  - component: {fileID: 3472060426164089745}
   m_Layer: 0
   m_Name: Apply/Check_Button
   m_TagString: Untagged
@@ -1162,8 +1059,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7188971182575456744}
-        m_TargetAssemblyTypeName: Television, Assembly-CSharp
+      - m_Target: {fileID: 6350651468716971040}
+        m_TargetAssemblyTypeName: Mirror, Assembly-CSharp
         m_MethodName: Confirm
         m_Mode: 1
         m_Arguments:
@@ -1174,42 +1071,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &5050216745782494519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8251748349686924571}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f04c24c3024fbb47868e5d9d01b18e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slideAnimation:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &4369553016347541205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1227,8 +1088,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5050216745782494519}
-          m_TargetAssemblyTypeName: TelevisionButton, Assembly-CSharp
+        - m_Target: {fileID: 3472060426164089745}
+          m_TargetAssemblyTypeName: MirrorButton, Assembly-CSharp
           m_MethodName: OnHover
           m_Mode: 1
           m_Arguments:
@@ -1243,8 +1104,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 5050216745782494519}
-          m_TargetAssemblyTypeName: TelevisionButton, Assembly-CSharp
+        - m_Target: {fileID: 3472060426164089745}
+          m_TargetAssemblyTypeName: MirrorButton, Assembly-CSharp
           m_MethodName: OnUnhover
           m_Mode: 1
           m_Arguments:
@@ -1269,6 +1130,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 1
   m_AspectRatio: 1
+--- !u!114 &3472060426164089745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8251748349686924571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b924139dc2af44f8f447ed910d059c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8251748350445222013
 GameObject:
   m_ObjectHideFlags: 0
@@ -1278,8 +1151,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8251748350445221954}
-  - component: {fileID: 7188971182575456744}
   - component: {fileID: 8987229251911427954}
+  - component: {fileID: 6350651468716971040}
   m_Layer: 0
   m_Name: Mirror
   m_TagString: Untagged
@@ -1306,31 +1179,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7188971182575456744
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8251748350445222013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e7d5831800c4e240863d03fb3be04e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mirrorCanvas: {fileID: 6712448232541319356}
-  planarReflection: {fileID: 1820861947487410686}
-  hidden: 0
-  changeType: 0
-  isQuestion: 1
-  isOn: 1
-  roomIndexoffset: 0
-  preAnswer: 
-  letters: 
-  huzzleWords: 1
-  mr: {fileID: 3279548954525874586}
-  offColor: {r: 1, g: 0.030596506, b: 0, a: 0}
-  onColor: {r: 0.027526617, g: 1, b: 0, a: 0}
 --- !u!54 &8987229251911427954
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1347,6 +1195,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &6350651468716971040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8251748350445222013}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 815a330334accaa4abd909ca8a8e2ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mirrorCanvas: {fileID: 6712448232541319356}
+  planarReflection: {fileID: 1820861947487410686}
+  hidden: 0
+  changeType: 0
+  isQuestion: 1
+  isOn: 0
+  roomIndexoffset: 0
+  preAnswer: 
+  letters: 
+  huzzleWords: 1
+  indicatorMesh: {fileID: 3279548954525874586}
+  offColor: {r: 1, g: 0, b: 0, a: 1}
+  onColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &8251748351396818494
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,7 +1258,6 @@ RectTransform:
   - {fileID: 3925191476114449787}
   - {fileID: 1421352773424936527}
   - {fileID: 5553840850390887916}
-  - {fileID: 4437120638134578127}
   m_Father: {fileID: 8251748350445221954}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1479,7 +1351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81efd6283affbb54a996cc3ec507f087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  television: {fileID: 7188971182575456744}
+  mirror: {fileID: 6350651468716971040}
   letterObjects: []
   selectedLetterObjects: []
   letterContainer: {fileID: 3925191476114449787}
@@ -1580,9 +1452,9 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 94f9165a17b46ac4abeb1d631dc4aceb, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 790fb02db3c1f3f4b929252974efaef5, type: 3}
---- !u!1 &6784035498899919005 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1876900126273645209, guid: 790fb02db3c1f3f4b929252974efaef5, type: 3}
+--- !u!4 &4726330963894907618 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 414021205698169062, guid: 790fb02db3c1f3f4b929252974efaef5, type: 3}
   m_PrefabInstance: {fileID: 4911644815302392324}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7428264544274597559 stripped
@@ -1590,8 +1462,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2539983807107382451, guid: 790fb02db3c1f3f4b929252974efaef5, type: 3}
   m_PrefabInstance: {fileID: 4911644815302392324}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &4726330963894907618 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 414021205698169062, guid: 790fb02db3c1f3f4b929252974efaef5, type: 3}
+--- !u!1 &6784035498899919005 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1876900126273645209, guid: 790fb02db3c1f3f4b929252974efaef5, type: 3}
   m_PrefabInstance: {fileID: 4911644815302392324}
   m_PrefabAsset: {fileID: 0}

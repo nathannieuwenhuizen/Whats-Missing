@@ -23,14 +23,14 @@ public class ChangeHandler
     public List<Change> Changes { get => changes; }
 
     ///<summary>
-    /// Returns the list of all changes that the room has with the televisions at the time of the call.
+    /// Returns the list of all changes that the room has with the mirrors at the time of the call.
     ///</summary>
     private List<Change> LoadingChanges() {
         List<Change> result = new List<Change>();
-        foreach (RoomTelevision tv in room.allTelevisions)
+        foreach (Mirror mirror in room.mirrors)
         {
-            if (!tv.isQuestion) {
-                Change newChange = CreateChange(tv);
+            if (!mirror.isQuestion) {
+                Change newChange = CreateChange(mirror);
                 if (newChange != null) {
                     result.Add(newChange);
                 }
@@ -43,13 +43,13 @@ public class ChangeHandler
         changes = LoadingChanges();
     }
     ///<summary>
-    /// Creates a tv change and returns null if the change doesn't find any objects with the word.
+    /// Creates a mirror change and returns null if the change doesn't find any objects with the word.
     ///</summary>
-    public Change CreateChange(RoomTelevision selectedTelevision) {
+    public Change CreateChange(Mirror selectedMirror) {
         Change newChange = new Change(){
-            word = selectedTelevision.Word, 
-            television = selectedTelevision,
-            roomIndexOffset = selectedTelevision.roomIndexoffset
+            word = selectedMirror.Word, 
+            mirror = selectedMirror,
+            roomIndexOffset = selectedMirror.roomIndexoffset
             };
 
         if (room.DoesObjectWordMatch(newChange, (IChangable obj) => {newChange.alternativeWords = obj.AlternativeWords; })) {
@@ -96,7 +96,7 @@ public class ChangeHandler
     }
 
     private bool ConnectedRoomIsComplete(Change change) {
-        return room.Area.Rooms[room.Area.Rooms.IndexOf(room) + change.roomIndexOffset].AllTelevisionsAreOn();
+        return room.Area.Rooms[room.Area.Rooms.IndexOf(room) + change.roomIndexOffset].AllMirrorsAreOn();
     }
     
     ///<summary>
@@ -122,10 +122,10 @@ public class ChangeHandler
     ///<summary>
     /// Returns true if the changes contains the word of the selected television
     ///</summary>
-    public bool TVWordMatchesChanges(RoomTelevision selectedTelevision) {
+    public bool WordMatchesChanges(Mirror mirror) {
         foreach (Change change in changes)
         {
-            if (change.word == selectedTelevision.Word || change.alternativeWords.Contains(selectedTelevision.Word)) {
+            if (change.word == mirror.Word || change.alternativeWords.Contains(mirror.Word)) {
                 return true;
             }
         }

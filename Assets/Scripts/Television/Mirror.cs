@@ -4,7 +4,7 @@ using Custom.Rendering;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomTelevision: MonoBehaviour, IRoomObject
+public class Mirror: MonoBehaviour, IRoomObject
 {
     [SerializeField]
     private MirrorCanvas mirrorCanvas;
@@ -17,7 +17,7 @@ public class RoomTelevision: MonoBehaviour, IRoomObject
     [SerializeField]
     private bool hidden = false;
 
-    [Header("Room TV settings")]
+    [Header("Room settings")]
     public ChangeType changeType = ChangeType.missing;
     public bool isQuestion = true;
     [SerializeField]
@@ -45,7 +45,7 @@ public class RoomTelevision: MonoBehaviour, IRoomObject
 
     [Header("color indicator")]
     [SerializeField]
-    private MeshRenderer mr;
+    private MeshRenderer indicatorMesh;
     [SerializeField]
     private Color offColor = Color.red;
     [SerializeField]
@@ -90,12 +90,12 @@ public class RoomTelevision: MonoBehaviour, IRoomObject
     public bool InSpace { get => inSpace; }
 
     ///<summary>
-    /// Updates the light indicator on whether the tv is on.
+    /// Updates the light indicator on whether the mirror is on.
     ///</summary>
     public void UpdateIndicatorLight() {
         Color colour = isOn ? onColor : offColor;
         colour *= 3.0f;
-        mr.material.SetColor("_EmissionColor", colour);
+        indicatorMesh.material.SetColor("_EmissionColor", colour);
     }
 
     ///<summary>
@@ -107,8 +107,10 @@ public class RoomTelevision: MonoBehaviour, IRoomObject
         mirrorCanvas.UpdateHeaderText(changeType, roomIndexoffset);
     }
 
+
     ///<summary>
     /// fires when the player wants to apply the question or sentence
+    /// Also called from the mirror button
     ///</summary>
     public void Confirm()
     {
@@ -116,21 +118,16 @@ public class RoomTelevision: MonoBehaviour, IRoomObject
         else if (isOn == false) room.AddTVChange(this);
     }
 
-    public void ConfirmationFailed() {
-        if (room.Animated)
-            AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);
-
-        mirrorCanvas.DeselectLetters();
-    }
-
     ///<summary>
     /// Resets the letters and removes the change or question check.
+    /// Also called from the mirror button.
     ///</summary>
-    public void ResetTV() {
+    public void ResetMirror() {
         mirrorCanvas.DeselectLetters();
-        if (!isQuestion) room.RemoveTVChange(this, true);
+        if (!isQuestion) room.RemoveMirrorChange(this, true);
         else room.CheckTVQuestion(this);
     }
+    
     public void ConfirmationSucceeded() {
         if (room.Animated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_true);
@@ -138,6 +135,13 @@ public class RoomTelevision: MonoBehaviour, IRoomObject
         foreach(Letter letter in mirrorCanvas.selectedLetterObjects) {
             letter.Color = new Color(.8f, 1f, .8f);
         }
+    }
+
+    public void ConfirmationFailed() {
+        if (room.Animated)
+            AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);
+
+        mirrorCanvas.DeselectLetters();
     }
 
     public void OnRoomEnter()

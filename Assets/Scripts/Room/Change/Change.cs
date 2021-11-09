@@ -1,12 +1,12 @@
 ///<summary>
-/// A change that is set inside the room. Holds on what word it is about and what tv has caused the change.
+/// A change that is set inside the room. Holds on what word it is about and what mirror has caused the change.
 ///</summary>
 [System.Serializable]
 public class Change {
     ///<summary>
-    /// The television this change is connected to.
+    /// The mirror this change is connected to.
     ///</summary>
-    public RoomTelevision television;
+    public Mirror mirror;
     ///<summary>
     /// The word that this change represents
     ///</summary>

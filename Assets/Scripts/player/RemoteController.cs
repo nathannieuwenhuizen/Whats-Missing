@@ -8,9 +8,9 @@ public class RemoteController : MonoBehaviour
     [SerializeField]
     private float remoteDistance = 5f;
 
-    private RoomTelevision focusedTelevision;
+    private Mirror focusedMirror;
 
-    private RoomTelevision oldTelevision;
+    private Mirror oldMirror;
 
     private bool isEnabled = true;
 
@@ -19,16 +19,16 @@ public class RemoteController : MonoBehaviour
     {
         if (!isEnabled) return;
 
-        focusedTelevision = FocussedTelevision();
-        if (focusedTelevision == null) {
-            if (oldTelevision) oldTelevision.MirrorCnvas.IsInteractable = false;
+        focusedMirror = FocussedMirror();
+        if (focusedMirror == null) {
+            if (oldMirror) oldMirror.MirrorCnvas.IsInteractable = false;
         } else {
-            if (oldTelevision != focusedTelevision)  {
-                if (oldTelevision) oldTelevision.MirrorCnvas.IsInteractable = false;
-                focusedTelevision.MirrorCnvas.IsInteractable = true;
+            if (oldMirror != focusedMirror)  {
+                if (oldMirror) oldMirror.MirrorCnvas.IsInteractable = false;
+                focusedMirror.MirrorCnvas.IsInteractable = true;
             }
         }
-        oldTelevision = focusedTelevision;
+        oldMirror = focusedMirror;
 
     }
     private void OnEnable() {
@@ -46,18 +46,18 @@ public class RemoteController : MonoBehaviour
     }
     private void DisableClick() {
         isEnabled = false;
-        oldTelevision = null;
-        if (focusedTelevision != null) {
-            focusedTelevision.MirrorCnvas.IsInteractable = false;
-            focusedTelevision = null;
+        oldMirror = null;
+        if (focusedMirror != null) {
+            focusedMirror.MirrorCnvas.IsInteractable = false;
+            focusedMirror = null;
         }
     }
 
 
-    private RoomTelevision FocussedTelevision() {
+    private Mirror FocussedMirror() {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, remoteDistance)) {
-            if (hit.rigidbody) if (hit.rigidbody.gameObject.GetComponent<RoomTelevision>() != null) return hit.rigidbody.gameObject.GetComponent<RoomTelevision>();
+            if (hit.rigidbody) if (hit.rigidbody.gameObject.GetComponent<Mirror>() != null) return hit.rigidbody.gameObject.GetComponent<Mirror>();
         }
         return null;
     }

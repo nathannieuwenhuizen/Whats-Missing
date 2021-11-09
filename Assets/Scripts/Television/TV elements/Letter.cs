@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
-public class Letter : TelevisionButton
+public class Letter : MirrorButton
 {
     public delegate void LetterClickedEvent(Letter letter);
     public event LetterClickedEvent onLetterClick;
@@ -113,7 +113,7 @@ public class Letter : TelevisionButton
         yield return new WaitForSeconds(delay);
         while( movingIndex < duration) {
             movingIndex += Time.unscaledDeltaTime;
-            rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, slideAnimation.Evaluate(movingIndex/ duration));
+            rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, scaleAnimation.Evaluate(movingIndex/ duration));
             yield return new WaitForEndOfFrame();
         }
         movingIndex = 1;
