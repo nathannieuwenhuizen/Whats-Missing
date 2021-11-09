@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Fire : RoomObject
+public class candle : RoomObject
 {
-
     [SerializeField]
     private MeshRenderer mr;
     private Material material;
-    private SFXInstance fireSound;
 
     protected void Awake() {
         material = mr.material;
@@ -17,59 +15,40 @@ public class Fire : RoomObject
     private void OnEnable() {
         TimeProperty.onTimeMissing += UpdateTimeScale;
         TimeProperty.onTimeAppearing += UpdateTimeScale;
-        WarmthProperty.OnWarmthMissing += SetFireOff;
-        WarmthProperty.OnWarmthAppearing += SetFireOn;
+        WarmthProperty.OnWarmthMissing += SetFlameOff;
+        WarmthProperty.OnWarmthAppearing += SetFlameOn;
     }
 
     private void OnDisable() {
         TimeProperty.onTimeMissing -= UpdateTimeScale;
         TimeProperty.onTimeAppearing -= UpdateTimeScale;
-        WarmthProperty.OnWarmthMissing -= SetFireOff;
-        WarmthProperty.OnWarmthAppearing -= SetFireOn;
+        WarmthProperty.OnWarmthMissing -= SetFlameOff;
+        WarmthProperty.OnWarmthAppearing -= SetFlameOn;
     }
 
-    public override void OnRoomEnter()
-    {
-        base.OnRoomEnter();
-        if (fireSound == null) {
-            fireSound =  AudioHandler.Instance.Player3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
-        }
-        fireSound.AudioSource.Play();
-    }
-
-    private void SetFireOn() {
+    private void SetFlameOn() {
         foreach(Transform go in transform.GetComponentInChildren<Transform>()) {
             go.gameObject.SetActive(true);
         }
-        if (fireSound != null)
-            fireSound.AudioSource.Pause();
 
     }
-    private void SetFireOff() {
+    private void SetFlameOff() {
         foreach(Transform go in transform.GetComponentInChildren<Transform>()) {
             go.gameObject.SetActive(false);
         }
-        if (fireSound != null)
-            fireSound.AudioSource.Play();
 
     }
 
 
     public void UpdateTimeScale() {
         if (InSpace == false) return;
-
         material.SetFloat("_RoomTime", Room.TimeScale);
-        if (fireSound != null){
-            fireSound.AudioSource.mute = Room.TimeScale == 0;
-        }
     }
 
     public override void OnRoomLeave()
     {
         base.OnRoomLeave();
         StopAllCoroutines();
-        if (fireSound != null)
-            fireSound.AudioSource.Stop();
     }
 
 
@@ -77,4 +56,5 @@ public class Fire : RoomObject
         Word = "Fire";
         AlternativeWords = new string[] {"Flame"};
     }
+
 }
