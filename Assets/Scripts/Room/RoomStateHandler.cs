@@ -30,7 +30,7 @@ public class RoomStateHandler
         foreach (RoomTelevision tv in room.allTelevisions)
         {
             TVState tvState = tvStates.Find(x => x.id == tv.id);
-            tv.DeselectLetters();
+            tv.MirrorCnvas.DeselectLetters();
             tv.Word = tvState.word;
             // tv.UpdateAnswerTextPosition();
         }

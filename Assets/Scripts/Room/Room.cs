@@ -108,7 +108,7 @@ public class Room : MonoBehaviour
     public void LoadTVs() {
         for (int i = 0; i < allTelevisions.Count; i++)
         {
-            allTelevisions[i].InitializeLetters();
+            allTelevisions[i].SetupCanvas();
             allTelevisions[i].UpdateIndicatorLight();
         }
     }

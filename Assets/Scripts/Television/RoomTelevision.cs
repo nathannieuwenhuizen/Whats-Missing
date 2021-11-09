@@ -99,20 +99,11 @@ public class RoomTelevision: MonoBehaviour, IRoomObject
     }
 
     ///<summary>
-    /// Creates all the letters and sets the word to pre answer
+    /// Sets up the canvas so it can be used to display all the letters
     ///</summary>
-    public void InitializeLetters()
+    public void SetupCanvas()
     {
-        if (huzzleWords) {
-            letters = Extensions.Shuffle(letters);
-        }
-        for(int i = 0; i < letters.Length; i++) {
-            mirrorCanvas.InitializeLetter(letters[i].ToString(), mirrorCanvas.GetLetterPosBasedOnIndex(i, letters.Length));
-        }
-        for(int i = 0; i < preAnswer.Length; i++) {
-            Letter answerLetter = mirrorCanvas.InitializeLetter(preAnswer[i].ToString(), mirrorCanvas.GetLetterPosBasedOnIndex(i, letters.Length));
-        }
-        mirrorCanvas.Word = preAnswer;
+        mirrorCanvas.InitializeLetters(huzzleWords, letters, preAnswer);
         mirrorCanvas.UpdateHeaderText(changeType, roomIndexoffset);
     }
 
@@ -126,42 +117,17 @@ public class RoomTelevision: MonoBehaviour, IRoomObject
     }
 
     public void ConfirmationFailed() {
-        if (room.Animated)         
+        if (room.Animated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);
 
-        DeselectLetters();
+        mirrorCanvas.DeselectLetters();
     }
 
-    protected void LetterClicked(Letter letter)
-    {
-        if ( room != null && room.Animated) {
-            AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .5f, 
-            .8f + (.4f * ((float)mirrorCanvas.selectedLetterObjects.Count / (float)(mirrorCanvas.letterObjects.Count + mirrorCanvas.selectedLetterObjects.Count)))
-            );
-        }
-        mirrorCanvas.LetterClicked(letter);
-    }
-
-    private void RemoveLetterFromAnswer(Letter letter)
-    {
-        mirrorCanvas.RemoveSelectedLetter(mirrorCanvas.selectedLetterObjects.IndexOf(letter));
-        // base.RemoveLetterFromAnswer(letter);
-    }
-
-
-    ///<summary>
-    /// sets all the letters to their original place.
-    ///</summary>
-    public void DeselectLetters() {
-        for(int i = mirrorCanvas.selectedLetterObjects.Count - 1; i >= 0; i--) {
-            mirrorCanvas.RemoveSelectedLetter(i);
-        }
-    }
     ///<summary>
     /// Resets the letters and removes the change or question check.
     ///</summary>
     public void ResetTV() {
-        DeselectLetters();
+        mirrorCanvas.DeselectLetters();
         if (!isQuestion) room.RemoveTVChange(this, true);
         else room.CheckTVQuestion(this);
     }

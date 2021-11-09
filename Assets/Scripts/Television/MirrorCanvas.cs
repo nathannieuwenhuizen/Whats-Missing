@@ -172,6 +172,23 @@ public class MirrorCanvas : MonoBehaviour
         result.y += -Mathf.Sin(xIndex / (float)containerColloms * Mathf.PI) * cellSize * .1f;
         return result;
     }
+    ///<summary>
+    /// Creates all the letters and sets the word to pre answer
+    ///</summary>
+    public void InitializeLetters(bool huzzleWords, string letters, string preAnswer)
+    {
+        if (huzzleWords) {
+            letters = Extensions.Shuffle(letters);
+        }
+        for(int i = 0; i < letters.Length; i++) {
+            InitializeLetter(letters[i].ToString(), GetLetterPosBasedOnIndex(i, letters.Length));
+        }
+        for(int i = 0; i < preAnswer.Length; i++) {
+            Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(i, letters.Length));
+        }
+        Word = preAnswer;
+    }
+
     public Letter InitializeLetter(string val, Vector3 pos) {
         Letter newLetter = GameObject.Instantiate(letterPrefab).GetComponent<Letter>();
             
@@ -196,11 +213,27 @@ public class MirrorCanvas : MonoBehaviour
     }
     public virtual void LetterClicked(Letter letter)
     {
-        if (!letter.Selected) AddLetterToAnswer(letter);
+        if (!letter.Selected) {
+            if (television.Room != null && television.Room.Animated) {
+                AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .5f, 
+                .8f + (.4f * ((float)selectedLetterObjects.Count / (float)(letterObjects.Count + selectedLetterObjects.Count)))
+                );
+            }
+            AddLetterToAnswer(letter);
+        }
         else RemoveSelectedLetter(selectedLetterObjects.IndexOf(letter));
         
         UpdateAnswerTextPosition();
     }
+    ///<summary>
+    /// sets all the letters to their original place.
+    ///</summary>
+    public void DeselectLetters() {
+        for(int i = selectedLetterObjects.Count - 1; i >= 0; i--) {
+            RemoveSelectedLetter(i);
+        }
+    }
+
 
     public void AddLetterToAnswer(Letter letter) {
         letterObjects.Remove(letter);

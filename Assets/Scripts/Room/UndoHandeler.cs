@@ -59,14 +59,14 @@ public class UndoHandeler : MonoBehaviour
 
         room.Animated = false;
         if (currentAction.change.television.isQuestion) {
-            currentAction.change.television.DeselectLetters();
+            currentAction.change.television.MirrorCnvas.DeselectLetters();
             currentAction.change.television.Word = currentAction.previousWord;
             room.CheckTVQuestion(currentAction.change.television, false);
         } else {
             if (currentAction.changeIsAdded) {
                 room.RemoveTVChange(currentAction.change.television, false);
             } else {
-                currentAction.change.television.DeselectLetters();
+                currentAction.change.television.MirrorCnvas.DeselectLetters();
                 currentAction.change.television.Word = currentAction.change.word;
                 room.AddTVChange(currentAction.change.television, false);
             }
