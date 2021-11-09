@@ -184,7 +184,7 @@ public class MirrorCanvas : MonoBehaviour
             InitializeLetter(letters[i].ToString(), GetLetterPosBasedOnIndex(i, letters.Length));
         }
         for(int i = 0; i < preAnswer.Length; i++) {
-            Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(i, letters.Length));
+            Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(i, preAnswer.Length));
         }
         Word = preAnswer;
     }

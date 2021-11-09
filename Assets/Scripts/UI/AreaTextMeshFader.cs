@@ -7,7 +7,7 @@ using UnityEngine;
 public class AreaTextMeshFader : TextMeshFader
 {
     public delegate void OnTVTutorial();
-    public static OnTVTutorial onTVTurialShow;
+    public static OnTVTutorial onMirrorTutorialShow;
 
     [SerializeField]
     private bool isTVTutorial = false;
@@ -20,7 +20,7 @@ public class AreaTextMeshFader : TextMeshFader
         base.FadeIn();
         if (isTVTutorial) {
             isTVTutorial = false;
-            onTVTurialShow?.Invoke();
+            onMirrorTutorialShow?.Invoke();
         }
     }
 }

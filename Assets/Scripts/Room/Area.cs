@@ -76,8 +76,8 @@ public class Area : MonoBehaviour
     }
 
     private void Awake() {
-        InitializeRooms();
         LoadProgress();
+        InitializeRooms();
     }
     
     void Start()
@@ -91,6 +91,7 @@ public class Area : MonoBehaviour
         directionalLight.animating = false;
         CurrentRoom = rooms[loadRoomIndex];
         directionalLight.animating = true;
+        Debug.Log("save progress " + rooms.IndexOf(currentRoom));
 
     }
 
@@ -100,8 +101,11 @@ public class Area : MonoBehaviour
     private void InitializeRooms() {
         Vector3 pos = Vector3.zero;
         Transform origin = transform;
-        
+        int index = 0;
         foreach (RoomLevel roomLevel in roomLevels) {
+            bool completed = index < loadRoomIndex;
+            index += 1;
+
             //make new room
             Room newRoom = Instantiate(roomLevel.prefab.gameObject, transform).GetComponent<Room>();
             newRoom.name = "Room: " + (roomLevel.roomInfo != null ? roomLevel.name : roomLevel.prefab.name);
@@ -112,7 +116,11 @@ public class Area : MonoBehaviour
                 foreach (Mirror mirror in newRoom.GetAllObjectsInRoom<Mirror>())
                 {
                     if (mirror.isQuestion) {
-                        mirror.Letters = roomLevel.roomInfo.questionMirror.letters;
+                        if (completed) {
+                            mirror.PreAnswer = roomLevel.roomInfo.changeMirror[0].letters;
+                            mirror.IsOn = true;
+                        }  else
+                            mirror.Letters = roomLevel.roomInfo.questionMirror.letters;
                         mirror.changeType = roomLevel.roomInfo.questionMirror.changeType;
                         mirror.roomIndexoffset = roomLevel.roomInfo.questionMirror.roomIndexoffset;
                     } else {
@@ -123,7 +131,7 @@ public class Area : MonoBehaviour
                     }
                 }
             }
-            newRoom.LoadTVs();
+            newRoom.LoadMirrors();
 
             //position room
             newRoom.transform.rotation = origin.rotation; 
@@ -181,9 +189,9 @@ public class Area : MonoBehaviour
     }
 
     public void SaveProgress() {
+        // SaveData.current = SaveData.GetStateOfRoom(currentRoom);
         SaveData.current.roomIndex = rooms.IndexOf(currentRoom);
-        SaveData.current = SaveData.GetStateOfRoom(currentRoom);
-        SerializationManager.Save("test", SaveData.current);
+        SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
     }
 
     private void OnDestroy() {
@@ -191,11 +199,13 @@ public class Area : MonoBehaviour
     }
 
     public void LoadProgress() {
-        object data = SerializationManager.Load(SerializationManager.filePath + "/test.save");
+        object data = SerializationManager.Load(SerializationManager.filePath + "/" + SaveData.FILE_NAME +".save");
         if (data != null) {
 
             SaveData.current = data as SaveData;
-            //startingRoomIndex = SaveData.current.roomIndex;
+#if !UNITY_EDITOR
+            loadRoomIndex = SaveData.current.roomIndex;
+#endif
             //loadRoomState = true;
         }
     }

@@ -32,14 +32,14 @@ public class TutorialIndicator : Singleton<AudioHandler>
 
     private void OnEnable() {
         Area.OnFirstRoomEnter += StartWaitingForMove;
-        AreaTextMeshFader.onTVTurialShow += StartWaitingForClick;
+        AreaTextMeshFader.onMirrorTutorialShow += StartWaitingForClick;
         Gravity.onGravityMissing += StartWaitingForJump;
     }
 
 
     private void OnDisable() {
         Area.OnFirstRoomEnter -= StartWaitingForMove;
-        AreaTextMeshFader.onTVTurialShow -= StartWaitingForClick;
+        AreaTextMeshFader.onMirrorTutorialShow -= StartWaitingForClick;
         Letter.OnLetterClickAction -= EnableClick;
         InputManager.OnMove -= EnableMove;
         InputManager.OnJump -= EnableJump;

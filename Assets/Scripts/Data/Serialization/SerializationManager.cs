@@ -17,6 +17,7 @@ public class SerializationManager : MonoBehaviour
             Debug.Log("create path!");
             Directory.CreateDirectory(filePath);
         }
+        Debug.Log("path: " + filePath);
 
         string path = filePath + "/" + saveName + ".save";
         FileStream file = File.Create(path);

@@ -73,8 +73,11 @@ public class InputManager : MonoBehaviour
             OnUndo?.Invoke();
         }
 
-        //reset
-        if (Input.GetKeyDown(KeyCode.R) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) {
+        // //reset
+        // if (Input.GetKeyDown(KeyCode.R) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) {
+        //     OnReset?.Invoke();
+        // }
+        if (Input.GetKeyDown(KeyCode.R)) {
             OnReset?.Invoke();
         }
 

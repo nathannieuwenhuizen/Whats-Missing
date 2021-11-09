@@ -9,6 +9,8 @@ using System.IO;
 [System.Serializable]
 public class SaveData
 {
+
+    public static string FILE_NAME = "test";
     private static SaveData _current;
     public static SaveData current {
         get { 
@@ -20,7 +22,7 @@ public class SaveData
         set { _current = value; }
     }
 
-    public int roomIndex;
+    public int roomIndex = 0;
     public TVState[] tvStates;
     public PickableRoomObjectCordinates[] cordinates;
     public PickableRoomObjectCordinates playerCordinates;

@@ -105,7 +105,7 @@ public class Room : MonoBehaviour
         }
     }
 
-    public void LoadTVs() {
+    public void LoadMirrors() {
         for (int i = 0; i < mirrors.Count; i++)
         {
             mirrors[i].SetupCanvas();
@@ -349,11 +349,14 @@ public class Room : MonoBehaviour
     /// Resets the room by deactivation all the changes and returns the room state and activates the changes 
     ///</summary>
     public void ResetRoom() {
+        Animated = false;
         changeHandler.DeactivateChanges();
         foreach (Mirror mirror in mirrors) mirror.IsOn = false;
         
         roomstateHandler.LoadState(beginState);
         changeHandler.LoadChanges();
         changeHandler.ActivateChanges();
+        CheckRoomCompletion();
+        Animated = true;
     }
 }
