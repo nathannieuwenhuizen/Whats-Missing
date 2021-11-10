@@ -34,7 +34,8 @@ public enum SFXFiles {
     woosh,
     grab_book,
 
-    exhale
+    exhale,
+    lamp_toggle
 }
 
 public enum MusicFiles {

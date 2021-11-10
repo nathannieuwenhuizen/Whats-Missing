@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1394563483249364790}
   - component: {fileID: 3362960418481793459}
-  - component: {fileID: 8345390941869286312}
+  - component: {fileID: 1303984003113125195}
   m_Layer: 0
   m_Name: Desk_Lamp
   m_TagString: Untagged
@@ -31,6 +31,7 @@ Transform:
   m_Children:
   - {fileID: 5879320580282687199}
   - {fileID: 7775886735695224419}
+  - {fileID: 6452068064741610795}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -50,7 +51,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8345390941869286312
+--- !u!114 &1303984003113125195
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,13 +60,108 @@ MonoBehaviour:
   m_GameObject: {fileID: 989800557041405369}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
+  m_Script: {fileID: 11500000, guid: d1db4455386abf44690056450c2a05c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   word: lamp
   alternateWords:
   - lamps
   missingChangeEffect: 1
+  spotLight: {fileID: 2517573625229652030}
+  cord: {fileID: 5879320580282687199}
+--- !u!1 &2517573625229652030
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6452068064741610795}
+  - component: {fileID: 5403573025066329384}
+  m_Layer: 0
+  m_Name: Spot Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6452068064741610795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2517573625229652030}
+  m_LocalRotation: {x: -0.000000022351742, y: -0.963469, z: 0.000000029802322, w: 0.26781997}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1394563483249364790}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: -148.931, z: 0}
+--- !u!108 &5403573025066329384
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2517573625229652030}
+  m_Enabled: 1
+  serializedVersion: 10
+  m_Type: 0
+  m_Shape: 0
+  m_Color: {r: 1, g: 0.845503, b: 0.740566, a: 1}
+  m_Intensity: 4
+  m_Range: 2.58
+  m_SpotAngle: 97.32351
+  m_InnerSpotAngle: 61.594185
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1 &2918797990735170789
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,7 +284,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7543183800980829807}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.000030544103, y: 0.004115293, z: -0.0031291249}
+  m_LocalPosition: {x: 0.000030544103, y: 0.00412, z: -0.00411}
   m_LocalScale: {x: 1, y: 1, z: 0.29040027}
   m_Children: []
   m_Father: {fileID: 1394563483249364790}
