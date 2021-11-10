@@ -82,7 +82,6 @@ public class Portal : MonoBehaviour
                 Debug.Log("warp!?");
                 Teleport();
             } 
-            player.Camera.nearClipPlane = objPos.y > 0 ? .01f : .7f;
         }
 
         if (isReady && mainCamera != null)
@@ -104,7 +103,6 @@ public class Portal : MonoBehaviour
     }
 
     public void OnPortalLeave() {
-        player.Camera.nearClipPlane = .7f;
 
         insidePortal = false;
         foreach (Collider coll in connectedColliders)

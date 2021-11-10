@@ -30,7 +30,6 @@ public class Player : RoomObject
 
     [SerializeField]
     private Camera playerCamera;
-    private float cameraClipPlane;
 
     [SerializeField]
     private Volume volume;
@@ -49,7 +48,6 @@ public class Player : RoomObject
     protected void Awake()
     {
         movement = GetComponent<FPMovement>();
-        cameraClipPlane = playerCamera.nearClipPlane;
 
         ApplyCameraSettings(Settings.GetSettings());
     }
@@ -106,7 +104,6 @@ public class Player : RoomObject
         playerCamera.transform.SetParent(headModel);
         playerCamera.transform.localPosition = animationView.localPosition;
         playerCamera.transform.localRotation = animationView.localRotation;
-        playerCamera.nearClipPlane = 0.01f;
         StartCoroutine(playerCamera.AnimatingFieldOfView(80, AnimationCurve.EaseInOut(0,0,1,1), 2f));
         Movement.CharacterAnimator.SetTrigger(trigger);
         Movement.CharacterAnimator.applyRootMotion = applyRoonAnimation;
@@ -140,7 +137,6 @@ public class Player : RoomObject
     public void EndOfCutSceneAnimation() {
         OnCutsceneEnd?.Invoke();
         playerCamera.transform.SetParent(transform);
-        playerCamera.nearClipPlane = cameraClipPlane;
         Movement.EnableRotation = true;
         Movement.EnableWalk = true;
         StartCoroutine(playerCamera.AnimatingFieldOfView(60, AnimationCurve.EaseInOut(0,0,1,1), .5f));
