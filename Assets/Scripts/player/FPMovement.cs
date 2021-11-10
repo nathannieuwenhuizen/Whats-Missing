@@ -159,6 +159,7 @@ public class FPMovement : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         footstepFile = other.gameObject.tag == "Stairs" ? SFXFiles.stairs_footstep : SFXFiles.player_footstep;
 
+        Debug.Log("enter");
         if (inAir && other.gameObject.tag != Tags.Picked) {
             InAir = false;
             AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
@@ -227,7 +228,7 @@ public class FPMovement : MonoBehaviour
     {
         if (EnableRotation) UpdateRotation();
         if (EnableWalk) UpdateMovement();
-        CheckFloorCollision();
+        // CheckFloorCollision();
     }
 
     ///<summary>
@@ -306,10 +307,10 @@ public class FPMovement : MonoBehaviour
     ///Checks if the player is above ground. If the distance is 0 or lower than 0, it sticks to the ground. If not it returns false.
     ///</summary>
     private bool CheckFloorCollision() {
-        if (inAir || rb.useGravity == false || rb.velocity.magnitude < .1f) return false;
+        if (inAir || rb.useGravity == false) return false;
         RaycastHit[] hit;
 
-        float radius = transform.localScale.x / 2f;
+        float radius = transform.localScale.x * .5f;
         float offset = .1f;
 
         //TODO: add a collider mask so that it can only collide with the floor.
@@ -318,6 +319,7 @@ public class FPMovement : MonoBehaviour
         float _distance = 10f;
         for (int i = 0; i < hit.Length; i++)
         {
+            Debug.Log("hit: " + hit[i].transform.name);
             // Debug.Log(hit[i].transform.name + " | "+ hit[i].distance);
             if (hit[i].distance < _distance && hit[i].distance != 0) {
                 _distance = hit[i].distance;
@@ -326,8 +328,7 @@ public class FPMovement : MonoBehaviour
         }
         if (_distance != 10f) {
             distance = _distance;
-            // rb.MovePosition(transform.position + new Vector3(0,-(distance - offset * 1.1f),0));
-            // InAir = false;
+            // rb.MovePosition(transform.position + new Vector3(0,-(distance - offset * 1.1f) * .5f,0));
             return true;
         } else {
             distance = 10f;
@@ -336,6 +337,7 @@ public class FPMovement : MonoBehaviour
     }
 
     private void OnCollisionExit(Collision other) {
+        Debug.Log("exit: " +  other.gameObject.name);
         if (CheckFloorCollision() == false) {
             InAir = true;
             StartCoroutine(MakeWindNoices());
@@ -381,6 +383,6 @@ public class FPMovement : MonoBehaviour
 
     private void OnDrawGizmos() {
         Gizmos.DrawLine(transform.position, transform.position + new Vector3(0,-distance,0));
-        Gizmos.DrawSphere(transform.position + new Vector3(0,-distance + transform.localScale.x *.1f ,0), transform.localScale.x * .1f);
+        Gizmos.DrawSphere(transform.position + new Vector3(0,-distance + transform.localScale.x * .5f ,0), transform.localScale.x * .5f);
     }
 }

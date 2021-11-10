@@ -57,7 +57,7 @@ public class WarmthProperty : Property
         snowMaterial.SetFloat("Opacity", endOpacity);
 
         base.OnMissingFinish();
-        temperature = -100;
+        Temperature = -100;
 
     }
 
@@ -69,18 +69,18 @@ public class WarmthProperty : Property
             start = -100f;
             end = 0f;
         }
-        temperature = start;
+        Temperature = start;
         float index = 0;
         while ( index < animationDuration) {
             index += Time.unscaledDeltaTime;
-            temperature = Mathf.Lerp(start, end, index / animationDuration);
+            Temperature = Mathf.Lerp(start, end, index / animationDuration);
             yield return new WaitForEndOfFrame();
         }
-        temperature = end;
+        Temperature = end;
     }
 
 
-    public float temperature {
+    public float Temperature {
         set {
             if (whiteBalance == null)
                 room.Player.Volume.profile.TryGet<WhiteBalance>(out whiteBalance);
@@ -111,14 +111,17 @@ public class WarmthProperty : Property
         base.OnAppearingFinish();
         foreach(MeshRenderer mr in room.GetAllObjectsInRoom<MeshRenderer>()) {
             Material[] materials = mr.materials;
-            List<Material> temp = new List<Material>(materials);
-            temp.RemoveAt(temp.Count - 1);
-            materials = temp.ToArray();
-            mr.materials = materials;
-            mr.UpdateGIMaterials();
+            if (materials.Length > 1) {
+
+                List<Material> temp = new List<Material>(materials);
+                temp.RemoveAt(temp.Count - 1);
+                materials = temp.ToArray();
+                mr.materials = materials;
+                mr.UpdateGIMaterials();
+            }
 
         }
-        temperature = 0;
+        Temperature = 0;
 
     }
 

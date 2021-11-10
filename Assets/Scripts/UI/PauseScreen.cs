@@ -16,9 +16,9 @@ public class PauseScreen : MonoBehaviour
 
     private bool paused = false;
 
-    public bool Paused {
-        get { return paused;}
-    }
+    private Animator animator;
+
+    private Coroutine fadeCoroutine;
 
     ///<summary>
     /// Pauses the game setting the timescale to 0.
@@ -32,8 +32,16 @@ public class PauseScreen : MonoBehaviour
         AudioHandler.Instance.FadeListener(.2f);
 
         SetGroupVisibility(true);
-        Time.timeScale = 0;
+        animator.SetBool("show", true);
+
+        // Time.timeScale = 0;
+        StartCoroutine(AnimateTimeScale(0));
+
         OnPause?.Invoke();
+    }
+
+    private void Awake() {
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -51,6 +59,19 @@ public class PauseScreen : MonoBehaviour
         group.blocksRaycasts = val;
     }
 
+    private IEnumerator AnimateTimeScale(float end) {
+        float begin = Time.timeScale;
+        
+        float index = 0;
+        float animationDuration = .5f;
+        while (index < animationDuration) {
+            index += Time.unscaledDeltaTime;
+            Time.timeScale = Mathf.Lerp(begin, end, index/ animationDuration);
+            yield return new WaitForEndOfFrame();
+        }
+        Time.timeScale = end;
+    }
+
     ///<summary>
     /// Resumes the game hiding the pauses screen and setting the timescale to 1.
     ///</summary>
@@ -60,9 +81,11 @@ public class PauseScreen : MonoBehaviour
         paused = false;
 
         AudioHandler.Instance.FadeListener(1f);
+        animator.SetBool("show", false);
 
         SetGroupVisibility(false);
-        Time.timeScale = 1;
+        StartCoroutine(AnimateTimeScale(1));
+        // Time.timeScale = 1;
         OnResume?.Invoke();
     }
     ///<summary>

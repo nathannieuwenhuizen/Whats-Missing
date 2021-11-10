@@ -71,12 +71,14 @@ public class Player : RoomObject
         AlternativeWords = new string[]{ "myself", "i", "player", "gregory"};
     }
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.D)) {
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) {
             Die();
             // PlaycharacterAnimation("standingUp", true);
             // PlaycharacterAnimation("takingItem");
 
         }
+#endif
     }
 
     private void OnEnable() {

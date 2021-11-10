@@ -52,7 +52,11 @@ public class ChangeHandler
             roomIndexOffset = selectedMirror.roomIndexoffset
             };
 
-        if (room.DoesObjectWordMatch(newChange, (IChangable obj) => {newChange.alternativeWords = obj.AlternativeWords; })) {
+        if (room.DoesObjectWordMatch(newChange, (IChangable obj) => {
+            List<string> allWords = new List<string>(obj.AlternativeWords);
+            allWords.Add(obj.Word);
+            newChange.alternativeWords = allWords.ToArray(); 
+            })) {
             return newChange;
         } else {
             return null;

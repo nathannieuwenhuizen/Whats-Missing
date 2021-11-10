@@ -119,10 +119,10 @@ public class AudioHandler : Singleton<AudioHandler>
     /// <summary>
     ///Plays a 2D sound in the game.
     ///</summary>
-    public void PlaySound(SFXFiles audioEffect, float volume = 1f, float pitch = 1f, bool loop = false, bool ignoreListenerVolume = false)
+    public SFXInstance PlaySound(SFXFiles audioEffect, float volume = 1f, float pitch = 1f, bool loop = false, bool ignoreListenerVolume = false)
     {
         SFXInstance selectedAudio = GetSFXInstance(audioEffect);
-        if (selectedAudio == default(SFXInstance)) return;
+        if (selectedAudio == default(SFXInstance)) return selectedAudio;
         selectedAudio.AudioSource.gameObject.SetActive(true);
         selectedAudio.AudioSource.spatialBlend = 0;
         selectedAudio.AudioSource.clip = selectedAudio.GetClip;
@@ -131,6 +131,14 @@ public class AudioHandler : Singleton<AudioHandler>
         selectedAudio.AudioSource.loop = loop;
         selectedAudio.AudioSource.ignoreListenerVolume = ignoreListenerVolume;
         selectedAudio.AudioSource.Play();
+        return selectedAudio;
+    }
+
+    ///<summary>
+    /// Plays an UI sound that ignores the listener volume.
+    ///</summary>
+    public SFXInstance PlayUISound(SFXFiles audioEffect, float volume = 1f, float pitch = 1f) {
+        return PlaySound(audioEffect, volume, pitch, false, true);
     }
 
     private SFXInstance GetSFXInstance(SFXFiles audioEffect) {

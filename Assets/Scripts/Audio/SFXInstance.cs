@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+
+///<summary>
+/// An SFX instance is an gameObject that has the clip and the enum the clip is connected to.
+///</summary>
 [System.Serializable]
 public class SFXInstance
 {

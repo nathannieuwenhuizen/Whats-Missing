@@ -185,7 +185,7 @@ public class Area : MonoBehaviour
     }
 
     public void ResetRoom() {
-        CurrentRoom.ResetRoom();
+        //CurrentRoom.ResetRoom();
     }
 
     public void SaveProgress() {
