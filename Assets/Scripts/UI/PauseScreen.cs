@@ -33,6 +33,7 @@ public class PauseScreen : MonoBehaviour
 
         SetGroupVisibility(true);
         animator.SetBool("show", true);
+        AudioHandler.Instance.PlayUISound(SFXFiles.pause_show);
 
         // Time.timeScale = 0;
         StartCoroutine(AnimateTimeScale(0));
@@ -82,6 +83,7 @@ public class PauseScreen : MonoBehaviour
 
         AudioHandler.Instance.FadeListener(1f);
         animator.SetBool("show", false);
+        AudioHandler.Instance.PlayUISound(SFXFiles.pause_hide);
 
         SetGroupVisibility(false);
         StartCoroutine(AnimateTimeScale(1));

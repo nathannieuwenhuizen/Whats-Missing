@@ -15,6 +15,10 @@ public class Menu : MonoBehaviour
         SetupPlayButtons();
     }
 
+    private void Start() {
+        AudioHandler.Instance.PlayMusic(MusicFiles.menu, .3f);
+    }
+
     private void SetupPlayButtons() {
         object data = SerializationManager.Load(SerializationManager.filePath + "/" + SaveData.FILE_NAME +".save");
         if (data != null && (data as SaveData).roomIndex != 0) {

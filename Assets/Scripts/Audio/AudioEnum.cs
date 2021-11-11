@@ -35,10 +35,22 @@ public enum SFXFiles {
     grab_book,
 
     exhale,
-    lamp_toggle
+    lamp_toggle,
+
+    //ui
+    ui_button_click,
+    ui_button_hover,
+    ui_button_unhover,
+    pause_show,
+    pause_hide,
+    play_button_click,
+    toggle_on,
+    toggle_off,
+    slider_select
 }
 
 public enum MusicFiles {
-    gallery,
-    test
+    planetarium,
+    menu,
+    planetarium_hidden_room
 }

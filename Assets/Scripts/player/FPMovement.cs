@@ -343,19 +343,7 @@ public class FPMovement : MonoBehaviour
             StartCoroutine(MakeWindNoices());
         }        
     }
-    private void OnTriggerEnter(Collider other) {
-        AreaTextMeshFader text = other.gameObject.GetComponent<AreaTextMeshFader>();
-        if (text != null){
-            text.FadeIn();
-        }
-    }
 
-    private void OnTriggerExit(Collider other) {
-        AreaTextMeshFader text = other.gameObject.GetComponent<AreaTextMeshFader>();
-        if (text != null){
-            // text.FadeOut();
-        }
-    }
     ///<summary>
     ///Updates the camera and player rotation based on the delta of input.
     ///</summary>
