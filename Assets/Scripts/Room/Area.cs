@@ -91,6 +91,10 @@ public class Area : MonoBehaviour
         directionalLight.animating = false;
         CurrentRoom = rooms[loadRoomIndex];
         directionalLight.animating = true;
+        if (loadRoomIndex == 0) {
+            player.Respawn();
+            OnRespawn?.Invoke();
+        }
         Debug.Log("save progress " + rooms.IndexOf(currentRoom));
 
     }

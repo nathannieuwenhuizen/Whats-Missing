@@ -8,6 +8,9 @@ using UnityEngine.Events;
 public class Room : MonoBehaviour
 {
 
+    public delegate void RoomAction();
+    public static event RoomAction OnRoomComplete;
+
     private Area area;
     public Area Area {
         get { return area;}
@@ -244,6 +247,7 @@ public class Room : MonoBehaviour
     ///</summary>
     private void CheckRoomCompletion() {
         if (AllMirrorsAreOn()) {
+            OnRoomComplete?.Invoke();
             StartCoroutine(WaitBeforeOpeningDoor());
             if (revealChangeAfterCompletion) {
                 changeHandler.DeactivateChanges(false);
