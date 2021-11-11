@@ -126,15 +126,20 @@ public class Player : RoomObject
         if (other.GetComponent<Portal>() != null) {
             other.GetComponent<Portal>().OnPortalEnter(this);
         }
-        AreaTextMeshFader text = other.gameObject.GetComponent<AreaTextMeshFader>();
-        if (text != null){
-            text.FadeIn();
+        if (other.GetComponent<AreaTrigger>() != null) {
+            other.GetComponent<AreaTrigger>().OnAreaEnter();
+        }
+        if (other.GetComponent<AreaTextMeshFader>() != null){
+            other.GetComponent<AreaTextMeshFader>().FadeIn();
         }
     }
 
     private void OnTriggerExit(Collider other) {
         if (other.GetComponent<Portal>() != null) {
             other.GetComponent<Portal>().OnPortalLeave();
+        }
+        if (other.GetComponent<AreaTrigger>() != null) {
+            other.GetComponent<AreaTrigger>().OnAreaExit();
         }
     }
 

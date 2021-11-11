@@ -9,6 +9,9 @@ public class Lamp : InteractabelObject
 
     [SerializeField]
     private Transform cord;
+
+    [SerializeField]
+    private MeshRenderer emissionRenderer;
     
     private Vector3 cordStartPos;
 
@@ -23,6 +26,9 @@ public class Lamp : InteractabelObject
             lampIsOn = value; 
             spotLight.SetActive(value);
             AudioHandler.Instance.PlaySound(SFXFiles.lamp_toggle, 1, value ? 1 : .8f);
+
+            if (value) emissionRenderer.material.EnableKeyword("_EMISSION");
+            else emissionRenderer.material.DisableKeyword("_EMISSION");
         }
     }
 
