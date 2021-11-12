@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// A button that plays a sound on click,hover and unhover.
 ///</summary>
 [RequireComponent(typeof(Button))]
-public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler
 {
 
     private Button button;
@@ -18,7 +18,6 @@ public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
 
     private void OnClick() {
-        Debug.Log("click");
         AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_click);
     }
 
@@ -30,5 +29,10 @@ public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerExit(PointerEventData eventData)
     {
         // AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_unhover);
+    }
+
+    public void OnSelect(BaseEventData eventData)
+    {
+        AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover);
     }
 }

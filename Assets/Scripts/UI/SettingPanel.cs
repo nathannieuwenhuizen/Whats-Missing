@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 ///<summary>
@@ -33,7 +34,6 @@ public class SettingPanel : MonoBehaviour
     {
         //sets up the event listeners.
         cameraSensitivitySlider.onValueChanged.AddListener(delegate { 
-            Debug.Log("sensetivity changed");
             settings.controlSettings.Camera_sensetivity = cameraSensitivitySlider.value;
             });
         cameraXInvert.onValueChanged.AddListener(delegate{ settings.controlSettings.Camera_x_invert = cameraXInvert.isOn;});
@@ -56,6 +56,10 @@ public class SettingPanel : MonoBehaviour
     public void Save() {
         settings.Save();
         OnSave?.Invoke(settings);
+    }
+
+    public void Open() {
+        ControllerCheck.SelectUIGameObject(cameraSensitivitySlider.gameObject);
     }
 
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 ///<summary>
 /// Pause screen inside the game.
@@ -13,8 +14,11 @@ public class PauseScreen : MonoBehaviour
     public static event PauseAction OnResume;
     [SerializeField]
     private CanvasGroup group;
+    [SerializeField]
+    private GameObject resumeButton;
 
     private bool paused = false;
+    private bool canPause = true;
 
     private Animator animator;
 
@@ -26,13 +30,14 @@ public class PauseScreen : MonoBehaviour
     public void Pause()
     {
 
-        if (paused) return;
+        if (paused || !canPause) return;
         paused = true;
 
         AudioHandler.Instance.FadeListener(.2f);
 
         SetGroupVisibility(true);
         animator.SetBool("show", true);
+        SelectResumeButton();
         AudioHandler.Instance.PlayUISound(SFXFiles.pause_show);
 
         // Time.timeScale = 0;
@@ -84,6 +89,7 @@ public class PauseScreen : MonoBehaviour
         AudioHandler.Instance.FadeListener(1f);
         animator.SetBool("show", false);
         AudioHandler.Instance.PlayUISound(SFXFiles.pause_hide);
+        EventSystem.current.SetSelectedGameObject(null);
 
         SetGroupVisibility(false);
         StartCoroutine(AnimateTimeScale(1));
@@ -102,10 +108,25 @@ public class PauseScreen : MonoBehaviour
     private void OnEnable()
     {
         InputManager.OnCancel += TogglePause;
+        Player.OnCutsceneStart += DisablePause;
+        Player.OnCutsceneEnd += EnablePause;
     }
     private void OnDisable()
     {
         InputManager.OnCancel -= TogglePause;
+        Player.OnCutsceneStart -= DisablePause;
+        Player.OnCutsceneEnd -= EnablePause;
+    }
+
+    public void SelectResumeButton() {
+        ControllerCheck.SelectUIGameObject(resumeButton);
+    }
+
+    private void EnablePause() {
+        canPause = true;
+    }
+    private void DisablePause() {
+        canPause = false;
     }
 
     private void OnDestroy()

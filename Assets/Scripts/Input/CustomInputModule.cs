@@ -15,15 +15,17 @@ public class CustomInputModule : StandaloneInputModule
     public override void Process()
     {
         if (mouseIsHidden) {
+            if (ControllerCheck.AnyControllerConnected()) {
+                submitButton = "Empty";
+            } else {
+                submitButton = "Submit";
+            }
             _currentLockState = Cursor.lockState;
-
-            //TODO: in edit mode lockmode is contained
             Cursor.lockState = CursorLockMode.Confined;
-
             base.Process();
-
             Cursor.lockState = _currentLockState;
         } else {
+            submitButton = "Submit";
             base.Process();
         }
     }
@@ -45,9 +47,11 @@ public class CustomInputModule : StandaloneInputModule
 
     }
     private void ShowMouse() {
-        Cursor.lockState = CursorLockMode.None;
+        if (ControllerCheck.AnyControllerConnected() == false) {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
         mouseIsHidden = false;
-        Cursor.visible = true;
     }
     private void HideMouse() {
         Cursor.lockState = CursorLockMode.Locked;

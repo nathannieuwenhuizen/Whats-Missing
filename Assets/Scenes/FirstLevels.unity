@@ -388,18 +388,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnDown: {fileID: 1446377893}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.42655182, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 1, g: 0.427451, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2379,7 +2379,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9dcba0f3ef6f9044ca7c745b279a0eba, type: 2}
   - {fileID: 11400000, guid: 6ae2ec25dbb638d4693ee55dc00383ba, type: 2}
   player: {fileID: 1391388559}
-  loadRoomIndex: 0
+  loadRoomIndex: 5
   areaFinishedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -3302,6 +3302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   group: {fileID: 1227136027}
+  resumeButton: {fileID: 192863848}
 --- !u!225 &1227136027
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -3763,7 +3764,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 30}
-  m_SizeDelta: {x: 0, y: 160}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1431161033
 MonoBehaviour:
@@ -3787,7 +3788,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1431161031}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -3934,18 +3935,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
+    m_SelectOnUp: {fileID: 192863850}
+    m_SelectOnDown: {fileID: 1473276096}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.42655182, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 1, g: 0.427451, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -4080,18 +4081,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 4
     m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
+    m_SelectOnUp: {fileID: 1446377893}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 1, g: 0.42655182, b: 0, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 1, g: 0.427451, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -4144,6 +4145,18 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 1
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1723266191}
+        m_TargetAssemblyTypeName: SettingPanel, Assembly-CSharp
+        m_MethodName: Open
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
@@ -4759,6 +4772,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 745746454535143738, guid: de8d3b427f5cce3409175f0306589aee, type: 3}
+      propertyPath: animationDelay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 745746454535143738, guid: de8d3b427f5cce3409175f0306589aee, type: 3}
       propertyPath: animationDuration
       value: 0.5
       objectReference: {fileID: 0}
@@ -4988,12 +5005,44 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7862728560677337612, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862728560677337612, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862728560677337612, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1424940883}
     - target: {fileID: 7862728560677337612, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 1227136026}
+    - target: {fileID: 7862728560677337612, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862728560677337612, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862728560677337612, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: SelectResumeButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862728560677337612, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: PauseScreen, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862728560677337612, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7862728560677337612, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 7862728560677337613, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.x
@@ -5388,6 +5437,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7862728560009851782, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
   m_PrefabInstance: {fileID: 1723266187}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1723266191 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7862728560009851800, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
+  m_PrefabInstance: {fileID: 1723266187}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1723266189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789ed963d95d65744ba35f281580b69c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1723618809
 GameObject:
   m_ObjectHideFlags: 0

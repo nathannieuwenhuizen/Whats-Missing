@@ -26,8 +26,6 @@ public class Player : RoomObject
     public static event CutSceneAction OnCutsceneStart;
     public static event CutSceneAction OnCutsceneEnd;
 
-    
-
     [SerializeField]
     private Camera playerCamera;
 
@@ -149,13 +147,10 @@ public class Player : RoomObject
         Movement.EnableRotation = true;
         Movement.EnableWalk = true;
         StartCoroutine(playerCamera.AnimatingFieldOfView(60, AnimationCurve.EaseInOut(0,0,1,1), .5f));
-        Movement.CameraPivot.transform.localPosition = new Vector3(0,Movement.CameraPivot.transform.localPosition.y,0);
+        Movement.CameraPivot.localPosition = new Vector3(0,Movement.CameraPivot.transform.localPosition.y,0);
         Movement.CharacterAnimator.applyRootMotion = false;
         Movement.CharacterAnimator.transform.localPosition = Vector3.zero;
-
     }
-
-
 
     ///<summary>
     /// Enables the movement and sets the camera animation to false.

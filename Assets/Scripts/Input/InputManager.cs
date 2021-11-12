@@ -24,23 +24,24 @@ public class InputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //controller
+        if (Input.GetButtonUp("Fire1 Controller"))  {
+            // OnClickUp?.Invoke();
+            if (MirrorButton.SELECTED_BUTTON != null) MirrorButton.SELECTED_BUTTON.gameObject.GetComponent<Button>().onClick.Invoke();
+        }
+        
         //mouse
         if (Input.GetButtonDown("Fire1")) {
+            Debug.Log("down");
             OnClickDown?.Invoke();
         }
         if (Input.GetButtonUp("Fire1"))  {
+            Debug.Log("up");
             OnClickUp?.Invoke();
         }
 
 
-        //controller
-        if (Input.GetButtonDown("Fire1 Controller")) {
-            OnClickDown?.Invoke();
-        }
-        if (Input.GetButtonUp("Fire1 Controller"))  {
-            OnClickUp?.Invoke();
-            if (MirrorButton.SELECTED_BUTTON != null) MirrorButton.SELECTED_BUTTON.gameObject.GetComponent<Button>().onClick.Invoke();
-        }
+
         
         //movement
         if (Input.GetButtonDown("Jump")) {

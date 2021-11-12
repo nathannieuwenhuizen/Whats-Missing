@@ -16,6 +16,8 @@ public class SceneLoader : MonoBehaviour
     private bool isLoading = false;
     [SerializeField]
     private float animationDuration = 1f;
+    [SerializeField]
+    private float animationDelay = 0f;
 
     private void Awake() {
         group = GetComponent<CanvasGroup>();
@@ -44,7 +46,7 @@ public class SceneLoader : MonoBehaviour
         SceneLoader.ANIMATING = true;
         loadingSlider.gameObject.SetActive(false);
         isLoading = true;
-        yield return StartCoroutine(FadeCanvasGroup(group, 1f, animationDuration));
+        yield return StartCoroutine(FadeCanvasGroup(group, 1f, animationDuration, animationDelay));
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
 
         loadingSlider.gameObject.SetActive(true);
@@ -63,12 +65,11 @@ public class SceneLoader : MonoBehaviour
     {
         Debug.Log("load out!");
         group.alpha = 1;
-        yield return null;
         yield return StartCoroutine(FadeCanvasGroup(group, 0, .5f));
         callback();
     }
     public IEnumerator FadeCanvasGroup(CanvasGroup group, float end, float duration, float delay = 0) {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(delay);
         float index = 0;
         float begin = group.alpha;
          while (index < duration) {

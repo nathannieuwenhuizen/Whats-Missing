@@ -177,6 +177,8 @@ public class MirrorCanvas : MonoBehaviour
     ///</summary>
     public void InitializeLetters(bool huzzleWords, string letters, string preAnswer)
     {
+        letters = letters.Replace(" ", "");
+        preAnswer = preAnswer.Replace(" ", "");
         if (huzzleWords) {
             letters = Extensions.Shuffle(letters);
         }

@@ -79,8 +79,7 @@ public class Hands : MonoBehaviour
     public void Release() {
         if (holdingObject == null) return;
 
-        if (Time.timeScale == 0) {
-        }
+        Debug.Log("released! " + holdingObject.gameObject.name);
         if (velocity.magnitude > maxThrowForce) {
             velocity = velocity.normalized * maxThrowForce;
         }            

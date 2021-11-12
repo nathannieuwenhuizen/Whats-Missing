@@ -159,7 +159,6 @@ public class FPMovement : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         footstepFile = other.gameObject.tag == "Stairs" ? SFXFiles.stairs_footstep : SFXFiles.player_footstep;
 
-        Debug.Log("enter");
         if (inAir && other.gameObject.tag != Tags.Picked) {
             InAir = false;
             AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
@@ -319,7 +318,6 @@ public class FPMovement : MonoBehaviour
         float _distance = 10f;
         for (int i = 0; i < hit.Length; i++)
         {
-            Debug.Log("hit: " + hit[i].transform.name);
             // Debug.Log(hit[i].transform.name + " | "+ hit[i].distance);
             if (hit[i].distance < _distance && hit[i].distance != 0) {
                 _distance = hit[i].distance;
@@ -337,7 +335,6 @@ public class FPMovement : MonoBehaviour
     }
 
     private void OnCollisionExit(Collision other) {
-        Debug.Log("exit: " +  other.gameObject.name);
         if (CheckFloorCollision() == false) {
             InAir = true;
             StartCoroutine(MakeWindNoices());
