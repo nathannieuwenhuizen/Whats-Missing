@@ -20,8 +20,6 @@ public class InputManager : MonoBehaviour
     public static event AxisAction OnMove;
     public static event AxisAction OnRotate;
 
-
-    // Update is called once per frame
     void Update()
     {
         //controller

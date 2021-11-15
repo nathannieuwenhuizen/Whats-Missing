@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Custom.Rendering;
 
 ///<summary>
 /// The texture property of the whole room. When a texture is missing, it gets replaced by the no texture material.
@@ -21,10 +22,13 @@ public class TextureProperty : Property
         materialHolders = new List<MaterialHolders>();
 
         foreach(Renderer mr in room.GetAllObjectsInRoom<Renderer>()) {
+            if (mr.GetComponent<PlanarReflection>() != null || 
+            mr.GetComponent<RectTransform>() != null ||
+            mr.gameObject.name == "lightray"
+            ) continue;
             Material[] materials = mr.sharedMaterials;
             List<Material> temp = new List<Material>(materials);
-            Material newMat = noTextureMaterial;
-            temp.Add(newMat);
+            temp.Add(noTextureMaterial);
             materials = temp.ToArray();
             mr.sharedMaterials = materials;
             mr.UpdateGIMaterials();
@@ -43,10 +47,10 @@ public class TextureProperty : Property
 
     public override void OnMissingFinish()
     {
-        foreach(Renderer mr in room.GetAllObjectsInRoom<Renderer>()) {
+        foreach(MaterialHolders mr in materialHolders) {
             Material newMat = noTextureMaterial;
-            mr.sharedMaterials = new Material[]{newMat};
-            mr.UpdateGIMaterials();
+            mr.renderer.sharedMaterials = new Material[]{newMat};
+            mr.renderer.UpdateGIMaterials();
         }
 
 
@@ -73,13 +77,13 @@ public class TextureProperty : Property
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
-        foreach(Renderer mr in room.GetAllObjectsInRoom<Renderer>()) {
-            Material[] materials = mr.sharedMaterials;
+        foreach(MaterialHolders mr in materialHolders) {
+            Material[] materials = mr.renderer.sharedMaterials;
             List<Material> temp = new List<Material>(materials);
             temp.RemoveAt(temp.Count - 1);
             materials = temp.ToArray();
-            mr.sharedMaterials = materials;
-            mr.UpdateGIMaterials();
+            mr.renderer.sharedMaterials = materials;
+            mr.renderer.UpdateGIMaterials();
 
         }
     }
