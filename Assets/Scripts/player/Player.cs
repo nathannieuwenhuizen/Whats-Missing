@@ -38,7 +38,7 @@ public class Player : RoomObject
     public Camera Camera { get => playerCamera;}
 
     [SerializeField]
-    private SkinnedMeshRenderer meshObject;
+    private SkinnedMeshRenderer[] meshObjects;
 
 
     private FPMovement movement;
@@ -58,7 +58,11 @@ public class Player : RoomObject
     }
 
     protected override Material[] getMaterials() {
-        return meshObject.materials;
+        List<Material> materials = new List<Material>();
+        foreach(SkinnedMeshRenderer mr in meshObjects) {
+            materials.AddRange(mr.materials);
+        }
+        return materials.ToArray();
     }
 
 
@@ -70,9 +74,6 @@ public class Player : RoomObject
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) {
             Die();
-            // PlaycharacterAnimation("standingUp", true);
-            // PlaycharacterAnimation("takingItem");
-
         }
 #endif
     }
@@ -111,13 +112,17 @@ public class Player : RoomObject
     public override void OnMissingFinish()
     {
         //no base call!
-        meshObject.enabled = false;
+        foreach(SkinnedMeshRenderer mr in meshObjects) {
+            mr.enabled = false;
+        }
     }
 
     public override void OnAppearing()
     { 
         //no base call!
-        meshObject.enabled = true;
+        foreach(SkinnedMeshRenderer mr in meshObjects) {
+            mr.enabled = true;
+        }        
         base.OnAppearing();
     }
     private void OnTriggerEnter(Collider other) {

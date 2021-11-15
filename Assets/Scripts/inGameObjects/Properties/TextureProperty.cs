@@ -22,6 +22,7 @@ public class TextureProperty : Property
         materialHolders = new List<MaterialHolders>();
 
         foreach(Renderer mr in room.GetAllObjectsInRoom<Renderer>()) {
+            //filter the mirror textures and the lightray
             if (mr.GetComponent<PlanarReflection>() != null || 
             mr.GetComponent<RectTransform>() != null ||
             mr.gameObject.name == "lightray"
