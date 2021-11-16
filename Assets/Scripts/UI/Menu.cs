@@ -14,7 +14,13 @@ public class Menu : MonoBehaviour
     private GameObject newGameButton;
 
     [SerializeField]
+    private GameObject startButton;
+
+    [SerializeField]
     private Button settingsButton;
+
+    [SerializeField]
+    private GameObject quitButton;
 
     [SerializeField]
     private GameObject newGameWarning;
@@ -33,20 +39,27 @@ public class Menu : MonoBehaviour
         object data = SerializationManager.Load(SerializationManager.filePath + "/" + SaveData.FILE_NAME +".save");
         if (data != null && (data as SaveData).roomIndex != 0) {
             continueButton.SetActive(true);
-            ControllerCheck.SelectUIGameObject(continueButton.transform.GetChild(0).gameObject, () => {
-                EventSystem.current.firstSelectedGameObject =(continueButton.transform.GetChild(0).gameObject);
-                settingsButton.navigation = new Navigation(){ mode = Navigation.Mode.Explicit, selectOnUp = continueButton.transform.GetChild(0).GetComponent<Button>()};
+            newGameButton.SetActive(true);
+            startButton.SetActive(false);
+            ControllerCheck.SelectUIGameObject(continueButton, () => {
+                EventSystem.current.firstSelectedGameObject = continueButton;
+                settingsButton.navigation = new Navigation(){ mode = Navigation.Mode.Explicit, 
+                selectOnUp = newGameButton.GetComponent<Button>(),
+                selectOnDown = quitButton.GetComponent<Button>()
+                };
             });
-            newGameButton.SetActive(false);
         } else {
             //set new game buttons
             continueButton.SetActive(false);
-            newGameButton.SetActive(true);
-            ControllerCheck.SelectUIGameObject(newGameButton, () => {
-                EventSystem.current.firstSelectedGameObject =(newGameButton);
-                settingsButton.navigation = new Navigation(){ mode = Navigation.Mode.Explicit,  selectOnUp = newGameButton.GetComponent<Button>()};
+            newGameButton.SetActive(false);
+            startButton.SetActive(true);
+            ControllerCheck.SelectUIGameObject(startButton, () => {
+                EventSystem.current.firstSelectedGameObject = startButton;
+                settingsButton.navigation = new Navigation(){ mode = Navigation.Mode.Explicit,  
+                selectOnUp = startButton.GetComponent<Button>(),
+                selectOnDown = quitButton.GetComponent<Button>()
+                };
             });
-
 
         }
     }

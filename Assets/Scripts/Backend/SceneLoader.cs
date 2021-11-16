@@ -61,6 +61,17 @@ public class SceneLoader : MonoBehaviour
         isLoading = false;
     }
 
+    public void Quit() {
+        #if UNITY_EDITOR
+         UnityEditor.EditorApplication.isPlaying = false;
+         #elif UNITY_WEBPLAYER
+        string webplayerQuitURL = "http://google.com";
+        Application.OpenURL(webplayerQuitURL);
+         #else
+         Application.Quit();
+         #endif
+    }
+
     private IEnumerator LoadOut(Action callback)
     {
         Debug.Log("load out!");

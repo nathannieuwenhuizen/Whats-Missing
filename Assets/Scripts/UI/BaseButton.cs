@@ -8,31 +8,61 @@ using UnityEngine.UI;
 /// A button that plays a sound on click,hover and unhover.
 ///</summary>
 [RequireComponent(typeof(Button))]
-public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler
+[RequireComponent(typeof(Image))]
+public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler, IPointerDownHandler, IPointerUpHandler
 {
 
+    [SerializeField]
+    private Sprite selectedSprite;
+    [SerializeField]
+    private Sprite clickedSprite;
+    private Sprite idleSprite;
+
     private Button button;
+    private Image image;
     private void Awake() {
+        image = GetComponent<Image>();
+        idleSprite = image.sprite;
+
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
     }
 
     private void OnClick() {
+        // image.sprite = clickedSprite;
         AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_click);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        image.sprite = selectedSprite;
         AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        image.sprite = idleSprite;
         // AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_unhover);
     }
 
     public void OnSelect(BaseEventData eventData)
     {
+        image.sprite = selectedSprite;
         AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover);
+    }
+
+    public void OnDeselect(BaseEventData eventData)
+    {
+        image.sprite = idleSprite;
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        image.sprite = clickedSprite;
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        image.sprite = selectedSprite;
     }
 }
