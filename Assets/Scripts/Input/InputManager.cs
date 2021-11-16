@@ -30,11 +30,9 @@ public class InputManager : MonoBehaviour
         
         //mouse
         if (Input.GetButtonDown("Fire1")) {
-            Debug.Log("down");
             OnClickDown?.Invoke();
         }
         if (Input.GetButtonUp("Fire1"))  {
-            Debug.Log("up");
             OnClickUp?.Invoke();
         }
 

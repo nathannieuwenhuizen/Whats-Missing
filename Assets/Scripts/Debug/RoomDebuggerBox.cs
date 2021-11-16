@@ -89,6 +89,7 @@ public class RoomDebuggerBox
 
         if (GUI.Button(new Rect(pos.x + size.x + horizontalOffset, 60, size.x * .4f, 30), "ADD"))
         {
+            currentRoom.Animated = true;
             tv.changeType = (ChangeType)selectedChangeType;
             // tv.changeType = Enum.Parse(typeof(ChangeType), changeTypes[selectedChangeType]);// ChangeType.missing;
             Change newChange = new Change() { word = word, mirror = tv, active = true};
@@ -97,6 +98,7 @@ public class RoomDebuggerBox
         }        
         if (GUI.Button(new Rect(pos.x + size.x + horizontalOffset + size.x * .6f, 60, size.x * .4f, 30), "REMOVE"))
         {
+            currentRoom.Animated = true;
             Change removedChange = currentRoom.ChangeHandler.Changes.Find(x => x.word == word);
             currentRoom.RemoveChangeInRoomObjects(removedChange);
             currentRoom.ChangeHandler.Changes.Remove(removedChange);

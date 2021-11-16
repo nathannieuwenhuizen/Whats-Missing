@@ -73,7 +73,7 @@ public class MirrorCanvas : MonoBehaviour
             case ChangeType.missing:
                 header = "missing";
                 break;
-            case ChangeType.reverse:
+            case ChangeType.flipped:
                 header = "flipped";
                 break;
             case ChangeType.tooBig:

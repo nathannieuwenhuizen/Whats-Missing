@@ -103,6 +103,36 @@ public interface IEnlargable {
     void OnEnlargeRevertFinish();
 }
 
+///<summary>
+/// An entity that can be flipped.
+///</summary>
+public interface IFlippable {
+    ///<summary>
+    /// Fires when the object starts flipping. Here it calls the animation if the object is set to animate.
+    ///</summary>
+    void OnFlipped();
+    ///<summary>
+    /// The animation of the object when it flips.
+    ///</summary>
+    IEnumerator AnimateFlipping();
+    ///<summary>
+    /// Fired when the animation has finished. Or immediately when the animation is set to false. Here the changes are actually set.
+    ///</summary>
+    void OnFlippingFinish();
+    ///<summary>
+    /// Fires when the object starts becomming normal from being flipped. Here it calls the animation if the object is set to animate.
+    ///</summary>
+    void OnFlippingRevert();
+    ///<summary>
+    /// The animation of the object when it goes back to normal from being flipped.
+    ///</summary>
+    IEnumerator AnimateFlippingRevert();
+    ///<summary>
+    /// Fired when the animation has finished. Or immediately when the animation is set to false. Here the changes are actually rmeoved.
+    ///</summary>
+    void OnFlippingRevertFinish();
+}
+
 
 ///<summary>
 /// Interface for an object inside a room
@@ -119,7 +149,7 @@ public interface IRoomObject {
 ///<summary>
 /// The entity can actually change.
 ///</summary>
-public interface IChangable : IMissable, IShrinkable
+public interface IChangable : IMissable, IShrinkable, IEnlargable, IFlippable
 {
     ///<summary>
     /// The word the mirror searches for when the player checks the answer or sets a change.

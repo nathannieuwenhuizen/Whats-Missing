@@ -10,5 +10,5 @@ public enum ChangeType
     missing,
     tooBig,
     tooSmall,
-    reverse
+    flipped
 }

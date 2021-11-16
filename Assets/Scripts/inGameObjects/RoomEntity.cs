@@ -42,6 +42,12 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
             case ChangeType.tooSmall:
                 OnShrinking();
                 break;
+            case ChangeType.tooBig:
+                OnEnlarge();
+                break;
+            case ChangeType.flipped:
+                OnFlipped();
+                break;
         }    
     }
     public void RemoveChange(Change change) {
@@ -52,6 +58,13 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
             case ChangeType.tooSmall:
                 OnShrinkRevert();
                 break;
+            case ChangeType.tooBig:
+                OnEnlargeRevert();
+                break;
+            case ChangeType.flipped:
+                OnFlippingRevert();
+                break;
+
         }
     }
 
@@ -146,11 +159,8 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnShrinkRevert()
     {
-        if (Animated) {
-            StartCoroutine(AnimateShrinkRevert());
-        } else {
-            OnShrinkingRevertFinish();
-        }
+        if (Animated) StartCoroutine(AnimateShrinkRevert());
+        else OnShrinkingRevertFinish();
     }
 
     public virtual IEnumerator AnimateShrinkRevert()
@@ -160,5 +170,64 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     }
 
     public virtual void OnShrinkingRevertFinish(){}
+
+    public virtual void OnEnlarge()
+    {
+        if (Animated)StartCoroutine(AnimateEnlarging());
+        else OnEnlargingFinish();
+    }
+
+    public virtual IEnumerator AnimateEnlarging()
+    {
+        yield return null;
+        OnEnlargingFinish();
+    }
+
+    public virtual void OnEnlargingFinish(){}
+
+    public virtual void OnEnlargeRevert()
+    {
+        if (Animated)StartCoroutine(AnimateEnlargeRevert());
+        else OnEnlargeRevertFinish();
+    }
+
+    public virtual IEnumerator AnimateEnlargeRevert()
+    {
+        yield return null;
+        OnEnlargeRevertFinish();
+    }
+
+    public virtual void OnEnlargeRevertFinish(){}
+
+    #endregion
+
+    #region flipped
+    public virtual void OnFlipped()
+    {
+        if (Animated)StartCoroutine(AnimateFlipping());
+        else OnFlippingFinish();
+    }
+
+    public virtual IEnumerator AnimateFlipping()
+    {
+        yield return null;
+        OnFlippingFinish();
+    }
+
+    public virtual void OnFlippingFinish(){}
+
+    public virtual void OnFlippingRevert()
+    {
+        if (Animated)StartCoroutine(AnimateFlippingRevert());
+        else OnFlippingRevertFinish();
+    }
+
+    public virtual IEnumerator AnimateFlippingRevert()
+    {
+        yield return null;
+        OnFlippingRevertFinish();
+    }
+
+    public virtual void OnFlippingRevertFinish(){}
     #endregion
 }

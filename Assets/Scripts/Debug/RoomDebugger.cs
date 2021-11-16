@@ -13,6 +13,8 @@ public class RoomDebugger : MonoBehaviour
     private RoomDebuggerBox debuggerBox = new RoomDebuggerBox();
     [SerializeField]
     private Area area;
+    [SerializeField]
+    private Room room;
 
     [SerializeField]
     private bool visible = true;
@@ -41,7 +43,7 @@ public class RoomDebugger : MonoBehaviour
         }
     }
     private void OnGUI() {
-        if (visible) debuggerBox.Draw(area.CurrentRoom, mirror);
+        if (visible) debuggerBox.Draw(area.gameObject.activeSelf ? area.CurrentRoom : room, mirror);
     }
     private void OnDisable() {
         visible = true;
