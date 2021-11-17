@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class Menu : MonoBehaviour
 {
 
+    private AnimatedPopup popup;
+
     [SerializeField]
     private GameObject continueButton;
 
@@ -23,7 +25,7 @@ public class Menu : MonoBehaviour
     private GameObject quitButton;
 
     [SerializeField]
-    private GameObject newGameWarning;
+    private AnimatedPopup newGameWarning;
     [SerializeField]
     private GameObject newGameWarningNoButton;
 
@@ -33,6 +35,13 @@ public class Menu : MonoBehaviour
     private void Start() {
         SetupPlayButtons();
         AudioHandler.Instance.PlayMusic(MusicFiles.menu, .3f);
+
+        popup = GetComponent<AnimatedPopup>();
+        StartCoroutine(DelayMenuShow());
+    }
+    private IEnumerator DelayMenuShow() {
+        yield return new WaitForSeconds(.3f);
+        popup.ShowAnimation(true);
     }
 
     private void SetupPlayButtons() {
@@ -65,7 +74,8 @@ public class Menu : MonoBehaviour
     }
 
     public void OpenNewGameWarning() {
-        newGameWarning.SetActive(true);
+        newGameWarning.gameObject.SetActive(true);
+        newGameWarning.ShowAnimation(true);
         ControllerCheck.SelectUIGameObject(newGameWarningNoButton);
     }
     public void BackToMenu() {

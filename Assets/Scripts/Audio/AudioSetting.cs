@@ -47,11 +47,11 @@ using UnityEngine.UI;
         // gameObject.SetActive(false);
         SFXSlider.minValue = 0;
         SFXSlider.maxValue = steps;
-        SFXSlider.wholeNumbers = true;
+        // SFXSlider.wholeNumbers = true;
         SFXSlider.onValueChanged.AddListener(SetSFX);
         musicSlider.minValue = 0;
         musicSlider.maxValue = steps;
-        musicSlider.wholeNumbers = true;
+        // musicSlider.wholeNumbers = true;
 
         musicSlider.onValueChanged.AddListener(SetMusic);
     }

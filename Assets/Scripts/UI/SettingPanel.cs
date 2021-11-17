@@ -7,7 +7,7 @@ using UnityEngine.UI;
 ///<summary>
 /// Handles the front end part of the settings panel. It does calls the settings to be saved in the settings struct
 ///</summary>
-public class SettingPanel : MonoBehaviour
+public class SettingPanel : AnimatedPopup
 {
     private Settings settings;
     public delegate void SettingsAction(Settings settings);
@@ -59,7 +59,12 @@ public class SettingPanel : MonoBehaviour
     }
 
     public void Open() {
+        ShowAnimation(true);
         ControllerCheck.SelectUIGameObject(cameraSensitivitySlider.gameObject);
+    }
+    public void Close() {
+        Save();
+        ShowAnimation(false);
     }
 
 }

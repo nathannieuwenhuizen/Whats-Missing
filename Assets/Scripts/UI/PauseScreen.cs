@@ -16,6 +16,9 @@ public class PauseScreen : MonoBehaviour
     private CanvasGroup group;
     [SerializeField]
     private GameObject resumeButton;
+    [SerializeField]
+    private AnimatedPopup subPausePanel;
+
 
     private bool paused = false;
     private bool canPause = true;
@@ -37,10 +40,9 @@ public class PauseScreen : MonoBehaviour
 
         SetGroupVisibility(true);
         animator.SetBool("show", true);
+        subPausePanel.ShowAnimation(true);
         SelectResumeButton();
         AudioHandler.Instance.PlayUISound(SFXFiles.pause_show);
-
-        // Time.timeScale = 0;
         StartCoroutine(AnimateTimeScale(0));
 
         OnPause?.Invoke();
@@ -88,12 +90,13 @@ public class PauseScreen : MonoBehaviour
 
         AudioHandler.Instance.FadeListener(1f);
         animator.SetBool("show", false);
+        subPausePanel.ShowAnimation(false);
+
         AudioHandler.Instance.PlayUISound(SFXFiles.pause_hide);
         EventSystem.current.SetSelectedGameObject(null);
 
         SetGroupVisibility(false);
         StartCoroutine(AnimateTimeScale(1));
-        // Time.timeScale = 1;
         OnResume?.Invoke();
     }
     ///<summary>

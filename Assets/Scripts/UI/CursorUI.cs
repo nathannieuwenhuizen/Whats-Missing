@@ -18,11 +18,15 @@ public class CursorUI : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(group.FadeCanvasGroup(1, 1f, 0));
     }
-        private void OnEnable() {
+    private void OnEnable() {
+        PauseScreen.OnPause += HideCursorUI;
+        PauseScreen.OnResume += ShowCursorUI;
         Player.OnCutsceneStart += HideCursorUI;
         Player.OnCutsceneEnd += ShowCursorUI;
     }
     private void OnDisable() {
+        PauseScreen.OnPause -= HideCursorUI;
+        PauseScreen.OnResume -= ShowCursorUI;
         Player.OnCutsceneStart -= HideCursorUI;
         Player.OnCutsceneEnd -= ShowCursorUI;
     }

@@ -51,6 +51,7 @@ public class SceneLoader : MonoBehaviour
         loadingImage.gameObject.SetActive(false);
         isLoading = true;
         yield return StartCoroutine(FadeCanvasGroup(group, 1f, animationDuration, animationDelay));
+        yield return new WaitForEndOfFrame();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
 
         // loadingSlider.gameObject.SetActive(true);
