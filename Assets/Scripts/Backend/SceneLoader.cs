@@ -13,6 +13,9 @@ public class SceneLoader : MonoBehaviour
     [SerializeField]
     private Slider loadingSlider;
 
+    [SerializeField]
+    private Image loadingImage;
+
     private bool isLoading = false;
     [SerializeField]
     private float animationDuration = 1f;
@@ -45,16 +48,18 @@ public class SceneLoader : MonoBehaviour
         Debug.Log("load scene async");
         SceneLoader.ANIMATING = true;
         loadingSlider.gameObject.SetActive(false);
+        loadingImage.gameObject.SetActive(false);
         isLoading = true;
         yield return StartCoroutine(FadeCanvasGroup(group, 1f, animationDuration, animationDelay));
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
 
-        loadingSlider.gameObject.SetActive(true);
+        // loadingSlider.gameObject.SetActive(true);
+        loadingImage.gameObject.SetActive(true);
         loadingSlider.value = 0;
         while (!asyncLoad.isDone)
         {
             yield return new WaitForSeconds(.2f);
-            loadingSlider.value = asyncLoad.progress;
+            // loadingSlider.value = asyncLoad.progress;
             yield return new WaitForSeconds(.2f);
             yield return null;
         }

@@ -2,20 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class TutorialIndicator : Singleton<AudioHandler>
 {
 
     [SerializeField]
-    private CanvasGroup mouseUI;
+    private GameObject mouseUI;
     [SerializeField]
-    private CanvasGroup keyboardUI;
+    private GameObject keyboardUI;
     [SerializeField]
-    private CanvasGroup spacebarUI;
+    private GameObject spacebarUI;
+
+    [SerializeField]
+    private Animator animator;
     private bool mirrorComplete = false;
     private bool moved = false;
     private bool hasJumped = false;
 
     private Coroutine fadeCoroutine;
+
+    [SerializeField]
+    private RectTransform mask;
+    [SerializeField]
+    private RectTransform maskChild;
 
 
     private void OnEnable() {
@@ -60,29 +69,45 @@ public class TutorialIndicator : Singleton<AudioHandler>
         InputManager.OnJump += EnableJump;
         StartCoroutine(WaitForJump());
     }
+
+    private void Update() {
+        maskChild.transform.localScale = new Vector3(1,1 / mask.transform.localScale.y,1);
+    }
     
     public IEnumerator WaitForMove() {
         // moved = false;
         yield return new WaitForSeconds(7);
         if (!moved) {
-            fadeCoroutine = StartCoroutine(keyboardUI.FadeCanvasGroup(1f, 1f));
+            ShowTutorial(keyboardUI);
             while (!moved) {
                 yield return new WaitForEndOfFrame();
             }
-            StopAllCoroutines();
-            fadeCoroutine = StartCoroutine(keyboardUI.FadeCanvasGroup(0f, 1f));
+            HideTutorial();
         }
+    }
+
+    private void ShowTutorial(GameObject gameObject) {
+        animator.SetBool("Show", true);
+
+        mouseUI.SetActive(false);
+        spacebarUI.SetActive(false);
+        keyboardUI.SetActive(false);
+
+        gameObject.SetActive(true);
+    }
+
+    private void HideTutorial() {
+        animator.SetBool("Show", false);
     }
 
     public IEnumerator WaitingForMirrorComplete() {
         yield return new WaitForSeconds(3);
         if (!mirrorComplete) {
-            fadeCoroutine = StartCoroutine(mouseUI.FadeCanvasGroup(1f, 1f));
+            ShowTutorial(mouseUI);
             while (!mirrorComplete) {
                 yield return new WaitForEndOfFrame();
             }
-            StopAllCoroutines();
-            fadeCoroutine = StartCoroutine(mouseUI.FadeCanvasGroup(0f, 1f));
+            HideTutorial();
         }
     }
 
@@ -90,12 +115,11 @@ public class TutorialIndicator : Singleton<AudioHandler>
         // hasJumped = false;
         yield return new WaitForSeconds(5);
         if (!hasJumped) {
-            fadeCoroutine = StartCoroutine(spacebarUI.FadeCanvasGroup(1f, 1f));
+            ShowTutorial(spacebarUI);
             while (!hasJumped) {
                 yield return new WaitForEndOfFrame();
             }
-            StopAllCoroutines();
-            fadeCoroutine = StartCoroutine(spacebarUI.FadeCanvasGroup(0f, 1f));
+            HideTutorial();
         }
     }
 }
