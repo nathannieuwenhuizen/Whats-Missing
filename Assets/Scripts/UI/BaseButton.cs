@@ -36,7 +36,7 @@ public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
         image.sprite = selectedSprite;
-        AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover);
+        AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover, .2f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -48,7 +48,7 @@ public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnSelect(BaseEventData eventData)
     {
         image.sprite = selectedSprite;
-        AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover);
+        AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover, .2f);
     }
 
     public void OnDeselect(BaseEventData eventData)
