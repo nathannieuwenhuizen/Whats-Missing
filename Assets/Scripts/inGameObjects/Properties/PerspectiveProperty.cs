@@ -9,6 +9,10 @@ public class PerspectiveProperty : Property
 
     private Camera m_camera;
 
+    public static OnPropertyToggle onPerspectiveMissing;
+    public static OnPropertyToggle onPerspectiveAppearing;
+
+
 
     private Matrix4x4 ortho, perspective;
     private float fov = 60f,
@@ -34,6 +38,7 @@ public class PerspectiveProperty : Property
     {
         m_camera.orthographic = true;
         StopAllCoroutines();
+        onPerspectiveMissing?.Invoke();
         base.OnMissing();
     }
     public override IEnumerator AnimateMissing()
@@ -68,23 +73,13 @@ public class PerspectiveProperty : Property
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
+        onPerspectiveAppearing?.Invoke();
         m_camera.orthographic = false;
         m_camera.projectionMatrix = perspective;
         m_camera.nearClipPlane = near;
     }
     #endregion
 
-    // void Update() {
-    //     if (Input.GetKeyDown(KeyCode.L)) {
-    //         if (room.Player != null) {
-    //             orthoOn = !orthoOn;
-    //             if (orthoOn)
-    //                 OnMissing();
-    //             else
-    //                 OnAppearing();
-    //         }
-    //     }
-    // }
 
     public static Matrix4x4 MatrixLerp(Matrix4x4 from, Matrix4x4 to, float time) {
         Matrix4x4 ret = new Matrix4x4();

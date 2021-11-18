@@ -15,7 +15,7 @@ public class Portal : MonoBehaviour
     private Player player;
     private static readonly Quaternion halfTurn = Quaternion.Euler(0.0f, 0.0f, 180.0f);
 
-    private float positionOffset  = .2f;
+    private float positionOffset  = 0f;
 
     public Portal connectedPortal;
     

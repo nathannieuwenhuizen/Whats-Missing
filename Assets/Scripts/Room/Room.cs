@@ -322,7 +322,6 @@ public class Room : MonoBehaviour
     /// Fires whem the player leaves the room.
     ///</summary>
     public void OnRoomLeave() {
-        AllObjects.Remove(Player);
         Player = null;
 
         foreach (IRoomObject item in GetAllObjectsInRoom<IRoomObject>())
@@ -332,6 +331,7 @@ public class Room : MonoBehaviour
 
         Animated = false;
         changeHandler.DeactivateChanges();
+        AllObjects.Remove(Player);
     }
 
     ///<summary>

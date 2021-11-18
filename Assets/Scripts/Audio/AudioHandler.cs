@@ -227,13 +227,20 @@ public class AudioHandler : Singleton<AudioHandler>
     ///</summary>
     public void FadeMusic(MusicFiles newMusic, float duration, bool waitForOtherMusictoFadeOut = false)
     {
-        StopAllCoroutines();
+        // StopAllCoroutines();
+        // if (musicIsFading && tempSource != null) {
+        //     Destroy(MusicSource);
+        //     MusicSource = tempSource;
+        //     MusicVolume = 1f;
+        // }
         StartCoroutine(FadingMusic(newMusic, duration, waitForOtherMusictoFadeOut));
     }
+    private AudioSource tempSource;
     private IEnumerator FadingMusic(MusicFiles music, float totalDuration, bool waitForOtherMusictoFadeOut = false)
     {
         musicIsFading = true;
-        float volume = MusicSource.volume * AudioSetting.MUSIC;
+        //TODO: Reson for the 1 is because of a bug that when you call this function fast, the volume gets to be really low in the end.
+        float volume = 1 * AudioSetting.MUSIC;// MusicSource.volume * AudioSetting.MUSIC;
         AudioSource tempSource = default(AudioSource);
         if (waitForOtherMusictoFadeOut) yield return StartCoroutine(FadeVolume(MusicSource, MusicSource.volume, 0, totalDuration / 2f));
         else {
@@ -245,6 +252,7 @@ public class AudioHandler : Singleton<AudioHandler>
         if (selectedMusic != null)
         {
             if (!waitForOtherMusictoFadeOut) {
+                Debug.Log("create other");
                 tempSource = gameObject.AddComponent<AudioSource>();
                 tempSource.loop = true;
                 tempSource.clip = selectedMusic.Clip;

@@ -83,9 +83,13 @@ public class Player : RoomObject
     }
 
     private void OnEnable() {
+        PerspectiveProperty.onPerspectiveAppearing += HideHead;
+        PerspectiveProperty.onPerspectiveMissing += ShowHead;
         SettingPanel.OnSave += ApplyCameraSettings;
     }
     private void OnDisable() {
+        PerspectiveProperty.onPerspectiveAppearing -= HideHead;
+        PerspectiveProperty.onPerspectiveMissing -= ShowHead;
         SettingPanel.OnSave -= ApplyCameraSettings;
     }
 
@@ -111,6 +115,12 @@ public class Player : RoomObject
         Movement.CharacterAnimator.SetTrigger(trigger);
         Movement.CharacterAnimator.applyRootMotion = applyRoonAnimation;
 
+    }
+    public void ShowHead() {
+        meshObjects[1].gameObject.layer = 0;
+    }
+    public void HideHead() {
+        meshObjects[1].gameObject.layer = 7;
     }
 
     public override void OnMissingFinish()

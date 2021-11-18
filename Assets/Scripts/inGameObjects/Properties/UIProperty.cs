@@ -42,12 +42,16 @@ public class UIProperty : Property
         Cursor.SetCursor(mouseEmptyTexture, new Vector2(0,0), CursorMode.ForceSoftware);
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
             uiGroup.alpha = 0;
+            uiGroup.gameObject.SetActive(false);
         }
         base.OnMissingFinish();
     }
 
     public override void OnAppearing()
     {
+        foreach(CanvasGroup uiGroup in ingameCanvasElements) {
+            uiGroup.gameObject.SetActive(true);
+        }
         Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
         base.OnAppearing();
     }

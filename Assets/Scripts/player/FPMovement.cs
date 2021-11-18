@@ -79,7 +79,7 @@ public class FPMovement : MonoBehaviour
         get { return inAir;}
         set { 
             inAir = value; 
-            characterAnimator.SetBool("inAir", inAir);
+            characterAnimator.SetBool("inAir", inAir || inCeiling);
         }
     }
 
@@ -146,7 +146,7 @@ public class FPMovement : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         windParticles.Stop();
-        if (playerExist) AudioHandler.Instance.StopSound(SFXFiles.wind_fall);
+        AudioHandler.Instance.StopSound(SFXFiles.wind_fall);
     }
 
     protected void DisableMovment() {
@@ -161,15 +161,13 @@ public class FPMovement : MonoBehaviour
     private void OnCollisionEnter(Collision other) {
         footstepFile = other.gameObject.tag == "Stairs" ? SFXFiles.stairs_footstep : SFXFiles.player_footstep;
 
+        if (other.contacts[0].thisCollider == topCollider) inCeiling = true;
+        else inCeiling = false;
+        
         if (inAir && other.gameObject.tag != Tags.Picked) {
             InAir = false;
             if (playerExist) AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
             oldPos = transform.position;
-        }
-        if (other.contacts[0].thisCollider == topCollider) {
-            inCeiling = true;
-        } else {
-            inCeiling = false;
         }
     }
 
@@ -271,15 +269,17 @@ public class FPMovement : MonoBehaviour
     ///Checks on when to make footstep sounds and tilt the camera
     ///</summary>
     private void UpdateWalking() {
-        if (inAir || !playerExist) return;
+        if (inAir) return;
         Vector3 delta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
 
-        UpdateCameraTilt(delta);
+        if (playerExist)  UpdateCameraTilt(delta);
 
         if (delta.magnitude > walkStepDistance){
             oldPos = transform.position;
-            AudioHandler.Instance?.PlaySound(footstepFile, footstepFile == SFXFiles.player_footstep ? .05f : 1f);
-            AudioHandler.Instance?.Player3DSound(footstepFile, transform, footstepFile == SFXFiles.player_footstep ? .05f : 1f, 1, false, true, 50);
+            if (playerExist) {
+                AudioHandler.Instance?.PlaySound(footstepFile, footstepFile == SFXFiles.player_footstep ? .05f : 1f);
+                AudioHandler.Instance?.Player3DSound(footstepFile, transform, footstepFile == SFXFiles.player_footstep ? .05f : 1f, 1, false, true, 50);
+            }
         }
     }
 
@@ -319,7 +319,7 @@ public class FPMovement : MonoBehaviour
         float offset = .1f;
 
         //TODO: add a collider mask so that it can only collide with the floor.
-        hit = Physics.SphereCastAll(transform.position - new Vector3(0, -offset -radius), radius, Vector3.down, 1f);
+        hit = Physics.SphereCastAll(transform.position - new Vector3(0, -offset -radius * .1f), radius * .1f, Vector3.down, 1f);
         RaycastHit closest = default(RaycastHit);
         float _distance = 10f;
         for (int i = 0; i < hit.Length; i++)

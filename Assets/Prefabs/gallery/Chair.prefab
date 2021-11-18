@@ -1,5 +1,33 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!64 &7631357894092051362
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918285845821129083}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -1765693164993016013, guid: a31598ad4ca0ec64fbb50adc1c67ae81, type: 3}
+--- !u!64 &458718006094421191
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4813917559445714180}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 766496397665100735, guid: a31598ad4ca0ec64fbb50adc1c67ae81, type: 3}
 --- !u!1 &5548861434174184534
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,11 +37,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3563135595151776410}
-  - component: {fileID: 6378469938232661087}
   - component: {fileID: 7611861176084157079}
   - component: {fileID: 9053609635709682999}
   - component: {fileID: 1065836226936435945}
-  - component: {fileID: 7550062025349703832}
   - component: {fileID: 1761898250491394418}
   m_Layer: 0
   m_Name: Chair
@@ -37,19 +63,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6378469938232661087
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5548861434174184534}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.5783625, z: 1.4886998}
-  m_Center: {x: 0, y: 0.78556776, z: -0.068378866}
 --- !u!82 &7611861176084157079
 AudioSource:
   m_ObjectHideFlags: 0
@@ -161,15 +174,6 @@ MonoBehaviour:
   word: chair
   alternateWords: []
   missingChangeEffect: 1
-  gameObjectID: 0
-  rigidBodyInfo:
-    Drag: 0
-    AngularDrag: 0.05
-    Mass: 1
-    RigidbodyConstraints: 0
-    Holdvelocity: {x: 0, y: 0, z: 0}
-    UseGravity: 1
-    tag: 
 --- !u!95 &1065836226936435945
 Animator:
   serializedVersion: 3
@@ -189,19 +193,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!65 &7550062025349703832
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5548861434174184534}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 2.7218857, z: 0.38502014}
-  m_Center: {x: 0, y: 1.8971205, z: -0.83797747}
 --- !u!54 &1761898250491394418
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -218,6 +209,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &2696117810351077282
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8088048170717773482}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4054302602815198755, guid: a31598ad4ca0ec64fbb50adc1c67ae81, type: 3}
 --- !u!1001 &6082743331109843019
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -285,10 +290,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -87.524
       objectReference: {fileID: 0}
+    - target: {fileID: 7271104178399920534, guid: 4ddafb47ee55ab14587bda44a84a654a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9163129031365847871, guid: 4ddafb47ee55ab14587bda44a84a654a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4ddafb47ee55ab14587bda44a84a654a, type: 3}
 --- !u!4 &6940687395146147711 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3762890243592296244, guid: 4ddafb47ee55ab14587bda44a84a654a, type: 3}
+  m_PrefabInstance: {fileID: 6082743331109843019}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8088048170717773482 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2617921936642854625, guid: 4ddafb47ee55ab14587bda44a84a654a, type: 3}
+  m_PrefabInstance: {fileID: 6082743331109843019}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4813917559445714180 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1631506305202734415, guid: 4ddafb47ee55ab14587bda44a84a654a, type: 3}
+  m_PrefabInstance: {fileID: 6082743331109843019}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3918285845821129083 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7064655655494332720, guid: 4ddafb47ee55ab14587bda44a84a654a, type: 3}
   m_PrefabInstance: {fileID: 6082743331109843019}
   m_PrefabAsset: {fileID: 0}

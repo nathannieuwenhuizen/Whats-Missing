@@ -21,7 +21,7 @@ public class Painting : InteractabelObject
 
     private void Reset() {
         Word = "painting";
-        AlternativeWords = new string[] {"portret", "illustration", "paintings", "drawing", "illustrations"};
+        AlternativeWords = new string[] {"portrait", "illustration", "paintings", "drawing", "illustrations"};
     }
 
     protected void Awake() {
