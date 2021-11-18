@@ -116,11 +116,16 @@ public class Player : RoomObject
         Movement.CharacterAnimator.applyRootMotion = applyRoonAnimation;
 
     }
+
+    private int headLayer;
     public void ShowHead() {
+        headLayer = meshObjects[1].gameObject.layer;
+        Debug.Log("layer = " + headLayer);
         meshObjects[1].gameObject.layer = 0;
     }
     public void HideHead() {
-        meshObjects[1].gameObject.layer = 7;
+        Debug.Log("back to head invisible");
+        meshObjects[1].gameObject.layer = headLayer;
     }
 
     public override void OnMissingFinish()

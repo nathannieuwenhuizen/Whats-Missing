@@ -62,6 +62,8 @@ public class PerspectiveProperty : Property
     
     public override void OnAppearing() {
         StopAllCoroutines();
+        Debug.Log("on appear finish");
+        onPerspectiveAppearing?.Invoke();
         base.OnAppearing();
     }
     public override IEnumerator AnimateAppearing()
@@ -73,6 +75,7 @@ public class PerspectiveProperty : Property
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
+        Debug.Log("on appear finish");
         onPerspectiveAppearing?.Invoke();
         m_camera.orthographic = false;
         m_camera.projectionMatrix = perspective;
