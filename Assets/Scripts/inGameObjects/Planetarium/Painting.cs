@@ -26,11 +26,15 @@ public class Painting : InteractabelObject
 
     protected void Awake() {
         animator = GetComponent<Animator>();
-        // SetPortalsActive(false);
+        SetPortalsActive(false);
     }
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
+    }
+    public override void OnRoomLeave()
+    {
+        base.OnRoomLeave();
         SetPortalsActive(false);
     }
 

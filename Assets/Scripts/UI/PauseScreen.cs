@@ -54,7 +54,7 @@ public class PauseScreen : MonoBehaviour
 
     private void Start()
     {
-        SetGroupVisibility(false);
+        // SetGroupVisibility(false);
     }
 
     ///<summary>

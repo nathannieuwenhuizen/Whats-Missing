@@ -28,11 +28,14 @@ public class SceneLoader : MonoBehaviour
             SceneLoader.ANIMATING = false;
             StartCoroutine(LoadOut(() => {
             }));
+        } else {
+            AudioListener.volume = 1;
         }
     }
 
-    public void LoadNewScene(string sceneName, bool showTransition) {
+    private void LoadNewScene(string sceneName, bool showTransition) {
         if(showTransition) {
+            AudioHandler.Instance.FadeListener(0);
             if (isLoading) return;
             StartCoroutine(LoadingSceneAsync(sceneName));
         } else {
@@ -77,11 +80,25 @@ public class SceneLoader : MonoBehaviour
          Application.Quit();
          #endif
     }
+    public static void QuitGame() {
+        #if UNITY_EDITOR
+         UnityEditor.EditorApplication.isPlaying = false;
+         #elif UNITY_WEBPLAYER
+        string webplayerQuitURL = "http://google.com";
+        Application.OpenURL(webplayerQuitURL);
+         #else
+         Application.Quit();
+         #endif
+    }
 
     private IEnumerator LoadOut(Action callback)
     {
-        Debug.Log("load out!");
         group.alpha = 1;
+        AudioListener.volume = 0;
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSeconds(.3f);
+        Debug.Log("load out!");
+        AudioHandler.Instance.FadeListener(1);
         yield return StartCoroutine(FadeCanvasGroup(group, 0, .5f));
         callback();
     }

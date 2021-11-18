@@ -9,7 +9,7 @@ public class QualitySetting: MonoBehaviour {
     [SerializeField]
     private TMP_Dropdown qualityDropDown;
 
-    private void Start() {
+    private void Awake() {
         List < OptionData > list = new List < OptionData > ();
         foreach(string name in QualitySettings.names) {
             list.Add(new OptionData(name));

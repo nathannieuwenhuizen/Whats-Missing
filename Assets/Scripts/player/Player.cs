@@ -22,6 +22,10 @@ public class Player : RoomObject
         get { return handsPosition;}
     }
 
+    public delegate void Playerevent();
+    public static event Playerevent OnPlayerMissing;
+    public static event Playerevent OnPlayerAppear;
+
     public delegate void CutSceneAction();
     public static event CutSceneAction OnCutsceneStart;
     public static event CutSceneAction OnCutsceneEnd;
@@ -112,6 +116,7 @@ public class Player : RoomObject
     public override void OnMissingFinish()
     {
         //no base call!
+        OnPlayerMissing?.Invoke();
         foreach(SkinnedMeshRenderer mr in meshObjects) {
             mr.enabled = false;
         }
@@ -119,6 +124,7 @@ public class Player : RoomObject
 
     public override void OnAppearing()
     { 
+        OnPlayerAppear?.Invoke();
         //no base call!
         foreach(SkinnedMeshRenderer mr in meshObjects) {
             mr.enabled = true;

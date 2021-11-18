@@ -33,12 +33,12 @@ public class World : Property
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.F)) {
-            Animated = true;
-            flipped = !flipped;
-            if (flipped) OnFlipped();
-            else OnFlippingRevert();
-        }
+        // if (Input.GetKeyDown(KeyCode.F)) {
+        //     Animated = true;
+        //     flipped = !flipped;
+        //     if (flipped) OnFlipped();
+        //     else OnFlippingRevert();
+        // }
     }
 
     private void SetupRotation() {

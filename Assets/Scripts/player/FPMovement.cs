@@ -11,6 +11,8 @@ public class FPMovement : MonoBehaviour
 {
     private Vector2 lerpedVelocity;
 
+    private bool playerExist = true;
+
     //camera movement offset values
     private float cameraYOffset = 0.03f;
     private float cameraStartYPos;
@@ -144,7 +146,7 @@ public class FPMovement : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         windParticles.Stop();
-        AudioHandler.Instance.StopSound(SFXFiles.wind_fall);
+        if (playerExist) AudioHandler.Instance.StopSound(SFXFiles.wind_fall);
     }
 
     protected void DisableMovment() {
@@ -161,7 +163,7 @@ public class FPMovement : MonoBehaviour
 
         if (inAir && other.gameObject.tag != Tags.Picked) {
             InAir = false;
-            AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
+            if (playerExist) AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
             oldPos = transform.position;
         }
         if (other.contacts[0].thisCollider == topCollider) {
@@ -181,6 +183,8 @@ public class FPMovement : MonoBehaviour
 
 
     private void OnEnable() {
+        Player.OnPlayerMissing += OnPlayerMissing;
+        Player.OnPlayerAppear += OnPlayerAppear;
         InputManager.OnStartRunning += StartRun;
         InputManager.OnEndRunning += EndRun;
         InputManager.OnMove += SetMovement;
@@ -195,6 +199,8 @@ public class FPMovement : MonoBehaviour
     }
 
     private void OnDisable() {
+        Player.OnPlayerMissing -= OnPlayerMissing;
+        Player.OnPlayerAppear -= OnPlayerAppear;
         InputManager.OnStartRunning -= StartRun;
         InputManager.OnEndRunning -= EndRun;
         InputManager.OnMove -= SetMovement;
@@ -265,7 +271,7 @@ public class FPMovement : MonoBehaviour
     ///Checks on when to make footstep sounds and tilt the camera
     ///</summary>
     private void UpdateWalking() {
-        if (inAir) return;
+        if (inAir || !playerExist) return;
         Vector3 delta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
 
         UpdateCameraTilt(delta);
@@ -364,6 +370,15 @@ public class FPMovement : MonoBehaviour
         {
             cameraPivot.localRotation = Quaternion.Euler(new Vector3(Mathf.Min(cameraPivot.rotation.eulerAngles.x, verticalAngle), 0, 0));
         }
+    }
+
+    public void OnPlayerMissing() {
+        Debug.Log("on player missing");
+        playerExist = false;
+
+    }
+    public void OnPlayerAppear() {
+        playerExist = true;
     }
 
     private void OnDrawGizmos() {

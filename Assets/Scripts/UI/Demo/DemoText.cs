@@ -21,5 +21,15 @@ public class DemoText : MonoBehaviour
     }
     public void FadeToWhite() {
         StartCoroutine(group.FadeCanvasGroup(1, 3f, 1));
+        StartCoroutine(WaitForExit());
+    }
+
+    private IEnumerator WaitForExit() {
+        while(true) {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                SceneLoader.QuitGame();
+            }
+            yield return new WaitForEndOfFrame();
+        }
     }
 }

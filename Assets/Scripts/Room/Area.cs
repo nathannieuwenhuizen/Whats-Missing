@@ -82,7 +82,6 @@ public class Area : MonoBehaviour
     
     void Start()
     {
-        AudioHandler.Instance.AudioListenerVolume = 1;
         AudioHandler.Instance.PlayMusic(MusicFiles.planetarium, 1f);
         player.transform.position = rooms[loadRoomIndex].StartDoor.EndPos();
         player.transform.rotation = rooms[loadRoomIndex].StartDoor.transform.rotation;
