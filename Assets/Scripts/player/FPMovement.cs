@@ -190,6 +190,8 @@ public class FPMovement : MonoBehaviour
         InputManager.OnJump += Jump;
         PauseScreen.OnPause += DisableMovment;
         PauseScreen.OnResume += EnableMovment;
+        WindowsErrorMessage.OnErrorShow += DisableMovment;
+        WindowsErrorMessage.OnErrorHide += EnableMovment;
         RoomDebugger.OnShow += DisableMovment;
         RoomDebugger.OnHide += EnableMovment;
         SettingPanel.OnSave += ApplyMovementSettings;
@@ -206,6 +208,8 @@ public class FPMovement : MonoBehaviour
         InputManager.OnJump -= Jump;
         PauseScreen.OnPause -= DisableMovment;
         PauseScreen.OnResume -= EnableMovment;
+        WindowsErrorMessage.OnErrorShow -= DisableMovment;
+        WindowsErrorMessage.OnErrorHide -= EnableMovment;
         RoomDebugger.OnShow -= DisableMovment;
         RoomDebugger.OnHide -= EnableMovment;
         SettingPanel.OnSave -= ApplyMovementSettings;

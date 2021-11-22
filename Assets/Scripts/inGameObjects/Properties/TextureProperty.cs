@@ -15,6 +15,8 @@ public class TextureProperty : Property
     [SerializeField]
     private Material noTextureMaterial;
 
+    public static event OnPropertyToggle OnTextureMissing;
+
     private List<MaterialHolders> materialHolders;
 
     public override void OnMissing()
@@ -54,7 +56,7 @@ public class TextureProperty : Property
             mr.renderer.UpdateGIMaterials();
         }
 
-
+        OnTextureMissing?.Invoke();
         noTextureMaterial.SetFloat("Dissolve", 0);
         base.OnMissingFinish();
     }

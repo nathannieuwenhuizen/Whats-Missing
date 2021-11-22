@@ -9,7 +9,6 @@ public class AnimatedPopup : MonoBehaviour
 
     private Animator animator;
     private CanvasGroup canvasGroup;
-
     private void OnEnable() {
         animator = GetComponent<Animator>();
         canvasGroup = GetComponent<CanvasGroup>();

@@ -33,6 +33,8 @@ public class CustomInputModule : StandaloneInputModule
     protected override void OnEnable() {
         
         base.OnEnable();
+        WindowsErrorMessage.OnErrorShow += ShowMouse;
+        WindowsErrorMessage.OnErrorHide += HideMouse;
         PauseScreen.OnPause += ShowMouse;
         PauseScreen.OnResume += HideMouse;
         RoomDebugger.OnShow += ShowMouse;
@@ -40,6 +42,8 @@ public class CustomInputModule : StandaloneInputModule
     }
     protected override void OnDisable() {
         base.OnDisable();
+        WindowsErrorMessage.OnErrorShow -= ShowMouse;
+        WindowsErrorMessage.OnErrorHide -= HideMouse;
         PauseScreen.OnPause -= ShowMouse;
         PauseScreen.OnResume -= HideMouse;        
         RoomDebugger.OnShow -= ShowMouse;
