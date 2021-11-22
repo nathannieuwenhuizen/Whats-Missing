@@ -128,12 +128,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd54e000b1934704285b8add3cbcb8c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  word: clock
+  word: window
   alternateWords:
-  - window
+  - clock
   - windows
-  appearing: {fileID: 0}
-  disAppearing: {fileID: 0}
   missingChangeEffect: 1
   secondArrow: {fileID: 7374974038735252614}
   minuteArrow: {fileID: 4701995704233713732}
@@ -549,6 +547,7 @@ GameObject:
   - component: {fileID: 5000520771802707222}
   - component: {fileID: 1427271973634308812}
   - component: {fileID: 7121396173489297601}
+  - component: {fileID: 343658875290585029}
   m_Layer: 0
   m_Name: Clock_Frame
   m_TagString: Untagged
@@ -619,3 +618,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &343658875290585029
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8914676712244783815}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3254194121813974385, guid: a31598ad4ca0ec64fbb50adc1c67ae81, type: 3}

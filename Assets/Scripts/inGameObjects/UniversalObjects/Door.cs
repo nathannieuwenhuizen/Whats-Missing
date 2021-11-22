@@ -80,21 +80,21 @@ public class Door : InteractabelObject
         }
     }
 
-    private void Opening() {
+    private void GoingThrough() {
         //TODO: Go to next room with player
         animating = true;
         CheckAngle();
         OnPassingThrough?.Invoke(this);
         CheckAngle();
         StopAllCoroutines();
-        StartCoroutine(OpenAnimation());
+        StartCoroutine(GoingThroughAnimation());
         //YRotation = startRotation + wideAngle;
     }
 
     public override void Interact()
     {
         if (locked || animating) return;
-        Opening();
+        GoingThrough();
     }
 
     protected override void OnFocus()
@@ -151,11 +151,12 @@ public class Door : InteractabelObject
     }
  
 
-    public IEnumerator OpenAnimation() {
+    public IEnumerator GoingThroughAnimation() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_open);
         yield return StartCoroutine(Flipping(startAngle + wideAngle, 1.3f, openCurve));
-        AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
-        Close();
+        yield return StartCoroutine(Flipping(startAngle + openAngle, .5f, openCurve));
+        // AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
+        // Close();
         animating = false;
     }
 
