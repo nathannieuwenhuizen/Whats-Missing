@@ -122,11 +122,11 @@ public class Mirror: MonoBehaviour, IRoomObject
     /// Resets the letters and removes the change or question check.
     /// Also called from the mirror button.
     ///</summary>
-    public void ResetMirror() {
-        mirrorCanvas.DeselectLetters();
-        if (!isQuestion) room.RemoveMirrorChange(this, true);
-        else room.CheckTVQuestion(this);
-    }
+    // public void ResetMirror() {
+    //     mirrorCanvas.DeselectLetters();
+    //     if (!isQuestion) room.RemoveMirrorChange(this, true);
+    //     else room.CheckTVQuestion(this);
+    // }
     
     public void ConfirmationSucceeded() {
         if (room.Animated)

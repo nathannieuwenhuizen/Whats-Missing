@@ -142,6 +142,11 @@ public class MirrorCanvas : MonoBehaviour
         }
     }
 
+    public void DeselectFrontLetter() {
+            AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
+        RemoveSelectedLetter(selectedLetterObjects.Count - 1);
+    }
+
     private readonly Dictionary<char, KeyCode> _keycodeCache = new Dictionary<char, KeyCode>();
     private KeyCode GetKeyCode(char character)
     {
@@ -232,7 +237,10 @@ public class MirrorCanvas : MonoBehaviour
             }
             AddLetterToAnswer(letter);
         }
-        else RemoveSelectedLetter(selectedLetterObjects.IndexOf(letter));
+        else {
+            AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
+            RemoveSelectedLetter(selectedLetterObjects.IndexOf(letter));
+        }
         
         UpdateAnswerTextPosition();
     }
