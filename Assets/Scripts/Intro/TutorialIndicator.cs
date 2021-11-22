@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 [RequireComponent(typeof(Animator))]
 public class TutorialIndicator : Singleton<AudioHandler>
 {
+
+    private bool tutorialIsVisible = false;
 
     [SerializeField]
     private GameObject mouseUI;
@@ -12,6 +15,10 @@ public class TutorialIndicator : Singleton<AudioHandler>
     private GameObject keyboardUI;
     [SerializeField]
     private GameObject spacebarUI;
+
+    [SerializeField]
+    private TMP_Text hintText;
+
 
     [SerializeField]
     private Animator animator;
@@ -28,20 +35,26 @@ public class TutorialIndicator : Singleton<AudioHandler>
 
 
     private void OnEnable() {
+        MirrorCanvas.OnShowHint += ToggleHint;
         Area.OnFirstRoomEnter += StartWaitingForMove;
         AreaTextMeshFader.onMirrorTutorialShow += StartWaitingMirrorComplete;
         Gravity.onGravityMissing += StartWaitingForJump;
         Room.OnRoomComplete += EnableClick;
+        Room.OnRoomComplete += HideTutorial;
+        Room.OnRoomLeaving += HideTutorial;
     }
 
 
     private void OnDisable() {
+        MirrorCanvas.OnShowHint -= ToggleHint;
         Area.OnFirstRoomEnter -= StartWaitingForMove;
         AreaTextMeshFader.onMirrorTutorialShow -= StartWaitingMirrorComplete;
         Room.OnRoomComplete -= EnableClick;
         InputManager.OnMove -= EnableMove;
         InputManager.OnJump -= EnableJump;
         Gravity.onGravityMissing -= StartWaitingForJump;
+        Room.OnRoomComplete -= HideTutorial;
+        Room.OnRoomLeaving -= HideTutorial;
     }
 
     private void EnableClick() {
@@ -70,6 +83,24 @@ public class TutorialIndicator : Singleton<AudioHandler>
         StartCoroutine(WaitForJump());
     }
 
+
+    public void ToggleHint(string value) {
+        if (tutorialIsVisible) {
+            HideTutorial();
+        } else {
+            hintText.text = value;
+            ShowTutorial(hintText.gameObject);
+            StartCoroutine(WaitBeforeDisappearing());
+        }
+    }
+
+    private IEnumerator WaitBeforeDisappearing(){
+        yield return new WaitForSeconds(5f);
+        if (tutorialIsVisible) {
+            HideTutorial();
+        }
+    }
+
     private void Update() {
         maskChild.transform.localScale = new Vector3(1,1 / mask.transform.localScale.y,1);
     }
@@ -87,16 +118,19 @@ public class TutorialIndicator : Singleton<AudioHandler>
     }
 
     private void ShowTutorial(GameObject gameObject) {
+        tutorialIsVisible = true;
         animator.SetBool("Show", true);
 
         mouseUI.SetActive(false);
         spacebarUI.SetActive(false);
         keyboardUI.SetActive(false);
+        hintText.gameObject.SetActive(true);
 
         gameObject.SetActive(true);
     }
 
     private void HideTutorial() {
+        tutorialIsVisible = false;
         animator.SetBool("Show", false);
     }
 

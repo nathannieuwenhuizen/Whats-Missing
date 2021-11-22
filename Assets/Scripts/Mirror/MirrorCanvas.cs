@@ -14,6 +14,15 @@ public class MirrorCanvas : MonoBehaviour
     [SerializeField]
     private Mirror mirror;
 
+    [SerializeField]
+    private CanvasGroup hintToggle;
+
+    public delegate void MirrorcanvasEvent(string hintText);
+    public static MirrorcanvasEvent OnShowHint;
+
+
+    private string hintText = "";
+
     public List<Letter> letterObjects = new List<Letter>();
     public List<Letter> selectedLetterObjects = new List<Letter>();
 
@@ -236,6 +245,19 @@ public class MirrorCanvas : MonoBehaviour
         }
     }
 
+    public void ShowHintButton(string _hintText) {
+        if (_hintText == "") return;
+
+        hintText = _hintText;
+        hintToggle.interactable = true;
+        hintToggle.blocksRaycasts = true;
+        AudioHandler.Instance.Player3DSound(SFXFiles.hintbutton_show, transform);
+        StartCoroutine(hintToggle.FadeCanvasGroup(1f, 1f, 0f));
+    }
+
+    public void HintToggleClick() {
+        OnShowHint?.Invoke(hintText);
+    }
 
     public void AddLetterToAnswer(Letter letter) {
         letterObjects.Remove(letter);

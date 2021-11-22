@@ -17,6 +17,8 @@ public class RoomData {
     public bool revealChangesAfterFinish = true;
     public MirrorData questionMirror;
     public MirrorData[] changeMirror;
+    public float durationBeforeHint = 60f;
+    public string hintText;
 }
 
 [System.Serializable]

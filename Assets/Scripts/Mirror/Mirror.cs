@@ -8,7 +8,7 @@ public class Mirror: MonoBehaviour, IRoomObject
 {
     [SerializeField]
     private MirrorCanvas mirrorCanvas;
-    public MirrorCanvas MirrorCnvas {
+    public MirrorCanvas MirrorCanvas {
         get { return mirrorCanvas;}
     }
 

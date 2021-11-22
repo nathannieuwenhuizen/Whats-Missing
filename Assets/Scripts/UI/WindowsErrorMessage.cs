@@ -21,12 +21,10 @@ public class WindowsErrorMessage : AnimatedPopup
     private void DelayPopup() {
         if (hasBeenShown) return;
         hasBeenShown = true;
-        Debug.Log("delay start");
         StartCoroutine(DelayingPopup());
 
     } 
     private IEnumerator DelayingPopup() {
-        Debug.Log("delay start");
         yield return new WaitForSeconds(1f);
         ShowPopup();
     }
@@ -37,7 +35,6 @@ public class WindowsErrorMessage : AnimatedPopup
     }
 
     private void ShowPopup() {
-        Debug.Log("show popup");
         visible = true;
         Time.timeScale = 0;
         AudioHandler.Instance.FadeListener(0);
@@ -46,7 +43,6 @@ public class WindowsErrorMessage : AnimatedPopup
         ShowAnimation(true);
     }
     public void Close() {
-        Debug.Log("close");
         if (!visible) return;
         visible = false;
         AudioHandler.Instance.FadeListener(1f);

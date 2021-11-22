@@ -30,7 +30,7 @@ public class RoomStateHandler
         foreach (Mirror mirror in room.mirrors)
         {
             TVState tvState = tvStates.Find(x => x.id == mirror.id);
-            mirror.MirrorCnvas.DeselectLetters();
+            mirror.MirrorCanvas.DeselectLetters();
             mirror.Word = tvState.word;
             // tv.UpdateAnswerTextPosition();
         }

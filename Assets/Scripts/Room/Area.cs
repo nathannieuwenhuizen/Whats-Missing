@@ -113,6 +113,7 @@ public class Area : MonoBehaviour
             Room newRoom = Instantiate(roomLevel.prefab.gameObject, transform).GetComponent<Room>();
             newRoom.name = "Room: " + (roomLevel.roomInfo != null ? roomLevel.name : roomLevel.prefab.name);
             newRoom.Area = this;
+            newRoom.roomLevel = roomLevel;
             int changeMirrorIndex = 0;
             if (roomLevel.roomInfo != null) {
                 newRoom.RevealChangeAfterCompletion = roomLevel.roomInfo.revealChangesAfterFinish;

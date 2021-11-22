@@ -58,14 +58,14 @@ public class UndoHandeler : MonoBehaviour
 
         room.Animated = false;
         if (currentAction.change.mirror.isQuestion) {
-            currentAction.change.mirror.MirrorCnvas.DeselectLetters();
+            currentAction.change.mirror.MirrorCanvas.DeselectLetters();
             currentAction.change.mirror.Word = currentAction.previousWord;
             room.CheckTVQuestion(currentAction.change.mirror, false);
         } else {
             if (currentAction.changeIsAdded) {
                 room.RemoveMirrorChange(currentAction.change.mirror, false);
             } else {
-                currentAction.change.mirror.MirrorCnvas.DeselectLetters();
+                currentAction.change.mirror.MirrorCanvas.DeselectLetters();
                 currentAction.change.mirror.Word = currentAction.change.word;
                 room.AddTVChange(currentAction.change.mirror, false);
             }

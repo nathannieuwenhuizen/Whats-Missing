@@ -10,6 +10,12 @@ public class Room : MonoBehaviour
 
     public delegate void RoomAction();
     public static event RoomAction OnRoomComplete;
+    public static event RoomAction OnRoomLeaving;
+
+    public RoomLevel roomLevel;
+
+    [SerializeField]
+    private HintStopwatch hintStopwatch;
 
     private Area area;
     public Area Area {
@@ -109,6 +115,8 @@ public class Room : MonoBehaviour
     }
 
     public void LoadMirrors() {
+        hintStopwatch.room = this;
+        hintStopwatch.Duration = roomLevel.roomInfo.durationBeforeHint;
         for (int i = 0; i < mirrors.Count; i++)
         {
             mirrors[i].SetupCanvas();
@@ -247,6 +255,7 @@ public class Room : MonoBehaviour
     ///</summary>
     private void CheckRoomCompletion() {
         if (AllMirrorsAreOn()) {
+            hintStopwatch.Pause();
             OnRoomComplete?.Invoke();
             StartCoroutine(WaitBeforeOpeningDoor());
             if (revealChangeAfterCompletion) {
@@ -284,6 +293,7 @@ public class Room : MonoBehaviour
         player.transform.parent = transform;
         AllObjects.Add(player);
 
+        hintStopwatch.Resume();
         Animated = false;
 
         if (loadSaveData) {
@@ -317,6 +327,15 @@ public class Room : MonoBehaviour
         roomEnterEvent?.Invoke();
     }
 
+    public void ShowMirrorToggleHint() {
+        foreach(Mirror mirror in mirrors) {
+            if (mirror.isQuestion) {
+                mirror.MirrorCanvas.ShowHintButton(roomLevel.roomInfo.hintText);
+                break;
+            }
+        }
+    }
+
 
     ///<summary>
     /// Fires whem the player leaves the room.
@@ -331,6 +350,8 @@ public class Room : MonoBehaviour
 
         Animated = false;
         changeHandler.DeactivateChanges();
+        hintStopwatch.Pause();
+        OnRoomLeaving?.Invoke();
         AllObjects.Remove(Player);
     }
 

@@ -48,7 +48,8 @@ public enum SFXFiles {
     toggle_off,
     slider_select,
 
-    windows_error
+    windows_error,
+    hintbutton_show
 }
 
 public enum MusicFiles {
