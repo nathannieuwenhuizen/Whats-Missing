@@ -17,6 +17,7 @@ public class Painting : InteractabelObject
     private GameObject hiddenRoom;
     private Animator animator;
     private bool open = false;
+    private bool animating = false;
 
 
     private void Reset() {
@@ -25,6 +26,7 @@ public class Painting : InteractabelObject
     }
 
     protected void Awake() {
+        OutlineEnabled = false;
         animator = GetComponent<Animator>();
         SetPortalsActive(false);
     }
@@ -51,12 +53,18 @@ public class Painting : InteractabelObject
 
     public override void Interact()
     {
-        
+        if (animating) return;
+        animating = true;
         open = !open;
         animator.SetBool("open", open);
         SetPortalsActive(true);
+        StartCoroutine(WaitBeforeAnimationFinish());
 
         base.Interact();
+    }
+    private IEnumerator WaitBeforeAnimationFinish() {
+        yield return new WaitForSeconds(2f);
+        animating = false;
     }
 
     public override void OnMissing()

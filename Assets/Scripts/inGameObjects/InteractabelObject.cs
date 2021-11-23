@@ -14,6 +14,12 @@ public class InteractabelObject : RoomObject, IInteractable
     private float duration = .4f;
     private Coroutine focusedCoroutine;
 
+    private bool outlineEnabled = true;
+    public bool OutlineEnabled {
+        get { return outlineEnabled;}
+        set { outlineEnabled = value; }
+    }
+
     public bool Focused { 
         get => focused; 
         set {
@@ -33,6 +39,8 @@ public class InteractabelObject : RoomObject, IInteractable
     /// When the cursor hovers over the mesh of the object. It makes the outline appear.
     ///</summary>
     protected virtual void OnFocus() {
+        if (!OutlineEnabled) return;
+
         if (outline == null) {
             outline = gameObject.AddComponent<Outline>();
         }
@@ -44,6 +52,8 @@ public class InteractabelObject : RoomObject, IInteractable
     /// When the cursor unhovers the emesh of the pbject. Making the outline disappear.
     ///</summary>
     protected virtual void OnBlur() {
+        if (!OutlineEnabled) return;
+        
         if (outline != null) {
             if (focusedCoroutine != null) 
                 StopCoroutine(focusedCoroutine);

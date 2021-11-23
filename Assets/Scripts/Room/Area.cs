@@ -27,6 +27,7 @@ public class Area : MonoBehaviour
 
     [SerializeField]
     private int loadRoomIndex = 0;
+    private int furthestCurrentRoomIndex;
 
     [SerializeField]
     private UnityEvent areaFinishedEvent;
@@ -72,6 +73,17 @@ public class Area : MonoBehaviour
                 if (rooms[i].gameObject.activeSelf)
                     rooms[i].EndDoor.Locked = false;
             }
+        }
+        LockPreviousRoomDoors();
+    }
+
+    ///<summary>
+    /// Locks all the doors of the previous rooms so that the player doesn't have to backtrack
+    ///</summary>
+    private void LockPreviousRoomDoors() {
+        int currentIndex = rooms.IndexOf(currentRoom);
+        for (int i = 0; i < rooms.Count; i++) {
+            if (i < furthestCurrentRoomIndex - 1) rooms[i].EndDoor.Locked = true;
         }
     }
 
@@ -212,6 +224,7 @@ public class Area : MonoBehaviour
 #endif
             //loadRoomState = true;
         }
+        furthestCurrentRoomIndex = loadRoomIndex;
     }
 
     private void UndoAction() {
@@ -224,15 +237,14 @@ public class Area : MonoBehaviour
 
     private void OnPassingThroughDoor(Door door) {
         float duration = 1.5f;
-        float delay = 0f;
         OnNewRoomEnter?.Invoke();
-        int index = rooms.IndexOf(door.room); // System.Array.IndexOf(roomPrefabs, door.room);
+        int index = rooms.IndexOf(door.room);
         if (door.room == currentRoom) {
             //next room
             if (index == rooms.Count - 1) {
+                //loop room 
                 Vector3 localPos = CurrentRoom.EndDoor.transform.InverseTransformPoint(player.transform.position);
                 player.transform.position = rooms[index - 1].EndDoor.transform.TransformPoint(localPos);
-                // player.transform.rotation = rooms[index - 1].EndDoor.transform.rotation;
                 player.transform.Rotate(0,90,0);
                 directionalLight.animating = false;
                 directionalLight.RotateToMatchRoon(rooms[index - 1].transform);
@@ -241,10 +253,8 @@ public class Area : MonoBehaviour
                 CurrentRoom = rooms[index];
                 StartCoroutine(Door.Walking(CurrentRoom.StartDoor.EndPos(), duration, player));
 
-
-                // areaFinishedEvent?.Invoke();
-                // Debug.Log("area finished!");
             } else {
+                furthestCurrentRoomIndex = index + 1;
                 CurrentRoom = rooms[index + 1];
                 StartCoroutine(Door.Walking(CurrentRoom.StartDoor.EndPos(), duration, player));
             }
