@@ -21,7 +21,6 @@ public class ColorProperty : Property
 
     public override void OnMissing()
     {
-        Debug.Log("color is missing!" + Animated);
         base.OnMissing();
         StopAllCoroutines();
         if (Animated) {

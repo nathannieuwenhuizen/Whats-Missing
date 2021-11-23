@@ -77,7 +77,9 @@ public class Player : RoomObject
     private void Update() {
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) {
-            Die();
+            Respawn();
+
+            // Die();
         }
 #endif
     }

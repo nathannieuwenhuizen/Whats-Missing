@@ -127,7 +127,6 @@ public class PerspectiveProperty : Property
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
-        Debug.Log("on room enter perspective");
         CameraSetup();
     }
 

@@ -101,9 +101,9 @@ public class ShockwaveController : MonoBehaviour {
             feature.SetActive(true);
 
         Radius = 0;
-        Magnitude = .4f;
+        Magnitude = .1f;
         if (decreasingMagnitude) {
-            Magnitude = .2f;
+            Magnitude = .1f;
             Radius = .3f / Speed;
         }
 

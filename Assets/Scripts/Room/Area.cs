@@ -82,7 +82,6 @@ public class Area : MonoBehaviour
         int currentIndex = rooms.IndexOf(currentRoom);
         for (int i = 0; i < rooms.Count; i++) {
             if (i < furthestCurrentRoomIndex - 1) {
-                Debug.Log("room that is locked " + rooms[i].gameObject.name);
                 rooms[i].EndDoor.Animated = false;
                 rooms[i].EndDoor.Locked = true;
             } else if (i >= (furthestCurrentRoomIndex - 1) && i < furthestCurrentRoomIndex) {
