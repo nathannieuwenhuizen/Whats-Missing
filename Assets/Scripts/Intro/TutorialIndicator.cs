@@ -124,7 +124,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
         mouseUI.SetActive(false);
         spacebarUI.SetActive(false);
         keyboardUI.SetActive(false);
-        hintText.gameObject.SetActive(true);
+        hintText.gameObject.SetActive(false);
 
         gameObject.SetActive(true);
     }

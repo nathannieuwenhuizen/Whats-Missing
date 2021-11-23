@@ -49,7 +49,8 @@ public enum SFXFiles {
     slider_select,
 
     windows_error,
-    hintbutton_show
+    hintbutton_show,
+    evil_spirit
 }
 
 public enum MusicFiles {

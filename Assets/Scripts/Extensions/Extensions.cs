@@ -79,8 +79,18 @@ public static class Extensions
             transform.localScale = Vector3.LerpUnclamped(beginScale, endScale , curve.Evaluate(timePassed / duration));
         }
         transform.localScale = endScale;
-
     }
+    public static IEnumerator FadeSFXVolume(this AudioSource audioSource, float endVal,  AnimationCurve curve, float duration = .5f) {
+        float timePassed = 0f;
+        float begin = audioSource.volume;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(begin, endVal , curve.Evaluate(timePassed / duration));
+        }
+        audioSource.volume = endVal;
+    }
+    
     public static  IEnumerator AnimatingLocalPos(this Transform transform, Vector3 endLocalPos,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;
         Vector3 beginPos = transform.localPosition;

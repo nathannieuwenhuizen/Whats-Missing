@@ -77,9 +77,7 @@ public class Player : RoomObject
     private void Update() {
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) {
-            Respawn();
-
-            // Die();
+            Die();
         }
 #endif
     }
@@ -116,7 +114,6 @@ public class Player : RoomObject
         StartCoroutine(playerCamera.AnimatingFieldOfView(80, AnimationCurve.EaseInOut(0,0,1,1), 2f));
         Movement.CharacterAnimator.SetTrigger(trigger);
         Movement.CharacterAnimator.applyRootMotion = applyRoonAnimation;
-
     }
 
     private int headLayer;
