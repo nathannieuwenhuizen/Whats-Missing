@@ -304,6 +304,7 @@ public class Room : MonoBehaviour
         {
             item.OnRoomEnter();
         }
+
         if (firstTimeEntering) {
             firstTimeEntering = false;
             changeHandler.LoadChanges();
@@ -324,6 +325,7 @@ public class Room : MonoBehaviour
         beginState = SaveData.GetStateOfRoom(this);
         
         Animated = true;
+
         roomEnterEvent?.Invoke();
     }
 

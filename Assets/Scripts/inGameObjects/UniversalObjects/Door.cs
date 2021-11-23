@@ -9,7 +9,10 @@ public class Door : InteractabelObject
     [HideInInspector]
     public Room room;
 
-    private bool animating = false;
+    private bool inAnimation = false;
+
+    private bool animated = false;
+
 
     public delegate void DoorAction(Door door);
     public static event DoorAction OnPassingThrough;
@@ -49,84 +52,70 @@ public class Door : InteractabelObject
     }
 
     private void Close() {
-        AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
-        StopAllCoroutines();
-        StartCoroutine(Flipping(startAngle, .5f, closeCurve));
+        if (Animated) {
+            AudioHandler.Instance?.Player3DSound(SFXFiles.door_closing, transform);
+            StopAllCoroutines();
+            StartCoroutine(AnimateDoorAngle(startAngle, .5f, closeCurve));
+        } else {
+            doorPivot.localRotation = Quaternion.Euler(doorPivot.localRotation.x, 0, doorPivot.localRotation.z);
+        }
     }
 
     private void Open() {
         OnDoorOpen?.Invoke(this);
+        
         AudioHandler.Instance?.PlaySound(SFXFiles.door_squeek, .2f);
         StopAllCoroutines();
-        if (gameObject.activeSelf) StartCoroutine(Flipping(startAngle + openAngle, 2f, openCurve));
+        if (gameObject.activeSelf) StartCoroutine(AnimateDoorAngle(startAngle + openAngle, 2f, openCurve));
     }
-    void Start()
+    void Awake()
     {
-        startAngle = YRotation;
+        startAngle = doorPivot.localRotation.eulerAngles.y;
     }
 
-    private void Update() {
-        // if (Input.GetKeyDown(KeyCode.O)) {
-        //     Locked = !locked;
-        // }
-        // if (Input.GetKeyDown(KeyCode.P)) {
-        //     StartCoroutine(OpenAnimation());
-        // }
-    }
-    private void CheckAngle() {
+    private bool CheckAngle() {
         if (room.Player != null) {
             float angle =  Vector3.Dot(transform.forward, room.Player.transform.position - transform.position);
-            flipped = angle > 0;
+            return angle > 0;
         }
+        return false;
     }
 
     private void GoingThrough() {
-        //TODO: Go to next room with player
-        animating = true;
-        CheckAngle();
+        inAnimation = true;
+        flipped = CheckAngle();
         OnPassingThrough?.Invoke(this);
-        CheckAngle();
+        flipped = CheckAngle();
         StopAllCoroutines();
         StartCoroutine(GoingThroughAnimation());
-        //YRotation = startRotation + wideAngle;
     }
 
     public override void Interact()
     {
-        if (locked || animating) return;
+        if (locked || inAnimation) return;
         GoingThrough();
     }
 
     protected override void OnFocus()
     {
-        if (locked || animating) return;
+        if (locked || inAnimation) return;
         base.OnFocus();
     }
 
-    public float YRotation {
-        get => doorPivot.localRotation.eulerAngles.y;
-        set => doorPivot.localRotation = Quaternion.Euler(doorPivot.localRotation.eulerAngles.x, value, doorPivot.localRotation.eulerAngles.z);
-
-    }
-
-    public IEnumerator Flipping(float endRotation, float duration, AnimationCurve curve) {
-
-        CheckAngle();
+    public IEnumerator AnimateDoorAngle(float endRotation, float duration, AnimationCurve curve) {
+        
+        //to make sure the door flips away from the player.
+        flipped = CheckAngle();
 
         float index = 0;
-        // float begin = YRotation;
-        //if (begin > 180) begin -= 360;
         Quaternion start = doorPivot.localRotation;
         Quaternion end = Quaternion.Euler(doorPivot.localRotation.x, endRotation  * (flipped ? - 1 : 1), doorPivot.localRotation.z);
         while (index < duration) {
             index += Time.unscaledDeltaTime;
             doorPivot.localRotation = Quaternion.Slerp(start, end, curve.Evaluate(index / duration));
-            // YRotation = Mathf.LerpUnclamped(begin, endRotation * (flipped ? - 1 : 1), curve.Evaluate(index / duration));
             yield return new WaitForEndOfFrame();
         }
         doorPivot.localRotation = end;
-
-        // YRotation = endRotation;
     }
 
     ///<summary>
@@ -153,11 +142,9 @@ public class Door : InteractabelObject
 
     public IEnumerator GoingThroughAnimation() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_open);
-        yield return StartCoroutine(Flipping(startAngle + wideAngle, 1.3f, openCurve));
-        yield return StartCoroutine(Flipping(startAngle + openAngle, .5f, openCurve));
-        // AudioHandler.Instance?.PlaySound(SFXFiles.door_closing);
-        // Close();
-        animating = false;
+        yield return StartCoroutine(AnimateDoorAngle(startAngle + wideAngle, 1.3f, openCurve));
+        yield return StartCoroutine(AnimateDoorAngle(startAngle + openAngle, .5f, openCurve));
+        inAnimation = false;
     }
 
     public Vector3 StartPos() {

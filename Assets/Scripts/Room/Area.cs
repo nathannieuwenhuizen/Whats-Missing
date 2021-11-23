@@ -70,8 +70,6 @@ public class Area : MonoBehaviour
                 rooms[i].gameObject.SetActive(false);
             }
             if (i < rooms.IndexOf(currentRoom)) {
-                if (rooms[i].gameObject.activeSelf)
-                    rooms[i].EndDoor.Locked = false;
             }
         }
         LockPreviousRoomDoors();
@@ -83,7 +81,16 @@ public class Area : MonoBehaviour
     private void LockPreviousRoomDoors() {
         int currentIndex = rooms.IndexOf(currentRoom);
         for (int i = 0; i < rooms.Count; i++) {
-            if (i < furthestCurrentRoomIndex - 1) rooms[i].EndDoor.Locked = true;
+            if (i < furthestCurrentRoomIndex - 1) {
+                Debug.Log("room that is locked " + rooms[i].gameObject.name);
+                rooms[i].EndDoor.Animated = false;
+                rooms[i].EndDoor.Locked = true;
+            } else if (i >= (furthestCurrentRoomIndex - 1) && i < furthestCurrentRoomIndex) {
+                if (rooms[i].gameObject.activeSelf)
+                    rooms[i].EndDoor.Locked = false;
+            }
+
+
         }
     }
 
