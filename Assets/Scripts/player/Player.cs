@@ -120,11 +120,9 @@ public class Player : RoomObject
     private int headLayer;
     public void ShowHead() {
         headLayer = meshObjects[1].gameObject.layer;
-        Debug.Log("layer = " + headLayer);
         meshObjects[1].gameObject.layer = 0;
     }
     public void HideHead() {
-        Debug.Log("back to head invisible");
         meshObjects[1].gameObject.layer = headLayer;
     }
 

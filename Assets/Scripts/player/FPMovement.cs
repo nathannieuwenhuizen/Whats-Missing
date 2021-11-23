@@ -52,6 +52,7 @@ public class FPMovement : MonoBehaviour
 
     private Vector3 oldPos;
 
+    public bool EnableHeadTilt {get; set; } = true;
     public bool EnableWalk {get; set; } = true;
     public bool EnableRotation {get; set; } = true;
 
@@ -276,7 +277,7 @@ public class FPMovement : MonoBehaviour
         if (inAir) return;
         Vector3 delta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
 
-        if (playerExist)  UpdateCameraTilt(delta);
+        if (playerExist && EnableHeadTilt)  UpdateCameraTilt(delta);
 
         if (delta.magnitude > walkStepDistance){
             oldPos = transform.position;

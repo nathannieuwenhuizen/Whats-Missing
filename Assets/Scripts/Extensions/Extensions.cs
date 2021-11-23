@@ -81,6 +81,17 @@ public static class Extensions
         transform.localScale = endScale;
 
     }
+    public static  IEnumerator AnimatingLocalPos(this Transform transform, Vector3 endLocalPos,  AnimationCurve curve, float duration = .5f) {
+        float timePassed = 0f;
+        Vector3 beginPos = transform.localPosition;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            transform.localPosition = Vector3.LerpUnclamped(beginPos, endLocalPos , curve.Evaluate(timePassed / duration));
+        }
+        transform.localPosition = endLocalPos;
+
+    }
     public static  IEnumerator AnimatingFieldOfView(this Camera camera, float endview,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;
         float beginView = camera.fieldOfView;

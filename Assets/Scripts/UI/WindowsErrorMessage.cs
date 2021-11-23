@@ -28,11 +28,6 @@ public class WindowsErrorMessage : AnimatedPopup
         yield return new WaitForSeconds(1f);
         ShowPopup();
     }
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.P)) {
-            ShowPopup();
-        }
-    }
 
     private void ShowPopup() {
         visible = true;

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class PerspectiveProperty : Property
 {
+
+    private Vector3 startLocalPos;
+    private float cameraYOffset = .5f;
+
     [SerializeField]
     private Room room;
 
@@ -25,6 +29,7 @@ public class PerspectiveProperty : Property
 
     public void CameraSetup() {
         m_camera = room.Player.Camera;
+        startLocalPos = m_camera.transform.localPosition;
         fov = m_camera.fieldOfView;
 
         aspect = (float)Screen.width / (float)Screen.height;
@@ -39,17 +44,20 @@ public class PerspectiveProperty : Property
         m_camera.orthographic = true;
         StopAllCoroutines();
         onPerspectiveMissing?.Invoke();
-        base.OnMissing();
+        room.Player.Movement.EnableHeadTilt = false;
+        StartCoroutine(AnimateMissing());
     }
     public override IEnumerator AnimateMissing()
     {
         m_camera.projectionMatrix = perspective;
+        StartCoroutine(m_camera.transform.AnimatingLocalPos(startLocalPos + new Vector3(0,cameraYOffset,0), AnimationCurve.EaseInOut(0,0,1,1), 1f));
         yield return StartCoroutine(BlendToMatrix(ortho, orthoNear, 1f, 8,true));
         yield return base.AnimateMissing();
     }
 
     public override void OnMissingFinish()
     {
+        m_camera.transform.localPosition = startLocalPos + new Vector3(0,cameraYOffset,0);
         m_camera.projectionMatrix = ortho;
         m_camera.nearClipPlane = orthoNear;
 
@@ -62,24 +70,26 @@ public class PerspectiveProperty : Property
     
     public override void OnAppearing() {
         StopAllCoroutines();
-        Debug.Log("on appear finish");
-        onPerspectiveAppearing?.Invoke();
-        base.OnAppearing();
+        StartCoroutine(AnimateAppearing());
     }
     public override IEnumerator AnimateAppearing()
     {
+        StartCoroutine(m_camera.transform.AnimatingLocalPos(startLocalPos, AnimationCurve.EaseInOut(0,0,1,1), 1f));
         yield return StartCoroutine(BlendToMatrix(perspective, near, 1f, 8,false));
-        yield return base.AnimateAppearing();
+        base.AnimateAppearing();
+        OnAppearingFinish();
+
     }
  
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
-        Debug.Log("on appear finish");
+        room.Player.Movement.EnableHeadTilt = true;
         onPerspectiveAppearing?.Invoke();
         m_camera.orthographic = false;
         m_camera.projectionMatrix = perspective;
         m_camera.nearClipPlane = near;
+        m_camera.transform.localPosition = startLocalPos;
     }
     #endregion
 
@@ -107,7 +117,6 @@ public class PerspectiveProperty : Property
     }
  
     public IEnumerator BlendToMatrix(Matrix4x4 targetMatrix, float targetNear, float duration, float ease, bool reverse) {
-        StopAllCoroutines();
         yield return StartCoroutine(LerpFromTo(m_camera.projectionMatrix, targetMatrix, m_camera.nearClipPlane, targetNear, duration, ease, reverse));
     }
 
@@ -118,6 +127,7 @@ public class PerspectiveProperty : Property
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
+        Debug.Log("on room enter perspective");
         CameraSetup();
     }
 

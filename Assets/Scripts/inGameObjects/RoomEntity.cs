@@ -106,8 +106,8 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     /// Coroutine that animates the roomobject into existing. 
     ///</summary>
     public virtual IEnumerator AnimateAppearing() {
-        yield return null;
         OnAppearingFinish();
+        yield return null;
     }
 
     
