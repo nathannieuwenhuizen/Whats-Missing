@@ -70,10 +70,6 @@ using UnityEngine.UI;
     public void SetSFX(float value) 
     {
         AudioSetting.SFX = value / steps;
-        if (AudioHandler.Instance) {
-            // AudioHandler.Instance.PlaySound(SFXFiles.plop, .5f);
-        }
-
     }
     public void SetMusic(float value) 
     {

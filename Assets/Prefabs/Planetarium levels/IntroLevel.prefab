@@ -186,7 +186,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1540840451
 Transform:
   m_ObjectHideFlags: 0
@@ -254,6 +254,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   duration: 1
   totalDelay: 1
+  delayBeforeAppearAnimation: 0
   offSetDistance: 2
   visible: 1
   isTVTutorial: 0
@@ -342,6 +343,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   duration: 1
   totalDelay: 1
+  delayBeforeAppearAnimation: 0
   offSetDistance: 2
   visible: 1
   isTVTutorial: 0
@@ -357,7 +359,7 @@ GameObject:
   - component: {fileID: 8955242159091988227}
   - component: {fileID: 6024593825631682787}
   m_Layer: 0
-  m_Name: evil spirit trigger
+  m_Name: evil spirit trigger2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -371,11 +373,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1186704846252003771}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.5, y: 0, z: 0}
+  m_LocalPosition: {x: 9.6, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6527485958438557256}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &8955242159091988227
 BoxCollider:
@@ -388,8 +390,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.7, y: 11.37, z: 11.13}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.7, y: 12.552799, z: 25.8657}
+  m_Center: {x: 0, y: 0.5913999, z: -0.11345291}
 --- !u!114 &6024593825631682787
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,21 +407,9 @@ MonoBehaviour:
   onAreaEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1901500145508779790}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 1901500145508779789}
         m_TargetAssemblyTypeName: Spirit, Assembly-CSharp
-        m_MethodName: PlayIntroScrene
+        m_MethodName: IntoMirror
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -686,9 +676,85 @@ MonoBehaviour:
     m_RotationOrder: 4
   duration: 1
   totalDelay: 1
+  delayBeforeAppearAnimation: 0
   offSetDistance: 2
   visible: 1
   isTVTutorial: 1
+--- !u!1 &4013967882025839631
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6320562444354377958}
+  - component: {fileID: 4043933108217980644}
+  - component: {fileID: 1490683663820042111}
+  m_Layer: 0
+  m_Name: evil spirit trigger1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6320562444354377958
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4013967882025839631}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 14.5, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6527485958438557256}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &4043933108217980644
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4013967882025839631}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.4943867, y: 11.37, z: 11.13}
+  m_Center: {x: 4.5972853, y: 0, z: 0}
+--- !u!114 &1490683663820042111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4013967882025839631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2db411da0904b09498026c2d4e222395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onAreaEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1901500145508779789}
+        m_TargetAssemblyTypeName: Spirit, Assembly-CSharp
+        m_MethodName: BehindPlayerDelay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  onAreaExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7754275021796874671
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,13 +935,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Spirit
       objectReference: {fileID: 0}
-    - target: {fileID: 4399173564363607692, guid: c68af459b776f80438216534a37826e0, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4399173564363607694, guid: c68af459b776f80438216534a37826e0, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 4399173564363607694, guid: c68af459b776f80438216534a37826e0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -919,17 +981,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c68af459b776f80438216534a37826e0, type: 3}
---- !u!1 &1901500145508779790 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4399173564363607692, guid: c68af459b776f80438216534a37826e0, type: 3}
-  m_PrefabInstance: {fileID: 2841346138417203586}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1901500145508779789 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4399173564363607695, guid: c68af459b776f80438216534a37826e0, type: 3}
   m_PrefabInstance: {fileID: 2841346138417203586}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1901500145508779790}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dfad49c519724c149bcb10414be8ff63, type: 3}
@@ -1068,7 +1125,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8289509384805391908, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: m_Name
-      value: WithTutorialText
+      value: IntroLevel
       objectReference: {fileID: 0}
     - target: {fileID: 8289509384805391908, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
       propertyPath: m_IsActive

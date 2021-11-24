@@ -46,7 +46,7 @@ public class FPMovement : MonoBehaviour
     private Collider topCollider;
     [SerializeField]
     private ParticleSystem windParticles;
-    private SFXFiles footstepFile = SFXFiles.player_footstep;
+    private string footstepFile = SFXFiles.player_footstep;
 
     private float walkStepDistance = 4f;
 

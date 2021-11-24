@@ -14,7 +14,19 @@ public class Spirit : MonoBehaviour
 
     private SFXInstance spiritSound;
 
-    public void ToggleParticles(bool val) {
+    private bool behindPlayerPlayed = false;
+    private bool intoMirrorPlayed = false;
+
+    public void EnableSpirit(bool val) {
+        if (val) {
+            if (spiritSound == null)
+                spiritSound = AudioHandler.Instance.Player3DSound(SFXFiles.evil_spirit, transform, 0f, 1f, true, true);
+            else spiritSound.AudioSource.Play();
+            StartCoroutine(spiritSound.AudioSource.FadeSFXVolume(.1f, AnimationCurve.EaseInOut(0,0,1,1), .5f));
+        }
+        else {
+            StartCoroutine(spiritSound.AudioSource.FadeSFXVolume(0, AnimationCurve.EaseInOut(0,0,1,1), 3f));
+        }
         foreach(ParticleSystem ps in particles) {
             if (val) {
                 ps.Play();
@@ -24,18 +36,36 @@ public class Spirit : MonoBehaviour
         }
     }
 
-    public void PlayIntroScrene() {
+    public void BehindPlayerDelay() {
+        if (behindPlayerPlayed) return;
+        behindPlayerPlayed = true;
+        StartCoroutine(WaitBeforeBehindPlayerCutscene());
+    }
 
-        spiritSound = AudioHandler.Instance.Player3DSound(SFXFiles.evil_spirit, transform, 0f, 1f, true, true);
-        StartCoroutine(spiritSound.AudioSource.FadeSFXVolume(.3f, AnimationCurve.EaseInOut(0,0,1,1), .2f));
 
-        ToggleParticles(true);
-        StartCoroutine(playAnimation("intro", 5f, () => {
-            ToggleParticles(false);
-            StartCoroutine(spiritSound.AudioSource.FadeSFXVolume(0, AnimationCurve.EaseInOut(0,0,1,1), 3f));
+    private IEnumerator WaitBeforeBehindPlayerCutscene() {
+        yield return new WaitForSeconds(4f);
+        BehindPlayer();
+    }
+
+    public void BehindPlayer() {
+        EnableSpirit(true);
+        StartCoroutine(playAnimation("behind_player", 2.5f, () => {
+            if (!intoMirrorPlayed) EnableSpirit(false);
+        }));
+    }
+
+    public void IntoMirror() {
+        if (intoMirrorPlayed) return;
+        intoMirrorPlayed = true;
+
+        EnableSpirit(true);
+        StartCoroutine(playAnimation("into_mirror", 2.5f, () => {
+            EnableSpirit(false);
             Destroy(gameObject, 5f);
             Destroy(spiritSound.AudioSource.gameObject, 5f);
         }));
+
     }
 
     private IEnumerator playAnimation(string keyword, float animationDuration, Action callback) {

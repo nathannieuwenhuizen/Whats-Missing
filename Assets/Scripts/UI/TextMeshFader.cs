@@ -18,6 +18,8 @@ public class TextMeshFader : MonoBehaviour
 
     [SerializeField]
     protected float totalDelay = 1f;
+    [SerializeField]
+    private float delayBeforeAppearAnimation = 0;
 
     [SerializeField]
     private float offSetDistance;
@@ -87,7 +89,7 @@ public class TextMeshFader : MonoBehaviour
         ResetPosition();
         for (int i = 0; i < meshes.Count; i++)
         {
-            StartCoroutine(FadeLetter(meshes[i],  ((float)i / (float)meshes.Count) * totalDelay, true));
+            StartCoroutine(FadeLetter(meshes[i], delayBeforeAppearAnimation + ((float)i / (float)meshes.Count) * totalDelay, true));
         }
     }
     ///<summary>

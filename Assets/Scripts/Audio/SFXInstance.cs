@@ -8,9 +8,8 @@ using UnityEngine;
 [System.Serializable]
 public class SFXInstance
 {
-    public string name;
     [SerializeField]
-    public SFXFiles AudioEffect;
+    public string name;
     [HideInInspector]
     public AudioSource AudioSource;
     public AudioClip[] Clip;
@@ -35,3 +34,4 @@ public class SFXInstance
     }
 
 }
+

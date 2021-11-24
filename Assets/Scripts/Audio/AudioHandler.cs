@@ -119,9 +119,9 @@ public class AudioHandler : Singleton<AudioHandler>
     /// <summary>
     ///Plays a 2D sound in the game.
     ///</summary>
-    public SFXInstance PlaySound(SFXFiles audioEffect, float volume = 1f, float pitch = 1f, bool loop = false, bool ignoreListenerVolume = false)
+    public SFXInstance PlaySound(string key, float volume = 1f, float pitch = 1f, bool loop = false, bool ignoreListenerVolume = false)
     {
-        SFXInstance selectedAudio = GetSFXInstance(audioEffect);
+        SFXInstance selectedAudio = GetSFXInstance(key);
         if (selectedAudio == default(SFXInstance)) return selectedAudio;
         selectedAudio.AudioSource.gameObject.SetActive(true);
         selectedAudio.AudioSource.spatialBlend = 0;
@@ -137,24 +137,24 @@ public class AudioHandler : Singleton<AudioHandler>
     ///<summary>
     /// Plays an UI sound that ignores the listener volume.
     ///</summary>
-    public SFXInstance PlayUISound(SFXFiles audioEffect, float volume = 1f, float pitch = 1f) {
-        return PlaySound(audioEffect, volume, pitch, false, true);
+    public SFXInstance PlayUISound(string key, float volume = 1f, float pitch = 1f) {
+        return PlaySound(key, volume, pitch, false, true);
     }
 
-    private SFXInstance GetSFXInstance(SFXFiles audioEffect) {
-        SFXInstance selectedAudio = soundEffectInstances.Find(x => x.AudioEffect == audioEffect);
+    private SFXInstance GetSFXInstance(string key) {
+        SFXInstance selectedAudio = soundEffectInstances.Find(x => x.name == key);
         if (selectedAudio == null || mute) {
-            Debug.LogWarning("AudioEffect of type" + audioEffect + " is null or mute");
+            Debug.LogWarning("AudioEffect with key " + key + " is null or mute");
             return default(SFXInstance);
         }
         if (selectedAudio.AudioSource == null) {
-            Debug.LogError("AudioSource of the audioeffect" + audioEffect + " is null");
+            Debug.LogError("AudioSource with key " + key + " is null");
             return default(SFXInstance);
         }
         return selectedAudio;
     }
-    public SFXInstance Player3DSound(SFXFiles audioEffect, Transform parent, float volume = 1f, float pitch = 1f, bool loop = false, bool asInstance = true, float soundMaxDistance = 100f,  bool ignoreListenerVolume = false) {
-        SFXInstance selectedAudio = GetSFXInstance(audioEffect);
+    public SFXInstance Player3DSound(string key, Transform parent, float volume = 1f, float pitch = 1f, bool loop = false, bool asInstance = true, float soundMaxDistance = 100f,  bool ignoreListenerVolume = false) {
+        SFXInstance selectedAudio = GetSFXInstance(key);
         if (selectedAudio == default(SFXInstance)) return selectedAudio;
         
         GameObject instance;
@@ -163,7 +163,7 @@ public class AudioHandler : Singleton<AudioHandler>
         } else {
             instance = selectedAudio.AudioSource.gameObject;
         }
-        SFXInstance newSFWIncstance = new SFXInstance() {AudioSource = instance.GetComponent<AudioSource>(), AudioEffect = audioEffect};
+        SFXInstance newSFWIncstance = new SFXInstance() {AudioSource = instance.GetComponent<AudioSource>(), name = key};
 
         newSFWIncstance.AudioSource.gameObject.SetActive(true);
         newSFWIncstance.AudioSource.clip = selectedAudio.GetClip;
@@ -192,9 +192,9 @@ public class AudioHandler : Singleton<AudioHandler>
     ///<summary>
     ///Stops the 2D sound
     ///</summary>
-    public void StopSound(SFXFiles audioEffect)
+    public void StopSound(string key)
     {
-        SFXInstance selectedAudio = soundEffectInstances.Find(x => x.AudioEffect == audioEffect);
+        SFXInstance selectedAudio = soundEffectInstances.Find(x => x.name == key);
         if (selectedAudio == null) 
             return;
         selectedAudio.AudioSource.Stop();

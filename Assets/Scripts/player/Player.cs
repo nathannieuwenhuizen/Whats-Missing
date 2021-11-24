@@ -98,6 +98,7 @@ public class Player : RoomObject
     ///</summary>
     public void Die() {
         Movement.CharacterAnimator.SetBool("dead", true);
+        StartCoroutine(PlayDeadFallSound());
         PlayCutSceneAnimation("dying");
         OnDie?.Invoke();
     }
@@ -114,6 +115,10 @@ public class Player : RoomObject
         StartCoroutine(playerCamera.AnimatingFieldOfView(80, AnimationCurve.EaseInOut(0,0,1,1), 2f));
         Movement.CharacterAnimator.SetTrigger(trigger);
         Movement.CharacterAnimator.applyRootMotion = applyRoonAnimation;
+    }
+    private IEnumerator PlayDeadFallSound() {
+        yield return new WaitForSeconds(.6f);
+        AudioHandler.Instance.PlaySound(SFXFiles.player_hits_ground, 1f);
     }
 
     private int headLayer;
@@ -180,15 +185,18 @@ public class Player : RoomObject
     ///</summary>
     public void Respawn() {
         Onrespawn?.Invoke();
-
-        // EndOfCutSceneAnimation();
         Movement.CharacterAnimator.SetBool("dead", false);
         PlayCutSceneAnimation("standingUp", true);
-        StartCoroutine(DelayEndOfAnimation(5f));
+        StartCoroutine(StandingUp());
     }
 
-    private IEnumerator DelayEndOfAnimation(float sec) {
-        yield return new WaitForSeconds(sec);
+    private IEnumerator StandingUp() {
+        yield return new WaitForSeconds(2.2f);
+        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep, .1f);
+        yield return new WaitForSeconds(.5f);
+        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep, .1f);
+        yield return new WaitForSeconds(2.3f);
+        // yield return new WaitForSeconds(5f);
         EndOfCutSceneAnimation();
     }
 }
