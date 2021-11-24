@@ -62,7 +62,7 @@ public class RoomObject : RoomEntity
             case MissingChangeEffect.scale:
                 transform.localScale = Vector3.zero;
                 AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
-                yield return transform.AnimatingScale(currentScale, curve, .5f);
+                yield return transform.AnimatingScale(startMissingScale, curve, .5f);
             break;
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials())
@@ -92,7 +92,7 @@ public class RoomObject : RoomEntity
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
-        transform.localScale = currentScale;
+        transform.localScale = startMissingScale;
     }
 
     #endregion

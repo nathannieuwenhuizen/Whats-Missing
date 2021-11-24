@@ -47,6 +47,9 @@ public interface IMissable {
 /// An entity that can be shrunk.
 ///</summary>
 public interface IShrinkable {
+
+    float ShrinkScale {get;}
+
     ///<summary>
     /// Fires when the object starts shrinking. Here it calls the animation if the object is set to animate.
     ///</summary>
@@ -77,6 +80,8 @@ public interface IShrinkable {
 /// An entity that can be enlarged.
 ///</summary>
 public interface IEnlargable {
+
+    float LargeScale {get;}
     ///<summary>
     /// Fires when the object starts enlarging. Here it calls the animation if the object is set to animate.
     ///</summary>
@@ -183,6 +188,10 @@ public interface IChangable : IMissable, IShrinkable, IEnlargable, IFlippable
     void RemoveChange(Change changeType);
 }
 
+
+///<summary>
+/// Interface for objects can be picked up and thrown away
+///</summary>
 public interface IPickable {
     void Grab(Rigidbody connectedRB);
     void Release();
@@ -190,9 +199,21 @@ public interface IPickable {
     Rigidbody RigidBody { get; set; }
     RigidBodyInfo RigidBodyInfo { get;set;}    
 }
+
+///<summary>
+/// Interface for objects that can be interacteb by the player
+///</summary>
 public interface IInteractable {
+
+    ///<summary>
+    /// Wheter the object is focues or not
+    ///</summary>
     bool Focused {get; set;}
     GameObject Gameobject { get; }
+
+    ///<summary>
+    /// This function gets called when the player clicks on the interactable object while playing.
+    ///</summary>
     void Interact();
 }
 

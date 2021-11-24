@@ -10,7 +10,7 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     [SerializeField]
     protected string[] alternateWords;
 
-    protected Vector3 currentScale;
+    protected Vector3 startMissingScale;
 
     public string Word {
         get { return word;}
@@ -33,6 +33,12 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     public MissingChangeEffect MissingChangeEffect => missingChangeEffect;
 
     public int id {get; set; }
+
+    protected float largeScale = 2;
+    public float LargeScale => largeScale;
+
+    protected float shrinkScale = .5f;
+    public float ShrinkScale => shrinkScale;
 
     public virtual void AddChange(Change change) {
         switch (change.mirror.changeType) {
@@ -86,7 +92,7 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     ///</summary>
     public virtual void OnMissing()
     {
-        currentScale = transform.localScale;
+        startMissingScale = transform.localScale;
         if (Animated) {
             StartCoroutine(AnimateMissing());
         } else {
@@ -123,7 +129,7 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     ///</summary>
     public virtual void OnAppearingFinish()
     {
-        transform.localScale = currentScale;
+        transform.localScale = startMissingScale;
     }
 
     #endregion

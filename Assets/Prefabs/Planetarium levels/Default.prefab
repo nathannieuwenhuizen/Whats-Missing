@@ -9988,7 +9988,7 @@ MonoBehaviour:
   alternateWords: []
   missingChangeEffect: 1
   room: {fileID: 8289509384805391910}
-  shockWaveMaterial: {fileID: 2100000, guid: fadb8a2825908334181afecf5aa96cb9, type: 2}
+  shockWaveMaterial: {fileID: 0}
 --- !u!1 &3775356660496504317
 GameObject:
   m_ObjectHideFlags: 0
@@ -14926,6 +14926,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e38689f8000104299cbba56202bcad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onAreaEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onAreaExit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &4109791166091500287
 GameObject:
   m_ObjectHideFlags: 0
@@ -15110,9 +15116,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5712448677931812146}
-  - component: {fileID: 1878902354186529407}
+  - component: {fileID: 5710092161577793496}
   m_Layer: 0
-  m_Name: ui
+  m_Name: cursor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15132,7 +15138,7 @@ Transform:
   m_Father: {fileID: 4893392740938670282}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1878902354186529407
+--- !u!114 &5710092161577793496
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15141,16 +15147,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5078616464939174188}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf04351e5419daa4f849c0b569400597, type: 3}
+  m_Script: {fileID: 11500000, guid: b7580c94c831b2e429130afc56a2a64b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  word: ui
+  word: cursor
   alternateWords:
-  - interface
-  - user interface
-  - interfaces
-  - cursor
-  - gui
+  - mouse
+  - ui
+  - intrface
+  - cursors
+  - mouses
+  - target
   missingChangeEffect: 1
   mouseEmptyTexture: {fileID: 2800000, guid: 7bdd1921478a5814eb616a0f24cd9f99, type: 3}
   bigMouseTexture: {fileID: 2800000, guid: c3d3194e0cd18464e80b017791446b47, type: 3}

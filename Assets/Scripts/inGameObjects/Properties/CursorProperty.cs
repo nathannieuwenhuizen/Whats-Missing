@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIProperty : Property
+public class CursorProperty : Property
 {
 
     private float animationDuration = 1f;
@@ -16,16 +16,12 @@ public class UIProperty : Property
     private List<CanvasGroup> GetIngameCanvasElements() {
         List<CanvasGroup> list = new List<CanvasGroup>();
         list.Add(Canvas.FindObjectOfType<CursorUI>().GetComponent<CanvasGroup>());
-        list.Add(Canvas.FindObjectOfType<LegendaPanel>().GetComponent<CanvasGroup>());
         return list;
     }
 
-    
-
-    public override void OnMissing()
-    {
-        ingameCanvasElements = GetIngameCanvasElements();
-        base.OnMissing();
+    #region Missing
+    private void Awake() {
+        largeScale = 10f;
     }
 
     public override IEnumerator AnimateMissing()
@@ -70,16 +66,65 @@ public class UIProperty : Property
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
             uiGroup.alpha = 1;
         }
+    }
 
+    #endregion
+
+    #region  Enlarging
+
+    public override IEnumerator AnimateEnlarging()
+    {
+        foreach(CanvasGroup uiGroup in ingameCanvasElements) {
+            RectTransform rt = uiGroup.GetComponent<RectTransform>();
+            StartCoroutine(rt.AnimatingScale(Vector3.one * LargeScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+        }
+        yield return new WaitForSeconds(animationDuration);
+        yield return base.AnimateEnlarging();
+    }
+
+    public override void OnEnlargingFinish()
+    {
+        foreach(CanvasGroup uiGroup in ingameCanvasElements) {
+            RectTransform rt = uiGroup.GetComponent<RectTransform>();
+            rt.localScale = Vector3.one * LargeScale;
+        }
+        Cursor.SetCursor(bigMouseTexture, Vector2.zero, CursorMode.ForceSoftware);
+        base.OnEnlargingFinish();
+    }
+
+    public override IEnumerator AnimateEnlargeRevert()
+    {
+        foreach(CanvasGroup uiGroup in ingameCanvasElements) {
+            RectTransform rt = uiGroup.GetComponent<RectTransform>();
+            StartCoroutine(rt.AnimatingScale(Vector3.one, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+        }
+        yield return new WaitForSeconds(animationDuration);
+        yield return base.AnimateEnlargeRevert();
+    }
+
+    public override void OnEnlargeRevertFinish()
+    {
+        base.OnEnlargeRevertFinish();
+        foreach(CanvasGroup uiGroup in ingameCanvasElements) {
+            RectTransform rt = uiGroup.GetComponent<RectTransform>();
+            rt.localScale = Vector3.one;
+        }
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+    }
+    #endregion
+
+    public override void OnRoomEnter()
+    {
+        ingameCanvasElements = GetIngameCanvasElements();
+        base.OnRoomEnter();
     }
 
     private void OnDisable() {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
     }
 
-
     private void Reset() {
-        Word = "ui";
-        AlternativeWords = new string[]{ "interface", "user interface", "interfaces", "cursor", "gui"};
+        Word = "cursor";
+        AlternativeWords = new string[]{ "mouse", "ui", "intrface", "cursors", "mouses", "target"};
     }
 }

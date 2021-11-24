@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public static class Extensions
@@ -46,40 +45,6 @@ public static class Extensions
         return p0 + t * (p1 - p0);
     }
 
-
-    public static IEnumerator FadeCanvasGroup( this CanvasGroup group, float end, float duration, float delay = 0) {
-        yield return new WaitForSeconds(delay);
-        float index = 0;
-        float begin = group.alpha;
-         while (index < duration) {
-             yield return new WaitForEndOfFrame();
-             index += Time.unscaledDeltaTime;
-             group.alpha = Mathf.Lerp(begin, end, index / duration);
-         }
-        group.alpha = end;
-    }
-    public static IEnumerator FadeText( this TMP_Text text, float end, float duration, float delay = 0) {
-        yield return new WaitForSeconds(delay);
-        float index = 0;
-        float begin = text.alpha;
-         while (index < duration) {
-             yield return new WaitForEndOfFrame();
-             index += Time.unscaledDeltaTime;
-             text.alpha = Mathf.Lerp(begin, end, index / duration);
-         }
-        text.alpha = end;
-    }
-
-    public static  IEnumerator AnimatingScale(this Transform transform, Vector3 endScale,  AnimationCurve curve, float duration = .5f) {
-        float timePassed = 0f;
-        Vector3 beginScale = transform.localScale;
-        while (timePassed < duration) {
-            yield return new WaitForEndOfFrame();
-            timePassed += Time.deltaTime;
-            transform.localScale = Vector3.LerpUnclamped(beginScale, endScale , curve.Evaluate(timePassed / duration));
-        }
-        transform.localScale = endScale;
-    }
     public static IEnumerator FadeSFXVolume(this AudioSource audioSource, float endVal,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;
         float begin = audioSource.volume;
@@ -91,17 +56,6 @@ public static class Extensions
         audioSource.volume = endVal;
     }
     
-    public static  IEnumerator AnimatingLocalPos(this Transform transform, Vector3 endLocalPos,  AnimationCurve curve, float duration = .5f) {
-        float timePassed = 0f;
-        Vector3 beginPos = transform.localPosition;
-        while (timePassed < duration) {
-            yield return new WaitForEndOfFrame();
-            timePassed += Time.deltaTime;
-            transform.localPosition = Vector3.LerpUnclamped(beginPos, endLocalPos , curve.Evaluate(timePassed / duration));
-        }
-        transform.localPosition = endLocalPos;
-
-    }
     public static  IEnumerator AnimatingFieldOfView(this Camera camera, float endview,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;
         float beginView = camera.fieldOfView;
@@ -111,26 +65,6 @@ public static class Extensions
             camera.fieldOfView = Mathf.LerpUnclamped(beginView, endview , curve.Evaluate(timePassed / duration));
         }
         camera.fieldOfView = endview;
-    }
-
-    public static  IEnumerator Shake(this Transform transform, float magintude, float frequence, float duration = .5f) {
-        float timePassed = 0f;
-        while (timePassed < duration) {
-            yield return new WaitForEndOfFrame();
-            timePassed += Time.deltaTime;
-            float currentMagnitude = Mathf.Sin(Mathf.PI * (timePassed / duration)) * magintude;
-            transform.localRotation = Quaternion.Euler(
-                transform.localRotation.x,
-                transform.localRotation.y,
-                Mathf.Sin((timePassed * frequence) * (Mathf.PI * 2)) * currentMagnitude
-            );
-        }
-        transform.localRotation = Quaternion.Euler(
-                transform.localRotation.x,
-                transform.localRotation.y,
-                0
-            );
-
     }
 
 
