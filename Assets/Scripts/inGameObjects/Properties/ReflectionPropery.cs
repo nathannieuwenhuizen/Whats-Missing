@@ -33,8 +33,8 @@ public class ReflectionPropery : Property
 
     public override IEnumerator AnimateMissing()
     {
-        StartCoroutine(mirrorMaterial.AnimatingDissolveMaterial(1,0, AnimationCurve.EaseInOut(0,0,1,1), 3f, 0.02f));
-        yield return new WaitForSeconds(3f);
+        StartCoroutine(mirrorMaterial.AnimatingDissolveMaterial(1,0, AnimationCurve.EaseInOut(0,0,1,1), animationDuration, 0.02f));
+        yield return new WaitForSeconds(animationDuration);
         yield return base.AnimateMissing();
     }
     public override void OnMissingFinish()
@@ -56,8 +56,8 @@ public class ReflectionPropery : Property
 
     public override IEnumerator AnimateAppearing()
     {
-        StartCoroutine(mirrorMaterial.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), 3f, 0.02f));
-        yield return new WaitForSeconds(3f);
+        StartCoroutine(mirrorMaterial.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), animationDuration, 0.02f));
+        yield return new WaitForSeconds(animationDuration);
         yield return base.AnimateAppearing();
     }
 

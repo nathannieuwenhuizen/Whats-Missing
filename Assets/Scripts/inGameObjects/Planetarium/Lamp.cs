@@ -17,7 +17,7 @@ public class Lamp : InteractabelObject
 
     private bool inAnimation = false;
     private float animationOffset = .0025f;
-    private float animationDuration = .5f;
+    private float cordAnimationDuration = .5f;
 
     private bool lampIsOn = true;
     public bool LampIsOn {
@@ -42,14 +42,14 @@ public class Lamp : InteractabelObject
         float index = 0; 
         bool toggled = false;
         inAnimation = true;
-        while(index < animationDuration) {
+        while(index < cordAnimationDuration) {
             index += Time.deltaTime;
-            if (index / animationDuration > .5f && toggled == false) {
+            if (index / cordAnimationDuration > .5f && toggled == false) {
                 LampIsOn = !LampIsOn;
                 toggled = true;
             }
             Vector3 newPos = cordStartPos;
-            newPos.z -= Mathf.Sin((index / animationDuration) * Mathf.PI) * animationOffset;
+            newPos.z -= Mathf.Sin((index / cordAnimationDuration) * Mathf.PI) * animationOffset;
             cord.localPosition = newPos;
             yield return new WaitForEndOfFrame();
         }

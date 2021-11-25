@@ -34,9 +34,9 @@ public class RoomObject : RoomEntity
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials())
                 {
-                    StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), 3f));
+                    StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
                 }
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(animationDuration);
             break;
         }
         OnMissingFinish();
@@ -67,9 +67,9 @@ public class RoomObject : RoomEntity
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials())
                 {
-                    StartCoroutine(mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), 3f));
+                    StartCoroutine(mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
                 }
-                yield return new WaitForSeconds(3f);
+                yield return new WaitForSeconds(animationDuration);
             break;
         }
         OnAppearingFinish();
@@ -101,33 +101,32 @@ public class RoomObject : RoomEntity
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
-        normalScale = transform.localScale;
+        normalScale = transform.localScale.x;
     }
 
 
     #region  shrinking/enlarging
-    private Vector3 normalScale;
 
     public override IEnumerator AnimateShrinking()
     {
-        yield return transform.AnimatingScale(normalScale * .5f, AnimationCurve.EaseInOut(0,0,1,1), 3f);
+        yield return transform.AnimatingScale(Vector3.one * shrinkScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnShrinkingFinish();
     }
 
     public override void OnShrinkingFinish()
     {
-        transform.localScale = normalScale * .5f;
+        transform.localScale = Vector3.one * shrinkScale;
     }
 
     public override IEnumerator AnimateShrinkRevert()
     {
-        yield return transform.AnimatingScale(normalScale, AnimationCurve.EaseInOut(0,0,1,1), 3f);
+        yield return transform.AnimatingScale(Vector3.one * normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnShrinkingRevertFinish();
     }
 
     public override void OnShrinkingRevertFinish()
     {
-        transform.localScale = normalScale;
+        transform.localScale = Vector3.one * normalScale;
     }
     #endregion
 }

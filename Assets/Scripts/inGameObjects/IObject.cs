@@ -47,7 +47,7 @@ public interface IMissable {
 /// An entity that can be shrunk.
 ///</summary>
 public interface IShrinkable {
-
+    float NormalScale {get;}
     float ShrinkScale {get;}
 
     ///<summary>
@@ -80,7 +80,7 @@ public interface IShrinkable {
 /// An entity that can be enlarged.
 ///</summary>
 public interface IEnlargable {
-
+    float NormalScale {get;}
     float LargeScale {get;}
     ///<summary>
     /// Fires when the object starts enlarging. Here it calls the animation if the object is set to animate.
@@ -170,6 +170,10 @@ public interface IChangable : IMissable, IShrinkable, IEnlargable, IFlippable
     /// If the entity sets it changes to be animated.
     ///</summary>
     bool Animated { get; set;}
+    ///<summary>
+    /// The duration the change animation should last in seconds.
+    ///</summary>
+    float AnimationDuration {get; set;}
     ///<summary>
     /// I don't know what this is...sorry
     ///</summary>

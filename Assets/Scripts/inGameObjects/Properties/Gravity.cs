@@ -22,6 +22,10 @@ public class Gravity : Property
         });
         yield return base.AnimateMissing();
     }
+
+    public Gravity() {
+        animationDuration = 1f;
+    }
     public override void OnMissingFinish()
     {
         onGravityMissing?.Invoke();
@@ -35,7 +39,6 @@ public class Gravity : Property
 
 
     private IEnumerator AnimatGravityToggle(Action<Rigidbody> callback) {
-        float totalTime = 1f;
         List<Rigidbody> allRigidbodies = SortedByDistanceRigidBodies();
         int steps = allRigidbodies.Count > 20 ? Mathf.CeilToInt(allRigidbodies.Count / 20) : 1;
         for (int i = 0; i < allRigidbodies.Count; i += steps)
@@ -47,7 +50,7 @@ public class Gravity : Property
                     callback(rb);
                 }
             }
-            yield return new WaitForSeconds(totalTime / ((float)allRigidbodies.Count / steps));
+            yield return new WaitForSeconds(animationDuration / ((float)allRigidbodies.Count / steps));
         }
     }
 

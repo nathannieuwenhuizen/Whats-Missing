@@ -27,6 +27,10 @@ public class LightningProperty : Property
             UpdateRenderSettings();
         }
     }
+
+    public LightningProperty() {
+        animationDuration = 2f;
+    }
     
     private void UpdateRenderSettings() {
         RenderSettings.ambientGroundColor = SceneColors.groundColor;
@@ -73,14 +77,14 @@ public class LightningProperty : Property
         yield return base.AnimateAppearing();
     }
 
-    private IEnumerator FadeAmbientColor(AmbientColors end, float duration = 2f) {
+    private IEnumerator FadeAmbientColor(AmbientColors end) {
         AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
         AmbientColors start = sceneColors;
         float index = 0;
-        while (index < duration)
+        while (index < animationDuration)
         {
             index += Time.deltaTime;
-            float val = curve.Evaluate(index / duration);
+            float val = curve.Evaluate(index / animationDuration);
             SceneColors = new AmbientColors() {
                 sunColor = Color.LerpUnclamped(start.sunColor, end.sunColor, val),
                 skyColor = Color.LerpUnclamped(start.skyColor, end.skyColor, val),

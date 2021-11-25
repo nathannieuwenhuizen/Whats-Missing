@@ -37,6 +37,10 @@ public class PerspectiveProperty : Property
         perspective = Matrix4x4.Perspective(fov, aspect, near, far);
     }
 
+    public PerspectiveProperty() {
+        animationDuration = 1f;
+    }
+
 
     #region  missing
     public override void OnMissing()
@@ -50,8 +54,8 @@ public class PerspectiveProperty : Property
     public override IEnumerator AnimateMissing()
     {
         m_camera.projectionMatrix = perspective;
-        StartCoroutine(m_camera.transform.AnimatingLocalPos(startLocalPos + new Vector3(0,cameraYOffset,0), AnimationCurve.EaseInOut(0,0,1,1), 1f));
-        yield return StartCoroutine(BlendToMatrix(ortho, orthoNear, 1f, 8,true));
+        StartCoroutine(m_camera.transform.AnimatingLocalPos(startLocalPos + new Vector3(0,cameraYOffset,0), AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+        yield return StartCoroutine(BlendToMatrix(ortho, orthoNear, animationDuration, 8,true));
         yield return base.AnimateMissing();
     }
 
@@ -74,8 +78,8 @@ public class PerspectiveProperty : Property
     }
     public override IEnumerator AnimateAppearing()
     {
-        StartCoroutine(m_camera.transform.AnimatingLocalPos(startLocalPos, AnimationCurve.EaseInOut(0,0,1,1), 1f));
-        yield return StartCoroutine(BlendToMatrix(perspective, near, 1f, 8,false));
+        StartCoroutine(m_camera.transform.AnimatingLocalPos(startLocalPos, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+        yield return StartCoroutine(BlendToMatrix(perspective, near, animationDuration, 8,false));
         base.AnimateAppearing();
         OnAppearingFinish();
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
+public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 {
     [SerializeField]
     protected string word;
@@ -39,6 +39,12 @@ public class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     protected float shrinkScale = .5f;
     public float ShrinkScale => shrinkScale;
+
+    protected float normalScale = 1f;
+    public float NormalScale => normalScale;
+
+    protected float animationDuration = 3f;
+    public float AnimationDuration { get => animationDuration; set => animationDuration = value; }
 
     public virtual void AddChange(Change change) {
         switch (change.mirror.changeType) {

@@ -86,10 +86,10 @@ public class MirrorCanvas : MonoBehaviour
                 header = "flipped";
                 break;
             case ChangeType.tooBig:
-                header = "too big";
+                header = "different";
                 break;
             case ChangeType.tooSmall:
-                header = "too small";
+                header = "different";
                 break;
         }
         HeaderText.text = "What's <b>" + header + "<b>" + roomText + "?";

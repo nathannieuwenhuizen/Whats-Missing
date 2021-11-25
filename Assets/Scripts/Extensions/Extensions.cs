@@ -68,7 +68,7 @@ public static class Extensions
     }
 
 
-    public static  IEnumerator AnimatingDissolveMaterial(this Material mat, float beginVal, float endVal,  AnimationCurve curve, float duration = .5f, float edgeWidth = .1f) {
+    public static  IEnumerator AnimatingDissolveMaterial(this Material mat, float beginVal, float endVal,  AnimationCurve curve, float duration = .5f, float edgeWidth = .05f) {
         mat.SetFloat("EdgeWidth", edgeWidth);
         mat.SetFloat("Dissolve", beginVal);
         float timePassed = 0f;

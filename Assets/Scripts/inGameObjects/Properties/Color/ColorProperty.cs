@@ -12,13 +12,16 @@ public class ColorProperty : Property
     [SerializeField]
     private Material greyMaterial;
 
-    private float animationDuration = 1f;
     private float sphereSize = 20f;
 
     [SerializeField]
     private Room room;
     private ColorAdjustments colorAdjustments;
 
+    public ColorProperty() {
+        Debug.Log("initialize");
+        animationDuration = 10f;
+    }
     public override void OnMissing()
     {
         base.OnMissing();
@@ -28,6 +31,7 @@ public class ColorProperty : Property
         } else 
             saturation = -100f;
     }
+
     public override void OnAppearing()
     {
         base.OnAppearing();

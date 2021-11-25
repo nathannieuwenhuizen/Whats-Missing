@@ -23,7 +23,6 @@ public class WarmthProperty : Property
     [SerializeField]
     private ParticleSystem snowParticles;
 
-    private float animationDuration = 3f;
     private float endOpacity = .8f;
 
     public override void OnMissing()

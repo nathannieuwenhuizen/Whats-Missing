@@ -43,8 +43,8 @@ public class TextureProperty : Property
     public override IEnumerator AnimateMissing()
     {
 
-        StartCoroutine(noTextureMaterial.AnimatingDissolveMaterial(1,0, AnimationCurve.EaseInOut(0,0,1,1), 3f, 0.02f));
-        yield return new WaitForSeconds(3f);
+        StartCoroutine(noTextureMaterial.AnimatingDissolveMaterial(1,0, AnimationCurve.EaseInOut(0,0,1,1), animationDuration, 0.02f));
+        yield return new WaitForSeconds(animationDuration);
         yield return base.AnimateMissing();
     }
 
@@ -71,8 +71,8 @@ public class TextureProperty : Property
 
     public override IEnumerator AnimateAppearing()
     {
-        StartCoroutine(noTextureMaterial.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), 3f, 0.02f));
-        yield return new WaitForSeconds(3f);
+        StartCoroutine(noTextureMaterial.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), animationDuration, 0.02f));
+        yield return new WaitForSeconds(animationDuration);
         yield return base.AnimateAppearing();
     }
 

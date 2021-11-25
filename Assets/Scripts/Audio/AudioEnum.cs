@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public static class SFXFiles {
+
+    //door
     public static string door_closing = "Door_closing";
     public static string door_open = "Door_open";
     public static string door_squeek = "Door_squeek";
 
+    //player
     public static string player_jump = "Player_jump";
     public static string player_landing = "Player_landing";
     public static string player_footstep = "Player_footstep";
@@ -18,21 +21,22 @@ public static class SFXFiles {
     public static string exhale = "Exhale";
     public static string player_hits_ground = "Person_hits_ground";
     
-    public static string chair_hit = "Chair_hit";
-
+    //planetarium
     public static string tv_change_woosh = "Tv_change_woosh";
     public static string letter_click = "Letter_click";
     public static string mirror_true = "Mirror_true";
     public static string mirror_false = "Mirror_false";
     public static string fire_crackling = "Fire_crackling";
+    public static string chair_hit = "Chair_hit";
     public static string clock_ticking = "Clock_ticking";
+    public static string evil_spirit = "Evil_spirit";
+    public static string lamp_toggle = "Lamp_toggle";
 
     //hiddenroom
     public static string rumble_ground = "Rumble_ground";
     public static string woosh = "Woosh";
     public static string grab_book = "Grab_book";
 
-    public static string lamp_toggle = "Lamp_toggle";
 
     //ui
     public static string ui_button_click = "Ui_button_click";
@@ -44,10 +48,12 @@ public static class SFXFiles {
     public static string toggle_on = "Toggle_on";
     public static string toggle_off = "Toggle_off";
     public static string slider_select = "Slider_select";
-
     public static string windows_error = "Windows_error";
     public static string hintbutton_show = "";
-    public static string evil_spirit = "Evil_spirit";
+
+    //Garden
+    public static string sun_burning = "Sun_burning";
+
 }
 public enum MusicFiles {
     planetarium,

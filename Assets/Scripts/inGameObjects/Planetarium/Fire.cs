@@ -19,6 +19,8 @@ public class Fire : RoomObject
         TimeProperty.onTimeAppearing += UpdateTimeScale;
         WarmthProperty.OnWarmthMissing += SetFireOff;
         WarmthProperty.OnWarmthAppearing += SetFireOn;
+        AirProperty.OnAirMissing += SetFireOff;
+        AirProperty.OnAirAppearing += SetFireOn;
     }
 
     private void OnDisable() {
@@ -26,6 +28,8 @@ public class Fire : RoomObject
         TimeProperty.onTimeAppearing -= UpdateTimeScale;
         WarmthProperty.OnWarmthMissing -= SetFireOff;
         WarmthProperty.OnWarmthAppearing -= SetFireOn;
+        AirProperty.OnAirMissing -= SetFireOff;
+        AirProperty.OnAirAppearing -= SetFireOn;
     }
 
     public override void OnRoomEnter()

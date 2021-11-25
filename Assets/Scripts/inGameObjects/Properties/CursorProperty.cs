@@ -5,8 +5,6 @@ using UnityEngine;
 public class CursorProperty : Property
 {
 
-    private float animationDuration = 1f;
-
     [SerializeField]
     private Texture2D mouseEmptyTexture;
     [SerializeField]
@@ -17,6 +15,10 @@ public class CursorProperty : Property
         List<CanvasGroup> list = new List<CanvasGroup>();
         list.Add(Canvas.FindObjectOfType<CursorUI>().GetComponent<CanvasGroup>());
         return list;
+    }
+
+    public CursorProperty() {
+        animationDuration = 1f;
     }
 
     #region Missing
@@ -96,7 +98,7 @@ public class CursorProperty : Property
     {
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
             RectTransform rt = uiGroup.GetComponent<RectTransform>();
-            StartCoroutine(rt.AnimatingScale(Vector3.one, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+            StartCoroutine(rt.AnimatingScale(Vector3.one * normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
         }
         yield return new WaitForSeconds(animationDuration);
         yield return base.AnimateEnlargeRevert();
@@ -107,7 +109,7 @@ public class CursorProperty : Property
         base.OnEnlargeRevertFinish();
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
             RectTransform rt = uiGroup.GetComponent<RectTransform>();
-            rt.localScale = Vector3.one;
+            rt.localScale = Vector3.one * normalScale;
         }
         Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
     }
