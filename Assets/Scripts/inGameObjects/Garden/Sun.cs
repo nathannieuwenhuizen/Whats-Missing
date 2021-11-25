@@ -26,17 +26,18 @@ public class Sun : RoomObject
         }
     }
     private void Start() {
-        //  SunEnabled = true;
-    }
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.P)) 
-        SunEnabled = true;
+         SunEnabled = true;
     }
 
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
+        // sunEnabled = false;
+    }
+    public override void OnRoomLeave()
+    {
         sunEnabled = false;
+        base.OnRoomLeave();
     }
 
     public override void OnShrinking()

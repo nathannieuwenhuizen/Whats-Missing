@@ -257,17 +257,17 @@ public class Area : MonoBehaviour
                 directionalLight.animating = true;
                 
                 CurrentRoom = rooms[index];
-                StartCoroutine(Door.Walking(CurrentRoom.StartDoor.EndPos(), duration, player));
+                StartCoroutine(door.Walking(CurrentRoom.StartDoor.EndPos(), duration, player));
 
             } else {
                 furthestCurrentRoomIndex = index + 1;
                 CurrentRoom = rooms[index + 1];
-                StartCoroutine(Door.Walking(CurrentRoom.StartDoor.EndPos(), duration, player));
+                StartCoroutine(door.Walking(CurrentRoom.StartDoor.EndPos(), duration, player));
             }
         } else {
             //previous room
             CurrentRoom = rooms[index];
-            StartCoroutine(Door.Walking(CurrentRoom.EndDoor.StartPos(), duration, player));
+            StartCoroutine(door.Walking(CurrentRoom.EndDoor.StartPos(), duration, player));
         }
     }
 

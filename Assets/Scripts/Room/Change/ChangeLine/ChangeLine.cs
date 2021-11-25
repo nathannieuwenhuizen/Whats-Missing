@@ -62,15 +62,15 @@ public class ChangeLine : MonoBehaviour
     ///<summary>
     /// Returns a Vector3 point based on the three points of the bezier curve.
     ///</summary>
-    private Vector3 CalculateSpiralBezierCurve(float t, Vector3 point0, Vector3 point1, Vector3 point2) {
-        Vector3 pointa = Extensions.CalculateQuadraticBezierPoint(t, point0, point1, point2);
-        Vector3 pointb = Extensions.CalculateQuadraticBezierPoint(t + 0.01f, point0, point1, point2);
-        Vector3 dir = pointb - pointa;
-        Vector3 right = (Quaternion.AngleAxis(-180, dir) * dir);
+    // private Vector3 CalculateSpiralBezierCurve(float t, Vector3 point0, Vector3 point1, Vector3 point2) {
+    //     Vector3 pointa = Extensions.CalculateQuadraticBezierPoint(t, point0, point1, point2);
+    //     Vector3 pointb = Extensions.CalculateQuadraticBezierPoint(t + 0.01f, point0, point1, point2);
+    //     Vector3 dir = pointb - pointa;
+    //     Vector3 right = (Quaternion.AngleAxis(-180, dir) * dir);
 
-        return pointa + right * 30f;
-        // return Extensions.CalculateQuadraticBezierPoint(t, point0, point1, point2);
-    }
+    //     return pointa + right * 30f;
+    //     // return Extensions.CalculateQuadraticBezierPoint(t, point0, point1, point2);
+    // }
 
 
 

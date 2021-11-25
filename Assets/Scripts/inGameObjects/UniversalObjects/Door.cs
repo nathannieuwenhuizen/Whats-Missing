@@ -5,6 +5,8 @@ using UnityEngine;
 public class Door : InteractabelObject
 {
     // Start is called before the first frame update
+    [SerializeField]
+    private Vector3 point0, point1, point2 = new Vector3();
 
     [HideInInspector]
     public Room room;
@@ -12,6 +14,7 @@ public class Door : InteractabelObject
     private bool inAnimation = false;
 
     private bool animated = false;
+    private bool inWalkingAnimation = false;
 
 
     public delegate void DoorAction(Door door);
@@ -121,18 +124,34 @@ public class Door : InteractabelObject
     ///<summary>
     /// Animates the player walking through the door
     ///</summary>
-    public static IEnumerator Walking(Vector3 endPos, float duration, Player player) {
+    public IEnumerator Walking(Vector3 endPos, float duration, Player player) {
+        inWalkingAnimation = true;
         float index = 0;
         player.Movement.EnableWalk = false;
+        player.Movement.RB.isKinematic = true;
         player.Movement.CharacterAnimator.SetTrigger("openingDoor");
+        SetBezierPoints(player.transform.position, GetClosestPoint(player), endPos);
+
         Vector3 begin = player.transform.position;
         while (index < duration) {
             index += Time.unscaledDeltaTime;
-            SetPlayerPos(Vector3.LerpUnclamped(begin, endPos, walkingCurve.Evaluate(index / duration)), player);
+            Vector3 newPos =  Extensions.CalculateQuadraticBezierPoint(walkingCurve.Evaluate(index / duration), point0, point1, point2);
+            SetPlayerPos(newPos, player);
+            // SetPlayerPos(Vector3.LerpUnclamped(begin, endPos, walkingCurve.Evaluate(index / duration)), player);
             yield return new WaitForEndOfFrame();
         }
         player.Movement.EnableWalk = true;
+        player.Movement.RB.isKinematic = false;
+
         SetPlayerPos(endPos, player);
+        inWalkingAnimation = false;
+    }
+
+    private Vector3 GetClosestPoint(Player player) {
+        if (Vector3.Distance(EndPos(), player.transform.position) <Vector3.Distance(StartPos(), player.transform.position)) {
+            return EndPos();
+        } 
+        return StartPos();
     }
 
     private static void SetPlayerPos(Vector3 value, Player player) {
@@ -154,6 +173,13 @@ public class Door : InteractabelObject
         return transform.position - transform.forward * walkDistance - transform.right * 1f;
     }
 
+    public void SetBezierPoints( Vector3 begin, Vector3 middle, Vector3 end) {
+        point0 = begin;
+        point2 = end;
+        point1 = middle;
+    }
+
+
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(StartPos(), .5f);
@@ -161,5 +187,23 @@ public class Door : InteractabelObject
         Gizmos.DrawSphere(EndPos(), .5f);
 
         Debug.DrawLine(StartPos(), EndPos(), Color.white);
+
+        if (inWalkingAnimation) {
+            int numberOfPoints = 50;
+            Gizmos.DrawWireSphere(point0, .5f);
+            Gizmos.DrawWireSphere(point1, .5f);
+            Gizmos.DrawWireSphere(point2, .5f);
+            Vector3 beginPos = point0;
+            if (point0 != null && point1 != null && point2 != null) {
+
+                for (int i = 1; i < numberOfPoints + 1; i++)
+                {
+                    float t = i / (float)numberOfPoints;
+                    Vector3 newPos =  Extensions.CalculateQuadraticBezierPoint(t, point0, point1, point2);
+                    Debug.DrawLine(beginPos, newPos);
+                    beginPos = newPos;
+                }
+            }
+        }
     }
 }
