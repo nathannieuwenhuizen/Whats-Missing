@@ -39,13 +39,7 @@ public class RigidBodyInfo {
 ///</summary>
 public class PickableRoomObject : InteractabelObject, IPickable
 {
-    private SpringJoint joint; 
-    protected Rigidbody rb; 
-    
-    
-    public int gameObjectID;
-
-
+    protected Rigidbody rb;     
     protected void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -66,6 +60,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
     [SerializeField]
     private RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
     public RigidBodyInfo RigidBodyInfo { get => rigidBodyInfo; set => rigidBodyInfo = value; }
+
+    private bool touching = false;
+    public bool Touching => touching;
 
     public override void OnAppearing()
     {
@@ -89,32 +86,16 @@ public class PickableRoomObject : InteractabelObject, IPickable
         base.OnFocus();
     }
 
-    protected override void OnBlur()
-    {
-        base.OnBlur();
+    private void FixedUpdate() {
+        touching = false;
     }
 
-
-    public override void Interact()
-    {
-        base.Interact();
+    private void OnCollisionStay(Collision other) {
+        touching = true;
     }
 
     public void Grab(Rigidbody connectedRigidBody)
-    {
-        //create spring
-        joint = gameObject.AddComponent<SpringJoint>();
-        joint.connectedBody = connectedRigidBody;
-        // joint.minDistance = 2f;
-        // joint.maxDistance = 2f;
-        joint.anchor = new Vector3(.5f,.5f,.5f);
-        joint.spring = 500;
-        joint.connectedAnchor = connectedRigidBody.transform.InverseTransformDirection(transform.position- connectedRigidBody.transform.position);
-        
-
-        if (Room.TimeScale == 0) {
-            ActivateRigidBody();
-        }
+    {        
         RigidBodyInfo.Save(rb);
         rb.drag = 100f;
         rb.mass = 0.1f;
@@ -145,20 +126,10 @@ public class PickableRoomObject : InteractabelObject, IPickable
         RigidBodyInfo.Load(rb);
     }
     ///<summary>
-    /// Releases the object activating the body only when the timescale of the room isn't 0.
+    /// Releases the object activating the body.
     ///</summary>
     public void Release()
     {
-
-        joint.connectedBody = null;
-        joint.breakForce = 0;
-
-        if (Room.TimeScale == 0) {
-            Destroy(joint);
-            DeactivateRigidBody(false);
-        } else {
-            ActivateRigidBody();
-            rb.isKinematic = false;
-        }
+        ActivateRigidBody();
     }
 }

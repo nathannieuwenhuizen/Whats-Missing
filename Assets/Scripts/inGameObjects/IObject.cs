@@ -199,6 +199,7 @@ public interface IChangable : IMissable, IShrinkable, IEnlargable, IFlippable
 public interface IPickable {
     void Grab(Rigidbody connectedRB);
     void Release();
+    bool Touching {get;}
     GameObject gameObject {get; }
     Rigidbody RigidBody { get; set; }
     RigidBodyInfo RigidBodyInfo { get;set;}    

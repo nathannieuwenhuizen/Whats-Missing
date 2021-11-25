@@ -19,7 +19,6 @@ public class ColorProperty : Property
     private ColorAdjustments colorAdjustments;
 
     public ColorProperty() {
-        Debug.Log("initialize");
         animationDuration = 10f;
     }
     public override void OnMissing()

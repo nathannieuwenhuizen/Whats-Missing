@@ -79,7 +79,6 @@ public class Hands : MonoBehaviour
     public void Release() {
         if (holdingObject == null) return;
 
-        Debug.Log("released! " + holdingObject.gameObject.name);
         if (velocity.magnitude > maxThrowForce) {
             velocity = velocity.normalized * maxThrowForce;
         }            
@@ -101,8 +100,18 @@ public class Hands : MonoBehaviour
     //TODO: needs a way better fix than this!
     private IEnumerator UpdatePhysics() {
         while (holdingObject != null) {
-
-            yield return new WaitForEndOfFrame();
+            for(int i=0 ; i < 1f; i++) {
+                var speed = holdingObject.Touching ? 3f : 10f;
+                // if (holdingObject.RigidBody.)
+                holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+                Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * 4f;
+                Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, transform.position + offset, Time.deltaTime * speed);
+                holdingObject.RigidBody.MovePosition(midwayDestination);
+                yield return new WaitForFixedUpdate();
+                
+                // holdingObject.RigidBody.velocity = Vector3.zero;
+            }
+            // yield return new WaitForEndOfFrame();
         }   
     }
 
