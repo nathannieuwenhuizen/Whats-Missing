@@ -40,14 +40,14 @@ public class PortalDoor : Door
         SetPortalState(false);
     }
 
-    public override void SetBezierPoints(Vector3 begin, Vector3 middle, Vector3 end)
+    public override void SetBezierPoints(Player player)
     {
+        base.SetBezierPoints(player);
         if (connectedDoor != null) {
-            connectedDoor.point0 = begin;
-            connectedDoor.point1 = middle;
-            connectedDoor.point2 = end;
+            connectedDoor.point0 = connectedDoor.transform.TransformPoint(transform.InverseTransformPoint(point0));
+            connectedDoor.point1 = point1 == StartPos() ? connectedDoor.StartPos() : connectedDoor.EndPos();
+            connectedDoor.point2 = point2 == StartPos() ? connectedDoor.StartPos() : connectedDoor.EndPos();
         }
-        base.SetBezierPoints(begin, middle, end);
     }
     public override void UpdatePlayerWalkingPosition(float precentage, Player player)
     {

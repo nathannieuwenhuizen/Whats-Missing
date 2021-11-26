@@ -255,7 +255,6 @@ public class Area : MonoBehaviour
     }
 
     private void OnPassingThroughDoor(Door door) {
-        float duration = 1.5f;
         OnNewRoomEnter?.Invoke();
         int index = rooms.IndexOf(door.room);
 
@@ -271,24 +270,24 @@ public class Area : MonoBehaviour
                 directionalLight.animating = true;
                 
                 CurrentRoom = rooms[index];
-                StartCoroutine(door.Walking(CurrentRoom.StartDoor.EndPos(), duration, player));
+                rooms[index - 1].EndDoor.GoingThrough();
+                StartCoroutine(rooms[index - 1].EndDoor.Walking(1.5f, player));
 
+                return;
             } else {
                 furthestCurrentRoomIndex = index + 1;
                 CurrentRoom = rooms[index + 1];
-                StartCoroutine(door.Walking(CurrentRoom.StartDoor.EndPos(), duration, player));
             }
         } else {
             //start door to previous room
             if (door == currentRoom.StartDoor) {
                 CurrentRoom = rooms[index - 1];
-                StartCoroutine(door.Walking(door.StartPos(), duration, player));
             } else {
                 //previous room
                 CurrentRoom = rooms[index];
-                StartCoroutine(door.Walking(CurrentRoom.EndDoor.StartPos(), duration, player));
             }
         }
+        StartCoroutine(door.Walking(1.5f, player));
     }
 
 }

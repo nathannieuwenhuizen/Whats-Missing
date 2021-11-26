@@ -74,7 +74,6 @@ public class Portal : MonoBehaviour
 
     
         if (!InView) return;
-        Debug.Log("is visible!");
         
         if (insidePortal && player != null) {
             Vector3 objPos = transform.InverseTransformPoint(player.transform.position);

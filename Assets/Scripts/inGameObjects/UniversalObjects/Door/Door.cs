@@ -89,10 +89,7 @@ public class Door : InteractabelObject
         return false;
     }
 
-    private void GoingThrough() {
-        inAnimation = true;
-        flipped = CheckAngle();
-        OnPassingThrough?.Invoke(this);
+    public void GoingThrough() {
         flipped = CheckAngle();
         StopAllCoroutines();
         StartCoroutine(GoingThroughFlippingAnimation());
@@ -101,6 +98,8 @@ public class Door : InteractabelObject
     public override void Interact()
     {
         if (locked || inAnimation) return;
+        flipped = CheckAngle();
+        OnPassingThrough?.Invoke(this);
         GoingThrough();
     }
 
@@ -134,13 +133,14 @@ public class Door : InteractabelObject
     ///<summary>
     /// Animates the player walking through the door
     ///</summary>
-    public IEnumerator Walking(Vector3 endPos, float duration, Player player) {
+    public IEnumerator Walking(float duration, Player player) {
         inWalkingAnimation = true;
         float index = 0;
         player.Movement.EnableWalk = false;
         player.Movement.RB.isKinematic = true;
         player.Movement.CharacterAnimator.SetTrigger("openingDoor");
-        SetBezierPoints(player.transform.position, GetClosestPoint(player), endPos);
+        Vector3 endPos = GetFarthestPoint(player);
+        SetBezierPoints(player);
 
         Vector3 begin = player.transform.position;
         while (index < duration) {
@@ -151,16 +151,26 @@ public class Door : InteractabelObject
         player.Movement.EnableWalk = true;
         player.Movement.RB.isKinematic = false;
 
-        SetPlayerPos(endPos, player);
+        // SetPlayerPos(endPos, player);
         inWalkingAnimation = false;
     }
+
+
+
+
     public virtual void UpdatePlayerWalkingPosition(float precentage, Player player) {
         Vector3 newPos =  Extensions.CalculateQuadraticBezierPoint(walkingCurve.Evaluate(precentage), point0, point1, point2);
         SetPlayerPos(newPos, player);
     }
 
-    private Vector3 GetClosestPoint(Player player) {
+    public Vector3 GetClosestPoint(Player player) {
         if (Vector3.Distance(EndPos(), player.transform.position) <Vector3.Distance(StartPos(), player.transform.position)) {
+            return EndPos();
+        } 
+        return StartPos();
+    }
+    public Vector3 GetFarthestPoint(Player player) {
+        if (Vector3.Distance(EndPos(), player.transform.position) > Vector3.Distance(StartPos(), player.transform.position)) {
             return EndPos();
         } 
         return StartPos();
@@ -172,6 +182,7 @@ public class Door : InteractabelObject
  
 
     public IEnumerator GoingThroughFlippingAnimation() {
+        inAnimation = true;
         AudioHandler.Instance?.PlaySound(SFXFiles.door_open);
         yield return StartCoroutine(AnimateDoorAngle(startAngle + wideAngle, 1.3f, openCurve));
         yield return StartCoroutine(AnimateDoorAngle(startAngle + openAngle, .5f, openCurve));
@@ -185,22 +196,22 @@ public class Door : InteractabelObject
         return transform.position - transform.forward * walkDistance - transform.right * 1f;
     }
 
-    public virtual void SetBezierPoints( Vector3 begin, Vector3 middle, Vector3 end) {
-        point0 = begin;
-        point1 = middle;
-        point2 = end;
+    public virtual void SetBezierPoints(Player player) {
+        point0 = player.transform.position;
+        point1 = GetClosestPoint(player);
+        point2 = GetFarthestPoint(player);
     }
 
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(StartPos(), .5f);
+        Gizmos.DrawSphere(StartPos(), .2f);
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(EndPos(), .5f);
+        Gizmos.DrawSphere(EndPos(), .2f);
 
-        Debug.DrawLine(StartPos(), EndPos(), Color.white);
+        // Debug.DrawLine(StartPos(), EndPos(), Color.white);
 
-        if (inWalkingAnimation) {
+        // if (inWalkingAnimation) {
             int numberOfPoints = 50;
             Gizmos.DrawWireSphere(point0, .5f);
             Gizmos.DrawWireSphere(point1, .5f);
@@ -216,6 +227,6 @@ public class Door : InteractabelObject
                     beginPos = newPos;
                 }
             }
-        }
+        // }
     }
 }
