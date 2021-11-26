@@ -43,6 +43,7 @@ public abstract class Property : RoomEntity
 
     public override void OnShrinkRevert()
     {
+        base.OnShrinkRevert();
         if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
     }
 

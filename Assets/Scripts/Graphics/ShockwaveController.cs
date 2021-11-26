@@ -27,12 +27,6 @@ public class ShockwaveController : MonoBehaviour {
     private BlitMaterialFeature blitFeature;
     private Material material;
 
-    private void Update() {
-        // if(Input.GetKeyDown(KeyCode.L)) {
-        //     StartShockwave(transform);
-        // }
-    }
-
     private void Awake() {
         if(TryGetFeature(out var feature)) {
             blitFeature = feature as BlitMaterialFeature;

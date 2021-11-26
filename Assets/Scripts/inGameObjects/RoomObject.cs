@@ -128,5 +128,26 @@ public class RoomObject : RoomEntity
     {
         transform.localScale = Vector3.one * normalScale;
     }
+    public override IEnumerator AnimateEnlarging()
+    {
+        yield return transform.AnimatingScale(Vector3.one * largeScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
+        OnEnlargingFinish();
+    }
+
+    public override void OnEnlargingFinish()
+    {
+        transform.localScale = Vector3.one * largeScale;
+    }
+
+    public override IEnumerator AnimateEnlargeRevert()
+    {
+        yield return transform.AnimatingScale(Vector3.one * normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
+        OnShrinkingRevertFinish();
+    }
+
+    public override void OnEnlargeRevertFinish()
+    {
+        transform.localScale = Vector3.one * normalScale;
+    }
     #endregion
 }

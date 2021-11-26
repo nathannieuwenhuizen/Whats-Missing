@@ -54,6 +54,10 @@ public class Player : RoomObject
         ApplyCameraSettings(Settings.GetSettings());
     }
 
+    public Player() {
+        shrinkScale = .2f;
+    }
+
     private void ApplyCameraSettings(Settings settings) {
         //set motionblur to settings.
         volume.profile.TryGet<MotionBlur>(out motionBlur);
