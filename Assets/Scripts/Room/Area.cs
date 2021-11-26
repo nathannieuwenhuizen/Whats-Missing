@@ -5,6 +5,11 @@ using UnityEngine.Events;
 
 public class Area : MonoBehaviour
 {
+    [SerializeField]
+    private Vector3 roomPositionOffset;
+    [SerializeField]
+    private float roomRotationOffset = 0;
+
     public delegate void UndoActionEvent(Room _room);
     public static UndoActionEvent OnUndo;
     public delegate void RoomEvent();
@@ -157,12 +162,20 @@ public class Area : MonoBehaviour
 
             //position room
             newRoom.transform.rotation = origin.rotation; 
-            newRoom.transform.Rotate(new Vector3(0,-90,0));
-            newRoom.transform.position = origin.position + (newRoom.transform.position - newRoom.StartDoor.transform.position);
+            newRoom.transform.Rotate(new Vector3(0,-90 + roomRotationOffset,0));
+            newRoom.transform.position = origin.position + (newRoom.transform.position - newRoom.StartDoor.transform.position) + roomPositionOffset;
             origin = newRoom.EndDoor.transform;
 
-            //deactivate the startdoor
-            newRoom.StartDoor.gameObject.SetActive(rooms.Count == 0);
+            //deactivate the startdoors if the door isn't a portal
+            if (newRoom.StartDoor.transform.GetComponent<PortalDoor>() == null) {
+                newRoom.StartDoor.gameObject.SetActive(rooms.Count == 0);
+            } else {
+                //connect the two portal doors with each other.
+                if (rooms.Count > 0) {
+                    newRoom.StartDoor.GetComponent<PortalDoor>().ConnectedDoor = rooms[rooms.Count - 1].EndDoor.GetComponent<PortalDoor>();
+                    rooms[rooms.Count - 1].EndDoor.GetComponent<PortalDoor>().ConnectedDoor = newRoom.StartDoor.GetComponent<PortalDoor>();
+                }
+            }
 
             //add to the list
             rooms.Add(newRoom);
@@ -245,7 +258,8 @@ public class Area : MonoBehaviour
         float duration = 1.5f;
         OnNewRoomEnter?.Invoke();
         int index = rooms.IndexOf(door.room);
-        if (door.room == currentRoom) {
+
+        if (door.room == currentRoom && door == currentRoom.EndDoor) {
             //next room
             if (index == rooms.Count - 1) {
                 //loop room 
@@ -265,9 +279,15 @@ public class Area : MonoBehaviour
                 StartCoroutine(door.Walking(CurrentRoom.StartDoor.EndPos(), duration, player));
             }
         } else {
-            //previous room
-            CurrentRoom = rooms[index];
-            StartCoroutine(door.Walking(CurrentRoom.EndDoor.StartPos(), duration, player));
+            //start door to previous room
+            if (door == currentRoom.StartDoor) {
+                CurrentRoom = rooms[index - 1];
+                StartCoroutine(door.Walking(door.StartPos(), duration, player));
+            } else {
+                //previous room
+                CurrentRoom = rooms[index];
+                StartCoroutine(door.Walking(CurrentRoom.EndDoor.StartPos(), duration, player));
+            }
         }
     }
 

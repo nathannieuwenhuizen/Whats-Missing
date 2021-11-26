@@ -6,7 +6,8 @@ public class Door : InteractabelObject
 {
     // Start is called before the first frame update
     [SerializeField]
-    private Vector3 point0, point1, point2 = new Vector3();
+    public Vector3 point0, point1, point2 = new Vector3();
+    
 
     [HideInInspector]
     public Room room;
@@ -20,7 +21,8 @@ public class Door : InteractabelObject
     public delegate void DoorAction(Door door);
     public static event DoorAction OnPassingThrough;
     public static event DoorAction OnDoorOpen;
-    private bool locked = true;
+    [HideInInspector]
+    public bool locked = true;
 
     private float openAngle = 30f;
     private float wideAngle = 90f;
@@ -31,6 +33,9 @@ public class Door : InteractabelObject
 
     [SerializeField]
     private Transform doorPivot;
+    public Transform DoorPivot {
+        get { return doorPivot;}
+    }
     [SerializeField]
     private AnimationCurve openCurve;
     [SerializeField]
@@ -41,7 +46,7 @@ public class Door : InteractabelObject
     [SerializeField]
     private float walkDistance = 4f;
 
-    public bool Locked {
+    public virtual bool Locked {
         get { return locked; }
         set {
             if (locked == value) return;
@@ -60,7 +65,7 @@ public class Door : InteractabelObject
             StopAllCoroutines();
             StartCoroutine(AnimateDoorAngle(startAngle, .5f, closeCurve));
         } else {
-            doorPivot.localRotation = Quaternion.Euler(doorPivot.localRotation.x, 0, doorPivot.localRotation.z);
+            SetDoorLocalRotation(Quaternion.Euler(doorPivot.localRotation.x, 0, doorPivot.localRotation.z));
         }
     }
 
@@ -90,7 +95,7 @@ public class Door : InteractabelObject
         OnPassingThrough?.Invoke(this);
         flipped = CheckAngle();
         StopAllCoroutines();
-        StartCoroutine(GoingThroughAnimation());
+        StartCoroutine(GoingThroughFlippingAnimation());
     }
 
     public override void Interact()
@@ -115,10 +120,15 @@ public class Door : InteractabelObject
         Quaternion end = Quaternion.Euler(doorPivot.localRotation.x, endRotation  * (flipped ? - 1 : 1), doorPivot.localRotation.z);
         while (index < duration) {
             index += Time.unscaledDeltaTime;
-            doorPivot.localRotation = Quaternion.Slerp(start, end, curve.Evaluate(index / duration));
+            SetDoorLocalRotation(Quaternion.Slerp(start, end, curve.Evaluate(index / duration)));
+            // doorPivot.localRotation = Quaternion.Slerp(start, end, curve.Evaluate(index / duration));
             yield return new WaitForEndOfFrame();
         }
-        doorPivot.localRotation = end;
+        SetDoorLocalRotation(end);
+    }
+
+    public virtual void SetDoorLocalRotation(Quaternion val) {
+        doorPivot.localRotation = val;
     }
 
     ///<summary>
@@ -135,9 +145,7 @@ public class Door : InteractabelObject
         Vector3 begin = player.transform.position;
         while (index < duration) {
             index += Time.unscaledDeltaTime;
-            Vector3 newPos =  Extensions.CalculateQuadraticBezierPoint(walkingCurve.Evaluate(index / duration), point0, point1, point2);
-            SetPlayerPos(newPos, player);
-            // SetPlayerPos(Vector3.LerpUnclamped(begin, endPos, walkingCurve.Evaluate(index / duration)), player);
+            UpdatePlayerWalkingPosition(walkingCurve.Evaluate(index / duration), player);
             yield return new WaitForEndOfFrame();
         }
         player.Movement.EnableWalk = true;
@@ -145,6 +153,10 @@ public class Door : InteractabelObject
 
         SetPlayerPos(endPos, player);
         inWalkingAnimation = false;
+    }
+    public virtual void UpdatePlayerWalkingPosition(float precentage, Player player) {
+        Vector3 newPos =  Extensions.CalculateQuadraticBezierPoint(walkingCurve.Evaluate(precentage), point0, point1, point2);
+        SetPlayerPos(newPos, player);
     }
 
     private Vector3 GetClosestPoint(Player player) {
@@ -159,7 +171,7 @@ public class Door : InteractabelObject
     }
  
 
-    public IEnumerator GoingThroughAnimation() {
+    public IEnumerator GoingThroughFlippingAnimation() {
         AudioHandler.Instance?.PlaySound(SFXFiles.door_open);
         yield return StartCoroutine(AnimateDoorAngle(startAngle + wideAngle, 1.3f, openCurve));
         yield return StartCoroutine(AnimateDoorAngle(startAngle + openAngle, .5f, openCurve));
@@ -173,10 +185,10 @@ public class Door : InteractabelObject
         return transform.position - transform.forward * walkDistance - transform.right * 1f;
     }
 
-    public void SetBezierPoints( Vector3 begin, Vector3 middle, Vector3 end) {
+    public virtual void SetBezierPoints( Vector3 begin, Vector3 middle, Vector3 end) {
         point0 = begin;
-        point2 = end;
         point1 = middle;
+        point2 = end;
     }
 
 

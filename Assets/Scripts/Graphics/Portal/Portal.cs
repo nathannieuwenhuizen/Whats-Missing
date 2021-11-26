@@ -74,17 +74,17 @@ public class Portal : MonoBehaviour
 
     
         if (!InView) return;
+        Debug.Log("is visible!");
         
         if (insidePortal && player != null) {
             Vector3 objPos = transform.InverseTransformPoint(player.transform.position);
             if (objPos.y < positionOffset)
             {
-                Debug.Log("warp!?");
                 Teleport();
             } 
         }
 
-        if (isReady && mainCamera != null)
+        if (isReady && mainCamera != null && connectedPortal != null)
             RenderPortal();
         else {
             mainCamera = Camera.main;
@@ -180,6 +180,7 @@ public class Portal : MonoBehaviour
         reflectionCamera.projectionMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
     }
 
+   
 
     public bool IncameraRange() {
 
