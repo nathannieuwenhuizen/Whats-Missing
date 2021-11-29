@@ -11,7 +11,7 @@ public class FPMovement : MonoBehaviour
 {
     private Vector2 lerpedVelocity;
 
-    private bool playerExist = true;
+    private Player player;
 
     //camera movement offset values
     private float cameraYOffset = 0.03f;
@@ -167,7 +167,7 @@ public class FPMovement : MonoBehaviour
         
         if (inAir && other.gameObject.tag != Tags.Picked) {
             InAir = false;
-            if (playerExist) AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
+            if (!player.IsMissing) AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
             oldPos = transform.position;
         }
     }
@@ -182,8 +182,6 @@ public class FPMovement : MonoBehaviour
 
 
     private void OnEnable() {
-        Player.OnPlayerMissing += OnPlayerMissing;
-        Player.OnPlayerAppear += OnPlayerAppear;
         InputManager.OnStartRunning += StartRun;
         InputManager.OnEndRunning += EndRun;
         InputManager.OnMove += SetMovement;
@@ -200,8 +198,6 @@ public class FPMovement : MonoBehaviour
     }
 
     private void OnDisable() {
-        Player.OnPlayerMissing -= OnPlayerMissing;
-        Player.OnPlayerAppear -= OnPlayerAppear;
         InputManager.OnStartRunning -= StartRun;
         InputManager.OnEndRunning -= EndRun;
         InputManager.OnMove -= SetMovement;
@@ -217,6 +213,7 @@ public class FPMovement : MonoBehaviour
     }
 
     private void Awake() {
+        player = GetComponent<Player>();
         ApplyMovementSettings(Settings.GetSettings());
         cameraStartYPos = cameraPivot.localPosition.y;
     }
@@ -277,13 +274,14 @@ public class FPMovement : MonoBehaviour
         if (inAir) return;
         Vector3 delta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
 
-        if (playerExist && EnableHeadTilt)  UpdateCameraTilt(delta);
+        if (!player.IsMissing && EnableHeadTilt)  UpdateCameraTilt(delta);
 
         if (delta.magnitude > walkStepDistance){
             oldPos = transform.position;
-            if (playerExist) {
-                AudioHandler.Instance?.PlaySound(footstepFile, footstepFile == SFXFiles.player_footstep ? .05f : 1f);
-                AudioHandler.Instance?.Player3DSound(footstepFile, transform, footstepFile == SFXFiles.player_footstep ? .05f : 1f, 1, false, true, 50);
+            if (!player.IsMissing) {
+                // AudioHandler.Instance?.PlaySound(footstepFile, footstepFile == SFXFiles.player_footstep ? .05f : 1f);
+
+                AudioHandler.Instance?.Player3DSound(footstepFile, transform, .05f, player.IsShrinked ? 1.5f :(player.IsEnlarged ? .5f : 1f), false, true, 50);
             }
         }
     }
@@ -375,15 +373,6 @@ public class FPMovement : MonoBehaviour
         {
             cameraPivot.localRotation = Quaternion.Euler(new Vector3(Mathf.Min(cameraPivot.rotation.eulerAngles.x, verticalAngle), 0, 0));
         }
-    }
-
-    public void OnPlayerMissing() {
-        Debug.Log("on player missing");
-        playerExist = false;
-
-    }
-    public void OnPlayerAppear() {
-        playerExist = true;
     }
 
     private void OnDrawGizmos() {

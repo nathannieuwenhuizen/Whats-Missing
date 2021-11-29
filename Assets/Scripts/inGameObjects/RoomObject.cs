@@ -128,6 +128,8 @@ public class RoomObject : RoomEntity
     {
         transform.localScale = Vector3.one * normalScale;
     }
+
+    //enlarging
     public override IEnumerator AnimateEnlarging()
     {
         yield return transform.AnimatingScale(Vector3.one * largeScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
@@ -136,6 +138,7 @@ public class RoomObject : RoomEntity
 
     public override void OnEnlargingFinish()
     {
+        Debug.Log("on enlarge finish");
         transform.localScale = Vector3.one * largeScale;
     }
 
@@ -149,5 +152,6 @@ public class RoomObject : RoomEntity
     {
         transform.localScale = Vector3.one * normalScale;
     }
+
     #endregion
 }

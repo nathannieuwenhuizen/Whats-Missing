@@ -42,7 +42,7 @@ public class Lungs : MonoBehaviour
         chokeSFX = AudioHandler.Instance.Player3DSound(SFXFiles.player_choking, transform, 1f, 1f, true, false, 100f, false);
         player.Movement.CameraZRotationTilt = true;
         chokeCoroutine = StartCoroutine(Chocking());
-        currentVignette.color = Color.red;
+        currentVignette.color = Color.black;
         currentVignette.smoothnes = 1;
     }
 

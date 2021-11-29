@@ -15,11 +15,15 @@ public class candle : RoomObject
     private void OnEnable() {
         TimeProperty.onTimeMissing += UpdateTimeScale;
         TimeProperty.onTimeAppearing += UpdateTimeScale;
+        TimeProperty.onTimeMissing += UpdateTimeScale;
+        TimeProperty.onTimeAppearing += UpdateTimeScale;
         WarmthProperty.OnWarmthMissing += SetFlameOff;
         WarmthProperty.OnWarmthAppearing += SetFlameOn;
     }
 
     private void OnDisable() {
+        TimeProperty.onTimeMissing -= UpdateTimeScale;
+        TimeProperty.onTimeAppearing -= UpdateTimeScale;
         TimeProperty.onTimeMissing -= UpdateTimeScale;
         TimeProperty.onTimeAppearing -= UpdateTimeScale;
         WarmthProperty.OnWarmthMissing -= SetFlameOff;

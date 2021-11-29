@@ -55,6 +55,7 @@ public class Player : RoomObject
     }
 
     public Player() {
+        largeScale = 4f;
         shrinkScale = .2f;
     }
 
@@ -145,6 +146,7 @@ public class Player : RoomObject
 
     public override void OnAppearing()
     { 
+        IsMissing = false;
         OnPlayerAppear?.Invoke();
         //no base call!
         foreach(SkinnedMeshRenderer mr in meshObjects) {
@@ -152,6 +154,7 @@ public class Player : RoomObject
         }        
         base.OnAppearing();
     }
+
     private void OnTriggerEnter(Collider other) {
         if (other.GetComponent<Portal>() != null) {
             other.GetComponent<Portal>().OnPortalEnter(this);
@@ -194,6 +197,9 @@ public class Player : RoomObject
         StartCoroutine(StandingUp());
     }
 
+    ///<summary>
+    /// Plays the standing up animation with the sounds
+    ///</summary>
     private IEnumerator StandingUp() {
         yield return new WaitForSeconds(2.2f);
         AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep, .1f);

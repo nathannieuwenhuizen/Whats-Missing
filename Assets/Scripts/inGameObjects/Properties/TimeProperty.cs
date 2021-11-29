@@ -25,6 +25,10 @@ public class TimeProperty : Property
         AudioHandler.Instance.pitchMultiplier = .5f;
 
     }
+
+    public TimeProperty() {
+        largeScale = 10f;
+    }
     public override void OnAppearing()
     {
         base.OnAppearing();
@@ -37,6 +41,31 @@ public class TimeProperty : Property
         onTimeAppearing?.Invoke();
         AudioHandler.Instance.pitchMultiplier = 1f;
     }
+
+    public override void OnEnlarge()
+    {
+        Room.TimeScale = largeScale;
+        base.OnEnlarge();
+    }
+
+    public override void OnEnlargeRevert()
+    {
+        Room.TimeScale = 1f;
+        base.OnEnlargeRevert();
+    }
+
+    public override void OnShrinking()
+    {
+        Room.TimeScale = shrinkScale;
+        base.OnShrinking();
+    }
+
+    public override void OnShrinkRevert()
+    {
+        Room.TimeScale = 1f;
+        base.OnShrinkRevert();
+    }
+
     private void Reset() {
         Word = "time";
         AlternativeWords = new string[] { "duration" };

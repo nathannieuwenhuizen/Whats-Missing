@@ -16,6 +16,8 @@ public enum MissingChangeEffect {
 ///</summary>
 public interface IMissable {
 
+    bool IsMissing {get; set;}
+
     MissingChangeEffect MissingChangeEffect {get; }
     ///<summary>
     /// Fires when the object starts missing. Here it calls the animation if the object is set to animate.
@@ -49,6 +51,7 @@ public interface IMissable {
 public interface IShrinkable {
     float NormalScale {get;}
     float ShrinkScale {get;}
+    bool IsShrinked {get; set;}
 
     ///<summary>
     /// Fires when the object starts shrinking. Here it calls the animation if the object is set to animate.
@@ -82,6 +85,7 @@ public interface IShrinkable {
 public interface IEnlargable {
     float NormalScale {get;}
     float LargeScale {get;}
+    bool IsEnlarged {get; set;}
     ///<summary>
     /// Fires when the object starts enlarging. Here it calls the animation if the object is set to animate.
     ///</summary>

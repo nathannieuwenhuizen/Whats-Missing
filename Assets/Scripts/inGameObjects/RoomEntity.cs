@@ -45,6 +45,9 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     protected float animationDuration = 3f;
     public float AnimationDuration { get => animationDuration; set => animationDuration = value; }
+    public bool IsShrinked { get; set; } = false;
+    public bool IsEnlarged { get; set; } = false;
+    public bool IsMissing { get; set; } = false;
 
     public virtual void AddChange(Change change) {
         switch (change.mirror.changeType) {
@@ -86,6 +89,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     ///</summary>
     public virtual void OnAppearing()
     {
+        IsMissing = false;
         if (Animated) {
             StartCoroutine(AnimateAppearing());
         } else {
@@ -98,6 +102,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     ///</summary>
     public virtual void OnMissing()
     {
+        IsMissing = true;
         startMissingScale = transform.localScale;
         if (Animated) {
             StartCoroutine(AnimateMissing());
@@ -154,6 +159,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     #region  shrinking/enlarging
     public virtual void OnShrinking()
     {
+        IsShrinked = true;
         if (Animated) {
             StartCoroutine(AnimateShrinking());
         } else {
@@ -171,6 +177,8 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnShrinkRevert()
     {
+        IsShrinked = false;
+
         if (Animated) StartCoroutine(AnimateShrinkRevert());
         else OnShrinkingRevertFinish();
     }
@@ -185,6 +193,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnEnlarge()
     {
+        IsEnlarged = true;
         if (Animated)StartCoroutine(AnimateEnlarging());
         else OnEnlargingFinish();
     }
@@ -199,6 +208,8 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnEnlargeRevert()
     {
+        IsEnlarged = false;
+
         if (Animated)StartCoroutine(AnimateEnlargeRevert());
         else OnEnlargeRevertFinish();
     }
