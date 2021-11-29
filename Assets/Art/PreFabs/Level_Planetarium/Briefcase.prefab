@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &144854486014827315
+--- !u!1 &1071060187696384025
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3461840605160208204}
-  - component: {fileID: 1999335074330525061}
-  - component: {fileID: 3557888779928729925}
-  - component: {fileID: 3444147640237696603}
-  - component: {fileID: 849189463761255835}
+  - component: {fileID: 753824635966439321}
+  - component: {fileID: 2450127884256859421}
+  - component: {fileID: 1758040176685794788}
+  - component: {fileID: 2115697170888796816}
+  - component: {fileID: 3587141225468153131}
   m_Layer: 0
-  m_Name: Globe
+  m_Name: Briefcase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3461840605160208204
+--- !u!4 &753824635966439321
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144854486014827315}
-  m_LocalRotation: {x: -0.6555183, y: 0.26513347, z: 0.2651335, w: 0.6555183}
-  m_LocalPosition: {x: 33.396805, y: 2.0076203, z: -6.4675274}
-  m_LocalScale: {x: 99.99999, y: 99.99999, z: 100}
+  m_GameObject: {fileID: 1071060187696384025}
+  m_LocalRotation: {x: -0.80211115, y: -0, z: -0, w: 0.5971748}
+  m_LocalPosition: {x: 3.8400002, y: 1.72, z: 3.92}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1999335074330525061
+  m_LocalEulerAnglesHint: {x: -106.664, y: 0, z: 0}
+--- !u!33 &2450127884256859421
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144854486014827315}
-  m_Mesh: {fileID: -4567184453792149465, guid: 250d02444d4781947ab5ab9b0c5ada69, type: 3}
---- !u!23 &3557888779928729925
+  m_GameObject: {fileID: 1071060187696384025}
+  m_Mesh: {fileID: 6610462251100039002, guid: 250d02444d4781947ab5ab9b0c5ada69, type: 3}
+--- !u!23 &1758040176685794788
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144854486014827315}
+  m_GameObject: {fileID: 1071060187696384025}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -83,33 +83,33 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3444147640237696603
+--- !u!54 &2115697170888796816
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1071060187696384025}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!64 &3587141225468153131
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144854486014827315}
+  m_GameObject: {fileID: 1071060187696384025}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: -4567184453792149465, guid: 250d02444d4781947ab5ab9b0c5ada69, type: 3}
---- !u!114 &849189463761255835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 144854486014827315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: Globe
-  alternateWords:
-  - 'World '
-  missingChangeEffect: 1
+  m_Mesh: {fileID: 6610462251100039002, guid: 250d02444d4781947ab5ab9b0c5ada69, type: 3}
