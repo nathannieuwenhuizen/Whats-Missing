@@ -35,6 +35,7 @@ public class PerspectiveProperty : Property
         aspect = (float)Screen.width / (float)Screen.height;
         ortho = Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize, orthographicSize, orthoNear, far);
         perspective = Matrix4x4.Perspective(fov, aspect, near, far);
+        
     }
 
     public PerspectiveProperty() {
