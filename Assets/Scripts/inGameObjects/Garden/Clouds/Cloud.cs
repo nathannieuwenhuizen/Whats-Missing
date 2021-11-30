@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Cloud : RoomObject
 {
+
     [SerializeField]
     private Vector3 size = new Vector3(5,5, 5);
     public static Vector3 DIRECTION = new Vector3(1,0,0);
@@ -33,16 +34,17 @@ public class Cloud : RoomObject
         for(int i = 0; i < ammountOfClouds; i++) {
             CloudSphere sphere = SpawnCloud();
             resetCloud(sphere);
+            sphere.CurrentLifeTime = Random.value * sphere.lifeTime;
         }
     }
 
     public void resetCloud(CloudSphere sphere) {
         sphere.gameObject.transform.localPosition = new Vector3(
-            Random.Range(-size.x / 2f, size.x / 2f),
-            Random.Range(-size.y / 2f, size.y / 2f),
-            Random.Range(-size.z / 2f, size.z / 2f)
+            Random.Range(-Size.x / 2f, Size.x / 2f),
+            Random.Range(-Size.y / 2f, Size.y / 2f),
+            Random.Range(-Size.z / 2f, Size.z / 2f)
         );
-        sphere.lifeTime = Random.Range(5, 10);
+        sphere.lifeTime = Random.Range(20, 50);
         sphere.gameObject.transform.localScale = new Vector3(
             Random.Range(minScale, maxScale),
             Random.Range(minScale, maxScale),
@@ -56,8 +58,14 @@ public class Cloud : RoomObject
         AlternativeWords = new string[] { "clouds", "smoke", "mist" };
     }
 
+    private Vector3 Size {
+        get {
+            return new Vector3(size.x * transform.localScale.x, size.y * transform.localScale.y, size.z * transform.localScale.z);
+        }
+    }
+
     private void OnDrawGizmos() {
         Gizmos.color = Color.white;
-        Gizmos.DrawWireCube(transform.position, size);
+        Gizmos.DrawWireCube(transform.position, Size);
     }
 }

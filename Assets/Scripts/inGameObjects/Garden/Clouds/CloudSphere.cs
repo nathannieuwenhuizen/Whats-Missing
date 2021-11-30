@@ -10,6 +10,10 @@ public class CloudSphere : MonoBehaviour
     private Material cloudMaterial;
     [SerializeField]
     private float currentLifetime = 0;
+    public float CurrentLifeTime {
+        get { return currentLifetime;}
+        set { currentLifetime = value; }
+    }
 
     private float FresnelPower{
         get => cloudMaterial.GetFloat("_FresnelPower");
