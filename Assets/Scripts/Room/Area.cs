@@ -189,8 +189,9 @@ public class Area : MonoBehaviour
         StartCoroutine(ResettingThePlayer(withAnimation));
     }
     private IEnumerator ResettingThePlayer(bool withAnimation) {
-        yield return new WaitForSeconds(withAnimation ? 2.5f : 3.5f);
-
+        yield return new WaitForSeconds(withAnimation ? 3.5f : 2.5f);
+        Debug.Log("respawn!");
+        player.Respawn();
         int index = rooms.IndexOf(currentRoom);
         if(index == 0) {
             CurrentRoom = rooms[0];
@@ -199,7 +200,6 @@ public class Area : MonoBehaviour
             CurrentRoom = rooms[index - 1];
             player.transform.position = CurrentRoom.EndDoor.StartPos();
         }
-        player.Respawn();
         OnRespawn?.Invoke();
     }
 

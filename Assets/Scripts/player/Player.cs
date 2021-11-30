@@ -12,6 +12,8 @@ public class Player : RoomObject
     public static event DieEvent OnDie;
     public static event DieEvent Onrespawn;
 
+    private bool dead = false;
+
     [SerializeField]
     private Transform headModel;
     [SerializeField]
@@ -82,7 +84,7 @@ public class Player : RoomObject
     private void Update() {
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) {
-            Die();
+            Die(false);
         }
 #endif
     }
@@ -102,6 +104,8 @@ public class Player : RoomObject
     /// Thep play dies and falls to the gorund
     ///</summary>
     public void Die(bool withAnimation = true) {
+        if (dead) return;
+        dead = true;
         if (withAnimation) {
             Movement.CharacterAnimator.SetBool("dead", true);
             StartCoroutine(PlayDeadFallSound());
@@ -110,7 +114,7 @@ public class Player : RoomObject
             movement.EnableRotation = false;
             movement.EnableWalk = false;
         }
-        OnDie?.Invoke(this);
+        OnDie?.Invoke(withAnimation);
     }
 
     public void PlayCutSceneAnimation(string trigger, bool applyRoonAnimation = false, Action callback = null) {
@@ -196,6 +200,8 @@ public class Player : RoomObject
     /// Enables the movement and sets the camera animation to false.
     ///</summary>
     public void Respawn() {
+        dead = false;
+        Movement.RB.velocity = Vector3.zero;
         Onrespawn?.Invoke(true);
         Movement.CharacterAnimator.SetBool("dead", false);
         PlayCutSceneAnimation("standingUp", true);

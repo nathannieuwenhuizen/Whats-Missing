@@ -111,6 +111,7 @@ public class Portal : MonoBehaviour
     }
 
     private void Teleport() {
+        Debug.Log("teleport!");
         OnPortalLeave();
         connectedPortal.OnPortalEnter(player);
 
