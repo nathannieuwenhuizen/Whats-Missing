@@ -8,7 +8,7 @@ using UnityEngine.Rendering.Universal;
 public class Player : RoomObject
 {
 
-    public delegate void DieEvent();
+    public delegate void DieEvent(bool withAnimation);
     public static event DieEvent OnDie;
     public static event DieEvent Onrespawn;
 
@@ -101,11 +101,16 @@ public class Player : RoomObject
     ///<summary>
     /// Thep play dies and falls to the gorund
     ///</summary>
-    public void Die() {
-        Movement.CharacterAnimator.SetBool("dead", true);
-        StartCoroutine(PlayDeadFallSound());
-        PlayCutSceneAnimation("dying");
-        OnDie?.Invoke();
+    public void Die(bool withAnimation = true) {
+        if (withAnimation) {
+            Movement.CharacterAnimator.SetBool("dead", true);
+            StartCoroutine(PlayDeadFallSound());
+            PlayCutSceneAnimation("dying");
+        } else {
+            movement.EnableRotation = false;
+            movement.EnableWalk = false;
+        }
+        OnDie?.Invoke(this);
     }
 
     public void PlayCutSceneAnimation(string trigger, bool applyRoonAnimation = false, Action callback = null) {
@@ -160,7 +165,7 @@ public class Player : RoomObject
             other.GetComponent<Portal>().OnPortalEnter(this);
         }
         if (other.GetComponent<AreaTrigger>() != null) {
-            other.GetComponent<AreaTrigger>().OnAreaEnter();
+            other.GetComponent<AreaTrigger>().OnAreaEnter(this);
         }
         if (other.GetComponent<AreaTextMeshFader>() != null){
             other.GetComponent<AreaTextMeshFader>().FadeIn();
@@ -172,7 +177,7 @@ public class Player : RoomObject
             other.GetComponent<Portal>().OnPortalLeave();
         }
         if (other.GetComponent<AreaTrigger>() != null) {
-            other.GetComponent<AreaTrigger>().OnAreaExit();
+            other.GetComponent<AreaTrigger>().OnAreaExit(this);
         }
     }
 
@@ -191,7 +196,7 @@ public class Player : RoomObject
     /// Enables the movement and sets the camera animation to false.
     ///</summary>
     public void Respawn() {
-        Onrespawn?.Invoke();
+        Onrespawn?.Invoke(true);
         Movement.CharacterAnimator.SetBool("dead", false);
         PlayCutSceneAnimation("standingUp", true);
         StartCoroutine(StandingUp());

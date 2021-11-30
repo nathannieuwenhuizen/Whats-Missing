@@ -16,16 +16,26 @@ public class BlackScreenOverlay : MonoBehaviour
         group.blocksRaycasts = false;
     }
     private void OnEnable() {
-        Player.OnDie += FadeToBlack;
+        Player.OnDie += DeathFade;
         Area.OnRespawn += RemoveOverlay;
         AlchemyItem.OnPickingAlchemyItem += FadeToWhite;
     }
     private void OnDisable() {
-        Player.OnDie -= FadeToBlack;
+        Player.OnDie -= DeathFade;
         Area.OnRespawn -= RemoveOverlay;
         AlchemyItem.OnPickingAlchemyItem -= FadeToWhite;
-
     }
+
+    public void DeathFade(bool withAnimation) {
+        if (withAnimation) {
+            image.color = Color.black;
+            StartCoroutine(group.FadeCanvasGroup(1, 1.5f, 1f));
+        } else {
+            image.color = Color.white;
+            StartCoroutine(group.FadeCanvasGroup(1, 1.5f));
+        }
+    }
+
     public void FadeToBlack() {
         image.color = Color.black;
         StartCoroutine(group.FadeCanvasGroup(1, 1.5f, 1f));

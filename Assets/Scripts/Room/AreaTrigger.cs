@@ -17,13 +17,13 @@ public class AreaTrigger : MonoBehaviour
         set {inArea = value; }
     }
 
-    public virtual void OnAreaEnter() {
+    public virtual void OnAreaEnter(Player player) {
         if (inArea) return;
         onAreaEnter?.Invoke();
         inArea = true;
     }
 
-    public virtual void OnAreaExit() {
+    public virtual void OnAreaExit(Player player) {
         if (!inArea) return;
         onAreaExit?.Invoke();
         inArea = false;

@@ -57,7 +57,7 @@ public class Area : MonoBehaviour
             }
 
             currentRoom.OnRoomEnter(player, loadRoomState);
-            directionalLight.RotateToMatchRoon(currentRoom.transform);
+            if(directionalLight != null) directionalLight.RotateToMatchRoon(currentRoom.transform);
 
             if (rooms.IndexOf(currentRoom) == 0) {
                 OnFirstRoomEnter?.Invoke();
@@ -110,9 +110,9 @@ public class Area : MonoBehaviour
         player.transform.rotation = rooms[loadRoomIndex].StartDoor.transform.rotation;
         player.transform.Rotate(0,180,0);// = rooms[startingRoomIndex].StartDoor.transform.rotation;
         //playerPos = rooms[startingRoomIndex].StartPos.position;
-        directionalLight.animating = false;
+        if(directionalLight != null) directionalLight.animating = false;
         CurrentRoom = rooms[loadRoomIndex];
-        directionalLight.animating = true;
+        if(directionalLight != null) directionalLight.animating = true;
         if (loadRoomIndex == 0) {
             player.Respawn();
             OnRespawn?.Invoke();
@@ -185,11 +185,11 @@ public class Area : MonoBehaviour
     ///<summary>
     /// Fires when the palyer dies and has to respawn
     ///</summary>
-    public void ResetPlayer() {
-        StartCoroutine(ResettingThePlayer());
+    public void ResetPlayer(bool withAnimation) {
+        StartCoroutine(ResettingThePlayer(withAnimation));
     }
-    private IEnumerator ResettingThePlayer() {
-        yield return new WaitForSeconds(3.5f);
+    private IEnumerator ResettingThePlayer(bool withAnimation) {
+        yield return new WaitForSeconds(withAnimation ? 2.5f : 3.5f);
 
         int index = rooms.IndexOf(currentRoom);
         if(index == 0) {
@@ -265,9 +265,9 @@ public class Area : MonoBehaviour
                 Vector3 localPos = CurrentRoom.EndDoor.transform.InverseTransformPoint(player.transform.position);
                 player.transform.position = rooms[index - 1].EndDoor.transform.TransformPoint(localPos);
                 player.transform.Rotate(0,90,0);
-                directionalLight.animating = false;
-                directionalLight.RotateToMatchRoon(rooms[index - 1].transform);
-                directionalLight.animating = true;
+                if(directionalLight != null) directionalLight.animating = false;
+                if(directionalLight != null) directionalLight.RotateToMatchRoon(rooms[index - 1].transform);
+                if(directionalLight != null) directionalLight.animating = true;
                 
                 CurrentRoom = rooms[index];
                 rooms[index - 1].EndDoor.GoingThrough();
