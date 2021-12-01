@@ -61,7 +61,7 @@ public class DayNightCycle : MonoBehaviour
     private void Update() {
         if (Room.TimeScale == 0 || Time.timeScale == 0 || !EbableRotation) return;
 
-        SunRotation += ((Time.deltaTime * Room.TimeScale) * 360f) * (1f / (dayDurationInMinutes * 60f));
+        SunRotation += ((Time.deltaTime * Mathf.Pow(Room.TimeScale, 2)) * 360f) * (1f / (dayDurationInMinutes * 60f));
 
     }
 

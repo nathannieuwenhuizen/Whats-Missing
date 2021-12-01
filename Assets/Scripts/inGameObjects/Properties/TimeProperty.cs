@@ -45,12 +45,14 @@ public class TimeProperty : Property
     public override void OnEnlarge()
     {
         Room.TimeScale = largeScale;
+        onTimeAppearing?.Invoke();
         base.OnEnlarge();
     }
 
     public override void OnEnlargeRevert()
     {
         Room.TimeScale = 1f;
+        onTimeAppearing?.Invoke();
         base.OnEnlargeRevert();
     }
 
