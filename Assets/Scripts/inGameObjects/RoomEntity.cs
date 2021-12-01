@@ -39,6 +39,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     protected float shrinkScale = .5f;
     public float ShrinkScale => shrinkScale;
+    public Coroutine ShrinkCoroutine {get; set;}
 
     protected float normalScale = 1f;
     public float NormalScale => normalScale;
@@ -160,8 +161,9 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     public virtual void OnShrinking()
     {
         IsShrinked = true;
+        if (ShrinkCoroutine != null) StopCoroutine(ShrinkCoroutine);
         if (Animated) {
-            StartCoroutine(AnimateShrinking());
+            ShrinkCoroutine = StartCoroutine(AnimateShrinking());
         } else {
             OnShrinkingFinish();
         }
@@ -179,7 +181,10 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     {
         IsShrinked = false;
 
-        if (Animated) StartCoroutine(AnimateShrinkRevert());
+        if (ShrinkCoroutine != null) StopCoroutine(ShrinkCoroutine);
+        if (Animated) {
+            ShrinkCoroutine = StartCoroutine(AnimateShrinkRevert());
+        }
         else OnShrinkingRevertFinish();
     }
 

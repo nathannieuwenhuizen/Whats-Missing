@@ -197,7 +197,7 @@ public class Room : MonoBehaviour
 
     
     /// <summary> 
-    ///removes a mirror  change updating the room and mirror
+    ///removes a mirror change updating the room and mirror
     ///</summary>
     public void RemoveMirrorChange(Mirror selectedMirror, bool undoAble = true) {
         if (!selectedMirror.IsOn) return;

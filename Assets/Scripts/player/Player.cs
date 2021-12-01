@@ -217,7 +217,6 @@ public class Player : RoomObject
         yield return new WaitForSeconds(.5f);
         AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep, .1f);
         yield return new WaitForSeconds(2.3f);
-        // yield return new WaitForSeconds(5f);
         EndOfCutSceneAnimation();
     }
 }

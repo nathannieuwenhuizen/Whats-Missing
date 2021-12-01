@@ -53,6 +53,8 @@ public interface IShrinkable {
     float ShrinkScale {get;}
     bool IsShrinked {get; set;}
 
+    Coroutine ShrinkCoroutine {get;set;}
+
     ///<summary>
     /// Fires when the object starts shrinking. Here it calls the animation if the object is set to animate.
     ///</summary>
