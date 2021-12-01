@@ -9,11 +9,19 @@ public class Sun : RoomObject
     [SerializeField]
     private Room room;
 
+    [SerializeField]
+    private LightningProperty lightningProperty;
+
     private SFXInstance fireSound;
     protected Coroutine soundCoroutine;
 
     protected float shrinkSoundVolume = .1f;
     protected float soundVolume = 1f;
+
+    public delegate void OnSunShrinkEvent();
+    public static OnSunShrinkEvent OnSunShrinking;
+    public static OnSunShrinkEvent OnSunShrinkingRevert;
+    
 
     [SerializeField]
     private GameObject sunBody;
@@ -65,20 +73,19 @@ public class Sun : RoomObject
     public override void OnRoomLeave()
     {
         normalScale = shrinkScale;
-
         sunEnabled = false;
+
+        Debug.Log("on room leave!");
+        lightningProperty.OnAppearingFinish();
+        OnSunShrinkingRevert?.Invoke();
+
         base.OnRoomLeave();
     }
 
     public override void OnShrinking()
     {
+        OnSunShrinking?.Invoke();
         base.OnShrinking();
-    }
-    public override IEnumerator AnimateShrinkRevert()
-    {
-        if (fireSound != null) soundCoroutine = StartCoroutine(fireSound.AudioSource.FadeSFXVolume(1f, AnimationCurve.EaseInOut(0,0,1,1), animationDuration * .5f));
-
-        return base.AnimateShrinkRevert();
     }
     public override void OnShrinkingFinish()
     {
@@ -86,8 +93,26 @@ public class Sun : RoomObject
         if(soundCoroutine != null) StopCoroutine(soundCoroutine);
         if (fireSound != null) fireSound.AudioSource.volume = shrinkSoundVolume;
 
+        lightningProperty.OnMissingFinish();
     }
-    
+
+    public override void OnShrinkRevert()
+    {
+        base.OnShrinkRevert();
+    }
+
+    public override void OnShrinkingRevertFinish()
+    {
+        OnSunShrinkingRevert?.Invoke();
+        base.OnShrinkingRevertFinish();
+    }
+
+    public override IEnumerator AnimateShrinkRevert()
+    {
+        if (fireSound != null) soundCoroutine = StartCoroutine(fireSound.AudioSource.FadeSFXVolume(1f, AnimationCurve.EaseInOut(0,0,1,1), animationDuration * .5f));
+
+        return base.AnimateShrinkRevert();
+    }
 
 
     private void Reset() {

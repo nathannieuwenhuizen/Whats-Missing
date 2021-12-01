@@ -15,6 +15,9 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField]
     private Transform sunPivot;
 
+    public bool EbableRotation { get; set; } = true;
+    private float oldSunRotation;
+
     [SerializeField]
     private float dayDurationInMinutes = 10;
 
@@ -44,8 +47,19 @@ public class DayNightCycle : MonoBehaviour
         // Debug.Log("rotation = " + SunRotation);
     }
 
+    private void SunIsMissing() {
+        if (SunRotation != -90) oldSunRotation = SunRotation;
+        EbableRotation = false;
+        SunRotation = -90;
+    }
+
+    private void SunIsAppearing() {
+        SunRotation = oldSunRotation;
+        EbableRotation = true;
+    }
+
     private void Update() {
-        if (Room.TimeScale == 0 || Time.timeScale == 0) return;
+        if (Room.TimeScale == 0 || Time.timeScale == 0 || !EbableRotation) return;
 
         SunRotation += ((Time.deltaTime * Room.TimeScale) * 360f) * (1f / (dayDurationInMinutes * 60f));
 
@@ -57,5 +71,15 @@ public class DayNightCycle : MonoBehaviour
 
     private void UpdateSkybox() {
 
+    }
+
+    private void OnEnable() {
+        Sun.OnSunShrinking += SunIsMissing;
+        Sun.OnSunShrinkingRevert += SunIsAppearing;
+    }
+
+    private void OnDisable() {
+        Sun.OnSunShrinking -= SunIsMissing;
+        Sun.OnSunShrinkingRevert -= SunIsAppearing;
     }
 }
