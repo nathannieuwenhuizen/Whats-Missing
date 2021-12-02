@@ -29,6 +29,10 @@ public class Duck : RoomObject
     protected FSM duckBehaviour;
     private SwimState swimState;
     private StaringState staringState;
+
+    public Duck() {
+        largeScale = 4f;
+    }
     private void Awake() {
         SetUpBehaviour();
     }

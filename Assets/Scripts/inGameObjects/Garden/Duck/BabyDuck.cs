@@ -18,6 +18,25 @@ public class BabyDuck : Duck
             };
         duckBehaviour = new FSM(followState);
     }
+
+    public BabyDuck() {
+        largeScale = 2f;
+    }
+
+    public override void OnEnlargingFinish()
+    {
+        base.OnEnlargingFinish();
+        followState.seperation = 4f;
+        followState.swimSpeed = 1f;
+    }
+
+    public override void OnEnlargeRevertFinish()
+    {
+        base.OnEnlargeRevertFinish();
+        followState.seperation = 2f;
+        followState.swimSpeed = 2f;
+
+    }
     private List<Duck> DetectDucks() {
         List<Duck> result = new List<Duck>(allDucks);
         result.Remove(this);
