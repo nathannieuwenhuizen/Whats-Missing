@@ -53,6 +53,8 @@ public static class SFXFiles {
 
     //Garden
     public static string sun_burning = "Sun_burning";
+    public static string duck = "Duck";
+    public static string baby_duck = "Baby_duck";
 
 }
 public enum MusicFiles {

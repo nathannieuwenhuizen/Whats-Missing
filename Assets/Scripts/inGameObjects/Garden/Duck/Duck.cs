@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+///<summary>
+/// Parent duck that swims arround and do quack sounds
+///</summary>
 public class Duck : RoomObject
 {
     [SerializeField]
@@ -9,19 +13,32 @@ public class Duck : RoomObject
 
     [SerializeField]
     private DuckSwimArea swimArea;
+    public DuckSwimArea SwimArea {
+        get { return swimArea;}
+    }
+
+
+    private Vector3 velocity;
+    public Vector3 Velocity {
+        get { return velocity;}
+        set { velocity = value; }
+    }
 
     private bool active = false;
 
-    private FSM duckBehaviour;
+    protected FSM duckBehaviour;
     private SwimState swimState;
     private StaringState staringState;
     private void Awake() {
+        SetUpBehaviour();
+    }
+
+    protected virtual void SetUpBehaviour() {
         swimState = new SwimState() {
-            _transform = transform, 
-            _swimArea = swimArea,
+            _duck = this
             };
         staringState = new StaringState() {
-            _transform = transform, 
+            _duck = this
             };
 
         swimState.staringState = staringState;
@@ -30,11 +47,18 @@ public class Duck : RoomObject
         duckBehaviour = new FSM(swimState);
     }
 
+    public virtual void Quack() {
+        AudioHandler.Instance.Player3DSound(SFXFiles.duck, transform, .5f, IsEnlarged ? .5f : 1f, false, true, 30f);
+    }
+
     public override void OnRoomEnter()
     {
         active = true;
-        swimState._player = room.Player.transform;
-        staringState._player = room.Player.transform;
+        Debug.Log("room = " + room);
+        if (swimState != null) {
+            swimState._player = room.Player.transform;
+            staringState._player = room.Player.transform;
+        }
         base.OnRoomEnter();
     }
 
