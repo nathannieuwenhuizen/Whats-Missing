@@ -10,6 +10,8 @@ public class Duck : RoomObject
     [SerializeField]
     private DuckSwimArea swimArea;
 
+    private bool active = false;
+
     private FSM duckBehaviour;
     private SwimState swimState;
     private StaringState staringState;
@@ -30,13 +32,20 @@ public class Duck : RoomObject
 
     public override void OnRoomEnter()
     {
+        active = true;
         swimState._player = room.Player.transform;
         staringState._player = room.Player.transform;
         base.OnRoomEnter();
     }
 
+    public override void OnRoomLeave()
+    {
+        active = false;
+        base.OnRoomLeave();
+    }
+
     private void Update() {
-        if (Time.deltaTime == 0 ||  Room.TimeScale == 0) return;
+        if (Time.deltaTime == 0 ||  Room.TimeScale == 0 || !active) return;
         
         duckBehaviour.Update();
     }
