@@ -44,7 +44,7 @@ public class Sun : RoomObject
     }
     public Sun() {
         shrinkScale = 0.01f;
-        animationDuration = 20f;
+        animationDuration = 30f;
     }
 
 
