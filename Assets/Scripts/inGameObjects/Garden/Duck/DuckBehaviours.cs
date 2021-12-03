@@ -122,14 +122,14 @@ public class SwimState : IState
         desiredVelocity = desiredVelocity.normalized * MaxVelocity;
 
         var steering = desiredVelocity - _duck.Velocity;
-        steering = Vector3.ClampMagnitude(steering, MaxForce);
-        steering /= Mass;
+        steering = Vector3.ClampMagnitude(steering, MaxForce * Room.TimeScale);
+        steering /= (Mass / Room.TimeScale);
 
         _duck.Velocity = Vector3.ClampMagnitude(_duck.Velocity + steering, MaxVelocity);
         if (_duck.Velocity.magnitude < MinVelocity) {
             _duck.Velocity = _duck.Velocity.normalized * MinVelocity;
         }
-        _duck.transform.position += _duck.Velocity * Time.deltaTime;
+        _duck.transform.position += _duck.Velocity * Time.deltaTime * Room.TimeScale;
 
 
 
@@ -140,7 +140,7 @@ public class SwimState : IState
          Quaternion _lookRotation = Quaternion.LookRotation(_direction);
  
          //rotate us over time according to speed until we are in the required rotation
-         _duck.transform.rotation = Quaternion.Slerp(_duck.transform.rotation, _lookRotation, Time.deltaTime * 10f);    
+         _duck.transform.rotation = Quaternion.Slerp(_duck.transform.rotation, _lookRotation, Time.deltaTime * Room.TimeScale * 10f);    
 
         // _transform.forward = _duck.Velocity.normalized;
 
@@ -189,13 +189,13 @@ public class FollowState : IState
 
         var steering = desiredVelocity - _duck.Velocity;
         steering = Vector3.ClampMagnitude(steering, MaxForce);
-        steering /= Mass;
+        steering /= Mathf.Max(1,  Mass / Room.TimeScale);
 
         _duck.Velocity = Vector3.ClampMagnitude(_duck.Velocity + steering, MaxVelocity);
         if (_duck.Velocity.magnitude < MinVelocity) {
             _duck.Velocity = _duck.Velocity.normalized * MinVelocity;
         }
-        _duck.transform.position += _duck.Velocity * Time.deltaTime * swimSpeed;
+        _duck.transform.position += _duck.Velocity * Time.deltaTime * Room.TimeScale * swimSpeed;
 
 
 
@@ -206,7 +206,7 @@ public class FollowState : IState
          Quaternion _lookRotation = Quaternion.LookRotation(_direction);
  
          //rotate us over time according to speed until we are in the required rotation
-         _duck.transform.rotation = Quaternion.Slerp(_duck.transform.rotation, _lookRotation, Time.deltaTime * RotationSpeed);    
+         _duck.transform.rotation = Quaternion.Slerp(_duck.transform.rotation, _lookRotation, Time.deltaTime * Room.TimeScale * RotationSpeed);    
 
         // _transform.forward = _duck.Velocity.normalized;
 

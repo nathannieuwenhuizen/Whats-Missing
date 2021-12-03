@@ -12,6 +12,10 @@ public class Duck : RoomObject
     private Room room;
 
     [SerializeField]
+    private TrailRenderer trail;
+    private float lifeTimeTrail;
+
+    [SerializeField]
     private DuckSwimArea swimArea;
     public DuckSwimArea SwimArea {
         get { return swimArea;}
@@ -34,6 +38,7 @@ public class Duck : RoomObject
         largeScale = 4f;
     }
     private void Awake() {
+        lifeTimeTrail = trail.time;
         SetUpBehaviour();
     }
 
@@ -70,6 +75,21 @@ public class Duck : RoomObject
     {
         active = false;
         base.OnRoomLeave();
+    }
+
+    private void OnEnable() {
+        TimeProperty.onTimeMissing += UpdateTrailLifeTime;
+        TimeProperty.onTimeAppearing += UpdateTrailLifeTime;
+    }
+
+    private void OnDisable() {
+        TimeProperty.onTimeMissing += UpdateTrailLifeTime;
+        TimeProperty.onTimeAppearing += UpdateTrailLifeTime;
+    }
+
+    private void UpdateTrailLifeTime() {
+        if (Room.TimeScale <= 0) return;
+        trail.time = lifeTimeTrail * (1/ Room.TimeScale);
     }
 
     private void Update() {
