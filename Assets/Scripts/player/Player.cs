@@ -83,9 +83,7 @@ public class Player : RoomObject
     }
     private void Update() {
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) {
-            Die(false);
-        }
+        if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) Die(false);
 #endif
     }
 
@@ -115,6 +113,9 @@ public class Player : RoomObject
             movement.EnableWalk = false;
         }
         OnDie?.Invoke(withAnimation);
+    }
+    public void DieWithoutAnimation() {
+        Die(false);
     }
 
     public void PlayCutSceneAnimation(string trigger, bool applyRoonAnimation = false, Action callback = null) {
