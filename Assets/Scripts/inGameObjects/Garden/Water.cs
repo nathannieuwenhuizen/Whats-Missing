@@ -25,8 +25,7 @@ public class Water : RoomObject
 
 
     public void UpdateTimeScale() {
-        // if (InSpace == false) return;
-        Debug.Log("set water time");
+        if (InSpace == false) return;
         watermaterial.SetFloat("_RoomTime", Room.TimeScale);
     }
 

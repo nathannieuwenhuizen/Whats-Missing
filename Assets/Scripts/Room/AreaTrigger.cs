@@ -3,8 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+public interface ITriggerArea {
+    bool InsideArea {get; set; }
+    void OnAreaEnter(Player player);
+    void OnAreaExit(Player player);
+}
+
 [RequireComponent(typeof(Collider))]
-public class AreaTrigger : MonoBehaviour
+public class AreaTrigger : MonoBehaviour, ITriggerArea
 {
 
     [SerializeField]

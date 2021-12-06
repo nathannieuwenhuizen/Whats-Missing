@@ -20,6 +20,7 @@ public static class SFXFiles {
     public static string stairs_footstep = "Stairs_footstep";
     public static string exhale = "Exhale";
     public static string player_hits_ground = "Person_hits_ground";
+    public static string player_cough = "Player_cough";
     
     //planetarium
     public static string tv_change_woosh = "Tv_change_woosh";
@@ -27,6 +28,8 @@ public static class SFXFiles {
     public static string mirror_true = "Mirror_true";
     public static string mirror_false = "Mirror_false";
     public static string fire_crackling = "Fire_crackling";
+    public static string fire_spread_burning = "Fire_spread_burning";
+
     public static string chair_hit = "Chair_hit";
     public static string clock_ticking = "Clock_ticking";
     public static string evil_spirit = "Evil_spirit";

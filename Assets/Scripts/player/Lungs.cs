@@ -16,6 +16,15 @@ public class Lungs : MonoBehaviour
     private Coroutine chokeCoroutine; 
     private SFXInstance chokeSFX;
 
+    private SFXInstance burnSFX;
+    private SFXInstance playerVoiceBurnSFX;
+
+    private float burnIndex = 0;
+    private float burnDuration = 15f;
+    private Coroutine burnCoroutine; 
+    private bool burning = true;
+
+
     private VignetteData startVignette;
     private VignetteData currentVignette;
     private Vignette vignette;
@@ -44,6 +53,16 @@ public class Lungs : MonoBehaviour
         chokeCoroutine = StartCoroutine(Chocking());
         currentVignette.color = Color.black;
         currentVignette.smoothnes = 1;
+    }
+    private void StartBurining() {
+        burnSFX = AudioHandler.Instance.Player3DSound(SFXFiles.fire_spread_burning, transform, 1f, 1f, true, false, 100f, false);
+        playerVoiceBurnSFX = AudioHandler.Instance.Player3DSound(SFXFiles.player_cough, transform, 1f, 1f, true, false, 100f, false);
+
+        burning = true;
+        if (burnIndex <= 0 || burnIndex >= burnDuration) {
+            burnCoroutine = StartCoroutine(Burning());
+        } 
+        UpdateVignette();
     }
 
     private void StartColdBreathing() {
@@ -86,6 +105,36 @@ public class Lungs : MonoBehaviour
         EndChoking();
     }
 
+    private IEnumerator Burning() {
+        while (burnIndex <= burnDuration && burnIndex >= 0) {
+            burnIndex += burning ? Time.deltaTime : -Time.deltaTime * 5f;
+            playerVoiceBurnSFX.Volume = (.9f * (burnIndex / burnDuration));
+            burnSFX.Volume = .1f + (.9f * (burnIndex / burnDuration));
+            currentVignette.intensity = startVignette.intensity + (burnIndex / burnDuration) * .4f;
+            currentVignette.color = Color.Lerp(startVignette.color, Color.red, (burnIndex / burnDuration));
+            currentVignette.smoothnes = startVignette.smoothnes + (burnIndex / burnDuration) * 2f;
+
+            UpdateVignette();
+            yield return new WaitForEndOfFrame();
+        }
+        if (burnIndex > burnDuration) {
+            player.Die(true);
+            AudioHandler.Instance.PlaySound(SFXFiles.choke_die, .5f, .8f);
+        }
+        EndBurning();
+    }
+
+    private void EndBurning() {
+        burnIndex = 0;
+        if (burnSFX != null) burnSFX.AudioSource.Stop();
+        if (playerVoiceBurnSFX != null) playerVoiceBurnSFX.AudioSource.Stop();
+        if (burnCoroutine != null) {
+            StopCoroutine(burnCoroutine);
+        }
+        currentVignette = startVignette;
+        UpdateVignette();
+    }
+
     private void EndChoking() {
         player.Movement.CameraZRotationTilt = false;
 
@@ -105,16 +154,25 @@ public class Lungs : MonoBehaviour
         AudioHandler.Instance.PlaySound(SFXFiles.player_relief_gasp, 1f, 1.2f);
     }
 
+    public void OutOfFire() {
+        burning = false;
+    }
+
 
     private void OnEnable() {
         WarmthProperty.OnWarmthMissing += StartColdBreathing;
         WarmthProperty.OnWarmthAppearing += StopColdBreathing;
+        FireSpread.OnFireSpreadEnter += StartBurining;
+        FireSpread.OnFireSpreadExit += OutOfFire;
         AirProperty.OnAirMissing += StartChoking;
         AirProperty.OnAirAppearing += GaspingForAir;
     }
     private void OnDisable() {
         WarmthProperty.OnWarmthMissing -= StartColdBreathing;
         WarmthProperty.OnWarmthAppearing -= StopColdBreathing;
+        FireSpread.OnFireSpreadEnter -= StartBurining;
+        FireSpread.OnFireSpreadExit -= OutOfFire;
+
         AirProperty.OnAirMissing -= StartChoking;
         AirProperty.OnAirAppearing -= GaspingForAir;
     }

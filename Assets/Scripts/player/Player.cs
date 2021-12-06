@@ -169,8 +169,8 @@ public class Player : RoomObject
         if (other.GetComponent<Portal>() != null) {
             other.GetComponent<Portal>().OnPortalEnter(this);
         }
-        if (other.GetComponent<AreaTrigger>() != null) {
-            other.GetComponent<AreaTrigger>().OnAreaEnter(this);
+        if (other.GetComponent<ITriggerArea>() != null) {
+            other.GetComponent<ITriggerArea>().OnAreaEnter(this);
         }
         if (other.GetComponent<AreaTextMeshFader>() != null){
             other.GetComponent<AreaTextMeshFader>().FadeIn();
@@ -181,8 +181,8 @@ public class Player : RoomObject
         if (other.GetComponent<Portal>() != null) {
             other.GetComponent<Portal>().OnPortalLeave();
         }
-        if (other.GetComponent<AreaTrigger>() != null) {
-            other.GetComponent<AreaTrigger>().OnAreaExit(this);
+        if (other.GetComponent<ITriggerArea>() != null) {
+            other.GetComponent<ITriggerArea>().OnAreaExit(this);
         }
     }
 
