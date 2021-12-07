@@ -37,12 +37,10 @@ public class Hands : MonoBehaviour
         }
     }
     private void Grab(IPickable obj) {
-        // obj.RigidBody.isKinematic = true;
-        // holidngObjectParent = obj.gameObject.transform.parent;
-        // obj.gameObject.transform.parent = transform;
         holdingObject = obj;
         oldPos = holdingObject.gameObject.transform.position;
         obj.Grab(rigidbody);
+        AudioHandler.Instance?.PlaySound(SFXFiles.player_grab, .5f);
         StartCoroutine(UpdateVelocity());
         StartCoroutine(UpdatePhysics()); 
     }

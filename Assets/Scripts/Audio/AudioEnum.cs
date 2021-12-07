@@ -21,6 +21,7 @@ public static class SFXFiles {
     public static string exhale = "Exhale";
     public static string player_hits_ground = "Person_hits_ground";
     public static string player_cough = "Player_cough";
+    public static string player_grab = "Player_grab";
     
     //planetarium
     public static string tv_change_woosh = "Tv_change_woosh";
