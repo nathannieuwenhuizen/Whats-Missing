@@ -122,8 +122,29 @@ public class Player : RoomObject
         Die(false);
     }
 
+    private Coroutine torsoCoroutine;
+    public void SetTorsoAnimation(bool on, string trigger = "") {
+        if (torsoCoroutine != null) StopCoroutine(torsoCoroutine);
+        torsoCoroutine = StartCoroutine(SettingTorsoWeight(on ? 1 : 0));
+        // Movement.CharacterAnimator.SetLayerWeight(1, on ? 1 : 0);
+        if (on) Movement.CharacterAnimator.SetTrigger(trigger);
+    }
+    public IEnumerator SettingTorsoWeight(float end) {
+        float index = 0; 
+        float start = Movement.CharacterAnimator.GetLayerWeight(1);
+        while (index < 1f) {
+            index += Time.deltaTime;
+            Movement.CharacterAnimator.SetLayerWeight(1, Mathf.Lerp(start, end, index / 1f));
+            yield return new WaitForEndOfFrame();
+        }
+        Movement.CharacterAnimator.SetLayerWeight(1, end);
+        
+    }
+
     public void PlayCutSceneAnimation(string trigger, bool applyRoonAnimation = false, Action callback = null) {
         OnCutsceneStart?.Invoke();
+
+        SetTorsoAnimation(false);
         Movement.EnableRotation = false;
         Movement.EnableWalk = false;
         Movement.RB.velocity = Vector3.zero;
