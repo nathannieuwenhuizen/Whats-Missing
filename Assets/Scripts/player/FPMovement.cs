@@ -5,7 +5,7 @@ using UnityEngine;
 
 ///<summary>
 /// First person movement controlling a rigidbody and a camera.
-/// Alos handles the footstep sounds and other particles based on the movement.
+/// Also handles the footstep sounds and other particles based on the movement.
 ///</summary>
 public class FPMovement : MonoBehaviour
 {
@@ -66,12 +66,6 @@ public class FPMovement : MonoBehaviour
     [SerializeField]
     private float jumpForce = 200f;
 
-    [SerializeField]
-    private Animator characterAnimator;
-
-    public Animator CharacterAnimator {
-        get { return characterAnimator;}
-    }
     private int rotateSpeed = 2;
 
     private bool isRunning = false;
@@ -80,7 +74,7 @@ public class FPMovement : MonoBehaviour
         get { return inAir;}
         set { 
             inAir = value; 
-            characterAnimator.SetBool("inAir", inAir || inCeiling);
+            player.CharacterAnimationPlayer.SetBool("inAir", inAir || inCeiling);
         }
     }
 
@@ -265,8 +259,7 @@ public class FPMovement : MonoBehaviour
         delta /= isRunning ? .23f : .15f; // i know, magic numbers...
         Vector2 animationDelta = new Vector2(delta.x, delta.z);
         lerpedVelocity = Vector2.Lerp(lerpedVelocity, animationDelta * (isRunning ? 1 : .5f), Time.deltaTime * 10f);
-        characterAnimator.SetFloat("deltaX", lerpedVelocity.x);
-        characterAnimator.SetFloat("deltaY", lerpedVelocity.y);
+        player.CharacterAnimationPlayer.SetWalkValues(lerpedVelocity);
     }
 
     ///<summary>

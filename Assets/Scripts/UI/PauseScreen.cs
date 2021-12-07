@@ -111,14 +111,14 @@ public class PauseScreen : MonoBehaviour
     private void OnEnable()
     {
         InputManager.OnCancel += TogglePause;
-        Player.OnCutsceneStart += DisablePause;
-        Player.OnCutsceneEnd += EnablePause;
+        CharacterAnimationPlayer.OnCutsceneStart += DisablePause;
+        CharacterAnimationPlayer.OnCutsceneEnd += EnablePause;
     }
     private void OnDisable()
     {
         InputManager.OnCancel -= TogglePause;
-        Player.OnCutsceneStart -= DisablePause;
-        Player.OnCutsceneEnd -= EnablePause;
+        CharacterAnimationPlayer.OnCutsceneStart -= DisablePause;
+        CharacterAnimationPlayer.OnCutsceneEnd -= EnablePause;
     }
 
     public void SelectResumeButton() {

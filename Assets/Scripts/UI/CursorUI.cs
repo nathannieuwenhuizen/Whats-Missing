@@ -21,14 +21,14 @@ public class CursorUI : MonoBehaviour
     private void OnEnable() {
         PauseScreen.OnPause += HideCursorUI;
         PauseScreen.OnResume += ShowCursorUI;
-        Player.OnCutsceneStart += HideCursorUI;
-        Player.OnCutsceneEnd += ShowCursorUI;
+        CharacterAnimationPlayer.OnCutsceneStart += HideCursorUI;
+        CharacterAnimationPlayer.OnCutsceneEnd += ShowCursorUI;
     }
     private void OnDisable() {
         PauseScreen.OnPause -= HideCursorUI;
         PauseScreen.OnResume -= ShowCursorUI;
-        Player.OnCutsceneStart -= HideCursorUI;
-        Player.OnCutsceneEnd -= ShowCursorUI;
+        CharacterAnimationPlayer.OnCutsceneStart -= HideCursorUI;
+        CharacterAnimationPlayer.OnCutsceneEnd -= ShowCursorUI;
     }
 
 }

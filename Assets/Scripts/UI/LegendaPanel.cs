@@ -42,8 +42,8 @@ public class LegendaPanel : MonoBehaviour
     private void OnEnable() {
         PauseScreen.OnPause += HidePanel;
         PauseScreen.OnResume += ShowPanel;
-        Player.OnCutsceneStart += HidePanel;
-        Player.OnCutsceneEnd += ShowPanel;
+        CharacterAnimationPlayer.OnCutsceneStart += HidePanel;
+        CharacterAnimationPlayer.OnCutsceneEnd += ShowPanel;
         Legenda.OnFocus += UpdateText;
     }
     private void OnDisable() {

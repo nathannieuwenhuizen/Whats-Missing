@@ -45,12 +45,12 @@ public class CutSceneBars : MonoBehaviour
     }
 
     private void OnEnable() {
-        Player.OnCutsceneStart += ShowBars;
-        Player.OnCutsceneEnd += HideBars;
+        CharacterAnimationPlayer.OnCutsceneStart += ShowBars;
+        CharacterAnimationPlayer.OnCutsceneEnd += HideBars;
     }
     private void OnDisable() {
-        Player.OnCutsceneStart -= ShowBars;
-        Player.OnCutsceneEnd -= HideBars;
+        CharacterAnimationPlayer.OnCutsceneStart -= ShowBars;
+        CharacterAnimationPlayer.OnCutsceneEnd -= HideBars;
     }
 
 

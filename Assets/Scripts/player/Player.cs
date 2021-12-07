@@ -19,6 +19,17 @@ public class Player : RoomObject
 
     [SerializeField]
     private Transform animationView;
+
+    private CharacterAnimationPlayer characterAnimationPlayer;
+    public CharacterAnimationPlayer CharacterAnimationPlayer {
+        get { return characterAnimationPlayer;}
+    }
+    [SerializeField]
+    private Animator animator;
+
+    public Transform AnimationView {
+        get { return animationView;}
+    }
     [SerializeField]
     private Transform handsPosition;
     public Transform HandsPosition {
@@ -43,6 +54,7 @@ public class Player : RoomObject
     private MotionBlur motionBlur;
 
     public Camera Camera { get => playerCamera;}
+    private int headLayer;
 
     [SerializeField]
     private SkinnedMeshRenderer[] meshObjects;
@@ -57,7 +69,9 @@ public class Player : RoomObject
     }
     protected void Awake()
     {
+        movement = GetComponent<FPMovement>();
         ApplyCameraSettings(Settings.GetSettings());
+        characterAnimationPlayer = new CharacterAnimationPlayer(this, animator);
     }
 
     public Player() {
@@ -87,7 +101,7 @@ public class Player : RoomObject
     }
     private void Update() {
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) Die(false);
+        if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) Die(true);
 #endif
     }
 
@@ -109,9 +123,9 @@ public class Player : RoomObject
         if (dead) return;
         dead = true;
         if (withAnimation) {
-            Movement.CharacterAnimator.SetBool("dead", true);
+            characterAnimationPlayer.SetBool("dead", true);
             StartCoroutine(PlayDeadFallSound());
-            PlayCutSceneAnimation("dying");
+            characterAnimationPlayer.PlayCutSceneAnimation("dying");
         } else {
             movement.EnableRotation = false;
             movement.EnableWalk = false;
@@ -122,46 +136,11 @@ public class Player : RoomObject
         Die(false);
     }
 
-    private Coroutine torsoCoroutine;
-    public void SetTorsoAnimation(bool on, string trigger = "") {
-        if (torsoCoroutine != null) StopCoroutine(torsoCoroutine);
-        torsoCoroutine = StartCoroutine(SettingTorsoWeight(on ? 1 : 0));
-        // Movement.CharacterAnimator.SetLayerWeight(1, on ? 1 : 0);
-        if (on) Movement.CharacterAnimator.SetTrigger(trigger);
-    }
-    public IEnumerator SettingTorsoWeight(float end) {
-        float index = 0; 
-        float start = Movement.CharacterAnimator.GetLayerWeight(1);
-        while (index < 1f) {
-            index += Time.deltaTime;
-            Movement.CharacterAnimator.SetLayerWeight(1, Mathf.Lerp(start, end, index / 1f));
-            yield return new WaitForEndOfFrame();
-        }
-        Movement.CharacterAnimator.SetLayerWeight(1, end);
-        
-    }
-
-    public void PlayCutSceneAnimation(string trigger, bool applyRoonAnimation = false, Action callback = null) {
-        OnCutsceneStart?.Invoke();
-
-        SetTorsoAnimation(false);
-        Movement.EnableRotation = false;
-        Movement.EnableWalk = false;
-        Movement.RB.velocity = Vector3.zero;
-
-        playerCamera.transform.SetParent(animationView);
-        playerCamera.transform.localPosition = animationView.localPosition;
-        playerCamera.transform.localRotation = animationView.localRotation;
-        StartCoroutine(playerCamera.AnimatingFieldOfView(80, AnimationCurve.EaseInOut(0,0,1,1), 2f));
-        Movement.CharacterAnimator.SetTrigger(trigger);
-        Movement.CharacterAnimator.applyRootMotion = applyRoonAnimation;
-    }
     private IEnumerator PlayDeadFallSound() {
         yield return new WaitForSeconds(.6f);
         AudioHandler.Instance.PlaySound(SFXFiles.player_hits_ground, 1f);
     }
 
-    private int headLayer;
     public void ShowHead() {
         
         headLayer = mirrorHeadModel.gameObject.layer;
@@ -212,17 +191,6 @@ public class Player : RoomObject
         }
     }
 
-    public void EndOfCutSceneAnimation() {
-        OnCutsceneEnd?.Invoke();
-        playerCamera.transform.SetParent(transform);
-        Movement.EnableRotation = true;
-        Movement.EnableWalk = true;
-        StartCoroutine(playerCamera.AnimatingFieldOfView(60, AnimationCurve.EaseInOut(0,0,1,1), .5f));
-        Movement.CameraPivot.localPosition = new Vector3(0,Movement.CameraPivot.transform.localPosition.y,0);
-        Movement.CharacterAnimator.applyRootMotion = false;
-        Movement.CharacterAnimator.transform.localPosition = Vector3.zero;
-    }
-
     ///<summary>
     /// Enables the movement and sets the camera animation to false.
     ///</summary>
@@ -230,8 +198,8 @@ public class Player : RoomObject
         dead = false;
         Movement.RB.velocity = Vector3.zero;
         Onrespawn?.Invoke(true);
-        Movement.CharacterAnimator.SetBool("dead", false);
-        PlayCutSceneAnimation("standingUp", true);
+        characterAnimationPlayer.SetBool("dead", false);
+        characterAnimationPlayer.PlayCutSceneAnimation("standingUp", true);
         StartCoroutine(StandingUp());
     }
 
@@ -244,6 +212,6 @@ public class Player : RoomObject
         yield return new WaitForSeconds(.5f);
         AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep, .1f);
         yield return new WaitForSeconds(2.3f);
-        EndOfCutSceneAnimation();
+        characterAnimationPlayer.EndOfCutSceneAnimation();
     }
 }

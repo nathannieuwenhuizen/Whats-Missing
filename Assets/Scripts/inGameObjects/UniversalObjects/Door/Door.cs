@@ -138,7 +138,7 @@ public class Door : InteractabelObject
         float index = 0;
         player.Movement.EnableWalk = false;
         player.Movement.RB.isKinematic = true;
-        player.Movement.CharacterAnimator.SetTrigger("openingDoor");
+        player.CharacterAnimationPlayer.SetTrigger("openingDoor");
         Vector3 endPos = GetFarthestPoint(player);
         SetBezierPoints(player);
 

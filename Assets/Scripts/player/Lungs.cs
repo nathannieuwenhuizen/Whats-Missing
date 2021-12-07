@@ -48,7 +48,7 @@ public class Lungs : MonoBehaviour
 
 
     private void StartChoking() {
-        player.SetTorsoAnimation(true, "choke");
+        player.CharacterAnimationPlayer.SetTorsoAnimation(true, "choke");
         chokeSFX = AudioHandler.Instance.Player3DSound(SFXFiles.player_choking, transform, 1f, 1f, true, false, 100f, false);
         player.Movement.CameraZRotationTilt = true;
         chokeCoroutine = StartCoroutine(Chocking());
@@ -56,7 +56,7 @@ public class Lungs : MonoBehaviour
         currentVignette.smoothnes = 1;
     }
     private void StartBurining() {
-        player.SetTorsoAnimation(true, "choke");
+        player.CharacterAnimationPlayer.SetTorsoAnimation(true, "choke");
         burnSFX = AudioHandler.Instance.Player3DSound(SFXFiles.fire_spread_burning, transform, 1f, 1f, true, false, 100f, false);
         playerVoiceBurnSFX = AudioHandler.Instance.Player3DSound(SFXFiles.player_cough, transform, 1f, 1f, true, false, 100f, false);
 
@@ -69,14 +69,14 @@ public class Lungs : MonoBehaviour
 
     private void StartColdBreathing() {
         tooCold = true;
-        player.SetTorsoAnimation(true, "cold");
+        player.CharacterAnimationPlayer.SetTorsoAnimation(true, "cold");
         breathParticleSystem.Play();
         StartCoroutine(ColdBreathing());
     }
     private void StopColdBreathing() {
         tooCold = false;
         breathParticleSystem.Stop();
-        player.SetTorsoAnimation(false);
+        player.CharacterAnimationPlayer.SetTorsoAnimation(false);
 
     }
 
@@ -135,14 +135,14 @@ public class Lungs : MonoBehaviour
         if (burnCoroutine != null) {
             StopCoroutine(burnCoroutine);
         }
-        player.SetTorsoAnimation(false);
+        player.CharacterAnimationPlayer.SetTorsoAnimation(false);
         currentVignette = startVignette;
         UpdateVignette();
     }
 
     private void EndChoking() {
         player.Movement.CameraZRotationTilt = false;
-        player.SetTorsoAnimation(false);
+        player.CharacterAnimationPlayer.SetTorsoAnimation(false);
 
 
         if (chokeSFX != null) chokeSFX.AudioSource.Stop();

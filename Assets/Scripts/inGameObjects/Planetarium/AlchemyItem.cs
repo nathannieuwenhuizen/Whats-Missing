@@ -64,7 +64,7 @@ public class AlchemyItem : InteractabelObject
         base.Interact();
         animate = false;
         OnPickingAlchemyItem?.Invoke();
-        room.Player.PlayCutSceneAnimation("takingItem", true);
+        room.Player.CharacterAnimationPlayer.PlayCutSceneAnimation("takingItem", true);
         coll.enabled = false;
         StartCoroutine(AudioHandler.Instance.FadeVolume(AudioHandler.Instance.MusicSource, AudioHandler.Instance.MusicSource.volume, 0, 2f));
         StartCoroutine(GetPickedUp());
