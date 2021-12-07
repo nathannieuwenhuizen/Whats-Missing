@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 8012604511279719778}
   - component: {fileID: 5001677752812243717}
   - component: {fileID: 8119363446861893270}
-  - component: {fileID: 284178089782143390}
   - component: {fileID: 4682347064581758671}
   - component: {fileID: 9063883760156186468}
+  - component: {fileID: 5766965316941563839}
   m_Layer: 0
   m_Name: Tea_Cup
   m_TagString: Untagged
@@ -84,21 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &284178089782143390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 480221821881093155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: Cup
-  alternateWords: []
-  missingChangeEffect: 1
 --- !u!54 &4682347064581758671
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -129,6 +114,29 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7965660181126641760, guid: 9849e47701c313643ba1044da223d9bd, type: 3}
+--- !u!114 &5766965316941563839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480221821881093155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27df562d2f5c3da4b8c9db3942e53ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: Cup
+  alternateWords: []
+  missingChangeEffect: 1
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    tag: 
 --- !u!1 &1326416704126292035
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,9 +148,9 @@ GameObject:
   - component: {fileID: 8527812913928588862}
   - component: {fileID: 2032029937082321719}
   - component: {fileID: 7319163540891826632}
-  - component: {fileID: 6466729586045876490}
   - component: {fileID: 7113533825696025639}
   - component: {fileID: 105237624183589674}
+  - component: {fileID: 2321314551391924552}
   m_Layer: 0
   m_Name: Tea_Dish
   m_TagString: Untagged
@@ -213,21 +221,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6466729586045876490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1326416704126292035}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: Dish
-  alternateWords: []
-  missingChangeEffect: 1
 --- !u!65 &7113533825696025639
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -257,6 +250,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2321314551391924552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326416704126292035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27df562d2f5c3da4b8c9db3942e53ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: Dish
+  alternateWords: []
+  missingChangeEffect: 1
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    tag: 
 --- !u!1 &7841640442780073099
 GameObject:
   m_ObjectHideFlags: 0

@@ -53,13 +53,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1434514008548984314}
-  m_LocalRotation: {x: 0.077058434, y: 0.008004753, z: -0.0076131774, w: 0.9969654}
-  m_LocalPosition: {x: 0.034, y: -0.199, z: -0.004}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 95985381851209066}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 8.846, y: 0.857, z: -0.809}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1902171954849214655
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,7 +170,7 @@ MonoBehaviour:
   - you
   - yourself
   missingChangeEffect: 2
-  headModel: {fileID: 95985381851209066}
+  mirrorHeadModel: {fileID: 649624688996229078}
   animationView: {fileID: 6082282791068677188}
   handsPosition: {fileID: 4158336928895200594}
   playerCamera: {fileID: 2294950103313630988}
@@ -178,6 +178,7 @@ MonoBehaviour:
   meshObjects:
   - {fileID: 2288863671655118138}
   - {fileID: 4644812119650383809}
+  - {fileID: 649624688996229078}
 --- !u!114 &1080875182671030980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5092,7 +5093,7 @@ GameObject:
   - component: {fileID: 749970658665739941}
   - component: {fileID: 649624688996229078}
   m_Layer: 7
-  m_Name: Character_Low.002 (1)
+  m_Name: MirrorHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5348,7 +5349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14c0a56f371527149851f848cf9ff14a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupDistance: 5
+  pickupDistance: 6
 --- !u!54 &2242219048395700261
 Rigidbody:
   m_ObjectHideFlags: 0

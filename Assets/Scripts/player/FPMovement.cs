@@ -214,6 +214,7 @@ public class FPMovement : MonoBehaviour
 
     private void Awake() {
         player = GetComponent<Player>();
+        rb = GetComponent<Rigidbody>();
         ApplyMovementSettings(Settings.GetSettings());
         cameraStartYPos = cameraPivot.localPosition.y;
     }
@@ -224,7 +225,6 @@ public class FPMovement : MonoBehaviour
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
         EnableCursor(false);
 
         oldPos = transform.position;
@@ -233,7 +233,9 @@ public class FPMovement : MonoBehaviour
     {
         if (EnableRotation) UpdateRotation();
         if (EnableWalk) UpdateMovement();
-        // CheckFloorCollision();
+        if (rb.useGravity == false) {
+            InAir = !IsOnFloor();
+        }
     }
 
     ///<summary>
@@ -314,8 +316,8 @@ public class FPMovement : MonoBehaviour
     ///<summary>
     ///Checks if the player is above ground. If the distance is 0 or lower than 0, it sticks to the ground. If not it returns false.
     ///</summary>
-    private bool CheckFloorCollision() {
-        if (inAir || rb.useGravity == false) return false;
+    private bool IsOnFloor() {
+        if (inAir) return false;
         RaycastHit[] hit;
 
         float radius = transform.localScale.x * .5f;
@@ -344,7 +346,7 @@ public class FPMovement : MonoBehaviour
     }
 
     private void OnCollisionExit(Collision other) {
-        if (CheckFloorCollision() == false) {
+        if (IsOnFloor() == false) {
             InAir = true;
             StartCoroutine(MakeWindNoices());
         }        

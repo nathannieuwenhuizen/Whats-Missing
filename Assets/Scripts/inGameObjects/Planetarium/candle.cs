@@ -19,6 +19,9 @@ public class candle : RoomObject
         TimeProperty.onTimeAppearing += UpdateTimeScale;
         WarmthProperty.OnWarmthMissing += SetFlameOff;
         WarmthProperty.OnWarmthAppearing += SetFlameOn;
+        AirProperty.OnAirMissing += SetFlameOff;
+        AirProperty.OnAirAppearing += SetFlameOn;
+
     }
 
     private void OnDisable() {
@@ -28,6 +31,8 @@ public class candle : RoomObject
         TimeProperty.onTimeAppearing -= UpdateTimeScale;
         WarmthProperty.OnWarmthMissing -= SetFlameOff;
         WarmthProperty.OnWarmthAppearing -= SetFlameOn;
+        AirProperty.OnAirMissing -= SetFlameOff;
+        AirProperty.OnAirAppearing -= SetFlameOn;
     }
 
     private void SetFlameOn() {

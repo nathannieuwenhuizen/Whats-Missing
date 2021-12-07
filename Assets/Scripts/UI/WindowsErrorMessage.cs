@@ -36,6 +36,12 @@ public class WindowsErrorMessage : AnimatedPopup
         OnErrorShow?.Invoke();
         AudioHandler.Instance.PlayUISound(SFXFiles.windows_error, 1f);
         ShowAnimation(true);
+        StartCoroutine(AutoClose());
+    }
+
+    private IEnumerator AutoClose() {
+        yield return new WaitForSecondsRealtime(10f);
+        Close();
     }
     public void Close() {
         if (!visible) return;

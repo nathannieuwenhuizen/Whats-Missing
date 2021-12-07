@@ -86,6 +86,7 @@ public class Painting : InteractabelObject
         meshObject.enabled = true;
         coll.enabled = true;
         button.enabled = true;
+        OutlineEnabled = true;
         base.OnAppearing();
     }
 

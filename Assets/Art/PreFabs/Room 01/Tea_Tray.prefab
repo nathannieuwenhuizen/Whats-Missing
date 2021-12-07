@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3786533873368491307}
   - component: {fileID: 7786147681449199191}
   - component: {fileID: 7160357166327579737}
-  - component: {fileID: 7356551741846583605}
   - component: {fileID: 3038728256411661210}
   - component: {fileID: 8590357063388527902}
+  - component: {fileID: 8651314862803204335}
   m_Layer: 0
   m_Name: Tea_Tray
   m_TagString: Untagged
@@ -84,21 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7356551741846583605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6729457374607733012}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: Tray
-  alternateWords: []
-  missingChangeEffect: 1
 --- !u!65 &3038728256411661210
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -128,3 +113,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8651314862803204335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6729457374607733012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27df562d2f5c3da4b8c9db3942e53ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: Tray
+  alternateWords: []
+  missingChangeEffect: 1
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    tag: 

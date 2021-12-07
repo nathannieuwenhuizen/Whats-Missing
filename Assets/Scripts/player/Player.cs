@@ -15,7 +15,8 @@ public class Player : RoomObject
     private bool dead = false;
 
     [SerializeField]
-    private Transform headModel;
+    private SkinnedMeshRenderer mirrorHeadModel;
+
     [SerializeField]
     private Transform animationView;
     [SerializeField]
@@ -48,11 +49,14 @@ public class Player : RoomObject
 
 
     private FPMovement movement;
-    public FPMovement Movement { get=> movement; }
+    public FPMovement Movement { 
+        get {
+        if (movement == null) movement = GetComponent<FPMovement>();
+        return  movement;
+        } 
+    }
     protected void Awake()
     {
-        movement = GetComponent<FPMovement>();
-
         ApplyCameraSettings(Settings.GetSettings());
     }
 
@@ -124,7 +128,7 @@ public class Player : RoomObject
         Movement.EnableWalk = false;
         Movement.RB.velocity = Vector3.zero;
 
-        playerCamera.transform.SetParent(headModel);
+        playerCamera.transform.SetParent(animationView);
         playerCamera.transform.localPosition = animationView.localPosition;
         playerCamera.transform.localRotation = animationView.localRotation;
         StartCoroutine(playerCamera.AnimatingFieldOfView(80, AnimationCurve.EaseInOut(0,0,1,1), 2f));
@@ -138,11 +142,12 @@ public class Player : RoomObject
 
     private int headLayer;
     public void ShowHead() {
-        headLayer = meshObjects[1].gameObject.layer;
-        meshObjects[1].gameObject.layer = 0;
+        
+        headLayer = mirrorHeadModel.gameObject.layer;
+        mirrorHeadModel.gameObject.layer = 0;
     }
     public void HideHead() {
-        meshObjects[1].gameObject.layer = headLayer;
+        mirrorHeadModel.gameObject.layer = headLayer;
     }
 
     public override void OnMissingFinish()

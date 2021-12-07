@@ -2425,8 +2425,8 @@ GameObject:
   - component: {fileID: 7064104297680548940}
   - component: {fileID: 8208105408883219332}
   - component: {fileID: 804475152657643393}
-  - component: {fileID: 4503384220298329413}
   - component: {fileID: 8842133862888469987}
+  - component: {fileID: 1654380312377423535}
   m_Layer: 0
   m_Name: Tea_SugarCup
   m_TagString: Untagged
@@ -2514,21 +2514,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4503384220298329413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6543070701449652555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: Sugar Pot
-  alternateWords: []
-  missingChangeEffect: 1
 --- !u!54 &8842133862888469987
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2545,6 +2530,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1654380312377423535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6543070701449652555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27df562d2f5c3da4b8c9db3942e53ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: Sugar Pot
+  alternateWords: []
+  missingChangeEffect: 1
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    tag: 
 --- !u!1 &7651757854451891352
 GameObject:
   m_ObjectHideFlags: 0
