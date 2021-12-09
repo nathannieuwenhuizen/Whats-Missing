@@ -11,7 +11,7 @@ public static class SFXFiles {
     //player
     public static string player_jump = "Player_jump";
     public static string player_landing = "Player_landing";
-    public static string player_footstep = "Player_footstep";
+    public static string player_footstep_normal = "Player_footstep";
     public static string player_choking = "Player_choking";
     public static string player_relief_gasp = "Player_relief_gasp";
     public static string choke_die = "Choke_die";
@@ -22,6 +22,9 @@ public static class SFXFiles {
     public static string player_hits_ground = "Person_hits_ground";
     public static string player_cough = "Player_cough";
     public static string player_grab = "Player_grab";
+    public static string player_footstep_water = "Player_footstep_water";
+    public static string player_footstep_grass = "Player_footstep_grass";
+
     
     //planetarium
     public static string tv_change_woosh = "Tv_change_woosh";

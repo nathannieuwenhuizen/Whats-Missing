@@ -46,9 +46,17 @@ public class FPMovement : MonoBehaviour
     }
     [SerializeField]
     private Collider topCollider;
+
+    public Collider TopCollider {
+        get { return topCollider;}
+    }
+
+    [SerializeField]
+    private ParticleSystem waterSplash;
+
     [SerializeField]
     private ParticleSystem windParticles;
-    private string footstepFile = SFXFiles.player_footstep;
+    public static string FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
 
     private float walkStepDistance = 4f;
 
@@ -163,7 +171,7 @@ public class FPMovement : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision other) {
-        footstepFile = other.gameObject.tag == "Stairs" ? SFXFiles.stairs_footstep : SFXFiles.player_footstep;
+        FOOTSTEP_SFXFILE = other.gameObject.tag == "Stairs" ? SFXFiles.stairs_footstep : SFXFiles.player_footstep_normal;
 
         if (other.contacts[0].thisCollider == topCollider) inCeiling = true;
         else inCeiling = false;
@@ -216,6 +224,8 @@ public class FPMovement : MonoBehaviour
         SettingPanel.OnSave -= ApplyMovementSettings;
         PerspectiveProperty.onPerspectiveMissing -= HalfCameraSensitiviy;
         PerspectiveProperty.onPerspectiveAppearing -= UnhalfCameraSensitiviy;
+
+        FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
     }
 
     private void HalfCameraSensitiviy() {
@@ -296,8 +306,11 @@ public class FPMovement : MonoBehaviour
             oldPos = transform.position;
             if (!player.IsMissing) {
                 // AudioHandler.Instance?.PlaySound(footstepFile, footstepFile == SFXFiles.player_footstep ? .05f : 1f);
-
-                AudioHandler.Instance?.Player3DSound(footstepFile, transform, .05f, player.IsShrinked ? 1.5f :(player.IsEnlarged ? .5f : 1f), false, true, 50);
+                AudioHandler.Instance?.Player3DSound(FOOTSTEP_SFXFILE, transform, FOOTSTEP_SFXFILE == SFXFiles.player_footstep_normal ? .05f : 1f, player.IsShrinked ? 1.5f :(player.IsEnlarged ? .5f : 1f), false, true, 50);
+                if (FOOTSTEP_SFXFILE == SFXFiles.player_footstep_water) {
+                    Debug.Log("emit splash");
+                    waterSplash.Emit(1);
+                }
             }
         }
     }

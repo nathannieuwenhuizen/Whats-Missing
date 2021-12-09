@@ -205,9 +205,9 @@ public class Player : RoomObject
     ///</summary>
     private IEnumerator StandingUp() {
         yield return new WaitForSeconds(2.2f);
-        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep, .1f);
+        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
         yield return new WaitForSeconds(.5f);
-        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep, .1f);
+        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
         yield return new WaitForSeconds(2.3f);
         characterAnimationPlayer.EndOfCutSceneAnimation();
     }

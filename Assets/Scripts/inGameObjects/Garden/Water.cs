@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshRenderer))]
-public class Water : RoomObject
+public class Water : RoomObject, ITriggerArea
 {
 
     private Material watermaterial;
+
+    public bool InsideArea { get; set;} = false;
 
     private void Awake() {
         watermaterial = GetComponent<MeshRenderer>().material;
@@ -34,4 +36,16 @@ public class Water : RoomObject
         AlternativeWords = new string[] { "waters", "lake", "pond", "pool", "liquid" };
     }
 
+    public void OnAreaEnter(Player player)
+    {
+        FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_water;
+        Debug.Log("water enter");
+    }
+
+    public void OnAreaExit(Player player)
+    {
+        FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
+        Debug.Log("water leave");
+
+    }
 }
