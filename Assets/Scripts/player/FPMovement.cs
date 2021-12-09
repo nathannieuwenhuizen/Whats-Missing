@@ -13,6 +13,8 @@ public class FPMovement : MonoBehaviour
 
     private Player player;
 
+    private float cameraSensetivityFactor = 1f;
+
     //camera movement offset values
     private float cameraYOffset = 0.03f;
     private float cameraStartYPos;
@@ -195,7 +197,8 @@ public class FPMovement : MonoBehaviour
         RoomDebugger.OnShow += DisableMovment;
         RoomDebugger.OnHide += EnableMovment;
         SettingPanel.OnSave += ApplyMovementSettings;
-
+        PerspectiveProperty.onPerspectiveMissing += HalfCameraSensitiviy;
+        PerspectiveProperty.onPerspectiveAppearing += UnhalfCameraSensitiviy;
     }
 
     private void OnDisable() {
@@ -211,6 +214,15 @@ public class FPMovement : MonoBehaviour
         RoomDebugger.OnShow -= DisableMovment;
         RoomDebugger.OnHide -= EnableMovment;
         SettingPanel.OnSave -= ApplyMovementSettings;
+        PerspectiveProperty.onPerspectiveMissing -= HalfCameraSensitiviy;
+        PerspectiveProperty.onPerspectiveAppearing -= UnhalfCameraSensitiviy;
+    }
+
+    private void HalfCameraSensitiviy() {
+        cameraSensetivityFactor = .5f;
+    }
+    private void UnhalfCameraSensitiviy() {
+        cameraSensetivityFactor = 1f;
     }
 
     private void Awake() {
@@ -361,12 +373,12 @@ public class FPMovement : MonoBehaviour
     {
         float inversionX = (controlSettings.Camera_x_invert ? -1 : 1);
         //horizontal rotation
-        transform.Rotate(new Vector3(0, mouseDelta.x * rotateSpeed * controlSettings.Camera_sensetivity * inversionX , 0));
+        transform.Rotate(new Vector3(0, mouseDelta.x * rotateSpeed * controlSettings.Camera_sensetivity * inversionX * cameraSensetivityFactor , 0));
 
         float inversionY = (controlSettings.Camera_y_invert ? -1 : 1);
 
         //vertical rotation
-        cameraPivot.Rotate(new Vector3(-mouseDelta.y * rotateSpeed * controlSettings.Camera_sensetivity * inversionY, 0, 0));
+        cameraPivot.Rotate(new Vector3(-mouseDelta.y * rotateSpeed * controlSettings.Camera_sensetivity * inversionY * cameraSensetivityFactor, 0, 0));
 
 
         //setting max angle cap

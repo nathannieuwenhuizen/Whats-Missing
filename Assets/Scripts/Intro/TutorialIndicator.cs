@@ -39,7 +39,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
         Area.OnFirstRoomEnter += StartWaitingForMove;
         AreaTextMeshFader.onMirrorTutorialShow += StartWaitingMirrorComplete;
         Gravity.onGravityMissing += StartWaitingForJump;
-        Room.OnRoomComplete += EnableClick;
+        Letter.OnLetterClickAction += EnableClick;
         Room.OnRoomComplete += HideTutorial;
         Room.OnRoomLeaving += HideTutorial;
     }
@@ -49,7 +49,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
         MirrorCanvas.OnShowHint -= ToggleHint;
         Area.OnFirstRoomEnter -= StartWaitingForMove;
         AreaTextMeshFader.onMirrorTutorialShow -= StartWaitingMirrorComplete;
-        Room.OnRoomComplete -= EnableClick;
+        Letter.OnLetterClickAction -= EnableClick;
         InputManager.OnMove -= EnableMove;
         InputManager.OnJump -= EnableJump;
         Gravity.onGravityMissing -= StartWaitingForJump;
@@ -57,7 +57,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
         Room.OnRoomLeaving -= HideTutorial;
     }
 
-    private void EnableClick() {
+    private void EnableClick(Letter letter) {
         mirrorComplete = true;
     }
     private void EnableMove(Vector2 delta) {

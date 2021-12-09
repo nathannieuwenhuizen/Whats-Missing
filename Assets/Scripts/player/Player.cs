@@ -177,9 +177,6 @@ public class Player : RoomObject
         if (other.GetComponent<ITriggerArea>() != null) {
             other.GetComponent<ITriggerArea>().OnAreaEnter(this);
         }
-        if (other.GetComponent<AreaTextMeshFader>() != null){
-            other.GetComponent<AreaTextMeshFader>().FadeIn();
-        }
     }
 
     private void OnTriggerExit(Collider other) {
