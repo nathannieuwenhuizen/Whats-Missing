@@ -13,6 +13,7 @@ public class RigidBodyInfo {
     public RigidbodyConstraints RigidbodyConstraints = RigidbodyConstraints.None;
     public Vector3 Holdvelocity = Vector3.zero;
     public bool UseGravity = true;
+    public bool IsKinematic = true;
     public string tag = "";
     public void Save(Rigidbody rb) {
         Drag = rb.drag;
@@ -22,6 +23,7 @@ public class RigidBodyInfo {
         Holdvelocity = rb.velocity;
         tag = rb.gameObject.tag;
         UseGravity = rb.useGravity;
+        IsKinematic = rb.isKinematic;
     }
     public void Load(Rigidbody rb) {
         rb.drag = Drag;
@@ -30,6 +32,7 @@ public class RigidBodyInfo {
         rb.constraints = RigidbodyConstraints;
         rb.velocity = Holdvelocity;
         rb.gameObject.tag = tag;
+        rb.isKinematic = IsKinematic;
     }
 }
 

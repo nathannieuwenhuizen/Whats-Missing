@@ -97,7 +97,7 @@ public class Player : RoomObject
 
     private void Reset() {
         Word = "me";
-        AlternativeWords = new string[]{ "myself", "i", "player", "gregory"};
+        AlternativeWords = new string[]{ "myself", "i", "player", "gregory", "you", "yourself", "self"};
     }
     private void Update() {
 #if UNITY_EDITOR

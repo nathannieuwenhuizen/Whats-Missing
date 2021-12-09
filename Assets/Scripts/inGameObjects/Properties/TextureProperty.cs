@@ -93,7 +93,7 @@ public class TextureProperty : Property
 
     private void Reset() {
         Word = "texture";
-        AlternativeWords = new string[] { "textures" };
+        AlternativeWords = new string[] { "textures", "shaders", "shader" };
     }
 }
 public struct MaterialHolders {

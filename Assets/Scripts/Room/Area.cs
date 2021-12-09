@@ -254,6 +254,11 @@ public class Area : MonoBehaviour
         UpdateRoomActiveStates(true);
     }
 
+    public bool IsLastRoom(Room room) {
+        int index = rooms.IndexOf(room);
+        return index == rooms.Count - 1;
+    }
+
     private void OnPassingThroughDoor(Door door) {
         OnNewRoomEnter?.Invoke();
         int index = rooms.IndexOf(door.room);

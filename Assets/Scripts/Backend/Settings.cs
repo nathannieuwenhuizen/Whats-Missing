@@ -25,7 +25,8 @@ public struct Settings
         controlSettings = new ControlSettings(){
             Camera_sensetivity = PlayerPrefs.GetFloat("Camera_sensetivity", 1f),
             Camera_x_invert = PlayerPrefs.GetInt("Camera_x_invert", 0) == 1,
-            Camera_y_invert = PlayerPrefs.GetInt("Camera_y_invert", 0) == 1
+            Camera_y_invert = PlayerPrefs.GetInt("Camera_y_invert", 0) == 1,
+            Enable_Keyboard_Input = PlayerPrefs.GetInt("Enable_Keyboard_Input", 0) == 1
         };
         cameraSettings = new CameraSettings() {
             Depth_of_field_enabled = PlayerPrefs.GetInt("Depth_of_field_enabled", 0) == 1,
@@ -40,6 +41,7 @@ public struct Settings
         PlayerPrefs.SetFloat("Camera_sensetivity", controlSettings.Camera_sensetivity);
         PlayerPrefs.SetInt("Camera_x_invert", controlSettings.Camera_x_invert ? 1 : 0);
         PlayerPrefs.SetInt("Camera_y_invert", controlSettings.Camera_y_invert ? 1 : 0);
+        PlayerPrefs.SetInt("Enable_Keyboard_Input", controlSettings.Enable_Keyboard_Input ? 1 : 0);
 
         PlayerPrefs.SetInt("Depth_of_field_enabled", cameraSettings.Depth_of_field_enabled ? 1 : 0);
         PlayerPrefs.SetInt("Motion_blur_enabled", cameraSettings.Motion_blur_enabled ? 1 : 0);
@@ -53,6 +55,7 @@ public struct ControlSettings {
     public float Camera_sensetivity;
     public bool Camera_y_invert;
     public bool Camera_x_invert;
+    public bool Enable_Keyboard_Input;
 }
 
 ///<summary>

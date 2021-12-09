@@ -18,7 +18,8 @@ public class TimeProperty : Property
         base.OnMissing();
         Room.TimeScale = 0f;
         foreach(PickableRoomObject obj in room.GetAllObjectsInRoom<PickableRoomObject>()) {
-            obj.DeactivateRigidBody();
+            obj.RigidBody.isKinematic = true;
+            // obj.DeactivateRigidBody();
         }
 
         onTimeMissing?.Invoke();
@@ -34,6 +35,7 @@ public class TimeProperty : Property
         base.OnAppearing();
         Room.TimeScale = 1f;
         foreach(PickableRoomObject obj in room.GetAllObjectsInRoom<PickableRoomObject>()) {
+            obj.RigidBodyInfo.IsKinematic = false;
             obj.RigidBodyInfo.UseGravity = true;
             obj.ActivateRigidBody();
         }

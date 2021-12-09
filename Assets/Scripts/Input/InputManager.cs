@@ -20,6 +20,31 @@ public class InputManager : MonoBehaviour
     public static event AxisAction OnMove;
     public static event AxisAction OnRotate;
 
+    public static bool KEYBOARD_ENABLED_MIRROR = false;
+
+
+    private void OnEnable() {
+        SettingPanel.OnSave += UpdateSettings;
+    }
+
+    private void OnDisable() {
+        SettingPanel.OnSave -= UpdateSettings;
+    }
+
+    private void Awake() {
+        UpdateSettings(Settings.GetSettings());
+    }
+
+    private void UpdateSettings(Settings settings) {
+        // #if UNITY_EDITOR
+        // InputManager.KEYBOARD_ENABLED_MIRROR = true;
+// #else
+        InputManager.KEYBOARD_ENABLED_MIRROR = settings.controlSettings.Enable_Keyboard_Input;
+        Debug.Log("update keyboard settings" + settings.controlSettings.Enable_Keyboard_Input);
+// #endif
+
+    }
+
     void Update()
     {
         //controller

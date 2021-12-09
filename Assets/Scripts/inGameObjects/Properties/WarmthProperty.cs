@@ -126,7 +126,7 @@ public class WarmthProperty : Property
 
     private void Reset() {
         Word = "temperature";
-        AlternativeWords = new string[] { "warmth", "heat", "hot", "hotness", "warmness" };
+        AlternativeWords = new string[] { "warmth", "heat", "hot", "hotness", "warmness", "warm" };
     }
 
 }

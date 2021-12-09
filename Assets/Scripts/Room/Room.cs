@@ -270,7 +270,7 @@ public class Room : MonoBehaviour
     }
     private IEnumerator WaitBeforeOpeningDoor() {
         yield return new WaitForSeconds(2f);
-        if (AllMirrorsAreOn()){
+        if (AllMirrorsAreOn() && !area.IsLastRoom(this)){
             roomFinishedEvent?.Invoke();
             endDoor.Locked = false;
         }

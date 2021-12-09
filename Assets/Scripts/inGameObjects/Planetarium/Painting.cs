@@ -100,7 +100,8 @@ public class Painting : InteractabelObject
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
-        if (!open) SetPortalsActive(false);
+        DetatchFromStairs();
+        // if (!open) SetPortalsActive(false);
 
     }
 

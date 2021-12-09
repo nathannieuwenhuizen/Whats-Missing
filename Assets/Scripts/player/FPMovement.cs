@@ -28,7 +28,7 @@ public class FPMovement : MonoBehaviour
 
     //gravity
     public float gravityScale = 1.0f; 
-    public static float globalGravity = -9.81f;
+    public static float globalGravity = -9.81f * .8f;
 
     private ControlSettings controlSettings;
 
@@ -113,13 +113,20 @@ public class FPMovement : MonoBehaviour
     ///Makes the player jump
     ///</summary>
     public void Jump() {
-        if (inAir && rb.useGravity == true) return;
+        if (inAir && rb.useGravity == false) {
+            //negative jump at gravity is missing
+            rb.velocity = new Vector3(rb.velocity.x, -jumpForce, rb.velocity.z);
+            inCeiling = false;
+            return;
+        }
+
+        if (inAir) return;
+        
         InAir = true;
         StartCoroutine(MakeWindNoices());
         AudioHandler.Instance?.PlaySound(SFXFiles.player_jump, .1f);
-        rb.velocity = new Vector3(rb.velocity.x, jumpForce * (inCeiling ? -1 : 1), rb.velocity.z);
+        rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
 
-        inCeiling = false;
     }
 
     ///<summary>
@@ -229,6 +236,8 @@ public class FPMovement : MonoBehaviour
         if (EnableWalk) UpdateMovement();
         if (rb.useGravity == false) {
             InAir = !IsOnFloor();
+        } else {
+            inCeiling = InAir = !IsOnFloor();
         }
     }
 
@@ -310,7 +319,7 @@ public class FPMovement : MonoBehaviour
     ///Checks if the player is above ground. If the distance is 0 or lower than 0, it sticks to the ground. If not it returns false.
     ///</summary>
     private bool IsOnFloor() {
-        if (inAir) return false;
+        //if (inAir) return false;
         RaycastHit[] hit;
 
         float radius = transform.localScale.x * .5f;
@@ -342,7 +351,7 @@ public class FPMovement : MonoBehaviour
         if (IsOnFloor() == false) {
             InAir = true;
             StartCoroutine(MakeWindNoices());
-        }        
+        }
     }
 
     ///<summary>
