@@ -31,7 +31,7 @@ public class Hands : MonoBehaviour
         if (interactableObj != default(IInteractable)) {
             if (interactableObj.Gameobject.GetComponent<IPickable>() != default(IPickable)) {
                 Grab(interactableObj.Gameobject.GetComponent<IPickable>());
-            } else {
+            } else if (interactableObj.Interactable){
                 interactableObj.Interact();
             }
         }

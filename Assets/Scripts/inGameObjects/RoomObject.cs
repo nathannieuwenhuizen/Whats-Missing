@@ -7,6 +7,7 @@ using UnityEngine;
 ///</summary>
 public class RoomObject : RoomEntity
 {
+    public delegate void OnMissingEvent();
 
     #region  missing changes
     ///<summary>

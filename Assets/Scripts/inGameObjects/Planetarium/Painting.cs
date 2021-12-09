@@ -19,15 +19,13 @@ public class Painting : InteractabelObject
     private bool open = false;
     private bool animating = false;
 
-
-    private void Reset() {
-        Word = "painting";
-        AlternativeWords = new string[] {"portrait", "illustration", "paintings", "drawing", "illustrations"};
-    }
+    private Rigidbody rigidBody;
 
     protected void Awake() {
         OutlineEnabled = false;
         animator = GetComponent<Animator>();
+        rigidBody = GetComponent<Rigidbody>();
+        rigidBody.isKinematic = true;
         SetPortalsActive(false);
     }
     public override void OnRoomEnter()
@@ -39,11 +37,20 @@ public class Painting : InteractabelObject
         base.OnRoomLeave();
         SetPortalsActive(false);
     }
+    private void OnEnable() {
+        Stairs.OnStairsMissing += DetatchFromStairs;
+        Gravity.onGravityMissing += DetatchFromStairs;
+    }
+    private void OnDisable() {
+        Stairs.OnStairsMissing -= DetatchFromStairs;
+        Gravity.onGravityMissing -= DetatchFromStairs;
+    }
 
-
-    private void Start() {
-        
-    }  
+    private void DetatchFromStairs() {
+        if (!inSpace) return;
+        Interactable = false;
+        rigidBody.isKinematic = false;
+    }
 
     private void SetPortalsActive(bool val) {
         hiddenRoom.SetActive(val);
@@ -95,6 +102,11 @@ public class Painting : InteractabelObject
         base.OnAppearingFinish();
         if (!open) SetPortalsActive(false);
 
+    }
+
+    private void Reset() {
+        Word = "painting";
+        AlternativeWords = new string[] {"portrait", "illustration", "paintings", "drawing", "illustrations"};
     }
 
 

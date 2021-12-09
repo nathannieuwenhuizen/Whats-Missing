@@ -20,6 +20,8 @@ public class InteractabelObject : RoomObject, IInteractable
         set { outlineEnabled = value; }
     }
 
+    public bool Interactable {get; set; } = true;
+
     public bool Focused { 
         get => focused; 
         set {
