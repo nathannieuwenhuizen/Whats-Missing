@@ -53,6 +53,8 @@ public class Painting : InteractabelObject
     }
 
     private void SetPortalsActive(bool val) {
+        if (hiddenRoom == null) return;
+        
         hiddenRoom.SetActive(val);
         foreach (Portal portal in portals)
             portal.gameObject.SetActive(val);
