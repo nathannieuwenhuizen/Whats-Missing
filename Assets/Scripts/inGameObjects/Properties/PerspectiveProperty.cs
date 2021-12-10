@@ -18,7 +18,7 @@ public class PerspectiveProperty : Property
 
 
 
-    private Matrix4x4 ortho, perspective;
+    private Matrix4x4 ortho, normalPerspective, enlargedPerspective;
     private float fov = 60f,
                  near = .1f,
                  far = 1000f,
@@ -34,7 +34,8 @@ public class PerspectiveProperty : Property
 
         aspect = (float)Screen.width / (float)Screen.height;
         ortho = Matrix4x4.Ortho(-orthographicSize * aspect, orthographicSize * aspect, -orthographicSize, orthographicSize, orthoNear, far);
-        perspective = Matrix4x4.Perspective(fov, aspect, near, far);
+        normalPerspective = Matrix4x4.Perspective(fov, aspect, near, far);
+        enlargedPerspective = Matrix4x4.Perspective(120, aspect, near, far);
         
     }
 
@@ -54,7 +55,7 @@ public class PerspectiveProperty : Property
     }
     public override IEnumerator AnimateMissing()
     {
-        m_camera.projectionMatrix = perspective;
+        m_camera.projectionMatrix = normalPerspective;
         StartCoroutine(m_camera.transform.AnimatingLocalPos(startLocalPos + new Vector3(0,cameraYOffset,0), AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
         yield return StartCoroutine(BlendToMatrix(ortho, orthoNear, animationDuration, 8,true));
         yield return base.AnimateMissing();
@@ -80,7 +81,7 @@ public class PerspectiveProperty : Property
     public override IEnumerator AnimateAppearing()
     {
         StartCoroutine(m_camera.transform.AnimatingLocalPos(startLocalPos, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
-        yield return StartCoroutine(BlendToMatrix(perspective, near, animationDuration, 8,false));
+        yield return StartCoroutine(BlendToMatrix(normalPerspective, near, animationDuration, 8,false));
         base.AnimateAppearing();
         OnAppearingFinish();
 
@@ -92,12 +93,42 @@ public class PerspectiveProperty : Property
         room.Player.Movement.EnableHeadTilt = true;
         onPerspectiveAppearing?.Invoke();
         m_camera.orthographic = false;
-        m_camera.projectionMatrix = perspective;
+        m_camera.projectionMatrix = normalPerspective;
         m_camera.nearClipPlane = near;
         m_camera.transform.localPosition = startLocalPos;
     }
     #endregion
 
+
+    #region  Enlarging
+
+    public override void OnEnlarge()
+    {
+        m_camera.orthographic = true;
+        StopAllCoroutines();
+        StartCoroutine(AnimateEnlarging());
+    }
+
+    public override IEnumerator AnimateEnlarging()
+    {
+        m_camera.projectionMatrix = normalPerspective;
+        StartCoroutine(m_camera.transform.AnimatingLocalPos(startLocalPos + new Vector3(0,cameraYOffset,0), AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+        yield return StartCoroutine(BlendToMatrix(enlargedPerspective, near, animationDuration, 8,true));
+        yield return base.AnimateEnlarging();
+    }
+    public override void OnEnlargingFinish()
+    {
+        base.OnEnlargingFinish();
+        m_camera.projectionMatrix = enlargedPerspective;
+        m_camera.nearClipPlane = near;
+    }
+
+    public override void OnEnlargeRevert()
+    {
+        base.OnAppearing();
+    }
+
+    #endregion
 
     public static Matrix4x4 MatrixLerp(Matrix4x4 from, Matrix4x4 to, float time) {
         Matrix4x4 ret = new Matrix4x4();
