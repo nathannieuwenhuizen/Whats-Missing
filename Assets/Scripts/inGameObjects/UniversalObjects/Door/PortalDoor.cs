@@ -68,8 +68,9 @@ public class PortalDoor : Door
         if (!inSpace || Door.IN_WALKING_ANIMATION) return;
 
         if (connectedDoor == null || connectedDoor.room == null) return;
+        if (room.Player == null) return;
 
-        if (portal.IncameraRange() && !locked) {
+        if (portal.IncameraRange() && !locked && Vector3.Distance(room.Player.transform.position, transform.position) < 20f) {
             if (!connectedDoor.room.gameObject.activeSelf) 
             {
                 Debug.Log("room show: " + connectedDoor.room.gameObject.name);
