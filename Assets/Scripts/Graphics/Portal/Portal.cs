@@ -83,8 +83,9 @@ public class Portal : MonoBehaviour
             } 
         }
 
-        if (isReady && mainCamera != null && connectedPortal != null)
+        if (isReady && mainCamera != null && connectedPortal != null){
             RenderPortal();
+        }
         else {
             mainCamera = Camera.main;
             OnValidate();
