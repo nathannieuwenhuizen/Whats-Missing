@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Door : InteractabelObject
 {
-    // Start is called before the first frame update
+
+    
     [SerializeField]
     public Vector3 point0, point1, point2 = new Vector3();
     
@@ -15,7 +16,7 @@ public class Door : InteractabelObject
     private bool inAnimation = false;
 
     private bool animated = false;
-    private bool inWalkingAnimation = false;
+    public static bool IN_WALKING_ANIMATION = false;
 
 
     public delegate void DoorAction(Door door);
@@ -134,7 +135,7 @@ public class Door : InteractabelObject
     /// Animates the player walking through the door
     ///</summary>
     public IEnumerator Walking(float duration, Player player) {
-        inWalkingAnimation = true;
+        IN_WALKING_ANIMATION = true;
         float index = 0;
         player.Movement.EnableWalk = false;
         player.Movement.RB.isKinematic = true;
@@ -152,7 +153,10 @@ public class Door : InteractabelObject
         player.Movement.RB.isKinematic = false;
 
         // SetPlayerPos(endPos, player);
-        inWalkingAnimation = false;
+
+        while(inAnimation) yield return new WaitForEndOfFrame();
+        
+        IN_WALKING_ANIMATION = false;
     }
 
 

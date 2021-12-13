@@ -64,6 +64,25 @@ public class PortalDoor : Door
         return Vector3.Distance(transform.position, player.transform.position) > 15f;
     }
 
+    private void LateUpdate() {
+        if (!inSpace || Door.IN_WALKING_ANIMATION) return;
+
+        if (connectedDoor == null || connectedDoor.room == null) return;
+
+        if (portal.IncameraRange() && !locked) {
+            if (!connectedDoor.room.gameObject.activeSelf) 
+            {
+                Debug.Log("room show: " + connectedDoor.room.gameObject.name);
+                connectedDoor.room.gameObject.SetActive(true);
+            }
+        } else {
+            if (connectedDoor.room.gameObject.activeSelf) {
+                Debug.Log("room hide: " + connectedDoor.room.gameObject.name);
+                connectedDoor.room.gameObject.SetActive(false);
+            }
+        }
+    }
+
     public override void OnRoomEnter()
     {
         SetPortalState(true);
@@ -74,9 +93,9 @@ public class PortalDoor : Door
     {
         base.OnRoomLeave();
         if (delayDeactivationCoroutine != null) StopCoroutine(delayDeactivationCoroutine);
-        delayDeactivationCoroutine = StartCoroutine(delaydeactivation());
+        delayDeactivationCoroutine = StartCoroutine(Delaydeactivation());
     }
-    private IEnumerator delaydeactivation() {
+    private IEnumerator Delaydeactivation() {
         yield return new WaitForSeconds(3f);
         SetPortalState(false);
     }

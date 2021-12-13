@@ -21,7 +21,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
         get; set; 
     }
 
-    protected bool inSpace = true;
+    protected bool inSpace = false;
     public bool InSpace { get => inSpace; }
 
     public Transform Transform => transform;
