@@ -6,7 +6,7 @@ using UnityEngine;
 public class StaringState : IState
 {
 
-    public static float DUCK_DETECTION_DISTANCE = 10f;
+    public static float DUCK_DETECTION_DISTANCE = 15f;
     public Duck _duck;
     public Transform _player;
     public ILiveStateDelegate OnStateSwitch { get; set; }

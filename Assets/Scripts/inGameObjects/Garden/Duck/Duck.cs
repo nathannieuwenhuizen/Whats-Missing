@@ -9,6 +9,9 @@ using UnityEngine;
 public class Duck : RoomObject
 {
     [SerializeField]
+    protected Animator animator;
+
+    [SerializeField]
     private Room room;
 
     [SerializeField]
@@ -57,6 +60,7 @@ public class Duck : RoomObject
     }
 
     public virtual void Quack() {
+        animator.SetTrigger("quack");
         AudioHandler.Instance.Player3DSound(SFXFiles.duck, transform, .5f, IsEnlarged ? .5f : 1f, false, true, 30f);
     }
 
