@@ -33,7 +33,6 @@ public class Cloud : RoomObject
 
 
     private void UpdateCloudColor(float sunIntensity) {
-        Debug.Log("precentage = " + sunIntensity);
         renderer.material.color =  Color.Lerp(Color.white, darkColor, 1 - sunIntensity);
     }
 
