@@ -14,8 +14,8 @@ public class Cloud : RoomObject
     [SerializeField]
     private Color darkColor;
     public Cloud() {
-        normalScale = 1f;
-        shrinkScale = 0.01f;
+        normalScale = 35f;
+        shrinkScale = 0.7f;
     }
 
     private void Reset() {
@@ -28,7 +28,7 @@ public class Cloud : RoomObject
     }
 
     private void Update() {
-        transform.Rotate(new Vector3(0,cloudSpeed * Room.TimeScale * Time.deltaTime,0));
+        transform.Rotate(new Vector3(0, 0, cloudSpeed * Room.TimeScale * Time.deltaTime));
     }
 
 

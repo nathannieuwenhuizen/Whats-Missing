@@ -41,7 +41,7 @@ public class ResolutionProperty : Property
     }
     
     private void OnDisable() {
-        SetMaterialActive(false);
+        if (InSpace) SetMaterialActive(false);
     }
 
     public override void OnShrinking()
@@ -58,24 +58,21 @@ public class ResolutionProperty : Property
     public override void OnShrinkingFinish()
     {
         base.OnShrinkingFinish();
+        Debug.Log("on shrink resolution");
         Resolution = shrinkResolution;
     }
 
     public override void OnShrinkRevert()
     {
-        Debug.Log("on shrink revert");
         base.OnShrinkRevert();
     }
     public override IEnumerator AnimateShrinkRevert()
     {
-        Debug.Log("shrink revert animate");
         yield return AnimateMaterialResolutionProperty(shrinkResolution, Screen.width);
         yield return base.AnimateShrinkRevert();
     }
     public override void OnShrinkingRevertFinish()
     {
-        Debug.Log("shrink revert finish");
-
         base.OnShrinkingRevertFinish();
         SetMaterialActive(false);
     }

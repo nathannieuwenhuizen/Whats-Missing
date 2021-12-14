@@ -70,15 +70,13 @@ public class PortalDoor : Door
         if (connectedDoor == null || connectedDoor.room == null) return;
         if (room.Player == null) return;
 
-        if (portal.IncameraRange() && !locked && Vector3.Distance(room.Player.transform.position, transform.position) < 20f) {
+        if (portal.IncameraRange() && !locked && Vector3.Distance(room.Player.transform.position, transform.position) < 40f) {
             if (!connectedDoor.room.gameObject.activeSelf) 
             {
-                Debug.Log("room show: " + connectedDoor.room.gameObject.name);
                 connectedDoor.room.gameObject.SetActive(true);
             }
         } else {
             if (connectedDoor.room.gameObject.activeSelf) {
-                Debug.Log("room hide: " + connectedDoor.room.gameObject.name);
                 connectedDoor.room.gameObject.SetActive(false);
             }
         }

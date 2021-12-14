@@ -98,7 +98,7 @@ public class Door : InteractabelObject
 
     public override void Interact()
     {
-        if (locked || inAnimation) return;
+        if (locked || inAnimation || IN_WALKING_ANIMATION) return;
         flipped = CheckAngle();
         OnPassingThrough?.Invoke(this);
         GoingThrough();

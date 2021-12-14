@@ -7,10 +7,6 @@ public class Moon : Property
 
     private Material materialSkybox;
 
-    //crashing variables
-    private float duratinoBeforeCrashing = 60f;
-    private float crashingScale = 9.8f;
-    private Coroutine crashingCoroutine;
 
     private void Awake() {
         materialSkybox  = RenderSettings.skybox;
@@ -18,7 +14,8 @@ public class Moon : Property
 
     public Moon() {
         normalScale = 7;
-        largeScale = 9.7f;
+        largeScale = 9.75f;
+        AnimationDuration = .5f;
     }
 
     public float MoonSize {
@@ -33,7 +30,7 @@ public class Moon : Property
     public override void OnEnlarge()
     {
         MoonRotation = 45;
-        base.OnEnlarge();
+        StartCoroutine(AnimateEnlarging());
     }
 
     public override IEnumerator AnimateEnlarging()
@@ -43,14 +40,15 @@ public class Moon : Property
     }
     public override void OnEnlargingFinish()
     {
+        Debug.Log("enlarging moon" + MoonSize);
         MoonSize = largeScale;
-        // crashingCoroutine = StartCoroutine(CrashingDown());
+        Debug.Log("enlarging moon" + MoonSize);
         base.OnEnlargingFinish();
     }
 
     public override void OnEnlargeRevert()
     {
-        if (crashingCoroutine != null) StopCoroutine(crashingCoroutine);
+        AnimationDuration = 3f;
         base.OnEnlargeRevert();
     }
 
@@ -79,14 +77,6 @@ public class Moon : Property
             MoonSize = Mathf.LerpUnclamped(beginSize, endSize , curve.Evaluate(timePassed / animationDuration));
         }
         MoonSize = endSize;
-    }
-
-    private IEnumerator CrashingDown() {
-        float index = 0; 
-        while (index < duratinoBeforeCrashing) {
-            MoonSize = Mathf.Lerp(largeScale, crashingScale, index / duratinoBeforeCrashing);
-            yield return new WaitForEndOfFrame();
-        }
     }
 
     private void Reset() {

@@ -10,6 +10,11 @@ public class Fire : RoomObject
     private Material material;
     private SFXInstance fireSound;
 
+    // [SerializeField]
+    // private Transform quad;
+    // [SerializeField]
+    // private Room room;
+
     [SerializeField]
     private FireSpread[] fireSpreads;
 

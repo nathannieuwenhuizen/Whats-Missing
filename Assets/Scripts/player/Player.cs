@@ -72,7 +72,9 @@ public class Player : RoomObject
 
     public Player() {
         largeScale = 4f;
-        shrinkScale = .2f;
+        normalScale = 2f;
+        shrinkScale = .3f;
+        animationDuration  = 1f;
     }
 
     private void ApplyCameraSettings(Settings settings) {
@@ -143,6 +145,7 @@ public class Player : RoomObject
         mirrorHeadModel.gameObject.layer = 0;
     }
     public void HideHead() {
+        if (headLayer == 0) headLayer = mirrorHeadModel.gameObject.layer;
         mirrorHeadModel.gameObject.layer = headLayer;
     }
 
@@ -183,6 +186,37 @@ public class Player : RoomObject
             other.GetComponent<ITriggerArea>().OnAreaExit(this);
         }
     }
+
+    public override void OnShrinking()
+    {
+        StopAllCoroutines();
+        StartCoroutine(AnimateShrinking());
+    }
+
+    public override void OnShrinkRevert()
+    {
+        StopAllCoroutines();
+        StartCoroutine(AnimateShrinkRevert());
+    }
+
+    public override void OnShrinkingFinish()
+    {
+        Debug.Log("shrink finish!");
+        base.OnShrinkingFinish();
+    }
+
+    public override void OnShrinkingRevertFinish()
+    {
+        Debug.Log("shrink revert finish!" + normalScale);
+        base.OnShrinkingRevertFinish();
+    }
+
+    public override void OnRoomEnter()
+    {
+        //no base call!
+    }
+
+
 
     ///<summary>
     /// Enables the movement and sets the camera animation to false.

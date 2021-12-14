@@ -124,7 +124,6 @@ public class Area : MonoBehaviour
         CurrentRoom = rooms[loadRoomIndex];
         if(directionalLight != null) directionalLight.animating = true;
         if (loadRoomIndex == 0) {
-            Debug.Log("do respawn animation");
             player.Respawn();
             BlackScreenOverlay.START_COLOR = startColor;
             OnRespawn?.Invoke();

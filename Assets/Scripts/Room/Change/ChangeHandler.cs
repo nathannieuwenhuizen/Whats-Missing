@@ -67,7 +67,7 @@ public class ChangeHandler
     /// Activate the existing changes in the room.
     ///</summary>
     public void ActivateChanges(){
-        Debug.Log("activate changes!");
+        // Debug.Log("activate changes!");
         for (int i = changes.Count - 1; i >= 0; i--)
         {
             if (changes[i].active == false) {
