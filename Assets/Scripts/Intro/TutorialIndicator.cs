@@ -15,6 +15,8 @@ public class TutorialIndicator : Singleton<AudioHandler>
     private GameObject keyboardUI;
     [SerializeField]
     private GameObject spacebarUI;
+    [SerializeField]
+    private GameObject shiftUI;
 
     [SerializeField]
     private TMP_Text hintText;
@@ -25,6 +27,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
     private bool mirrorComplete = false;
     private bool moved = false;
     private bool hasJumped = false;
+    private bool hasShifted = false;
 
     private Coroutine fadeCoroutine;
 
@@ -36,10 +39,12 @@ public class TutorialIndicator : Singleton<AudioHandler>
 
     private void OnEnable() {
         MirrorCanvas.OnShowHint += ToggleHint;
-        Area.OnFirstRoomEnter += StartWaitingForMove;
+        Area.OnFirstAreaEnter += StartWaitingForMove;
+        Area.OnSecondAreaEnter += StartWaitingForShift;
         AreaTextMeshFader.onMirrorTutorialShow += StartWaitingMirrorComplete;
         Gravity.onGravityMissing += StartWaitingForJump;
         Letter.OnLetterClickAction += EnableClick;
+        
         Room.OnRoomComplete += HideTutorial;
         Room.OnRoomLeaving += HideTutorial;
     }
@@ -47,43 +52,110 @@ public class TutorialIndicator : Singleton<AudioHandler>
 
     private void OnDisable() {
         MirrorCanvas.OnShowHint -= ToggleHint;
-        Area.OnFirstRoomEnter -= StartWaitingForMove;
+        Area.OnFirstAreaEnter -= StartWaitingForMove;
+        Area.OnSecondAreaEnter -= StartWaitingForShift;
         AreaTextMeshFader.onMirrorTutorialShow -= StartWaitingMirrorComplete;
         Letter.OnLetterClickAction -= EnableClick;
         InputManager.OnMove -= EnableMove;
         InputManager.OnJump -= EnableJump;
+        InputManager.OnStartRunning -= EnableShift;
         Gravity.onGravityMissing -= StartWaitingForJump;
         Room.OnRoomComplete -= HideTutorial;
         Room.OnRoomLeaving -= HideTutorial;
     }
 
-    private void EnableClick(Letter letter) {
-        mirrorComplete = true;
-    }
+
+    #region move
     private void EnableMove(Vector2 delta) {
         if (delta.magnitude != 0)
         {
             moved = true;
         }
     }
-
-    private void EnableJump() {
-        hasJumped = true;
+    public IEnumerator WaitForMove() {
+        // moved = false;
+        yield return new WaitForSeconds(7);
+        if (!moved) {
+            ShowTutorial(keyboardUI);
+            while (!moved) {
+                yield return new WaitForEndOfFrame();
+            }
+            HideTutorial();
+        }
     }
-
     public void StartWaitingForMove() {
         InputManager.OnMove += EnableMove;
         StartCoroutine(WaitForMove());
     }
+    #endregion
+
+    #region  click
     public void StartWaitingMirrorComplete() {
         StartCoroutine(WaitingForMirrorComplete());
     }
+
+    private void EnableClick(Letter letter) {
+        mirrorComplete = true;
+    }
+
+    public IEnumerator WaitingForMirrorComplete() {
+        yield return new WaitForSeconds(3);
+        if (!mirrorComplete) {
+            ShowTutorial(mouseUI);
+            while (!mirrorComplete) {
+                yield return new WaitForEndOfFrame();
+            }
+            HideTutorial();
+        }
+    }
+    #endregion
+
+    #region  jump
+    private void EnableJump() {
+        hasJumped = true;
+    }
+
     public void StartWaitingForJump() {
+        if (hasJumped) return;
         InputManager.OnJump += EnableJump;
         StartCoroutine(WaitForJump());
     }
+    public IEnumerator WaitForJump() {
+        yield return new WaitForSeconds(5);
+        if (!hasJumped) {
+            ShowTutorial(spacebarUI);
+            while (!hasJumped) {
+                yield return new WaitForEndOfFrame();
+            }
+            HideTutorial();
+        }
+    }
 
+    #endregion
+    #region  shift
+    private void EnableShift() {
+        hasShifted = true;
+    }
 
+    public void StartWaitingForShift() {
+        if (hasShifted) return;
+        InputManager.OnStartRunning += EnableShift;
+        StartCoroutine(WaitForShift());
+    }
+    public IEnumerator WaitForShift() {
+        yield return new WaitForSeconds(10);
+        if (!hasShifted) {
+            ShowTutorial(shiftUI);
+            while (!hasShifted) {
+                yield return new WaitForEndOfFrame();
+            }
+            HideTutorial();
+        }
+    }
+
+    #endregion
+
+    #region  hint
     public void ToggleHint(string value) {
         if (tutorialIsVisible) {
             HideTutorial();
@@ -101,21 +173,14 @@ public class TutorialIndicator : Singleton<AudioHandler>
         }
     }
 
+    #endregion
+
+
+
     private void Update() {
         maskChild.transform.localScale = new Vector3(1,1 / mask.transform.localScale.y,1);
     }
     
-    public IEnumerator WaitForMove() {
-        // moved = false;
-        yield return new WaitForSeconds(7);
-        if (!moved) {
-            ShowTutorial(keyboardUI);
-            while (!moved) {
-                yield return new WaitForEndOfFrame();
-            }
-            HideTutorial();
-        }
-    }
 
     private void ShowTutorial(GameObject gameObject) {
         tutorialIsVisible = true;
@@ -134,26 +199,5 @@ public class TutorialIndicator : Singleton<AudioHandler>
         animator.SetBool("Show", false);
     }
 
-    public IEnumerator WaitingForMirrorComplete() {
-        yield return new WaitForSeconds(3);
-        if (!mirrorComplete) {
-            ShowTutorial(mouseUI);
-            while (!mirrorComplete) {
-                yield return new WaitForEndOfFrame();
-            }
-            HideTutorial();
-        }
-    }
 
-    public IEnumerator WaitForJump() {
-        // hasJumped = false;
-        yield return new WaitForSeconds(5);
-        if (!hasJumped) {
-            ShowTutorial(spacebarUI);
-            while (!hasJumped) {
-                yield return new WaitForEndOfFrame();
-            }
-            HideTutorial();
-        }
-    }
 }

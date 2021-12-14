@@ -22,7 +22,8 @@ public class Area : MonoBehaviour
     public static UndoActionEvent OnUndo;
     public delegate void RoomEvent();
     public static RoomEvent OnNewRoomEnter;
-    public static RoomEvent OnFirstRoomEnter;
+    public static RoomEvent OnFirstAreaEnter;
+    public static RoomEvent OnSecondAreaEnter;
     public static RoomEvent OnRespawn;
 
     [SerializeField]
@@ -67,8 +68,9 @@ public class Area : MonoBehaviour
             currentRoom.OnRoomEnter(player, loadRoomState);
             if(directionalLight != null) directionalLight.RotateToMatchRoon(currentRoom.transform);
 
-            if (rooms.IndexOf(currentRoom) == 0 && areaIndex == 0) {
-                OnFirstRoomEnter?.Invoke();
+            if (rooms.IndexOf(currentRoom) == 0) {
+                if (areaIndex == 0) OnFirstAreaEnter?.Invoke();
+                else OnSecondAreaEnter?.Invoke();
             }
             loadRoomState = false;
         }
