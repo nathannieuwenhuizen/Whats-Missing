@@ -110,6 +110,7 @@ public class LightningProperty : Property
 
 }
 
+[System.Serializable]
 public struct AmbientColors {
     public Color sunColor;
     public Color skyColor;

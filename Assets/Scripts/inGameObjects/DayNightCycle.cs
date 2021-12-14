@@ -7,6 +7,32 @@ using UnityEngine;
 ///</summary>
 public class DayNightCycle : MonoBehaviour
 {
+    [SerializeField]
+    private AmbientColors nightColors = new AmbientColors() {
+        groundColor = Color.black, 
+        equatorColor = Color.black, 
+        skyColor = Color.black,
+        sunColor = Color.black};
+
+    private AmbientColors dayColors;
+    private AmbientColors sceneColors;
+    public AmbientColors SceneColors {
+        get => sceneColors;
+        set {
+            sceneColors = value;
+            UpdateRenderSettings();
+        }
+    }
+    private void UpdateRenderSettings() {
+        RenderSettings.ambientGroundColor = SceneColors.groundColor;
+        RenderSettings.ambientEquatorColor = SceneColors.equatorColor;
+        RenderSettings.ambientSkyColor = SceneColors.skyColor;
+        RenderSettings.sun.color = SceneColors.sunColor;
+
+    }
+
+
+    
 
     public delegate void SunIntensityEvent(float precentage);
     public static SunIntensityEvent OnSunIntensityChange;
@@ -42,10 +68,19 @@ public class DayNightCycle : MonoBehaviour
     }
 
     private void Awake() {
+        dayColors = new AmbientColors() {
+            groundColor = RenderSettings.ambientGroundColor,
+            equatorColor = RenderSettings.ambientEquatorColor,
+            skyColor = RenderSettings.ambientSkyColor,
+            sunColor = RenderSettings.sun.color
+        };
+
         startIntensity = directionalLight.intensity;
         sunXRotation = sunPivot.localRotation.eulerAngles.x;
         sunYRotation = sunPivot.localRotation.eulerAngles.y;
         sunZRotation = sunPivot.localRotation.eulerAngles.z;
+        
+        
         SunRotation = sunXRotation;
         // Debug.Log("rotation = " + SunRotation);
     }
@@ -70,7 +105,17 @@ public class DayNightCycle : MonoBehaviour
 
     private void UpdateDirectionalLight() {
         directionalLight.intensity = Mathf.Max(Mathf.Sin(sunRotation / 360 * Mathf.PI * 2) * startIntensity, 0.01f);
-        OnSunIntensityChange?.Invoke(directionalLight.intensity / startIntensity);
+        float precentage = directionalLight.intensity / startIntensity;
+        OnSunIntensityChange?.Invoke(precentage);
+        
+
+        SceneColors = new AmbientColors() {
+            sunColor = dayColors.sunColor,
+            skyColor = Color.LerpUnclamped(dayColors.skyColor, nightColors.skyColor, 1 - precentage),
+            equatorColor = Color.LerpUnclamped(dayColors.equatorColor, nightColors.equatorColor, 1 - precentage),
+            groundColor = Color.LerpUnclamped(dayColors.groundColor, nightColors.groundColor, 1 - precentage)
+        };
+    
     }
 
     private void UpdateSkybox() {
