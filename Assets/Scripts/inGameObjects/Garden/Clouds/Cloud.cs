@@ -4,32 +4,46 @@ using UnityEngine;
 
 public class Cloud : RoomObject
 {
+    private float cloudSpeed = .5f;
+
     [SerializeField]
-    private ParticleSystem cloudsParticleSystem;
+    private MeshRenderer renderer;
 
+    private Material cloudMaterial;
 
+    [SerializeField]
+    private Color darkColor;
     public Cloud() {
         normalScale = 1f;
         shrinkScale = 0.01f;
     }
+
     private void Reset() {
         Word = "cloud";
         AlternativeWords = new string[] { "clouds", "smoke", "mist" };
     }
 
     private void Awake() {
-        cloudsParticleSystem.gameObject.SetActive(false);
+        cloudMaterial = renderer.material;
     }
 
-    public override void OnRoomEnter()
-    {
-        cloudsParticleSystem.gameObject.SetActive(true);
-        base.OnRoomEnter();
+    private void Update() {
+        transform.Rotate(new Vector3(0,cloudSpeed * Room.TimeScale * Time.deltaTime,0));
     }
 
-    public override void OnRoomLeave()
-    {
-        cloudsParticleSystem.gameObject.SetActive(false);
-        base.OnRoomLeave();
+
+    private void UpdateCloudColor(float sunIntensity) {
+        Debug.Log("precentage = " + sunIntensity);
+        renderer.material.color =  Color.Lerp(Color.white, darkColor, 1 - sunIntensity);
     }
+
+    private void OnEnable() {
+        DayNightCycle.OnSunIntensityChange += UpdateCloudColor;
+    }
+
+    private void OnDisable() {
+        DayNightCycle.OnSunIntensityChange -= UpdateCloudColor;
+    }
+
+
 }

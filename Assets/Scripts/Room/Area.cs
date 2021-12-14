@@ -256,7 +256,7 @@ public class Area : MonoBehaviour
         if (data != null) {
 
             SaveData.current = data as SaveData;
-#if UNITY_EDITOR
+#if !UNITY_EDITOR
             loadRoomIndex = SaveData.current.roomIndex;
 #endif
             //loadRoomState = true;

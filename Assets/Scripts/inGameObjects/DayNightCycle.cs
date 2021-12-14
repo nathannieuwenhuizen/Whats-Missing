@@ -8,6 +8,9 @@ using UnityEngine;
 public class DayNightCycle : MonoBehaviour
 {
 
+    public delegate void SunIntensityEvent(float precentage);
+    public static SunIntensityEvent OnSunIntensityChange;
+
     [SerializeField]
     private Light directionalLight;
     private float startIntensity;
@@ -67,6 +70,7 @@ public class DayNightCycle : MonoBehaviour
 
     private void UpdateDirectionalLight() {
         directionalLight.intensity = Mathf.Max(Mathf.Sin(sunRotation / 360 * Mathf.PI * 2) * startIntensity, 0.01f);
+        OnSunIntensityChange?.Invoke(directionalLight.intensity / startIntensity);
     }
 
     private void UpdateSkybox() {
