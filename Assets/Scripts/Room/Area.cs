@@ -5,10 +5,18 @@ using UnityEngine.Events;
 
 public class Area : MonoBehaviour
 {
+
+    public static bool AUTO_SAVE_WHEN_DESTROY = true;
+
+
     [SerializeField]
     private Vector3 roomPositionOffset;
     [SerializeField]
     private float roomRotationOffset = 0;
+    [SerializeField]
+    private Color startColor = Color.black;
+    [SerializeField]
+    private int areaIndex = 0;
 
     public delegate void UndoActionEvent(Room _room);
     public static UndoActionEvent OnUndo;
@@ -59,12 +67,13 @@ public class Area : MonoBehaviour
             currentRoom.OnRoomEnter(player, loadRoomState);
             if(directionalLight != null) directionalLight.RotateToMatchRoon(currentRoom.transform);
 
-            if (rooms.IndexOf(currentRoom) == 0) {
+            if (rooms.IndexOf(currentRoom) == 0 && areaIndex == 0) {
                 OnFirstRoomEnter?.Invoke();
             }
             loadRoomState = false;
         }
     }
+    
 
     private void UpdateRoomActiveStates(bool includingNextRoom = false) {
         int currentIndex = rooms.IndexOf(currentRoom);
@@ -99,6 +108,7 @@ public class Area : MonoBehaviour
     }
 
     private void Awake() {
+        AUTO_SAVE_WHEN_DESTROY = true;
         LoadProgress();
         InitializeRooms();
     }
@@ -114,7 +124,9 @@ public class Area : MonoBehaviour
         CurrentRoom = rooms[loadRoomIndex];
         if(directionalLight != null) directionalLight.animating = true;
         if (loadRoomIndex == 0) {
+            Debug.Log("do respawn animation");
             player.Respawn();
+            BlackScreenOverlay.START_COLOR = startColor;
             OnRespawn?.Invoke();
         }
         Debug.Log("save progress " + rooms.IndexOf(currentRoom));
@@ -188,6 +200,10 @@ public class Area : MonoBehaviour
     public void ResetPlayer(bool withAnimation) {
         StartCoroutine(ResettingThePlayer(withAnimation));
     }
+
+    ///<summary>
+    /// Coroutine that resets the player after some time.
+    ///</summary>
     private IEnumerator ResettingThePlayer(bool withAnimation) {
         yield return new WaitForSeconds(withAnimation ? 3.5f : 2.5f);
         Debug.Log("respawn!");
@@ -200,6 +216,7 @@ public class Area : MonoBehaviour
             CurrentRoom = rooms[index - 1];
             player.transform.position = CurrentRoom.EndDoor.StartPos();
         }
+        BlackScreenOverlay.START_COLOR = Color.white;
         OnRespawn?.Invoke();
     }
 
@@ -226,11 +243,12 @@ public class Area : MonoBehaviour
     public void SaveProgress() {
         // SaveData.current = SaveData.GetStateOfRoom(currentRoom);
         SaveData.current.roomIndex = rooms.IndexOf(currentRoom);
+        SaveData.current.areaIndex = areaIndex;
         SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
     }
 
     private void OnDestroy() {
-        SaveProgress();
+        if (AUTO_SAVE_WHEN_DESTROY) SaveProgress();
     }
 
     public void LoadProgress() {
@@ -238,7 +256,7 @@ public class Area : MonoBehaviour
         if (data != null) {
 
             SaveData.current = data as SaveData;
-#if !UNITY_EDITOR
+#if UNITY_EDITOR
             loadRoomIndex = SaveData.current.roomIndex;
 #endif
             //loadRoomState = true;

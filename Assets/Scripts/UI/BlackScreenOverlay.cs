@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class BlackScreenOverlay : MonoBehaviour
 {
-
+    public static Color START_COLOR;
     private CanvasGroup group;
     private Image image;
 
@@ -46,6 +46,7 @@ public class BlackScreenOverlay : MonoBehaviour
     }
     public void RemoveOverlay() {
         StopAllCoroutines();
+        image.color = START_COLOR;
         group.alpha = 1;
         StartCoroutine(group.FadeCanvasGroup(0, 1.5f, 1f));
     }

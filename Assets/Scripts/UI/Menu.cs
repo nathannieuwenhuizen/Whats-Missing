@@ -29,6 +29,11 @@ public class Menu : MonoBehaviour
     [SerializeField]
     private GameObject newGameWarningNoButton;
 
+    private SaveData saveData;
+    [SerializeField]
+    private SceneLoader sceneLoader;
+    
+
     private void Awake() {
     }
 
@@ -46,7 +51,8 @@ public class Menu : MonoBehaviour
 
     private void SetupPlayButtons() {
         object data = SerializationManager.Load(SerializationManager.filePath + "/" + SaveData.FILE_NAME +".save");
-        if (data != null && (data as SaveData).roomIndex != 0) {
+        if (data != null && ((data as SaveData).roomIndex != 0) || (data as SaveData).areaIndex != 0) {
+            saveData = (data as SaveData);
             continueButton.SetActive(true);
             newGameButton.SetActive(true);
             startButton.SetActive(false);
@@ -71,6 +77,11 @@ public class Menu : MonoBehaviour
             });
 
         }
+    }
+
+    public void ContinueGame() {
+        SaveData data = SaveData.current;
+        sceneLoader.LoadNewSceneAnimated(data.areaIndex == 0 ? Scenes.FIRST_LEVEL_SCENE_NAME : Scenes.SECOND_LEVEL_SCENE_NAME);
     }
 
     public void OpenNewGameWarning() {

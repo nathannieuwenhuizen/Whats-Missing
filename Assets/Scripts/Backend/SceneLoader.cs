@@ -91,6 +91,28 @@ public class SceneLoader : MonoBehaviour
          #endif
     }
 
+    private void OnEnable() {
+        AlchemyItem.OnAlchemyEndScene += GoToSecondLevel;
+    }
+
+    private void OnDisable() {
+        AlchemyItem.OnAlchemyEndScene -= GoToSecondLevel;
+    }
+
+
+    private void GoToSecondLevel() {
+        Debug.Log("go to second levels");
+        SaveData.current.areaIndex = 1;
+        SaveData.current.roomIndex = 0;
+        SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
+
+        Area.AUTO_SAVE_WHEN_DESTROY = false;
+        LoadNewScene(Scenes.SECOND_LEVEL_SCENE_NAME, false);
+        // LoadingSceneAsync(Scenes.SECOND_LEVEL_SCENE_NAME);
+
+    }
+
+
     private IEnumerator LoadOut(Action callback)
     {
         group.alpha = 1;

@@ -40,10 +40,6 @@ public class Player : RoomObject
     public static event Playerevent OnPlayerMissing;
     public static event Playerevent OnPlayerAppear;
 
-    public delegate void CutSceneAction();
-    public static event CutSceneAction OnCutsceneStart;
-    public static event CutSceneAction OnCutsceneEnd;
-
     [SerializeField]
     private Camera playerCamera;
 

@@ -21,7 +21,7 @@ public class SaveData
         }
         set { _current = value; }
     }
-
+    public int areaIndex = 0;
     public int roomIndex = 0;
     public TVState[] tvStates;
     public PickableRoomObjectCordinates[] cordinates;
