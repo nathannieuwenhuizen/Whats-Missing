@@ -55,6 +55,17 @@ public static class Extensions
         }
         audioSource.volume = endVal;
     }
+
+    public static IEnumerator AnimateLightIntensity(this Light light, float endVal,  AnimationCurve curve, float duration = .5f) {
+        float timePassed = 0f;
+        float begin = light.intensity;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            light.intensity = Mathf.Lerp(begin, endVal , curve.Evaluate(timePassed / duration));
+        }
+        light.intensity = endVal;
+    }
     
     public static  IEnumerator AnimatingFieldOfView(this Camera camera, float endview,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;

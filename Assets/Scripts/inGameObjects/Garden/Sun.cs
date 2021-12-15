@@ -18,6 +18,12 @@ public class Sun : RoomObject
     protected float shrinkSoundVolume = .1f;
     protected float soundVolume = 1f;
 
+    [SerializeField]
+    private Light light;
+    private float lightIntensityShrink;
+    private float lightIntensityLarge;
+
+
     public delegate void OnSunShrinkEvent();
     public static OnSunShrinkEvent OnSunShrinking;
     public static OnSunShrinkEvent OnSunShrinkingRevert;
@@ -29,12 +35,12 @@ public class Sun : RoomObject
     public bool SunEnabled {
         get { return sunEnabled;}
         set { 
-            if (sunEnabled == value) return;
+            // if (sunEnabled == value) return;
             sunEnabled = value; 
             sunBody.SetActive(value);
             if (value) {
                 if (fireSound == null) 
-                    fireSound = AudioHandler.Instance?.Player3DSound(SFXFiles.sun_burning, transform, shrinkSoundVolume, 1f, true, true, 30);
+                    fireSound = AudioHandler.Instance?.Player3DSound(SFXFiles.sun_burning, transform, shrinkSoundVolume, 1f, true, true, 200);
                 fireSound.AudioSource.Play();
             } else {
                 fireSound?.AudioSource.Stop();
@@ -43,8 +49,13 @@ public class Sun : RoomObject
         }
     }
     public Sun() {
-        shrinkScale = 0.01f;
-        animationDuration = 30f;
+        shrinkScale = 0.02f;
+        animationDuration = 20f;
+    }
+
+    private void Awake() {
+        lightIntensityShrink = light.intensity;
+        lightIntensityLarge = lightIntensityShrink * 3f;
     }
 
 
@@ -67,15 +78,19 @@ public class Sun : RoomObject
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
-        normalScale = 1f;
-        // sunEnabled = false;
+        StopAllCoroutines();
+        normalScale = shrinkScale;
+        transform.localScale = Vector3.one * normalScale;
+        sunEnabled = true;
+        if (fireSound != null) fireSound.Volume = shrinkSoundVolume;
+        light.intensity = lightIntensityShrink;
+
     }
     public override void OnRoomLeave()
     {
         normalScale = shrinkScale;
         sunEnabled = false;
 
-        Debug.Log("on room leave!");
         lightningProperty.OnAppearingFinish();
         OnSunShrinkingRevert?.Invoke();
 
@@ -92,12 +107,14 @@ public class Sun : RoomObject
         base.OnShrinkingFinish();
         if(soundCoroutine != null) StopCoroutine(soundCoroutine);
         if (fireSound != null) fireSound.AudioSource.volume = shrinkSoundVolume;
+        light.intensity = lightIntensityShrink;
 
         lightningProperty.OnMissingFinish();
     }
 
     public override void OnShrinkRevert()
     {
+        normalScale = Animated ? 1f : shrinkScale;
         base.OnShrinkRevert();
     }
 
@@ -110,7 +127,7 @@ public class Sun : RoomObject
     public override IEnumerator AnimateShrinkRevert()
     {
         if (fireSound != null) soundCoroutine = StartCoroutine(fireSound.AudioSource.FadeSFXVolume(1f, AnimationCurve.EaseInOut(0,0,1,1), animationDuration * .5f));
-
+        StartCoroutine(light.AnimateLightIntensity(lightIntensityLarge, AnimationCurve.EaseInOut(0,0,1,1), animationDuration * .5f));
         return base.AnimateShrinkRevert();
     }
 

@@ -28,10 +28,6 @@ public class Painting : InteractabelObject
         rigidBody.isKinematic = true;
         SetPortalsActive(false);
     }
-    public override void OnRoomEnter()
-    {
-        base.OnRoomEnter();
-    }
     public override void OnRoomLeave()
     {
         base.OnRoomLeave();
