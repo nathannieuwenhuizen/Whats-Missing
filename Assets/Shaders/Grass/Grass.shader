@@ -21,7 +21,7 @@ Properties
 
 		_GrassMap("Grass Visibility Map", 2D) = "white" {}
 		_GrassThreshold("Grass Visibility Threshold", Range(-0.1, 1)) = 0.5
-		_GrassFalloff("Grass Visibility Fade-In Falloff", Range(0, 0.5)) = 0.05
+		_GrassFalloff("Grass Visibility Fade-In Falloff", Range(0, 2)) = 0.05
 
 		_WindMap("Wind Offset Map", 2D) = "bump" {}
 		_WindVelocity("Wind Velocity", Vector) = (1, 0, 0, 0)
