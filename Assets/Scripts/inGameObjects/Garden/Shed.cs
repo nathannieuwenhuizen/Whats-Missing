@@ -6,8 +6,8 @@ public class Shed : RoomObject
 {
 
     public Shed() {
-        normalScale = 75;
-        largeScale = 280;
+        normalScale = .75f;
+        largeScale = 2.80f;
     }
     private void Reset() {
         Word = "shed";
