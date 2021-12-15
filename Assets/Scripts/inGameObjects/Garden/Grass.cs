@@ -57,8 +57,8 @@ public class Grass : RoomObject
 
     private void UpdateGrassColor(float precentage)
     {
-        BaseColor = Color.Lerp(startBaseColor, darkColor, 1 - precentage);
-        TipColor = Color.Lerp(startTipColor, darkColor, 1 - precentage);
+        BaseColor = Color.Lerp(startBaseColor, darkColor, Mathf.Pow(1 - precentage, 2));
+        TipColor = Color.Lerp(startTipColor, darkColor,  Mathf.Pow(1 - precentage, 2));
     }
 
     private void UpdateWindSpeedBasedOnTime() {
