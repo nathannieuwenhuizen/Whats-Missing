@@ -106,7 +106,7 @@ public class DayNightCycle : MonoBehaviour
     private void UpdateDirectionalLight() {
         directionalLight.intensity = Mathf.Max(Mathf.Sin(sunRotation / 360 * Mathf.PI * 2) * startIntensity, 0.01f);
         float precentage = directionalLight.intensity / startIntensity;
-        OnSunIntensityChange?.Invoke(precentage);
+        OnSunIntensityChange?.Invoke(Mathf.Pow(precentage, 2));
         
 
         SceneColors = new AmbientColors() {

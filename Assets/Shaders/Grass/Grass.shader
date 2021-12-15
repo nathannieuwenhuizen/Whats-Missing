@@ -21,7 +21,7 @@ Properties
 
 		_GrassMap("Grass Visibility Map", 2D) = "white" {}
 		_GrassThreshold("Grass Visibility Threshold", Range(-0.1, 1)) = 0.5
-		_GrassFalloff("Grass Visibility Fade-In Falloff", Range(0, 0.5)) = 0.05
+		_GrassFalloff("Grass Visibility Fade-In Falloff", Range(0, 20)) = 0.05
 
 		_WindMap("Wind Offset Map", 2D) = "bump" {}
 		_WindVelocity("Wind Velocity", Vector) = (1, 0, 0, 0)
@@ -303,7 +303,7 @@ Properties
 					// Rotate around the bottom of the blade a random amount.
 					float3x3 randBendMatrix = angleAxis3x3(rand(pos.zzx) * _BendDelta * UNITY_PI * 0.5f, float3(-1.0f, 0, 0));
 
-					float2 windUV = pos.xz * _WindMap_ST.xy + _WindMap_ST.zw + normalize(_WindVelocity.xzy) * _WindFrequency * _Time.y;
+					float2 windUV = pos.xz * _WindMap_ST.xy + _WindMap_ST.zw + _WindFrequency * 0.01f * _Time.y;
 					float2 windSample = (tex2Dlod(_WindMap, float4(windUV, 0, 0)).xy * 2 - 1) * length(_WindVelocity);
 
 					float3 windAxis = normalize(float3(windSample.x, windSample.y, 0));
