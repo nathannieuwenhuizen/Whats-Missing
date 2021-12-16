@@ -17,7 +17,7 @@ Properties
 
 		_BendDelta("Bend Variation", Range(0, 1)) = 0.2
 
-		_TessellationGrassDistance("Tessellation Grass Distance", Range(0.001, 2)) = 0.1
+		_TessellationGrassDistance("Tessellation Grass Distance", Range(0.1, 2)) = 0.5
 
 		_GrassMap("Grass Visibility Map", 2D) = "white" {}
 		_GrassThreshold("Grass Visibility Threshold", Range(-0.1, 1)) = 0.5
