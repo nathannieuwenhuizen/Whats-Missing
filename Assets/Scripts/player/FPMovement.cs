@@ -171,8 +171,6 @@ public class FPMovement : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision other) {
-        FOOTSTEP_SFXFILE = other.gameObject.tag == "Stairs" ? SFXFiles.stairs_footstep : SFXFiles.player_footstep_normal;
-
         if (other.contacts[0].thisCollider == topCollider) inCeiling = true;
         else inCeiling = false;
         
@@ -306,8 +304,15 @@ public class FPMovement : MonoBehaviour
             oldPos = transform.position;
             if (!player.IsMissing) {
                 // AudioHandler.Instance?.PlaySound(footstepFile, footstepFile == SFXFiles.player_footstep ? .05f : 1f);
-                AudioHandler.Instance?.Play3DSound(FOOTSTEP_SFXFILE, transform, FOOTSTEP_SFXFILE == SFXFiles.player_footstep_normal ? .05f : 1f, player.IsShrinked ? 1.5f :(player.IsEnlarged ? .5f : 1f), false, true, 50);
+                Debug.Log("foot step file = " + FOOTSTEP_SFXFILE);
+                float volume = FOOTSTEP_SFXFILE == SFXFiles.player_footstep_normal ? .05f : 1f;
+                float pitch = player.IsShrinked ? 1.5f :(player.IsEnlarged ? .5f : 1f);
                 if (FOOTSTEP_SFXFILE == SFXFiles.player_footstep_water) {
+                    pitch = .5f;
+                    volume = .2f;
+                }
+                AudioHandler.Instance?.Play3DSound(FOOTSTEP_SFXFILE, transform, volume, pitch, false, true, 50);
+                if (FOOTSTEP_SFXFILE != SFXFiles.player_footstep_normal) {
                     Debug.Log("emit splash");
                     waterSplash.Emit(1);
                 }

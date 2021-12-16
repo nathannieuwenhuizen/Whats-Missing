@@ -25,6 +25,16 @@ public static class TransformExtensions
         }
         transform.localPosition = endLocalPos;
     }
+    public static  IEnumerator AnimatingPos(this Transform transform, Vector3 endPos,  AnimationCurve curve, float duration = .5f) {
+        float timePassed = 0f;
+        Vector3 beginPos = transform.position;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            transform.position = Vector3.LerpUnclamped(beginPos, endPos , curve.Evaluate(timePassed / duration));
+        }
+        transform.position = endPos;
+    }
 
     public static  IEnumerator Shake(this Transform transform, float magintude, float frequence, float duration = .5f) {
         float timePassed = 0f;

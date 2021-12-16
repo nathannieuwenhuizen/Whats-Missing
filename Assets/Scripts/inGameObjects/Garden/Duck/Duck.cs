@@ -20,8 +20,12 @@ public class Duck : RoomObject
 
     [SerializeField]
     private DuckSwimArea swimArea;
+    [SerializeField]
+    private DuckSwimArea bigSwimArea;
+    private DuckSwimArea currentSwimArea;
+
     public DuckSwimArea SwimArea {
-        get { return swimArea;}
+        get { return currentSwimArea;}
     }
 
 
@@ -42,6 +46,7 @@ public class Duck : RoomObject
     }
     private void Awake() {
         lifeTimeTrail = trail.time;
+        SetNormalSwimArea();
         SetUpBehaviour();
     }
 
@@ -83,11 +88,29 @@ public class Duck : RoomObject
     private void OnEnable() {
         TimeProperty.onTimeMissing += UpdateTrailLifeTime;
         TimeProperty.onTimeAppearing += UpdateTrailLifeTime;
+        Water.OnWaterBig += SetBigSwimArea;
+        Water.OnWaterNormal += SetNormalSwimArea;
     }
 
     private void OnDisable() {
         TimeProperty.onTimeMissing += UpdateTrailLifeTime;
         TimeProperty.onTimeAppearing += UpdateTrailLifeTime;
+        Water.OnWaterBig -= SetBigSwimArea;
+        Water.OnWaterNormal -= SetNormalSwimArea;
+    }
+
+    private void SetBigSwimArea() {
+        currentSwimArea = bigSwimArea;
+        Vector3 temp = transform.position;
+        temp.y = currentSwimArea.transform.position.y;
+        transform.position = temp;
+    }
+    private void SetNormalSwimArea() {
+        currentSwimArea = swimArea;
+        Vector3 temp = transform.position;
+        temp.y = currentSwimArea.transform.position.y;
+        transform.position = temp;
+
     }
 
     private void UpdateTrailLifeTime() {

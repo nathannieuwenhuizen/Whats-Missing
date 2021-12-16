@@ -16,7 +16,7 @@ public class Fire : RoomObject
     [SerializeField]
     private ParticleSystem smokeParticle;
     [SerializeField]
-    private GameObject collider;
+    private GameObject colliderObj;
     [SerializeField]
     private ParticleSystem fireParticle;
 
@@ -32,6 +32,7 @@ public class Fire : RoomObject
         TimeProperty.onTimeMissing += UpdateTimeScale;
         TimeProperty.onTimeAppearing += UpdateTimeScale;
         WarmthProperty.OnWarmthMissing += SetFireOff;
+        Water.OnWaterBig += SetFireOff;
         WarmthProperty.OnWarmthAppearing += SetFireOn;
         AirProperty.OnAirMissing += SetFireOff;
         AirProperty.OnAirAppearing += SetFireOn;
@@ -40,6 +41,7 @@ public class Fire : RoomObject
     private void OnDisable() {
         TimeProperty.onTimeMissing -= UpdateTimeScale;
         TimeProperty.onTimeAppearing -= UpdateTimeScale;
+        Water.OnWaterBig -= SetFireOff;
         WarmthProperty.OnWarmthMissing -= SetFireOff;
         WarmthProperty.OnWarmthAppearing -= SetFireOn;
         AirProperty.OnAirMissing -= SetFireOff;
@@ -64,6 +66,7 @@ public class Fire : RoomObject
 
     }
     private void SetFireOff() {
+        if (!InSpace) return;
         foreach(Transform go in transform.GetComponentInChildren<Transform>()) {
             go.gameObject.SetActive(false);
         }
@@ -87,7 +90,7 @@ public class Fire : RoomObject
 
         fireSpreadObject.gameObject.SetActive(val);
         smokeParticle.gameObject.SetActive(val);
-        collider.gameObject.SetActive(val);
+        colliderObj.gameObject.SetActive(val);
         if (val) {
             smokeParticle.Play();
             fireParticle.Play();
@@ -116,7 +119,7 @@ public class Fire : RoomObject
     public override IEnumerator AnimateEnlargeRevert()
     {
         // StartCoroutine(fireSpreadObject.AnimatingScale(Vector3.zero, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
-        collider.gameObject.SetActive(false);
+        colliderObj.gameObject.SetActive(false);
         fireParticle.Stop();
         return base.AnimateEnlargeRevert();
     }

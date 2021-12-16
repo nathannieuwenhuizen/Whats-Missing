@@ -15,7 +15,7 @@ public class FireSpread : MonoBehaviour, ITriggerArea
 
     private void Start() {
         if (fireSound == null) {
-            fireSound =  AudioHandler.Instance.Play3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 80);
+            fireSound =  AudioHandler.Instance.Play3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 40);
         }
 
     }

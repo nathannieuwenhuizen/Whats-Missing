@@ -741,6 +741,51 @@ Transform:
   m_Father: {fileID: 2668442761619748716}
   m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1570602262000525456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 716590924393244534}
+  - component: {fileID: 7135958764835117985}
+  m_Layer: 0
+  m_Name: largeswimArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &716590924393244534
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570602262000525456}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 12.1, y: 3.48, z: -38.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3125721778587713948}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7135958764835117985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570602262000525456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c33f3814fde469d4bb175f5b3aec409c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 35.96
+  target: {x: 0, y: 0, z: 0}
 --- !u!1 &1587708997934564734
 GameObject:
   m_ObjectHideFlags: 0
@@ -6297,7 +6342,7 @@ GameObject:
   - component: {fileID: 7909656480505468155}
   - component: {fileID: 7689077328427076803}
   m_Layer: 0
-  m_Name: swimArea
+  m_Name: smallswimArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16947,6 +16992,7 @@ Transform:
   - {fileID: 2942375222934041605}
   - {fileID: 393685916961952901}
   - {fileID: 1021354068878257825}
+  - {fileID: 716590924393244534}
   m_Father: {fileID: 4472780665352910751}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16994,7 +17040,9 @@ GameObject:
   - component: {fileID: 8386588494035355095}
   - component: {fileID: 5380024418395696921}
   - component: {fileID: 711168131962729171}
-  m_Layer: 0
+  - component: {fileID: 2512860033708349212}
+  - component: {fileID: 168791698713784653}
+  m_Layer: 4
   m_Name: MainIsland_WaterPlane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17064,6 +17112,31 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2512860033708349212
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5315593994924410814}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2553816, y: 1.2883438, z: 0.03}
+  m_Center: {x: -0.18653679, y: -0.04461852, z: -0.00086524955}
+--- !u!114 &168791698713784653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5315593994924410814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63962a71a06f1d445ae12cff0bbb8679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5316416533738325444
 GameObject:
   m_ObjectHideFlags: 0
@@ -18308,7 +18381,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 20000
+    maxNumParticles: 7000
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -18573,7 +18646,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 7000
+      scalar: 4000
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -24347,6 +24420,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 210818fc016363e4ab56aeda4b1a9959, type: 3}
+--- !u!4 &4423723403713400734 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3965655374241598391, guid: 210818fc016363e4ab56aeda4b1a9959, type: 3}
+  m_PrefabInstance: {fileID: 751237411889038377}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1527129378617115216 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2260132351141480057, guid: 210818fc016363e4ab56aeda4b1a9959, type: 3}
@@ -24358,11 +24436,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46cb620a3338e4148b54451c835004f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &4423723403713400734 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3965655374241598391, guid: 210818fc016363e4ab56aeda4b1a9959, type: 3}
-  m_PrefabInstance: {fileID: 751237411889038377}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &761909922699670605
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25151,6 +25224,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7689077328427076803}
     - target: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
+      propertyPath: bigSwimArea
+      value: 
+      objectReference: {fileID: 7135958764835117985}
+    - target: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
       propertyPath: allDucks.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -25184,11 +25261,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
---- !u!4 &2942375222934041605 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4443117124911115427, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
-  m_PrefabInstance: {fileID: 1548241912470493350}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &9112320478724728244 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
@@ -25200,6 +25272,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6138b3e4e653824e9bcb8740348399b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &2942375222934041605 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4443117124911115427, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
+  m_PrefabInstance: {fileID: 1548241912470493350}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1552349134662706078
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27210,6 +27287,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7689077328427076803}
     - target: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
+      propertyPath: bigSwimArea
+      value: 
+      objectReference: {fileID: 7135958764835117985}
+    - target: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
       propertyPath: allDucks.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -27235,11 +27316,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
---- !u!4 &1021354068878257825 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4443117124911115427, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
-  m_PrefabInstance: {fileID: 3712526717717004802}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &6380625965569031952 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
@@ -27251,6 +27327,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6138b3e4e653824e9bcb8740348399b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1021354068878257825 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4443117124911115427, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
+  m_PrefabInstance: {fileID: 3712526717717004802}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3785475106423003069
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27406,9 +27487,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4472780665352910751}
     m_Modifications:
+    - target: {fileID: 552205262533104990, guid: 3bdac70de4002e04c8330b1ab18ac038, type: 3}
+      propertyPath: mainLand_water
+      value: 
+      objectReference: {fileID: 5315593994924410814}
     - target: {fileID: 9209416887197990587, guid: 3bdac70de4002e04c8330b1ab18ac038, type: 3}
       propertyPath: m_Name
       value: Water
+      objectReference: {fileID: 0}
+    - target: {fileID: 9209416887197990587, guid: 3bdac70de4002e04c8330b1ab18ac038, type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9209416887197990598, guid: 3bdac70de4002e04c8330b1ab18ac038, type: 3}
       propertyPath: m_RootOrder
@@ -27867,6 +27956,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7689077328427076803}
     - target: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
+      propertyPath: bigSwimArea
+      value: 
+      objectReference: {fileID: 7135958764835117985}
+    - target: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
       propertyPath: allDucks.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -28186,6 +28279,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7689077328427076803}
     - target: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
+      propertyPath: bigSwimArea
+      value: 
+      objectReference: {fileID: 7135958764835117985}
+    - target: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
       propertyPath: allDucks.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -28219,6 +28316,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
+--- !u!4 &522284695781663011 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4443117124911115427, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
+  m_PrefabInstance: {fileID: 4221729195412704640}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5881589748479504530 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
@@ -28230,11 +28332,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6138b3e4e653824e9bcb8740348399b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &522284695781663011 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4443117124911115427, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
-  m_PrefabInstance: {fileID: 4221729195412704640}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4291129385305340949
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29286,6 +29383,10 @@ PrefabInstance:
       propertyPath: swimArea
       value: 
       objectReference: {fileID: 7689077328427076803}
+    - target: {fileID: 5962519595956563681, guid: ecd72d72fc202804cadf8be243459474, type: 3}
+      propertyPath: bigSwimArea
+      value: 
+      objectReference: {fileID: 7135958764835117985}
     - target: {fileID: 6919557568507342109, guid: ecd72d72fc202804cadf8be243459474, type: 3}
       propertyPath: m_Name
       value: Duck
@@ -29336,6 +29437,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecd72d72fc202804cadf8be243459474, type: 3}
+--- !u!4 &3512244676002220824 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8905218953695973136, guid: ecd72d72fc202804cadf8be243459474, type: 3}
+  m_PrefabInstance: {fileID: 5415664967917585416}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1844032058478471913 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5962519595956563681, guid: ecd72d72fc202804cadf8be243459474, type: 3}
@@ -29347,11 +29453,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec40fa652e5b33f49b919d43b020bf34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &3512244676002220824 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8905218953695973136, guid: ecd72d72fc202804cadf8be243459474, type: 3}
-  m_PrefabInstance: {fileID: 5415664967917585416}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5425589317376316091
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31359,6 +31460,10 @@ PrefabInstance:
       propertyPath: swimArea
       value: 
       objectReference: {fileID: 7689077328427076803}
+    - target: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
+      propertyPath: bigSwimArea
+      value: 
+      objectReference: {fileID: 7135958764835117985}
     - target: {fileID: 7712699011883040018, guid: 026b0deeebd000c46952eec2b44f950d, type: 3}
       propertyPath: allDucks.Array.size
       value: 6
