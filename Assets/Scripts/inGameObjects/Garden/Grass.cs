@@ -3,10 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public class LODInfo {
+    public float distance;
+    public float detail;
+}
 public class Grass : RoomObject
 {
+    public List<LODInfo> lods = new List<LODInfo>();
+
+
     [SerializeField]
-    private Color darkColor;
+    private Color darkBaseColor;
+    [SerializeField]
+    private Color darkTipColor;
 
     private Color startTipColor;
     private Color startBaseColor;
@@ -14,6 +24,10 @@ public class Grass : RoomObject
     private Material grassMaterial;
     private float startWindSpeed;
 
+    // public float WindSpeed {
+    //     get { return grassMaterial.GetFloat("_WindFrequency"); }
+    //     set {  grassMaterial.SetFloat("_WindFrequency", value); }
+    // }
     public float WindSpeed {
         get { return grassMaterial.GetFloat("_WindFrequency"); }
         set {  grassMaterial.SetFloat("_WindFrequency", value); }
@@ -33,6 +47,10 @@ public class Grass : RoomObject
         startTipColor = TipColor;
         startBaseColor = BaseColor;
         startWindSpeed = WindSpeed;
+
+        lods.Add( new LODInfo() {distance = 10f, detail = 0.1f});
+        lods.Add( new LODInfo() {distance = 100f, detail = 0.3f});
+        lods.Add( new LODInfo() {distance = 200f, detail = 0.5f});
     }
 
     private void Reset() {
@@ -55,14 +73,18 @@ public class Grass : RoomObject
         BaseColor = startBaseColor;
     }
 
+
+    private void setLODOfGrass(LODInfo lodInfo) {
+        
+    }
+
     private void UpdateGrassColor(float precentage)
     {
-        BaseColor = Color.Lerp(startBaseColor, darkColor, Mathf.Pow(1 - precentage, 2));
-        TipColor = Color.Lerp(startTipColor, darkColor,  Mathf.Pow(1 - precentage, 2));
+        BaseColor = Color.Lerp(startBaseColor, darkBaseColor, Mathf.Pow(1 - precentage, 2));
+        TipColor = Color.Lerp(startTipColor, darkTipColor,  Mathf.Pow(1 - precentage, 2));
     }
 
     private void UpdateWindSpeedBasedOnTime() {
-        Debug.Log("time scale = " + Room.TimeScale);
         WindSpeed = startWindSpeed * Room.TimeScale;
     }
 
