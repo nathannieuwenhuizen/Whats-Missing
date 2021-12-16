@@ -61,7 +61,7 @@ public class Duck : RoomObject
 
     public virtual void Quack() {
         animator.SetTrigger("quack");
-        AudioHandler.Instance.Player3DSound(SFXFiles.duck, transform, .5f, IsEnlarged ? .5f : 1f, false, true, 30f);
+        AudioHandler.Instance.Play3DSound(SFXFiles.duck, transform, .5f, IsEnlarged ? .5f : 1f, false, true, 30f);
     }
 
     public override void OnRoomEnter()

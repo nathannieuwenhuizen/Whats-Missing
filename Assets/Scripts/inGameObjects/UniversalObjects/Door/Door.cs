@@ -62,7 +62,7 @@ public class Door : InteractabelObject
 
     private void Close() {
         if (Animated) {
-            AudioHandler.Instance?.Player3DSound(SFXFiles.door_closing, transform);
+            AudioHandler.Instance?.Play3DSound(SFXFiles.door_closing, transform);
             StopAllCoroutines();
             StartCoroutine(AnimateDoorAngle(startAngle, .5f, closeCurve));
         } else {

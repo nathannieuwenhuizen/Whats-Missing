@@ -259,7 +259,7 @@ public class MirrorCanvas : MonoBehaviour
         hintText = _hintText;
         hintToggle.interactable = true;
         hintToggle.blocksRaycasts = true;
-        AudioHandler.Instance.Player3DSound(SFXFiles.hintbutton_show, transform);
+        AudioHandler.Instance.Play3DSound(SFXFiles.hintbutton_show, transform);
         StartCoroutine(hintToggle.FadeCanvasGroup(1f, 1f, 0f));
     }
 

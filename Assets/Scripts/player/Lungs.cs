@@ -20,9 +20,9 @@ public class Lungs : MonoBehaviour
     private SFXInstance playerVoiceBurnSFX;
 
     private float burnIndex = 0;
-    private float burnDuration = 15f;
+    private float burnDuration = 25f;
     private Coroutine burnCoroutine; 
-    private bool burning = true;
+    private bool burning = false;
 
 
     private VignetteData startVignette;
@@ -49,18 +49,25 @@ public class Lungs : MonoBehaviour
 
     private void StartChoking() {
         player.CharacterAnimationPlayer.SetTorsoAnimation(true, "choke");
-        chokeSFX = AudioHandler.Instance.Player3DSound(SFXFiles.player_choking, transform, 1f, 1f, true, false, 100f, false);
+        chokeSFX = AudioHandler.Instance.Play3DSound(SFXFiles.player_choking, transform, 1f, 1f, true, false, 100f, false);
         player.Movement.CameraZRotationTilt = true;
         chokeCoroutine = StartCoroutine(Chocking());
         currentVignette.color = Color.black;
         currentVignette.smoothnes = 1;
     }
-    private void StartBurining() {
-        player.CharacterAnimationPlayer.SetTorsoAnimation(true, "choke");
-        burnSFX = AudioHandler.Instance.Player3DSound(SFXFiles.fire_spread_burning, transform, 1f, 1f, true, false, 100f, false);
-        playerVoiceBurnSFX = AudioHandler.Instance.Player3DSound(SFXFiles.player_cough, transform, 1f, 1f, true, false, 100f, false);
+
+    private List<FireSpread> fireSpreads = new List<FireSpread>();
+
+    private void StartBurining(FireSpread spread) {
+        if (!fireSpreads.Contains(spread)) fireSpreads.Add(spread);
+        if (burning) return;
 
         burning = true;
+
+        player.CharacterAnimationPlayer.SetTorsoAnimation(true, "choke");
+        burnSFX = AudioHandler.Instance.Play3DSound(SFXFiles.fire_spread_burning, transform, 1f, 1f, true, false, 100f, false);
+        playerVoiceBurnSFX = AudioHandler.Instance.Play3DSound(SFXFiles.player_cough, transform, 1f, 1f, true, false, 100f, false);
+
         if (burnIndex <= 0 || burnIndex >= burnDuration) {
             burnCoroutine = StartCoroutine(Burning());
         } 
@@ -128,6 +135,11 @@ public class Lungs : MonoBehaviour
         EndBurning();
     }
 
+    private void OutOfFire(FireSpread spread) {
+        fireSpreads.Remove(spread);
+        if (fireSpreads.Count == 0) burning = false;
+    }
+
     private void EndBurning() {
         burnIndex = 0;
         if (burnSFX != null) burnSFX.AudioSource.Stop();
@@ -160,11 +172,6 @@ public class Lungs : MonoBehaviour
         yield return new WaitForSeconds(1f);
         AudioHandler.Instance.PlaySound(SFXFiles.player_relief_gasp, 1f, 1.2f);
     }
-
-    public void OutOfFire() {
-        burning = false;
-    }
-
 
     private void OnEnable() {
         WarmthProperty.OnWarmthMissing += StartColdBreathing;

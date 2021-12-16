@@ -153,7 +153,7 @@ public class AudioHandler : Singleton<AudioHandler>
         }
         return selectedAudio;
     }
-    public SFXInstance Player3DSound(string key, Transform parent, float volume = 1f, float pitch = 1f, bool loop = false, bool asInstance = true, float soundMaxDistance = 100f,  bool ignoreListenerVolume = false) {
+    public SFXInstance Play3DSound(string key, Transform parent, float volume = 1f, float pitch = 1f, bool loop = false, bool asInstance = true, float soundMaxDistance = 100f,  bool ignoreListenerVolume = false) {
         SFXInstance selectedAudio = GetSFXInstance(key);
         if (selectedAudio == default(SFXInstance)) return selectedAudio;
         

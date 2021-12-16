@@ -40,7 +40,7 @@ public class Sun : RoomObject
             sunBody.SetActive(value);
             if (value) {
                 if (fireSound == null) 
-                    fireSound = AudioHandler.Instance?.Player3DSound(SFXFiles.sun_burning, transform, shrinkSoundVolume, 1f, true, true, 200);
+                    fireSound = AudioHandler.Instance?.Play3DSound(SFXFiles.sun_burning, transform, shrinkSoundVolume, 1f, true, true, 200);
                 fireSound.AudioSource.Play();
             } else {
                 fireSound?.AudioSource.Stop();

@@ -20,7 +20,7 @@ public class Spirit : MonoBehaviour
     public void EnableSpirit(bool val) {
         if (val) {
             if (spiritSound == null)
-                spiritSound = AudioHandler.Instance.Player3DSound(SFXFiles.evil_spirit, transform, 0f, 1f, true, true);
+                spiritSound = AudioHandler.Instance.Play3DSound(SFXFiles.evil_spirit, transform, 0f, 1f, true, true);
             else spiritSound.AudioSource.Play();
             StartCoroutine(spiritSound.AudioSource.FadeSFXVolume(.1f, AnimationCurve.EaseInOut(0,0,1,1), .5f));
         }

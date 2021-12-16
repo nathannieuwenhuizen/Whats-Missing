@@ -45,6 +45,6 @@ public class BabyDuck : Duck
     public override void Quack()
     {
         animator.SetTrigger("quack");
-        AudioHandler.Instance.Player3DSound(SFXFiles.baby_duck, transform, .2f, IsEnlarged ? .5f : 1f, false, true, 30f);
+        AudioHandler.Instance.Play3DSound(SFXFiles.baby_duck, transform, .2f, IsEnlarged ? .5f : 1f, false, true, 30f);
     }
 }

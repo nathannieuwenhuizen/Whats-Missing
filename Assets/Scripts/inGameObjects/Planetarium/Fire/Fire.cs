@@ -10,19 +10,22 @@ public class Fire : RoomObject
     private Material material;
     private SFXInstance fireSound;
 
-    // [SerializeField]
-    // private Transform quad;
-    // [SerializeField]
-    // private Room room;
-
+    private float fireSpreadScale;
     [SerializeField]
-    private FireSpread[] fireSpreads;
+    private Transform fireSpreadObject;
+    [SerializeField]
+    private ParticleSystem smokeParticle;
+    [SerializeField]
+    private GameObject collider;
+    [SerializeField]
+    private ParticleSystem fireParticle;
 
     protected void Awake() {
         material = mr.material;
         ToggleFireSpread(false);
         normalScale = transform.localScale.x;
         largeScale = normalScale * 2f;
+        fireSpreadScale = fireSpreadObject.transform.localScale.x;
     }
 
     private void OnEnable() {
@@ -47,7 +50,7 @@ public class Fire : RoomObject
     {
         base.OnRoomEnter();
         if (fireSound == null) {
-            fireSound =  AudioHandler.Instance.Player3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
+            fireSound =  AudioHandler.Instance.Play3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
         }
         fireSound.AudioSource.Play();
     }
@@ -80,52 +83,49 @@ public class Fire : RoomObject
     }
 
     private void ToggleFireSpread(bool val) {
-        foreach(FireSpread fireSpread in fireSpreads) {
-            fireSpread.gameObject.SetActive(val);
+        if (fireSpreadObject == null) return;
+
+        fireSpreadObject.gameObject.SetActive(val);
+        smokeParticle.gameObject.SetActive(val);
+        collider.gameObject.SetActive(val);
+        if (val) {
+            smokeParticle.Play();
+            fireParticle.Play();
         }
     }
 
     public override void OnEnlarge()
     {
         ToggleFireSpread(true);
-        foreach(FireSpread fireSpread in fireSpreads) {
-            fireSpread.transform.transform.localScale = Vector3.zero;
-        }
+        fireSpreadObject.transform.transform.localScale = Vector3.zero;
 
         base.OnEnlarge();
     }
 
     public override IEnumerator AnimateEnlarging()
     {
-        foreach(FireSpread fireSpread in fireSpreads) {
-            StartCoroutine(fireSpread.transform.AnimatingScale(Vector3.one, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
-        }
+        StartCoroutine(fireSpreadObject.AnimatingScale(Vector3.one * fireSpreadScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
         return base.AnimateEnlarging();
     }
     public override void OnEnlargingFinish()
     {
-        foreach(FireSpread fireSpread in fireSpreads) {
-            fireSpread.transform.transform.localScale = Vector3.one;
-        }
+        fireSpreadObject.localScale = Vector3.one * fireSpreadScale;
         base.OnEnlargingFinish();
     }
 
     public override IEnumerator AnimateEnlargeRevert()
     {
-        foreach(FireSpread fireSpread in fireSpreads) {
-            StartCoroutine(fireSpread.transform.AnimatingScale(Vector3.zero, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
-        }
+        // StartCoroutine(fireSpreadObject.AnimatingScale(Vector3.zero, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+        collider.gameObject.SetActive(false);
+        fireParticle.Stop();
         return base.AnimateEnlargeRevert();
     }
 
-    public override void OnFlippingRevertFinish()
+    public override void OnEnlargeRevertFinish()
     {
-        base.OnFlippingRevertFinish();
-        ToggleFireSpread(false);
+        base.OnEnlargeRevertFinish();
+        // ToggleFireSpread(false);
     }
-
-
-
 
     public override void OnRoomLeave()
     {

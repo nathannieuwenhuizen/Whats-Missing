@@ -306,7 +306,7 @@ public class FPMovement : MonoBehaviour
             oldPos = transform.position;
             if (!player.IsMissing) {
                 // AudioHandler.Instance?.PlaySound(footstepFile, footstepFile == SFXFiles.player_footstep ? .05f : 1f);
-                AudioHandler.Instance?.Player3DSound(FOOTSTEP_SFXFILE, transform, FOOTSTEP_SFXFILE == SFXFiles.player_footstep_normal ? .05f : 1f, player.IsShrinked ? 1.5f :(player.IsEnlarged ? .5f : 1f), false, true, 50);
+                AudioHandler.Instance?.Play3DSound(FOOTSTEP_SFXFILE, transform, FOOTSTEP_SFXFILE == SFXFiles.player_footstep_normal ? .05f : 1f, player.IsShrinked ? 1.5f :(player.IsEnlarged ? .5f : 1f), false, true, 50);
                 if (FOOTSTEP_SFXFILE == SFXFiles.player_footstep_water) {
                     Debug.Log("emit splash");
                     waterSplash.Emit(1);
