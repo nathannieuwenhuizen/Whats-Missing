@@ -139,14 +139,13 @@ public class RoomObject : RoomEntity
 
     public override void OnEnlargingFinish()
     {
-        Debug.Log("on enlarge finish");
         transform.localScale = Vector3.one * largeScale;
     }
 
     public override IEnumerator AnimateEnlargeRevert()
     {
         yield return transform.AnimatingScale(Vector3.one * normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
-        OnShrinkingRevertFinish();
+        OnEnlargeRevertFinish();
     }
 
     public override void OnEnlargeRevertFinish()

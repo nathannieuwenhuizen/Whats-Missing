@@ -67,7 +67,6 @@ public class Duck : RoomObject
     public override void OnRoomEnter()
     {
         active = true;
-        Debug.Log("room = " + room);
         if (swimState != null) {
             swimState._player = room.Player.transform;
             staringState._player = room.Player.transform;
