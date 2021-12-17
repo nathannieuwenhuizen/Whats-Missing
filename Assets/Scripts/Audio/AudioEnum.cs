@@ -67,5 +67,6 @@ public static class SFXFiles {
 public enum MusicFiles {
     planetarium,
     menu,
-    planetarium_hidden_room
+    planetarium_hidden_room,
+    garden
 }
