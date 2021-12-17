@@ -151,6 +151,7 @@ MonoBehaviour:
   - illustrations
   - portrait
   missingChangeEffect: 2
+  paintingButton: {fileID: 5210999500739231633}
   meshObject: {fileID: 6836957526520953432}
   coll: {fileID: 5239935452447212400}
   button: {fileID: 5955037885326485892}
@@ -204,6 +205,8 @@ GameObject:
   - component: {fileID: 1053909762070536150}
   - component: {fileID: 6859697738279868285}
   - component: {fileID: 5955037885326485892}
+  - component: {fileID: 5210999500739231633}
+  - component: {fileID: 8105589080083887511}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -274,3 +277,32 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5210999500739231633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4436949763612858090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9935ac781d5f3684bad630165eb1b739, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: appel
+  alternateWords: []
+  missingChangeEffect: 1
+  painting: {fileID: 4472653718141699678}
+--- !u!65 &8105589080083887511
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4436949763612858090}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.003093333, y: 0.0038099808, z: 0.003653943}
+  m_Center: {x: -0.001082616, y: 0.031234156, z: -0.0010213208}

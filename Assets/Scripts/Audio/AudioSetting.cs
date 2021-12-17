@@ -36,7 +36,7 @@ using UnityEngine.UI;
     public static float MUSIC 
     {
         get {
-            float val = PlayerPrefs.GetFloat("Music", 1);
+            float val = PlayerPrefs.GetFloat("Music", .5f);
             return val;
         }
         set {

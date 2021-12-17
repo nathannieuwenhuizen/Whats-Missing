@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Painting : InteractabelObject
 {
+    [SerializeField]
+    private PaintingButton paintingButton;
 
     [SerializeField]
     private MeshRenderer meshObject;
@@ -23,6 +25,7 @@ public class Painting : InteractabelObject
 
     protected void Awake() {
         OutlineEnabled = false;
+        Interactable = false;
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.isKinematic = true;
@@ -45,6 +48,8 @@ public class Painting : InteractabelObject
     private void DetatchFromStairs() {
         if (!inSpace) return;
         Interactable = false;
+        paintingButton.Interactable = false;
+        paintingButton.OutlineEnabled = false;
         rigidBody.isKinematic = false;
     }
 
@@ -91,7 +96,9 @@ public class Painting : InteractabelObject
         meshObject.enabled = true;
         coll.enabled = true;
         button.enabled = true;
-        OutlineEnabled = true;
+        paintingButton.Interactable = false;
+        paintingButton.OutlineEnabled = false;
+        // OutlineEnabled = true;
         base.OnAppearing();
     }
 
