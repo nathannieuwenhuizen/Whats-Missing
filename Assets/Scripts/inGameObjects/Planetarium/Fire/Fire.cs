@@ -20,6 +20,8 @@ public class Fire : RoomObject
     [SerializeField]
     private ParticleSystem fireParticle;
 
+    private Coroutine smokeCoroutine;
+
     protected void Awake() {
         material = mr.material;
         ToggleFireSpread(false);
@@ -99,6 +101,8 @@ public class Fire : RoomObject
 
     public override void OnEnlarge()
     {
+        if (smokeCoroutine != null) StopCoroutine(smokeCoroutine);
+
         ToggleFireSpread(true);
         fireSpreadObject.transform.transform.localScale = Vector3.zero;
 
@@ -127,7 +131,13 @@ public class Fire : RoomObject
     public override void OnEnlargeRevertFinish()
     {
         base.OnEnlargeRevertFinish();
+        smokeCoroutine = StartCoroutine(deactivateSmoke());
         // ToggleFireSpread(false);
+    }
+
+    private IEnumerator deactivateSmoke() {
+        yield return new WaitForSeconds(5f);
+        smokeParticle.Stop();
     }
 
     public override void OnRoomLeave()

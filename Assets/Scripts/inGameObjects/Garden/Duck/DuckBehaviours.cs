@@ -45,6 +45,7 @@ public class StaringState : IState
 
         //find the vector pointing from our position to the target
          _direction = (_player.position - _duck.transform.position).normalized;
+         _direction.y = 0;
  
          //create the rotation we need to be in to look at the target
          _lookRotation = Quaternion.LookRotation(_direction);
