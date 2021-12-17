@@ -7,6 +7,13 @@ public class FloatingIsland : RoomObject, ITriggerArea
     public bool InsideArea { get; set; }
     private Transform oldParent;
 
+    [SerializeField]
+    private Animator animator;
+
+    private void Awake() {
+        animator = GetComponent<Animator>();
+    }
+
     private void Reset() {
         Word = "ground";
         AlternativeWords = new string[] { "island" };
@@ -17,11 +24,13 @@ public class FloatingIsland : RoomObject, ITriggerArea
         if (oldParent == transform) return;
         
         oldParent = player.transform.parent;
+        animator.speed = 0;
         player.transform.SetParent(transform);
     }
 
     public void OnAreaExit(Player player)
     {
+        animator.speed = 1;
         player.transform.SetParent(oldParent);
     }
 }

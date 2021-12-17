@@ -46,7 +46,7 @@ public class Duck : RoomObject
     }
     private void Awake() {
         lifeTimeTrail = trail.time;
-        SetNormalSwimArea();
+        currentSwimArea = swimArea;
         SetUpBehaviour();
     }
 
@@ -100,12 +100,15 @@ public class Duck : RoomObject
     }
 
     private void SetBigSwimArea() {
+        if (!InSpace) return;
         currentSwimArea = bigSwimArea;
         Vector3 temp = transform.position;
         temp.y = currentSwimArea.transform.position.y;
         transform.position = temp;
     }
     private void SetNormalSwimArea() {
+        if (!InSpace) return;
+
         currentSwimArea = swimArea;
         Vector3 temp = transform.position;
         temp.y = currentSwimArea.transform.position.y;

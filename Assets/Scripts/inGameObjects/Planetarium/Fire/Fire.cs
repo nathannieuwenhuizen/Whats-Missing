@@ -120,12 +120,11 @@ public class Fire : RoomObject
         base.OnEnlargingFinish();
     }
 
-    public override IEnumerator AnimateEnlargeRevert()
+    public override void OnEnlargeRevert()
     {
-        // StartCoroutine(fireSpreadObject.AnimatingScale(Vector3.zero, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
         colliderObj.gameObject.SetActive(false);
         fireParticle.Stop();
-        return base.AnimateEnlargeRevert();
+        base.OnEnlargeRevert();
     }
 
     public override void OnEnlargeRevertFinish()
