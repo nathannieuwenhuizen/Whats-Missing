@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[System.Serializable]
 public class LODInfo {
     public float distance;
     public float detail;
@@ -12,6 +12,8 @@ public class Grass : RoomObject
 {
     public List<LODInfo> lods = new List<LODInfo>();
 
+    [SerializeField]
+    private Room room;
 
     [SerializeField]
     private Color darkBaseColor;
@@ -24,10 +26,12 @@ public class Grass : RoomObject
     private Material grassMaterial;
     private float startWindSpeed;
 
-    // public float WindSpeed {
-    //     get { return grassMaterial.GetFloat("_WindFrequency"); }
-    //     set {  grassMaterial.SetFloat("_WindFrequency", value); }
-    // }
+    private MeshRenderer meshRenderer;
+
+    public float TessellationGrassDistance {
+        get { return grassMaterial.GetFloat("_TessellationGrassDistance"); }
+        set {  grassMaterial.SetFloat("_TessellationGrassDistance", value); }
+    }
     public float WindSpeed {
         get { return grassMaterial.GetFloat("_WindFrequency"); }
         set {  grassMaterial.SetFloat("_WindFrequency", value); }
@@ -43,14 +47,14 @@ public class Grass : RoomObject
 
     void Awake()
     {
-        grassMaterial = GetComponent<MeshRenderer>().material;
+        meshRenderer = GetComponent<MeshRenderer>();
+        grassMaterial = meshRenderer.material;
         startTipColor = TipColor;
         startBaseColor = BaseColor;
         startWindSpeed = WindSpeed;
 
-        lods.Add( new LODInfo() {distance = 10f, detail = 0.1f});
-        lods.Add( new LODInfo() {distance = 100f, detail = 0.3f});
-        lods.Add( new LODInfo() {distance = 200f, detail = 0.5f});
+        InitializeLODs();
+
     }
 
     private void Reset() {
@@ -73,9 +77,24 @@ public class Grass : RoomObject
         BaseColor = startBaseColor;
     }
 
+    private void Update() {
+        CheckLODDistance();
+    }
+
+    public void CheckLODDistance() {
+        if (room == null || room.Player == null) return;
+
+        for(int i = 0; i <  lods.Count; i++) {
+            if (Vector3.Distance(meshRenderer.bounds.center, room.Player.transform.position ) < lods[i].distance) {
+                setLODOfGrass(lods[i]);
+                return;
+            }
+        }
+    }
 
     private void setLODOfGrass(LODInfo lodInfo) {
-        
+        // Debug.Log("set lod update! " + lodInfo.detail);;
+        TessellationGrassDistance = lodInfo.detail;
     }
 
     private void UpdateGrassColor(float precentage)
@@ -86,6 +105,24 @@ public class Grass : RoomObject
 
     private void UpdateWindSpeedBasedOnTime() {
         WindSpeed = startWindSpeed * Room.TimeScale;
+    }
+
+    private void  InitializeLODs() {
+        if (lods.Count != 0) lods = new List<LODInfo>();
+        lods.Add( new LODInfo() {distance = 50f, detail = 0.1f});
+        lods.Add( new LODInfo() {distance = 60f, detail = 0.13f});
+        lods.Add( new LODInfo() {distance = 70f, detail = 0.15f});
+        lods.Add( new LODInfo() {distance = 80f, detail = 0.3f});
+        lods.Add( new LODInfo() {distance = 200f, detail = 0.5f});
+    }
+
+    private void OnDrawGizmosSelected() {
+        meshRenderer = GetComponent<MeshRenderer>();
+        InitializeLODs();
+
+        for (int i = 0; i < lods.Count; i++) {
+            // Gizmos.DrawWireSphere(meshRenderer.bounds.center, lods[i].distance);
+        }
     }
 
 

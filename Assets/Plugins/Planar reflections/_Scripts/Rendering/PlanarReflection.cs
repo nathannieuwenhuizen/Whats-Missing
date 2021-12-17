@@ -9,13 +9,24 @@
         public Camera mainCamera;
         public Camera reflectionCamera;
         public Transform reflectionPlane;
-        private RenderTexture outputTexture;
+
+
+        //output Texture
+        private RenderTexture output_texture_high;
+        private RenderTexture output_texture_mid;
+        private RenderTexture output_texture_low;
 
         // parameters
         public bool copyCameraParamerers;
         public float verticalOffset;
         private bool isReady;
 
+
+        public float updateInterval = 1f /60f;
+        public float UpdateInterval {
+            get { return updateInterval;}
+            set { updateInterval = value; }
+        }
         private bool inView = false;
         public bool InView {
             get { return inView;}
@@ -40,26 +51,51 @@
         private Transform reflectionCamTransform;
 
         private void Start() {
-            outputTexture = new RenderTexture(Screen.width, Screen.height, 16, RenderTextureFormat.ARGB32);
-            outputTexture.name = "my texture2";
-            outputTexture.Create();
-            reflectionCamera.targetTexture = outputTexture;
-            reflectionPlane.GetComponent<MeshRenderer>().material.SetTexture("_ReflectionTex", outputTexture);
+            output_texture_high = CreateRenderTexture("highTexture", 1);
+            output_texture_mid = CreateRenderTexture("midTexture", .5f);
+            output_texture_low = CreateRenderTexture("midTexture", .3f);
 
+            SetRenderTexture(output_texture_mid);
             IsActive = isActive;
+        }
+
+        private RenderTexture CreateRenderTexture(string name, float factor) {
+            RenderTexture newTexture = new RenderTexture(Mathf.RoundToInt((float)Screen.width * factor), Mathf.RoundToInt((float)Screen.height * factor), 8, RenderTextureFormat.ARGB32);
+            newTexture.name = name;
+            newTexture.Create();
+            return newTexture;
+        }
+
+        private void SetRenderTexture(RenderTexture texture) {
+            if (reflectionCamera.targetTexture == texture) return;
+
+            reflectionCamera.targetTexture = texture;            
+            reflectionPlane.GetComponent<MeshRenderer>().material.SetTexture("_ReflectionTex", texture);
+            // reflectionCamera.Render();
+        }
+
+        private void UpdateLODTexture() {
+
+            float distance = Vector3.Distance(mainCamera.gameObject.transform.position, reflectionPlane.transform.position);
+            if (distance < 15f) {
+                SetRenderTexture(output_texture_high);
+            } else if (distance < 50f){
+                SetRenderTexture(output_texture_mid);
+            } else {
+                SetRenderTexture(output_texture_low);
+            }
         }
 
 
         private void LateUpdate()
         {
             if (!isActive) return;
-            
             InView = IncameraRange();
-        
             if (!InView) return;
-
-            if (isReady && mainCamera != null)
+            if (isReady && mainCamera != null){
+                UpdateLODTexture();
                 RenderReflection();
+            }
             else {
                 mainCamera = Camera.main;
                 OnValidate();
@@ -102,7 +138,7 @@
             int dot = System.Math.Sign(Vector3.Dot(clipPlane.forward, clipPlane.position - reflectionCamTransform.position));
 
             Vector3 cameraSpacePos = reflectionCamera.worldToCameraMatrix.MultiplyPoint(clipPlane.position);
-            int revert = clipPlane.position.y < mainCamera.transform.position.y ? 1 : -1;
+            int revert = clipPlane.position.y <= mainCamera.transform.position.y ? 1 : -1;
             Vector3 cameraSpaceNormal = reflectionCamera.worldToCameraMatrix.MultiplyVector(clipPlane.up * revert) * dot;
             float camSpaceDst = -Vector3.Dot(cameraSpacePos, cameraSpaceNormal);
             Vector4 clipPlaneCameraSpace = new Vector4(cameraSpaceNormal.x, cameraSpaceNormal.y, cameraSpaceNormal.z, camSpaceDst);
@@ -151,7 +187,7 @@
                 copyCameraParamerers = !copyCameraParamerers;
                 reflectionCamera.CopyFrom(mainCamera);
 
-                reflectionCamera.targetTexture = outputTexture;
+                reflectionCamera.targetTexture = output_texture_high;
             }
         }
     }
