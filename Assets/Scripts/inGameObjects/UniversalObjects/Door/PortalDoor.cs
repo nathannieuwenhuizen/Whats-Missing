@@ -26,6 +26,7 @@ public class PortalDoor : Door
     }
 
     private void SetPortalState(bool val) {
+        if (delayDeactivationCoroutine != null) StopCoroutine(delayDeactivationCoroutine);
         portal.IsActive = val;
     }
 
