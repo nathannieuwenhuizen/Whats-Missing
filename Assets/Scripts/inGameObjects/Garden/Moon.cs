@@ -49,7 +49,7 @@ public class Moon : Property
 
     public override void OnEnlargeRevert()
     {
-        AnimationDuration = 3f;
+        AnimationDuration = 5f;
         base.OnEnlargeRevert();
     }
 

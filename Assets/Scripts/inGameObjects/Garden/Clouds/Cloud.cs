@@ -33,7 +33,7 @@ public class Cloud : RoomObject
 
 
     private void UpdateCloudColor(float sunIntensity) {
-        meshRenderer.material.color =  Color.Lerp(Color.white, darkColor, 1 - Mathf.Pow(sunIntensity, 2));
+        meshRenderer.material.color =  Color.Lerp(Color.white, darkColor, Mathf.Pow( 1 - sunIntensity, 2));
     }
 
     private void OnEnable() {

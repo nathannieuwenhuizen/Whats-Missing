@@ -175,8 +175,10 @@ public class Area : MonoBehaviour
             newRoom.LoadMirrors();
 
             //position room
-            newRoom.transform.rotation = origin.rotation; 
-            newRoom.transform.Rotate(new Vector3(0,-90 + roomRotationOffset,0));
+            if (areaIndex == 0) {
+                newRoom.transform.rotation = origin.rotation; 
+                newRoom.transform.Rotate(new Vector3(0,-90 + roomRotationOffset,0));
+            }
             newRoom.transform.position = origin.position + (newRoom.transform.position - newRoom.StartDoor.transform.position) + roomPositionOffset;
             origin = newRoom.EndDoor.transform;
 

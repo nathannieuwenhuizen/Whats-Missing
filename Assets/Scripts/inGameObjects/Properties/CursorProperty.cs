@@ -90,6 +90,7 @@ public class CursorProperty : Property
             RectTransform rt = uiGroup.GetComponent<RectTransform>();
             rt.localScale = Vector3.one * LargeScale;
         }
+        Debug.Log( "set big cursor");
         Cursor.SetCursor(bigMouseTexture, Vector2.zero, CursorMode.ForceSoftware);
         base.OnEnlargingFinish();
     }
@@ -122,7 +123,7 @@ public class CursorProperty : Property
     }
 
     private void OnDisable() {
-        Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+        if (InSpace) Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
     }
 
     private void Reset() {

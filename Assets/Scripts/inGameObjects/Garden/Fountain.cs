@@ -8,9 +8,21 @@ public class Fountain : RoomObject
     [SerializeField]
     private Animator animator;
 
+    private SFXInstance waterSound;
+
+
     void Start()
     {
         UpdateAnimatorTimeScale();
+    }
+
+    public override void OnRoomEnter()
+    {
+        base.OnRoomEnter();
+        if (waterSound == null) {
+            waterSound =  AudioHandler.Instance.Play3DSound(SFXFiles.fountain, transform, .2f, 1f, true, true, 30);
+        }
+        waterSound.AudioSource.Play();
     }
     private void OnEnable() {
         TimeProperty.onTimeMissing += UpdateAnimatorTimeScale;
@@ -20,6 +32,13 @@ public class Fountain : RoomObject
     private void OnDisable() {
         TimeProperty.onTimeMissing -= UpdateAnimatorTimeScale;
         TimeProperty.onTimeAppearing -= UpdateAnimatorTimeScale;
+    }
+    public override void OnRoomLeave()
+    {
+        base.OnRoomLeave();
+        if (waterSound != null)
+            waterSound.AudioSource.Play();
+
     }
 
     private void UpdateAnimatorTimeScale() {

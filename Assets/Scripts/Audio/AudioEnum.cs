@@ -62,6 +62,7 @@ public static class SFXFiles {
     public static string sun_burning = "Sun_burning";
     public static string duck = "Duck";
     public static string baby_duck = "Baby_duck";
+    public static string fountain = "Fountain";
 
 }
 public enum MusicFiles {
