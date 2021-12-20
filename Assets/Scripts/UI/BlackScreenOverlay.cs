@@ -19,11 +19,14 @@ public class BlackScreenOverlay : MonoBehaviour
         Player.OnDie += DeathFade;
         Area.OnRespawn += RemoveOverlay;
         AlchemyItem.OnPickingAlchemyItem += FadeToWhite;
+        TeddyBear.OnTeddyBearPickUp += FadeToWhiteImmeditately;
+
     }
     private void OnDisable() {
         Player.OnDie -= DeathFade;
         Area.OnRespawn -= RemoveOverlay;
         AlchemyItem.OnPickingAlchemyItem -= FadeToWhite;
+        TeddyBear.OnTeddyBearPickUp -= FadeToWhiteImmeditately;
     }
 
     public void DeathFade(bool withAnimation) {
@@ -43,6 +46,10 @@ public class BlackScreenOverlay : MonoBehaviour
     public void FadeToWhite() {
         image.color = Color.white;
         StartCoroutine(group.FadeCanvasGroup(1, 1f, 8f));
+    }
+    public void FadeToWhiteImmeditately() {
+        image.color = Color.white;
+        StartCoroutine(group.FadeCanvasGroup(1, 1f, 0f));
     }
     public void RemoveOverlay() {
         StopAllCoroutines();

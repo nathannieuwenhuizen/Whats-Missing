@@ -14,9 +14,11 @@ public class DemoText : MonoBehaviour
     }
     private void OnEnable() {
         AlchemyItem.OnAlchemyEndScene += FadeToWhite;
+        TeddyBear.OnCutsceneEnd += FadeToWhite;
     }
     private void OnDisable() {
         AlchemyItem.OnAlchemyEndScene -= FadeToWhite;
+        TeddyBear.OnCutsceneEnd -= FadeToWhite;
 
     }
     public void FadeToWhite() {

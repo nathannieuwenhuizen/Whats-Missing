@@ -7,6 +7,13 @@ public class TeddyBear : InteractabelObject
 
     public delegate void TeddyBearEvent();
     public static TeddyBearEvent OnTeddyBearPickUp;
+    public static TeddyBearEvent OnCutsceneEnd;
+
+    private bool inCutScene = false;
+
+
+    [SerializeField]
+    private Room room;
 
     [SerializeField]
     private Rigidbody rigidBody;
@@ -39,7 +46,19 @@ public class TeddyBear : InteractabelObject
     {
         Debug.Log("teddy bear cutscene start");
         base.Interact();
+
+        if (inCutScene) return;
+        inCutScene = true;
+
         OnTeddyBearPickUp?.Invoke();
+        room.Player.Movement.EnableWalk = false;
+        room.Player.Movement.EnableRotation = false;
+        StartCoroutine(TeddybearCutscene());
+    }
+
+    public IEnumerator TeddybearCutscene() {
+        yield return new WaitForSeconds(1f);
+        OnCutsceneEnd?.Invoke();
     }
 
     public override void OnEnlargeRevertFinish()
