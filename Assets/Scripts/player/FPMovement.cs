@@ -72,7 +72,7 @@ public class FPMovement : MonoBehaviour
     [SerializeField]
     private float walkSpeed = 5;
     [SerializeField]
-    private float runSpeed = 8;
+    private float runSpeed = 10;
     [SerializeField]
     private float jumpForce = 200f;
 

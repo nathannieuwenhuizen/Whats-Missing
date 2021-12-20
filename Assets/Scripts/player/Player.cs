@@ -189,13 +189,13 @@ public class Player : RoomObject
 
     public override void OnShrinking()
     {
-        StopAllCoroutines();
+        // StopAllCoroutines();
         StartCoroutine(AnimateShrinking());
     }
 
     public override void OnShrinkRevert()
     {
-        StopAllCoroutines();
+        // StopAllCoroutines();
         StartCoroutine(AnimateShrinkRevert());
     }
 

@@ -8,6 +8,8 @@ using UnityEngine.Rendering.Universal;
 public class ColorProperty : Property
 {
 
+    public static OnPropertyToggle OnColorEnlarged;
+
     private BlitMaterialFeature blitFeature;
     private Material material;
     [SerializeField] private ForwardRendererData rendererData = null;
@@ -67,6 +69,7 @@ public class ColorProperty : Property
 
     public override void OnEnlarge()
     {
+        OnColorEnlarged?.Invoke();
         SetMaterialActive(true);
         base.OnEnlarge();
     }

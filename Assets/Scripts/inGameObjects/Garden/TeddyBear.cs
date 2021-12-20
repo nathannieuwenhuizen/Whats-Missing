@@ -8,6 +8,7 @@ public class TeddyBear : InteractabelObject
     public delegate void TeddyBearEvent();
     public static TeddyBearEvent OnTeddyBearPickUp;
     public static TeddyBearEvent OnCutsceneEnd;
+    public static TeddyBearEvent OnTeddyBearEnlarged;
 
     private bool inCutScene = false;
 
@@ -34,6 +35,7 @@ public class TeddyBear : InteractabelObject
         midIslandAnimator.SetTrigger("show");
         rigidBody.isKinematic = true;
         Interactable = false;
+        OnTeddyBearEnlarged?.Invoke();
         base.OnEnlarge();
     }
 

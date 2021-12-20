@@ -117,7 +117,10 @@ public class Area : MonoBehaviour
     
     void Start()
     {
-        AudioHandler.Instance.PlayMusic(areaIndex == 0? MusicFiles.planetarium : MusicFiles.garden, 1f);
+        AudioListener.volume = 0;
+        AudioHandler.Instance.FadeListener(1f);
+
+        AudioHandler.Instance.PlayMusic(areaIndex == 0? MusicFiles.planetarium : MusicFiles.garden, .5f);
 
         player.transform.position = rooms[loadRoomIndex].StartDoor.EndPos();
         player.transform.rotation = rooms[loadRoomIndex].StartDoor.transform.rotation;
@@ -244,6 +247,8 @@ public class Area : MonoBehaviour
         InputManager.OnUndo -= UndoAction;
         Player.OnDie -= ResetPlayer;
         InputManager.OnReset -= ResetRoom;
+
+        if (AUTO_SAVE_WHEN_DESTROY) SaveProgress();
     }
 
     public void ResetRoom() {
@@ -255,6 +260,8 @@ public class Area : MonoBehaviour
         SaveData.current.roomIndex = rooms.IndexOf(currentRoom);
         SaveData.current.areaIndex = areaIndex;
         SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
+
+        Debug.Log("save progress!");
     }
 
     private void OnDestroy() {

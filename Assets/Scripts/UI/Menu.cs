@@ -80,8 +80,7 @@ public class Menu : MonoBehaviour
     }
 
     public void ContinueGame() {
-        SaveData data = SaveData.current;
-        sceneLoader.LoadNewSceneAnimated(data.areaIndex == 0 ? Scenes.FIRST_LEVEL_SCENE_NAME : Scenes.SECOND_LEVEL_SCENE_NAME);
+        sceneLoader.LoadNewSceneAnimated(saveData.areaIndex == 0 ? Scenes.FIRST_LEVEL_SCENE_NAME : Scenes.SECOND_LEVEL_SCENE_NAME);
     }
 
     public void OpenNewGameWarning() {

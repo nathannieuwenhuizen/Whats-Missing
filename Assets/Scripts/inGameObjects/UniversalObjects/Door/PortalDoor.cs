@@ -97,6 +97,9 @@ public class PortalDoor : Door
     }
     private IEnumerator Delaydeactivation() {
         yield return new WaitForSeconds(3f);
+        while (IN_WALKING_ANIMATION) {
+            yield return new WaitForEndOfFrame();
+        }
         SetPortalState(false);
     }
 }

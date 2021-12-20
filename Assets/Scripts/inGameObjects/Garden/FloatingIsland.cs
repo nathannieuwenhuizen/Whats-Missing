@@ -26,11 +26,14 @@ public class FloatingIsland : RoomObject, ITriggerArea
         oldParent = player.transform.parent;
         animator.speed = 0;
         player.transform.SetParent(transform);
+        AudioHandler.Instance.FadeMusic(MusicFiles.planetarium_hidden_room, 1f);
+
     }
 
     public void OnAreaExit(Player player)
     {
         animator.speed = 1;
         player.transform.SetParent(oldParent);
+        AudioHandler.Instance.FadeMusic(MusicFiles.planetarium, .5f);
     }
 }

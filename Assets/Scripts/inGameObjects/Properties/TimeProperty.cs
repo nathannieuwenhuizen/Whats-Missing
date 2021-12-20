@@ -13,6 +13,10 @@ public class TimeProperty : Property
     private Room room;
 
     private Vignette vignette;
+
+    private void Awake() {
+        Room.TimeScale = 1f;
+    }
     public override void OnMissing()
     {
         base.OnMissing();
@@ -42,6 +46,9 @@ public class TimeProperty : Property
 
         onTimeAppearing?.Invoke();
         AudioHandler.Instance.pitchMultiplier = 1f;
+    }
+    private void OnDisable() {
+        if (InSpace) Room.TimeScale = 1f;
     }
 
     public override void OnEnlarge()

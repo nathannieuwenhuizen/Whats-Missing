@@ -104,7 +104,7 @@ public class Grass : RoomObject
     }
 
     private void UpdateWindSpeedBasedOnTime() {
-        WindSpeed = startWindSpeed * Room.TimeScale;
+        if (InSpace) WindSpeed = startWindSpeed * Room.TimeScale;
     }
 
     private void  InitializeLODs() {

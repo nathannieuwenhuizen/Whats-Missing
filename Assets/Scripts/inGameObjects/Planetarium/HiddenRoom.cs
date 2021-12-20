@@ -14,7 +14,7 @@ public class HiddenRoom : AreaTrigger
     {
         if (!InsideArea) return;
         base.OnAreaExit(player);
-        AudioHandler.Instance.FadeMusic(MusicFiles.planetarium, 1f);
+        AudioHandler.Instance.FadeMusic(MusicFiles.planetarium, .5f);
 
     }
 }

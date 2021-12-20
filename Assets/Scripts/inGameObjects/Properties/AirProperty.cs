@@ -12,6 +12,7 @@ public class AirProperty : Property
 
     public static OnPropertyToggle OnAirMissing;
     public static OnPropertyToggle OnAirAppearing;
+
     public override void OnMissing()
     {
         AudioHandler.Instance.MusicSource.Pause();

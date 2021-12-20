@@ -47,5 +47,17 @@ public abstract class Property : RoomEntity
         if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
     }
 
+    public override void OnEnlarge()
+    {
+        base.OnEnlarge();
+        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
+    }
+
+    public override void OnEnlargeRevert()
+    {
+        base.OnEnlargeRevert();
+        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
+    }
+
     #endregion
 }
