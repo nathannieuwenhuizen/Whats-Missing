@@ -5,13 +5,13 @@ using UnityEngine;
 ///<summary>
 /// A particle effect that goes towardsa destination to create a cool effect.
 ///</summary>
-[RequireComponent(typeof(ParticleSystem))]
 public class ChangeLine : MonoBehaviour
 {
     [SerializeField]
     private Vector3 point0, point1, point2 = new Vector3();
     private float duration = 2f;
 
+    [SerializeField]
     private ParticleSystem ps;
 
     private AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
@@ -36,8 +36,8 @@ public class ChangeLine : MonoBehaviour
             transform.position = Extensions.CalculateQuadraticBezierPoint(curve.Evaluate(index / duration), point0, point1, point2);
             yield return new WaitForEndOfFrame();
         }
-        ps.startSpeed = ps.startSpeed * 2;
-        ps.Emit(100);
+        // ps.startSpeed = ps.startSpeed * 2;
+        // ps.Emit(100);
         Destroy(gameObject, 2f);
     }
 

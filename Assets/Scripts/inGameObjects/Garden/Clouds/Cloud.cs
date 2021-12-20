@@ -7,7 +7,7 @@ public class Cloud : RoomObject
     private float cloudSpeed = .5f;
 
     [SerializeField]
-    private MeshRenderer renderer;
+    private MeshRenderer meshRenderer;
 
     private Material cloudMaterial;
 
@@ -24,7 +24,7 @@ public class Cloud : RoomObject
     }
 
     private void Awake() {
-        cloudMaterial = renderer.material;
+        cloudMaterial = meshRenderer.material;
     }
 
     private void Update() {
@@ -33,7 +33,7 @@ public class Cloud : RoomObject
 
 
     private void UpdateCloudColor(float sunIntensity) {
-        renderer.material.color =  Color.Lerp(Color.white, darkColor, 1 - sunIntensity);
+        meshRenderer.material.color =  Color.Lerp(Color.white, darkColor, 1 - Mathf.Pow(sunIntensity, 2));
     }
 
     private void OnEnable() {

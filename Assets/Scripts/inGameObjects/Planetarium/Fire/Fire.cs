@@ -27,6 +27,7 @@ public class Fire : RoomObject
         ToggleFireSpread(false);
         normalScale = transform.localScale.x;
         largeScale = normalScale * 2f;
+        if (fireSpreadObject != null)
         fireSpreadScale = fireSpreadObject.transform.localScale.x;
     }
 
