@@ -11,7 +11,7 @@ public class Tree : RoomObject
 
     private void Awake() {
         normalScale = transform.localScale.x;
-        shrinkScale = normalScale * .1f;
+        shrinkScale = normalScale * .2f;
         leavesMaterial = leaves.material;
     }
     private void OnEnable() {

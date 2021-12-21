@@ -29,6 +29,9 @@ public class TeddyBear : InteractabelObject
         Word = "teddybear";
         AlternativeWords = new string[] {"bear", "teddy"};
     }
+    private void Awake() {
+        rigidBody.isKinematic = true;
+    }
 
     public override void OnEnlarge()
     {
@@ -69,7 +72,7 @@ public class TeddyBear : InteractabelObject
         Debug.Log("teddy is now small");
         Interactable = true;
         OutlineEnabled = true;
-        rigidBody.isKinematic = false;
+        // rigidBody.isKinematic = false;
         base.OnEnlargeRevertFinish();
     }
 

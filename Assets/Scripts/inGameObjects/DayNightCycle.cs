@@ -96,7 +96,7 @@ public class DayNightCycle : MonoBehaviour
     }
 
     private void SetRotationToMidday() {
-        sunRotation = 90;
+        sunRotation = 60;
     }
 
     private void Update() {
@@ -130,6 +130,7 @@ public class DayNightCycle : MonoBehaviour
         Sun.OnSunShrinkingRevert += SunIsAppearing;
         ColorProperty.OnColorEnlarged += SetRotationToMidday;
         TeddyBear.OnTeddyBearEnlarged += SetRotationToMidday;
+        Room.OnRoomEntering += SetRotationToMidday;
 
     }
 
@@ -138,6 +139,7 @@ public class DayNightCycle : MonoBehaviour
         Sun.OnSunShrinkingRevert -= SunIsAppearing;
         ColorProperty.OnColorEnlarged -= SetRotationToMidday;
         TeddyBear.OnTeddyBearEnlarged -= SetRotationToMidday;
+        Room.OnRoomEntering -= SetRotationToMidday;
 
 
     }

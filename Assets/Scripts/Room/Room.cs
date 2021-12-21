@@ -11,6 +11,7 @@ public class Room : MonoBehaviour
     public delegate void RoomAction();
     public static event RoomAction OnRoomComplete;
     public static event RoomAction OnRoomLeaving;
+    public static event RoomAction OnRoomEntering;
 
     public RoomLevel roomLevel;
 
@@ -292,6 +293,8 @@ public class Room : MonoBehaviour
         player = _player;
         player.transform.parent = transform;
         AllObjects.Add(player);
+
+        OnRoomEntering?.Invoke();
 
         hintStopwatch.Resume();
         Animated = false;
