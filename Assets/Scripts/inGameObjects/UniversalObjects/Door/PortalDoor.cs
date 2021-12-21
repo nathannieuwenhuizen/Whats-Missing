@@ -96,10 +96,10 @@ public class PortalDoor : Door
         delayDeactivationCoroutine = StartCoroutine(Delaydeactivation());
     }
     private IEnumerator Delaydeactivation() {
-        yield return new WaitForSeconds(5f);
         while (IN_WALKING_ANIMATION) {
             yield return new WaitForEndOfFrame();
         }
+        yield return new WaitForSeconds(3f);
         SetPortalState(false);
     }
 }
