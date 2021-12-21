@@ -182,7 +182,10 @@ public class Area : MonoBehaviour
                 newRoom.transform.rotation = origin.rotation; 
                 newRoom.transform.Rotate(new Vector3(0,-90 + roomRotationOffset,0));
             }
-            newRoom.transform.position = origin.position + (newRoom.transform.position - newRoom.StartDoor.transform.position) + roomPositionOffset;
+            Vector3 spawnPos = origin.position + (newRoom.transform.position - newRoom.StartDoor.transform.position);
+            spawnPos += new Vector3(roomPositionOffset.x * ((index % 2) == 0 ? 1 : -1), roomPositionOffset.y, roomPositionOffset.z);
+
+            newRoom.transform.position = spawnPos;
             origin = newRoom.EndDoor.transform;
 
             //deactivate the startdoors if the door isn't a portal

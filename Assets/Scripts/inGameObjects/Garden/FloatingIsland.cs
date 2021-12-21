@@ -34,6 +34,6 @@ public class FloatingIsland : RoomObject, ITriggerArea
     {
         animator.speed = 1;
         player.transform.SetParent(oldParent);
-        AudioHandler.Instance.FadeMusic(MusicFiles.planetarium, .5f);
+        AudioHandler.Instance.FadeMusic(MusicFiles.garden, .5f);
     }
 }

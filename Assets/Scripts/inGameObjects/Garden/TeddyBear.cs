@@ -35,6 +35,7 @@ public class TeddyBear : InteractabelObject
         midIslandAnimator.SetTrigger("show");
         rigidBody.isKinematic = true;
         Interactable = false;
+        OutlineEnabled = false;
         OnTeddyBearEnlarged?.Invoke();
         base.OnEnlarge();
     }
@@ -67,6 +68,7 @@ public class TeddyBear : InteractabelObject
     {
         Debug.Log("teddy is now small");
         Interactable = true;
+        OutlineEnabled = true;
         rigidBody.isKinematic = false;
         base.OnEnlargeRevertFinish();
     }

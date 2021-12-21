@@ -47,8 +47,7 @@ public class DayNightCycle : MonoBehaviour
     public bool EbableRotation { get; set; } = true;
     private float oldSunRotation;
 
-    [SerializeField]
-    private float dayDurationInMinutes = 10;
+    private float dayDurationInMinutes = 30;
 
     private float sunXRotation;
     private float sunYRotation;
@@ -103,7 +102,7 @@ public class DayNightCycle : MonoBehaviour
     private void Update() {
         if (Room.TimeScale == 0 || Time.timeScale == 0 || !EbableRotation) return;
 
-        SunRotation += ((Time.deltaTime * Mathf.Pow(Room.TimeScale, 2.1f)) * 360f) * (1f / (dayDurationInMinutes * 60f));
+        SunRotation += ((Time.deltaTime * Mathf.Pow(Room.TimeScale, 2.3f)) * 360f) * (1f / (dayDurationInMinutes * 60f));
 
     }
 
