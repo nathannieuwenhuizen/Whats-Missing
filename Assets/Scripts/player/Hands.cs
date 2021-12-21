@@ -12,6 +12,16 @@ public class Hands : MonoBehaviour
 
     [SerializeField]
     private float pickupDistance = 3;
+    private float shrinkPickupDistance;
+
+    private bool shrinked = false;
+
+    public float PickupDistance {
+        get {
+            return shrinked ? shrinkPickupDistance : pickupDistance;
+        }
+    }
+
     [SerializeField]
     private IInteractable currentInteractable;
 
@@ -50,6 +60,8 @@ public class Hands : MonoBehaviour
         InputManager.OnClickUp += Release;
         PauseScreen.OnPause += DisableClick;
         PauseScreen.OnResume += EnableClick;
+        Player.OnPlayerShrink += PlayerHasShrunk;
+        Player.OnPlayerUnShrink += PlayerHasUnShrunk;
     }
 
     private void OnDisable() {
@@ -57,6 +69,16 @@ public class Hands : MonoBehaviour
         InputManager.OnClickUp -= Release;
         PauseScreen.OnPause -= DisableClick;
         PauseScreen.OnResume -= EnableClick;
+        Player.OnPlayerShrink -= PlayerHasShrunk;
+        Player.OnPlayerUnShrink -= PlayerHasUnShrunk;
+    }
+
+    private void PlayerHasShrunk() {
+        shrinked = true;
+
+    }
+    private void PlayerHasUnShrunk() {
+        shrinked = false;
     }
 
     private void EnableClick() {
@@ -70,8 +92,9 @@ public class Hands : MonoBehaviour
     private void Awake() {
         localPos = transform.localPosition;
         rigidbody = GetComponent<Rigidbody>();
+        shrinkPickupDistance = pickupDistance / 2f;
     }
-    
+
 
     //Releases the holding object
     public void Release() {
@@ -102,7 +125,7 @@ public class Hands : MonoBehaviour
                 var speed = holdingObject.Touching ? 3f : 10f;
                 // if (holdingObject.RigidBody.)
                 holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-                Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * 4f;
+                Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (PickupDistance * .5f);
                 Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, transform.position + offset, Time.deltaTime * speed);
                 holdingObject.RigidBody.MovePosition(midwayDestination);
                 yield return new WaitForFixedUpdate();
@@ -135,7 +158,7 @@ public class Hands : MonoBehaviour
     //raycast froward from the camera to any object that has the component T with it.
     private T FocussedObject<T>() {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, pickupDistance)) {
+        if (Physics.Raycast(transform.position, transform.forward, out hit, PickupDistance)) {
             if (hit.collider.gameObject.GetComponent<T>() != null) {
                 return hit.collider.gameObject.GetComponent<T>();
             } else if (hit.collider.transform.parent != null) {

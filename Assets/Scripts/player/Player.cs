@@ -39,6 +39,8 @@ public class Player : RoomObject
     public delegate void Playerevent();
     public static event Playerevent OnPlayerMissing;
     public static event Playerevent OnPlayerAppear;
+    public static event Playerevent OnPlayerShrink;
+    public static event Playerevent OnPlayerUnShrink;
 
     [SerializeField]
     private Camera playerCamera;
@@ -190,12 +192,14 @@ public class Player : RoomObject
     public override void OnShrinking()
     {
         // StopAllCoroutines();
+        OnPlayerShrink?.Invoke();
         StartCoroutine(AnimateShrinking());
     }
 
     public override void OnShrinkRevert()
     {
         // StopAllCoroutines();
+        OnPlayerUnShrink?.Invoke();
         StartCoroutine(AnimateShrinkRevert());
     }
 
