@@ -20,7 +20,6 @@ public class MirrorCanvas : MonoBehaviour
     public delegate void MirrorcanvasEvent(string hintText);
     public static MirrorcanvasEvent OnShowHint;
 
-
     private string hintText = "";
 
     public List<Letter> letterObjects = new List<Letter>();
