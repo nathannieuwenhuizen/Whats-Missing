@@ -11,7 +11,7 @@ public class StaringState : IState
     public Transform _player;
     public ILiveStateDelegate OnStateSwitch { get; set; }
     
-    public float RotationSpeed = 10f;
+    public float RotationSpeed = 2f;
  
     //values for internal use
     private Quaternion _lookRotation;
@@ -141,7 +141,7 @@ public class SwimState : IState
          Quaternion _lookRotation = Quaternion.LookRotation(_direction);
  
          //rotate us over time according to speed until we are in the required rotation
-         _duck.transform.rotation = Quaternion.Slerp(_duck.transform.rotation, _lookRotation, Time.deltaTime * Room.TimeScale * 10f);    
+         _duck.transform.rotation = Quaternion.Slerp(_duck.transform.rotation, _lookRotation, Time.deltaTime * Room.TimeScale * 2f);    
 
         // _transform.forward = _duck.Velocity.normalized;
 
@@ -157,7 +157,7 @@ public class FollowState : IState
     public Duck _duck;
     public ILiveStateDelegate OnStateSwitch { get; set; }
     
-    public float RotationSpeed = 10f;
+    public float RotationSpeed = 4f;
  
     //values for internal use
     private Quaternion _lookRotation;

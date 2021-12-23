@@ -44,7 +44,7 @@ public class Duck : RoomObject
     public Duck() {
         largeScale = 4f;
     }
-    private void Awake() {
+    protected virtual void Awake() {
         lifeTimeTrail = trail.time;
         currentSwimArea = swimArea;
         SetUpBehaviour();

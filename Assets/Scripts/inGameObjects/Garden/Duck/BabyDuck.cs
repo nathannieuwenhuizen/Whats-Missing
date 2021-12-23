@@ -19,8 +19,17 @@ public class BabyDuck : Duck
         duckBehaviour = new FSM(followState);
     }
 
+    protected override void Awake() {
+        allDucks = FindAllDucks();
+        base.Awake();
+    }
+
     public BabyDuck() {
         largeScale = 2f;
+    }
+
+    private Duck[] FindAllDucks () {
+        return transform.parent.GetComponentsInChildren<Duck>();;
     }
 
     public override void OnEnlargingFinish()

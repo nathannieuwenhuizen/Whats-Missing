@@ -6,8 +6,7 @@ public class Fire : RoomObject
 {
 
     [SerializeField]
-    private MeshRenderer mr;
-    private Material material;
+    private MeshRenderer[] fireRenderers;
     private SFXInstance fireSound;
 
     private float fireSpreadScale;
@@ -23,12 +22,12 @@ public class Fire : RoomObject
     private Coroutine smokeCoroutine;
 
     protected void Awake() {
-        material = mr.material;
         ToggleFireSpread(false);
         normalScale = transform.localScale.x;
         largeScale = normalScale * 2f;
         if (fireSpreadObject != null)
         fireSpreadScale = fireSpreadObject.transform.localScale.x;
+        UpdatingTimeScale(1);
     }
 
     private void OnEnable() {
@@ -80,11 +79,17 @@ public class Fire : RoomObject
 
 
     public void UpdateTimeScale() {
+        UpdatingTimeScale(Room.TimeScale);
+    }
+
+    public void UpdatingTimeScale(float val) {
         if (InSpace == false) return;
 
-        material.SetFloat("_RoomTime", Room.TimeScale);
+        foreach(MeshRenderer meshRenderer in fireRenderers) {
+            meshRenderer.material.SetFloat("_RoomTime", val);
+        }
         if (fireSound != null){
-            fireSound.AudioSource.mute = Room.TimeScale == 0;
+            fireSound.AudioSource.mute = val == 0;
         }
     }
 

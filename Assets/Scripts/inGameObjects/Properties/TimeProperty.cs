@@ -27,8 +27,6 @@ public class TimeProperty : Property
         }
 
         onTimeMissing?.Invoke();
-        AudioHandler.Instance.pitchMultiplier = .5f;
-
     }
 
     public TimeProperty() {
@@ -53,6 +51,7 @@ public class TimeProperty : Property
 
     public override void OnEnlarge()
     {
+        AudioHandler.Instance.pitchMultiplier = 1.5f;
         Room.TimeScale = largeScale;
         onTimeAppearing?.Invoke();
         base.OnEnlarge();
