@@ -15,6 +15,9 @@ public class Fountain : RoomObject
     {
         UpdateAnimatorTimeScale();
     }
+    public Fountain () {
+        largeScale = 1.8f;
+    }
 
     public override void OnRoomEnter()
     {
@@ -47,7 +50,7 @@ public class Fountain : RoomObject
 
     private void Reset() {
         Word = "fountain";
-        AlternativeWords = new string[] { "fountains" };
+        AlternativeWords = new string[] { "fountains", "spring" };
     }
 
 }

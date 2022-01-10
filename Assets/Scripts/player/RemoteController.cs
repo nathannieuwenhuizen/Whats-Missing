@@ -20,11 +20,13 @@ public class RemoteController : MonoBehaviour
         if (!isEnabled) return;
 
         focusedMirror = FocussedMirror();
+        Debug.Log("focussed mirror: " + focusedMirror);
         if (focusedMirror == null) {
             if (oldMirror) oldMirror.MirrorCanvas.IsInteractable = false;
         } else {
             if (oldMirror != focusedMirror)  {
                 if (oldMirror) oldMirror.MirrorCanvas.IsInteractable = false;
+                Debug.Log("mirror focused!");
                 focusedMirror.MirrorCanvas.IsInteractable = true;
             }
         }
@@ -57,7 +59,8 @@ public class RemoteController : MonoBehaviour
     private Mirror FocussedMirror() {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, remoteDistance)) {
-            if (hit.collider.gameObject.GetComponent<Mirror>() != null) return hit.collider.gameObject.GetComponent<Mirror>();
+            Debug.Log(hit.collider.gameObject.name);
+            if (hit.collider.GetComponentInParent<Mirror>() != null) return hit.collider.GetComponentInParent<Mirror>();
         }
         return null;
     }

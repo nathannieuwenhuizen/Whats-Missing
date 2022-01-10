@@ -128,6 +128,6 @@ public class CursorProperty : Property
 
     private void Reset() {
         Word = "cursor";
-        AlternativeWords = new string[]{ "mouse", "ui", "intrface", "cursors", "mouses", "target"};
+        AlternativeWords = new string[]{ "mouse", "ui", "intrface", "cursors", "mouses", "target", "crosshair", "pointer"};
     }
 }
