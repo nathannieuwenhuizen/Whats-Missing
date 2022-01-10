@@ -18,7 +18,8 @@ public class PauseScreen : MonoBehaviour
     private GameObject resumeButton;
     [SerializeField]
     private AnimatedPopup subPausePanel;
-
+    [SerializeField] 
+    private SettingPanel settingPanel;
 
     private bool paused = false;
     private bool canPause = true;
@@ -91,6 +92,7 @@ public class PauseScreen : MonoBehaviour
         AudioHandler.Instance.FadeListener(1f);
         animator.SetBool("show", false);
         subPausePanel.ShowAnimation(false);
+        settingPanel.Close();
 
         AudioHandler.Instance.PlayUISound(SFXFiles.pause_hide);
         EventSystem.current.SetSelectedGameObject(null);

@@ -27,4 +27,5 @@ public class MirrorData {
     [Range(-1,1)]
     public int roomIndexoffset = 0;
     public ChangeType changeType = ChangeType.missing;
+    public bool isOn = false;
 }

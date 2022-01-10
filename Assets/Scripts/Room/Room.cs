@@ -366,6 +366,7 @@ public class Room : MonoBehaviour
     public void UpdateMirrorStates() {
         foreach (Mirror mirror in mirrors)
         {
+            Debug.Log("mirror: " + mirror.name + " | " + mirror.isQuestion );
             if (!mirror.isQuestion) {
                 mirror.IsOn = changeHandler.Changes.Find(c => c.mirror == mirror) != null;
             } else {

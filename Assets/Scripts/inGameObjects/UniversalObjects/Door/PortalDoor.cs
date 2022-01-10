@@ -71,7 +71,7 @@ public class PortalDoor : Door
         if (connectedDoor == null || connectedDoor.room == null) return;
         if (room.Player == null) return;
 
-        if (portal.IncameraRange() && !locked && Vector3.Distance(room.Player.transform.position, transform.position) < 40f) {
+        if (portal.IncameraRange() && (!locked && Vector3.Distance(room.Player.transform.position, transform.position) < 150f)) {
             if (!connectedDoor.room.gameObject.activeSelf) 
             {
                 connectedDoor.room.gameObject.SetActive(true);

@@ -11,6 +11,10 @@ public class Portal : MonoBehaviour
     private Collider[] connectedColliders;
 
     private bool insidePortal = false;
+    private bool portalHasbeenRendered = false;
+    public bool PortalHasbeenRendered {
+        get { return portalHasbeenRendered;}
+    }
 
     private Player player;
     private static readonly Quaternion halfTurn = Quaternion.Euler(0.0f, 0.0f, 180.0f);
@@ -164,6 +168,8 @@ public class Portal : MonoBehaviour
         reflectionCamTransform.position = cameraPositionWorldSpace;
         reflectionCamTransform.LookAt(cameraPositionWorldSpace + cameraDirectionWorldSpace, cameraUpWorldSpace);
         SetNearClipPlane();
+
+        portalHasbeenRendered = true;
         // reflectionCamera.nearClipPlane = Vector3.Distance(reflectionCamTransform.position, reflectionPlane.position);            
     }
 

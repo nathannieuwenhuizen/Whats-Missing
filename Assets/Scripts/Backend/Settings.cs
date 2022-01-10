@@ -14,7 +14,7 @@ public struct Settings
         Settings settings = new Settings();
         settings.Load();
         return settings;
-    }
+}
 
     public ControlSettings controlSettings;
     public CameraSettings cameraSettings;
