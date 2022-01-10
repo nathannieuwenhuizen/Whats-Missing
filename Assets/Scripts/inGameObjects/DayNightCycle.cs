@@ -31,9 +31,6 @@ public class DayNightCycle : MonoBehaviour
 
     }
 
-
-    
-
     public delegate void SunIntensityEvent(float precentage);
     public static SunIntensityEvent OnSunIntensityChange;
 
@@ -44,7 +41,7 @@ public class DayNightCycle : MonoBehaviour
     [SerializeField]
     private Transform sunPivot;
 
-    public bool EbableRotation { get; set; } = true;
+    public bool EnableRotation { get; set; } = false;
     private float oldSunRotation;
 
     private float dayDurationInMinutes = 30;
@@ -86,21 +83,21 @@ public class DayNightCycle : MonoBehaviour
 
     private void SunIsMissing() {
         if (SunRotation != -90) oldSunRotation = SunRotation;
-        EbableRotation = false;
+        // EnableRotation = false;
         SunRotation = -90;
     }
 
     private void SunIsAppearing() {
         SunRotation = oldSunRotation;
-        EbableRotation = true;
+        // EnableRotation = true;
     }
 
     private void SetRotationToMidday() {
-        sunRotation = 60;
+        SunRotation = 60;
     }
 
     private void Update() {
-        if (Room.TimeScale == 0 || Time.timeScale == 0 || !EbableRotation) return;
+        if (Room.TimeScale == 0 || Time.timeScale == 0 || !EnableRotation) return;
 
         SunRotation += ((Time.deltaTime * Mathf.Pow(Room.TimeScale, 2.3f)) * 360f) * (1f / (dayDurationInMinutes * 60f));
 
@@ -121,6 +118,11 @@ public class DayNightCycle : MonoBehaviour
     
     }
 
+    public void UpdateDayNightCycleBasedOnTime() {
+        EnableRotation = Room.TimeScale != 1;
+    }
+
+
     private void UpdateSkybox() {
 
     }
@@ -131,7 +133,7 @@ public class DayNightCycle : MonoBehaviour
         ColorProperty.OnColorEnlarged += SetRotationToMidday;
         TeddyBear.OnTeddyBearEnlarged += SetRotationToMidday;
         Room.OnRoomEntering += SetRotationToMidday;
-
+        TimeProperty.onTimeAppearing += UpdateDayNightCycleBasedOnTime;
     }
 
     private void OnDisable() {
@@ -140,7 +142,6 @@ public class DayNightCycle : MonoBehaviour
         ColorProperty.OnColorEnlarged -= SetRotationToMidday;
         TeddyBear.OnTeddyBearEnlarged -= SetRotationToMidday;
         Room.OnRoomEntering -= SetRotationToMidday;
-
-
+        TimeProperty.onTimeAppearing -= UpdateDayNightCycleBasedOnTime;
     }
 }

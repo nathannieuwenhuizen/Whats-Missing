@@ -5,16 +5,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CanvasGroup))]
 public class SceneLoader : MonoBehaviour
 {
     public static bool ANIMATING = false;
-    private CanvasGroup group;
     [SerializeField]
-    private Slider loadingSlider;
+    private CanvasGroup group;
 
     [SerializeField]
-    private Image loadingImage;
+    private Image loadingIcon;
+    [SerializeField]
+    private Image cornerLoadingIcon;
 
     private bool isLoading = false;
     [SerializeField]
@@ -23,7 +23,6 @@ public class SceneLoader : MonoBehaviour
     private float animationDelay = 0f;
 
     private void Awake() {
-        group = GetComponent<CanvasGroup>();
         if (SceneLoader.ANIMATING) {
             SceneLoader.ANIMATING = false;
             StartCoroutine(LoadOut(() => {
@@ -33,33 +32,48 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    private void LoadNewScene(string sceneName, bool showTransition) {
-        if(showTransition) {
+    private void LoadNewScene(string sceneName, bool showMainLoadingScreen) {
+        if(showMainLoadingScreen) {
             AudioHandler.Instance.FadeListener(0);
             if (isLoading) return;
-            StartCoroutine(LoadingSceneAsync(sceneName));
+            StartCoroutine(LoadingSceneAsyncMainLoadingScreen(sceneName));
         } else {
-            SceneManager.LoadScene(sceneName);
+            if (isLoading) return;
+            StartCoroutine(LoadingSceneAsyncWithCornerLoadingIcon(sceneName));
         }
     }
     public void LoadNewSceneAnimated(string sceneName) {
         LoadNewScene(sceneName, true);
     }
 
-    public IEnumerator LoadingSceneAsync(string sceneName)
+    public IEnumerator LoadingSceneAsyncMainLoadingScreen(string sceneName)
     {
-        Debug.Log("load scene async");
         SceneLoader.ANIMATING = true;
-        loadingSlider.gameObject.SetActive(false);
-        loadingImage.gameObject.SetActive(false);
+        loadingIcon.gameObject.SetActive(false);
         isLoading = true;
         yield return StartCoroutine(FadeCanvasGroup(group, 1f, animationDuration, animationDelay));
         yield return new WaitForEndOfFrame();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
 
-        // loadingSlider.gameObject.SetActive(true);
-        loadingImage.gameObject.SetActive(true);
-        loadingSlider.value = 0;
+        loadingIcon.gameObject.SetActive(true);
+        while (!asyncLoad.isDone)
+        {
+            yield return new WaitForSeconds(.2f);
+            // loadingSlider.value = asyncLoad.progress;
+            yield return new WaitForSeconds(.2f);
+            yield return null;
+        }
+        isLoading = false;
+    }
+    public IEnumerator LoadingSceneAsyncWithCornerLoadingIcon(string sceneName)
+    {
+        SceneLoader.ANIMATING = true;
+        cornerLoadingIcon.gameObject.SetActive(false);
+        isLoading = true;
+        yield return new WaitForEndOfFrame();
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+
+        cornerLoadingIcon.gameObject.SetActive(true);
         while (!asyncLoad.isDone)
         {
             yield return new WaitForSeconds(.2f);
