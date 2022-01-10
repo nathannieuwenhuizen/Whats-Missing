@@ -23,7 +23,7 @@ public struct Settings
     ///</summary>
     public void Load() {
         controlSettings = new ControlSettings(){
-            Camera_sensetivity = PlayerPrefs.GetFloat("Camera_sensetivity", 1f),
+        Camera_sensetivity = PlayerPrefs.GetFloat("Camera_sensetivity", 1f),
             Camera_x_invert = PlayerPrefs.GetInt("Camera_x_invert", 0) == 1,
             Camera_y_invert = PlayerPrefs.GetInt("Camera_y_invert", 0) == 1,
             Enable_Keyboard_Input = PlayerPrefs.GetInt("Enable_Keyboard_Input", 0) == 1

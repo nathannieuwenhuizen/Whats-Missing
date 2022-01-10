@@ -59,7 +59,6 @@ public class RemoteController : MonoBehaviour
     private Mirror FocussedMirror() {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, remoteDistance)) {
-            Debug.Log(hit.collider.gameObject.name);
             if (hit.collider.GetComponentInParent<Mirror>() != null) return hit.collider.GetComponentInParent<Mirror>();
         }
         return null;
