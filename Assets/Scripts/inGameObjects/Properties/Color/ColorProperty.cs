@@ -172,7 +172,7 @@ public class ColorProperty : Property
 
     private void Reset() {
         Word = "color";
-        AlternativeWords = new string[]{ "colour", "colors", "colours"};
+        AlternativeWords = new string[]{ "colour", "colors", "colours", "saturation", "saturations"};
     }
 
 }
