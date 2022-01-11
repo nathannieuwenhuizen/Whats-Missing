@@ -80,8 +80,9 @@ public class Sun : RoomObject
         base.OnRoomEnter();
         StopAllCoroutines();
         normalScale = shrinkScale;
+        
         transform.localScale = Vector3.one * normalScale;
-        sunEnabled = true;
+        SunEnabled = IsShrinked;
         if (fireSound != null) fireSound.Volume = shrinkSoundVolume;
         light.intensity = lightIntensityShrink;
 
@@ -100,6 +101,7 @@ public class Sun : RoomObject
     public override void OnShrinking()
     {
         OnSunShrinking?.Invoke();
+        SunEnabled = true;
         base.OnShrinking();
     }
     public override void OnShrinkingFinish()
