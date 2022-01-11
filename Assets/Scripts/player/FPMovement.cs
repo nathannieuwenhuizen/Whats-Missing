@@ -102,7 +102,7 @@ public class FPMovement : MonoBehaviour
         mouseDelta = delta;
     }
 
-    private float distance = 0;
+    private float distanceToFloor = 0;
 
     /** Enables the cursor */
     private void EnableCursor(bool enabled = false)
@@ -356,7 +356,7 @@ public class FPMovement : MonoBehaviour
         //TODO: add a collider mask so that it can only collide with the floor.
         hit = Physics.SphereCastAll(transform.position - new Vector3(0, -offset -radius * .1f), radius * .1f, Vector3.down, 1f);
         RaycastHit closest = default(RaycastHit);
-        float _distance = 10f;
+        float _distance = Mathf.Infinity;
         for (int i = 0; i < hit.Length; i++)
         {
             // Debug.Log(hit[i].transform.name + " | "+ hit[i].distance);
@@ -365,12 +365,11 @@ public class FPMovement : MonoBehaviour
                 closest = hit[i];
             }
         }
-        if (_distance != 10f) {
-            distance = _distance;
-            // rb.MovePosition(transform.position + new Vector3(0,-(distance - offset * 1.1f) * .5f,0));
+        if (_distance != Mathf.Infinity) {
+            distanceToFloor = _distance;
             return true;
         } else {
-            distance = 10f;
+            distanceToFloor = 0;
             return false;
         }
     }
@@ -408,7 +407,7 @@ public class FPMovement : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(0,-distance,0));
-        Gizmos.DrawSphere(transform.position + new Vector3(0,-distance + transform.localScale.x * .5f ,0), transform.localScale.x * .5f);
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(0,-distanceToFloor,0));
+        Gizmos.DrawSphere(transform.position + new Vector3(0,-distanceToFloor + transform.localScale.x * .5f ,0), transform.localScale.x * .5f);
     }
 }

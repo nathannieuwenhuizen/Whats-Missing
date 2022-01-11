@@ -20,13 +20,11 @@ public class RemoteController : MonoBehaviour
         if (!isEnabled) return;
 
         focusedMirror = FocussedMirror();
-        Debug.Log("focussed mirror: " + focusedMirror);
         if (focusedMirror == null) {
             if (oldMirror) oldMirror.MirrorCanvas.IsInteractable = false;
         } else {
             if (oldMirror != focusedMirror)  {
                 if (oldMirror) oldMirror.MirrorCanvas.IsInteractable = false;
-                Debug.Log("mirror focused!");
                 focusedMirror.MirrorCanvas.IsInteractable = true;
             }
         }

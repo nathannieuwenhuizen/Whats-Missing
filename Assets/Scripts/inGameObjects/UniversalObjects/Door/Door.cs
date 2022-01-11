@@ -181,7 +181,7 @@ public class Door : InteractabelObject
     }
 
     private static void SetPlayerPos(Vector3 value, Player player) {
-        player.transform.position = new Vector3(value.x, player.transform.position.y, value.z);
+        player.transform.position = new Vector3(value.x, value.y, value.z);
     }
  
 
@@ -194,10 +194,10 @@ public class Door : InteractabelObject
     }
 
     public Vector3 StartPos() {
-        return transform.position + transform.forward * walkDistance - transform.right * 1f;
+        return transform.position + transform.forward * walkDistance - transform.right * 1f + new Vector3(0,-1,0);
     }
     public Vector3 EndPos() {
-        return transform.position - transform.forward * walkDistance - transform.right * 1f;
+        return transform.position - transform.forward * walkDistance - transform.right * 1f + new Vector3(0,-1,0);
     }
 
     public virtual void SetBezierPoints(Player player) {

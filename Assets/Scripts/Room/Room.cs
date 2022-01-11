@@ -292,6 +292,7 @@ public class Room : MonoBehaviour
     public void OnRoomEnter(Player _player, bool loadSaveData = false) {
         player = _player;
         player.transform.parent = transform;
+        FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
         AllObjects.Add(player);
 
         OnRoomEntering?.Invoke();
