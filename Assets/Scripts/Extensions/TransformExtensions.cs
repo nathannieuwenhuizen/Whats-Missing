@@ -14,6 +14,16 @@ public static class TransformExtensions
         }
         transform.localScale = endScale;
     }
+    public static IEnumerator AnimatingRoomObjectScale(this RoomObject roomObject, float endScale,  AnimationCurve curve, float duration = .5f) {
+        float timePassed = 0f;
+        float beginScale = roomObject.CurrentScale;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            roomObject.CurrentScale = Mathf.LerpUnclamped(beginScale, endScale , curve.Evaluate(timePassed / duration));
+        }
+        roomObject.CurrentScale = endScale;
+    }
 
     public static  IEnumerator AnimatingLocalPos(this Transform transform, Vector3 endLocalPos,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;

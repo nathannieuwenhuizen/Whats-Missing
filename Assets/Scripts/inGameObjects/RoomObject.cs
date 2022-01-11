@@ -9,6 +9,14 @@ public class RoomObject : RoomEntity
 {
     public delegate void OnMissingEvent();
 
+    public override float CurrentScale { 
+        get { return transform.localScale.x; }
+        set {
+            transform.localScale = Vector3.one * value;
+        } 
+    }
+
+
     #region  missing changes
     ///<summary>
     /// Fires when the object starts to appear, here it will also chick if it has to animate or not.
@@ -110,47 +118,47 @@ public class RoomObject : RoomEntity
 
     public override IEnumerator AnimateShrinking()
     {
-        yield return transform.AnimatingScale(Vector3.one * shrinkScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
+        yield return this.AnimatingRoomObjectScale( shrinkScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnShrinkingFinish();
     }
 
     public override void OnShrinkingFinish()
     {
-        transform.localScale = Vector3.one * shrinkScale;
+        CurrentScale = shrinkScale;
     }
 
     public override IEnumerator AnimateShrinkRevert()
     {
-        yield return transform.AnimatingScale(Vector3.one * normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
+        yield return this.AnimatingRoomObjectScale( normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnShrinkingRevertFinish();
     }
 
     public override void OnShrinkingRevertFinish()
     {
-        transform.localScale = Vector3.one * normalScale;
+        CurrentScale = normalScale;
     }
 
     //enlarging
     public override IEnumerator AnimateEnlarging()
     {
-        yield return transform.AnimatingScale(Vector3.one * largeScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
+        yield return this.AnimatingRoomObjectScale( largeScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnEnlargingFinish();
     }
 
     public override void OnEnlargingFinish()
     {
-        transform.localScale = Vector3.one * largeScale;
+        CurrentScale = largeScale;
     }
 
     public override IEnumerator AnimateEnlargeRevert()
     {
-        yield return transform.AnimatingScale(Vector3.one * normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
+        yield return this.AnimatingRoomObjectScale( normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnEnlargeRevertFinish();
     }
 
     public override void OnEnlargeRevertFinish()
     {
-        transform.localScale = Vector3.one * normalScale;
+        CurrentScale = normalScale;
     }
 
     #endregion
