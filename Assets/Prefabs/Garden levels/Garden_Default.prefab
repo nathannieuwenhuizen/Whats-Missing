@@ -9494,17 +9494,6 @@ MonoBehaviour:
   - plant
   - plants
   missingChangeEffect: 1
-  lods:
-  - distance: 50
-    detail: 0.1
-  - distance: 60
-    detail: 0.13
-  - distance: 70
-    detail: 0.15
-  - distance: 80
-    detail: 0.3
-  - distance: 200
-    detail: 0.5
   room: {fileID: 3000441207758156416}
   darkBaseColor: {r: 0, g: 0, b: 0, a: 0}
   darkTipColor: {r: 0, g: 0, b: 0, a: 0}
@@ -18825,17 +18814,6 @@ MonoBehaviour:
   - plant
   - plants
   missingChangeEffect: 1
-  lods:
-  - distance: 50
-    detail: 0.1
-  - distance: 60
-    detail: 0.13
-  - distance: 70
-    detail: 0.15
-  - distance: 80
-    detail: 0.3
-  - distance: 200
-    detail: 0.5
   room: {fileID: 3000441207758156416}
   darkBaseColor: {r: 0, g: 0, b: 0, a: 0}
   darkTipColor: {r: 0, g: 0, b: 0, a: 0}
@@ -27870,6 +27848,8 @@ GameObject:
   - component: {fileID: 6788891013711149812}
   - component: {fileID: 7833791247155698177}
   - component: {fileID: 1386141020618717965}
+  - component: {fileID: 4933915901080832517}
+  - component: {fileID: 1190987527589528008}
   m_Layer: 0
   m_Name: Floating Island_Mid
   m_TagString: Untagged
@@ -27932,6 +27912,36 @@ MonoBehaviour:
   - island
   missingChangeEffect: 1
   animator: {fileID: 0}
+--- !u!114 &4933915901080832517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3000441207307632217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 0
+  priority: 1
+  blendDistance: 10
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: 44f2a11ff640c134f89693ec4413bd41, type: 2}
+--- !u!135 &1190987527589528008
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3000441207307632217}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1223757
+  m_Center: {x: 0, y: -3.4382296e-16, z: 0.13336883}
 --- !u!1 &3000441207904991577
 GameObject:
   m_ObjectHideFlags: 0
@@ -28034,17 +28044,6 @@ MonoBehaviour:
   - plant
   - plants
   missingChangeEffect: 1
-  lods:
-  - distance: 50
-    detail: 0.1
-  - distance: 60
-    detail: 0.13
-  - distance: 70
-    detail: 0.15
-  - distance: 80
-    detail: 0.3
-  - distance: 200
-    detail: 0.5
   room: {fileID: 3000441207758156416}
   darkBaseColor: {r: 0, g: 0, b: 0, a: 0}
   darkTipColor: {r: 0, g: 0, b: 0, a: 0}
@@ -28058,7 +28057,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2052409625904680715}
   - component: {fileID: 3513090286622809157}
-  - component: {fileID: 14360879515628294}
   m_Layer: 0
   m_Name: Floating Island_Small
   m_TagString: Untagged
@@ -28102,23 +28100,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &14360879515628294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3000441207939992889}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe796c9ab41afcb469fd0fd69e02d34e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: ground
-  alternateWords:
-  - island
-  missingChangeEffect: 1
-  animator: {fileID: 0}
 --- !u!1 &3000441208253070133
 GameObject:
   m_ObjectHideFlags: 0
@@ -28129,7 +28110,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2263043047742754864}
   - component: {fileID: 3524446775497725809}
-  - component: {fileID: 1632743043833650810}
   m_Layer: 0
   m_Name: Floating Island_Big
   m_TagString: Untagged
@@ -28174,23 +28154,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1632743043833650810
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3000441208253070133}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe796c9ab41afcb469fd0fd69e02d34e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: ground
-  alternateWords:
-  - island
-  missingChangeEffect: 1
-  animator: {fileID: 0}
 --- !u!1 &3000441208784230365
 GameObject:
   m_ObjectHideFlags: 0
@@ -28293,17 +28256,6 @@ MonoBehaviour:
   - plant
   - plants
   missingChangeEffect: 1
-  lods:
-  - distance: 50
-    detail: 0.1
-  - distance: 60
-    detail: 0.13
-  - distance: 70
-    detail: 0.15
-  - distance: 80
-    detail: 0.3
-  - distance: 200
-    detail: 0.5
   room: {fileID: 3000441207758156416}
   darkBaseColor: {r: 0, g: 0, b: 0, a: 0}
   darkTipColor: {r: 0, g: 0, b: 0, a: 0}
@@ -28589,6 +28541,7 @@ GameObject:
   - component: {fileID: 2900172286615338268}
   - component: {fileID: 3141759896926003437}
   - component: {fileID: 5936199886734361173}
+  - component: {fileID: 1218071014636403904}
   m_Layer: 0
   m_Name: deathTrigger
   m_TagString: Untagged
@@ -28690,6 +28643,19 @@ MonoBehaviour:
   onAreaExit:
     m_PersistentCalls:
       m_Calls: []
+--- !u!65 &1218071014636403904
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3140748356942425897}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3141358173220580314
 GameObject:
   m_ObjectHideFlags: 0
@@ -42388,17 +42354,6 @@ MonoBehaviour:
   - plant
   - plants
   missingChangeEffect: 1
-  lods:
-  - distance: 50
-    detail: 0.1
-  - distance: 60
-    detail: 0.13
-  - distance: 70
-    detail: 0.15
-  - distance: 80
-    detail: 0.3
-  - distance: 200
-    detail: 0.5
   room: {fileID: 3000441207758156416}
   darkBaseColor: {r: 0, g: 0, b: 0, a: 0}
   darkTipColor: {r: 0, g: 0, b: 0, a: 0}
@@ -43862,17 +43817,6 @@ MonoBehaviour:
   - plant
   - plants
   missingChangeEffect: 1
-  lods:
-  - distance: 50
-    detail: 0.1
-  - distance: 60
-    detail: 0.13
-  - distance: 70
-    detail: 0.15
-  - distance: 80
-    detail: 0.3
-  - distance: 200
-    detail: 0.5
   room: {fileID: 3000441207758156416}
   darkBaseColor: {r: 0, g: 0, b: 0, a: 0}
   darkTipColor: {r: 0, g: 0, b: 0, a: 0}
@@ -65692,17 +65636,6 @@ MonoBehaviour:
   - plant
   - plants
   missingChangeEffect: 1
-  lods:
-  - distance: 50
-    detail: 0.1
-  - distance: 60
-    detail: 0.13
-  - distance: 70
-    detail: 0.15
-  - distance: 80
-    detail: 0.3
-  - distance: 200
-    detail: 0.5
   room: {fileID: 3000441207758156416}
   darkBaseColor: {r: 0, g: 0, b: 0, a: 0}
   darkTipColor: {r: 0, g: 0, b: 0, a: 0}
@@ -65958,17 +65891,6 @@ MonoBehaviour:
   - plant
   - plants
   missingChangeEffect: 1
-  lods:
-  - distance: 50
-    detail: 0.1
-  - distance: 60
-    detail: 0.13
-  - distance: 70
-    detail: 0.15
-  - distance: 80
-    detail: 0.3
-  - distance: 200
-    detail: 0.5
   room: {fileID: 3000441207758156416}
   darkBaseColor: {r: 0, g: 0, b: 0, a: 0}
   darkTipColor: {r: 0, g: 0, b: 0, a: 0}
@@ -73638,17 +73560,6 @@ MonoBehaviour:
   - plant
   - plants
   missingChangeEffect: 1
-  lods:
-  - distance: 50
-    detail: 0.1
-  - distance: 60
-    detail: 0.13
-  - distance: 70
-    detail: 0.15
-  - distance: 80
-    detail: 0.3
-  - distance: 200
-    detail: 0.5
   room: {fileID: 3000441207758156416}
   darkBaseColor: {r: 0, g: 0, b: 0, a: 0}
   darkTipColor: {r: 0, g: 0, b: 0, a: 0}
@@ -84410,17 +84321,6 @@ MonoBehaviour:
   - plant
   - plants
   missingChangeEffect: 1
-  lods:
-  - distance: 50
-    detail: 0.1
-  - distance: 60
-    detail: 0.13
-  - distance: 70
-    detail: 0.15
-  - distance: 80
-    detail: 0.3
-  - distance: 200
-    detail: 0.5
   room: {fileID: 3000441207758156416}
   darkBaseColor: {r: 0, g: 0, b: 0, a: 0}
   darkTipColor: {r: 0, g: 0, b: 0, a: 0}
@@ -85549,17 +85449,6 @@ MonoBehaviour:
   - plant
   - plants
   missingChangeEffect: 1
-  lods:
-  - distance: 50
-    detail: 0.1
-  - distance: 60
-    detail: 0.13
-  - distance: 70
-    detail: 0.15
-  - distance: 80
-    detail: 0.3
-  - distance: 200
-    detail: 0.5
   room: {fileID: 3000441207758156416}
   darkBaseColor: {r: 0, g: 0, b: 0, a: 0}
   darkTipColor: {r: 0, g: 0, b: 0, a: 0}
