@@ -213,14 +213,14 @@ public class Area : MonoBehaviour
     ///<summary>
     /// Fires when the palyer dies and has to respawn
     ///</summary>
-    public void ResetPlayer(bool withAnimation) {
-        StartCoroutine(ResettingThePlayer(withAnimation));
+    public void ResetPlayer(bool withAnimation, bool toPreviousLevel) {
+        StartCoroutine(ResettingThePlayer(withAnimation, toPreviousLevel));
     }
 
     ///<summary>
     /// Coroutine that resets the player after some time.
     ///</summary>
-    private IEnumerator ResettingThePlayer(bool withAnimation) {
+    private IEnumerator ResettingThePlayer(bool withAnimation, bool toPreviousLevel) {
         yield return new WaitForSeconds(withAnimation ? 3.5f : 2.5f);
         Debug.Log("respawn!");
         player.Respawn();
@@ -228,7 +228,7 @@ public class Area : MonoBehaviour
         if(index == 0) {
             CurrentRoom = rooms[0];
             player.transform.position = CurrentRoom.StartDoor.EndPos();
-        } else if (areaIndex == 0){
+        } else if (toPreviousLevel){
             CurrentRoom = rooms[index - 1];
             player.transform.position = CurrentRoom.EndDoor.StartPos();
         } else {

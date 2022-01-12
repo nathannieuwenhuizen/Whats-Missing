@@ -10,7 +10,25 @@ public class LODInfo {
 }
 public class Grass : RoomObject
 {
-    public List<LODInfo> lods = new List<LODInfo>();
+    public static LODInfo[] highLods = new LODInfo[] {
+        new LODInfo() {distance = 50f, detail = 0.1f},
+        new LODInfo() {distance = 60f, detail = 0.13f},
+        new LODInfo() {distance = 70f, detail = 0.15f},
+        new LODInfo() {distance = 80f, detail = 0.3f},
+        new LODInfo() {distance = 200f, detail = 0.5f},
+    };
+    public static LODInfo[] midLods = new LODInfo[] {
+        new LODInfo() {distance = 50f, detail = 0.2f},
+        new LODInfo() {distance = 60f, detail = 0.3f},
+        new LODInfo() {distance = 70f, detail = 0.5f},
+        new LODInfo() {distance = 80f, detail = 0.7f},
+        new LODInfo() {distance = 200f, detail = 0.9f},
+    };
+    public static LODInfo[] lowLods = new LODInfo[] {
+        new LODInfo() {distance = 50f, detail = 0.3f},
+        new LODInfo() {distance = 70f, detail = 0.5f},
+        new LODInfo() {distance = 200f, detail = 0.9f},
+    };
 
     [SerializeField]
     private Room room;
@@ -52,9 +70,6 @@ public class Grass : RoomObject
         startTipColor = TipColor;
         startBaseColor = BaseColor;
         startWindSpeed = WindSpeed;
-
-        InitializeLODs();
-
     }
 
     private void Reset() {
@@ -78,13 +93,17 @@ public class Grass : RoomObject
     }
 
     private void Update() {
-        CheckLODDistance();
+        int qualityLevel = QualitySettings.GetQualityLevel();
+
+        if (qualityLevel >= 5) CheckLODDistance(highLods);
+        else if (qualityLevel >= 2) CheckLODDistance(midLods);
+        else CheckLODDistance(lowLods);
     }
 
-    public void CheckLODDistance() {
+    public void CheckLODDistance(LODInfo[] lods) {
         if (room == null || room.Player == null) return;
 
-        for(int i = 0; i <  lods.Count; i++) {
+        for(int i = 0; i <  lods.Length; i++) {
             if (Vector3.Distance(meshRenderer.bounds.center, room.Player.transform.position ) < lods[i].distance) {
                 setLODOfGrass(lods[i]);
                 return;
@@ -107,20 +126,11 @@ public class Grass : RoomObject
         if (InSpace) WindSpeed = startWindSpeed * Room.TimeScale;
     }
 
-    private void  InitializeLODs() {
-        if (lods.Count != 0) lods = new List<LODInfo>();
-        lods.Add( new LODInfo() {distance = 50f, detail = 0.1f});
-        lods.Add( new LODInfo() {distance = 60f, detail = 0.13f});
-        lods.Add( new LODInfo() {distance = 70f, detail = 0.15f});
-        lods.Add( new LODInfo() {distance = 80f, detail = 0.3f});
-        lods.Add( new LODInfo() {distance = 200f, detail = 0.5f});
-    }
 
     private void OnDrawGizmosSelected() {
         meshRenderer = GetComponent<MeshRenderer>();
-        InitializeLODs();
 
-        for (int i = 0; i < lods.Count; i++) {
+        for (int i = 0; i < highLods.Length; i++) {
             // Gizmos.DrawWireSphere(meshRenderer.bounds.center, lods[i].distance);
         }
     }

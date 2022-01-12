@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2966123523970274612}
   - component: {fileID: 3026709530075784973}
   - component: {fileID: 8289509385850357301}
-  - component: {fileID: 3251545252916221518}
+  - component: {fileID: 6383473184498729453}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -50,7 +50,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8868390651051746634}
   m_Enabled: 1
-  m_CastShadows: 2
+  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -97,7 +97,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -629719859055844128, guid: 4ddb934fc8f5fbf4c8a443ecfc3f168e, type: 3}
---- !u!114 &3251545252916221518
+--- !u!114 &6383473184498729453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,9 +106,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8868390651051746634}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
+  m_Script: {fileID: 11500000, guid: 93c548c70634a7a41852e86abe9f9339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   word: floor
-  alternateWords: []
+  alternateWords:
+  - ground
   missingChangeEffect: 2
+  invisibleFloorCollider: {fileID: 0}

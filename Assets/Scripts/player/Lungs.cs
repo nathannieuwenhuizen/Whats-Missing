@@ -111,7 +111,7 @@ public class Lungs : MonoBehaviour
             UpdateVignette();
             yield return new WaitForEndOfFrame();
         }
-        player.Die(true);
+        player.Die(true, true);
         AudioHandler.Instance.PlaySound(SFXFiles.choke_die, .5f, .8f);
         EndChoking();
     }

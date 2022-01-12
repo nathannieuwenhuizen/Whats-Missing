@@ -8,9 +8,8 @@ using UnityEngine.Rendering.Universal;
 public class Player : RoomObject
 {
 
-    public delegate void DieEvent(bool withAnimation);
+    public delegate void DieEvent(bool withAnimation, bool toPreviousLevel);
     public static event DieEvent OnDie;
-    public static event DieEvent Onrespawn;
 
     private bool dead = false;
 
@@ -101,7 +100,7 @@ public class Player : RoomObject
     }
     private void Update() {
 #if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) Die(true);
+        if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) Die(true, false);
 #endif
     }
 
@@ -119,7 +118,7 @@ public class Player : RoomObject
     ///<summary>
     /// Thep play dies and falls to the gorund
     ///</summary>
-    public void Die(bool withAnimation = true) {
+    public void Die(bool withAnimation = true, bool toPreviousLevel = false) {
         if (dead) return;
         dead = true;
         if (withAnimation) {
@@ -130,7 +129,7 @@ public class Player : RoomObject
             movement.EnableRotation = false;
             movement.EnableWalk = false;
         }
-        OnDie?.Invoke(withAnimation);
+        OnDie?.Invoke(withAnimation, toPreviousLevel);
     }
     public void DieWithoutAnimation() {
         Die(false);
@@ -228,7 +227,6 @@ public class Player : RoomObject
     public void Respawn() {
         dead = false;
         Movement.RB.velocity = Vector3.zero;
-        Onrespawn?.Invoke(true);
         characterAnimationPlayer.SetBool("dead", false);
         characterAnimationPlayer.PlayCutSceneAnimation("standingUp", true);
         StartCoroutine(StandingUp());

@@ -29,7 +29,7 @@ public class BlackScreenOverlay : MonoBehaviour
         TeddyBear.OnTeddyBearPickUp -= FadeToWhiteImmeditately;
     }
 
-    public void DeathFade(bool withAnimation) {
+    public void DeathFade(bool withAnimation, bool toPreviousLevel) {
         if (withAnimation) {
             image.color = Color.black;
             StartCoroutine(group.FadeCanvasGroup(1, 1.5f, 1f));
