@@ -7,6 +7,7 @@ public static class SFXFiles {
     public static string door_closing = "Door_closing";
     public static string door_open = "Door_open";
     public static string door_squeek = "Door_squeek";
+    public static string door_locked = "Door_locked";
 
     //player
     public static string player_jump = "Player_jump";

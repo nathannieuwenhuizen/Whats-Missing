@@ -33,7 +33,11 @@ public class PortalDoor : Door
     public override bool Locked { 
         get => base.Locked; 
         set {
-            if (connectedDoor) connectedDoor.locked = value;
+            if (connectedDoor) {
+                connectedDoor.locked = value;
+                connectedDoor.DoorAnimator.enabled = value;
+            }
+ 
             base.Locked = value; 
         }
     }

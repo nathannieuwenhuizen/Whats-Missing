@@ -8,7 +8,18 @@ public class Door : InteractabelObject
     
     [SerializeField]
     public Vector3 point0, point1, point2 = new Vector3();
-    
+
+    private Animator animator;
+    public Animator DoorAnimator {
+        get { 
+            if (animator == null) animator = GetComponent<Animator>();
+            return animator;
+            }
+        set { 
+            if (animator == null) animator = GetComponent<Animator>();
+            animator = value; 
+        }
+    }
 
     [HideInInspector]
     public Room room;
@@ -52,6 +63,7 @@ public class Door : InteractabelObject
         set {
             if (locked == value) return;
             locked = value;
+            DoorAnimator.enabled = value;
             if (locked) {
                 Close();
             } else {
@@ -98,7 +110,13 @@ public class Door : InteractabelObject
 
     public override void Interact()
     {
-        if (locked || inAnimation || IN_WALKING_ANIMATION) return;
+        if (inAnimation || IN_WALKING_ANIMATION) return;
+
+        if (locked) {
+            DoorAnimator.SetTrigger("shake");
+            AudioHandler.Instance?.PlaySound(SFXFiles.door_locked, .5f);
+            return;
+        }
         flipped = CheckAngle();
         OnPassingThrough?.Invoke(this);
         GoingThrough();
