@@ -208,6 +208,7 @@ public class MirrorCanvas : MonoBehaviour
         Letter newLetter = GameObject.Instantiate(letterPrefab).GetComponent<Letter>();
             
             newLetter.onLetterClick += LetterClicked;
+            newLetter.MirrorCanvas = this;
             newLetter.GetComponent<RectTransform>().SetParent(letterContainer);
             newLetter.GetComponent<RectTransform>().localPosition = pos;
             newLetter.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
@@ -228,17 +229,27 @@ public class MirrorCanvas : MonoBehaviour
     }
     public virtual void LetterClicked(Letter letter)
     {
-        if (!letter.Selected) {
-            if (mirror.Room != null && mirror.Room.Animated) {
-                AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .5f, 
-                .8f + (.4f * ((float)selectedLetterObjects.Count / (float)(letterObjects.Count + selectedLetterObjects.Count)))
-                );
+        if (letter.Dragged()) {
+            Debug.Log("letter drag end at index " + passedLetterIndex);
+            if (passedLetterIndex == -1) {
+                letter.Deselect();
+            } else {
+                AddLetterToAnswer(letter, passedLetterIndex);
             }
-            AddLetterToAnswer(letter);
-        }
-        else {
-            AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
-            RemoveSelectedLetter(selectedLetterObjects.IndexOf(letter));
+
+        } else {
+            if (!letter.PreClickSelected) {
+                if (mirror.Room != null && mirror.Room.Animated) {
+                    AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .5f, 
+                    .8f + (.4f * ((float)selectedLetterObjects.Count / (float)(letterObjects.Count + selectedLetterObjects.Count)))
+                    );
+                }
+                AddLetterToAnswer(letter);
+            }
+            else {
+                AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
+                letter.Deselect();
+            }
         }
         
         UpdateAnswerTextPosition();
@@ -250,6 +261,46 @@ public class MirrorCanvas : MonoBehaviour
         for(int i = selectedLetterObjects.Count - 1; i >= 0; i--) {
             RemoveSelectedLetter(i);
         }
+    }
+    private int passedLetterIndex = -1;
+    public void UpdateLetterDrag(Letter draggedLetter) {
+
+        passedLetterIndex = -1;
+        Debug.Log("answer pos y: " + answerText.transform.localPosition.y);
+        Debug.Log("dragged pos y: " + draggedLetter.Position.y);
+        if (draggedLetter.Position.y > 80f) {
+            passedLetterIndex = 0;
+        }
+
+        float padding = 15f;
+        if (selectedLetterObjects.Count == 0) return;
+
+        float totalWidth = -padding;
+
+        foreach(Letter letter in selectedLetterObjects) {
+            totalWidth += letter.size.width + padding;
+        }
+        totalWidth += draggedLetter.size.width + padding;
+
+        bool passed = false;
+        float cPos = -(totalWidth + padding + selectedLetterObjects[0].size.width) * .5f;
+        for(int i = 0; i < selectedLetterObjects.Count; i++) {
+            if (i != 0) {
+                cPos += selectedLetterObjects[i].size.width *.5f + padding;
+            }
+            if (passed == false && passedLetterIndex == 0 && selectedLetterObjects[i].Position.x > draggedLetter.Position.x) {
+                passed = true;
+                passedLetterIndex = i;
+                cPos += draggedLetter.size.width *.5f + padding;
+            }
+            selectedLetterObjects[i].MoveTo(answerText.localPosition + new Vector3(cPos, 0, 0));
+            cPos += selectedLetterObjects[i].size.width *.5f + padding;
+        }
+        if (passed == false && passedLetterIndex == 0) {
+            passedLetterIndex = selectedLetterObjects.Count;
+        }
+        Debug.Log("passed index " + passedLetterIndex);
+
     }
 
     public void ShowHintButton(string _hintText) {
@@ -266,9 +317,10 @@ public class MirrorCanvas : MonoBehaviour
         OnShowHint?.Invoke(hintText);
     }
 
-    public void AddLetterToAnswer(Letter letter) {
+    public void AddLetterToAnswer(Letter letter, int index = -1) {
         letterObjects.Remove(letter);
-        selectedLetterObjects.Add(letter);
+        if (index == -1) selectedLetterObjects.Add(letter); 
+        else selectedLetterObjects.Insert(index, letter);
         letter.Select();
         letter.transform.SetParent(answerText.transform);
     }

@@ -50,7 +50,7 @@ public class InputManager : MonoBehaviour
         //controller
         if (Input.GetButtonUp("Fire1 Controller"))  {
             // OnClickUp?.Invoke();
-            if (MirrorButton.SELECTED_BUTTON != null) MirrorButton.SELECTED_BUTTON.gameObject.GetComponent<Button>().onClick.Invoke();
+            // if (MirrorButton.SELECTED_BUTTON != null) MirrorButton.SELECTED_BUTTON.gameObject.GetComponent<Button>().onClick.Invoke();
         }
         
         //mouse
