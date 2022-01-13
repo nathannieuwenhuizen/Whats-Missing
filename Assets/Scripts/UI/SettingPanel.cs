@@ -13,7 +13,22 @@ public class SettingPanel : AnimatedPopup
     public delegate void SettingsAction(Settings settings);
     public static event SettingsAction OnSave;
 
+    [SerializeField]
+    private TMPro.TMP_Text settingsText;
 
+    [Header("header buttons")]
+    [SerializeField]
+    private Button generalButton;
+    [SerializeField]
+    private GameObject generalList;
+    [SerializeField]
+    private Button gameplayButton;
+    [SerializeField]
+    private GameObject gmaeplayList;
+
+
+
+    [Header("setting elements")]
     [SerializeField]
     private Slider cameraSensitivitySlider;
     [SerializeField]
@@ -30,6 +45,23 @@ public class SettingPanel : AnimatedPopup
     private void Awake() {
         settings = Settings.GetSettings();
         UpdateUI();
+    }
+
+    public void ToggleGeneral() {
+        generalList.SetActive(true);
+        gmaeplayList.SetActive(false);
+        generalButton.interactable = false;
+        gameplayButton.interactable = true;
+        settingsText.text = "General";
+    }
+
+    public void ToggleGameplay() {
+        generalList.SetActive(false);
+        gmaeplayList.SetActive(true);
+        generalButton.interactable = true;
+        gameplayButton.interactable = false;
+        settingsText.text = "Gameplay";
+
     }
     
     void Start()
@@ -64,6 +96,7 @@ public class SettingPanel : AnimatedPopup
 
     public void Open() {
         ShowAnimation(true);
+        ToggleGameplay();
         ControllerCheck.SelectUIGameObject(cameraSensitivitySlider.gameObject);
     }
     public void Close() {
