@@ -127,6 +127,7 @@ public class MirrorCanvas : MonoBehaviour
         if (InputManager.KEYBOARD_ENABLED_MIRROR){
             foreach( Letter letter in letterObjects) {
                 if (Input.GetKeyDown(GetKeyCode(letter.LetterValue[0]))) {
+                    letter.pressedTime = 0;
                     LetterClicked(letter);
                     return;
                 }

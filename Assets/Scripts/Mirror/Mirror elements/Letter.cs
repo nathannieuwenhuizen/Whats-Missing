@@ -22,7 +22,7 @@ public class Letter : MirrorButton, IPointerDownHandler
 
 
     private bool pressed = false;
-    private float pressedTime;
+    public float pressedTime;
     private float pressedTimeBeforeDrag = 0.4f;
     private MirrorCanvas mirrorCanvas;
     public MirrorCanvas MirrorCanvas {
