@@ -71,7 +71,7 @@ public class Butterflies : RoomObject
     }
 
     public void UpdateTimeSimulationSpeed(){
-        mainModule.simulationSpeed = Room.TimeScale;
+        // mainModule.simulationSpeed = Room.TimeScale;
     }
 
     private void OnDisable() {
