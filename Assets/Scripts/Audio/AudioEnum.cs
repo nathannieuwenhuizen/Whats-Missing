@@ -65,6 +65,15 @@ public static class SFXFiles {
     public static string baby_duck = "Baby_duck";
     public static string fountain = "Fountain";
 
+
+    //grave
+    public static string knee_on_dirt = "Knee_on_dirt";
+    public static string music_box = "Music_box";
+    public static string music_box_on_ground = "Music_box_on_ground";
+    public static string pulling_pocket = "Pulling_pocket";
+    public static string gregory_cry = "Gregory_cry";
+
+
 }
 public enum MusicFiles {
     planetarium,

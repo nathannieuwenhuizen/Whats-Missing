@@ -45,6 +45,16 @@ public static class TransformExtensions
         }
         transform.position = endPos;
     }
+    public static  IEnumerator AnimatingRotation(this Transform transform, Quaternion endrotation,  AnimationCurve curve, float duration = .5f) {
+        float timePassed = 0f;
+        Quaternion beginrotation = transform.rotation;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            transform.rotation = Quaternion.Slerp(beginrotation, endrotation , curve.Evaluate(timePassed / duration));
+        }
+        transform.rotation = endrotation;
+    }
 
     public static  IEnumerator Shake(this Transform transform, float magintude, float frequence, float duration = .5f) {
         float timePassed = 0f;

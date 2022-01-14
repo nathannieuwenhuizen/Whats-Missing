@@ -56,16 +56,15 @@ public class AudioHandler : Singleton<AudioHandler>
         set { AudioListener.volume = value; }
     }
 
-    public void FadeListener(float val) {
+    public void FadeListener(float val, float duration = .5f) {
         if (audioListenerCoroutine != null) {
             StopCoroutine(audioListenerCoroutine);
         }
-        audioListenerCoroutine = StartCoroutine(FadingListener(val));
+        audioListenerCoroutine = StartCoroutine(FadingListener(val, duration));
     }
-    private IEnumerator FadingListener(float val) {
+    private IEnumerator FadingListener(float val, float duration = .5f) {
         float start = AudioListenerVolume;
         float index = 0;
-        float duration = .5f;
         while ( index < duration) {
             AudioListenerVolume = Mathf.Lerp(start, val , index / duration);
             index += Time.unscaledDeltaTime;

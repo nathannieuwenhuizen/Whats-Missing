@@ -14,10 +14,12 @@ public class CharacterAnimationPlayer
 
     private Coroutine torsoCoroutine;
     private Animator animator;
+    private Transform animationView;
     private Player player;
 
-    public CharacterAnimationPlayer(Player _player, Animator _animator) {
+    public CharacterAnimationPlayer(Player _player, Animator _animator, Transform _animationView) {
         animator = _animator;
+        animationView = _animationView;
         player = _player;
     }
 
@@ -81,12 +83,19 @@ public class CharacterAnimationPlayer
         player.Movement.EnableWalk = false;
         player.Movement.RB.velocity = Vector3.zero;
 
-        player.Camera.transform.SetParent(player.AnimationView);
-        player.Camera.transform.localPosition = player.AnimationView.localPosition;
-        player.Camera.transform.localRotation = player.AnimationView.localRotation;
+        player.Camera.transform.SetParent(animationView);
+        player.Camera.transform.localPosition = animationView.localPosition;
+        player.Camera.transform.localRotation = animationView.localRotation;
         player.StartCoroutine(player.Camera.AnimatingFieldOfView(80, AnimationCurve.EaseInOut(0,0,1,1), 2f));
         animator.SetTrigger(trigger);
         animator.applyRootMotion = applyRoonAnimation;
+    }
+
+    public void SetAnimator(Animator _animator, Transform _animationView) {
+        animator.gameObject.SetActive(false); //may cause errors?
+        _animator.gameObject.SetActive(true);        
+        animator = _animator;
+        animationView = _animationView;
     }
 
     ///<summary>

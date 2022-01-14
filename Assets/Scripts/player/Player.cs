@@ -18,6 +18,8 @@ public class Player : RoomObject
 
     [SerializeField]
     private Transform animationView;
+    [SerializeField]
+    private Transform animationViewLevel2End;
 
     private CharacterAnimationPlayer characterAnimationPlayer;
     public CharacterAnimationPlayer CharacterAnimationPlayer {
@@ -25,10 +27,9 @@ public class Player : RoomObject
     }
     [SerializeField]
     private Animator animator;
+    [SerializeField]
+    private Animator animatorLevel2End;
 
-    public Transform AnimationView {
-        get { return animationView;}
-    }
     [SerializeField]
     private Transform handsPosition;
     public Transform HandsPosition {
@@ -68,7 +69,7 @@ public class Player : RoomObject
     {
         movement = GetComponent<FPMovement>();
         ApplyCameraSettings(Settings.GetSettings());
-        characterAnimationPlayer = new CharacterAnimationPlayer(this, animator);
+        characterAnimationPlayer = new CharacterAnimationPlayer(this, animator, animationView);
     }
 
     public Player() {
@@ -242,5 +243,10 @@ public class Player : RoomObject
         AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
         yield return new WaitForSeconds(2.3f);
         characterAnimationPlayer.EndOfCutSceneAnimation();
+    }
+
+    public void SetLevel2EndAnimation() {
+        characterAnimationPlayer.SetAnimator(animatorLevel2End, animationViewLevel2End);
+        characterAnimationPlayer.PlayCutSceneAnimation("level2end", true);
     }
 }

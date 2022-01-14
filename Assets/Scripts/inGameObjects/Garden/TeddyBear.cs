@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,9 @@ public class TeddyBear : InteractabelObject
 
     [SerializeField]
     private Rigidbody rigidBody;
+
+    [SerializeField]
+    private Transform endScenePosition;
 
     [SerializeField]
     private Animator midIslandAnimator;
@@ -55,15 +59,49 @@ public class TeddyBear : InteractabelObject
 
         if (inCutScene) return;
         inCutScene = true;
+        Focused = false;
+        Interactable = false;
+        OutlineEnabled = false;
+        
 
-        OnTeddyBearPickUp?.Invoke();
         room.Player.Movement.EnableWalk = false;
+        room.Player.Movement.RB.useGravity = false;
         room.Player.Movement.EnableRotation = false;
+        room.Player.Movement.enabled = false;
+        StartCoroutine(room.Player.transform.AnimatingPos(endScenePosition.position, AnimationCurve.EaseInOut(0,0,1,1), 1f));
+        StartCoroutine(room.Player.transform.AnimatingRotation(endScenePosition.rotation, AnimationCurve.EaseInOut(0,0,1,1), 1f));
         StartCoroutine(TeddybearCutscene());
+
+        StartCoroutine(PlayCutsceneAudio(1f , () => {
+            Debug.Log("audio gets played!");
+            AudioHandler.Instance.PlaySound(SFXFiles.knee_on_dirt, .2f, .9f);
+        }));
+        StartCoroutine(PlayCutsceneAudio(3f , () => {
+            AudioHandler.Instance.PlaySound(SFXFiles.pulling_pocket, .5f);
+        }));
+        StartCoroutine(PlayCutsceneAudio(5.4f , () => {
+            AudioHandler.Instance.PlaySound(SFXFiles.music_box, .3f);
+        }));
+        StartCoroutine(PlayCutsceneAudio(7.8f , () => {
+            AudioHandler.Instance.PlaySound(SFXFiles.music_box_on_ground, 1f);
+        }));
+        StartCoroutine(PlayCutsceneAudio(8f , () => {
+            AudioHandler.Instance.PlayUISound(SFXFiles.gregory_cry, .7f);
+        }));
+        StartCoroutine(PlayCutsceneAudio(9f , () => {
+            AudioHandler.Instance.FadeListener(0, 5f);
+        }));
+    }
+    public IEnumerator PlayCutsceneAudio(float delay, Action callback) {
+        yield return new WaitForSeconds(delay);
+        callback();
     }
 
     public IEnumerator TeddybearCutscene() {
-        yield return new WaitForSeconds(1f);
+        room.Player.SetLevel2EndAnimation();
+        yield return new WaitForSeconds(11f);
+        OnTeddyBearPickUp?.Invoke();
+        yield return new WaitForSeconds(5f);
         OnCutsceneEnd?.Invoke();
     }
 

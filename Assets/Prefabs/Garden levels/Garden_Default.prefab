@@ -3810,7 +3810,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 0.29803923}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.15686275}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4453,7 +4453,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 200
+      scalar: 50
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -11449,12 +11449,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1542841634815070180}
   m_LocalRotation: {x: -0.014070511, y: 0.008730441, z: 0.8495996, w: 0.5271683}
-  m_LocalPosition: {x: -0.02782, y: 0.0322, z: 0.06931}
+  m_LocalPosition: {x: -0.0254, y: 0.0137, z: 0.0699}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3090965367141342395}
   m_Father: {fileID: 6788891013711149812}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5669009105927999841
 MonoBehaviour:
@@ -11473,8 +11473,9 @@ MonoBehaviour:
   - bear
   - teddy
   missingChangeEffect: 1
-  room: {fileID: 0}
+  room: {fileID: 3000441207758156416}
   rigidBody: {fileID: 3000441208220185702}
+  endScenePosition: {fileID: 4050951583022265123}
   midIslandAnimator: {fileID: 7833791247155698177}
 --- !u!1 &1544719461715386541
 GameObject:
@@ -24527,6 +24528,36 @@ MonoBehaviour:
   word: Sugar Cubes
   alternateWords: []
   missingChangeEffect: 1
+--- !u!1 &2343351803561510755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4050951583022265123}
+  m_Layer: 0
+  m_Name: level 2 end scene position
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4050951583022265123
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2343351803561510755}
+  m_LocalRotation: {x: 0.013858385, y: -0.70697093, z: -0.70697105, w: 0.013858385}
+  m_LocalPosition: {x: -0.0070999907, y: -0.019699983, z: 0.075329676}
+  m_LocalScale: {x: 0.019999998, y: 0.020000003, z: 0.020000001}
+  m_Children: []
+  m_Father: {fileID: 6788891013711149812}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: -92.246, y: -270, z: 90}
 --- !u!1 &2350252184738854259
 GameObject:
   m_ObjectHideFlags: 0
@@ -25953,7 +25984,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2651628666547601727}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 35, y: 35, z: 35}
   m_Children: []
   m_Father: {fileID: 2394322825610720865}
@@ -27030,6 +27061,7 @@ Transform:
   m_Children:
   - {fileID: 8555684497115229697}
   - {fileID: 1753655490942911096}
+  - {fileID: 4050951583022265123}
   - {fileID: 8206881916753285846}
   - {fileID: 3413146597026409769}
   - {fileID: 762525446898935911}
@@ -33032,7 +33064,7 @@ Transform:
   - {fileID: 1438577742394159438}
   - {fileID: 7220255737706731437}
   m_Father: {fileID: 6788891013711149812}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3287532923731750514
 GameObject:
@@ -53597,7 +53629,7 @@ Transform:
   - {fileID: 7587764617618575025}
   - {fileID: 2647467039658654181}
   m_Father: {fileID: 6788891013711149812}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 89.997}
 --- !u!114 &5185871224012076625
 MonoBehaviour:
@@ -63951,7 +63983,7 @@ MonoBehaviour:
   bendType: 27
   bendID: 1
   bendPivotPoint: {fileID: 8814959872438532231}
-  bendPivotPointPosition: {x: 14.1, y: 2.1, z: -10.4}
+  bendPivotPointPosition: {x: 14.1, y: 2, z: -10.4}
   bendRotationCenter: {fileID: 0}
   bendRotationCenterPosition: {x: 0, y: 0, z: 0}
   bendRotationAxis: {x: 1, y: 0, z: 0}
