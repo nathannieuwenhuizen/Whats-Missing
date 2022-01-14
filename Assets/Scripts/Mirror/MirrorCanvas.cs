@@ -16,8 +16,10 @@ public class MirrorCanvas : MonoBehaviour
 
     [SerializeField]
     private CanvasGroup hintToggle;
+    [SerializeField]
+    private CanvasGroup hintToggle2;
 
-    public delegate void MirrorcanvasEvent(string hintText);
+    public delegate void MirrorcanvasEvent(string hintText, float duration);
     public static MirrorcanvasEvent OnShowHint;
 
     private string hintText = "";
@@ -222,18 +224,18 @@ public class MirrorCanvas : MonoBehaviour
     public void RemoveSelectedLetter(int index)
     {
         if (index < 0) return;
-        selectedLetterObjects[index].Color = Color.white;
         selectedLetterObjects[index].transform.parent = letterContainer;
         selectedLetterObjects[index].Deselect();
         letterObjects.Add(selectedLetterObjects[index]);
         selectedLetterObjects.Remove(selectedLetterObjects[index]);
     }
-    public virtual void LetterClicked(Letter letter)
+    public virtual void LetterClicked(Letter letter, bool canBeDragged = false)
     {
-        if (letter.Dragged()) {
+        if (letter.Dragged() && canBeDragged) {
             Debug.Log("letter drag end at index " + passedLetterIndex);
             if (passedLetterIndex == -1) {
                 letter.Deselect();
+                letter.PreClickSelected = false;
             } else {
                 AddLetterToAnswer(letter, passedLetterIndex);
             }
@@ -250,6 +252,7 @@ public class MirrorCanvas : MonoBehaviour
             else {
                 AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
                 letter.Deselect();
+                letter.PreClickSelected = false;
             }
         }
         
@@ -300,13 +303,12 @@ public class MirrorCanvas : MonoBehaviour
         if (passed == false && passedLetterIndex == 0) {
             passedLetterIndex = selectedLetterObjects.Count;
         }
-        Debug.Log("passed index " + passedLetterIndex);
-
     }
 
-    public void ShowHintButton(string _hintText) {
+    private float durationBeforeSecondHint = 0;
+    public void ShowHintButton(string _hintText, float _durationBeforeSecondHint) {
         if (_hintText == "") return;
-
+        durationBeforeSecondHint = _durationBeforeSecondHint;
         hintText = _hintText;
         hintToggle.interactable = true;
         hintToggle.blocksRaycasts = true;
@@ -314,8 +316,36 @@ public class MirrorCanvas : MonoBehaviour
         StartCoroutine(hintToggle.FadeCanvasGroup(1f, 1f, 0f));
     }
 
+    private string secondHintAnswer = "";
+    public void ShowSecondHintButton(string _answer) {
+        secondHintAnswer = _answer;
+        hintToggle2.interactable = true;
+        hintToggle2.blocksRaycasts = true;
+        hintToggle2.GetComponent<Button>().onClick.AddListener(HighlightAnswer);
+        AudioHandler.Instance.Play3DSound(SFXFiles.hintbutton_show, transform);
+        StartCoroutine(hintToggle2.FadeCanvasGroup(1f, 1f, 0f));
+    }
+    public void HighlightAnswer() {
+        DeselectLetters();
+        List<Letter> answerLetters = new List<Letter>();
+        List<Letter> letterobjectsTemp = letterObjects;
+        for(int i = 0; i < secondHintAnswer.Length; i++) {
+            Letter foundLetter = letterobjectsTemp.Find(l => l.LetterValue == (secondHintAnswer[i] + "") );
+            letterobjectsTemp.Remove(foundLetter);
+            answerLetters.Add(foundLetter);
+            // foundLetter.Color = Color.Lerp( new Color(0,.5f,0, 1f), Color.white, (float)i/ (float)secondHintAnswer.Length);
+        }
+        foreach(Letter letter in letterObjects) {
+            letter.DefaultColor = new Color(1,1,1,1f);
+        }
+
+        foreach(Letter letter in letterobjectsTemp) {
+                letter.DefaultColor = new Color(1,1,1,.2f);
+        }
+    }
+
     public void HintToggleClick() {
-        OnShowHint?.Invoke(hintText);
+        OnShowHint?.Invoke(hintText, durationBeforeSecondHint);
     }
 
     public void AddLetterToAnswer(Letter letter, int index = -1) {

@@ -174,13 +174,14 @@ public class Area : MonoBehaviour
                         mirror.changeType = roomLevel.roomInfo.questionMirror.changeType;
                         mirror.roomIndexoffset = roomLevel.roomInfo.questionMirror.roomIndexoffset;
                     } else {
-                        mirror.PreAnswer = roomLevel.roomInfo.changeMirror[changeMirrorIndex].letters;
+                        newRoom.SecondHintAnswer = mirror.PreAnswer = roomLevel.roomInfo.changeMirror[changeMirrorIndex].letters;
                         mirror.changeType = roomLevel.roomInfo.changeMirror[changeMirrorIndex].changeType;
                         mirror.roomIndexoffset = roomLevel.roomInfo.changeMirror[changeMirrorIndex].roomIndexoffset;
                         changeMirrorIndex++;
                     }
                 }
             }
+            
             newRoom.LoadMirrors();
 
             //position room

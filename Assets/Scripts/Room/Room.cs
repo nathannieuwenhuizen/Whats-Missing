@@ -38,6 +38,18 @@ public class Room : MonoBehaviour
 
     public static float TimeScale = 1f;
 
+    private bool inArea = false;
+    public bool InArea {
+        get { return inArea;}
+        set { inArea = value; }
+    }
+
+    private string secondHintAnswer = "";
+    public string SecondHintAnswer {
+        get { return secondHintAnswer;}
+        set { secondHintAnswer = value; }
+    }
+
     private bool firstTimeEntering = true;
     public bool FirstTimeEntering {
         get { return firstTimeEntering;}
@@ -295,6 +307,8 @@ public class Room : MonoBehaviour
         FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
         AllObjects.Add(player);
 
+        InArea = true;
+
         OnRoomEntering?.Invoke();
 
         hintStopwatch.Resume();
@@ -336,7 +350,15 @@ public class Room : MonoBehaviour
     public void ShowMirrorToggleHint() {
         foreach(Mirror mirror in mirrors) {
             if (mirror.isQuestion) {
-                mirror.MirrorCanvas.ShowHintButton(roomLevel.roomInfo.hintText);
+                mirror.MirrorCanvas.ShowHintButton(roomLevel.roomInfo.hintText, roomLevel.roomInfo.durationBeforeHighlighting);
+                break;
+            }
+        }
+    }
+    public void ShowMirrorToggleSecondHint() {
+        foreach(Mirror mirror in mirrors) {
+            if (mirror.isQuestion) {
+                mirror.MirrorCanvas.ShowSecondHintButton(SecondHintAnswer);
                 break;
             }
         }
@@ -352,6 +374,8 @@ public class Room : MonoBehaviour
         {
             item.OnRoomLeave();
         }
+
+        InArea = false;
 
         Animated = false;
         changeHandler.DeactivateChanges();

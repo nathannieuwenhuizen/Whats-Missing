@@ -156,7 +156,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
     #endregion
 
     #region  hint
-    public void ToggleHint(string value) {
+    public void ToggleHint(string value, float duration) {
         if (tutorialIsVisible) {
             HideTutorial();
         } else {

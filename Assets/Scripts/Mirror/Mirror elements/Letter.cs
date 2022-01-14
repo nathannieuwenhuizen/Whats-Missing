@@ -10,7 +10,7 @@ public class Letter : MirrorButton, IPointerDownHandler
     public delegate void LetterClickedEvent(Letter letter);
     public static event LetterClickedEvent OnLetterClickAction;
     
-    public delegate void LetterClickedDragEvent(Letter letter);
+    public delegate void LetterClickedDragEvent(Letter letter, bool canBeDragged);
     public event LetterClickedDragEvent onLetterClick;
 
     private Button button;
@@ -18,7 +18,7 @@ public class Letter : MirrorButton, IPointerDownHandler
     private bool selected = false;
     public bool Selected { get => selected; }
     private bool preClickSelected = false;
-    public bool PreClickSelected { get => preClickSelected; }
+    public bool PreClickSelected { get => preClickSelected; set => preClickSelected = value; }
 
 
     private bool pressed = false;
@@ -89,6 +89,7 @@ public class Letter : MirrorButton, IPointerDownHandler
     public void Deselect()
     {
         selected = false;
+        Color = DefaultColor;
         MoveTo(spawnPosition);
     }
 
@@ -102,6 +103,14 @@ public class Letter : MirrorButton, IPointerDownHandler
     public Color Color {
         get => text.color;
         set => text.color = value;
+    }
+    private Color defaultColor = Color.white;
+    public Color DefaultColor {
+        get { return defaultColor;}
+        set { 
+            defaultColor = value; 
+            Color = value;
+        }
     }
 
 
@@ -130,7 +139,7 @@ public class Letter : MirrorButton, IPointerDownHandler
         pressed = false;
         bool dragged = Dragged();
         OnLetterClickAction?.Invoke(this);
-        onLetterClick?.Invoke(this);
+        onLetterClick?.Invoke(this, true);
         clickParticle.Emit(20);
         pressedTime = 0;
     }

@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 
 public class HintButton : MonoBehaviour, IPointerEnterHandler, IRoomObject
 {
-
     private Animator animator;
 
     public bool InSpace {get; set;} = false;
