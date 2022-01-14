@@ -88,7 +88,7 @@ public class TeddyBear : InteractabelObject
         StartCoroutine(PlayCutsceneAudio(8f , () => {
             AudioHandler.Instance.PlayUISound(SFXFiles.gregory_cry, .7f);
         }));
-        StartCoroutine(PlayCutsceneAudio(9f , () => {
+        StartCoroutine(PlayCutsceneAudio(11f , () => {
             AudioHandler.Instance.FadeListener(0, 5f);
         }));
     }
