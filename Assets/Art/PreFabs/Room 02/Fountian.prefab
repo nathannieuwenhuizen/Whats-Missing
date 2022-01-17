@@ -202,13 +202,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3639709986570494259}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0.001}
+  m_LocalRotation: {x: -0.000000007450582, y: 0.00000008940698, z: -0.9896795, w: 0.14329875}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0135}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 928181040301522187}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -163.522}
 --- !u!198 &6756978086083299638
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -1773,7 +1773,7 @@ ParticleSystem:
     z:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 20
+      scalar: 0
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -2144,7 +2144,7 @@ ParticleSystem:
     radial:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 4
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -2247,7 +2247,7 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    inWorldSpace: 0
+    inWorldSpace: 1
   InheritVelocityModule:
     enabled: 0
     m_Mode: 0
@@ -5037,6 +5037,7 @@ MonoBehaviour:
   - fountains
   missingChangeEffect: 1
   animator: {fileID: 7206302329668965223}
+  waterParticles: {fileID: 6756978086083299638}
 --- !u!95 &7206302329668965223
 Animator:
   serializedVersion: 3

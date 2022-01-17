@@ -10,13 +10,29 @@ public class Fountain : RoomObject
 
     private SFXInstance waterSound;
 
+    [SerializeField]
+    private ParticleSystem waterParticles;
+    private ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime;
 
-    void Start()
+
+    void Awake()
     {
-        UpdateAnimatorTimeScale();
+        velocityOverLifetime = waterParticles.velocityOverLifetime;
     }
     public Fountain () {
         largeScale = 1.8f;
+    }
+
+    public override void OnEnlargingFinish()
+    {
+        base.OnEnlargingFinish();
+        waterParticles.transform.localScale = Vector3.one * largeScale;
+    }
+
+    public override void OnEnlargeRevertFinish()
+    {
+        base.OnEnlargeRevertFinish();
+        waterParticles.transform.localScale = Vector3.one * normalScale;
     }
 
     public override void OnRoomEnter()
@@ -27,15 +43,6 @@ public class Fountain : RoomObject
         }
         waterSound.AudioSource.Play();
     }
-    private void OnEnable() {
-        TimeProperty.onTimeMissing += UpdateAnimatorTimeScale;
-        TimeProperty.onTimeAppearing += UpdateAnimatorTimeScale;
-    }
-
-    private void OnDisable() {
-        TimeProperty.onTimeMissing -= UpdateAnimatorTimeScale;
-        TimeProperty.onTimeAppearing -= UpdateAnimatorTimeScale;
-    }
     public override void OnRoomLeave()
     {
         base.OnRoomLeave();
@@ -43,10 +50,26 @@ public class Fountain : RoomObject
             waterSound.AudioSource.Play();
 
     }
-
-    private void UpdateAnimatorTimeScale() {
-        // animator.speed = Room.TimeScale;
+    
+    private void FasterWind() {
+        velocityOverLifetime.x = 10f;
     }
+    private void NormalWind() {
+        velocityOverLifetime.x = 0f;
+    }
+
+    private void OnEnable() {
+        Wind.OnWindEnlarged += FasterWind;
+        Wind.OnWindNormal += NormalWind;
+    }
+
+    private void OnDisable() {
+        Wind.OnWindEnlarged -= FasterWind;
+        Wind.OnWindNormal -= NormalWind;
+
+    }
+
+    
 
     private void Reset() {
         Word = "fountain";
