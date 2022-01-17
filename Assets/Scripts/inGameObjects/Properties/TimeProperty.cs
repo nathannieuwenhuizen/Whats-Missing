@@ -59,6 +59,7 @@ public class TimeProperty : Property
 
     public override void OnEnlargeRevert()
     {
+        AudioHandler.Instance.pitchMultiplier = 1f;
         Room.TimeScale = 1f;
         onTimeAppearing?.Invoke();
         base.OnEnlargeRevert();
