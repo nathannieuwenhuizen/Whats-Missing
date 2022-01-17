@@ -22,7 +22,7 @@ public class FPMovement : MonoBehaviour
     private float cameraZIndex = 0;
     private bool cameraZRotationTilt = false;
 
-    private bool kinematicMovement = false;
+    private bool kinematicMovement = true;
     public bool KinematicMovement {
         get { return kinematicMovement;}
         set { kinematicMovement = value; }
