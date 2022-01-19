@@ -52,14 +52,13 @@
         private Transform reflectionCamTransform;
 
         private void Start() {
-            output_texture_high = CreateRenderTexture("highTexture", 1);
-            output_texture_mid = CreateRenderTexture("midTexture", .5f);
-            output_texture_low = CreateRenderTexture("midTexture", .3f);
+            output_texture_high = CreateRenderTexture("highTexture", .5f);
+            output_texture_mid = CreateRenderTexture("midTexture", .3f);
+            output_texture_low = CreateRenderTexture("midTexture", .1f);
 
             SetRenderTexture(output_texture_mid);
             IsActive = isActive;
 
-            StartCoroutine(UpdateRendering());
         }
 
         private RenderTexture CreateRenderTexture(string name, float factor) {
@@ -92,28 +91,24 @@
 
         private void LateUpdate()
         {
-
+            UpdateRendering();
         }
 
         private void example() {
 
         }
-        private IEnumerator UpdateRendering() {
-            while (true)
-            {
+        private void UpdateRendering() {
 
-                if (!isActive) yield return null;
-                InView = IncameraRange();
-                if (!InView) yield return null;
-                if (isReady && mainCamera != null){
-                    UpdateLODTexture();
-                    RenderReflection(); 
-                }
-                else {
-                    mainCamera = Camera.main;
-                    OnValidate();
-                }
-                yield return new WaitForEndOfFrame();
+            if (!isActive) return;
+            InView = IncameraRange();
+            if (!InView) return;
+            if (isReady && mainCamera != null){
+                UpdateLODTexture();
+                RenderReflection(); 
+            }
+            else {
+                mainCamera = Camera.main;
+                OnValidate();
             }
         }
 

@@ -12,7 +12,7 @@ public interface IState
     void Exit();
 
 }
-public class FSM : MonoBehaviour
+public class FSM
 {
     private IState cState;
     public FSM (IState _startState)
