@@ -1,5 +1,6 @@
 ﻿namespace Custom.Rendering
 {
+    using System.Collections;
     using UnityEngine;
 
     // [ExecuteAlways]
@@ -57,6 +58,8 @@
 
             SetRenderTexture(output_texture_mid);
             IsActive = isActive;
+
+            StartCoroutine(UpdateRendering());
         }
 
         private RenderTexture CreateRenderTexture(string name, float factor) {
@@ -89,16 +92,28 @@
 
         private void LateUpdate()
         {
-            if (!isActive) return;
-            InView = IncameraRange();
-            if (!InView) return;
-            if (isReady && mainCamera != null){
-                UpdateLODTexture();
-                RenderReflection();
-            }
-            else {
-                mainCamera = Camera.main;
-                OnValidate();
+
+        }
+
+        private void example() {
+
+        }
+        private IEnumerator UpdateRendering() {
+            while (true)
+            {
+
+                if (!isActive) yield return null;
+                InView = IncameraRange();
+                if (!InView) yield return null;
+                if (isReady && mainCamera != null){
+                    UpdateLODTexture();
+                    RenderReflection(); 
+                }
+                else {
+                    mainCamera = Camera.main;
+                    OnValidate();
+                }
+                yield return new WaitForEndOfFrame();
             }
         }
 
