@@ -70,6 +70,8 @@ public class Grass : RoomObject
         startTipColor = TipColor;
         startBaseColor = BaseColor;
         startWindSpeed = WindSpeed;
+        meshRenderer.enabled = false;
+
     }
 
     private void Reset() {
@@ -93,6 +95,8 @@ public class Grass : RoomObject
     }
 
     private void Update() {
+        if (!InSpace) return; 
+
         int qualityLevel = QualitySettings.GetQualityLevel();
 
         if (qualityLevel >= 5) CheckLODDistance(highLods);
@@ -124,6 +128,19 @@ public class Grass : RoomObject
 
     private void UpdateWindSpeedBasedOnTime() {
         if (InSpace) WindSpeed = startWindSpeed * Room.TimeScale;
+    }
+
+    public override void OnRoomEnter()
+    {
+        base.OnRoomEnter();
+        meshRenderer.enabled = true;
+    }
+
+    public override void OnRoomLeave()
+    {
+        base.OnRoomLeave();
+        meshRenderer.enabled = false;
+
     }
 
 
