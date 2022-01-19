@@ -96,7 +96,7 @@ public class SettingPanel : AnimatedPopup
 
     public void Open() {
         ShowAnimation(true);
-        ToggleGameplay();
+        ToggleGeneral();
         ControllerCheck.SelectUIGameObject(cameraSensitivitySlider.gameObject);
     }
     public void Close() {

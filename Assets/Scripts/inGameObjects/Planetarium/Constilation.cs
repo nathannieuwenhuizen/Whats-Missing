@@ -20,12 +20,25 @@ public class Constilation : RoomObject
     private Vector3 rotationVector;
     private Vector3 mainRotationVector;
 
+    private Quaternion mianstartRotation;
+    private Quaternion startRotation;
+
+    private void Awake() {
+        mianstartRotation = mainPivot.rotation;
+        startRotation = pivot.rotation;
+    }
+
     private void Start() {
         rotationVector = new Vector3(0,0,rotationSpeed);
         mainRotationVector = new Vector3(0,0, mainRotationSpeed);
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.C)) {
+            mainPivot.rotation = mianstartRotation;
+            pivot.rotation = startRotation;
+        }
+
         pivot.Rotate(rotationVector * Time.deltaTime * Room.TimeScale);
         mainPivot.Rotate(mainRotationVector * Time.deltaTime * Room.TimeScale);
     }
