@@ -9,6 +9,7 @@ public class WindMill : RoomObject
     private Transform rotationPivot;
 
     private float speed = 15f;
+
     public WindMill() {
         shrinkScale = .2f;
     }
@@ -19,6 +20,25 @@ public class WindMill : RoomObject
     private void Reset() {
         Word = "windmill";
         AlternativeWords = new string[] {"mill"};
+    }
+
+    private void FasterWind() {
+        speed = 600f;
+    }
+    private void NormalWind() {
+        speed = 15f;
+    }
+    
+
+    private void OnEnable() {
+        Wind.OnWindEnlarged += FasterWind;
+        Wind.OnWindNormal += NormalWind;
+    }
+
+    private void OnDisable() {
+        Wind.OnWindEnlarged -= FasterWind;
+        Wind.OnWindNormal -= NormalWind;
+
     }
 
 }

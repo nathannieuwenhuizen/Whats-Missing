@@ -21,6 +21,12 @@ public class FPMovement : MonoBehaviour
     private float cameraYIndex = 0;
     private float cameraZIndex = 0;
     private bool cameraZRotationTilt = false;
+
+    private bool kinematicMovement = true;
+    public bool KinematicMovement {
+        get { return kinematicMovement;}
+        set { kinematicMovement = value; }
+    }
     public bool CameraZRotationTilt {
         get { return cameraZRotationTilt;}
         set { cameraZRotationTilt = value; }
@@ -272,7 +278,11 @@ public class FPMovement : MonoBehaviour
                 rb.velocity.y, 
                 walkDelta.y * (isRunning ? runSpeed : walkSpeed)
             ));
-        rb.velocity = dir;
+        if (!kinematicMovement) {
+            if (walkDelta.x != 0 || walkDelta.y != 0) rb.velocity = Vector3.Lerp(rb.velocity, dir, Time.deltaTime * 10f);
+        } else {
+            rb.velocity = dir;
+        }
         UpdateWalking();
     }
 

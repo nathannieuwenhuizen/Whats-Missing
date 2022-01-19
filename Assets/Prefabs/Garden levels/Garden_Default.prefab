@@ -1493,6 +1493,7 @@ Transform:
   - {fileID: 5422802103723978790}
   - {fileID: 8932437470494869260}
   - {fileID: 2106995294068594116}
+  - {fileID: 8493474170964561489}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3600,7 +3601,7 @@ GameObject:
   - component: {fileID: 6994888329739428595}
   - component: {fileID: 2013610229150571881}
   m_Layer: 0
-  m_Name: wind
+  m_Name: windparticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4188,7 +4189,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 3000
     size3D: 0
     rotation3D: 1
     gravityModifier:
@@ -47729,6 +47730,58 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -8252084882743204326, guid: 5d57ff47bc37e5749953abcf0c15ac0b, type: 3}
+--- !u!1 &4532577134412268964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8493474170964561489}
+  - component: {fileID: 8525608907748087905}
+  m_Layer: 0
+  m_Name: wind
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8493474170964561489
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4532577134412268964}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -104.3, y: -6.8, z: 3.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2394322825610720865}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8525608907748087905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4532577134412268964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2503d9e6a4150c341a0c4c6729177219, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: wind
+  alternateWords:
+  - winds
+  - air
+  - weather
+  - breeze
+  missingChangeEffect: 1
+  room: {fileID: 3000441207758156416}
+  windParticles: {fileID: 6997583795221593877}
 --- !u!1 &4599215262247957840
 GameObject:
   m_ObjectHideFlags: 0
@@ -64233,7 +64286,7 @@ MonoBehaviour:
   bendType: 27
   bendID: 1
   bendPivotPoint: {fileID: 8814959872438532231}
-  bendPivotPointPosition: {x: 14.1, y: 2, z: -10.4}
+  bendPivotPointPosition: {x: 14.1, y: 2.1, z: -10.4}
   bendRotationCenter: {fileID: 0}
   bendRotationCenterPosition: {x: 0, y: 0, z: 0}
   bendRotationAxis: {x: 1, y: 0, z: 0}

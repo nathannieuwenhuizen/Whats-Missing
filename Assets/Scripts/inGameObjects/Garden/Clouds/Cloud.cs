@@ -36,12 +36,25 @@ public class Cloud : RoomObject
         meshRenderer.material.color =  Color.Lerp(Color.white, darkColor, Mathf.Pow( 1 - sunIntensity, 2));
     }
 
+    private void MakeCloudsFaster() {
+        cloudSpeed = 5f;
+    }
+    private void MakeCloudsNormal() {
+        cloudSpeed = .5f;
+    }
+    
+
     private void OnEnable() {
+        Wind.OnWindEnlarged += MakeCloudsFaster;
+        Wind.OnWindNormal += MakeCloudsNormal;
         DayNightCycle.OnSunIntensityChange += UpdateCloudColor;
     }
 
     private void OnDisable() {
         DayNightCycle.OnSunIntensityChange -= UpdateCloudColor;
+        Wind.OnWindEnlarged -= MakeCloudsFaster;
+        Wind.OnWindNormal -= MakeCloudsNormal;
+
     }
 
 

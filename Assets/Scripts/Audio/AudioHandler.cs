@@ -271,7 +271,7 @@ public class AudioHandler : Singleton<AudioHandler>
     }
 
     ///<summary>
-    ///Internal enumerator that fades a music clip.
+    ///Internal enumerator that fades a AudooSource clip.
     ///</summary>
     public IEnumerator FadeVolume(AudioSource audioS, float begin, float end, float duration)
     {
