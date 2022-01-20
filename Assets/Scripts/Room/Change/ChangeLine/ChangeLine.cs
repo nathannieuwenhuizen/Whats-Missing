@@ -23,7 +23,7 @@ public class ChangeLine : MonoBehaviour
     public void SetDestination( Vector3 begin, Vector3 end) {
         point0 = begin;
         point2 = end;
-        point1 = begin + ((end - begin) / 2f) + new Vector3(0,5,0);
+        point1 = begin + ((end - begin) / 2f) + new Vector3(0,7,0);
     }
 
     ///<summary>
