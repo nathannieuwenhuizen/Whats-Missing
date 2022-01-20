@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
 public class DeathTrigger : AreaTrigger, IRoomObject
 {
     public bool InSpace { get; set; }
-    private BoxCollider boxCollider;
+    private Collider collider;
     private void Awake() {
-        boxCollider = GetComponent<BoxCollider>();
+        collider = GetComponent<Collider>();
     }
     public override void OnAreaEnter(Player player)
     {
@@ -19,11 +18,11 @@ public class DeathTrigger : AreaTrigger, IRoomObject
 
     public void OnRoomEnter()
     {
-        boxCollider.enabled = true;
+        collider.enabled = true;
     }
 
     public void OnRoomLeave()
     {
-        boxCollider.enabled = false;
+        collider.enabled = false;
     }
 }

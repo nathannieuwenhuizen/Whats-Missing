@@ -52,9 +52,9 @@
         private Transform reflectionCamTransform;
 
         private void Start() {
-            output_texture_high = CreateRenderTexture("highTexture", .5f);
-            output_texture_mid = CreateRenderTexture("midTexture", .3f);
-            output_texture_low = CreateRenderTexture("midTexture", .1f);
+            output_texture_high = CreateRenderTexture("highTexture", 1f);
+            output_texture_mid = CreateRenderTexture("midTexture", .5f);
+            output_texture_low = CreateRenderTexture("midTexture", .3f);
 
             SetRenderTexture(output_texture_mid);
             IsActive = isActive;

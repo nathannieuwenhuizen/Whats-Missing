@@ -60,7 +60,7 @@ public class Sun : RoomObject
 
     private void Start() {
         deathTrigger.OnAreaEnterEvent.AddListener(DeathBySun);
-        SunEnabled = true;
+        SunEnabled = false;
     }
 
     private void DeathBySun() {
