@@ -234,6 +234,7 @@ public class MirrorCanvas : MonoBehaviour
         if (letter.Dragged() && canBeDragged) {
             Debug.Log("letter drag end at index " + passedLetterIndex);
             if (passedLetterIndex == -1) {
+                AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
                 letter.Deselect();
                 letter.PreClickSelected = false;
             } else {
@@ -242,11 +243,6 @@ public class MirrorCanvas : MonoBehaviour
 
         } else {
             if (!letter.PreClickSelected) {
-                if (mirror.Room != null && mirror.Room.Animated) {
-                    AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .5f, 
-                    .8f + (.4f * ((float)selectedLetterObjects.Count / (float)(letterObjects.Count + selectedLetterObjects.Count)))
-                    );
-                }
                 AddLetterToAnswer(letter);
             }
             else {
@@ -349,6 +345,12 @@ public class MirrorCanvas : MonoBehaviour
     }
 
     public void AddLetterToAnswer(Letter letter, int index = -1) {
+        if (mirror.Room != null && mirror.Room.Animated) {
+            AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .5f, 
+            .8f + (.4f * ((float)selectedLetterObjects.Count / (float)(letterObjects.Count + selectedLetterObjects.Count)))
+            );
+        }
+
         letterObjects.Remove(letter);
         if (index == -1) selectedLetterObjects.Add(letter); 
         else selectedLetterObjects.Insert(index, letter);

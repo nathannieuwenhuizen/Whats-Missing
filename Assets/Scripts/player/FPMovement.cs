@@ -305,10 +305,11 @@ public class FPMovement : MonoBehaviour
     ///Checks on when to make footstep sounds and tilt the camera
     ///</summary>
     private void UpdateWalking() {
-        if (inAir) return;
         Vector3 delta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
-
         if (!player.IsMissing && EnableHeadTilt)  UpdateCameraTilt(delta);
+        
+        if (inAir) return;
+
 
         if (delta.magnitude > walkStepDistance){
             oldPos = transform.position;

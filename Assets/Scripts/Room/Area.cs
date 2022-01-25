@@ -230,6 +230,8 @@ public class Area : MonoBehaviour
             CurrentRoom = rooms[0];
             player.transform.position = CurrentRoom.StartDoor.EndPos();
         } else if (toPreviousLevel){
+
+            furthestCurrentRoomIndex = index - 1;
             CurrentRoom = rooms[index - 1];
             player.transform.position = CurrentRoom.EndDoor.StartPos();
         } else {
@@ -239,6 +241,7 @@ public class Area : MonoBehaviour
             // player.transform.rotation = CurrentRoom.StartDoor.transform.rotation;
             player.transform.rotation = Quaternion.Euler(new Vector3(0,CurrentRoom.StartDoor.transform.rotation.y - 90f,0));
         }
+         
         BlackScreenOverlay.START_COLOR = Color.white;
         OnRespawn?.Invoke();
     }

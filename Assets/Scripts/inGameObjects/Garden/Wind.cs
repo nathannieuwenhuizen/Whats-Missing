@@ -19,6 +19,8 @@ public class Wind : Property
     private float windForce = 1000f;
     private float maxVelocity = 5;
 
+    private float windVolume = .2f;
+
     private SFXInstance windAudio;
     private void Awake() {
         mainModule = windParticles.main;
@@ -34,7 +36,7 @@ public class Wind : Property
         mainModule.startSpeed = 50f;
         windParticles.emissionRate = 200f;
 
-        windAudio = AudioHandler.Instance.PlaySound(SFXFiles.wind, .5f, 1f, true);
+        windAudio = AudioHandler.Instance.PlaySound(SFXFiles.wind, windVolume, 1f, true);
         windAudio.AudioSource.Play();
         IsEnlarged = true;
         StartCoroutine(ApplyWindForce());
@@ -42,7 +44,7 @@ public class Wind : Property
     }
     public override IEnumerator AnimateEnlarging()
     {
-        yield return AudioHandler.Instance.FadeVolume(windAudio.AudioSource, 0, .5f, animationDuration);
+        yield return AudioHandler.Instance.FadeVolume(windAudio.AudioSource, 0, windVolume, animationDuration);
         yield return base.AnimateEnlarging();
     }
 
@@ -57,7 +59,7 @@ public class Wind : Property
     }
     
     public override IEnumerator AnimateEnlargeRevert() {
-        yield return AudioHandler.Instance.FadeVolume(windAudio.AudioSource, .5f, 0, animationDuration);
+        yield return AudioHandler.Instance.FadeVolume(windAudio.AudioSource, windVolume, 0, animationDuration);
         yield return base.AnimateEnlargeRevert();
 
     }
