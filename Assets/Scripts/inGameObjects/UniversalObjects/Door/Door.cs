@@ -169,6 +169,7 @@ public class Door : InteractabelObject
         }
         player.Movement.EnableWalk = true;
         player.Movement.RB.isKinematic = false;
+        UpdatePlayerWalkingPosition(2, player);
 
         // SetPlayerPos(endPos, player);
 
@@ -181,7 +182,7 @@ public class Door : InteractabelObject
 
 
     public virtual void UpdatePlayerWalkingPosition(float precentage, Player player) {
-        Vector3 newPos =  Extensions.CalculateQuadraticBezierPoint(walkingCurve.Evaluate(precentage), point0, point1, point2);
+        Vector3 newPos =  Extensions.CalculateQuadraticBezierPoint(walkingCurve.Evaluate(Mathf.Min(1, precentage)), point0, point1, point2);
         SetPlayerPos(newPos, player);
     }
 

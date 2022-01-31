@@ -56,7 +56,7 @@ public class PortalDoor : Door
     }
     public override void UpdatePlayerWalkingPosition(float precentage, Player player)
     {
-        if (WentThroughPortal(player) && connectedDoor != null) connectedDoor.UpdatePlayerWalkingPosition(precentage, player);
+        if ((WentThroughPortal(player) || precentage == 2) && connectedDoor != null) connectedDoor.UpdatePlayerWalkingPosition(Mathf.Min(1, precentage), player);
         else base.UpdatePlayerWalkingPosition(precentage, player);
     }
     public override void SetDoorLocalRotation(Quaternion val)
