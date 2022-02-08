@@ -17,11 +17,12 @@ public class Constilation : RoomObject
     [SerializeField]
     private float mainRotationSpeed;
 
+    private Quaternion startRotation;
+
     private Vector3 rotationVector;
     private Vector3 mainRotationVector;
 
     private Quaternion mianstartRotation;
-    private Quaternion startRotation;
 
     private void Awake() {
         mianstartRotation = mainPivot.rotation;
@@ -41,6 +42,12 @@ public class Constilation : RoomObject
 
         pivot.Rotate(rotationVector * Time.deltaTime * Room.TimeScale);
         mainPivot.Rotate(mainRotationVector * Time.deltaTime * Room.TimeScale);
+    }
+
+    public override void OnRoomEnter()
+    {
+        base.OnRoomEnter();
+        pivot.rotation = startRotation;
     }
 
     private void Reset() {
