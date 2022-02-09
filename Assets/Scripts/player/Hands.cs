@@ -10,6 +10,10 @@ public class Hands : MonoBehaviour
     private Vector3 oldPos = new Vector3();
     private Vector3 velocity = new Vector3();
 
+    public delegate void FocusedAction();
+    public static event FocusedAction OnFocus; 
+    public static event FocusedAction OnUnfocus; 
+
     [SerializeField]
     private float pickupDistance = 3;
     private float shrinkPickupDistance;
@@ -118,26 +122,22 @@ public class Hands : MonoBehaviour
         }
     }
 
-    //TODO: needs a way better fix than this!
     private IEnumerator UpdatePhysics() {
         while (holdingObject != null) {
             for(int i=0 ; i < 1f; i++) {
                 var speed = holdingObject.Touching ? 3f : 10f;
-                // if (holdingObject.RigidBody.)
                 holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
                 Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (PickupDistance * .5f);
                 Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, transform.position + offset, Time.deltaTime * speed);
                 holdingObject.RigidBody.MovePosition(midwayDestination);
                 yield return new WaitForFixedUpdate();
-                
-                // holdingObject.RigidBody.velocity = Vector3.zero;
             }
-            // yield return new WaitForEndOfFrame();
         }   
     }
 
     private void Update() {
-        UpdateFocusedObject();
+        if( holdingObject == null) 
+            UpdateFocusedObject();
     }
     private void UpdateFocusedObject() {
         IInteractable interactableObj = FocussedObject<IInteractable>();
@@ -147,8 +147,10 @@ public class Hands : MonoBehaviour
                     currentInteractable.Focused = false;
                 interactableObj.Focused = true;
                 currentInteractable = interactableObj;
+                OnFocus?.Invoke();
             }
         } else if (currentInteractable != null) {
+            OnUnfocus?.Invoke();
             currentInteractable.Focused = false;
             currentInteractable = default(IInteractable);
         }

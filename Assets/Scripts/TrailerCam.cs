@@ -17,7 +17,6 @@ public class TrailerCam : MonoBehaviour
 
     private void Update() {
         if (Input.GetKeyDown(KeyCode.C)) {
-            Debug.Log("camera cinematic start");
             if (isMoving) {
                 isMoving = false;
             } else {
