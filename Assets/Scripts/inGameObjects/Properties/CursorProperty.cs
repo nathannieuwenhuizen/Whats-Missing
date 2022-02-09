@@ -87,6 +87,7 @@ public class CursorProperty : Property
     public override void OnEnlargingFinish()
     {
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
+            uiGroup.GetComponent<CursorUI>().CanHighLight = false;
             RectTransform rt = uiGroup.GetComponent<RectTransform>();
             rt.localScale = Vector3.one * LargeScale;
         }
@@ -109,6 +110,7 @@ public class CursorProperty : Property
     {
         base.OnEnlargeRevertFinish();
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
+            uiGroup.GetComponent<CursorUI>().CanHighLight = true;
             RectTransform rt = uiGroup.GetComponent<RectTransform>();
             rt.localScale = Vector3.one * normalScale;
         }

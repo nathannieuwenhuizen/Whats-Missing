@@ -9,12 +9,19 @@ public class CursorUI : MonoBehaviour
     [SerializeField]
     private AnimationCurve rotationCurve;
     private bool hidden = false;
+    private bool canHighLight = true;
+
+    public bool CanHighLight {
+        get { return canHighLight;}
+        set { canHighLight = value; }
+    }
     private float idleAlpha = .6f;
     private float highLightedAlpha = .6f;
     private float highLightDuration = .3f;
 
     private void Awake() {
         group = GetComponent<CanvasGroup>();
+        group.alpha = idleAlpha;
     }
 
     private void HideCursorUI() {
@@ -24,7 +31,7 @@ public class CursorUI : MonoBehaviour
     }
     private void ShowCursorUI() {
         hidden = false;
-        ResetToIdle();
+        if (canHighLight) ResetToIdle();
         StopAllCoroutines();
         StartCoroutine(group.FadeCanvasGroup(idleAlpha, 1f, 0));
     }
@@ -52,14 +59,14 @@ public class CursorUI : MonoBehaviour
     }
 
     private void HighLightCursorUI() {
-        if (hidden) return;
+        if (hidden || !canHighLight) return;
         StopAllCoroutines();
         StartCoroutine(group.FadeCanvasGroup(highLightedAlpha, highLightDuration));
         StartCoroutine(group.GetComponent<RectTransform>().AnimatingScale(Vector3.one * 1.5f, AnimationCurve.EaseInOut(0,0,1,1), highLightDuration));
         StartCoroutine(group.GetComponent<RectTransform>().AnimatingRotation(Quaternion.Euler(0,0,90f), rotationCurve, highLightDuration));
     }
     private void UnhighlightCursorUI() {
-        if (hidden) return;
+        if (hidden || !canHighLight) return;
         StopAllCoroutines();
         StartCoroutine(group.FadeCanvasGroup(idleAlpha, highLightDuration));
         StartCoroutine(group.GetComponent<RectTransform>().AnimatingScale(Vector3.one, AnimationCurve.EaseInOut(0,0,1,1), highLightDuration));
