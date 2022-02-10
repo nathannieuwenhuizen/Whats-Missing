@@ -7,6 +7,14 @@ using UnityEngine;
 ///</summary>
 public class RoomObject : RoomEntity
 {
+    protected RoomObjectEventSender eventSender;
+    public RoomObjectEventSender EventSender {
+        get { 
+            if (eventSender == null) eventSender = new RoomObjectEventSender(this);
+            return eventSender;
+            }
+        set { eventSender = value; }
+    }
     public delegate void OnMissingEvent();
 
     public override float CurrentScale { 
@@ -14,6 +22,15 @@ public class RoomObject : RoomEntity
         set {
             transform.localScale = Vector3.one * value;
         } 
+    }
+
+    protected virtual void Awake() {
+        Debug.Log("awake!!!");
+        eventSender = new RoomObjectEventSender(this);
+    }
+
+    private void Update() {
+        EventSender.Update();
     }
 
 
@@ -24,6 +41,7 @@ public class RoomObject : RoomEntity
     public override void OnAppearing()
     {
         gameObject.SetActive(true);
+        eventSender.SendAppearingEvent();
         base.OnAppearing();
     }
 
@@ -93,6 +111,8 @@ public class RoomObject : RoomEntity
     {
         base.OnMissingFinish();
         gameObject.SetActive(false);
+        eventSender.SendMissingEvent();
+
     }
 
     ///<summary>
@@ -111,6 +131,11 @@ public class RoomObject : RoomEntity
     {
         base.OnRoomEnter();
         normalScale = transform.localScale.x;
+    }
+    public override void OnRoomLeave()
+    {
+        base.OnRoomLeave();
+        eventSender.Active = false;
     }
 
 
@@ -159,6 +184,9 @@ public class RoomObject : RoomEntity
     public override void OnEnlargeRevertFinish()
     {
         CurrentScale = normalScale;
+    }
+    public void OnDestroy() {
+        eventSender.SendMissingEvent();
     }
 
     #endregion

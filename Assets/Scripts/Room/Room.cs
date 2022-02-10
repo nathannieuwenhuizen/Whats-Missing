@@ -193,7 +193,7 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Checks and apply the change to the room 
     ///</summary>
-    public void AddTVChange(Mirror selectedMirror, bool undoAble = true) {
+    public void AddMirrorChange(Mirror selectedMirror, bool undoAble = true) {
         Change newChange = changeHandler.CreateChange(selectedMirror);
 
         if (newChange != null) {
@@ -242,7 +242,7 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Checks if a mirror question is correct with the changes that exist inside the room.
     ///</summary>
-    public void CheckTVQuestion(Mirror selectedMirror, bool undoAble = true) {
+    public void CheckMirrorQuestion(Mirror selectedMirror, bool undoAble = true) {
         if (undoAble) {
             OnMakeRoomAction?.Invoke(this, new Change() {word = selectedMirror.Word, mirror = selectedMirror}, false, selectedMirror.PreviousWord);
             selectedMirror.PreviousWord = selectedMirror.Word;
@@ -266,7 +266,7 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Handles if the door should be open or not. 
     ///</summary>
-    private void CheckRoomCompletion() {
+    public void CheckRoomCompletion() {
         if (AllMirrorsAreOn()) {
             hintStopwatch.Pause();
             OnRoomComplete?.Invoke();
@@ -321,6 +321,8 @@ public class Room : MonoBehaviour
         foreach (IRoomObject item in GetAllObjectsInRoom<IRoomObject>())
         {
             item.OnRoomEnter();
+            RoomObject roomObject = item as RoomObject;
+            if (roomObject != null) roomObject.EventSender.Active = !revealChangeAfterCompletion;
         }
 
         if (firstTimeEntering) {
@@ -399,6 +401,21 @@ public class Room : MonoBehaviour
         }
     }
 
+    private void OnEnable() {
+        RoomObjectEventSender.OnAltered += UpdateRoomObjectChanges;
+    }
+
+    private void OnDisable() {
+        RoomObjectEventSender.OnAltered -= UpdateRoomObjectChanges;
+    }
+
+    public void UpdateRoomObjectChanges(RoomObject _roomObject, ChangeType _changeType, bool _enabled) {
+        if (!InArea) return;
+        changeHandler.UpdateRoomObjectChanges(_roomObject, _changeType, _enabled);
+        UpdateMirrorStates();
+        CheckRoomCompletion();
+    }
+
 
     ///<summary>
     /// Resets the room by deactivation all the changes and returns the room state and activates the changes 
@@ -414,4 +431,5 @@ public class Room : MonoBehaviour
         CheckRoomCompletion();
         Animated = true;
     }
+
 }

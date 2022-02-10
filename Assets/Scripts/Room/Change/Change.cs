@@ -25,3 +25,9 @@ public class Change {
     ///</summary>
     public int roomIndexOffset = 0;
 }
+
+[System.Serializable]
+public class RoomObjectChange {
+    public RoomObject roomObject;
+    public ChangeType changeType;
+}

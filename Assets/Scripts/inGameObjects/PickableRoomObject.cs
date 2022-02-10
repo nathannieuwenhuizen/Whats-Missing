@@ -43,8 +43,9 @@ public class RigidBodyInfo {
 public class PickableRoomObject : InteractabelObject, IPickable
 {
     protected Rigidbody rb;     
-    protected void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         rb = GetComponent<Rigidbody>();
         RigidBodyInfo.Save(rb);
     }

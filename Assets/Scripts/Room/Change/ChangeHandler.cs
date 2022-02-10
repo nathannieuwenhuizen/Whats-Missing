@@ -18,9 +18,17 @@ public class ChangeHandler
         room = _room;
     }
 
-    [SerializeField]
+    ///<summary>
+    /// Changes made by the mirrors
+    ///</summary>
     private List<Change> changes = new List<Change>();
     public List<Change> Changes { get => changes; }
+
+    //changes made by the palyer, mirror or enviroment.
+    private List<RoomObjectChange> roomObjectChanges = new List<RoomObjectChange>();
+    public List<RoomObjectChange> RoomObjectChanges { get => roomObjectChanges; }
+
+
 
     ///<summary>
     /// Returns the list of all changes that the room has with the mirrors at the time of the call.
@@ -127,14 +135,28 @@ public class ChangeHandler
     /// Returns true if the changes contains the word of the selected television
     ///</summary>
     public bool WordMatchesChanges(Mirror mirror) {
-        foreach (Change change in changes)
-        {
-            if (change.word == mirror.Word || change.alternativeWords.Contains(mirror.Word)) {
+        foreach (Change change in changes) {
+            if ((change.word == mirror.Word || change.alternativeWords.Contains(mirror.Word)) && change.mirror.changeType == mirror.changeType) {
+                return true;
+            }
+        } 
+        foreach (RoomObjectChange change in roomObjectChanges) {
+            if ((change.roomObject.Word == mirror.Word || change.roomObject.AlternativeWords.Contains(mirror.Word)) && change.changeType == mirror.changeType) {
                 return true;
             }
         }
         return false;
+    }
 
+    public void UpdateRoomObjectChanges(RoomObject _roomObject, ChangeType _changeType, bool _enabled) {
+        int index = roomObjectChanges.FindIndex(x => x.roomObject == _roomObject);
+        Debug.Log("index: " + index);
+        if (_enabled) {
+            if (index == -1) roomObjectChanges.Add(new RoomObjectChange() { roomObject = _roomObject, changeType = _changeType});
+            
+        } else {
+            if (index != -1) roomObjectChanges.RemoveAt(index);
+        }
     }
 
 }

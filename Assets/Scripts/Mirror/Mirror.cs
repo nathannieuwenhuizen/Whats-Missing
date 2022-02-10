@@ -62,11 +62,13 @@ public class Mirror: MonoBehaviour, IRoomObject
     public bool IsOn {
         get { return isOn; }
         set { 
-            isOn = value; 
-            if (value) {
-                ConfirmationSucceeded();
-            } else {
-                ConfirmationFailed();
+            if (isOn != value) {
+                isOn = value; 
+                if (value) {
+                    ConfirmationSucceeded();
+                } else {
+                    ConfirmationFailed();
+                }
             }
             UpdateIndicatorLight();
         }
@@ -114,20 +116,10 @@ public class Mirror: MonoBehaviour, IRoomObject
     ///</summary>
     public void Confirm()
     {
-        if (isQuestion) room.CheckTVQuestion(this);
-        else if (isOn == false) room.AddTVChange(this);
+        if (isQuestion) room.CheckMirrorQuestion(this);
+        else if (isOn == false) room.AddMirrorChange(this);
     }
 
-    ///<summary>
-    /// Resets the letters and removes the change or question check.
-    /// Also called from the mirror button.
-    ///</summary>
-    // public void ResetMirror() {
-    //     mirrorCanvas.DeselectLetters();
-    //     if (!isQuestion) room.RemoveMirrorChange(this, true);
-    //     else room.CheckTVQuestion(this);
-    // }
-    
     public void ConfirmationSucceeded() {
         if (room.Animated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_true, .5f);
@@ -141,7 +133,7 @@ public class Mirror: MonoBehaviour, IRoomObject
         if (room.Animated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);
 
-        mirrorCanvas.DeselectLetters();
+        // mirrorCanvas.DeselectLetters();
     }
 
     public void OnRoomEnter()

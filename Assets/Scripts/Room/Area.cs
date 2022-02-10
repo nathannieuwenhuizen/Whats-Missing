@@ -160,12 +160,12 @@ public class Area : MonoBehaviour
                 foreach (Mirror mirror in newRoom.GetAllObjectsInRoom<Mirror>())
                 {
                     if (mirror.isQuestion) {
-                        if (completed) {
+                        if (completed && roomLevel.roomInfo.changeMirror.Length > 0) {
                             mirror.PreAnswer = roomLevel.roomInfo.changeMirror[0].letters;
                             mirror.IsOn = true;
                         }  else {
                             mirror.IsOn = roomLevel.roomInfo.questionMirror.isOn;
-                            if(mirror.IsOn) {
+                            if(mirror.IsOn && roomLevel.roomInfo.changeMirror.Length > 0) {
                                 mirror.PreAnswer = roomLevel.roomInfo.changeMirror[0].letters;
                             } else {
                                 mirror.Letters = roomLevel.roomInfo.questionMirror.letters;

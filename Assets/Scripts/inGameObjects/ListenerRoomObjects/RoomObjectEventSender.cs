@@ -11,14 +11,25 @@ public class RoomObjectEventSender
     public delegate void OnAlteration(RoomObject roomObject, ChangeType changeType, bool enabled);
     public static OnAlteration OnAltered;
 
-    public bool Active {get; set;} = false;
+    private bool active = false;
+    public bool Active {
+        get {
+            return active;
+        } set {
+            active = value;
+            startRotation = roomObject.transform.rotation;
+        }
+    }
     private bool hasBeenFlipped = false;
+
+    private Quaternion startRotation;
 
     public RoomObjectEventSender(RoomObject _roomObject) {
         roomObject = _roomObject;
     }
     
     public void Update() {
+        if (!Active) return;
         CheckFlipState();
     }
     public void CheckFlipState() {
@@ -35,19 +46,25 @@ public class RoomObjectEventSender
         }
     }
     private bool IsFlipped() {
+        if (roomObject.Word == "book") {
+            // Debug.Log("start rotation | " + startRotation);
+        }
+        // return Quaternion.Angle(roomObject.transform.rotation, startRotation) > 90f;
         return Vector3.Dot(roomObject.transform.up, Vector3.down) > 0;
     }
 
     public void SendFlipEvent() {
-        OnAltered?.Invoke(roomObject, ChangeType.flipped, true);
+        Debug.Log("send flip event: " + roomObject.Word);
+        if (Active) OnAltered?.Invoke(roomObject, ChangeType.flipped, true);
     }
     public void SendUnflipEvent() {
-        OnAltered?.Invoke(roomObject, ChangeType.flipped, false);
+        Debug.Log("send unflip event: " + roomObject.Word);
+        if (Active) OnAltered?.Invoke(roomObject, ChangeType.flipped, false);
     }
     public void SendMissingEvent() {
-        OnAltered?.Invoke(roomObject, ChangeType.missing, true);
+        if (Active) OnAltered?.Invoke(roomObject, ChangeType.missing, true);
     }
     public void SendAppearingEvent() {
-        OnAltered?.Invoke(roomObject, ChangeType.flipped, false);
+        if (Active) OnAltered?.Invoke(roomObject, ChangeType.flipped, false);
     }
 }
