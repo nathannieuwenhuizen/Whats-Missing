@@ -11,6 +11,12 @@ public enum MissingChangeEffect {
     dissolve
 }
 
+public enum FlippingAxis {
+    forward,
+    right,
+    up
+}
+
 ///<summary>
 /// An entity that can be missing.
 ///</summary>
@@ -44,6 +50,7 @@ public interface IMissable {
     ///</summary>
     void OnAppearingFinish();
 }
+
 
 ///<summary>
 /// An entity that can be shrunk.

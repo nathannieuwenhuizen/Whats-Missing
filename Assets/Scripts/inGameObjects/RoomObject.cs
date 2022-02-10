@@ -7,6 +7,8 @@ using UnityEngine;
 ///</summary>
 public class RoomObject : RoomEntity
 {
+    [SerializeField]
+    private FlippingAxis flippingAxis = FlippingAxis.up;
     protected RoomObjectEventSender eventSender;
     public RoomObjectEventSender EventSender {
         get { 
@@ -188,6 +190,74 @@ public class RoomObject : RoomEntity
     public void OnDestroy() {
         eventSender.SendMissingEvent();
     }
+
+    #endregion
+
+    #region  flipped
+    public override void OnFlipped()
+    {
+        base.OnFlipped();
+    }
+
+    public override IEnumerator AnimateFlipping()
+    {
+        Bounce();
+        yield return StartCoroutine(transform.AnimatingFlip(GetObjectHeight(), animationDuration, flippingAxis));
+        yield return base.AnimateFlipping();
+    }
+
+    public override void OnFlippingFinish()
+    {
+        if (tempParent != null) {
+            transform.parent = tempParent.transform.parent;
+            Destroy(tempParent);
+        }
+        base.OnFlippingFinish();
+    }
+
+    public override void OnFlippingRevert()
+    {
+        base.OnFlippingRevert();
+    }
+
+    public override IEnumerator AnimateFlippingRevert()
+    {
+        Bounce();
+        yield return StartCoroutine(transform.AnimatingFlip(GetObjectHeight(), animationDuration, flippingAxis));
+        yield return base.AnimateFlippingRevert();
+    }
+
+    public override void OnFlippingRevertFinish()
+    {
+        if (tempParent != null) {
+            transform.parent = tempParent.transform.parent;
+            Destroy(tempParent);
+        }
+        base.OnFlippingRevertFinish();
+    }
+
+    public Renderer GetObjectHeight() {
+        // if (GetComponent<Collider>() != null) {
+        //     return GetComponent<Collider>();
+        // } else if (GetComponentInChildren<Collider>() != null) {
+        //     return GetComponentInChildren<Collider>();
+        if (GetComponent<Renderer>() != null) {
+            return GetComponent<Renderer>();
+        } else if (GetComponentInChildren<Renderer>() != null) {
+            return GetComponentInChildren<Renderer>();
+        }
+
+        return default(Renderer);
+    }
+
+    private GameObject tempParent;
+    public void Bounce() {
+        tempParent = new GameObject("tempParent");
+        tempParent.transform.parent = transform.parent;
+        transform.parent = tempParent.transform;
+        StartCoroutine(tempParent.transform.AnimatingPosBounce(2f, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+    }
+
 
     #endregion
 }

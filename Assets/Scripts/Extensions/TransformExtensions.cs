@@ -45,6 +45,39 @@ public static class TransformExtensions
         }
         transform.position = endPos;
     }
+    public static IEnumerator AnimatingFlip(this Transform transform, Renderer renderer, float duration = 5f, FlippingAxis flippingAxis = FlippingAxis.up) {
+
+        float timePassed = 0f;
+        float oldTimepaseed = 0;
+        AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            timePassed = Mathf.Min(duration, timePassed);
+            float angle = curve.Evaluate(timePassed / duration) - curve.Evaluate(oldTimepaseed / duration);
+            Vector3 axis = transform.up;
+            if (flippingAxis == FlippingAxis.forward) axis = transform.forward;
+            else if (flippingAxis == FlippingAxis.right) axis = transform.right;
+            transform.RotateAround(renderer.bounds.center, axis, 180 * (angle));
+            oldTimepaseed = timePassed;
+        }
+    }
+
+    public static  IEnumerator AnimatingPosBounce(this Transform transform, float amplitude,  AnimationCurve curve, float duration = 5f) {
+        float timePassed = 0f;
+        Vector3 beginPos = transform.position;
+        float currentHeight = 0;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            currentHeight = Mathf.Sin(Mathf.PI * (curve.Evaluate(timePassed / duration))) * amplitude;
+            transform.position = beginPos + new Vector3(0,currentHeight, 0);
+            // transform.position = Vector3.LerpUnclamped(beginPos, endPos , curve.Evaluate(timePassed / duration));
+        }
+        transform.position = beginPos;
+    }
+
+
     public static  IEnumerator AnimatingRotation(this Transform transform, Quaternion endrotation,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;
         Quaternion beginrotation = transform.rotation;

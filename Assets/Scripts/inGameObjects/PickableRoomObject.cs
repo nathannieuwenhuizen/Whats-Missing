@@ -136,4 +136,29 @@ public class PickableRoomObject : InteractabelObject, IPickable
     {
         ActivateRigidBody();
     }
+
+    #region flipped
+    public override void OnFlipped()
+    {
+        DeactivateRigidBody();
+        base.OnFlipped();
+    }
+    public override void OnFlippingFinish()
+    {
+        ActivateRigidBody();
+        base.OnFlippingFinish();
+    }
+
+    public override void OnFlippingRevert()
+    {
+        DeactivateRigidBody();
+        base.OnFlippingRevert();
+    }
+
+    public override void OnFlippingRevertFinish()
+    {
+        ActivateRigidBody();
+        base.OnFlippingRevertFinish();
+    }
+    #endregion
 }
