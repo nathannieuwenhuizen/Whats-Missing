@@ -48,6 +48,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
         base.Awake();
         rb = GetComponent<Rigidbody>();
         RigidBodyInfo.Save(rb);
+        // DeactivateRigidBody();
     }
     public Rigidbody RigidBody { 
         get {
@@ -135,6 +136,17 @@ public class PickableRoomObject : InteractabelObject, IPickable
     public void Release()
     {
         ActivateRigidBody();
+    }
+
+    public override void OnRoomEnter()
+    {
+        base.OnRoomEnter();
+        ActivateRigidBody();
+    }
+    public override void OnRoomLeave()
+    {
+        base.OnRoomLeave();
+        DeactivateRigidBody();
     }
 
     #region flipped

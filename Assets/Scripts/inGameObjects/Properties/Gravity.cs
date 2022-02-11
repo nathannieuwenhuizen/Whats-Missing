@@ -80,6 +80,26 @@ public class Gravity : Property
         return allRigidbodies;
     }
 
+    public override void OnFlipped()
+    {
+        base.OnFlipped();
+        Physics.gravity *= -1;
+        FPMovement.GLOBAL_GRAVITY *= -1;
+        Vector3 flipped = room.Player.transform.eulerAngles;
+        flipped.z += 180f;
+        StartCoroutine(room.Player.transform.AnimatingRotation(Quaternion.Euler(flipped), AnimationCurve.EaseInOut(0,0,1,1), animationDuration ));
+    }
+    public override void OnFlippingRevert()
+    {
+        Physics.gravity *= -1;
+        FPMovement.GLOBAL_GRAVITY *= -1;
+        Vector3 flipped = room.Player.transform.eulerAngles;
+        flipped.z += 180f;
+        StartCoroutine(room.Player.transform.AnimatingRotation(Quaternion.Euler(flipped), AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+
+        base.OnFlippingRevert();
+    }
+
 
 
     private void Reset() {

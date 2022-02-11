@@ -43,7 +43,7 @@ public class RoomObject : RoomEntity
     public override void OnAppearing()
     {
         gameObject.SetActive(true);
-        eventSender.SendAppearingEvent();
+        EventSender.SendAppearingEvent();
         base.OnAppearing();
     }
 
@@ -113,7 +113,7 @@ public class RoomObject : RoomEntity
     {
         base.OnMissingFinish();
         gameObject.SetActive(false);
-        eventSender.SendMissingEvent();
+        EventSender.SendMissingEvent();
 
     }
 
@@ -137,7 +137,7 @@ public class RoomObject : RoomEntity
     public override void OnRoomLeave()
     {
         base.OnRoomLeave();
-        eventSender.Active = false;
+        EventSender.Active = false;
     }
 
 
@@ -188,7 +188,7 @@ public class RoomObject : RoomEntity
         CurrentScale = normalScale;
     }
     public void OnDestroy() {
-        eventSender.SendMissingEvent();
+        EventSender.SendMissingEvent();
     }
 
     #endregion

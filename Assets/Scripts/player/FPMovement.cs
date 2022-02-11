@@ -36,7 +36,7 @@ public class FPMovement : MonoBehaviour
 
     //gravity
     public float gravityScale = 1.0f; 
-    public static float globalGravity = -9.81f * .8f;
+    public static float GLOBAL_GRAVITY = -9.81f * .8f;
 
     private ControlSettings controlSettings;
 
@@ -49,12 +49,6 @@ public class FPMovement : MonoBehaviour
     private Transform cameraPivot;
     public Transform CameraPivot {
         get { return cameraPivot;}
-    }
-    [SerializeField]
-    private Collider topCollider;
-
-    public Collider TopCollider {
-        get { return topCollider;}
     }
 
     [SerializeField]
@@ -90,7 +84,7 @@ public class FPMovement : MonoBehaviour
         get { return inAir;}
         set { 
             inAir = value; 
-            player.CharacterAnimationPlayer.SetBool("inAir", inAir || inCeiling);
+            player.CharacterAnimationPlayer.SetBool("inAir", inAir);
         }
     }
 
@@ -129,19 +123,19 @@ public class FPMovement : MonoBehaviour
     ///Makes the player jump
     ///</summary>
     public void Jump() {
-        if (inAir && rb.useGravity == false) {
+        if (inAir ) {
             //negative jump at gravity is missing
-            rb.velocity = new Vector3(rb.velocity.x, -jumpForce, rb.velocity.z);
-            inCeiling = false;
+            if (rb.useGravity == false) rb.velocity = new Vector3(rb.velocity.x, -jumpForce, rb.velocity.z);
             return;
         }
-
-        if (inAir) return;
         
         InAir = true;
         StartCoroutine(MakeWindNoices());
         AudioHandler.Instance?.PlaySound(SFXFiles.player_jump, .1f);
-        rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+        if (GLOBAL_GRAVITY < 0) {
+            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+        } else rb.velocity = new Vector3(rb.velocity.x, -jumpForce, rb.velocity.z);
+
 
     }
 
@@ -176,10 +170,7 @@ public class FPMovement : MonoBehaviour
         EnableRotation = true;
     }
 
-    private void OnCollisionEnter(Collision other) {
-        if (other.contacts[0].thisCollider == topCollider) inCeiling = true;
-        else inCeiling = false;
-        
+    private void OnCollisionEnter(Collision other) {        
         if (inAir && other.gameObject.tag != Tags.Picked) {
             InAir = false;
             if (!player.IsMissing) AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
@@ -189,7 +180,7 @@ public class FPMovement : MonoBehaviour
 
     private void FixedUpdate() {
         if (rb.useGravity){
-            Vector3 gravity = globalGravity * gravityScale * Vector3.up;
+            Vector3 gravity = GLOBAL_GRAVITY * gravityScale * Vector3.up;
             rb.AddForce(gravity, ForceMode.Acceleration);
         }
         UpdateAnimator();
@@ -206,8 +197,8 @@ public class FPMovement : MonoBehaviour
         PauseScreen.OnResume += EnableMovment;
         WindowsErrorMessage.OnErrorShow += DisableMovment;
         WindowsErrorMessage.OnErrorHide += EnableMovment;
-        RoomDebugger.OnShow += DisableMovment;
-        RoomDebugger.OnHide += EnableMovment;
+        // RoomDebugger.OnShow += DisableMovment;
+        // RoomDebugger.OnHide += EnableMovment;
         SettingPanel.OnSave += ApplyMovementSettings;
         PerspectiveProperty.onPerspectiveMissing += HalfCameraSensitiviy;
         PerspectiveProperty.onPerspectiveAppearing += UnhalfCameraSensitiviy;
@@ -223,8 +214,8 @@ public class FPMovement : MonoBehaviour
         PauseScreen.OnResume -= EnableMovment;
         WindowsErrorMessage.OnErrorShow -= DisableMovment;
         WindowsErrorMessage.OnErrorHide -= EnableMovment;
-        RoomDebugger.OnShow -= DisableMovment;
-        RoomDebugger.OnHide -= EnableMovment;
+        // RoomDebugger.OnShow -= DisableMovment;
+        // RoomDebugger.OnHide -= EnableMovment;
         SettingPanel.OnSave -= ApplyMovementSettings;
         PerspectiveProperty.onPerspectiveMissing -= HalfCameraSensitiviy;
         PerspectiveProperty.onPerspectiveAppearing -= UnhalfCameraSensitiviy;
@@ -263,7 +254,7 @@ public class FPMovement : MonoBehaviour
         if (rb.useGravity == false) {
             InAir = !IsOnFloor();
         } else {
-            inCeiling = InAir = !IsOnFloor();
+            InAir = !IsOnFloor();
         }
     }
 
@@ -281,7 +272,7 @@ public class FPMovement : MonoBehaviour
         if (!kinematicMovement) {
             if (walkDelta.x != 0 || walkDelta.y != 0) rb.velocity = Vector3.Lerp(rb.velocity, dir, Time.deltaTime * 10f);
         } else {
-            rb.velocity = dir;
+            rb.velocity = new Vector3(dir.x, rb.velocity.y, dir.z);
         }
         UpdateWalking();
     }
@@ -365,11 +356,12 @@ public class FPMovement : MonoBehaviour
         float offset = .1f;
 
         //TODO: add a collider mask so that it can only collide with the floor.
-        hit = Physics.SphereCastAll(transform.position - new Vector3(0, -offset -radius * .1f), radius * .1f, Vector3.down, 1f);
+        hit = Physics.SphereCastAll(transform.position + transform.up * (radius + offset), radius, transform.up * -1, 1f);
         RaycastHit closest = default(RaycastHit);
         float _distance = Mathf.Infinity;
         for (int i = 0; i < hit.Length; i++)
         {
+            Debug.Log("hit object: " + hit[i].transform.name);
             // Debug.Log(hit[i].transform.name + " | "+ hit[i].distance);
             if (hit[i].distance < _distance && hit[i].distance != 0) {
                 _distance = hit[i].distance;
@@ -410,15 +402,17 @@ public class FPMovement : MonoBehaviour
         //setting max angle cap
         if (cameraPivot.localRotation.eulerAngles.x > 180)
         {
-            cameraPivot.localRotation = Quaternion.Euler( new Vector3(Mathf.Max(cameraPivot.rotation.eulerAngles.x, 360 - verticalAngle) , 0, 0));
+            cameraPivot.localRotation = Quaternion.Euler( new Vector3(Mathf.Max(cameraPivot.localRotation.eulerAngles.x, 360 - verticalAngle) , 0, 0));
         } else
         {
-            cameraPivot.localRotation = Quaternion.Euler(new Vector3(Mathf.Min(cameraPivot.rotation.eulerAngles.x, verticalAngle), 0, 0));
+            cameraPivot.localRotation = Quaternion.Euler(new Vector3(Mathf.Min(cameraPivot.localRotation.eulerAngles.x, verticalAngle), 0, 0));
         }
     }
 
     private void OnDrawGizmos() {
+        Gizmos.color = IsOnFloor() ? Color.green : Color.red;
         Gizmos.DrawLine(transform.position, transform.position + new Vector3(0,-distanceToFloor,0));
+        Gizmos.DrawLine(transform.position, transform.position + (transform.up * -1f));
         Gizmos.DrawSphere(transform.position + new Vector3(0,-distanceToFloor + transform.localScale.x * .5f ,0), transform.localScale.x * .5f);
     }
 }
