@@ -125,6 +125,10 @@ public class Room : MonoBehaviour
             mirrors[i].id = i;
             mirrors[i].Room = this;
         }
+        foreach(Rigidbody rb in GetAllObjectsInRoom<Rigidbody>()) {
+            rb.sleepThreshold = Mathf.Infinity;
+        }
+
     }
 
     public void LoadMirrors() {
@@ -324,6 +328,9 @@ public class Room : MonoBehaviour
             RoomObject roomObject = item as RoomObject;
             if (roomObject != null) roomObject.EventSender.Active = !revealChangeAfterCompletion;
         }
+        foreach(Rigidbody rb in GetAllObjectsInRoom<Rigidbody>()) {
+            rb.sleepThreshold = 0.14f;
+        }
 
         if (firstTimeEntering) {
             firstTimeEntering = false;
@@ -376,6 +383,10 @@ public class Room : MonoBehaviour
         {
             item.OnRoomLeave();
         }
+        foreach(Rigidbody rb in GetAllObjectsInRoom<Rigidbody>()) {
+            if (rb != player.Movement.RB) rb.sleepThreshold = Mathf.Infinity;
+        }
+
 
         InArea = false;
 
