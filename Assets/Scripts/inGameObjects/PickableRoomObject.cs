@@ -101,6 +101,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     public void Grab(Rigidbody connectedRigidBody)
     {        
+        OutlineEnabled = false;
         RigidBodyInfo.Save(rb);
         rb.drag = 100f;
         rb.mass = 0.1f;
@@ -135,6 +136,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
     ///</summary>
     public void Release()
     {
+        OutlineEnabled = true;
         ActivateRigidBody();
     }
 

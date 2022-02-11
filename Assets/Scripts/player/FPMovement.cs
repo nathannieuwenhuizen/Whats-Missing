@@ -71,6 +71,8 @@ public class FPMovement : MonoBehaviour
     [Header("Movement speeds")]
     [SerializeField]
     private float walkSpeed = 5;
+    public float WalkMultiplier { get; set;} = 1f;
+    
     [SerializeField]
     private float runSpeed = 10;
     [SerializeField]
@@ -265,9 +267,9 @@ public class FPMovement : MonoBehaviour
     {
         Vector3 dir = transform.TransformDirection(
             new Vector3(
-                walkDelta.x * (isRunning ? runSpeed : walkSpeed), 
+                walkDelta.x * (isRunning ? runSpeed : walkSpeed * WalkMultiplier), 
                 rb.velocity.y, 
-                walkDelta.y * (isRunning ? runSpeed : walkSpeed)
+                walkDelta.y * (isRunning ? runSpeed : walkSpeed * WalkMultiplier)
             ));
         if (!kinematicMovement) {
             if (walkDelta.x != 0 || walkDelta.y != 0) rb.velocity = Vector3.Lerp(rb.velocity, dir, Time.deltaTime * 10f);
@@ -349,7 +351,6 @@ public class FPMovement : MonoBehaviour
     ///Checks if the player is above ground. If the distance is 0 or lower than 0, it sticks to the ground. If not it returns false.
     ///</summary>
     private bool IsOnFloor() {
-        //if (inAir) return false;
         RaycastHit[] hit;
 
         float radius = transform.localScale.x * .5f;
@@ -361,8 +362,6 @@ public class FPMovement : MonoBehaviour
         float _distance = Mathf.Infinity;
         for (int i = 0; i < hit.Length; i++)
         {
-            Debug.Log("hit object: " + hit[i].transform.name);
-            // Debug.Log(hit[i].transform.name + " | "+ hit[i].distance);
             if (hit[i].distance < _distance && hit[i].distance != 0) {
                 _distance = hit[i].distance;
                 closest = hit[i];
