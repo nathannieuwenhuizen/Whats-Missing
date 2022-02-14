@@ -10,7 +10,7 @@ using System.IO;
 public class SaveData
 {
 
-    public static string FILE_NAME = "test";
+    public static string FILE_NAME = "test2";
     private static SaveData _current;
     public static SaveData current {
         get { 
@@ -23,20 +23,9 @@ public class SaveData
     }
     public int areaIndex = 0;
     public int roomIndex = 0;
-    public TVState[] tvStates;
-    public PickableRoomObjectCordinates[] cordinates;
-    public PickableRoomObjectCordinates playerCordinates;
 
     public static SaveData GetStateOfRoom(Room _room) {
         SaveData newState = new SaveData();
-        
-        newState.tvStates = UndoHandeler.GetAllTVStates(_room);
-        newState.cordinates = UndoHandeler.GetAllPickableRoomCordinates(_room);
-        PickableRoomObjectCordinates _playerCordinates = new PickableRoomObjectCordinates() {
-            position = _room.Player.transform.position,
-            rotation = _room.Player.transform.rotation,
-        };
-        newState.playerCordinates = _playerCordinates;
         return newState;
     }
 }

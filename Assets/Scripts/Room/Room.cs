@@ -197,14 +197,13 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Checks and apply the change to the room 
     ///</summary>
-    public void AddMirrorChange(Mirror selectedMirror, bool undoAble = true) {
+    public void AddMirrorChange(Mirror selectedMirror) {
         Change newChange = changeHandler.CreateChange(selectedMirror);
 
         if (newChange != null) {
             AddChangeInRoomObjects(newChange);
             changeHandler.Changes.Add(newChange);
             selectedMirror.IsOn = true;
-            if (undoAble) OnMakeRoomAction?.Invoke(this, newChange, true);
             CheckRoomCompletion();
 
         } else {
@@ -216,12 +215,11 @@ public class Room : MonoBehaviour
     /// <summary> 
     ///removes a mirror change updating the room and mirror
     ///</summary>
-    public void RemoveMirrorChange(Mirror selectedMirror, bool undoAble = true) {
+    public void RemoveMirrorChange(Mirror selectedMirror) {
         if (!selectedMirror.IsOn) return;
         selectedMirror.IsOn = false;
         CheckRoomCompletion();
         Change removedChange = changeHandler.Changes.Find(x => x.mirror == selectedMirror);
-        if (undoAble) OnMakeRoomAction?.Invoke(this, removedChange, false);
         if (!selectedMirror.isQuestion) {
             RemoveChangeInRoomObjects(removedChange);
             changeHandler.Changes.Remove(removedChange);
@@ -246,12 +244,7 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Checks if a mirror question is correct with the changes that exist inside the room.
     ///</summary>
-    public void CheckMirrorQuestion(Mirror selectedMirror, bool undoAble = true) {
-        if (undoAble) {
-            OnMakeRoomAction?.Invoke(this, new Change() {word = selectedMirror.Word, mirror = selectedMirror}, false, selectedMirror.PreviousWord);
-            selectedMirror.PreviousWord = selectedMirror.Word;
-        }
-
+    public void CheckMirrorQuestion(Mirror selectedMirror) {
         ChangeHandler checkChangeHandler = changeHandler;
         if (selectedMirror.roomIndexoffset == -1) {
             checkChangeHandler = area.Rooms[area.Rooms.IndexOf(this) - 1].ChangeHandler;
