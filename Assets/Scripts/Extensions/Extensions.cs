@@ -127,4 +127,24 @@ public static class Extensions
         }
     }
 
+
+    public static Vector3 MouseToWorldPosition(this Canvas m_Canvas) {
+        Plane m_CanvasPlane = new Plane();
+        m_CanvasPlane.Set3Points (
+            m_Canvas.transform.TransformPoint (new Vector3 (0, 0)), 
+            m_Canvas.transform.TransformPoint (new Vector3 (0, 1)),
+            m_Canvas.transform.TransformPoint (new Vector3 (1, 0))
+        );
+        // Raycast from the camera to the plane, to get the screen position on the canvas
+        Ray ray = Camera.main.ScreenPointToRay (new Vector3(Screen.width * .5f, Screen.height * .5f, 0));
+        Vector3 worldPosOnCanvas = Vector3.zero;
+        float rayHitDistance= 20f;
+        if (m_CanvasPlane.Raycast (ray, out rayHitDistance)) {
+            //RESULT: Here is what you what (in world space coordinate)
+            worldPosOnCanvas = ray.GetPoint (rayHitDistance * 0.9f);
+        }
+        return worldPosOnCanvas;
+    }
+
+
 }

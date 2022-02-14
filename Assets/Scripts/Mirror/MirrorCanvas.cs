@@ -22,6 +22,15 @@ public class MirrorCanvas : MonoBehaviour
     public delegate void MirrorcanvasEvent(string hintText, float duration);
     public static MirrorcanvasEvent OnShowHint;
 
+    private float letterPadding = 5f;
+
+    private Canvas canvas;
+    public Canvas Canvas {
+        get { 
+            return canvas;
+        }
+    }
+
     private string hintText = "";
 
     public List<Letter> letterObjects = new List<Letter>();
@@ -51,7 +60,7 @@ public class MirrorCanvas : MonoBehaviour
     }
 
     //ui elements
-    private int containerColloms = 9;
+    private int containerColloms = 13;
     private int containerRows = 2;
 
     public string Word {
@@ -97,23 +106,23 @@ public class MirrorCanvas : MonoBehaviour
     }
 
     private void Awake() {
+        canvas = GetComponent<Canvas>();
         IsInteractable = false;
     }
 
     public void UpdateAnswerTextPosition() {
-        float padding = 15f;
         if (selectedLetterObjects.Count == 0) return;
-        float totalWidth = -padding;
+        float totalWidth = -letterPadding;
         foreach(Letter letter in selectedLetterObjects) {
-            totalWidth += letter.size.width + padding;
+            totalWidth += letter.size.width + letterPadding;
         }
-        float cPos = -(totalWidth + padding + selectedLetterObjects[0].size.width) * .5f;
+        float cPos = -(totalWidth + letterPadding + selectedLetterObjects[0].size.width) * .5f;
         for(int i = 0; i < selectedLetterObjects.Count; i++) {
             if (i != 0) {
-                cPos += selectedLetterObjects[i].size.width *.5f + padding;
+                cPos += selectedLetterObjects[i].size.width *.5f + letterPadding;
             }
             selectedLetterObjects[i].MoveTo(answerText.localPosition + new Vector3(cPos, 0, 0));
-            cPos += selectedLetterObjects[i].size.width *.5f + padding;
+            cPos += selectedLetterObjects[i].size.width *.5f + letterPadding;
         }
     }
 
@@ -122,6 +131,7 @@ public class MirrorCanvas : MonoBehaviour
         if (isInteractable)
         {
             CheckKeyboardInput();
+            HighLightClosestLetter();
         }
     }
 
@@ -141,6 +151,26 @@ public class MirrorCanvas : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)) {
             mirror.Confirm();
+        }
+    }
+
+    private void HighLightClosestLetter() {
+        HighLightClosestLetterFromList(selectedLetterObjects);
+        HighLightClosestLetterFromList(letterObjects);
+    }
+    private void HighLightClosestLetterFromList(List<Letter> list) {
+        float length = Mathf.Infinity;
+        Letter focusedLetter = null;
+        foreach(Letter letter in list) {
+            float delta= Vector3.Distance(letter.transform.position,
+             canvas.MouseToWorldPosition());
+             if (delta < length) {
+                length = delta;
+                focusedLetter = letter;
+             }
+        }
+        if (focusedLetter != null) {
+            focusedLetter.transform.SetSiblingIndex(list.Count);
         }
     }
 
@@ -209,7 +239,7 @@ public class MirrorCanvas : MonoBehaviour
 
     public Letter InitializeLetter(string val, Vector3 pos) {
         Letter newLetter = GameObject.Instantiate(letterPrefab).GetComponent<Letter>();
-            
+            newLetter.gameObject.name ="letter: " + val;
             newLetter.onLetterClick += LetterClicked;
             newLetter.MirrorCanvas = this;
             newLetter.GetComponent<RectTransform>().SetParent(letterContainer);
@@ -235,7 +265,8 @@ public class MirrorCanvas : MonoBehaviour
             Debug.Log("letter drag end at index " + passedLetterIndex);
             if (passedLetterIndex == -1) {
                 AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
-                letter.Deselect();
+
+                letter.Deselect(true);
                 letter.PreClickSelected = false;
             } else {
                 AddLetterToAnswer(letter, passedLetterIndex);
@@ -272,29 +303,28 @@ public class MirrorCanvas : MonoBehaviour
             passedLetterIndex = 0;
         }
 
-        float padding = 15f;
         if (selectedLetterObjects.Count == 0) return;
 
-        float totalWidth = -padding;
+        float totalWidth = -letterPadding;
 
         foreach(Letter letter in selectedLetterObjects) {
-            totalWidth += letter.size.width + padding;
+            totalWidth += letter.size.width + letterPadding;
         }
-        totalWidth += draggedLetter.size.width + padding;
+        totalWidth += draggedLetter.size.width + letterPadding;
 
         bool passed = false;
-        float cPos = -(totalWidth + padding + selectedLetterObjects[0].size.width) * .5f;
+        float cPos = -(totalWidth + letterPadding + selectedLetterObjects[0].size.width) * .5f;
         for(int i = 0; i < selectedLetterObjects.Count; i++) {
             if (i != 0) {
-                cPos += selectedLetterObjects[i].size.width *.5f + padding;
+                cPos += selectedLetterObjects[i].size.width *.5f + letterPadding;
             }
             if (passed == false && passedLetterIndex == 0 && selectedLetterObjects[i].Position.x > draggedLetter.Position.x) {
                 passed = true;
                 passedLetterIndex = i;
-                cPos += draggedLetter.size.width *.5f + padding;
+                cPos += draggedLetter.size.width *.5f + letterPadding;
             }
             selectedLetterObjects[i].MoveTo(answerText.localPosition + new Vector3(cPos, 0, 0));
-            cPos += selectedLetterObjects[i].size.width *.5f + padding;
+            cPos += selectedLetterObjects[i].size.width *.5f + letterPadding;
         }
         if (passed == false && passedLetterIndex == 0) {
             passedLetterIndex = selectedLetterObjects.Count;

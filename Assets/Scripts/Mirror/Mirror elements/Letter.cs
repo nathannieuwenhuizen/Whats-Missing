@@ -20,6 +20,7 @@ public class Letter : MirrorButton, IPointerDownHandler
     private bool preClickSelected = false;
     public bool PreClickSelected { get => preClickSelected; set => preClickSelected = value; }
 
+    private float movingDuration = .5f;
 
     private bool pressed = false;
     public float pressedTime;
@@ -86,8 +87,9 @@ public class Letter : MirrorButton, IPointerDownHandler
         if (spawnPosition == Vector3.zero) spawnPosition = rt.localPosition;
     }
 
-    public void Deselect()
+    public void Deselect(bool withStartPositionAsign = false)
     {
+        if (withStartPositionAsign)startMovePos = rt.localPosition;
         selected = false;
         Color = DefaultColor;
         MoveTo(spawnPosition);
@@ -149,11 +151,10 @@ public class Letter : MirrorButton, IPointerDownHandler
     }
     private IEnumerator Dragging() {
         MirrorButton.BUTTON_DRAGGED = true;
-        Canvas canvas = MirrorCanvas.GetComponent<Canvas>();
+        Canvas canvas = MirrorCanvas.Canvas;
         while(pressed) {
-            yield return new WaitForEndOfFrame();
 
-            transform.position = GetCanvasPos(canvas);
+            transform.position = canvas.MouseToWorldPosition();
             transform.localPosition = new Vector3(
                 transform.localPosition.x,
                 transform.localPosition.y,
@@ -168,36 +169,21 @@ public class Letter : MirrorButton, IPointerDownHandler
                 Debug.Log("button up!");
                 LetterIsClicked();
             }
+            yield return new WaitForEndOfFrame();
         }
         MirrorButton.BUTTON_DRAGGED = false;
 
     }
 
-    private Vector3 GetCanvasPos(Canvas m_Canvas) {
-        Plane m_CanvasPlane = new Plane();
-        m_CanvasPlane.Set3Points (
-            m_Canvas.transform.TransformPoint (new Vector3 (0, 0)), 
-            m_Canvas.transform.TransformPoint (new Vector3 (0, 1)),
-            m_Canvas.transform.TransformPoint (new Vector3 (1, 0))
-        );
-        // Raycast from the camera to the plane, to get the screen position on the canvas
-        Ray ray = Camera.main.ScreenPointToRay (new Vector3(Screen.width * .5f, Screen.height * .5f, 0));
-        Vector3 worldPosOnCanvas = Vector3.zero;
-        float rayHitDistance= 20f;
-        if (m_CanvasPlane.Raycast (ray, out rayHitDistance)) {
-            //RESULT: Here is what you what (in world space coordinate)
-            worldPosOnCanvas = ray.GetPoint (rayHitDistance * 0.9f);
-        }
-        return worldPosOnCanvas;
-    }
 
     public Vector3 Position {
         get { return transform.localPosition; }
     }
 
     public void MoveTo( Vector3 pos) {
-        if (movingCoroutine != null && movingIndex < 1 && movingIndex > 0) {
-            StopCoroutine(movingCoroutine);
+        // in animation
+        if (movingCoroutine != null) StopCoroutine(movingCoroutine);
+        if (movingCoroutine != null && movingIndex < movingDuration && movingIndex > 0) {
             movingCoroutine =  StartCoroutine(Moving(pos));
             return;
         }
@@ -205,11 +191,10 @@ public class Letter : MirrorButton, IPointerDownHandler
         startMovePos = rt.localPosition;
         movingCoroutine =  StartCoroutine(Moving(pos));
     }
-    private IEnumerator Moving(Vector3 pos, float duration = .5f, float delay = 0) {
-        yield return new WaitForSeconds(delay);
-        while( movingIndex < duration) {
+    private IEnumerator Moving(Vector3 pos) {
+        while( movingIndex < movingDuration) {
             movingIndex += Time.unscaledDeltaTime;
-            rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, scaleAnimation.Evaluate(movingIndex/ duration));
+            rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, scaleAnimation.Evaluate(movingIndex/ movingDuration));
             yield return new WaitForEndOfFrame();
         }
         movingIndex = 1;
