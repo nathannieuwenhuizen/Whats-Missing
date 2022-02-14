@@ -20,6 +20,8 @@ public class Player : RoomObject
     private Transform animationView;
     [SerializeField]
     private Transform animationViewLevel2End;
+    [SerializeField]
+    private Hands hands;
 
     private CharacterAnimationPlayer characterAnimationPlayer;
     public CharacterAnimationPlayer CharacterAnimationPlayer {
@@ -34,6 +36,14 @@ public class Player : RoomObject
     private Transform handsPosition;
     public Transform HandsPosition {
         get { return handsPosition;}
+    }
+
+    public override float CurrentScale { get { return base.CurrentScale; } 
+        set {
+            base.CurrentScale = value;
+            hands.MassThreshhold = value;
+            movement.RB.mass = value;
+        }  
     }
 
     public delegate void Playerevent();
@@ -139,6 +149,28 @@ public class Player : RoomObject
     private IEnumerator PlayDeadFallSound() {
         yield return new WaitForSeconds(.6f);
         AudioHandler.Instance.PlaySound(SFXFiles.player_hits_ground, 1f);
+    }
+
+
+    //TODO: maybe move this to the fpmovement class
+    private void OnCollisionStay(Collision other) {
+        if (other.rigidbody != null) 
+            if (other.rigidbody.mass > hands.MassThreshhold) {
+                other.rigidbody.velocity = Vector3.zero;
+                movement.RB.mass = 0.01f;
+            }
+    }
+    private void OnCollisionEnter(Collision other) {
+        if (other.rigidbody != null) 
+            if (other.rigidbody.mass > hands.MassThreshhold) {
+                other.rigidbody.velocity = Vector3.zero;
+                movement.RB.mass = 0.01f;
+            }
+    }
+    private void OnCollisionExit(Collision other) {
+        if (other.rigidbody != null) 
+            if (other.rigidbody.mass > hands.MassThreshhold) 
+                movement.RB.mass = CurrentScale;
     }
 
     public void ShowHead() {

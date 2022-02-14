@@ -35,7 +35,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     public int id {get; set; }
 
     public virtual float CurrentScale { get; set; } = 1;
-
+    
     protected float largeScale = 2;
     public float LargeScale => largeScale;
 

@@ -165,8 +165,8 @@ public class Area : MonoBehaviour
                             mirror.IsOn = true;
                         }  else {
                             mirror.IsOn = roomLevel.roomInfo.questionMirror.isOn;
-                            if(mirror.IsOn && roomLevel.roomInfo.changeMirror.Length > 0) {
-                                mirror.PreAnswer = roomLevel.roomInfo.changeMirror[0].letters;
+                            if(mirror.IsOn) {
+                                mirror.PreAnswer = roomLevel.roomInfo.questionMirror.letters;
                             } else {
                                 mirror.Letters = roomLevel.roomInfo.questionMirror.letters;
                             }
@@ -174,9 +174,16 @@ public class Area : MonoBehaviour
                         mirror.changeType = roomLevel.roomInfo.questionMirror.changeType;
                         mirror.roomIndexoffset = roomLevel.roomInfo.questionMirror.roomIndexoffset;
                     } else {
-                        newRoom.SecondHintAnswer = mirror.PreAnswer = roomLevel.roomInfo.changeMirror[changeMirrorIndex].letters;
-                        mirror.changeType = roomLevel.roomInfo.changeMirror[changeMirrorIndex].changeType;
-                        mirror.roomIndexoffset = roomLevel.roomInfo.changeMirror[changeMirrorIndex].roomIndexoffset;
+                        MirrorData changeMirrorData = roomLevel.roomInfo.changeMirror[changeMirrorIndex];
+                        newRoom.SecondHintAnswer =  changeMirrorData.letters;
+                        mirror.IsOn = changeMirrorData.isOn;
+                        if (changeMirrorData.isOn) {
+                            mirror.PreAnswer = changeMirrorData.letters;
+                        } else {
+                            mirror.Letters = changeMirrorData.letters;
+                        }
+                        mirror.changeType = changeMirrorData.changeType;
+                        mirror.roomIndexoffset = changeMirrorData.roomIndexoffset;
                         changeMirrorIndex++;
                     }
                 }

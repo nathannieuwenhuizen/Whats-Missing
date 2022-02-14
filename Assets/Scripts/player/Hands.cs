@@ -10,13 +10,19 @@ public class Hands : MonoBehaviour
     private Vector3 oldPos = new Vector3();
     private Vector3 velocity = new Vector3();
 
-    public delegate void FocusedAction();
+    public delegate void FocusedAction(bool whiteColor);
     public static event FocusedAction OnFocus; 
     public static event FocusedAction OnUnfocus; 
 
     [SerializeField]
     private float pickupDistance = 3;
     private float shrinkPickupDistance;
+
+    private float massThreshhold = 1f;
+    public float MassThreshhold {
+        get { return massThreshhold;}
+        set { massThreshhold = value; }
+    }
 
     private bool shrinked = false;
 
@@ -43,8 +49,10 @@ public class Hands : MonoBehaviour
         //check objects to interact with.
         IInteractable interactableObj = FocussedObject<IInteractable>();
         if (interactableObj != default(IInteractable)) {
-            if (interactableObj.Gameobject.GetComponent<IPickable>() != default(IPickable)) {
-                Grab(interactableObj.Gameobject.GetComponent<IPickable>());
+            IPickable pickable = interactableObj.Gameobject.GetComponent<IPickable>();
+            if (pickable != default(IPickable) && pickable.TooHeavy(this) == false) {
+                Grab(pickable);
+
             } else if (interactableObj.Interactable){
                 interactableObj.Interact();
             }
@@ -118,6 +126,7 @@ public class Hands : MonoBehaviour
         while (holdingObject != null) {
             velocity = holdingObject.gameObject.transform.position - oldPos;
             oldPos = holdingObject.gameObject.transform.position;
+            if (holdingObject.TooHeavy(this)) Release();
             yield return new WaitForSecondsRealtime(.1f);
         }
     }
@@ -136,7 +145,7 @@ public class Hands : MonoBehaviour
     }
 
     private void Update() {
-        if( holdingObject == null) 
+        if(holdingObject == null) 
             UpdateFocusedObject();
     }
     private void UpdateFocusedObject() {
@@ -145,12 +154,22 @@ public class Hands : MonoBehaviour
             if (interactableObj != currentInteractable) {
                 if (currentInteractable != default(IInteractable))
                     currentInteractable.Focused = false;
+                if (interactableObj.Gameobject.GetComponent<IPickable>() != default(IPickable)) {
+                    if (interactableObj.Gameobject.GetComponent<IPickable>().TooHeavy(this)){
+                        interactableObj.FocusedColor = Color.red;
+                        interactableObj.Focused = true;
+                        currentInteractable = interactableObj;
+                        OnFocus?.Invoke(false);
+                        return;
+                    }
+                } 
+                interactableObj.FocusedColor = Color.white;
                 interactableObj.Focused = true;
                 currentInteractable = interactableObj;
-                OnFocus?.Invoke();
+                OnFocus?.Invoke(true);
             }
         } else if (currentInteractable != null) {
-            OnUnfocus?.Invoke();
+            OnUnfocus?.Invoke(true);
             currentInteractable.Focused = false;
             currentInteractable = default(IInteractable);
         }

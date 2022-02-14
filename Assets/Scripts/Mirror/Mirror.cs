@@ -117,7 +117,12 @@ public class Mirror: MonoBehaviour, IRoomObject
     public void Confirm()
     {
         if (isQuestion) room.CheckMirrorQuestion(this);
-        else if (isOn == false) room.AddMirrorChange(this);
+        else {
+            if (!isOn) room.AddMirrorChange(this); else {
+                room.RemoveMirrorChange(this);
+                room.AddMirrorChange(this);
+            }
+        }
     }
 
     public void ConfirmationSucceeded() {

@@ -10,6 +10,13 @@ public class InteractabelObject : RoomObject, IInteractable
 {
     private bool focused;
     private Outline outline;
+    public Outline Outline {
+        get { 
+            if (outline == null) outline = gameObject.AddComponent<Outline>();
+            return outline;
+        }
+        set { outline = value; }
+    }
     private float outlineWidth = 10;
     private float duration = .4f;
     private Coroutine focusedCoroutine;
@@ -36,6 +43,12 @@ public class InteractabelObject : RoomObject, IInteractable
         } 
     }
     public GameObject Gameobject { get => gameObject; }
+    private Color focusedColor = Color.white;
+    public Color FocusedColor { get => focusedColor; 
+    set{
+        focusedColor = value;
+        Outline.OutlineColor = value;
+    } }
 
     ///<summary>
     /// When the cursor hovers over the mesh of the object. It makes the outline appear.
@@ -43,10 +56,7 @@ public class InteractabelObject : RoomObject, IInteractable
     protected virtual void OnFocus() {
         if (!OutlineEnabled) return;
 
-        if (outline == null) {
-            outline = gameObject.AddComponent<Outline>();
-        }
-        outline.enabled = true;
+        Outline.enabled = true;
         if (focusedCoroutine != null) StopCoroutine(focusedCoroutine);
         focusedCoroutine = StartCoroutine(AnimateOutline(outlineWidth, false)); 
     }

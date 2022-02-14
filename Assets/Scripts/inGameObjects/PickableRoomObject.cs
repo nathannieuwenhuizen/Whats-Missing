@@ -85,6 +85,14 @@ public class PickableRoomObject : InteractabelObject, IPickable
         base.OnMissing();
     }
 
+    public override float CurrentScale { get { return base.CurrentScale; } 
+        set {
+            base.CurrentScale = value;
+            rb.mass = value;
+        }  
+    }
+
+
     protected override void OnFocus()
     {
         //todo: check if mass isnt too high with what the player can handle.
@@ -174,5 +182,8 @@ public class PickableRoomObject : InteractabelObject, IPickable
         ActivateRigidBody();
         base.OnFlippingRevertFinish();
     }
+
+    public bool TooHeavy(Hands hands) => hands.MassThreshhold < rb.mass;
+    
     #endregion
 }

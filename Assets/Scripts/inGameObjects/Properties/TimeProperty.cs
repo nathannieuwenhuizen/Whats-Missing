@@ -23,7 +23,6 @@ public class TimeProperty : Property
         Room.TimeScale = 0f;
         foreach(PickableRoomObject obj in room.GetAllObjectsInRoom<PickableRoomObject>()) {
             obj.RigidBody.isKinematic = true;
-            // obj.DeactivateRigidBody();
         }
 
         onTimeMissing?.Invoke();
