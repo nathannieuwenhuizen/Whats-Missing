@@ -15,7 +15,7 @@ public class RoomLevel : ScriptableObject
 [System.Serializable]
 public class RoomData {
     public bool revealChangesAfterFinish = true;
-    public MirrorData questionMirror;
+    public MirrorData[] questionMirror;
     public MirrorData[] changeMirror;
     [Header("Hints")]
     public float durationBeforeHint = 60f;

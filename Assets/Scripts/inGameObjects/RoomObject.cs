@@ -27,7 +27,6 @@ public class RoomObject : RoomEntity
     }
 
     protected virtual void Awake() {
-        Debug.Log("awake!!!");
         eventSender = new RoomObjectEventSender(this);
     }
 

@@ -164,15 +164,15 @@ public class Area : MonoBehaviour
                             mirror.PreAnswer = roomLevel.roomInfo.changeMirror[0].letters;
                             mirror.IsOn = true;
                         }  else {
-                            mirror.IsOn = roomLevel.roomInfo.questionMirror.isOn;
+                            mirror.IsOn = roomLevel.roomInfo.questionMirror[0].isOn;
                             if(mirror.IsOn) {
-                                mirror.PreAnswer = roomLevel.roomInfo.questionMirror.letters;
+                                mirror.PreAnswer = roomLevel.roomInfo.questionMirror[0].letters;
                             } else {
-                                mirror.Letters = roomLevel.roomInfo.questionMirror.letters;
+                                mirror.Letters = roomLevel.roomInfo.questionMirror[0].letters;
                             }
                         }
-                        mirror.changeType = roomLevel.roomInfo.questionMirror.changeType;
-                        mirror.roomIndexoffset = roomLevel.roomInfo.questionMirror.roomIndexoffset;
+                        mirror.changeType = roomLevel.roomInfo.questionMirror[0].changeType;
+                        mirror.roomIndexoffset = roomLevel.roomInfo.questionMirror[0].roomIndexoffset;
                     } else {
                         MirrorData changeMirrorData = roomLevel.roomInfo.changeMirror[changeMirrorIndex];
                         newRoom.SecondHintAnswer =  changeMirrorData.letters;
