@@ -151,12 +151,12 @@ public class PickableRoomObject : InteractabelObject, IPickable
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
-        ActivateRigidBody();
+        // ActivateRigidBody();
     }
     public override void OnRoomLeave()
     {
         base.OnRoomLeave();
-        DeactivateRigidBody();
+        // DeactivateRigidBody();
     }
 
     #region flipped

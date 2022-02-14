@@ -16,6 +16,7 @@ public class CharacterAnimationPlayer
     private Animator animator;
     private Transform animationView;
     private Player player;
+    private Transform cameraParent;
 
     public CharacterAnimationPlayer(Player _player, Animator _animator, Transform _animationView) {
         animator = _animator;
@@ -83,6 +84,7 @@ public class CharacterAnimationPlayer
         player.Movement.EnableWalk = false;
         player.Movement.RB.velocity = Vector3.zero;
 
+        cameraParent = player.Camera.transform.parent;
         player.Camera.transform.SetParent(animationView);
         player.Camera.transform.localPosition = animationView.localPosition;
         player.Camera.transform.localRotation = animationView.localRotation;
@@ -104,7 +106,7 @@ public class CharacterAnimationPlayer
 
     public void EndOfCutSceneAnimation() {
         OnCutsceneEnd?.Invoke();
-        player.Camera.transform.SetParent(player.transform);
+        player.Camera.transform.SetParent(cameraParent);
         player.Movement.EnableRotation = true;
         player.Movement.EnableWalk = true;
         player.StartCoroutine(player.Camera.AnimatingFieldOfView(60, AnimationCurve.EaseInOut(0,0,1,1), .5f));
