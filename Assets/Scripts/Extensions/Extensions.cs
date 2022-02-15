@@ -127,6 +127,20 @@ public static class Extensions
         }
     }
 
+    public static RaycastHit LerpWithBezier(this RaycastHit a,RaycastHit b, RaycastHit mid,  float interval) {
+        RaycastHit temp = a;
+        temp.point = CalculateQuadraticBezierPoint(interval, a.point, mid.point, b.point);
+        // temp.point = Vector3.LerpUnclamped(a.point, b.point, interval);
+        temp.normal = Vector3.SlerpUnclamped(a.normal, b.normal, interval);
+        return temp;
+    }
+    public static RaycastHit LerpUnclamped(this RaycastHit a,RaycastHit b,  float interval) {
+        RaycastHit temp = a;
+        temp.point = Vector3.LerpUnclamped(a.point, b.point, interval);
+        temp.normal = Vector3.SlerpUnclamped(a.normal, b.normal, interval);
+        return temp;
+    }
+
 
     public static Vector3 MouseToWorldPosition(this Canvas m_Canvas) {
         Plane m_CanvasPlane = new Plane();

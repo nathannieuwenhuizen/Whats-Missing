@@ -14,14 +14,16 @@ public class CharacterAnimationPlayer
 
     private Coroutine torsoCoroutine;
     private Animator animator;
+    private IKPass IKPass;
     private Transform animationView;
     private Player player;
     private Transform cameraParent;
 
-    public CharacterAnimationPlayer(Player _player, Animator _animator, Transform _animationView) {
+    public CharacterAnimationPlayer(Player _player, Animator _animator, Transform _animationView, IKPass _IKPass) {
         animator = _animator;
         animationView = _animationView;
         player = _player;
+        IKPass =_IKPass;
     }
 
     ///<summary>
@@ -80,11 +82,12 @@ public class CharacterAnimationPlayer
         OnCutsceneStart?.Invoke();
 
         SetTorsoAnimation(false);
+        IKPass.IKActive = false;
         player.Movement.EnableRotation = false;
         player.Movement.EnableWalk = false;
         player.Movement.RB.velocity = Vector3.zero;
 
-        cameraParent = player.Camera.transform.parent;
+        if (player.Camera.transform.parent != animationView) cameraParent = player.Camera.transform.parent;
         player.Camera.transform.SetParent(animationView);
         player.Camera.transform.localPosition = animationView.localPosition;
         player.Camera.transform.localRotation = animationView.localRotation;
@@ -113,5 +116,7 @@ public class CharacterAnimationPlayer
         player.Movement.CameraPivot.localPosition = new Vector3(0,player.Movement.CameraPivot.transform.localPosition.y,0);
         animator.applyRootMotion = false;
         animator.transform.localPosition = Vector3.zero;
+        IKPass.IKActive = true;
+
     }
 }

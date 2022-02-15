@@ -12,6 +12,8 @@ public class FPMovement : MonoBehaviour
     private Vector2 lerpedVelocity;
 
     private Player player;
+    [SerializeField]
+    private IKPass IKPass;
 
     private float cameraSensetivityFactor = 1f;
 
@@ -292,6 +294,8 @@ public class FPMovement : MonoBehaviour
         Vector2 animationDelta = new Vector2(delta.x, delta.z);
         lerpedVelocity = Vector2.Lerp(lerpedVelocity, animationDelta * (isRunning ? 1 : .5f), Time.deltaTime * 10f);
         player.CharacterAnimationPlayer.SetWalkValues(lerpedVelocity);
+
+        IKPass.SetHeadDirection(cameraPivot);
     }
 
     ///<summary>

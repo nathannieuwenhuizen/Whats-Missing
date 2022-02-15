@@ -31,6 +31,8 @@ public class Player : RoomObject
     private Animator animator;
     [SerializeField]
     private Animator animatorLevel2End;
+    [SerializeField]
+    private IKPass IKPass;
 
     [SerializeField]
     private Transform handsPosition;
@@ -79,7 +81,7 @@ public class Player : RoomObject
     {
         movement = GetComponent<FPMovement>();
         ApplyCameraSettings(Settings.GetSettings());
-        characterAnimationPlayer = new CharacterAnimationPlayer(this, animator, animationView);
+        characterAnimationPlayer = new CharacterAnimationPlayer(this, animator, animationView, IKPass);
     }
 
     public Player() {
