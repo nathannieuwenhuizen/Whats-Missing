@@ -6,6 +6,12 @@ public class IKPass : MonoBehaviour
 {
     [SerializeField]
     private FPMovement movement;
+
+    [SerializeField]
+    private Transform leftFeet;
+    [SerializeField]
+    private Transform rightFeet;
+    
     protected Animator animator;
     
     private bool ikActive = true;
@@ -15,6 +21,9 @@ public class IKPass : MonoBehaviour
     private IKHand rightHand;
     private IKHand leftHand;
 
+    private IKLeg rightLeg;
+    private IKLeg leftLeg;
+
     private float headDuration = .5f;
 
     void Awake () 
@@ -23,11 +32,15 @@ public class IKPass : MonoBehaviour
         animator = GetComponent<Animator>();
         rightHand = gameObject.AddComponent<IKHand>();
         leftHand = gameObject.AddComponent<IKHand>();
+        rightLeg = gameObject.AddComponent<IKLeg>();
+        leftLeg = gameObject.AddComponent<IKLeg>();
     }
 
     private void Start() {
         rightHand.Setup(transform,animator, movement.RB, true);
         leftHand.Setup(transform,animator, movement.RB, false);
+        rightLeg.Setup(transform,animator, movement.RB, rightFeet, true);
+        leftLeg.Setup(transform,animator, movement.RB, leftFeet, false);
     }
 
     public bool IKActive {
@@ -84,9 +97,11 @@ public class IKPass : MonoBehaviour
                 animator.SetLookAtPosition(lookPosition);
                 
                 // Set the right hand target position and rotation, if one has been assigned
-                rightHand.RaycastWall();
-                // leftHand.RaycastWall();
-                rightHand.updateIK();
+                rightHand.UpdateIK();
+
+                //update the legs inverse kinematic
+                rightLeg.UpdateIK();
+                leftLeg.UpdateIK();
                 // leftHand.updateIK();
                 
             }

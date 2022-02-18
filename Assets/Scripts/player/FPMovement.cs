@@ -9,6 +9,8 @@ using UnityEngine;
 ///</summary>
 public class FPMovement : MonoBehaviour
 {
+
+    public static float FOOT_RANGE = 1f;
     private Vector2 lerpedVelocity;
 
     private Player player;
@@ -361,7 +363,7 @@ public class FPMovement : MonoBehaviour
         float offset = .1f;
 
         //TODO: add a collider mask so that it can only collide with the floor.
-        hit = Physics.SphereCastAll(transform.position + transform.up * (radius + offset), radius, transform.up * -1, 1f);
+        hit = Physics.SphereCastAll(transform.position + transform.up * (radius + offset), radius, transform.up * -1, FOOT_RANGE);
         RaycastHit closest = default(RaycastHit);
         float _distance = Mathf.Infinity;
         for (int i = 0; i < hit.Length; i++)
@@ -416,6 +418,6 @@ public class FPMovement : MonoBehaviour
         Gizmos.color = IsOnFloor() ? Color.green : Color.red;
         Gizmos.DrawLine(transform.position, transform.position + new Vector3(0,-distanceToFloor,0));
         Gizmos.DrawLine(transform.position, transform.position + (transform.up * -1f));
-        Gizmos.DrawSphere(transform.position + new Vector3(0,-distanceToFloor + transform.localScale.x * .5f ,0), transform.localScale.x * .5f);
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0,-distanceToFloor + transform.localScale.x * .5f ,0), transform.localScale.x * .5f);
     }
 }

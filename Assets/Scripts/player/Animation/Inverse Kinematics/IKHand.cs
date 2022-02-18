@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IKHand: MonoBehaviour
+public class IKHand: MonoBehaviour, IIKLimb
 {
     private RaycastHit currentHandHit;
     private RaycastHit destinationHandHit;
@@ -17,8 +17,8 @@ public class IKHand: MonoBehaviour
 
             hasContact = value; 
 
-            if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-            moveCoroutine = StartCoroutine(TogglingHandIK(value ? 1 : 0));
+            if (weightCoroutine != null) StopCoroutine(weightCoroutine);
+            weightCoroutine = StartCoroutine(AnimateWeight(value ? 1 : 0));
         }
     }
 
@@ -31,11 +31,11 @@ public class IKHand: MonoBehaviour
         }
     }
 
-    private float handWeight = 0f;
-    public float HandWeight {
-        get { return handWeight;}
+    private float weight = 0f;
+    public float Weight {
+        get { return weight;}
         set { 
-            handWeight = value;
+            weight = value;
             animator.SetIKPositionWeight(IKGoal, value);
             animator.SetIKRotationWeight(IKGoal,Mathf.Sqrt(value));
         }
@@ -44,7 +44,7 @@ public class IKHand: MonoBehaviour
     public static Vector3 SHOULDER_OFFSET = new Vector3(0.5f, 4f, 0f);
     public static float HAND_RANGE = 1.5f;
 
-    private Coroutine moveCoroutine;
+    private Coroutine weightCoroutine;
     private Coroutine handHitCoroutine;
 
     private float contactDuration = .5f;
@@ -68,17 +68,19 @@ public class IKHand: MonoBehaviour
     }
 
 
-    public Vector3 getShoulderPos() {
+    public Vector3 GetRayCastPosition() {
         Vector3 temp = SHOULDER_OFFSET;
         if (IKGoal == AvatarIKGoal.LeftHand) temp.x *= -1;
         return animatorTransform.position + animatorTransform.TransformDirection(temp) + animatorTransform.forward;
     }
 
-    public void updateIK() {
+    public void UpdateIK() {
         if (animator == null) return;
-        HandWeight = HandWeight;
 
-        if (HandWeight != 0) {
+        RaycastWall();
+        Weight = Weight;
+
+        if (Weight != 0) {
 
             Vector3 delta = transform.InverseTransformPoint( currentHandHit.point + currentHandHit.normal * .2f);
             if (rigidBody.velocity.magnitude > 0.1f) 
@@ -93,11 +95,10 @@ public class IKHand: MonoBehaviour
     }
 
 
-    public void RaycastWall() {
+    private void RaycastWall() {
 
-        Ray ray = new Ray(getShoulderPos(), animatorTransform.forward);
+        Ray ray = new Ray(GetRayCastPosition(), animatorTransform.forward);
         RaycastHit hit;
-        Debug.Log("rb velocity: " + rigidBody.velocity.magnitude);
         if (Physics.Raycast(ray, out hit, HAND_RANGE) && rigidBody.velocity.magnitude < 8.5f)
         {    
             if (HasContact == false) currentHandHit = hit;
@@ -118,16 +119,16 @@ public class IKHand: MonoBehaviour
             HasContact = false;
         }
     }
-    private IEnumerator TogglingHandIK(float end) {
+    public IEnumerator AnimateWeight(float end) {
         float index = 0;
-        float start = HandWeight;
+        float start = Weight;
         AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
         while (index < contactDuration) {
             index += Time.deltaTime;
-            HandWeight = Mathf.Lerp(start,end, curve.Evaluate(index / contactDuration));
+            Weight = Mathf.Lerp(start,end, curve.Evaluate(index / contactDuration));
             yield return new WaitForEndOfFrame();
         }
-        HandWeight = end;
+        Weight = end;
     }
     private IEnumerator AnimateHitPosition(RaycastHit end) {
         float index = 0;
