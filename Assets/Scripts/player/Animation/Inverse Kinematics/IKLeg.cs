@@ -108,7 +108,6 @@ public class IKLeg : MonoBehaviour, IIKLimb
 
         // if (HasContact) Weight = animator.GetFloat(IKGoal == AvatarIKGoal.LeftFoot ? "IKLeftFootWeight" : "IKRightFootWeight");
         if (Weight != 0) {
-            if (IKGoal == AvatarIKGoal.LeftFoot) Debug.Log("weight: " + Weight);
             Weight = Weight;
             animator.SetIKPosition(IKGoal,currentFootHit.point + currentFootHit.normal * GroundOffset);
             animator.SetIKRotation(IKGoal,Quaternion.LookRotation(transform.forward, currentFootHit.normal));
