@@ -32,7 +32,7 @@ public class IKPass : MonoBehaviour
         animator = GetComponent<Animator>();
         rightHand = gameObject.AddComponent<IKHand>();
         leftHand = gameObject.AddComponent<IKHand>();
-        rightLeg = gameObject.AddComponent<IKLeg>();
+        rightLeg = gameObject.AddComponent<IKLeg>(); 
         leftLeg = gameObject.AddComponent<IKLeg>();
     }
 

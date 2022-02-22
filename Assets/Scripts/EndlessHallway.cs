@@ -57,8 +57,6 @@ public class EndlessHallway : MonoBehaviour
         Vector3 forward = player.transform.forward;
         Vector3 toOther = startChunk.transform.position - player.transform.position;
         float angle = Vector3.Angle(forward, toOther);
-        Debug.Log("angle: " + angle);
-        Debug.Log("dot: " + Vector3.Dot(forward, toOther));
         if (Vector3.Dot(forward, toOther) < 0)
         {
             return true;
