@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AmazingAssets.CurvedWorld;
+// using AmazingAssets.CurvedWorld;
 public class World : Property
 {
 
@@ -12,8 +12,8 @@ public class World : Property
     private Room room;
     [SerializeField]
     private Transform rotationPoint;
-    [SerializeField]
-    private CurvedWorldController curvedWorldController;
+    // [SerializeField]
+    // private CurvedWorldController curvedWorldController;
     [SerializeField]
     private Material curveMaterial;
     [SerializeField]
@@ -29,7 +29,7 @@ public class World : Property
     private bool flipped = false;
 
     private void Awake() {
-        curvedWorldController.enabled = false;
+        // curvedWorldController.enabled = false;
     }
 
     private void Update() {
@@ -61,13 +61,13 @@ public class World : Property
     }
     public override IEnumerator AnimateFlipping()
     {
-        curvedWorldController.enabled = true;
+        // curvedWorldController.enabled = true;
         ApplyCurveMaterial();
         StartCoroutine(AnimateCurvature(-Mathf.Abs(rotationPoint.position.x - room.Player.transform.position.x)));
         yield return new WaitForSeconds(rotationDuration * .8f);
         StartCoroutine(AnimateCurvature(0));
         yield return StartCoroutine(AnimateRotation(180));
-        curvedWorldController.enabled = false;
+        // curvedWorldController.enabled = false;
         RemoveCurveMaterial();
 
         yield return base.AnimateFlipping();
@@ -82,7 +82,7 @@ public class World : Property
 
     public override void OnFlippingRevert()
     {
-        curvedWorldController.enabled = false;
+        // curvedWorldController.enabled = false;
 
         SetupRotation();
         base.OnFlippingRevert();
@@ -133,13 +133,13 @@ public class World : Property
 
     public override IEnumerator AnimateFlippingRevert()
     {
-        curvedWorldController.enabled = true;
+        // curvedWorldController.enabled = true;
         ApplyCurveMaterial();
         StartCoroutine(AnimateCurvature(-Mathf.Abs(rotationPoint.position.x - room.Player.transform.position.x)));
         yield return new WaitForSeconds(rotationDuration * .8f);
         StartCoroutine(AnimateCurvature(0));
         yield return StartCoroutine(AnimateRotation(0));
-        curvedWorldController.enabled = false;
+        // curvedWorldController.enabled = false;
         RemoveCurveMaterial();
 
         yield return base.AnimateFlippingRevert();
@@ -163,13 +163,13 @@ public class World : Property
     }
     private IEnumerator AnimateCurvature(float endVal) {
         float index = 0;
-        float beignVal = CurveOffset;
+        // float beignVal = CurveOffset;
         while (index < rotationDuration) {
-            CurveOffset = Mathf.LerpUnclamped(beignVal, endVal, curve.Evaluate(index / rotationDuration));
+            // CurveOffset = Mathf.LerpUnclamped(beignVal, endVal, curve.Evaluate(index / rotationDuration));
             yield return new WaitForFixedUpdate();
             index += Time.deltaTime;
         }
-        CurveOffset = endVal;
+        // CurveOffset = endVal;
     }
 
     private float xRotation = 0;
@@ -185,12 +185,12 @@ public class World : Property
         }
     }
 
-    private float CurveOffset{
-        get => curvedWorldController.bendCurvatureOffset;
-        set {
-            curvedWorldController.bendCurvatureOffset = value;
-        }
-    }
+    // private float CurveOffset{
+    //     get => curvedWorldController.bendCurvatureOffset;
+    //     set {
+    //         curvedWorldController.bendCurvatureOffset = value;
+    //     }
+    // }
 
 
     private void Reset() {
