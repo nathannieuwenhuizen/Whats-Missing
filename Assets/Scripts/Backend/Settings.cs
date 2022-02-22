@@ -37,7 +37,6 @@ public struct Settings
     /// Saves the settings into the playerprefs
     ///</summary>
     public void Save() {
-        Debug.Log("save" + controlSettings.Camera_sensetivity);
         PlayerPrefs.SetFloat("Camera_sensetivity", controlSettings.Camera_sensetivity);
         PlayerPrefs.SetInt("Camera_x_invert", controlSettings.Camera_x_invert ? 1 : 0);
         PlayerPrefs.SetInt("Camera_y_invert", controlSettings.Camera_y_invert ? 1 : 0);

@@ -85,14 +85,7 @@ public class SceneLoader : MonoBehaviour
     }
 
     public void Quit() {
-        #if UNITY_EDITOR
-         UnityEditor.EditorApplication.isPlaying = false;
-         #elif UNITY_WEBPLAYER
-        string webplayerQuitURL = "http://google.com";
-        Application.OpenURL(webplayerQuitURL);
-         #else
-         Application.Quit();
-         #endif
+        QuitGame();
     }
     public static void QuitGame() {
         #if UNITY_EDITOR

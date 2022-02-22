@@ -28,7 +28,6 @@ public class IKPass : MonoBehaviour
 
     void Awake () 
     {
-        Debug.Log("awake");
         animator = GetComponent<Animator>();
         rightHand = gameObject.AddComponent<IKHand>();
         leftHand = gameObject.AddComponent<IKHand>();
@@ -47,7 +46,7 @@ public class IKPass : MonoBehaviour
         get { return ikActive;}
         set { 
             ikActive = value; 
-            leftHand.IsActive = value;
+            // leftHand.IsActive = value;
             rightHand.IsActive = value;
             StartCoroutine(TogglingHeadIK(value ? 1 : 0));
         }
@@ -77,15 +76,6 @@ public class IKPass : MonoBehaviour
         LookWeight = end;
     }
 
-
-
-    public Vector3 getShoulderPos(bool rightShoulder = true) {
-        Vector3 temp = IKHand.SHOULDER_OFFSET;
-        if (rightShoulder == false) temp.x *= -1;
-        return transform.position + transform.TransformDirection(temp) + transform.forward;
-    }
-
-    
     //a callback for calculating IK
     void OnAnimatorIK()
     {
@@ -98,11 +88,11 @@ public class IKPass : MonoBehaviour
                 
                 // Set the right hand target position and rotation, if one has been assigned
                 rightHand.UpdateIK();
+                leftHand.UpdateIK();
 
                 //update the legs inverse kinematic
                 rightLeg.UpdateIK();
                 leftLeg.UpdateIK();
-                // leftHand.updateIK();
                 
             }
         }
@@ -112,8 +102,5 @@ public class IKPass : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(lookPosition, .1f);
         Gizmos.color = Color.yellow;
-
-        Gizmos.DrawLine(getShoulderPos(true), getShoulderPos(true) + transform.forward * IKHand.HAND_RANGE);
-        Gizmos.DrawLine(getShoulderPos(false), getShoulderPos(false) + transform.forward * IKHand.HAND_RANGE);
     }
 }

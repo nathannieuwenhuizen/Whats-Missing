@@ -7,8 +7,6 @@ public class IKHand: MonoBehaviour, IIKLimb
     private RaycastHit currentHandHit;
     private RaycastHit destinationHandHit;
     private bool hasContact = false;
-
-    private Vector3 oldPos;
     
     public bool HasContact {
         get { return hasContact;}
@@ -49,6 +47,8 @@ public class IKHand: MonoBehaviour, IIKLimb
 
     private float contactDuration = .5f;
     private float handMovingDuration = .3f;
+    private float scale = 1f;
+    private bool grabbing = false;
 
     private float maxDistanceBetweenhits = .5f;
     private float minDistanceBetweenhits = .5f;
@@ -71,13 +71,14 @@ public class IKHand: MonoBehaviour, IIKLimb
     public Vector3 GetRayCastPosition() {
         Vector3 temp = SHOULDER_OFFSET;
         if (IKGoal == AvatarIKGoal.LeftHand) temp.x *= -1;
-        return animatorTransform.position + animatorTransform.TransformDirection(temp) + animatorTransform.forward;
+        return animatorTransform.position + (animatorTransform.TransformDirection(temp) + animatorTransform.forward) * scale;
     }
 
     public void UpdateIK() {
         if (animator == null) return;
 
-        RaycastWall();
+        if (!grabbing) RaycastWall();
+
         Weight = Weight;
 
         if (Weight != 0) {
@@ -88,7 +89,6 @@ public class IKHand: MonoBehaviour, IIKLimb
                 if (IKGoal == AvatarIKGoal.RightHand) delta.x = Mathf.Max(0f, delta.x);
                 else delta.x = Mathf.Min(0f, delta.x);
             } 
-            // Debug.Log("delta: " + delta);
             animator.SetIKPosition(IKGoal,transform.TransformPoint(delta));
             animator.SetIKRotation(IKGoal,Quaternion.LookRotation(-currentHandHit.normal + new Vector3(0,90,0), animatorTransform.up));
         }
@@ -96,6 +96,12 @@ public class IKHand: MonoBehaviour, IIKLimb
 
 
     private void RaycastWall() {
+
+        //left hand doesnt touch walls
+        if (IKGoal == AvatarIKGoal.LeftHand) {
+            HasContact = false;
+            return;
+        }
 
         Ray ray = new Ray(GetRayCastPosition(), animatorTransform.forward);
         RaycastHit hit;
@@ -134,6 +140,51 @@ public class IKHand: MonoBehaviour, IIKLimb
         }
         Weight = end;
     }
+
+    private void OnEnable() {
+        Player.OnPlayerShrink += OnPlayerShrink;
+        Player.OnPlayerUnShrink += OnPlayerNormal;
+        Door.OnPassingThrough += GrabDoorKnob;
+    }
+    private void OnDisable() {
+        Player.OnPlayerShrink -= OnPlayerShrink;
+        Player.OnPlayerUnShrink -= OnPlayerNormal;
+        Door.OnPassingThrough -= GrabDoorKnob;
+    }
+
+    private void OnPlayerShrink() {
+        scale = 0.1f;
+    }
+    private void OnPlayerNormal() {
+        scale = 1;
+    }
+
+    public void GrabDoorKnob(Door door) {
+
+        if (door.PlayerIsAtStartSide() && IKGoal == AvatarIKGoal.RightHand ||
+        !door.PlayerIsAtStartSide() && IKGoal == AvatarIKGoal.LeftHand) return;
+        StartCoroutine(GrabbingDoorKnob(door));
+    }
+    private IEnumerator GrabbingDoorKnob(Door door) {
+        grabbing = true;
+        HasContact = true;
+        RaycastHit doorKnobPos = currentHandHit;
+        bool atStart = door.PlayerIsAtStartSide();
+        Transform knob = door.GetKnob(atStart);
+        doorKnobPos.point = knob.position;
+        doorKnobPos.normal = (Camera.main.transform.position - knob.position).normalized;
+        yield return StartCoroutine(AnimateHitPosition(doorKnobPos));
+        while(Door.IN_WALKING_ANIMATION) {
+            Weight = 1;
+            knob = door.GetKnob(atStart);
+            currentHandHit.point = knob.position;
+            currentHandHit.normal = (Camera.main.transform.position - knob.position).normalized;
+            // doorKnobPos.normal = door.Knob.forward;
+            yield return new WaitForEndOfFrame();
+        }
+        grabbing = false;
+    }
+
     private IEnumerator AnimateHitPosition(RaycastHit end) {
         float index = 0;
         RaycastHit start = currentHandHit;
@@ -147,4 +198,13 @@ public class IKHand: MonoBehaviour, IIKLimb
         }
         currentHandHit = end;
     }
+
+    private void OnDrawGizmos() {
+        Gizmos.color = HasContact ? Color.green : Color.red;
+        Gizmos.DrawSphere(GetRayCastPosition(), .1f);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(GetRayCastPosition(), GetRayCastPosition() + transform.forward * IKHand.HAND_RANGE);
+    }
+
 }

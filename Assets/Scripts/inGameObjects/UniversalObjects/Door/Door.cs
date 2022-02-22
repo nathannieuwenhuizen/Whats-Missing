@@ -8,6 +8,15 @@ public class Door : InteractabelObject
     
     [SerializeField]
     public Vector3 point0, point1, point2 = new Vector3();
+    [SerializeField]
+    private Transform startKnob;
+    [SerializeField]
+    private Transform endKnob;
+
+    public virtual Transform GetKnob(bool start) {
+        if (start)return startKnob;
+        return endKnob;
+    }
 
     private Animator animator;
     public Animator DoorAnimator {
@@ -178,7 +187,11 @@ public class Door : InteractabelObject
         IN_WALKING_ANIMATION = false;
     }
 
-
+    public bool PlayerIsAtStartSide() {
+        float deltaStart = Vector3.Distance(Camera.main.transform.position, StartPos());
+        float deltaEnd = Vector3.Distance(Camera.main.transform.position, EndPos());
+        return deltaStart < deltaEnd;
+    }
 
 
     public virtual void UpdatePlayerWalkingPosition(float precentage, Player player) {
@@ -213,10 +226,10 @@ public class Door : InteractabelObject
     }
 
     public Vector3 StartPos() {
-        return transform.position + transform.forward * walkDistance - transform.right * 1f + new Vector3(0,-1,0);
+        return transform.position + transform.forward * walkDistance - transform.right * 1f + new Vector3(0,-1.1f,0);
     }
     public Vector3 EndPos() {
-        return transform.position - transform.forward * walkDistance - transform.right * 1f + new Vector3(0,-1,0);
+        return transform.position - transform.forward * walkDistance - transform.right * 1f + new Vector3(0,-1.1f,0);
     }
 
     public virtual void SetBezierPoints(Player player) {

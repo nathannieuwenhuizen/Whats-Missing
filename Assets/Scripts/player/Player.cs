@@ -45,6 +45,7 @@ public class Player : RoomObject
             base.CurrentScale = value;
             hands.MassThreshhold = value;
             movement.RB.mass = value;
+            Camera.nearClipPlane = .1f * value;
         }  
     }
 

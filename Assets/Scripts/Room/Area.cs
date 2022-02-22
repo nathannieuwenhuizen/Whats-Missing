@@ -325,9 +325,11 @@ public class Area : MonoBehaviour
                 Vector3 localPos = CurrentRoom.EndDoor.transform.InverseTransformPoint(player.transform.position);
                 player.transform.position = rooms[index - 1].EndDoor.transform.TransformPoint(localPos);
                 player.transform.Rotate(0,90,0);
-                if(directionalLight != null) directionalLight.animating = false;
-                if(directionalLight != null) directionalLight.RotateToMatchRoon(rooms[index - 1].transform);
-                if(directionalLight != null) directionalLight.animating = true;
+                if(directionalLight != null) {
+                    directionalLight.animating = false;
+                    directionalLight.RotateToMatchRoon(rooms[index - 1].transform);
+                    directionalLight.animating = true;
+                }
                 
                 CurrentRoom = rooms[index];
                 rooms[index - 1].EndDoor.GoingThrough();

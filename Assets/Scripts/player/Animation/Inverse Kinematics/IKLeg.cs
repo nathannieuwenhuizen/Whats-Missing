@@ -95,7 +95,22 @@ public class IKLeg : MonoBehaviour, IIKLimb
         } else {
             HasContact = false;
         }
+    }
 
+    private void OnEnable() {
+        Player.OnPlayerShrink += OnPlayerShrink;
+        Player.OnPlayerUnShrink += OnPlayerNormal;
+    }
+    private void OnDisable() {
+        Player.OnPlayerShrink -= OnPlayerShrink;
+        Player.OnPlayerUnShrink -= OnPlayerNormal;
+    }
+
+    private void OnPlayerShrink() {
+        GroundOffset = .1f;
+    }
+    private void OnPlayerNormal() {
+        GroundOffset = .35f;
     }
 
     public void UpdateIK() {

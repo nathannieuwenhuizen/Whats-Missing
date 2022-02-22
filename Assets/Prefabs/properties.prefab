@@ -740,36 +740,6 @@ MonoBehaviour:
   missingChangeEffect: 1
   mouseEmptyTexture: {fileID: 2800000, guid: 7bdd1921478a5814eb616a0f24cd9f99, type: 3}
   bigMouseTexture: {fileID: 2800000, guid: c3d3194e0cd18464e80b017791446b47, type: 3}
---- !u!1 &7322183236874046506
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5205380524128294225}
-  m_Layer: 0
-  m_Name: pivot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5205380524128294225
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7322183236874046506}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.1, y: 2, z: -10.4}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1516436566984082024}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7368211068829957251
 GameObject:
   m_ObjectHideFlags: 0
@@ -5587,73 +5557,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8bd614884cfff845b531005f1a4713d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &7681635869323416379
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1240975664420587217}
-  - component: {fileID: 5609139226515819903}
-  m_Layer: 0
-  m_Name: Curved World Controller
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1240975664420587217
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7681635869323416379}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1516436566984082024}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5609139226515819903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7681635869323416379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2651a4c7e50c3274bb02a1b6c03b054b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bendType: 27
-  bendID: 1
-  bendPivotPoint: {fileID: 5205380524128294225}
-  bendPivotPointPosition: {x: 14.1, y: 2, z: -10.4}
-  bendRotationCenter: {fileID: 0}
-  bendRotationCenterPosition: {x: 0, y: 0, z: 0}
-  bendRotationAxis: {x: 1, y: 0, z: 0}
-  bendRotationAxisType: 1
-  bendRotationCenter2: {fileID: 0}
-  bendRotationCenter2Position: {x: 0, y: 0, z: 0}
-  bendVerticalSize: 0
-  bendVerticalOffset: 0
-  bendHorizontalSize: 0
-  bendHorizontalOffset: 0
-  bendCurvatureSize: 5
-  bendCurvatureOffset: 0
-  bendAngle: 0.33
-  bendAngle2: 0
-  bendMinimumRadius: 4.14
-  bendMinimumRadius2: 0
-  bendRolloff: 44.45
-  disableInEditor: 0
-  manualUpdate: 0
-  isExpanded: 1
 --- !u!1 &7927795285530275704
 GameObject:
   m_ObjectHideFlags: 0
@@ -5780,9 +5683,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1240975664420587217}
-  - {fileID: 5205380524128294225}
+  m_Children: []
   m_Father: {fileID: 5639548462549908798}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5805,8 +5706,7 @@ MonoBehaviour:
   - enviroment
   missingChangeEffect: 1
   room: {fileID: 0}
-  rotationPoint: {fileID: 5205380524128294225}
-  curvedWorldController: {fileID: 5609139226515819903}
+  rotationPoint: {fileID: 0}
   curveMaterial: {fileID: 2100000, guid: 3af4936b947dcef49a5879f0e65859bf, type: 2}
   curveTransparentMaterial: {fileID: 2100000, guid: 1ef66045cd0786b4d91f56bc16d04e0d, type: 2}
   curveParticleMaterial: {fileID: 0}

@@ -30,6 +30,14 @@ public class PortalDoor : Door
         portal.IsActive = val;
     }
 
+    public override Transform GetKnob(bool start)
+    {
+        float delta = Vector3.Distance(Camera.main.transform.position, transform.position);
+        float deltaConnectedDoor = Vector3.Distance(Camera.main.transform.position, connectedDoor.transform.position);
+        if (delta < deltaConnectedDoor) return base.GetKnob(start);
+        else return connectedDoor.GetKnob(start);
+    }
+
     public override bool Locked { 
         get => base.Locked; 
         set {
