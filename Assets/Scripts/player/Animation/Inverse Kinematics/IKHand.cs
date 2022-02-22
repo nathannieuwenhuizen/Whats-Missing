@@ -101,6 +101,10 @@ public class IKHand: MonoBehaviour, IIKLimb
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, HAND_RANGE) && rigidBody.velocity.magnitude < 8.5f)
         {    
+            if (hit.transform.tag == Tags.Picked) {
+                HasContact = false;
+                return;
+            }
             if (HasContact == false) currentHandHit = hit;
 
             float handAngle = Vector3.Angle(transform.forward, -hit.normal);

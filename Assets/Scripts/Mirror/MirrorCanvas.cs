@@ -19,6 +19,11 @@ public class MirrorCanvas : MonoBehaviour
     [SerializeField]
     private CanvasGroup hintToggle2;
 
+    [SerializeField]
+    private TMP_FontAsset sentenceFont;
+    [SerializeField]
+    private TMP_FontAsset questionFont;
+
     public delegate void MirrorcanvasEvent(string hintText, float duration);
     public static MirrorcanvasEvent OnShowHint;
 
@@ -58,6 +63,15 @@ public class MirrorCanvas : MonoBehaviour
             GetComponent<CanvasGroup>().alpha = value ? 1 : .8f;
         }
     }
+    public TMP_FontAsset Font {
+        set { 
+            headerText.font = value;
+            foreach(Letter letter in selectedLetterObjects) 
+                letter.Text.font = value;
+            foreach(Letter letter in letterObjects) 
+                letter.Text.font = value;
+        }
+    }
 
     //ui elements
     private int containerColloms = 13;
@@ -82,7 +96,11 @@ public class MirrorCanvas : MonoBehaviour
             }
         }
     }
-    public void UpdateHeaderText(ChangeType changeType, int roomIndexOffset = 0) {
+
+    ///<summary>
+    /// Sets up the type of text in the header and sets the font type depending if the mirror is a question mirror or not.
+    ///</summary>
+    public void SetupText(ChangeType changeType, int roomIndexOffset = 0) {
         string header = "missing";
         string roomText = "";
         if (roomIndexOffset == -1) {
@@ -103,6 +121,8 @@ public class MirrorCanvas : MonoBehaviour
                 break;
         }
         HeaderText.text = "What's <b>" + header + "<b>" + roomText + "?";
+
+        Font = mirror.isQuestion ? questionFont : sentenceFont;
     }
 
     private void Awake() {
@@ -110,6 +130,9 @@ public class MirrorCanvas : MonoBehaviour
         IsInteractable = false;
     }
 
+    ///<summary>
+    /// Updates the letters of the answer psotiion to make it more centered.
+    ///</summary>
     public void UpdateAnswerTextPosition() {
         if (selectedLetterObjects.Count == 0) return;
         float totalWidth = -letterPadding;
@@ -135,6 +158,9 @@ public class MirrorCanvas : MonoBehaviour
         }
     }
 
+    ///<summary>
+    /// Checks and updates all the keyboard input the mirror canvas needs.
+    ///</summary>
     private void CheckKeyboardInput() {
         if (InputManager.KEYBOARD_ENABLED_MIRROR){
             foreach( Letter letter in letterObjects) {
@@ -154,10 +180,16 @@ public class MirrorCanvas : MonoBehaviour
         }
     }
 
+    ///<summary>
+    /// Fix for overlapping padding issue on the letters
+    ///</summary>
     private void HighLightClosestLetter() {
         HighLightClosestLetterFromList(selectedLetterObjects);
         HighLightClosestLetterFromList(letterObjects);
     }
+    ///<summary>
+    /// Fix for overlapping padding issue on the letters
+    ///</summary>
     private void HighLightClosestLetterFromList(List<Letter> list) {
         float length = Mathf.Infinity;
         Letter focusedLetter = null;

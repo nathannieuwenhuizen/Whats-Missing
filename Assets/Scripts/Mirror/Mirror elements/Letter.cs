@@ -36,6 +36,9 @@ public class Letter : MirrorButton, IPointerDownHandler
     private Vector3 startMovePos;
     [SerializeField]
     private TMP_Text text; 
+    public TMP_Text Text {
+        get { return text;}
+    }
     [SerializeField]
     private ParticleSystem clickParticle;
 
