@@ -15,7 +15,7 @@ public class AirProperty : Property
 
     public override void OnMissing()
     {
-        AudioHandler.Instance.MusicSource.Pause();
+        AudioHandler.Instance.PauseMusic();
         base.OnMissing();
         OnAirMissing?.Invoke();
     }
@@ -30,7 +30,7 @@ public class AirProperty : Property
     }
 
     public override void OnAppearing() {
-        AudioHandler.Instance.MusicSource.Play();
+        AudioHandler.Instance.ResumeMusic();
         OnAirAppearing?.Invoke();
         base.OnAppearing();
     }

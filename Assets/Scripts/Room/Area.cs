@@ -119,7 +119,6 @@ public class Area : MonoBehaviour
     {
         AudioListener.volume = 0;
         AudioHandler.Instance.FadeListener(1f);
-
         AudioHandler.Instance.PlayMusic(areaIndex == 0? MusicFiles.planetarium : MusicFiles.garden, .5f);
 
         player.transform.position = rooms[loadRoomIndex].StartDoor.EndPos();

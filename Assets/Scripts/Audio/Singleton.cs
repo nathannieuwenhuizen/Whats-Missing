@@ -10,9 +10,10 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
-            if (instance == null)
+            if (instance == null){
+                return default(T);
                 Debug.LogWarning("Singleton is not set, but being accessed!");
-
+            }
             return instance;
         }
         private set { instance = value; }
