@@ -22,7 +22,7 @@ public class SceneLoader : MonoBehaviour
     [SerializeField]
     private float animationDelay = 0f;
 
-    private void Awake() {
+    private void Start() {
         if (SceneLoader.ANIMATING) {
             SceneLoader.ANIMATING = false;
             StartCoroutine(LoadOut(() => {
@@ -52,16 +52,12 @@ public class SceneLoader : MonoBehaviour
         loadingIcon.gameObject.SetActive(false);
         isLoading = true;
         yield return StartCoroutine(FadeCanvasGroup(group, 1f, animationDuration, animationDelay));
+        loadingIcon.gameObject.SetActive(true);
         yield return new WaitForEndOfFrame();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
-
-        loadingIcon.gameObject.SetActive(true);
         while (!asyncLoad.isDone)
         {
-            yield return new WaitForSeconds(.2f);
-            // loadingSlider.value = asyncLoad.progress;
-            yield return new WaitForSeconds(.2f);
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
         isLoading = false;
     }
@@ -72,14 +68,10 @@ public class SceneLoader : MonoBehaviour
         isLoading = true;
         yield return new WaitForEndOfFrame();
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
-
         cornerLoadingIcon.gameObject.SetActive(true);
         while (!asyncLoad.isDone)
         {
-            yield return new WaitForSeconds(.2f);
-            // loadingSlider.value = asyncLoad.progress;
-            yield return new WaitForSeconds(.2f);
-            yield return null;
+            yield return new WaitForEndOfFrame();
         }
         isLoading = false;
     }
@@ -108,7 +100,6 @@ public class SceneLoader : MonoBehaviour
 
 
     private void GoToSecondLevel() {
-        Debug.Log("go to second levels");
         SaveData.current.areaIndex = 1;
         SaveData.current.roomIndex = 0;
         SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
@@ -126,7 +117,6 @@ public class SceneLoader : MonoBehaviour
         AudioListener.volume = 0;
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(.3f);
-        Debug.Log("load out!");
         AudioHandler.Instance.FadeListener(1);
         yield return StartCoroutine(FadeCanvasGroup(group, 0, .5f));
         callback();

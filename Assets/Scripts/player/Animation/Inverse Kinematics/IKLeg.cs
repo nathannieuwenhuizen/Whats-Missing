@@ -2,87 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IKLeg : MonoBehaviour, IIKLimb
+public class IKLeg : IKLimb
 {
-    private RaycastHit currentFootHit;
 
     private float GroundOffset = .35f;
-    private float contactDuration = .3f;
-
-    private AvatarIKGoal IKGoal = AvatarIKGoal.RightFoot;
-
-    private Transform animatorTransform;
-    private Animator animator;
-    private Rigidbody rigidBody;
     private Transform feetTransform;
 
-    [SerializeField]
-    private bool hasContact = false;
-    private Coroutine weightCoroutine;
-    public bool HasContact {
-        get { return hasContact;}
-        set { 
-            if (hasContact == value) return;
 
-            hasContact = value; 
-
-            if (weightCoroutine != null) StopCoroutine(weightCoroutine);
-            weightCoroutine = StartCoroutine(AnimateWeight(value ? 1 : 0));
-        }
-    }
-
-    private bool isActive = true;
-    public bool IsActive {
-        get => isActive;
-        set {
-            isActive = value;
-            if (value == false) HasContact = false;
-        }
-    }
-
-    private float weight = 0f;
-    public float Weight {
-        get { return weight;}
-        set { 
-            weight = value;
-            animator.SetIKPositionWeight(IKGoal, value);
-            animator.SetIKRotationWeight(IKGoal,value);
-        }
-    }
-
-
-    public Vector3 GetRayCastPosition()
+    public override Vector3 GetRayCastPosition()
     {
-         return  animator.GetIKPosition(IKGoal) - currentFootHit.normal * GroundOffset;
+         return  animator.GetIKPosition(IKGoal) - currentHit.normal * GroundOffset;
     }
 
     public Vector3 GetFeetPos() {
         return feetTransform.position;
     }
 
-    public void Setup(Transform _transform, Animator _animator, Rigidbody _rigidBody, bool rightFoot = true) {
-    }
     public void Setup(Transform _transform, Animator _animator, Rigidbody _rigidBody, Transform _feetTransform, bool rightFoot = true) {
-        animatorTransform = _transform;
-        animator = _animator;
-        rigidBody = _rigidBody;
+        base.Setup(_transform, _animator, _rigidBody);
+        contactDuration = .3f;
         feetTransform = _feetTransform;
 
         if (rightFoot == false) IKGoal = AvatarIKGoal.LeftFoot;
+        else  IKGoal = AvatarIKGoal.RightFoot;
         
-    }
-
-    public IEnumerator AnimateWeight(float end)
-    {
-        float index = 0;
-        float start = Weight;
-        AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
-        while (index < contactDuration) {
-            index += Time.deltaTime;
-            Weight = Mathf.Lerp(start,end, curve.Evaluate(index / contactDuration));
-            yield return new WaitForEndOfFrame();
-        }
-        Weight = end;
     }
 
     private void RayCastToGround() {
@@ -90,7 +33,7 @@ public class IKLeg : MonoBehaviour, IIKLimb
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, FPMovement.FOOT_RANGE) && rigidBody.velocity.magnitude < 8.5f && rigidBody.velocity.magnitude < .5f)
         {    
-            currentFootHit = hit;
+            currentHit = hit;
             HasContact = true;
         } else {
             HasContact = false;
@@ -113,19 +56,15 @@ public class IKLeg : MonoBehaviour, IIKLimb
         GroundOffset = .35f;
     }
 
-    public void UpdateIK() {
+    public override void UpdateIK() {
         if (animator == null) return;
 
 
-        // animator.SetIKPosition(IKGoal,currentFootHit.point + currentFootHit.normal * GroundOffset);
         RayCastToGround();
-        // Weight = 1;
-
-        // if (HasContact) Weight = animator.GetFloat(IKGoal == AvatarIKGoal.LeftFoot ? "IKLeftFootWeight" : "IKRightFootWeight");
         if (Weight != 0) {
             Weight = Weight;
-            animator.SetIKPosition(IKGoal,currentFootHit.point + currentFootHit.normal * GroundOffset);
-            animator.SetIKRotation(IKGoal,Quaternion.LookRotation(transform.forward, currentFootHit.normal));
+            animator.SetIKPosition(IKGoal,currentHit.point + currentHit.normal * GroundOffset);
+            animator.SetIKRotation(IKGoal,Quaternion.LookRotation(transform.forward, currentHit.normal));
         }
     }
 

@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+///<summary>
+/// Responsible for the IK update calls for the player character
+///</summary>
 public class IKPass : MonoBehaviour
 {
     [SerializeField]
