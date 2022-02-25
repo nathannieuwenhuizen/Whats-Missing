@@ -9,7 +9,6 @@ public class Lamp : InteractabelObject
 
     [SerializeField]
     private Transform cord;
-
     [SerializeField]
     private MeshRenderer emissionRenderer;
     

@@ -13,6 +13,8 @@ public class SFXInstance
     [HideInInspector]
     public AudioSource AudioSource;
     public AudioClip[] Clip;
+    // [HideInInspector]
+    public FMOD.GUID emitter;
 
     public float Volume {
         get { return AudioSource.volume;}

@@ -313,7 +313,6 @@ public class FPMovement : MonoBehaviour
         if (delta.magnitude > walkStepDistance){
             oldPos = transform.position;
             if (!player.IsMissing) {
-                // AudioHandler.Instance?.PlaySound(footstepFile, footstepFile == SFXFiles.player_footstep ? .05f : 1f);
                 float volume = FOOTSTEP_SFXFILE == SFXFiles.player_footstep_normal ? .05f : 1f;
                 float pitch = player.IsShrinked ? 1.5f :(player.IsEnlarged ? .5f : 1f);
                 if (FOOTSTEP_SFXFILE == SFXFiles.player_footstep_water) {

@@ -13,15 +13,25 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   soundEffectInstances:
-  - name: Player_jump
+  - name: event:/SFX/Player/Jump
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: 4eb8b9fa8673d024d9d48e650dbb5877, type: 3}
-  - name: Player_landing
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+  - name: event:/SFX/Player/Landing
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: a10110e30279b2a4f89350ca26e538c6, type: 3}
-  - name: Player_footstep
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+  - name: event:/SFX/Player/Footstep
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: ea07a3a804fcc774f8f50c8c5807437f, type: 3}
@@ -39,10 +49,20 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 5f54f3380d431aa409008eb033e86e52, type: 3}
     - {fileID: 8300000, guid: b227964f914ce4143bfa22d85c4dc00b, type: 3}
     - {fileID: 8300000, guid: 90aab06d8fec1044dbd6999739208554, type: 3}
-  - name: Wind_fall
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+  - name: event:/SFX/Player/Wind_fall
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: 604e94aeb18b1a044b1f549cbc897315, type: 3}
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
   - name: Stairs_footstep
     AudioSource: {fileID: 0}
     Clip:
@@ -51,58 +71,84 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 29243f6b7ddf59b4ca88dd2cca57c176, type: 3}
     - {fileID: 8300000, guid: 81a5c1057e6ef2843a94e8d5e65f1de6, type: 3}
     - {fileID: 8300000, guid: 6a8bb8894c5c9004c806d8aa81fc1c22, type: 3}
-  - name: Player_choking
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+  - name: event:/SFX/Player/Choking
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: d20707775b9a73c41a02e80b54992fc7, type: 3}
-  - name: Player_relief_gasp
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+  - name: event:/SFX/Player/Relief_gasp
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: a98e7553e32073f43b8a83c7134d856e, type: 3}
-  - name: Choke_die
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+  - name: event:/SFX/Player/Choke_die
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: 7091f09a1ab1aab48868f4f8b744415c, type: 3}
-  - name: Heartbeat
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+  - name: event:/SFX/Player/Heartbeat
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: 24d439c4138891746ada5ab16f015ee4, type: 3}
-  - name: Exhale
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+  - name: event:/SFX/Player/Exhale
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: 89bfe5c231438d04795562f0d5521189, type: 3}
-  - name: Person_hits_ground
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+  - name: event:/SFX/Player/Falling
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: 504efafaf4810cf49b330a8d4dad8234, type: 3}
-  - name: Player_cough
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+  - name: event:/SFX/Player/Coughing
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: 9c798f14b4a63544fa100fd70f209c38, type: 3}
-  - name: Player_grab
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+  - name: event:/SFX/Player/Grab
     AudioSource: {fileID: 0}
     Clip:
     - {fileID: 8300000, guid: f844493b9dae26842a0b213b139d648a, type: 3}
     - {fileID: 8300000, guid: bc06116a5f570734e99996ecc182933b, type: 3}
     - {fileID: 8300000, guid: d99ebe72df49a9d498ae50dcbde58971, type: 3}
     - {fileID: 8300000, guid: fd1a3b822511a704d915c2ca301b9d6f, type: 3}
-  - name: Player_footstep_grass
-    AudioSource: {fileID: 0}
-    Clip:
-    - {fileID: 8300000, guid: 683514dd11fff854fac72c1e49c21f57, type: 3}
-    - {fileID: 8300000, guid: 71bf012bea56a034d9b245e5b1d636c2, type: 3}
-    - {fileID: 8300000, guid: 1f00241867a92064ba357d85f2dec58d, type: 3}
-    - {fileID: 8300000, guid: 03ea9904db9591a4f9143f40a4af4e89, type: 3}
-    - {fileID: 8300000, guid: 28362963e9ea17b4ea638a2f55ceaf07, type: 3}
-  - name: Player_footstep_water
-    AudioSource: {fileID: 0}
-    Clip:
-    - {fileID: 8300000, guid: dfa7b1f7f7f927345a0cf88affd463fa, type: 3}
-    - {fileID: 8300000, guid: a20214711df0768408a41f204218ee3d, type: 3}
-    - {fileID: 8300000, guid: 5350493fed40c274a8e86e69720c08e6, type: 3}
-    - {fileID: 8300000, guid: 5903481a1fa2ddd40a528c80fe3c8486, type: 3}
-    - {fileID: 8300000, guid: eadd2cca5b9cdc94f93fccc6109cc08e, type: 3}
-    - {fileID: 8300000, guid: 385b82cda4dbda14daadd001bf8ec92b, type: 3}
-    - {fileID: 8300000, guid: ae3eaed834a0c904bb0bd8bb9ec60dcc, type: 3}
-    - {fileID: 8300000, guid: a1bbaa5dbbaf9d74b8f197493c07f7e9, type: 3}
+    emitter:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
   musicClips: []

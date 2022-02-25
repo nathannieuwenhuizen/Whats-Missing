@@ -29,7 +29,7 @@ public class AudioHandler : Singleton<AudioHandler>
     protected override void Awake()
     {
         base.Awake();
-        am = gameObject.AddComponent<UnityAudioManager>();
+        am = gameObject.AddComponent<FMODAudioManager>();
         am.Initialize(libraries);
     }
 
