@@ -56,7 +56,6 @@ public static class SFXFiles {
     public static string toggle_off = "event:/SFX/UI/Toggle_off";
     public static string slider_select = "event:/SFX/UI/Slider_select";
     public static string windows_error = "event:/SFX/UI/Windows_error";
-    public static string hintbutton_show = "";
 
     //Garden
     public static string sun_burning = "event:/SFX/Environment/Garden/Sun_burning";

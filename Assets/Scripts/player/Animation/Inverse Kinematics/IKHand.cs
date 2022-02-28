@@ -43,12 +43,16 @@ public class IKHand: IKLimb
 
         if (Weight != 0) {
 
+            animator.SetIKPositionWeight(IKGoal, Weight);
+            animator.SetIKRotationWeight(IKGoal,Mathf.Sqrt(Weight));
+            
             Vector3 delta = transform.InverseTransformPoint( currentHit.point + currentHit.normal * .2f);
             if (rigidBody.velocity.magnitude > 0.1f) 
             {
                 if (IKGoal == AvatarIKGoal.RightHand) delta.x = Mathf.Max(0f, delta.x);
                 else delta.x = Mathf.Min(0f, delta.x);
             } 
+
             animator.SetIKPosition(IKGoal,transform.TransformPoint(delta));
             animator.SetIKRotation(IKGoal,Quaternion.LookRotation(-currentHit.normal + new Vector3(0,90,0), animatorTransform.up));
         }

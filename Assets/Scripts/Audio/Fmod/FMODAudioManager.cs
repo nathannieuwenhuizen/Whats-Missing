@@ -6,6 +6,15 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
 {
     public float MusicVolume { get; set; } = 1;
     public float pitchMultiplier { get; set; } = 1;
+    private float audioListenerVolume = 1f;
+    public float AudioListenerVolume { 
+        get{
+            return audioListenerVolume;
+        } set {
+            audioListenerVolume = Mathf.Clamp(value, 0, 1);
+            UpdateBanks();
+        } }
+
     public SFXInstance Music;
 
     public void FadeMusic(MusicFiles newMusic, float duration, bool waitForOtherMusictoFadeOut = false)
@@ -29,6 +38,7 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
 
     public void Initialize(AudioLibrary[] libraries)
     {
+        AudioListenerVolume = 1f;
         
     }
 
@@ -43,12 +53,13 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
 
     private void OnDisable() {
         AudioSetting.OnSoundAltered -= UpdateBanks;
+        Music.Stop(true);
     }
 
     public void UpdateBanks() {
-        RuntimeManager.GetBus("bus:/SFX").setVolume(AudioSetting.SFX);
+        RuntimeManager.GetBus("bus:/SFX").setVolume(AudioSetting.SFX * audioListenerVolume);
         RuntimeManager.GetBus("bus:/UI").setVolume(AudioSetting.SFX);
-        RuntimeManager.GetBus("bus:/Music").setVolume(AudioSetting.MUSIC);
+        RuntimeManager.GetBus("bus:/Music").setVolume(AudioSetting.MUSIC * audioListenerVolume);
     }
 
     public void PauseMusic()
@@ -90,7 +101,7 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
     {
         FMOD.Studio.EventInstance instance = RuntimeManager.CreateInstance(key);
         float test = 1f;
-        instance.getParameterByName("test", out test);
+        instance.setParameterByName("test", test);
         if (pitch != 1) instance.setPitch(pitch);
         if (volume != 1) instance.setVolume(volume);
         instance.start();
@@ -129,4 +140,24 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
     {
         
     }
+
+        private Coroutine audioListenerCoroutine;
+
+    public void FadeListener(float val, float duration = 0.5F)
+    {
+        if (audioListenerCoroutine != null) StopCoroutine(audioListenerCoroutine);
+        audioListenerCoroutine = StartCoroutine(FadingListener(val, duration));    
+    }
+
+    public IEnumerator FadingListener(float val, float duration = .5f) {
+        float start = AudioListenerVolume;
+        float index = 0;
+        while ( index < duration) {
+            AudioListenerVolume = Mathf.Lerp(start, val , index / duration);
+            index += Time.unscaledDeltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        AudioListenerVolume = val;
+    }
+
 }

@@ -28,6 +28,7 @@ public class FireSpread : MonoBehaviour, ITriggerArea
 
     private void OnDisable() {
         OnFireSpreadExit?.Invoke(this);
+        if (fireSound != null) fireSound.Stop(true);
     }
 
     public void OnAreaExit(Player player)

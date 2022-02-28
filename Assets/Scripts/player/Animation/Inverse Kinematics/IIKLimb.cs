@@ -60,8 +60,6 @@ public abstract class IKLimb : MonoBehaviour, IIKHumanLimb
         get { return weight;}
         set { 
             weight = value;
-            animator.SetIKPositionWeight(IKGoal, value);
-            animator.SetIKRotationWeight(IKGoal,Mathf.Sqrt(value));
         }
     }
 

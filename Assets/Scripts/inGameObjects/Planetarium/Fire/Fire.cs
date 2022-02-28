@@ -48,6 +48,7 @@ public class Fire : RoomObject
         WarmthProperty.OnWarmthAppearing -= SetFireOn;
         AirProperty.OnAirMissing -= SetFireOff;
         AirProperty.OnAirAppearing -= SetFireOn;
+        if (fireSound != null) fireSound.Stop(true);
     }
 
     public override void OnRoomEnter()

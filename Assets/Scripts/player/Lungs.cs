@@ -142,8 +142,8 @@ public class Lungs : MonoBehaviour
 
     private void EndBurning() {
         burnIndex = 0;
-        if (burnSFX != null) burnSFX.AudioSource.Stop();
-        if (playerVoiceBurnSFX != null) playerVoiceBurnSFX.AudioSource.Stop();
+        if (burnSFX != null) burnSFX.Stop();
+        if (playerVoiceBurnSFX != null) playerVoiceBurnSFX.Stop();
         if (burnCoroutine != null) {
             StopCoroutine(burnCoroutine);
         }
@@ -157,7 +157,7 @@ public class Lungs : MonoBehaviour
         player.CharacterAnimationPlayer.SetTorsoAnimation(false);
 
 
-        if (chokeSFX != null) chokeSFX.AudioSource.Stop();
+        if (chokeSFX != null) chokeSFX.Stop();
         if (chokeCoroutine != null) {
             StopCoroutine(chokeCoroutine);
         }
@@ -189,6 +189,9 @@ public class Lungs : MonoBehaviour
 
         AirProperty.OnAirMissing -= StartChoking;
         AirProperty.OnAirAppearing -= GaspingForAir;
+        if (chokeSFX != null) chokeSFX.Stop(true);
+        if (burnSFX != null) burnSFX.Stop(true);
+        if (playerVoiceBurnSFX != null) playerVoiceBurnSFX.Stop(true);
     }
 }
 

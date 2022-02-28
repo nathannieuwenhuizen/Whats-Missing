@@ -63,6 +63,9 @@ public class IKLeg : IKLimb
         RayCastToGround();
         if (Weight != 0) {
             Weight = Weight;
+            animator.SetIKPositionWeight(IKGoal, Weight);
+            animator.SetIKRotationWeight(IKGoal,Mathf.Sqrt(Weight));
+
             animator.SetIKPosition(IKGoal,currentHit.point + currentHit.normal * GroundOffset);
             animator.SetIKRotation(IKGoal,Quaternion.LookRotation(transform.forward, currentHit.normal));
         }

@@ -117,7 +117,7 @@ public class Area : MonoBehaviour
     
     void Start()
     {
-        AudioListener.volume = 0;
+        AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
         AudioHandler.Instance.FadeListener(1f);
         AudioHandler.Instance.PlayMusic(areaIndex == 0? MusicFiles.planetarium : MusicFiles.garden, .5f);
 
@@ -133,8 +133,6 @@ public class Area : MonoBehaviour
             BlackScreenOverlay.START_COLOR = startColor;
             OnRespawn?.Invoke();
         }
-        Debug.Log("save progress " + rooms.IndexOf(currentRoom));
-
     }
 
     ///<summary>

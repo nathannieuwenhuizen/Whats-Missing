@@ -41,13 +41,13 @@ public class Fountain : RoomObject
         if (waterSound == null) {
             waterSound =  AudioHandler.Instance.Play3DSound(SFXFiles.fountain, transform, .2f, 1f, true, true, 30);
         }
-        waterSound.AudioSource.Play();
+        waterSound.Play();
     }
     public override void OnRoomLeave()
     {
         base.OnRoomLeave();
         if (waterSound != null)
-            waterSound.AudioSource.Play();
+            waterSound.Pause();
 
     }
     
@@ -65,7 +65,9 @@ public class Fountain : RoomObject
 
     private void OnDisable() {
         Wind.OnWindEnlarged -= FasterWind;
-        Wind.OnWindNormal -= NormalWind;
+        Wind.OnWindNormal -= NormalWind;        
+        if (waterSound != null)
+            waterSound.Stop(true);
 
     }
 

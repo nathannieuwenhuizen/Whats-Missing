@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class WaterArea : MonoBehaviour, ITriggerArea
 {
-        public bool InsideArea { get; set;} = false;
+    public bool InsideArea { get; set;} = false;
+    public static bool IN_WATER = false;
 
+    private void OnDisable() {
+        IN_WATER = false;
+    }
     public void OnAreaEnter(Player player)
     {
-        FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_water;
+        IN_WATER = true;
+        // FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_water;
     }
 
     public void OnAreaExit(Player player)
     {
-        FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
+        IN_WATER = false;
+        // FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
     }
 
 }

@@ -28,7 +28,7 @@ public class SceneLoader : MonoBehaviour
             StartCoroutine(LoadOut(() => {
             }));
         } else {
-            AudioListener.volume = 1;
+            AudioHandler.Instance.AudioManager.AudioListenerVolume = 1;
         }
     }
 
@@ -114,7 +114,7 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator LoadOut(Action callback)
     {
         group.alpha = 1;
-        AudioListener.volume = 0;
+        AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(.3f);
         AudioHandler.Instance.FadeListener(1);

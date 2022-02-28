@@ -370,7 +370,6 @@ public class MirrorCanvas : MonoBehaviour
         hintText = _hintText;
         hintToggle.interactable = true;
         hintToggle.blocksRaycasts = true;
-        AudioHandler.Instance.Play3DSound(SFXFiles.hintbutton_show, transform);
         StartCoroutine(hintToggle.FadeCanvasGroup(1f, 1f, 0f));
     }
 
@@ -380,7 +379,6 @@ public class MirrorCanvas : MonoBehaviour
         hintToggle2.interactable = true;
         hintToggle2.blocksRaycasts = true;
         hintToggle2.GetComponent<Button>().onClick.AddListener(HighlightAnswer);
-        AudioHandler.Instance.Play3DSound(SFXFiles.hintbutton_show, transform);
         StartCoroutine(hintToggle2.FadeCanvasGroup(1f, 1f, 0f));
     }
     public void HighlightAnswer() {

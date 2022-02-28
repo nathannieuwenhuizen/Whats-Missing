@@ -9,8 +9,11 @@ using UnityEngine;
 ///</summary>
 public class FPMovement : MonoBehaviour
 {
-
+    ///<summary>
+    /// Range of the foot on the ground beofre it consider itself in the air
+    ///</summary>
     public static float FOOT_RANGE = 1f;
+    public bool on_grass = false;
     private Vector2 lerpedVelocity;
 
     private Player player;
@@ -89,13 +92,20 @@ public class FPMovement : MonoBehaviour
     public bool InAir {
         get { return inAir;}
         set { 
+            if (inAir == value) return;
             inAir = value; 
             player.CharacterAnimationPlayer.SetBool("inAir", inAir);
+            if (value) {
+                if (windCoroutine != null) StopCoroutine(windCoroutine);
+                windCoroutine = StartCoroutine(MakeWindNoices());
+            }
         }
     }
 
     private bool inCeiling = false;
     private int verticalAngle = 80;
+
+    private Coroutine windCoroutine;
 
     private Vector2 walkDelta = new Vector2();
     private Vector2 mouseDelta = new Vector2();
@@ -136,7 +146,6 @@ public class FPMovement : MonoBehaviour
         }
         
         InAir = true;
-        StartCoroutine(MakeWindNoices());
         AudioHandler.Instance?.PlaySound(SFXFiles.player_jump, .1f);
         if (GLOBAL_GRAVITY < 0) {
             rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
@@ -150,12 +159,15 @@ public class FPMovement : MonoBehaviour
     ///</summary>
     private IEnumerator MakeWindNoices() {
         bool windEffectEnabled = false;
-        while (InAir)
+        SFXInstance windSound = AudioHandler.Instance.PlaySound(SFXFiles.wind_fall, .5f, 1, true);
+        windSound.Pause();
+        yield return new WaitForSeconds(1f);
+        while (InAir && EnableWalk)
         {
-            if (rb.velocity.y < -20f && windEffectEnabled == false){
+            if (rb.velocity.y < -10f && windEffectEnabled == false){
                 windEffectEnabled = true;
-                AudioHandler.Instance.PlaySound(SFXFiles.wind_fall, .5f, 1, true);
                 windParticles.Play();
+                windSound.Play();
             }
 
             if (windEffectEnabled) {
@@ -164,7 +176,7 @@ public class FPMovement : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         windParticles.Stop();
-        AudioHandler.Instance.StopSound(SFXFiles.wind_fall);
+        if (windSound != null) windSound.Stop(true);
     }
 
     protected void DisableMovment() {
@@ -174,14 +186,6 @@ public class FPMovement : MonoBehaviour
     protected void EnableMovment() {
         EnableWalk = true;
         EnableRotation = true;
-    }
-
-    private void OnCollisionEnter(Collision other) {        
-        if (inAir && other.gameObject.tag != Tags.Picked) {
-            InAir = false;
-            if (!player.IsMissing) AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
-            oldPos = transform.position;
-        }
     }
 
     private void FixedUpdate() {
@@ -313,18 +317,26 @@ public class FPMovement : MonoBehaviour
         if (delta.magnitude > walkStepDistance){
             oldPos = transform.position;
             if (!player.IsMissing) {
-                float volume = FOOTSTEP_SFXFILE == SFXFiles.player_footstep_normal ? .05f : 1f;
-                float pitch = player.IsShrinked ? 1.5f :(player.IsEnlarged ? .5f : 1f);
-                if (FOOTSTEP_SFXFILE == SFXFiles.player_footstep_water) {
-                    pitch = .5f;
-                    volume = .2f;
-                }
-                AudioHandler.Instance?.Play3DSound(FOOTSTEP_SFXFILE, transform, volume, pitch, false, true, 50);
+                // float volume = FOOTSTEP_SFXFILE == SFXFiles.player_footstep_normal ? .05f : 1f;
+                // float pitch = player.IsShrinked ? 1.5f :(player.IsEnlarged ? .5f : 1f);
+                // if (FOOTSTEP_SFXFILE == SFXFiles.player_footstep_water) {
+                //     pitch = .5f;
+                //     volume = .2f;
+                // }
+                SFXInstance footSound = AudioHandler.Instance?.Play3DSound(FOOTSTEP_SFXFILE, transform, 1, 1, false, true, 50);
+                footSound.FMODInstance.setParameterByName(FMODParams.GROUNDPARAM, GetGroundMaterial());
                 if (FOOTSTEP_SFXFILE != SFXFiles.player_footstep_normal) {
                     waterSplash.Emit(1);
                 }
             }
         }
+    }
+
+    public float GetGroundMaterial() {
+        if (WaterArea.IN_WATER) {
+            return 2;
+        } else if (on_grass) return 1;
+        return 0;
     }
 
 
@@ -381,12 +393,28 @@ public class FPMovement : MonoBehaviour
         }
     }
 
+
+    #region  collision
+    private void OnCollisionEnter(Collision other) {  
+              
+        if (inAir && other.gameObject.tag != Tags.Picked) {
+            InAir = false;
+            if (!player.IsMissing) AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
+            oldPos = transform.position;
+        }
+        if (other.gameObject.tag == Tags.Environment_GRASS) on_grass = true;
+    }
+
     private void OnCollisionExit(Collision other) {
         if (IsOnFloor() == false) {
             InAir = true;
             StartCoroutine(MakeWindNoices());
+
         }
+        if (other.gameObject.tag == Tags.Environment_GRASS) on_grass = false;
     }
+
+    #endregion
 
     ///<summary>
     ///Updates the camera and player rotation based on the delta of input.

@@ -72,4 +72,12 @@ public interface IAudioManager {
     ///Internal enumerator that fades a AudooSource clip.
     ///</summary>
     public IEnumerator FadeMusicVolume( float end, float duration);
+
+    ///<summary>
+    /// Fades the ingame SFX and menu to open/close the pause men
+    ///</summary>
+    public void FadeListener(float val, float duration = .5f);
+    public IEnumerator FadingListener(float val, float duration = .5f);
+    public float AudioListenerVolume {get; set;}
+
 }

@@ -17,6 +17,10 @@ public class UnityAudioManager : MonoBehaviour, IAudioManager
     }
 
     public float pitchMultiplier { get; set; } = 1f;
+    public float AudioListenerVolume {
+        get { return AudioListener.volume; }
+        set { AudioListener.volume = value; }
+    }
 
     public SFXInstance GetSFXInstance(string key)
     {
@@ -226,5 +230,23 @@ public class UnityAudioManager : MonoBehaviour, IAudioManager
     public IEnumerator FadeMusicVolume(float end, float duration)
     {
         yield return FadeVolume(MusicSource, MusicSource.volume, end, duration);
+    }
+    private Coroutine audioListenerCoroutine;
+
+    public void FadeListener(float val, float duration = 0.5F)
+    {
+        if (audioListenerCoroutine != null) StopCoroutine(audioListenerCoroutine);
+        audioListenerCoroutine = StartCoroutine(FadingListener(val, duration));    
+    }
+
+    public IEnumerator FadingListener(float val, float duration = .5f) {
+        float start = AudioListenerVolume;
+        float index = 0;
+        while ( index < duration) {
+            AudioListenerVolume = Mathf.Lerp(start, val , index / duration);
+            index += Time.unscaledDeltaTime;
+            yield return new WaitForEndOfFrame();
+        }
+        AudioListenerVolume = val;
     }
 }

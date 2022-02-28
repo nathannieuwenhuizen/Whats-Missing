@@ -7,7 +7,6 @@ public class AudioHandler : Singleton<AudioHandler>
 {
 
     private IAudioManager am;
-    private Coroutine audioListenerCoroutine;
 
     [SerializeField]
     private AudioLibrary[] libraries;
@@ -25,6 +24,9 @@ public class AudioHandler : Singleton<AudioHandler>
         get => am.pitchMultiplier;
         set => am.pitchMultiplier = value;
     }
+    public IAudioManager AudioManager {
+        get => am;
+    }
 
     protected override void Awake()
     {
@@ -33,26 +35,9 @@ public class AudioHandler : Singleton<AudioHandler>
         am.Initialize(libraries);
     }
 
-    public float AudioListenerVolume {
-        get { return AudioListener.volume; }
-        set { AudioListener.volume = value; }
-    }
 
     public void FadeListener(float val, float duration = .5f) {
-        if (audioListenerCoroutine != null) {
-            StopCoroutine(audioListenerCoroutine);
-        }
-        audioListenerCoroutine = StartCoroutine(FadingListener(val, duration));
-    }
-    private IEnumerator FadingListener(float val, float duration = .5f) {
-        float start = AudioListenerVolume;
-        float index = 0;
-        while ( index < duration) {
-            AudioListenerVolume = Mathf.Lerp(start, val , index / duration);
-            index += Time.unscaledDeltaTime;
-            yield return new WaitForEndOfFrame();
-        }
-        AudioListenerVolume = val;
+        am.FadeListener(val, duration);
     }
 
     /// <summary>

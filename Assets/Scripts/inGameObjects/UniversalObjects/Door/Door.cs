@@ -180,8 +180,6 @@ public class Door : InteractabelObject
         player.Movement.RB.isKinematic = false;
         UpdatePlayerWalkingPosition(2, player);
 
-        // SetPlayerPos(endPos, player);
-
         while(inAnimation) yield return new WaitForEndOfFrame();
         
         IN_WALKING_ANIMATION = false;
@@ -212,6 +210,9 @@ public class Door : InteractabelObject
         return StartPos();
     }
 
+    ///<summary>
+    /// Updates the player position to value
+    ///</summary>
     private static void SetPlayerPos(Vector3 value, Player player) {
         player.transform.position = new Vector3(value.x, value.y, value.z);
     }
