@@ -94,7 +94,7 @@ public class Door : InteractabelObject
     private void Open() {
         OnDoorOpen?.Invoke(this);
         
-        AudioHandler.Instance?.PlaySound(SFXFiles.door_squeek, .2f);
+        AudioHandler.Instance?.Play3DSound(SFXFiles.door_squeek, transform, .2f);
         StopAllCoroutines();
         if (gameObject.activeSelf) StartCoroutine(AnimateDoorAngle(startAngle + openAngle, 2f, openCurve));
     }
@@ -123,7 +123,7 @@ public class Door : InteractabelObject
 
         if (locked) {
             DoorAnimator.SetTrigger("shake");
-            AudioHandler.Instance?.PlaySound(SFXFiles.door_locked, .5f);
+            AudioHandler.Instance?.Play3DSound(SFXFiles.door_locked, transform, .5f);
             return;
         }
         flipped = CheckAngle();
@@ -219,7 +219,7 @@ public class Door : InteractabelObject
 
     public IEnumerator GoingThroughFlippingAnimation() {
         inAnimation = true;
-        AudioHandler.Instance?.PlaySound(SFXFiles.door_open);
+        AudioHandler.Instance?.Play3DSound(SFXFiles.door_open, transform);
         yield return StartCoroutine(AnimateDoorAngle(startAngle + wideAngle, 1.3f, openCurve));
         yield return StartCoroutine(AnimateDoorAngle(startAngle + openAngle, .5f, openCurve));
         inAnimation = false;

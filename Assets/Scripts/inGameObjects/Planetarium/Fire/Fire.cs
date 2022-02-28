@@ -56,7 +56,7 @@ public class Fire : RoomObject
         if (fireSound == null) {
             fireSound =  AudioHandler.Instance.Play3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
         }
-        fireSound.AudioSource.Play();
+        fireSound.Play();
     }
 
     private void SetFireOn() {
@@ -64,7 +64,7 @@ public class Fire : RoomObject
             go.gameObject.SetActive(true);
         }
         if (fireSound != null)
-            fireSound.AudioSource.Pause();
+            fireSound.Pause();
 
     }
     private void SetFireOff() {
@@ -73,7 +73,7 @@ public class Fire : RoomObject
             go.gameObject.SetActive(false);
         }
         if (fireSound != null)
-            fireSound.AudioSource.Play();
+            fireSound.Play();
 
     }
 
@@ -89,7 +89,7 @@ public class Fire : RoomObject
             meshRenderer.material.SetFloat("_RoomTime", val);
         }
         if (fireSound != null){
-            fireSound.AudioSource.mute = val == 0;
+            fireSound.Mute = val == 0;
         }
     }
 
@@ -150,7 +150,7 @@ public class Fire : RoomObject
         base.OnRoomLeave();
         StopAllCoroutines();
         if (fireSound != null)
-            fireSound.AudioSource.Stop();
+            fireSound.Stop();
     }
 
 

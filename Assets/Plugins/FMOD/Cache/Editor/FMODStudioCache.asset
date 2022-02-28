@@ -49,7 +49,7 @@ MonoBehaviour:
   - {fileID: -8131241323680167273}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -157,7 +157,7 @@ MonoBehaviour:
   - {fileID: 2683272393981133291}
   IsStream: 1
   Is3D: 1
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -177,10 +177,37 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 637814047144617657
+  lastModified: 637816560401832537
   FileSizes:
   - Name: Desktop
-    Value: 2010752
+    Value: 2011136
+  Exists: 1
+--- !u!114 &-7676220116849081446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Footstep/GroundMaterial
+  m_EditorClassIdentifier: 
+  Name: GroundMaterial
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 1222496227
+    data2: 1687675467
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Normal
+  - Grass
+  - Water
   Exists: 1
 --- !u!114 &-7558289270648431186
 MonoBehaviour:
@@ -204,7 +231,7 @@ MonoBehaviour:
   - {fileID: 2683272393981133291}
   IsStream: 0
   Is3D: 1
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -259,10 +286,11 @@ MonoBehaviour:
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
-  Parameters: []
+  Parameters:
+  - {fileID: -7676220116849081446}
   MinDistance: 1
   MaxDistance: 20
-  Length: 340
+  Length: 1057
 --- !u!114 &-6116149503610042060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,7 +530,7 @@ MonoBehaviour:
   - {fileID: -8131241323680167273}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -630,10 +658,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637814047144318472
+  lastModified: 637816560401613132
   FileSizes:
   - Name: Desktop
-    Value: 2964
+    Value: 3124
   Exists: 1
 --- !u!114 &-1595212400138157173
 MonoBehaviour:
@@ -813,7 +841,7 @@ MonoBehaviour:
   - {fileID: 6829679958740080538}
   StringsBanks:
   - {fileID: -1914383068894343305}
-  cacheTime: 637814047152409201
+  cacheTime: 637816560402124777
   cacheVersion: 10
 --- !u!114 &73971793938978484
 MonoBehaviour:
@@ -837,7 +865,7 @@ MonoBehaviour:
   - {fileID: 2683272393981133291}
   IsStream: 1
   Is3D: 1
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -864,7 +892,7 @@ MonoBehaviour:
   - {fileID: 2683272393981133291}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -891,7 +919,7 @@ MonoBehaviour:
   - {fileID: 2683272393981133291}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -938,10 +966,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/InGame.bank
   Name: InGame
   StudioPath: bank:/InGame
-  lastModified: 637814047151967998
+  lastModified: 637816560401393711
   FileSizes:
   - Name: Desktop
-    Value: 3009888
+    Value: 3133728
   Exists: 1
 --- !u!114 &3223162313583247977
 MonoBehaviour:
@@ -965,7 +993,7 @@ MonoBehaviour:
   - {fileID: 2683272393981133291}
   IsStream: 1
   Is3D: 1
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -1019,11 +1047,11 @@ MonoBehaviour:
   - {fileID: 2683272393981133291}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 24764
+  Length: 24800
 --- !u!114 &4470836576981718317
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1147,10 +1175,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637814047144298508
+  lastModified: 637816560401603154
   FileSizes:
   - Name: Desktop
-    Value: 693504
+    Value: 694080
   Exists: 1
 --- !u!114 &6922853477775588413
 MonoBehaviour:
@@ -1174,7 +1202,7 @@ MonoBehaviour:
   - {fileID: -8131241323680167273}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -1194,7 +1222,7 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/UI.bank
   Name: UI
   StudioPath: bank:/UI
-  lastModified: 637814047152409201
+  lastModified: 637816560402124777
   FileSizes:
   - Name: Desktop
     Value: 153216
@@ -1329,7 +1357,7 @@ MonoBehaviour:
   - {fileID: 2683272393981133291}
   IsStream: 1
   Is3D: 1
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20

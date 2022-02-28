@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
     private float steps = 10;
 
+    public delegate void SoundSettingAlteredEvent();
+    public static SoundSettingAlteredEvent OnSoundAltered;
+
     [SerializeField]
     private Slider SFXSlider;
 
@@ -51,6 +54,7 @@ using UnityEngine.UI;
         SFXSlider.onValueChanged.AddListener(SetSFX);
         musicSlider.minValue = 0;
         musicSlider.maxValue = steps;
+        OnSoundAltered?.Invoke();
         // musicSlider.wholeNumbers = true;
 
         musicSlider.onValueChanged.AddListener(SetMusic);
@@ -70,12 +74,15 @@ using UnityEngine.UI;
     public void SetSFX(float value) 
     {
         AudioSetting.SFX = value / steps;
+        OnSoundAltered?.Invoke();
     }
     public void SetMusic(float value) 
     {
         AudioSetting.MUSIC = value / steps;
         if (AudioHandler.Instance)
             AudioHandler.Instance.MusicVolume = AudioHandler.Instance.MusicVolume;
+
+        OnSoundAltered?.Invoke();
     }
 
     // public void ToggleMute() {

@@ -24,7 +24,7 @@ public class Lamp : InteractabelObject
         set { 
             lampIsOn = value; 
             spotLight.SetActive(value);
-            AudioHandler.Instance.PlaySound(SFXFiles.lamp_toggle, 1, value ? 1 : .8f);
+            AudioHandler.Instance.Play3DSound(SFXFiles.lamp_toggle, transform, 1, value ? 1 : .8f);
 
             if (value) emissionRenderer.material.EnableKeyword("_EMISSION");
             else emissionRenderer.material.DisableKeyword("_EMISSION");

@@ -420,7 +420,6 @@ public class Room : MonoBehaviour
         CheckRoomCompletion();
     }
 
-
     ///<summary>
     /// Resets the room by deactivation all the changes and returns the room state and activates the changes 
     ///</summary>

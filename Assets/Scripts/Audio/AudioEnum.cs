@@ -74,6 +74,12 @@ public static class SFXFiles {
     public static string gregory_cry = "Gregory_cry";
 
 
+    //music
+    public static string MENU = "event:/Music/Menu";
+    public static string HIDDEN_ROOM = "event:/Music/Hidden_room";
+    public static string Environment1 = "event:/Music/Environment1";
+    public static string Environment2 = "event:/Music/Environment2";
+
 }
 public enum MusicFiles {
     planetarium,

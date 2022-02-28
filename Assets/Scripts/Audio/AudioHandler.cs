@@ -89,7 +89,6 @@ public class AudioHandler : Singleton<AudioHandler>
     ///</summary>
     public void PlayMusic(MusicFiles music, float volume = 1f)
     {
-        Debug.Log("start play music");
         am.PlayMusic(music, volume);
     }
     ///<summary>
