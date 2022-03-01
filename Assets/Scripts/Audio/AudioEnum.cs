@@ -39,6 +39,8 @@ public static class SFXFiles {
     public static string evil_spirit = "Evil_spirit";
     public static string lamp_toggle = "event:/SFX/Environment/Planetarium/Lamp_toggle";
 
+
+    public static string hidden_room_cutscene = "event:/SFX/Environment/Planetarium/Hidden_room_cutscene";
     //hiddenroom
     public static string rumble_ground = "Rumble_ground";
     public static string woosh = "Woosh";
@@ -71,6 +73,7 @@ public static class SFXFiles {
     public static string music_box_on_ground = "Music_box_on_ground";
     public static string pulling_pocket = "Pulling_pocket";
     public static string gregory_cry = "Gregory_cry";
+    public static string grave_cutscene = "event:/SFX/Environment/Garden/Grave_cutscene";
 
 
     //music

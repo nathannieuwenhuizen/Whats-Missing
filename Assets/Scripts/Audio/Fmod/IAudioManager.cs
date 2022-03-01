@@ -24,6 +24,11 @@ public interface IAudioManager {
     ///</summary>
     public float pitchMultiplier {get; set;}
 
+    ///<summary>
+    /// Stops all audio. 
+    ///</summary>
+    public void StopAllAudio();
+
 
 
     //-----------sound

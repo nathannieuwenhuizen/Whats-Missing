@@ -20,8 +20,18 @@ public class SFXInstance
     private float oldFMODVolume;
 
     public float Volume {
-        get { return AudioSource.volume;}
-        set { AudioSource.volume = value * AudioSetting.SFX; }
+        get { 
+            if (isFMOD) {
+                float result = 0f;
+                FMODInstance.getVolume(out result);
+                return result;
+            }
+            return AudioSource.volume;
+        }
+        set { 
+            if (isFMOD) FMODInstance.setVolume(value);
+            else AudioSource.volume = value * AudioSetting.SFX;
+        }
     }
 
     public void Play() {

@@ -72,10 +72,32 @@ public class AlchemyItem : InteractabelObject
 
 
     private IEnumerator GetPickedUp() {
+        SFXInstance cutsceneAudio = AudioHandler.Instance.PlaySound(SFXFiles.hidden_room_cutscene);
         
         yield return new WaitForSeconds(2.3f);
-        AudioHandler.Instance.PlaySound(SFXFiles.grab_book, .2f, .5f);
+        // AudioHandler.Instance.PlaySound(SFXFiles.grab_book, .2f, .5f);
 
+
+        //animate towards Hand
+        yield return StartCoroutine(AnimateToHand());
+
+        yield return new WaitForSeconds(.5f);
+        // AudioHandler.Instance.PlaySound(SFXFiles.woosh, 1f);
+        yield return new WaitForSeconds(1f);
+        // AudioHandler.Instance.PlaySound(SFXFiles.rumble_ground, 1f, .2f);
+
+        StartCoroutine(room.Player.Camera.transform.Shake(5f, 10, 7));
+        StartCoroutine(AnimateBloomIntensity(5f, 60));
+        StartCoroutine(AnimateChromaticAttribution(1f, 1));
+        yield return new WaitForSeconds(5f);
+        // AudioHandler.Instance.StopSound(SFXFiles.rumble_ground);
+        cutsceneAudio.Stop();
+        AudioHandler.Instance.AudioManager.StopAllAudio();
+
+        OnAlchemyEndScene?.Invoke();
+    }
+
+    public IEnumerator AnimateToHand() {
         float index = 0;
         float duration = .5f;
         Vector3 start = transform.position;
@@ -90,18 +112,6 @@ public class AlchemyItem : InteractabelObject
         transform.SetParent(room.Player.HandsPosition);
         transform.localPosition = Vector3.zero;
 
-        yield return new WaitForSeconds(.5f);
-        AudioHandler.Instance.PlaySound(SFXFiles.woosh, 1f);
-        yield return new WaitForSeconds(1f);
-        AudioHandler.Instance.PlaySound(SFXFiles.rumble_ground, 1f, .2f);
-
-        StartCoroutine(room.Player.Camera.transform.Shake(5f, 10, 7));
-        StartCoroutine(AnimateBloomIntensity(5f, 60));
-        StartCoroutine(AnimateChromaticAttribution(1f, 1));
-        yield return new WaitForSeconds(5f);
-        AudioHandler.Instance.StopSound(SFXFiles.rumble_ground);
-
-        OnAlchemyEndScene?.Invoke();
     }
     public IEnumerator AnimateBloomIntensity(float animationDuration, float end) {
         float start = bloomIntensity;

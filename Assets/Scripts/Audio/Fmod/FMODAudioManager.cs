@@ -4,7 +4,10 @@ using UnityEngine;
 using FMODUnity;
 public class FMODAudioManager : MonoBehaviour, IAudioManager
 {
-    public float MusicVolume { get; set; } = 1;
+    public float MusicVolume { 
+       get => Music.Volume;
+       set => Music.Volume = value;
+    }
     public float pitchMultiplier { get; set; } = 1;
     private float audioListenerVolume = 1f;
     public float AudioListenerVolume { 
@@ -19,11 +22,27 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
 
     public void FadeMusic(MusicFiles newMusic, float duration, bool waitForOtherMusictoFadeOut = false)
     {
+        StartCoroutine(FadeMusicVolume(newMusic, duration));
     }
 
-    public IEnumerator FadeMusicVolume(float end, float duration)
+    public IEnumerator FadeMusicVolume(MusicFiles newMusicFile, float duration)
     {
-        return null;
+        float end = 0;
+        float begin = Music.Volume;
+        SFXInstance newMusic = PlaySound(GetKey(newMusicFile), end);
+        float index = 0;
+        while (index < duration)
+        {
+            index += Time.deltaTime;
+            Music.Volume =  Mathf.Lerp(begin, end, index / duration);
+            newMusic.Volume =  Mathf.Lerp(end, begin, index / duration);
+            yield return new WaitForFixedUpdate();
+        }
+
+        Music.Volume = end;
+        Music.Stop();
+        newMusic.Volume = begin;
+        Music = newMusic;
     }
 
     public IEnumerator FadeVolume(AudioSource audioS, float begin, float end, float duration)
@@ -71,6 +90,10 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
 
     public void PlayMusic(MusicFiles music, float volume = 1)
     {
+        Music = PlaySound(GetKey(music), volume);
+    }
+
+    private string GetKey(MusicFiles music) {
         string key = SFXFiles.MENU;
 
         switch (music) {
@@ -81,11 +104,12 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
             key = SFXFiles.Environment2;
             break;
             case MusicFiles.planetarium_hidden_room:
-            key = SFXFiles.Environment1;
+            key = SFXFiles.HIDDEN_ROOM;
             break;
         }
-        Music = PlaySound(key, volume);
-    }
+        return key;
+    }  
+
 
     public SFXInstance Play3DSound(string key, Transform parent, float volume = 1, float pitch = 1, bool loop = false, bool asInstance = true, float soundMaxDistance = 100, bool ignoreListenerVolume = false)
     {
@@ -160,4 +184,15 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
         AudioListenerVolume = val;
     }
 
+    public IEnumerator FadeMusicVolume(float end, float duration)
+{
+        throw new System.NotImplementedException();
+    }
+
+    public void StopAllAudio()
+    {
+        RuntimeManager.GetBus("bus:/SFX").stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        RuntimeManager.GetBus("bus:/Music").stopAllEvents(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+    }
 }

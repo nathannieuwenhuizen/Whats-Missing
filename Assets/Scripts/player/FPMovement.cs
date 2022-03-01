@@ -231,6 +231,7 @@ public class FPMovement : MonoBehaviour
         PerspectiveProperty.onPerspectiveAppearing -= UnhalfCameraSensitiviy;
 
         FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
+        if (windCoroutine != null) StopCoroutine(windCoroutine);
     }
 
     private void HalfCameraSensitiviy() {

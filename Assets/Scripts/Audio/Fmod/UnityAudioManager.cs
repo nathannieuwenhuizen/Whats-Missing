@@ -249,4 +249,9 @@ public class UnityAudioManager : MonoBehaviour, IAudioManager
         }
         AudioListenerVolume = val;
     }
+
+    public void StopAllAudio()
+    {
+
+    }
 }

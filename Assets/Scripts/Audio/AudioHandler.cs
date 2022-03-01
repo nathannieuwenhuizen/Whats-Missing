@@ -62,6 +62,10 @@ public class AudioHandler : Singleton<AudioHandler>
         am.Stop3DSound(instance, destroy);
     }
 
+    private void OnDisable() {
+        am.StopAllAudio();
+    }
+
     ///<summary>
     ///Stops the 2D sound
     ///</summary>

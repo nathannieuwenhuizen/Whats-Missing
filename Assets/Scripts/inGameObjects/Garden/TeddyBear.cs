@@ -72,22 +72,24 @@ public class TeddyBear : InteractabelObject
         StartCoroutine(room.Player.transform.AnimatingRotation(endScenePosition.rotation, AnimationCurve.EaseInOut(0,0,1,1), 1f));
         StartCoroutine(TeddybearCutscene());
 
-        StartCoroutine(PlayCutsceneAudio(1f , () => {
-            Debug.Log("audio gets played!");
-            AudioHandler.Instance.PlaySound(SFXFiles.knee_on_dirt, .2f, .9f);
-        }));
-        StartCoroutine(PlayCutsceneAudio(3f , () => {
-            AudioHandler.Instance.PlaySound(SFXFiles.pulling_pocket, .5f);
-        }));
-        StartCoroutine(PlayCutsceneAudio(5.4f , () => {
-            AudioHandler.Instance.PlaySound(SFXFiles.music_box, .3f);
-        }));
-        StartCoroutine(PlayCutsceneAudio(7.8f , () => {
-            AudioHandler.Instance.PlaySound(SFXFiles.music_box_on_ground, 1f);
-        }));
-        StartCoroutine(PlayCutsceneAudio(8f , () => {
-            AudioHandler.Instance.PlayUISound(SFXFiles.gregory_cry, .7f);
-        }));
+
+        AudioHandler.Instance.PlaySound(SFXFiles.grave_cutscene);
+
+        // StartCoroutine(PlayCutsceneAudio(1f , () => {
+        //     AudioHandler.Instance.PlaySound(SFXFiles.knee_on_dirt, .2f, .9f);
+        // }));
+        // StartCoroutine(PlayCutsceneAudio(3f , () => {
+        //     AudioHandler.Instance.PlaySound(SFXFiles.pulling_pocket, .5f);
+        // }));
+        // StartCoroutine(PlayCutsceneAudio(5.4f , () => {
+        //     AudioHandler.Instance.PlaySound(SFXFiles.music_box, .3f);
+        // }));
+        // StartCoroutine(PlayCutsceneAudio(7.8f , () => {
+        //     AudioHandler.Instance.PlaySound(SFXFiles.music_box_on_ground, 1f);
+        // }));
+        // StartCoroutine(PlayCutsceneAudio(8f , () => {
+        //     AudioHandler.Instance.PlayUISound(SFXFiles.gregory_cry, .7f);
+        // }));
         StartCoroutine(PlayCutsceneAudio(11f , () => {
             AudioHandler.Instance.FadeListener(0, 5f);
         }));
