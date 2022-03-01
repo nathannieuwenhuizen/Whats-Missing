@@ -8,7 +8,7 @@ using UnityEngine;
 public class RoomObject : RoomEntity
 {
     [SerializeField]
-    private FlippingAxis flippingAxis = FlippingAxis.up;
+    protected FlippingAxis flippingAxis = FlippingAxis.up;
     protected RoomObjectEventSender eventSender;
     public RoomObjectEventSender EventSender {
         get { 

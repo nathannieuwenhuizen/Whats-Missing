@@ -23,7 +23,8 @@ public class Painting : InteractabelObject
 
     private Rigidbody rigidBody;
 
-    protected void Awake() {
+    protected override void Awake() {
+        base.Awake();
         OutlineEnabled = false;
         Interactable = false;
         animator = GetComponent<Animator>();
@@ -59,6 +60,10 @@ public class Painting : InteractabelObject
         hiddenRoom.SetActive(val);
         foreach (Portal portal in portals)
             portal.gameObject.SetActive(val);
+    }
+
+    protected override void OnFocus() {
+        Debug.Log("focus!" + OutlineEnabled);
     }
 
     public override void Interact()

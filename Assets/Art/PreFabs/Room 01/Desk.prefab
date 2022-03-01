@@ -254,9 +254,9 @@ GameObject:
   - component: {fileID: 945955454425803864}
   - component: {fileID: 7171465657437583038}
   - component: {fileID: 8926037117775588035}
-  - component: {fileID: 7730097065689012946}
   - component: {fileID: 6498845561671075514}
   - component: {fileID: 3877165166932866198}
+  - component: {fileID: 7354104811980344474}
   m_Layer: 0
   m_Name: Desk
   m_TagString: Untagged
@@ -333,22 +333,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7730097065689012946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5510814091199189146}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: desk
-  alternateWords:
-  - bureau
-  missingChangeEffect: 2
 --- !u!64 &6498845561671075514
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -376,6 +360,26 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.02552207, y: 0.045833446, z: 0.00836742}
   m_Center: {x: 0.0006976235, y: 0.00022655964, z: 0.008453605}
+--- !u!114 &7354104811980344474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5510814091199189146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dcc9850b7a64ef41848dea78297c1b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: desk
+  alternateWords:
+  - desks
+  - bureau
+  - table
+  missingChangeEffect: 2
+  flippingAxis: 2
+  objectsOnTable: []
 --- !u!1 &6505154975035657606
 GameObject:
   m_ObjectHideFlags: 0

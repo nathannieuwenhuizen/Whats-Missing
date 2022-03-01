@@ -77,6 +77,17 @@ public static class TransformExtensions
         transform.position = beginPos;
     }
 
+    public static  IEnumerator AnimatingPosBezierCurve(this Transform transform, Vector3 end, Vector3 mid, AnimationCurve curve, float duration = 5f) {
+        float index = 0f;
+        Vector3 begin = transform.position;
+        while (index < duration) {
+            yield return new WaitForEndOfFrame();
+            index += Time.deltaTime;
+            transform.position = Extensions.CalculateQuadraticBezierPoint(index / duration,  begin, mid, end);
+        }
+        transform.position = end;
+    }
+
 
     public static  IEnumerator AnimatingRotation(this Transform transform, Quaternion endrotation,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;
