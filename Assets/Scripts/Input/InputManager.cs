@@ -1,10 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class InputManager : MonoBehaviour
 {
+    private GamePlayControls controls;
+    private float movementGravity = 10f;
+    private float movementDeadzone = .01f;
+    private Vector2 movementVector = Vector2.zero;
+    private Vector2 MovementVector {
+        get => movementVector;
+        set {
+            //setting deadzones
+            if (value.x < movementDeadzone || value.x > 1f - movementDeadzone) {
+                if (movementVector.x < movementDeadzone) movementVector.x = 0;
+                if (movementVector.x > 1f - movementDeadzone) movementVector.x = 1f;
+            }
+            if (value.y < movementDeadzone || value.y > 1f - movementDeadzone) {
+                if (movementVector.y < movementDeadzone) movementVector.y = 0;
+                if (movementVector.y > 1f - movementDeadzone) movementVector.y = 1f;
+            }
+            movementVector = value;
+
+
+        }
+    }
+
     public delegate void ClickAction();
     public static event ClickAction OnClickDown;
     public static event ClickAction OnClickUp;
@@ -25,7 +48,14 @@ public class InputManager : MonoBehaviour
 
     private void OnEnable() {
         SettingPanel.OnSave += UpdateSettings;
-    }
+        controls = new GamePlayControls();
+        controls.Player.Enable();
+        controls.Player.Jump.started += Jump;
+        controls.Player.Run.started += RunStart;
+        controls.Player.Run.canceled += RunEnd;
+        controls.Player.Click.started += ClickStart;
+        controls.Player.Click.canceled += ClickEnd;
+    }    
 
     private void OnDisable() {
         SettingPanel.OnSave -= UpdateSettings;
@@ -48,39 +78,33 @@ public class InputManager : MonoBehaviour
     void Update()
     {
         //controller
-        if (Input.GetButtonUp("Fire1 Controller"))  {
-            // OnClickUp?.Invoke();
-            // if (MirrorButton.SELECTED_BUTTON != null) MirrorButton.SELECTED_BUTTON.gameObject.GetComponent<Button>().onClick.Invoke();
-        }
         
         //mouse
-        if (Input.GetButtonDown("Fire1")) {
-            OnClickDown?.Invoke();
-        }
-        if (Input.GetButtonUp("Fire1"))  {
-            OnClickUp?.Invoke();
-        }
-
-
+        // if (Input.GetButtonDown("Fire1")) {
+        //     OnClickDown?.Invoke();
+        // }
+        // if (Input.GetButtonUp("Fire1"))  {
+        //     OnClickUp?.Invoke();
+        // }
 
         
         //movement
-        if (Input.GetButtonDown("Jump")) {
-            OnJump?.Invoke();
-        }
-        if (Time.timeScale == 1) {
-            OnMove?.Invoke(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
-        }
-        else {
-            OnMove?.Invoke(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
-        }
-        //running
-        if (Input.GetButtonDown("Run")) {
-            OnStartRunning?.Invoke();
-        }
-        if (Input.GetButtonUp("Run")) {
-            OnEndRunning?.Invoke();
-        }
+        // if (Input.GetButtonDown("Jump")) {
+        //     OnJump?.Invoke();
+        // }
+        // if (Time.timeScale == 1) {
+        //     OnMove?.Invoke(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+        // }
+        // else {
+        //     OnMove?.Invoke(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
+        // }
+        // //running
+        // if (Input.GetButtonDown("Run")) {
+        //     OnStartRunning?.Invoke();
+        // }
+        // if (Input.GetButtonUp("Run")) {
+        //     OnEndRunning?.Invoke();
+        // }
 
         //rotate
         OnRotate?.Invoke(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
@@ -103,5 +127,28 @@ public class InputManager : MonoBehaviour
             OnReset?.Invoke();
         }
 
+        MovementVector = Vector2.Lerp(movementVector, controls.Player.Movement.ReadValue<Vector2>(), Time.deltaTime * movementGravity);
+        OnMove?.Invoke(MovementVector);
+
     }
+
+
+
+    public void Jump(InputAction.CallbackContext context) {
+        OnJump?.Invoke();
+    }
+    public void RunStart(InputAction.CallbackContext context) {
+        OnStartRunning?.Invoke();
+    }
+    public void RunEnd(InputAction.CallbackContext context) {
+        OnEndRunning?.Invoke();
+    }
+    public void ClickStart(InputAction.CallbackContext context) {
+        OnClickDown?.Invoke();
+    }
+    public void ClickEnd(InputAction.CallbackContext context) {
+        OnClickUp?.Invoke();
+    }
+
+
 }

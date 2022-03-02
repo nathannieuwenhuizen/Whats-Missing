@@ -21,6 +21,9 @@ public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     private Sprite idleSprite;
 
     private Button button;
+    public Button Button {
+        get { return button;}
+    }
     private Image image;
     private void Awake() {
         image = GetComponent<Image>();

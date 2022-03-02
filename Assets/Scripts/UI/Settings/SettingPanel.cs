@@ -24,7 +24,7 @@ public class SettingPanel : AnimatedPopup
     [SerializeField]
     private Button gameplayButton;
     [SerializeField]
-    private GameObject gmaeplayList;
+    private GameObject gameplayList;
 
 
 
@@ -42,6 +42,13 @@ public class SettingPanel : AnimatedPopup
     [SerializeField]
     private Toggle enableKeyboardInput;
 
+    [Header("Controls")]
+
+    [SerializeField]
+    private Button controlButton;
+    [SerializeField]
+    private GameObject controlList;
+
     private void Awake() {
         settings = Settings.GetSettings();
         UpdateUI();
@@ -49,19 +56,31 @@ public class SettingPanel : AnimatedPopup
 
     public void ToggleGeneral() {
         generalList.SetActive(true);
-        gmaeplayList.SetActive(false);
+        gameplayList.SetActive(false);
         generalButton.interactable = false;
         gameplayButton.interactable = true;
+        controlList.SetActive(false);
+        controlButton.interactable = true;
         settingsText.text = "General";
     }
 
     public void ToggleGameplay() {
         generalList.SetActive(false);
-        gmaeplayList.SetActive(true);
+        gameplayList.SetActive(true);
         generalButton.interactable = true;
         gameplayButton.interactable = false;
+        controlList.SetActive(false);
+        controlButton.interactable = true;
         settingsText.text = "Gameplay";
-
+    }
+    public void ToggleControls() {
+        generalList.SetActive(false);
+        gameplayList.SetActive(false);
+        generalButton.interactable = false;
+        gameplayButton.interactable = false;
+        controlList.SetActive(true);
+        controlButton.interactable = false;
+        settingsText.text = "Controls";
     }
     
     void Start()
