@@ -27,7 +27,7 @@ public class EndlessHallway : MonoBehaviour
 
         Vector3 spawnPos = startChunk.transform.position;
         for(int i = 0; i < ammountOfChunks; i++) {
-            spawnPos += new Vector3(0,0, chunkSize);
+            spawnPos += new Vector3(-chunkSize,0,0);
             GameObject newChunk = Instantiate(chunkPrefabs[Random.Range(0, chunkPrefabs.Length)], spawnPos, Quaternion.identity);
             newChunk.name = "chunk #" + i;
             newChunk.transform.SetParent(transform);
@@ -40,11 +40,13 @@ public class EndlessHallway : MonoBehaviour
     }
 
     private void Update() {
-        if (player.transform.position.z < startChunk.transform.position.z) return;
+        if (player.transform.position.x > startChunk.transform.position.x) return;
 
-        float delta = Mathf.Abs(player.transform.position.z - startChunk.transform.position.z);
+        float delta = Mathf.Abs(startChunk.transform.position.x - player.transform.position.x );
         int indexDifference = Mathf.FloorToInt(delta / chunkSize);
         // Debug.Log("is behind = " +  StartChunkIsBehind());
+        Debug.Log("delta = " +  delta);
+        Debug.Log("delta = " +  indexDifference);
         if (StartChunkIsBehind()) {
             if (indexDifference > 1) SetPlayerBack(indexDifference - 1);
         } else {
@@ -66,7 +68,7 @@ public class EndlessHallway : MonoBehaviour
 
 
     private void SetPlayerBack(float ammountOfSegments) {
-        Vector3 moveDelta = new Vector3(0,0,chunkSize) * ammountOfSegments;
+        Vector3 moveDelta = new Vector3(-chunkSize,0,0) * ammountOfSegments;
         player.transform.position -= moveDelta;
 
         List<GameObject> temp = new List<GameObject>();
@@ -84,7 +86,7 @@ public class EndlessHallway : MonoBehaviour
             chunks.Remove(chunk);
         }
         foreach(GameObject chunk in temp) {
-            chunk.transform.position = chunks[chunks.Count - 1].transform.position + new Vector3(0,0, chunkSize);
+            chunk.transform.position = chunks[chunks.Count - 1].transform.position + new Vector3(-chunkSize,0, 0);
             chunks.Add(chunk);
         }
     }

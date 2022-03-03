@@ -72,7 +72,7 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
 
     private void OnDisable() {
         AudioSetting.OnSoundAltered -= UpdateBanks;
-        Music.Stop(true);
+        if (Music != null) Music.Stop(true);
     }
 
     public void UpdateBanks() {
