@@ -13,7 +13,7 @@ public class InputManager : MonoBehaviour
     private Vector2 MovementVector {
         get => movementVector;
         set {
-            //setting deadzones
+            //setting deadzones for keyboard buttons
             if (value.x < movementDeadzone || value.x > 1f - movementDeadzone) {
                 if (movementVector.x < movementDeadzone) movementVector.x = 0;
                 if (movementVector.x > 1f - movementDeadzone) movementVector.x = 1f;
@@ -23,10 +23,9 @@ public class InputManager : MonoBehaviour
                 if (movementVector.y > 1f - movementDeadzone) movementVector.y = 1f;
             }
             movementVector = value;
-
-
         }
     }
+    private Vector2 cameraVector = Vector2.zero;
 
     public delegate void ClickAction();
     public static event ClickAction OnClickDown;
@@ -48,17 +47,33 @@ public class InputManager : MonoBehaviour
 
     private void OnEnable() {
         SettingPanel.OnSave += UpdateSettings;
-        controls = new GamePlayControls();
-        controls.Player.Enable();
+        ControllerRebinds.OnRebindChanged +=  UpdateControllerRebind;
+    }   
+
+    private void UpdateControllerRebind(GamePlayControls _controls) {
+        if (controls != null) {
+            controls.Player.Jump.started -= Jump;
+            controls.Player.Run.started -= RunStart;
+            controls.Player.Run.canceled -= RunEnd;
+            controls.Player.Click.started -= ClickStart;
+            controls.Player.Click.canceled -= ClickEnd;
+            controls.Player.Cancel.started -= Cancel;
+
+
+        }
+        controls = _controls;
         controls.Player.Jump.started += Jump;
         controls.Player.Run.started += RunStart;
         controls.Player.Run.canceled += RunEnd;
         controls.Player.Click.started += ClickStart;
         controls.Player.Click.canceled += ClickEnd;
-    }    
+        controls.Player.Cancel.started += Cancel;
+
+    } 
 
     private void OnDisable() {
         SettingPanel.OnSave -= UpdateSettings;
+        ControllerRebinds.OnRebindChanged -=  UpdateControllerRebind;
     }
 
     private void Awake() {
@@ -70,7 +85,6 @@ public class InputManager : MonoBehaviour
         // InputManager.KEYBOARD_ENABLED_MIRROR = true;
 // #else
         InputManager.KEYBOARD_ENABLED_MIRROR = settings.controlSettings.Enable_Keyboard_Input;
-        Debug.Log("update keyboard settings" + settings.controlSettings.Enable_Keyboard_Input);
 // #endif
 
     }
@@ -107,12 +121,12 @@ public class InputManager : MonoBehaviour
         // }
 
         //rotate
-        OnRotate?.Invoke(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
+        // OnRotate?.Invoke(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
 
         //Cancel
-        if (Input.GetButtonDown("Cancel")) {
-            OnCancel?.Invoke();
-        }
+        // if (Input.GetButtonDown("Cancel")) {
+        //     OnCancel?.Invoke();
+        // }
     
         //Undo
         if (Input.GetKeyDown(KeyCode.Z)) {
@@ -129,6 +143,8 @@ public class InputManager : MonoBehaviour
 
         MovementVector = Vector2.Lerp(movementVector, controls.Player.Movement.ReadValue<Vector2>(), Time.deltaTime * movementGravity);
         OnMove?.Invoke(MovementVector);
+        cameraVector = controls.Player.Camera.ReadValue<Vector2>();
+        OnRotate?.Invoke(cameraVector);
 
     }
 
@@ -148,6 +164,9 @@ public class InputManager : MonoBehaviour
     }
     public void ClickEnd(InputAction.CallbackContext context) {
         OnClickUp?.Invoke();
+    }
+    public void Cancel(InputAction.CallbackContext context) {
+        OnCancel?.Invoke();
     }
 
 

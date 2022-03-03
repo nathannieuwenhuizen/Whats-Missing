@@ -8,9 +8,8 @@ using static UnityEngine.InputSystem.InputBinding;
 public class RebindKey : MonoBehaviour
 {
 
-    public delegate void RebindAction();
+    public delegate void RebindAction(RebindKey rebindKey);
     public static RebindAction OnRebindingBegin;
-    public static RebindAction OnRebindingEnd;
     [SerializeField]
     private TMP_Text keyText;
     [SerializeField]
@@ -28,27 +27,17 @@ public class RebindKey : MonoBehaviour
         get { return action;}
         set { 
             action = value; 
-            UpdateBindingUI();
+            UpdateUI();
         }
     }
 
 
-    public void UpdateBindingUI() {
+    public void UpdateUI() {
         keyText.text = action.name;
         valueText.text = action.bindings[0].ToDisplayString(DisplayStringOptions.DontUseShortDisplayNames);
     }
 
     public void ChangeBinding() {
-        OnRebindingBegin?.Invoke();
-        Debug.Log("select new key...");
-        action.PerformInteractiveRebinding()
-        .OnComplete(callback => {
-
-            //...
-            OnRebindingEnd?.Invoke();
-            UpdateBindingUI();
-            Debug.Log("new key selected: " + action.bindings[0].ToDisplayString(DisplayStringOptions.DontUseShortDisplayNames));
-            callback.Dispose();
-        }) .Start();
+        OnRebindingBegin?.Invoke(this);
     }
 }

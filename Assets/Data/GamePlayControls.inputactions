@@ -11,7 +11,8 @@
                     "id": "a1d36569-80de-4412-8f58-fcb6080876cf",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Movement",
@@ -19,7 +20,17 @@
                     "id": "262bb531-447d-4cad-b8bc-c2854d5556db",
                     "expectedControlType": "Vector2",
                     "processors": "StickDeadzone",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Camera",
+                    "type": "PassThrough",
+                    "id": "ee32a2b2-cad0-44a8-b512-62ef906f23dc",
+                    "expectedControlType": "Vector2",
+                    "processors": "ScaleVector2(x=0.1,y=0.1)",
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Run",
@@ -27,7 +38,8 @@
                     "id": "b4727c2e-4683-46b1-a7d9-29bbbbf64ea7",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Click",
@@ -35,7 +47,17 @@
                     "id": "f3416984-c9bc-4703-951e-a156fb67e5ec",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "5bc4ad2b-9e34-4ef8-a91d-f25367d5415a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -84,7 +106,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "up",
+                    "name": "Up",
                     "id": "d02d01d6-ea0c-4f0d-9e38-a4231058a75f",
                     "path": "<Keyboard>/w",
                     "interactions": "",
@@ -95,7 +117,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "down",
+                    "name": "Down",
                     "id": "e01583ce-33b5-41c4-b7b2-8832a5e1a9de",
                     "path": "<Keyboard>/s",
                     "interactions": "",
@@ -106,23 +128,23 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "left",
-                    "id": "822217e8-7a6e-4a9d-b386-4b0191933611",
+                    "name": "Left",
+                    "id": "eb7eb2e7-22d5-4fef-899d-45a41f5e77c7",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "right",
-                    "id": "eb6d3642-db04-491b-8f2a-7a1370606f1a",
+                    "name": "Right",
+                    "id": "065f7ea0-f1d7-42d4-af28-46f93c61ac77",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard",
+                    "groups": "",
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -278,6 +300,50 @@
                     "processors": "",
                     "groups": "GamePad",
                     "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c6f2a46e-8b81-48d2-ba70-21180788ef77",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "StickDeadzone",
+                    "groups": "GamePad",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b2f01caa-5250-4faf-ab7c-955139e145e9",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e83ae95-4392-49e3-84cc-9fc3680a2e7b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "707821cb-c4f3-46a8-9be6-a9ce0bceaed1",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "GamePad",
+                    "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

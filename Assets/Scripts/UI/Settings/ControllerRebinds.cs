@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputBinding;
 
 public class ControllerRebinds : MonoBehaviour
 {
 
-    private GamePlayControls controls;
+    public delegate void RebindChangedEvent(GamePlayControls _controls);
+    public static RebindChangedEvent OnRebindChanged;
+
+    private readonly string PLAYER_PREF_REIND_KEY = "input_rebinds";
+    public static GamePlayControls controls;
 
     [SerializeField]
     private GameObject prefabTemplate;
@@ -17,31 +23,47 @@ public class ControllerRebinds : MonoBehaviour
     List<RebindKey> rebindKeys = new List<RebindKey>();
 
     private void Awake() {
-        controls = new GamePlayControls();
-        controls.Enable();
+        ControllerRebinds.controls = LoadRebinds();
+        ControllerRebinds.controls.Player.Enable();
+
         InstantiateUI();
         rebindPopup.SetActive(false);
     }
 
     private void OnEnable() {
-        RebindKey.OnRebindingBegin += OnRebindBegin;
-        RebindKey.OnRebindingEnd += OnRebindEnd;
+        RebindKey.OnRebindingBegin += OnRebind;
     }
 
     private void OnDisable() {
-        RebindKey.OnRebindingBegin += OnRebindBegin;
-        RebindKey.OnRebindingEnd += OnRebindEnd;
+        RebindKey.OnRebindingBegin -= OnRebind;
     }
 
-    public void OnRebindBegin() {
+    public void OnRebind(RebindKey rebindKey) {
+        Debug.Log("rebinding key event");
+        StartCoroutine(OnRebinding(rebindKey));
+    }
+
+    IEnumerator OnRebinding(RebindKey rebindKey) {
+        ControllerRebinds.controls.Player.Disable();
+        Debug.Log("select new key...");
         rebindPopup.SetActive(true);
         EnableEditButtons(false);
-        controls.Disable();
+
+        rebindKey.Action.PerformInteractiveRebinding()
+        .OnComplete(callback => {
+            OnRebindEnd();
+            rebindKey.UpdateUI();
+            Debug.Log("new key selected: " + rebindKey.Action.bindings[0].ToDisplayString(DisplayStringOptions.DontUseShortDisplayNames));
+            callback.Dispose();
+        }) .Start();
+
+        yield return null;
     }
     public void OnRebindEnd() {
         rebindPopup.SetActive(false);
         EnableEditButtons(true);
         controls.Enable();
+        SaveRebinds();
     }
 
     public void EnableEditButtons(bool val) {
@@ -50,12 +72,63 @@ public class ControllerRebinds : MonoBehaviour
         }
     }
 
+    private void SaveRebinds() {
+        
+        string data = controls.SaveBindingOverridesAsJson();
+        PlayerPrefs.SetString(PLAYER_PREF_REIND_KEY, data);
+        Debug.Log("data = " + data);
+        OnRebindChanged?.Invoke(controls);
+    }
+
+    ///<summary>
+    /// Loads the rebinds from the playerpref
+    ///</summary>
+    private GamePlayControls LoadRebinds() {
+        controls = new GamePlayControls();
+        // controls.Enable();
+
+        string data = PlayerPrefs.GetString(PLAYER_PREF_REIND_KEY, "");
+        if (data != "") {
+            controls.LoadBindingOverridesFromJson(data);
+        }
+
+        OnRebindChanged?.Invoke(controls);
+
+        return controls;
+    }
+
+    public void ResetRebinds() {
+        PlayerPrefs.SetString(PLAYER_PREF_REIND_KEY, "");
+        ControllerRebinds.controls.Disable();
+        ControllerRebinds.controls = LoadRebinds();
+
+        ControllerRebinds.controls.Player.Enable();
+
+        DestroyUI();
+        InstantiateUI();
+
+        //stupid scale bug
+        foreach(RebindKey key in rebindKeys) {
+            key.transform.localScale = Vector3.one;
+            key.GetComponent<RectTransform>().localScale = Vector3.one;
+        }
+    }
+
     private void InstantiateUI() {
+        prefabTemplate.SetActive(true);
         rebindKeys.Add(InstantiateRebindKey(controls.Player.Jump));
         rebindKeys.Add(InstantiateRebindKey(controls.Player.Click));
         rebindKeys.Add(InstantiateRebindKey(controls.Player.Run));
+        rebindKeys.Add(InstantiateRebindKey(controls.Player.Cancel));
         // rebindKeys.Add(InstantiateRebindKey(controls.Player.Movement));
         prefabTemplate.SetActive(false);
+    }
+
+    private void DestroyUI() {
+        foreach(RebindKey key in rebindKeys) {
+           Destroy(key.gameObject);
+        }
+        rebindKeys = new List<RebindKey>();
     }
 
     private RebindKey InstantiateRebindKey(InputAction _action) {
