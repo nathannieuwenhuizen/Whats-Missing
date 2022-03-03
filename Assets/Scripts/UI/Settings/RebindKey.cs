@@ -31,10 +31,19 @@ public class RebindKey : MonoBehaviour
         }
     }
 
+    public int GetBindingIndex {
+        get {
+            return ControllerCheck.AnyControllerConnected() ? (Action.bindings.Count - 1) : 0;
+        }
+    }
+
 
     public void UpdateUI() {
         keyText.text = action.name;
-        valueText.text = action.bindings[0].ToDisplayString(DisplayStringOptions.DontUseShortDisplayNames);
+        for(int i = 0 ; i < action.bindings.Count; i++) {
+            // Debug.Log("bindings name: " + action.bindings[i].ToDisplayString(DisplayStringOptions.DontUseShortDisplayNames));
+        }
+        valueText.text = action.bindings[GetBindingIndex].ToDisplayString(DisplayStringOptions.DontUseShortDisplayNames);
     }
 
     public void ChangeBinding() {

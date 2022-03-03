@@ -49,11 +49,11 @@ public class ControllerRebinds : MonoBehaviour
         rebindPopup.SetActive(true);
         EnableEditButtons(false);
 
-        rebindKey.Action.PerformInteractiveRebinding()
+        rebindKey.Action.PerformInteractiveRebinding(rebindKey.GetBindingIndex)
         .OnComplete(callback => {
             OnRebindEnd();
             rebindKey.UpdateUI();
-            Debug.Log("new key selected: " + rebindKey.Action.bindings[0].ToDisplayString(DisplayStringOptions.DontUseShortDisplayNames));
+            Debug.Log("new key selected: " + rebindKey.Action.bindings[rebindKey.GetBindingIndex].ToDisplayString(DisplayStringOptions.DontUseShortDisplayNames));
             callback.Dispose();
         }) .Start();
 
@@ -107,7 +107,7 @@ public class ControllerRebinds : MonoBehaviour
         DestroyUI();
         InstantiateUI();
 
-        //stupid scale bug
+        //stupid scale bug fix
         foreach(RebindKey key in rebindKeys) {
             key.transform.localScale = Vector3.one;
             key.GetComponent<RectTransform>().localScale = Vector3.one;
