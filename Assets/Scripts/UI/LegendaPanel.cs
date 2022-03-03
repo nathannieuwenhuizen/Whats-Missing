@@ -16,7 +16,6 @@ public class LegendaPanel : MonoBehaviour
     }
 
     private void HidePanel() {
-        Debug.Log("hide panel");
         StopAllCoroutines();
         StartCoroutine(group.FadeCanvasGroup(0, 1f, 0));
     }

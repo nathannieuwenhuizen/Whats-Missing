@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MirrorButton : MonoBehaviour
+public class MirrorButton : MonoBehaviour, IPointerUpHandler
 {
+    ///<summary>
+    /// Purely nessecary for the gamepad input of the world canvas
+    ///</summary>
     public static MirrorButton SELECTED_BUTTON;
+    
     public static bool BUTTON_DRAGGED = false;
     protected bool canBeClicked = true;
     protected Vector3 normalScale = Vector3.one;
@@ -38,5 +43,7 @@ public class MirrorButton : MonoBehaviour
         rt.localScale = endScale;
     }
 
-
+    public virtual void OnPointerUp(PointerEventData eventData)
+    {
+    }
 }

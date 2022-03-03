@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public static class ControllerCheck
 {
@@ -22,6 +23,12 @@ public static class ControllerCheck
                 callBack();
         }
 
+    }
+
+    public static bool IsInputFromGamePad(InputAction.CallbackContext obj) {
+        var inputAction = obj.action;
+        var binding = inputAction.GetBindingForControl(inputAction.activeControl).Value;
+        return binding.groups == "GamePad";
     }
     private static void checkJoystickNames()
     {

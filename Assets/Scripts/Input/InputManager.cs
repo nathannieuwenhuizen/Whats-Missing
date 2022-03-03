@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -161,9 +162,17 @@ public class InputManager : MonoBehaviour
     }
     public void ClickStart(InputAction.CallbackContext context) {
         OnClickDown?.Invoke();
+        if (MirrorButton.SELECTED_BUTTON != null && ControllerCheck.IsInputFromGamePad(context)) {
+            ExecuteEvents.Execute (MirrorButton.SELECTED_BUTTON.gameObject, new PointerEventData (EventSystem.current), ExecuteEvents.pointerDownHandler);
+        }
     }
     public void ClickEnd(InputAction.CallbackContext context) {
         OnClickUp?.Invoke();
+        if (MirrorButton.SELECTED_BUTTON != null && ControllerCheck.IsInputFromGamePad(context)) {
+            ExecuteEvents.Execute (MirrorButton.SELECTED_BUTTON.gameObject, new PointerEventData (EventSystem.current), ExecuteEvents.pointerClickHandler);
+            ExecuteEvents.Execute (MirrorButton.SELECTED_BUTTON.gameObject, new PointerEventData (EventSystem.current), ExecuteEvents.pointerUpHandler);
+        }
+
     }
     public void Cancel(InputAction.CallbackContext context) {
         OnCancel?.Invoke();

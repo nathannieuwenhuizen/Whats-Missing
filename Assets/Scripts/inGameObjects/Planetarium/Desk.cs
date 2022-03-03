@@ -81,6 +81,7 @@ public class Desk : RoomObject
             rb.isKinematic = false;
             rb.useGravity = true;
             rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
         }
     }
 
