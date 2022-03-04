@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using static UnityEngine.InputSystem.InputBinding;
 
 public class ControllerRebinds : MonoBehaviour
@@ -10,6 +11,12 @@ public class ControllerRebinds : MonoBehaviour
 
     public delegate void RebindChangedEvent(GamePlayControls _controls);
     public static RebindChangedEvent OnRebindChanged;
+
+    [SerializeField]
+    private Button controlButton;
+
+    [SerializeField]
+    private Button resetButton;
 
     private readonly string PLAYER_PREF_REIND_KEY = "input_rebinds";
     public static GamePlayControls controls;
@@ -53,7 +60,7 @@ public class ControllerRebinds : MonoBehaviour
         .OnComplete(callback => {
             OnRebindEnd();
             rebindKey.UpdateUI();
-            Debug.Log("new key selected: " + rebindKey.Action.bindings[rebindKey.GetBindingIndex].ToDisplayString(DisplayStringOptions.DontUseShortDisplayNames));
+            ControllerCheck.SelectUIGameObject(rebindKey.EditButton.gameObject);
             callback.Dispose();
         }) .Start();
 
@@ -120,7 +127,13 @@ public class ControllerRebinds : MonoBehaviour
         rebindKeys.Add(InstantiateRebindKey(controls.Player.Click));
         rebindKeys.Add(InstantiateRebindKey(controls.Player.Run));
         rebindKeys.Add(InstantiateRebindKey(controls.Player.Cancel));
-        // rebindKeys.Add(InstantiateRebindKey(controls.Player.Movement));
+
+        foreach(RebindKey key in rebindKeys) {
+            key.transform.localScale = Vector3.one;
+            key.GetComponent<RectTransform>().localScale = Vector3.one;
+        }
+        SetNavigation();
+
         prefabTemplate.SetActive(false);
     }
 
@@ -138,5 +151,22 @@ public class ControllerRebinds : MonoBehaviour
         RebindKey newRebindKey = temp.GetComponent<RebindKey>();
         newRebindKey.Action = _action;
         return newRebindKey;
+    }
+
+    private void SetNavigation() {
+        for(int index = 0 ; index < rebindKeys.Count; index++) {
+            rebindKeys[index].EditButton.Button.navigation = new UnityEngine.UI.Navigation() {
+                mode = Navigation.Mode.Explicit,  
+                selectOnUp = index > 0 ? rebindKeys[index - 1].EditButton.Button : resetButton,
+                selectOnDown = index < rebindKeys.Count - 1 ? rebindKeys[index + 1].EditButton.Button : controlButton
+            };
+        }
+        Navigation nav = controlButton.navigation;
+        nav.selectOnUp = rebindKeys[rebindKeys.Count - 1].EditButton.Button;
+        controlButton.navigation = nav;
+        
+        nav = resetButton.navigation;
+        nav.selectOnDown = rebindKeys[0].EditButton.Button;
+        resetButton.navigation = nav;
     }
 }

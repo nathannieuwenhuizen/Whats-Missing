@@ -11,8 +11,6 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Image))]
 public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler, IPointerDownHandler, IPointerUpHandler
 {
-    [SerializeField]
-    private Animator shineAnimator;
 
     [SerializeField]
     private Sprite selectedSprite;
@@ -40,7 +38,6 @@ public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // shineAnimator.SetTrigger("shine");
         image.sprite = selectedSprite;
         AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover, .05f);
     }
@@ -53,7 +50,6 @@ public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnSelect(BaseEventData eventData)
     {
-        // shineAnimator.SetTrigger("shine");
         image.sprite = selectedSprite;
         AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover, .05f);
     }

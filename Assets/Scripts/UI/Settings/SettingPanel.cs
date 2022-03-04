@@ -55,6 +55,7 @@ public class SettingPanel : AnimatedPopup
     }
 
     public void ToggleGeneral() {
+
         generalList.SetActive(true);
         gameplayList.SetActive(false);
         generalButton.interactable = false;
@@ -62,9 +63,12 @@ public class SettingPanel : AnimatedPopup
         controlList.SetActive(false);
         controlButton.interactable = true;
         settingsText.text = "General";
+        Debug.Log("should be general by now");
+        ControllerCheck.SelectUIGameObject(generalButton.gameObject);
     }
 
     public void ToggleGameplay() {
+
         generalList.SetActive(false);
         gameplayList.SetActive(true);
         generalButton.interactable = true;
@@ -72,8 +76,10 @@ public class SettingPanel : AnimatedPopup
         controlList.SetActive(false);
         controlButton.interactable = true;
         settingsText.text = "Gameplay";
+        ControllerCheck.SelectUIGameObject(gameplayButton.gameObject);
     }
     public void ToggleControls() {
+
         generalList.SetActive(false);
         gameplayList.SetActive(false);
         generalButton.interactable = false;
@@ -81,6 +87,7 @@ public class SettingPanel : AnimatedPopup
         controlList.SetActive(true);
         controlButton.interactable = false;
         settingsText.text = "Controls";
+        ControllerCheck.SelectUIGameObject(controlButton.gameObject);
     }
     
     void Start()
@@ -116,7 +123,6 @@ public class SettingPanel : AnimatedPopup
     public void Open() {
         ShowAnimation(true);
         ToggleGeneral();
-        ControllerCheck.SelectUIGameObject(cameraSensitivitySlider.gameObject);
     }
     public void Close() {
         Save();

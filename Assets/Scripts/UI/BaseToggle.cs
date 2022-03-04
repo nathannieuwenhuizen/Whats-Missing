@@ -24,7 +24,7 @@ public class BaseToggle : MonoBehaviour, IPointerEnterHandler, ISelectHandler, I
     
     private Toggle toggle;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         toggle = GetComponent<Toggle>();
         toggle.onValueChanged.AddListener(OnToggle);

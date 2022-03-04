@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {
 
+    [SerializeField]
+    private InputSystemUIInputModule inputModule;
+    
     private AnimatedPopup popup;
 
     [SerializeField]
@@ -62,9 +66,10 @@ public class Menu : MonoBehaviour
                 startButton.SetActive(false);
                 ControllerCheck.SelectUIGameObject(continueButton, () => {
                     EventSystem.current.firstSelectedGameObject = continueButton;
-                    settingsButton.navigation = new Navigation(){ mode = Navigation.Mode.Explicit, 
-                    selectOnUp = newGameButton.GetComponent<Button>(),
-                    selectOnDown = quitButton.GetComponent<Button>()
+                    settingsButton.navigation = new Navigation(){ 
+                        mode = Navigation.Mode.Explicit, 
+                        selectOnUp = newGameButton.GetComponent<Button>(),
+                        selectOnDown = quitButton.GetComponent<Button>()
                     };
                 });
                 return;
@@ -77,9 +82,10 @@ public class Menu : MonoBehaviour
         startButton.SetActive(true);
         ControllerCheck.SelectUIGameObject(startButton, () => {
             EventSystem.current.firstSelectedGameObject = startButton;
-            settingsButton.navigation = new Navigation(){ mode = Navigation.Mode.Explicit,  
-            selectOnUp = startButton.GetComponent<Button>(),
-            selectOnDown = quitButton.GetComponent<Button>()
+            settingsButton.navigation = new Navigation(){ 
+                mode = Navigation.Mode.Explicit,  
+                selectOnUp = startButton.GetComponent<Button>(),
+                selectOnDown = quitButton.GetComponent<Button>()
             };
         });
 

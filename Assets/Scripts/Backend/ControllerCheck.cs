@@ -16,7 +16,7 @@ public static class ControllerCheck
         return Xbox_One_Controller || PS4_Controller;
     }
     public static void SelectUIGameObject(GameObject go, Action callBack = null) {
-        if (ControllerCheck.AnyControllerConnected()) {
+        if (ControllerCheck.AnyControllerConnected() || true) {
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(go);
             if (callBack != null)
