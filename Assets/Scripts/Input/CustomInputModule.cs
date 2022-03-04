@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-
+using UnityEngine.InputSystem.UI;
+///<summary>
+/// Makes sure that the world canvas can be accessed
+///</summary>
 public class CustomInputModule : StandaloneInputModule
 {
     // Current cursor lock state (memory cache)
@@ -50,14 +53,14 @@ public class CustomInputModule : StandaloneInputModule
         RoomDebugger.OnHide -= HideMouse;
 
     }
-    private void ShowMouse() {
-        if (ControllerCheck.AnyControllerConnected() == false) {
+    public void ShowMouse() {
+        if (ControllerCheck.AnyControllerConnected() == false || true) {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
         mouseIsHidden = false;
     }
-    private void HideMouse() {
+    public void HideMouse() {
         Cursor.lockState = CursorLockMode.Locked;
         mouseIsHidden = true;
         Cursor.visible = false;

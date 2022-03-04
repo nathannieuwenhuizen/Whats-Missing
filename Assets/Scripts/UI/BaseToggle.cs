@@ -32,7 +32,7 @@ public class BaseToggle : MonoBehaviour, IPointerEnterHandler, ISelectHandler, I
     }
 
     private void OnToggle(bool val) {
-        AudioHandler.Instance.PlayUISound(val ? SFXFiles.toggle_on : SFXFiles.toggle_off,  1f, val ?  1f : .8f);
+        if (AudioHandler.Instance != null) AudioHandler.Instance.PlayUISound(val ? SFXFiles.toggle_on : SFXFiles.toggle_off,  1f, val ?  1f : .8f);
         UpdateImage(true);
     }
 

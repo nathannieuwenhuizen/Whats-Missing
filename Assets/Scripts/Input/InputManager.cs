@@ -59,8 +59,6 @@ public class InputManager : MonoBehaviour
             controls.Player.Click.started -= ClickStart;
             controls.Player.Click.canceled -= ClickEnd;
             controls.Player.Cancel.started -= Cancel;
-
-
         }
         controls = _controls;
         controls.Player.Jump.started += Jump;
@@ -73,6 +71,14 @@ public class InputManager : MonoBehaviour
     } 
 
     private void OnDisable() {
+        if (controls != null) {
+            controls.Player.Jump.started -= Jump;
+            controls.Player.Run.started -= RunStart;
+            controls.Player.Run.canceled -= RunEnd;
+            controls.Player.Click.started -= ClickStart;
+            controls.Player.Click.canceled -= ClickEnd;
+            controls.Player.Cancel.started -= Cancel;
+        }
         SettingPanel.OnSave -= UpdateSettings;
         ControllerRebinds.OnRebindChanged -=  UpdateControllerRebind;
     }
@@ -142,10 +148,13 @@ public class InputManager : MonoBehaviour
             OnReset?.Invoke();
         }
 
-        MovementVector = Vector2.Lerp(movementVector, controls.Player.Movement.ReadValue<Vector2>(), Time.deltaTime * movementGravity);
-        OnMove?.Invoke(MovementVector);
-        cameraVector = controls.Player.Camera.ReadValue<Vector2>();
-        OnRotate?.Invoke(cameraVector);
+        if (controls != null) {
+            MovementVector = Vector2.Lerp(movementVector, controls.Player.Movement.ReadValue<Vector2>(), Time.deltaTime * movementGravity);
+            OnMove?.Invoke(MovementVector);
+            cameraVector = controls.Player.Camera.ReadValue<Vector2>();
+            OnRotate?.Invoke(cameraVector);
+        }
+
 
     }
 

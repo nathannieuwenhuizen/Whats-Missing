@@ -6,11 +6,7 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
-{
-
-    [SerializeField]
-    private InputSystemUIInputModule inputModule;
-    
+{    
     private AnimatedPopup popup;
 
     [SerializeField]

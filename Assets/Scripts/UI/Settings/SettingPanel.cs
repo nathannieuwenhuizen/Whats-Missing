@@ -82,8 +82,8 @@ public class SettingPanel : AnimatedPopup
 
         generalList.SetActive(false);
         gameplayList.SetActive(false);
-        generalButton.interactable = false;
-        gameplayButton.interactable = false;
+        generalButton.interactable = true;
+        gameplayButton.interactable = true;
         controlList.SetActive(true);
         controlButton.interactable = false;
         settingsText.text = "Controls";

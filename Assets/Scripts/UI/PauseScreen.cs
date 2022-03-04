@@ -38,15 +38,26 @@ public class PauseScreen : MonoBehaviour
         paused = true;
 
         AudioHandler.Instance.FadeListener(.2f);
-
-        SetGroupVisibility(true);
         animator.SetBool("show", true);
-        subPausePanel.ShowAnimation(true);
-        SelectResumeButton();
         AudioHandler.Instance.PlayUISound(SFXFiles.pause_show);
         StartCoroutine(AnimateTimeScale(0));
-
         OnPause?.Invoke();
+        OpenPausePanel();
+    }
+
+    public void OpenPausePanel() {
+        Debug.Log("open pause panel");
+        ControllerCheck.SelectUIGameObject(resumeButton);
+        SetGroupVisibility(true);
+        subPausePanel.ShowAnimation(true);
+        StartCoroutine(SelectingGameObject());
+    }
+
+    IEnumerator SelectingGameObject() {
+        yield return new WaitForEndOfFrame();
+        Debug.Log("open pause panel for realz");
+        ControllerCheck.SelectUIGameObject(resumeButton);
+
     }
 
     private void Awake() {

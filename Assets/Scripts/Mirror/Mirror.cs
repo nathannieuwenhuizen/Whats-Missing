@@ -105,6 +105,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     ///</summary>
     public void SetupCanvas()
     {
+        Debug.Log("seeting up letters = " + letters);
         mirrorCanvas.InitializeLetters(huzzleWords, letters, preAnswer);
         mirrorCanvas.SetupText(changeType, roomIndexoffset);
     }

@@ -45,8 +45,6 @@ public class EndlessHallway : MonoBehaviour
         float delta = Mathf.Abs(startChunk.transform.position.x - player.transform.position.x );
         int indexDifference = Mathf.FloorToInt(delta / chunkSize);
         // Debug.Log("is behind = " +  StartChunkIsBehind());
-        Debug.Log("delta = " +  delta);
-        Debug.Log("delta = " +  indexDifference);
         if (StartChunkIsBehind()) {
             if (indexDifference > 1) SetPlayerBack(indexDifference - 1);
         } else {
