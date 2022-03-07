@@ -5,8 +5,17 @@ using UnityEngine;
 
 namespace ForcefieldDemo
 {
-    public class ForcefieldImpact : MonoBehaviour
-    {
+    public class Forcefield : MonoBehaviour
+    {    
+
+        [SerializeField] 
+        private Collider sphereCollider;
+        [SerializeField]
+        private bool isOn = false;
+        private Coroutine disolveCoroutine;
+        [SerializeField]
+        private int burstAmmount = 600;
+        
 
         private Coroutine dampenCoroutine;
 
@@ -14,6 +23,8 @@ namespace ForcefieldDemo
         [Range(0.1f, 5f)]
         [SerializeField] private float dampenTime = 1.5f;
 
+
+        //filling values
         private float fillMax = .2f;
         private float fillIdle;
 
@@ -38,10 +49,19 @@ namespace ForcefieldDemo
         private MeshRenderer meshRenderer;
         [SerializeField]
         private ParticleSystem burstParticle;
+        [SerializeField]
+        private ParticleSystem ringsParticle;
 
         void Start()
         {
+            meshRenderer.enabled = false;
+            sphereCollider.enabled = false;
+            Dissolve = 1;
+            isOn = false;
+
+            Radius = meshRenderer.transform.lossyScale.y * .5f;
             fillIdle = Fill;
+
             if (cam == null && Camera.main != null)
             {
                 cam = Camera.main;
@@ -50,18 +70,33 @@ namespace ForcefieldDemo
 
         }
 
+        public bool IsOn {
+            get { return isOn;}
+            set { 
+                isOn = value; 
+                if (disolveCoroutine != null) StopCoroutine(disolveCoroutine);
+                disolveCoroutine = StartCoroutine(Dissolving(value));
+            }
+        }  
+
+        private IEnumerator Dissolving(bool turningOn) {
+            sphereCollider.enabled = true;
+            meshRenderer.enabled = true;
+            yield return StartCoroutine(meshRenderer.material.AnimatingDissolveMaterial(Dissolve, turningOn ? 0 : 1, AnimationCurve.EaseInOut(0,0,1,1), 2f));
+            sphereCollider.enabled = isOn;
+            if (IsOn) ringsParticle.Play();
+            else ringsParticle.Stop();
+            meshRenderer.enabled = isOn;
+        }   
+
+
         #region DIAGNOSTIC 
         private void UpdateMouse()
         {
             coolDownWindow -= Time.deltaTime;
-
             if (coolDownWindow <= 0)
-            {
                 if (Input.GetMouseButtonDown(0))
-                {
                     ClickToImpact();
-                }
-            }
         }
 
         // allow mouse clicks to test forcefield - useful for diagnostic
@@ -80,14 +115,9 @@ namespace ForcefieldDemo
                 if (hitXform == meshRenderer.transform)
                 {
                     coolDownWindow = coolDownMax;
-
                     ApplyImpact(hit.point, hit.normal);
                 }
-                else
-                {
-                    // for debugging if we hit another object instead
-                    Debug.Log("Hit " + hitXform.name);
-                }
+
             }
         }
         #endregion
@@ -130,6 +160,14 @@ namespace ForcefieldDemo
             get { return meshRenderer.material.GetFloat("_fill");}
             set { meshRenderer.material.SetFloat("_fill", value); }
         }
+        public float Radius {
+            get { return meshRenderer.material.GetFloat("_radius");}
+            set { meshRenderer.material.SetFloat("_radius", value); }
+        }
+        public float Dissolve {
+            get { return meshRenderer.material.GetFloat("Dissolve");}
+            set { meshRenderer.material.SetFloat("Dissolve", value); }
+        }
 
 
         // impact Forcefield, passing in hit point and direction
@@ -144,7 +182,7 @@ namespace ForcefieldDemo
                 // meshRenderer.material.SetFloat("_impactRippleAmplitude", impactRippleAmplitude);
                 meshRenderer.material.SetVector("_impactRippleDirection", direction);
                 meshRenderer.material.SetVector("_impactPoint", position);
-                burstParticle.Emit(300);
+                burstParticle.Emit(burstAmmount);
 
                 if (dampenCoroutine != null) StopCoroutine(dampenCoroutine);
                 dampenCoroutine = StartCoroutine(Dampen());
@@ -170,9 +208,16 @@ namespace ForcefieldDemo
             Fill = fillIdle;
             EnableRipple(false);
         }
+        private void OnDestroy() {
+            Dissolve = 0;
+        }
 
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.L))
+                    if (!IsOn) IsOn = true;
+
+
             if (clickToImpact)
             {
                 UpdateMouse();

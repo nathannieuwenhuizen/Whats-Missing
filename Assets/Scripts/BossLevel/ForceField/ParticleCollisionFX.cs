@@ -47,7 +47,7 @@ namespace ForcefieldDemo
                 collisionFX.transform.rotation = Quaternion.LookRotation(collisionEvents[i].normal);
 
                 // if the other object has a ForcefieldImpact component, activate the forcefield ripple
-                ForcefieldImpact forcefieldImpact = other.GetComponent<ForcefieldImpact>();
+                Forcefield forcefieldImpact = other.GetComponent<Forcefield>();
 
                 if (forcefieldImpact != null)
                 {
