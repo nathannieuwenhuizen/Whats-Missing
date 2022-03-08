@@ -4,10 +4,6 @@
 [System.Serializable]
 public class Change {
     ///<summary>
-    /// The mirror this change is connected to.
-    ///</summary>
-    public Mirror mirror;
-    ///<summary>
     /// The word that this change represents
     ///</summary>
     public string word;
@@ -24,10 +20,27 @@ public class Change {
     /// Whether the change is connected to this room or to the room next/previous of the current room.
     ///</summary>
     public int roomIndexOffset = 0;
+
+
+    public ChangeType changeType;
+
 }
 
 [System.Serializable]
-public class RoomObjectChange {
-    public RoomObject roomObject;
-    public ChangeType changeType;
+public class MirrorChange : Change {
+    ///<summary>
+    /// The mirror this change is connected to.
+    ///</summary>
+    public Mirror mirror;
+}
+
+public enum ChangeCausation {
+    environment,
+    potion
+}
+
+[System.Serializable]
+public class RoomChange : Change {
+    public IChangable roomObject;
+    public ChangeCausation changeCausation = ChangeCausation.environment;
 }

@@ -14,7 +14,7 @@ public abstract class Property : RoomEntity
     public static event OnShockwave onShockwave;
 
 
-    protected Change currentChange;
+    protected MirrorChange currentChange;
 
     public override void OnAppearing()
     {
@@ -28,7 +28,7 @@ public abstract class Property : RoomEntity
         if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
     }
 
-    public override void AddChange(Change change) {
+    public override void AddChange(MirrorChange change) {
         currentChange = change;
         base.AddChange(change);        
     }

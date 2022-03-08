@@ -75,7 +75,7 @@ public class RoomDebuggerBox
 
         if (currentRoom != null) {
 
-            foreach(Change change in currentRoom.ChangeHandler.Changes) {
+            foreach(MirrorChange change in currentRoom.ChangeHandler.MirrorChanges) {
                 GUI.color = change.active ? Color.green : Color.red;
                 GUI.skin.label.fontStyle = FontStyle.Bold;
                 GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.word + " | " + change.mirror.changeType, style);
@@ -92,16 +92,16 @@ public class RoomDebuggerBox
             currentRoom.Animated = true;
             tv.changeType = (ChangeType)selectedChangeType;
             // tv.changeType = Enum.Parse(typeof(ChangeType), changeTypes[selectedChangeType]);// ChangeType.missing;
-            Change newChange = new Change() { word = word, mirror = tv, active = true};
+            MirrorChange newChange = new MirrorChange() { word = word, mirror = tv, active = true};
             currentRoom.AddChangeInRoomObjects(newChange);
-            currentRoom.ChangeHandler.Changes.Add(newChange);
+            currentRoom.ChangeHandler.MirrorChanges.Add(newChange);
         }        
         if (GUI.Button(new Rect(pos.x + size.x + horizontalOffset + size.x * .6f, 60, size.x * .4f, 30), "REMOVE"))
         {
             currentRoom.Animated = true;
-            Change removedChange = currentRoom.ChangeHandler.Changes.Find(x => x.word == word);
+            MirrorChange removedChange = currentRoom.ChangeHandler.MirrorChanges.Find(x => x.word == word);
             currentRoom.RemoveChangeInRoomObjects(removedChange);
-            currentRoom.ChangeHandler.Changes.Remove(removedChange);
+            currentRoom.ChangeHandler.MirrorChanges.Remove(removedChange);
         } 
         DrawDropDown(new Vector2 (pos.x + size.x, 100));
 

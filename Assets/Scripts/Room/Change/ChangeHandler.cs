@@ -21,24 +21,24 @@ public class ChangeHandler
     ///<summary>
     /// Changes made by the mirrors
     ///</summary>
-    private List<Change> changes = new List<Change>();
-    public List<Change> Changes { get => changes; }
+    private List<MirrorChange> mirrorChanges = new List<MirrorChange>();
+    public List<MirrorChange> MirrorChanges { get => mirrorChanges; }
 
     //changes made by the palyer, mirror or enviroment.
-    private List<RoomObjectChange> roomObjectChanges = new List<RoomObjectChange>();
-    public List<RoomObjectChange> RoomObjectChanges { get => roomObjectChanges; }
+    private List<RoomChange> roomChanges = new List<RoomChange>();
+    public List<RoomChange> RoomObjectChanges { get => roomChanges; }
 
 
 
     ///<summary>
     /// Returns the list of all changes that the room has with the mirrors at the time of the call.
     ///</summary>
-    private List<Change> LoadingChanges() {
-        List<Change> result = new List<Change>();
+    private List<MirrorChange> LoadingChanges() {
+        List<MirrorChange> result = new List<MirrorChange>();
         foreach (Mirror mirror in room.mirrors)
         {
             if (!mirror.isQuestion) {
-                Change newChange = CreateChange(mirror);
+                MirrorChange newChange = CreateChange(mirror);
                 if (newChange != null) {
                     result.Add(newChange);
                 }
@@ -48,13 +48,13 @@ public class ChangeHandler
     }
     
     public void LoadChanges() {
-        changes = LoadingChanges();
+        mirrorChanges = LoadingChanges();
     }
     ///<summary>
     /// Creates a mirror change and returns null if the change doesn't find any objects with the word.
     ///</summary>
-    public Change CreateChange(Mirror selectedMirror) {
-        Change newChange = new Change(){
+    public MirrorChange CreateChange(Mirror selectedMirror) {
+        MirrorChange newChange = new MirrorChange(){
             word = selectedMirror.Word, 
             mirror = selectedMirror,
             roomIndexOffset = selectedMirror.roomIndexoffset
@@ -76,15 +76,15 @@ public class ChangeHandler
     ///</summary>
     public void ActivateChanges(){
         // Debug.Log("activate changes!");
-        for (int i = changes.Count - 1; i >= 0; i--)
+        for (int i = mirrorChanges.Count - 1; i >= 0; i--)
         {
-            if (changes[i].active == false) {
-                if (changes[i].roomIndexOffset == 0) {
-                    room.AddChangeInRoomObjects(changes[i]);
-                    changes[i].active = true;
-                } else if (ConnectedRoomIsComplete(changes[i]) == false) {
-                    room.AddChangeInRoomObjects(changes[i]);
-                    changes[i].active = true;
+            if (mirrorChanges[i].active == false) {
+                if (mirrorChanges[i].roomIndexOffset == 0) {
+                    room.AddChangeInRoomObjects(mirrorChanges[i]);
+                    mirrorChanges[i].active = true;
+                } else if (ConnectedRoomIsComplete(mirrorChanges[i]) == false) {
+                    room.AddChangeInRoomObjects(mirrorChanges[i]);
+                    mirrorChanges[i].active = true;
                 }
             }
         }
@@ -94,13 +94,13 @@ public class ChangeHandler
     /// Activate the other changes if the room connected to it is not finished.
     ///</summary>
     public void CheckAndActiveOtherRoomChanges() {
-        for (int i = changes.Count - 1; i >= 0; i--)
+        for (int i = mirrorChanges.Count - 1; i >= 0; i--)
         {
-            if (changes[i].active == false) {
-                if (changes[i].roomIndexOffset != 0) {
-                    if (ConnectedRoomIsComplete(changes[i]) == false) {
-                        room.AddChangeInRoomObjects(changes[i]);
-                        changes[i].active = true;
+            if (mirrorChanges[i].active == false) {
+                if (mirrorChanges[i].roomIndexOffset != 0) {
+                    if (ConnectedRoomIsComplete(mirrorChanges[i]) == false) {
+                        room.AddChangeInRoomObjects(mirrorChanges[i]);
+                        mirrorChanges[i].active = true;
                     }
                 }
             }
@@ -116,16 +116,16 @@ public class ChangeHandler
     /// If the force is false, the change can still be active if the roomoffset isnt 0 and the corresponding room isn't finished.
     ///</summary>
     public void DeactivateChanges(bool force = true){
-        for (int i = changes.Count - 1; i >= 0; i--)
+        for (int i = mirrorChanges.Count - 1; i >= 0; i--)
         {
-            if (changes[i].active) {
-                if (force || changes[i].roomIndexOffset == 0) {
-                    room.RemoveChangeInRoomObjects(changes[i]);
-                    changes[i].active = false;
+            if (mirrorChanges[i].active) {
+                if (force || mirrorChanges[i].roomIndexOffset == 0) {
+                    room.RemoveChangeInRoomObjects(mirrorChanges[i]);
+                    mirrorChanges[i].active = false;
                 } else {
-                    if (ConnectedRoomIsComplete(changes[i])) {
-                        room.RemoveChangeInRoomObjects(changes[i]);
-                        changes[i].active = false;
+                    if (ConnectedRoomIsComplete(mirrorChanges[i])) {
+                        room.RemoveChangeInRoomObjects(mirrorChanges[i]);
+                        mirrorChanges[i].active = false;
                     }
                 }
             }
@@ -135,12 +135,12 @@ public class ChangeHandler
     /// Returns true if the changes contains the word of the selected television
     ///</summary>
     public bool WordMatchesChanges(Mirror mirror) {
-        foreach (Change change in changes) {
+        foreach (MirrorChange change in mirrorChanges) {
             if ((change.word == mirror.Word || change.alternativeWords.Contains(mirror.Word)) && change.mirror.changeType == mirror.changeType) {
                 return true;
             }
         } 
-        foreach (RoomObjectChange change in roomObjectChanges) {
+        foreach (RoomChange change in roomChanges) {
             if ((change.roomObject.Word == mirror.Word || change.roomObject.AlternativeWords.Contains(mirror.Word)) && change.changeType == mirror.changeType) {
                 return true;
             }
@@ -148,15 +148,39 @@ public class ChangeHandler
         return false;
     }
 
+
+    ///<summary>
+    /// Updates the room object changes when the event sender did an invoke.
+    ///</summary>
     public void UpdateRoomObjectChanges(RoomObject _roomObject, ChangeType _changeType, bool _enabled) {
-        int index = roomObjectChanges.FindIndex(x => x.roomObject == _roomObject);
+        int index = roomChanges.FindIndex(x => x.roomObject == (IChangable)_roomObject);
         Debug.Log("index: " + index);
         if (_enabled) {
-            if (index == -1) roomObjectChanges.Add(new RoomObjectChange() { roomObject = _roomObject, changeType = _changeType});
+            if (index == -1) roomChanges.Add(new RoomChange() { roomObject = _roomObject, changeType = _changeType});
             
         } else {
-            if (index != -1) roomObjectChanges.RemoveAt(index);
+            if (index != -1) roomChanges.RemoveAt(index);
         }
     }
 
+    public void AddPotionChange(Potion potion, IChangable changable) {
+        //check if existing change has been made by same potion
+        int index = roomChanges.FindIndex(x => x.changeCausation == ChangeCausation.potion && x.changeType == potion.ChangeType);
+        Debug.Log("index: " + index);
+
+        bool sameObject = false;
+        if (index != -1) {
+            //same object? then just ignore the rest
+            sameObject = roomChanges[index].roomObject == changable;
+            if (sameObject) return;
+
+            //remove other change
+            roomChanges[index].roomObject.RemoveChange(roomChanges[index]);
+            roomChanges.RemoveAt(index);
+
+        }
+        RoomChange newChange = new RoomChange() {changeType = potion.ChangeType, roomObject = changable, changeCausation = ChangeCausation.potion};
+        roomChanges.Add(newChange);
+        changable.AddChange(newChange);
+    }
 }

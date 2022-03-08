@@ -142,7 +142,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
     ///<summary>
     /// Releases the object activating the body.
     ///</summary>
-    public void Release()
+    public virtual void Release()
     {
         OutlineEnabled = true;
         ActivateRigidBody();

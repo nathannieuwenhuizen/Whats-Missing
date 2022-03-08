@@ -52,8 +52,18 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     public bool IsEnlarged { get; set; } = false;
     public bool IsMissing { get; set; } = false;
 
+
+    public virtual void AddChange(MirrorChange change)
+    {
+        ApplyChange(change.changeType);
+    }
+
     public virtual void AddChange(Change change) {
-        switch (change.mirror.changeType) {
+        ApplyChange(change.changeType);
+    }
+
+    private void ApplyChange(ChangeType _type) {
+        switch (_type) {
             case ChangeType.missing:
                 OnMissing();
                 break;
@@ -67,9 +77,10 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
                 OnFlipped();
                 break;
         }    
+
     }
     public void RemoveChange(Change change) {
-        switch (change.mirror.changeType) {
+        switch (change.changeType) {
             case ChangeType.missing:
                 OnAppearing();
                 break;
@@ -259,5 +270,6 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     }
 
     public virtual void OnFlippingRevertFinish(){}
+
     #endregion
 }
