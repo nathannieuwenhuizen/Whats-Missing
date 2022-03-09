@@ -13,6 +13,8 @@ public class Hands : MonoBehaviour
     public delegate void FocusedAction(bool whiteColor);
     public static event FocusedAction OnFocus; 
     public static event FocusedAction OnUnfocus; 
+    [SerializeField]
+    private Player player;
 
     [SerializeField]
     private float pickupDistance = 3;
@@ -24,11 +26,10 @@ public class Hands : MonoBehaviour
         set { massThreshhold = value; }
     }
 
-    private bool shrinked = false;
 
     public float PickupDistance {
         get {
-            return shrinked ? shrinkPickupDistance : pickupDistance;
+            return pickupDistance / player.NormalScale * player.CurrentScale;
         }
     }
 
@@ -62,7 +63,6 @@ public class Hands : MonoBehaviour
         holdingObject = obj;
         oldPos = holdingObject.gameObject.transform.position;
         obj.Grab(rigidbody);
-        AudioHandler.Instance?.PlaySound(SFXFiles.player_grab, .5f);
         StartCoroutine(UpdateVelocity());
         StartCoroutine(UpdatePhysics()); 
     }
@@ -72,8 +72,6 @@ public class Hands : MonoBehaviour
         InputManager.OnClickUp += Release;
         PauseScreen.OnPause += DisableClick;
         PauseScreen.OnResume += EnableClick;
-        Player.OnPlayerShrink += PlayerHasShrunk;
-        Player.OnPlayerUnShrink += PlayerHasUnShrunk;
     }
 
     private void OnDisable() {
@@ -81,16 +79,6 @@ public class Hands : MonoBehaviour
         InputManager.OnClickUp -= Release;
         PauseScreen.OnPause -= DisableClick;
         PauseScreen.OnResume -= EnableClick;
-        Player.OnPlayerShrink -= PlayerHasShrunk;
-        Player.OnPlayerUnShrink -= PlayerHasUnShrunk;
-    }
-
-    private void PlayerHasShrunk() {
-        shrinked = true;
-
-    }
-    private void PlayerHasUnShrunk() {
-        shrinked = false;
     }
 
     private void EnableClick() {

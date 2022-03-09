@@ -89,7 +89,7 @@ public class Mirror: MonoBehaviour, IRoomObject
 
 
     private bool inSpace = true;
-    public bool InSpace { get => inSpace; }
+    public bool InSpace { get => inSpace; set => inSpace = value; }
 
     ///<summary>
     /// Updates the light indicator on whether the mirror is on.

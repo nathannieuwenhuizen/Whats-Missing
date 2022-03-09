@@ -62,6 +62,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
             rb = value;
         }
     }
+
+    protected string grabSound = SFXFiles.player_grab;
+
     [SerializeField]
     private RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
     public RigidBodyInfo RigidBodyInfo { get => rigidBodyInfo; set => rigidBodyInfo = value; }
@@ -107,8 +110,10 @@ public class PickableRoomObject : InteractabelObject, IPickable
         touching = true;
     }
 
-    public void Grab(Rigidbody connectedRigidBody)
+    public virtual void Grab(Rigidbody connectedRigidBody)
     {        
+        AudioHandler.Instance?.PlaySound(grabSound);
+
         OutlineEnabled = false;
         RigidBodyInfo.Save(rb);
         rb.drag = 100f;

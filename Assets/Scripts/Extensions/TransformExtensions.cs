@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class TransformExtensions
 {
-    public static  IEnumerator AnimatingScale(this Transform transform, Vector3 endScale,  AnimationCurve curve, float duration = .5f) {
+    public static  IEnumerator AnimatingLocalScale(this Transform transform, Vector3 endScale,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;
         Vector3 beginScale = transform.localScale;
         while (timePassed < duration) {

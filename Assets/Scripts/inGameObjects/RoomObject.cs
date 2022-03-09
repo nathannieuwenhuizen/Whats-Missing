@@ -56,7 +56,7 @@ public class RoomObject : RoomEntity
             break;
             case MissingChangeEffect.scale:
                 AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
-                yield return transform.AnimatingScale(Vector3.zero, curve, .5f);
+                yield return transform.AnimatingLocalScale(Vector3.zero, curve, .5f);
                 transform.localScale = Vector3.zero;
             break;
             case MissingChangeEffect.dissolve:
@@ -90,7 +90,7 @@ public class RoomObject : RoomEntity
             case MissingChangeEffect.scale:
                 transform.localScale = Vector3.zero;
                 AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
-                yield return transform.AnimatingScale(startMissingScale, curve, .5f);
+                yield return transform.AnimatingLocalScale(startMissingScale, curve, .5f);
             break;
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials())

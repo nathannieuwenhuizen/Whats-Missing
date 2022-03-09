@@ -22,7 +22,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     }
 
     protected bool inSpace = false;
-    public bool InSpace { get => inSpace; }
+    public bool InSpace { get => inSpace; set => inSpace = value; }
 
     public Transform Transform => transform;
 
@@ -173,6 +173,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     #region  shrinking/enlarging
     public virtual void OnShrinking()
     {
+        IsEnlarged = false;
         IsShrinked = true;
         if (ShrinkCoroutine != null) StopCoroutine(ShrinkCoroutine);
         if (Animated) {
@@ -211,6 +212,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnEnlarge()
     {
+        IsShrinked = false;
         IsEnlarged = true;
         if (Animated)StartCoroutine(AnimateEnlarging());
         else OnEnlargingFinish();

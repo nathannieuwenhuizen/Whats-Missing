@@ -317,6 +317,7 @@ public class Room : MonoBehaviour
 
         foreach (IRoomObject item in GetAllObjectsInRoom<IRoomObject>())
         {
+            item.InSpace = true;
             item.OnRoomEnter();
             RoomObject roomObject = item as RoomObject;
             if (roomObject != null) roomObject.EventSender.Active = !revealChangeAfterCompletion;
@@ -375,6 +376,7 @@ public class Room : MonoBehaviour
         foreach (IRoomObject item in GetAllObjectsInRoom<IRoomObject>())
         {
             item.OnRoomLeave();
+            item.InSpace = false;
         }
         foreach(Rigidbody rb in GetAllObjectsInRoom<Rigidbody>()) {
             if (rb != player.Movement.RB) rb.sleepThreshold = Mathf.Infinity;
@@ -407,12 +409,12 @@ public class Room : MonoBehaviour
 
     private void OnEnable() {
         RoomObjectEventSender.OnAltered += UpdateRoomObjectChanges;
-        Potion.OnCrash += AddPotionChange;
+        Potion.OnChanging += AddPotionChange;
     }
 
     private void OnDisable() {
         RoomObjectEventSender.OnAltered -= UpdateRoomObjectChanges;
-        Potion.OnCrash -= AddPotionChange;
+        Potion.OnChanging -= AddPotionChange;
     }
 
     public void UpdateRoomObjectChanges(RoomObject _roomObject, ChangeType _changeType, bool _enabled) {

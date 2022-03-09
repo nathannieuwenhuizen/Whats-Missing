@@ -15,7 +15,7 @@ public class AreaTextMeshFader : TextMeshFader, ITriggerArea, IRoomObject
     public bool InsideArea { get; set; } = false;
 
     private bool inSpace = false;
-    public bool InSpace {get => inSpace; }
+    public bool InSpace {get => inSpace; set => inSpace = value; }
 
     protected override void Start() {
         base.Start();

@@ -159,7 +159,7 @@ public interface IRoomObject {
     ///<summary>
     /// Is true when the player is inside the same room as the object
     ///</summary>
-    bool InSpace {get; }
+    bool InSpace {get; set; }
     void OnRoomEnter();
     void OnRoomLeave();
 }

@@ -76,6 +76,13 @@ public static class SFXFiles {
     public static string grave_cutscene = "event:/SFX/Environment/Garden/Grave_cutscene";
 
 
+    //potion
+    public static string potion_grab = "event:/SFX/Environment/Third_area/Potion_grab";
+    public static string potion_throw = "event:/SFX/Environment/Third_area/Potion_throw";
+    public static string potion_break = "event:/SFX/Environment/Third_area/Potion_break";
+
+
+
     //music
     public static string MENU = "event:/Music/Menu";
     public static string HIDDEN_ROOM = "event:/Music/Hidden_room";
