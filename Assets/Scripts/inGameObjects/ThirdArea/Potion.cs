@@ -17,6 +17,13 @@ public class Potion : PickableRoomObject
     private ParticleSystem burstParticle;
     [SerializeField]
     private ParticleSystem smokeParticle;
+
+    [SerializeField]
+    private LineRenderer lineRenderer;
+    [SerializeField]
+    private Transform aimHitObject;
+
+    private int linePointCount = 300;
     
     [SerializeField]
     private ChangeType changeType;
@@ -24,7 +31,7 @@ public class Potion : PickableRoomObject
     public ChangeType ChangeType {
         get { return changeType;}
     }
-    private float forcePower = 500f;
+    private float forcePower = 1000f;
 
     private bool thrown = false;
     private bool broken = false;
@@ -38,6 +45,8 @@ public class Potion : PickableRoomObject
     {
         base.Awake();
         grabSound = SFXFiles.potion_grab;
+        ClearAimLine();
+
     }
 
     public override void OnRoomEnter()
@@ -61,12 +70,22 @@ public class Potion : PickableRoomObject
     }
 
 
+    public override void Grab(Rigidbody connectedRigidBody)
+    {
+        base.Grab(connectedRigidBody);
+        StartCoroutine(UpdatingAimLine());
+    }
+
     public override void Release()
     {
         base.Release();
         AudioHandler.Instance?.PlaySound(SFXFiles.potion_throw);
         Vector3 delta =  Camera.main.transform.forward;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
         rb.AddForce(delta * forcePower * rb.mass);
+        rb.drag = 0;
+        rb.angularDrag = 0;
         thrown = true;
     }
 
@@ -91,6 +110,70 @@ public class Potion : PickableRoomObject
         return changable;
     }
 
+    IEnumerator UpdatingAimLine() {
+        lineRenderer.enabled = true;
+        aimHitObject.transform.parent = transform.parent;
+
+        while (thrown == false) {
+            Vector3 delta =  -Camera.main.transform.forward * forcePower * rb.mass;
+            UpdateAimLine(delta, rb, transform.position);
+            yield return new WaitForEndOfFrame();
+        }
+        // ClearAimLine();
+
+    }
+
+    ///<summary>
+    /// Updates the aimline by performing a formula with gravity on the physics rigidbody
+    ///</summary>
+    public void UpdateAimLine(Vector3 forceVector, Rigidbody rigidbody, Vector3 startingPoint) {
+        List<Vector3> linePoints =new List<Vector3>();
+
+        Vector3 velocity = (forceVector / rigidbody.mass) * Time.fixedDeltaTime;
+
+        // float flightDuration = (2  * -Mathf.Abs( Mathf.Min(100, velocity.y))) / Physics.gravity.y;
+        float stepTime =  .1f;
+        bool hitted = false;
+
+        Vector3 oldPos = startingPoint;
+        for (int i = 0 ; i < linePointCount; i++) {
+            float stepTimePassed = stepTime * i;
+            Vector3 movementVector = new Vector3(
+                velocity.x * stepTimePassed,
+                velocity.y * stepTimePassed - .5f * (Physics.gravity.y * 1.0f) * stepTimePassed * stepTimePassed,
+                velocity.z * stepTimePassed
+            );
+            RaycastHit hit;
+            if (Physics.SphereCast(startingPoint -movementVector,.5f, ((startingPoint -movementVector) -oldPos).normalized * .1f, out hit, ((startingPoint -movementVector) -oldPos).magnitude)) {
+                if (hit.transform.parent != transform) {
+                    Debug.Log("hit object: " + hit.transform.name);
+                    linePoints.Add(hit.point);
+                    hitted = true;
+                    aimHitObject.transform.position = hit.point;
+                    aimHitObject.transform.rotation = Quaternion.LookRotation(aimHitObject.forward, hit.normal);;
+                    break;
+                }
+            }
+            oldPos = -movementVector + startingPoint;
+            linePoints.Add(-movementVector + startingPoint);
+        }
+        lineRenderer.positionCount = linePoints.Count;
+        lineRenderer.SetPositions(linePoints.ToArray());
+        aimHitObject.gameObject.SetActive(hitted);
+
+        lineRenderer.materials = new Material[]{ lineRenderer.materials[0]};
+    }
+
+
+    ///<summary>
+    /// CLears the aim line setting all the positions to zero
+    ///</summary>
+    public void ClearAimLine() {
+        lineRenderer.positionCount = 0;
+        lineRenderer.enabled = false;
+        aimHitObject.gameObject.SetActive(false);
+    }
+
     public void Break() {
         AudioHandler.Instance?.Play3DSound(SFXFiles.potion_break, burstParticle.transform);
 
@@ -99,6 +182,7 @@ public class Potion : PickableRoomObject
         burstParticle.Emit(50);
         smokeParticle.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         OnBreak?.Invoke(this);
+        Destroy(aimHitObject.gameObject);
         Destroy(burstParticle, 5f);
         Destroy(smokeParticle, 5f);
         Destroy(gameObject);
