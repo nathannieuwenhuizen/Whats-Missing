@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 ///<summary>
-/// A physical object inside the room that can be changed. 
+/// A physical object inside the room that can be changed. and has thus a transform that will be changed (scale or rotation)
 ///</summary>
 public class RoomObject : RoomEntity
 {
@@ -41,7 +41,8 @@ public class RoomObject : RoomEntity
     ///</summary>
     public override void OnAppearing()
     {
-        gameObject.SetActive(true);
+        // gameObject.SetActive(true);
+        SetActive(true);
         EventSender.SendAppearingEvent();
         base.OnAppearing();
     }
@@ -90,7 +91,7 @@ public class RoomObject : RoomEntity
             case MissingChangeEffect.scale:
                 transform.localScale = Vector3.zero;
                 AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
-                yield return transform.AnimatingLocalScale(startMissingScale, curve, .5f);
+                yield return this.AnimatingRoomObjectScale(DesiredScale(), AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
             break;
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials())
@@ -111,7 +112,8 @@ public class RoomObject : RoomEntity
     public override void OnMissingFinish()
     {
         base.OnMissingFinish();
-        gameObject.SetActive(false);
+        // gameObject.SetActive(false);
+        SetActive(false);
         EventSender.SendMissingEvent();
 
     }
@@ -122,7 +124,14 @@ public class RoomObject : RoomEntity
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
-        transform.localScale = startMissingScale;
+        transform.localScale = Vector3.one * DesiredScale();
+    }
+
+    ///<summary>
+    /// The desired scale the object wants to have based on its state. USed in the appearing animation calls because there the scale might be temporary zero.
+    ///</summary>
+    private float DesiredScale() {
+        return (IsShrinked ? ShrinkScale : (IsEnlarged ? LargeScale : NormalScale));
     }
 
     #endregion
@@ -233,6 +242,20 @@ public class RoomObject : RoomEntity
             Destroy(tempParent);
         }
         base.OnFlippingRevertFinish();
+    }
+
+    ///<summary>
+    /// Enables all the components inside a gameobject and its children, only works on renderers, colliders and particle systems.
+    ///</summary>
+    private List<Renderer> disabledRenderers = new List<Renderer>();
+    public virtual void SetActive(bool active) {
+        if (!active)  disabledRenderers = gameObject.SetAllComponentsActive<Renderer>(false, null);
+        else gameObject.SetAllComponentsActive<Renderer>(true, disabledRenderers);
+
+        Debug.Log("disble renders count: " + disabledRenderers.Count);
+        gameObject.SetAllComponentsActive<Collider>(active, null);
+        gameObject.SetAllComponentsActive<ParticleSystem>(active, null);
+        gameObject.SetAllComponentsActive<Light>(active, null);
     }
 
     public Renderer GetObjectHeight() {

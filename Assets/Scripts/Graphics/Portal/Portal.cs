@@ -7,6 +7,8 @@ public class Portal : MonoBehaviour
 {
     // referenses
 
+    private float timeInterval = 0;
+
     [SerializeField]
     private Collider[] connectedColliders;
 
@@ -52,6 +54,15 @@ public class Portal : MonoBehaviour
         }
     }
 
+    public float RenderInterval () {
+        float distance = Vector3.Distance(mainCamera.transform.position, transform.position);
+        if (distance < 20f) {
+            return 1f/60f;
+        } else if (distance < 40f) 
+            return 2f / 60f;
+        return 40f / 60f;
+    }
+
     // cache
     private Transform mainCamTransform;
     private Transform reflectionCamTransform;
@@ -88,7 +99,16 @@ public class Portal : MonoBehaviour
         }
 
         if (isReady && mainCamera != null && connectedPortal != null){
-            RenderPortal();
+            timeInterval += Time.deltaTime;
+            Debug.Log("render interval" + RenderInterval());
+            if (timeInterval > RenderInterval())
+            {
+                reflectionCamera.enabled = true;
+                timeInterval = 0;
+                RenderPortal();
+            } else {
+                reflectionCamera.enabled = false;
+            }
         }
         else {
             mainCamera = Camera.main;

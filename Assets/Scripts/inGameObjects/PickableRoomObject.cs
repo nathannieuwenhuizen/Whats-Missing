@@ -42,6 +42,8 @@ public class RigidBodyInfo {
 ///</summary>
 public class PickableRoomObject : InteractabelObject, IPickable
 {
+    private bool grabbed = false;
+
     protected Rigidbody rb;     
     protected override void Awake()
     {
@@ -84,6 +86,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     public override void OnMissing()
     {
+        if (grabbed) Release();
         DeactivateRigidBody();
         base.OnMissing();
     }
@@ -112,6 +115,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     public virtual void Grab(Rigidbody connectedRigidBody)
     {        
+        grabbed = true;
         AudioHandler.Instance?.PlaySound(grabSound);
 
         OutlineEnabled = false;
@@ -149,6 +153,8 @@ public class PickableRoomObject : InteractabelObject, IPickable
     ///</summary>
     public virtual void Release()
     {
+        if (!grabbed) return;
+        grabbed = false;
         OutlineEnabled = true;
         ActivateRigidBody();
     }

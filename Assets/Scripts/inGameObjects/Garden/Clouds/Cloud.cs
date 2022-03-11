@@ -37,10 +37,10 @@ public class Cloud : RoomObject
     }
 
     private void MakeCloudsFaster() {
-        cloudSpeed = 5f;
+        if (inSpace) cloudSpeed = 5f;
     }
     private void MakeCloudsNormal() {
-        cloudSpeed = .5f;
+        if (InSpace) cloudSpeed = .5f;
     }
     
 

@@ -99,13 +99,15 @@ public class Mirror: MonoBehaviour, IRoomObject
         colour *= 3.0f;
         indicatorMesh.material.SetColor("_EmissionColor", colour);
     }
+    protected void Awake() {
+        // planarReflection.IsActive = false;
+    }
 
     ///<summary>
     /// Sets up the canvas so it can be used to display all the letters
     ///</summary>
     public void SetupCanvas()
     {
-        Debug.Log("seeting up letters = " + letters);
         mirrorCanvas.InitializeLetters(huzzleWords, letters, preAnswer);
         mirrorCanvas.SetupText(changeType, roomIndexoffset);
     }

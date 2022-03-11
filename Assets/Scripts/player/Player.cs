@@ -203,9 +203,12 @@ public class Player : RoomObject
         foreach(SkinnedMeshRenderer mr in meshObjects) {
             mr.enabled = true;
         }        
-        base.OnAppearing();
+        if (Animated) {
+            StartCoroutine(AnimateAppearing());
+        } else {
+            OnAppearingFinish();
+        }
     }
-
     private void OnTriggerEnter(Collider other) {
         if (other.GetComponent<Portal>() != null) {
             other.GetComponent<Portal>().OnPortalEnter(this);

@@ -37,14 +37,14 @@ public class Wind : Property
         windParticles.emissionRate = 200f;
 
         windAudio = AudioHandler.Instance.PlaySound(SFXFiles.wind, windVolume, 1f, true);
-        windAudio.AudioSource.Play();
+        windAudio.Play();
         IsEnlarged = true;
         StartCoroutine(ApplyWindForce());
         base.OnEnlarge();
     }
     public override IEnumerator AnimateEnlarging()
     {
-        yield return AudioHandler.Instance.FadeVolume(windAudio.AudioSource, 0, windVolume, animationDuration);
+        // yield return AudioHandler.Instance.FadeVolume(windAudio.AudioSource, 0, windVolume, animationDuration);
         yield return base.AnimateEnlarging();
     }
 
@@ -59,13 +59,14 @@ public class Wind : Property
     }
     
     public override IEnumerator AnimateEnlargeRevert() {
-        yield return AudioHandler.Instance.FadeVolume(windAudio.AudioSource, windVolume, 0, animationDuration);
+        // yield return AudioHandler.Instance.FadeVolume(windAudio.AudioSource, windVolume, 0, animationDuration);
         yield return base.AnimateEnlargeRevert();
 
     }
     public override void OnEnlargeRevertFinish()
     {
-        AudioHandler.Instance?.StopSound(SFXFiles.wind);
+        windAudio.Stop();
+        // AudioHandler.Instance?.StopSound(SFXFiles.wind);
         base.OnEnlargeRevertFinish();
     }
 
@@ -89,7 +90,6 @@ public class Wind : Property
             yield return new WaitForEndOfFrame();
         }
     }
-
 
     private void Reset() {
         Word = "wind";

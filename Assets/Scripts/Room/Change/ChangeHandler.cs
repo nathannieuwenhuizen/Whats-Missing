@@ -57,6 +57,7 @@ public class ChangeHandler
         MirrorChange newChange = new MirrorChange(){
             word = selectedMirror.Word, 
             mirror = selectedMirror,
+            changeType = selectedMirror.changeType,
             roomIndexOffset = selectedMirror.roomIndexoffset
             };
 
