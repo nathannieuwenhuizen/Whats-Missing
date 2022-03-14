@@ -59,10 +59,13 @@ public class FPMovement : MonoBehaviour
     }
 
     [SerializeField]
-    private ParticleSystem waterSplash;
+    private ParticleSystem waveEmitter;
+    private WaterSplash waterSplash;
 
     [SerializeField]
     private ParticleSystem windParticles;
+
+
     public static string FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
 
     private float walkStepDistance = 4f;
@@ -242,6 +245,7 @@ public class FPMovement : MonoBehaviour
     }
 
     private void Awake() {
+        waterSplash = new WaterSplash(waveEmitter);
         player = GetComponent<Player>();
         rb = GetComponent<Rigidbody>();
         ApplyMovementSettings(Settings.GetSettings());
@@ -318,17 +322,9 @@ public class FPMovement : MonoBehaviour
         if (delta.magnitude > walkStepDistance){
             oldPos = transform.position;
             if (!player.IsMissing) {
-                // float volume = FOOTSTEP_SFXFILE == SFXFiles.player_footstep_normal ? .05f : 1f;
-                // float pitch = player.IsShrinked ? 1.5f :(player.IsEnlarged ? .5f : 1f);
-                // if (FOOTSTEP_SFXFILE == SFXFiles.player_footstep_water) {
-                //     pitch = .5f;
-                //     volume = .2f;
-                // }
                 SFXInstance footSound = AudioHandler.Instance?.Play3DSound(FOOTSTEP_SFXFILE, transform, 1, 1, false, true, 50);
                 footSound.FMODInstance.setParameterByName(FMODParams.GROUNDPARAM, GetGroundMaterial());
-                if (FOOTSTEP_SFXFILE != SFXFiles.player_footstep_normal) {
-                    waterSplash.Emit(1);
-                }
+                waterSplash.OnFootStep();
             }
         }
     }

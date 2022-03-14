@@ -181,8 +181,6 @@ public class Room : MonoBehaviour
                 result = true;
             }
         }
-        Debug.Log(change.changeType + " | " + change.mirror.name);
-
 
         foreach (IChangable obj in foundObjects)
         {

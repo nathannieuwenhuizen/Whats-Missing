@@ -6,6 +6,8 @@ using System;
 using System.IO;
 using System.Reflection;
 
+#if UNITY_EDITOR
+
 [CustomEditor(typeof(Readme))]
 [InitializeOnLoad]
 public class ReadmeEditor : Editor {
@@ -60,7 +62,6 @@ public class ReadmeEditor : Editor {
 			return null;
 		}
 	}
-	
 	protected override void OnHeaderGUI()
 	{
 		var readme = (Readme)target;
@@ -101,7 +102,6 @@ public class ReadmeEditor : Editor {
 			GUILayout.Space(kSpace);
 		}
 	}
-	
 	
 	bool m_Initialized;
 	
@@ -156,3 +156,4 @@ public class ReadmeEditor : Editor {
 	}
 }
 
+#endif

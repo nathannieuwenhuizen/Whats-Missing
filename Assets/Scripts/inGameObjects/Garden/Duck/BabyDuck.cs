@@ -8,8 +8,6 @@ public class BabyDuck : Duck
 {
 
     private FollowState followState;
-    [SerializeField]
-    private Duck[] allDucks;
     protected override void SetUpBehaviour()
     {
         followState = new FollowState() {
@@ -20,7 +18,6 @@ public class BabyDuck : Duck
     }
 
     protected override void Awake() {
-        allDucks = FindAllDucks();
         base.Awake();
     }
 
@@ -47,8 +44,9 @@ public class BabyDuck : Duck
 
     }
     private List<Duck> DetectDucks() {
-        List<Duck> result = new List<Duck>(allDucks);
+        List<Duck> result = new List<Duck>(FindAllDucks());
         result.Remove(this);
+        Debug.Log("ducks length" + result.Count);
         return result;  
     }
     public override void Quack()

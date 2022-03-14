@@ -87,7 +87,7 @@ public class Gravity : Property
         FPMovement.GLOBAL_GRAVITY *= -1;
         Vector3 flipped = room.Player.transform.eulerAngles;
         flipped.z += 180f;
-        StartCoroutine(room.Player.transform.AnimatingRotation(Quaternion.Euler(flipped), AnimationCurve.EaseInOut(0,0,1,1), animationDuration ));
+        StartCoroutine(room.Player.transform.AnimatingLocalRotation(Quaternion.Euler(flipped), AnimationCurve.EaseInOut(0,0,1,1), animationDuration ));
     }
     public override void OnFlippingRevert()
     {
@@ -95,7 +95,7 @@ public class Gravity : Property
         FPMovement.GLOBAL_GRAVITY *= -1;
         Vector3 flipped = room.Player.transform.eulerAngles;
         flipped.z += 180f;
-        StartCoroutine(room.Player.transform.AnimatingRotation(Quaternion.Euler(flipped), AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+        StartCoroutine(room.Player.transform.AnimatingLocalRotation(Quaternion.Euler(flipped), AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
 
         base.OnFlippingRevert();
     }

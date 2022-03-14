@@ -32,10 +32,10 @@ public class LegendaPanel : MonoBehaviour
 
     private IEnumerator TransitionWord(string word) {
         if (group.alpha > .5f) {
-            yield return text.FadeText(0, .2f, 0);
+            yield return text.AnimateTextAlpha(0, .2f, 0);
         }
         text.text = word.ToLower();
-        yield return text.FadeText(1, .5f, 0);
+        yield return text.AnimateTextAlpha(1, .5f, 0);
     }
 
     private void OnEnable() {

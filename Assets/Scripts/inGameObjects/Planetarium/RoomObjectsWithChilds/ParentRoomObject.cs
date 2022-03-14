@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class DeskObject {
 
     public Transform transform;
@@ -13,29 +12,24 @@ public class DeskObject {
         oldRotation = transform.transform.rotation;
     }
 }
-public class Desk : RoomObject
+
+///<summary>
+/// A parent which has smaller objects on top of it so that when it reappears again, the child objects go into their original position.
+///</summary>
+public class ParentRoomObject : RoomObject
 {
     [SerializeField]
     private Transform[] objectsOnTable;
 
-    private List<DeskObject> deskObjects;
-    public Desk()
-    {
-        largeScale = 200;
-    }
+    private List<DeskObject> deskObjects = new List<DeskObject>();
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         deskObjects = new List<DeskObject>();
         for(int i = 0 ; i < objectsOnTable.Length; i++) {
             DeskObject newDeskObject = new DeskObject() {transform = objectsOnTable[i] };
             deskObjects.Add(newDeskObject);
         }
-    }
-
-    private void Reset() {
-        Word = "desk";
-        AlternativeWords = new string[] { "desks", "bureau", "table" };
-        flippingAxis = FlippingAxis.up; 
     }
 
     public override void OnMissing()
@@ -62,7 +56,6 @@ public class Desk : RoomObject
         } 
     }
 
-
     public IEnumerator AnimateBackToOldPos(DeskObject deskObj, float delay, float duration) {
         Rigidbody rb = deskObj.transform.GetComponent<Rigidbody>();
         if (rb != null) {
@@ -76,7 +69,7 @@ public class Desk : RoomObject
         Vector3 mid = begin + (end - begin) * .5f;
         mid.y += 5f;
         StartCoroutine(deskObj.transform.AnimatingPosBezierCurve(end, mid, AnimationCurve.EaseInOut(0,0,1,1), duration));
-        yield return StartCoroutine(deskObj.transform.AnimatingRotation(deskObj.oldRotation, AnimationCurve.EaseInOut(0,0,1,1), duration));
+        yield return StartCoroutine(deskObj.transform.AnimatingLocalRotation(deskObj.oldRotation, AnimationCurve.EaseInOut(0,0,1,1), duration));
         if (rb != null) {
             rb.isKinematic = false;
             rb.useGravity = true;
@@ -84,6 +77,5 @@ public class Desk : RoomObject
             rb.angularVelocity = Vector3.zero;
         }
     }
-
 
 }

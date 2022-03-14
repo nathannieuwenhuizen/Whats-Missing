@@ -89,7 +89,7 @@ public static class TransformExtensions
     }
 
 
-    public static  IEnumerator AnimatingRotation(this Transform transform, Quaternion endrotation,  AnimationCurve curve, float duration = .5f) {
+    public static  IEnumerator AnimatingLocalRotation(this Transform transform, Quaternion endrotation,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;
         Quaternion beginrotation = transform.rotation;
         while (timePassed < duration) {
@@ -117,7 +117,12 @@ public static class TransformExtensions
                 transform.localRotation.y,
                 0
             );
-
+    }
+    public static Quaternion RandomRotation (float amplitude = 1f) {
+        return Quaternion.Euler(Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude));
+    }
+    public static Vector3 RandomVector (float amplitude = 1f) {
+        return new Vector3(Random.Range(0.0f, amplitude), Random.Range(0.0f, amplitude), Random.Range(0.0f, amplitude));
     }
 
 
