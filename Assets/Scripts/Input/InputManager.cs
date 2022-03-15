@@ -67,6 +67,7 @@ public class InputManager : MonoBehaviour
         controls.Player.Click.started += ClickStart;
         controls.Player.Click.canceled += ClickEnd;
         controls.Player.Cancel.started += Cancel;
+        Debug.Log("input enabled!");
 
     } 
 
@@ -88,12 +89,7 @@ public class InputManager : MonoBehaviour
     }
 
     private void UpdateSettings(Settings settings) {
-        // #if UNITY_EDITOR
-        // InputManager.KEYBOARD_ENABLED_MIRROR = true;
-// #else
         InputManager.KEYBOARD_ENABLED_MIRROR = settings.controlSettings.Enable_Keyboard_Input;
-// #endif
-
     }
 
     void Update()

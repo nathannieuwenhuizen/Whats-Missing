@@ -35,7 +35,7 @@ public class EndlessHallway : MonoBehaviour
             chunks.Add(newChunk);
         }
     }
-    private void Awake() {
+private void Awake() {
         SpawnChunks();
     }
 
