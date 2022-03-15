@@ -133,7 +133,7 @@ public class ChangeHandler
         }
     }
     ///<summary>
-    /// Returns true if the changes contains the word of the selected television
+    /// Returns true if the changes contains the word of the selected mirror
     ///</summary>
     public bool WordMatchesChanges(Mirror mirror) {
         foreach (MirrorChange change in mirrorChanges) {
