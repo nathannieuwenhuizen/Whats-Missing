@@ -57,8 +57,8 @@ public class ChangeHandler
         MirrorChange newChange = new MirrorChange(){
             word = selectedMirror.Word, 
             mirror = selectedMirror,
-            changeType = selectedMirror.changeType,
-            roomIndexOffset = selectedMirror.roomIndexoffset
+            changeType = selectedMirror.MirrorData.changeType,
+            roomIndexOffset = 0
             };
 
         if (room.DoesObjectWordMatch(newChange, (IChangable obj) => {
@@ -137,12 +137,12 @@ public class ChangeHandler
     ///</summary>
     public bool WordMatchesChanges(Mirror mirror) {
         foreach (MirrorChange change in mirrorChanges) {
-            if ((change.word == mirror.Word || change.alternativeWords.Contains(mirror.Word)) && change.mirror.changeType == mirror.changeType) {
+            if ((change.word == mirror.Word || change.alternativeWords.Contains(mirror.Word)) && change.mirror.MirrorData.changeType == mirror.ChangeType) {
                 return true;
             }
         } 
         foreach (RoomChange change in roomChanges) {
-            if ((change.roomObject.Word == mirror.Word || change.roomObject.AlternativeWords.Contains(mirror.Word)) && change.changeType == mirror.changeType) {
+            if ((change.roomObject.Word == mirror.Word || change.roomObject.AlternativeWords.Contains(mirror.Word)) && change.changeType == mirror.ChangeType) {
                 return true;
             }
         }

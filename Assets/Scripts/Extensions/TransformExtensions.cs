@@ -83,7 +83,7 @@ public static class TransformExtensions
         while (index < duration) {
             yield return new WaitForEndOfFrame();
             index += Time.deltaTime;
-            transform.position = Extensions.CalculateQuadraticBezierPoint(index / duration,  begin, mid, end);
+            transform.position = Extensions.CalculateQuadraticBezierPoint(curve.Evaluate(index / duration),  begin, mid, end);
         }
         transform.position = end;
     }

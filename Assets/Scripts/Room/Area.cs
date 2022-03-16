@@ -157,30 +157,30 @@ public class Area : MonoBehaviour
                 foreach (Mirror mirror in newRoom.GetAllObjectsInRoom<Mirror>())
                 {
                     if (mirror.isQuestion) {
+                        MirrorData questionMirrorData = roomLevel.roomInfo.questionMirror[0].Clone;
+                        mirror.MirrorData = questionMirrorData;
+
                         if (completed && roomLevel.roomInfo.changeMirror.Length > 0) {
                             mirror.PreAnswer = roomLevel.roomInfo.changeMirror[0].letters;
                             mirror.IsOn = true;
                         }  else {
-                            mirror.IsOn = roomLevel.roomInfo.questionMirror[0].isOn;
                             if(mirror.IsOn) {
-                                mirror.PreAnswer = roomLevel.roomInfo.questionMirror[0].letters;
+                                mirror.PreAnswer = mirror.MirrorData.letters;
+                                mirror.Letters = "";
                             } else {
-                                mirror.Letters = roomLevel.roomInfo.questionMirror[0].letters;
+                                mirror.Letters = mirror.MirrorData.letters;
                             }
                         }
-                        mirror.changeType = roomLevel.roomInfo.questionMirror[0].changeType;
-                        mirror.roomIndexoffset = roomLevel.roomInfo.questionMirror[0].roomIndexoffset;
                     } else {
-                        MirrorData changeMirrorData = roomLevel.roomInfo.changeMirror[changeMirrorIndex];
+                        MirrorData changeMirrorData = roomLevel.roomInfo.changeMirror[changeMirrorIndex].Clone;
+                        mirror.MirrorData = changeMirrorData;
                         newRoom.SecondHintAnswer =  changeMirrorData.letters;
-                        mirror.IsOn = changeMirrorData.isOn;
-                        if (changeMirrorData.isOn) {
-                            mirror.PreAnswer = changeMirrorData.letters;
+                        if(mirror.IsOn) {
+                            mirror.PreAnswer = mirror.MirrorData.letters;
+                            mirror.Letters = "";
                         } else {
-                            mirror.Letters = changeMirrorData.letters;
+                            mirror.Letters = mirror.MirrorData.letters;
                         }
-                        mirror.changeType = changeMirrorData.changeType;
-                        mirror.roomIndexoffset = changeMirrorData.roomIndexoffset;
                         changeMirrorIndex++;
                     }
                 }

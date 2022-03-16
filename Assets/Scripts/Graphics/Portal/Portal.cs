@@ -5,10 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class Portal : RenderTexturePlane
 {
-    // referenses
-
-    private float timeInterval = 0;
-
     [SerializeField]
     private Collider[] connectedColliders;
 

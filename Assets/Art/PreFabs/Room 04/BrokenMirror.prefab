@@ -8,9 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9040985051389914110}
+  - component: {fileID: 8650266686886177183}
   - component: {fileID: 5501465494297430816}
   - component: {fileID: 1470073868437364496}
+  - component: {fileID: 3713283546021753925}
+  - component: {fileID: 1955970981453403175}
   m_Layer: 0
   m_Name: Mirror_Broken03
   m_TagString: Untagged
@@ -18,7 +20,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9040985051389914110
+--- !u!4 &8650266686886177183
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -29,7 +31,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7855086780252604645}
+  m_Father: {fileID: 6882826410751788517}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5501465494297430816
@@ -59,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6560844713221854498, guid: 2acf81671896ea445bedb8be015f63fb, type: 3}
+  - {fileID: 2100000, guid: 94f9165a17b46ac4abeb1d631dc4aceb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,6 +83,71 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3713283546021753925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894992603329586523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af04322ae76e1843be7f9bad5bb037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: shard
+  alternateWords:
+  - shards
+  missingChangeEffect: 1
+  flippingAxis: 2
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+  letterCoords: []
+  brokenMirror: {fileID: 0}
+--- !u!114 &1955970981453403175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1894992603329586523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af04322ae76e1843be7f9bad5bb037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: shard
+  alternateWords:
+  - shards
+  missingChangeEffect: 1
+  flippingAxis: 2
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+  letterCoords:
+  - letterValue: g
+    letterDelta: {x: -2.47, y: 0, z: -1.5}
+    letter: {fileID: 0}
+  - letterValue: v
+    letterDelta: {x: -3.53, y: 0, z: -1.5}
+    letter: {fileID: 0}
+  - letterValue: y
+    letterDelta: {x: -3.03, y: 0, z: -0.5}
+    letter: {fileID: 0}
+  brokenMirror: {fileID: 0}
 --- !u!1 &3583169757404221095
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,9 +156,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5695886905111604306}
+  - component: {fileID: 6431316667874793673}
   - component: {fileID: 2693992250162725596}
   - component: {fileID: 728927704677725319}
+  - component: {fileID: 5005780839004278800}
+  - component: {fileID: 7155263649185864578}
   m_Layer: 0
   m_Name: Mirror_Broken04
   m_TagString: Untagged
@@ -99,7 +168,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5695886905111604306
+--- !u!4 &6431316667874793673
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,7 +179,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7855086780252604645}
+  m_Father: {fileID: 6882826410751788517}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &2693992250162725596
@@ -140,7 +209,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6560844713221854498, guid: 2acf81671896ea445bedb8be015f63fb, type: 3}
+  - {fileID: 2100000, guid: 94f9165a17b46ac4abeb1d631dc4aceb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -162,6 +231,108 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5005780839004278800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3583169757404221095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af04322ae76e1843be7f9bad5bb037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: shard
+  alternateWords:
+  - shards
+  missingChangeEffect: 1
+  flippingAxis: 2
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+  letterCoords: []
+  brokenMirror: {fileID: 0}
+--- !u!114 &7155263649185864578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3583169757404221095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af04322ae76e1843be7f9bad5bb037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: shard
+  alternateWords:
+  - shards
+  missingChangeEffect: 1
+  flippingAxis: 2
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+  letterCoords:
+  - letterValue: s
+    letterDelta: {x: 3.29, y: 0, z: -0.5}
+    letter: {fileID: 0}
+  - letterValue: p
+    letterDelta: {x: 3.38, y: 0, z: -1.5}
+    letter: {fileID: 0}
+  - letterValue: i
+    letterDelta: {x: 2.51, y: 0, z: -2}
+    letter: {fileID: 0}
+  brokenMirror: {fileID: 0}
+--- !u!1 &3821303783593278572
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6882826410751788517}
+  m_Layer: 0
+  m_Name: holder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6882826410751788517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3821303783593278572}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 125, y: 125, z: 125}
+  m_Children:
+  - {fileID: 4571961577578644480}
+  - {fileID: 6727713788543535524}
+  - {fileID: 644648437116169242}
+  - {fileID: 8643274907043624786}
+  - {fileID: 8650266686886177183}
+  - {fileID: 1371201432005493306}
+  - {fileID: 6431316667874793673}
+  m_Father: {fileID: 7855086780252604645}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4568278739892371470
 GameObject:
   m_ObjectHideFlags: 0
@@ -170,9 +341,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6228229198069886965}
+  - component: {fileID: 8643274907043624786}
   - component: {fileID: 5118086292043638587}
   - component: {fileID: 3539031087244594643}
+  - component: {fileID: 2194484168270802089}
+  - component: {fileID: 5434289443384550444}
   m_Layer: 0
   m_Name: Mirror_Broken02
   m_TagString: Untagged
@@ -180,7 +353,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6228229198069886965
+--- !u!4 &8643274907043624786
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -191,7 +364,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7855086780252604645}
+  m_Father: {fileID: 6882826410751788517}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5118086292043638587
@@ -221,7 +394,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6560844713221854498, guid: 2acf81671896ea445bedb8be015f63fb, type: 3}
+  - {fileID: 2100000, guid: 94f9165a17b46ac4abeb1d631dc4aceb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -243,6 +416,77 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2194484168270802089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4568278739892371470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af04322ae76e1843be7f9bad5bb037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: shard
+  alternateWords:
+  - shards
+  missingChangeEffect: 1
+  flippingAxis: 2
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+  letterCoords: []
+  brokenMirror: {fileID: 0}
+--- !u!114 &5434289443384550444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4568278739892371470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af04322ae76e1843be7f9bad5bb037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: shard
+  alternateWords:
+  - shards
+  missingChangeEffect: 1
+  flippingAxis: 2
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+  letterCoords:
+  - letterValue: a
+    letterDelta: {x: -0.33, y: 0, z: -0.5}
+    letter: {fileID: 0}
+  - letterValue: i
+    letterDelta: {x: -1.38, y: 0, z: -0.5}
+    letter: {fileID: 0}
+  - letterValue: r
+    letterDelta: {x: 0.22, y: 0, z: -1.5}
+    letter: {fileID: 0}
+  - letterValue: w
+    letterDelta: {x: -0.58, y: 0, z: -1.5}
+    letter: {fileID: 0}
+  - letterValue: t
+    letterDelta: {x: -1.36, y: 0, z: -1.5}
+    letter: {fileID: 0}
+  brokenMirror: {fileID: 0}
 --- !u!1 &5757832000115447990
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,9 +495,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5034677801316409082}
+  - component: {fileID: 644648437116169242}
   - component: {fileID: 2119735816751253706}
   - component: {fileID: 427352512922786872}
+  - component: {fileID: 3246977948867936667}
+  - component: {fileID: 8660580240949294273}
   m_Layer: 0
   m_Name: Mirror_Broken01
   m_TagString: Untagged
@@ -261,20 +507,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5034677801316409082
+--- !u!4 &644648437116169242
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5757832000115447990}
-  m_LocalRotation: {x: -0.000000059604645, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.000000119209275, y: -7.2759565e-10, z: -0.00025798604, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7855086780252604645}
+  m_Father: {fileID: 6882826410751788517}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.03}
 --- !u!33 &2119735816751253706
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -302,7 +548,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6560844713221854498, guid: 2acf81671896ea445bedb8be015f63fb, type: 3}
+  - {fileID: 2100000, guid: 94f9165a17b46ac4abeb1d631dc4aceb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -324,6 +570,68 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3246977948867936667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5757832000115447990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af04322ae76e1843be7f9bad5bb037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: shard
+  alternateWords:
+  - shards
+  missingChangeEffect: 1
+  flippingAxis: 2
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+  letterCoords: []
+  brokenMirror: {fileID: 0}
+--- !u!114 &8660580240949294273
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5757832000115447990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af04322ae76e1843be7f9bad5bb037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: shard
+  alternateWords:
+  - shards
+  missingChangeEffect: 1
+  flippingAxis: 2
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+  letterCoords:
+  - letterValue: M
+    letterDelta: {x: 1.83, y: 0, z: -0.5}
+    letter: {fileID: 0}
+  - letterValue: E
+    letterDelta: {x: 0.79, y: 0, z: -0.5}
+    letter: {fileID: 0}
+  brokenMirror: {fileID: 0}
 --- !u!1 &6057370632627332153
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,7 +661,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7855086780252604645}
+  m_Father: {fileID: 6882826410751788517}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3363453546028415657
@@ -383,7 +691,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6560844713221854498, guid: 2acf81671896ea445bedb8be015f63fb, type: 3}
+  - {fileID: 2100000, guid: 94f9165a17b46ac4abeb1d631dc4aceb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -434,7 +742,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7855086780252604645}
+  m_Father: {fileID: 6882826410751788517}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &6205470523223461219
@@ -513,13 +821,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4571961577578644480}
-  - {fileID: 6727713788543535524}
-  - {fileID: 5034677801316409082}
-  - {fileID: 6228229198069886965}
-  - {fileID: 9040985051389914110}
-  - {fileID: 6818981720326563332}
-  - {fileID: 5695886905111604306}
+  - {fileID: 6882826410751788517}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -531,9 +833,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6818981720326563332}
+  - component: {fileID: 1371201432005493306}
   - component: {fileID: 653869827215556384}
   - component: {fileID: 8248731949178212575}
+  - component: {fileID: 3087473413881578464}
+  - component: {fileID: 917043388116848037}
   m_Layer: 0
   m_Name: Mirror_Broken05
   m_TagString: Untagged
@@ -541,7 +845,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6818981720326563332
+--- !u!4 &1371201432005493306
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -552,7 +856,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 7855086780252604645}
+  m_Father: {fileID: 6882826410751788517}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &653869827215556384
@@ -582,7 +886,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6560844713221854498, guid: 2acf81671896ea445bedb8be015f63fb, type: 3}
+  - {fileID: 2100000, guid: 94f9165a17b46ac4abeb1d631dc4aceb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -604,3 +908,59 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3087473413881578464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8123366011792908562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af04322ae76e1843be7f9bad5bb037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: shard
+  alternateWords:
+  - shards
+  missingChangeEffect: 1
+  flippingAxis: 2
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+  letterCoords: []
+  brokenMirror: {fileID: 0}
+--- !u!114 &917043388116848037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8123366011792908562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af04322ae76e1843be7f9bad5bb037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: shard
+  alternateWords:
+  - shards
+  missingChangeEffect: 1
+  flippingAxis: 2
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+  letterCoords: []
+  brokenMirror: {fileID: 0}

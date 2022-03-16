@@ -100,12 +100,9 @@ public class MirrorCanvas : MonoBehaviour
     ///<summary>
     /// Sets up the type of text in the header and sets the font type depending if the mirror is a question mirror or not.
     ///</summary>
-    public void SetupText(ChangeType changeType, int roomIndexOffset = 0) {
+    public void SetupText(ChangeType changeType) {
         string header = "missing";
         string roomText = "";
-        if (roomIndexOffset == -1) {
-            roomText = " in the <b>PREVIOUS</b> room";
-        }
         switch (changeType) {
             case ChangeType.missing:
                 header = "missing";

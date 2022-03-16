@@ -26,7 +26,10 @@ public class InteractabelObject : RoomObject, IInteractable
         get { return outlineEnabled;}
         set { outlineEnabled = value; }
     }
-
+    
+    ///<summary>
+    /// If the pickable object can be interacted with
+    ///</summary>
     public bool Interactable {get; set; } = true;
 
     public bool Focused { 

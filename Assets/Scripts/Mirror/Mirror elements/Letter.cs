@@ -71,13 +71,13 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     public override void OnHover() {
         base.OnHover();
-        if (!canBeClicked || BUTTON_DRAGGED) return;
+        if (!interactable || BUTTON_DRAGGED) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(hoverScale));
     }
     public override void OnUnhover() {
         base.OnUnhover();
-        if (!canBeClicked || BUTTON_DRAGGED) return;
+        if (!interactable || BUTTON_DRAGGED) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(normalScale));
     }
@@ -140,7 +140,7 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     void LetterIsClicked()
     {
-        if (!canBeClicked || !pressed) return;
+        if (!interactable || !pressed) return;
         pressed = false;
         bool dragged = Dragged();
         OnLetterClickAction?.Invoke(this);

@@ -246,9 +246,6 @@ public class Room : MonoBehaviour
     ///</summary>
     public void CheckMirrorQuestion(Mirror selectedMirror) {
         ChangeHandler checkChangeHandler = changeHandler;
-        if (selectedMirror.roomIndexoffset == -1) {
-            checkChangeHandler = area.Rooms[area.Rooms.IndexOf(this) - 1].ChangeHandler;
-        }
         if (checkChangeHandler.WordMatchesChanges(selectedMirror)) {
                 selectedMirror.IsOn = true;
                 CheckRoomCompletion();

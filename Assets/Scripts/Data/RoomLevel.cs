@@ -27,8 +27,11 @@ public class RoomData {
 [System.Serializable]
 public class MirrorData {
     public string letters;
-    [Range(-1,1)]
-    public int roomIndexoffset = 0;
     public ChangeType changeType = ChangeType.missing;
     public bool isOn = false;
+    public bool huzzleWords = true;
+
+    public MirrorData Clone {
+        get => new MirrorData() {letters = letters, changeType = changeType, isOn = isOn, huzzleWords = huzzleWords };
+    }
 }

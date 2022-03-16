@@ -78,7 +78,7 @@ public class RoomDebuggerBox
             foreach(MirrorChange change in currentRoom.ChangeHandler.MirrorChanges) {
                 GUI.color = change.active ? Color.green : Color.red;
                 GUI.skin.label.fontStyle = FontStyle.Bold;
-                GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.word + " | " + change.mirror.changeType, style);
+                GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.word + " | " + change.mirror.ChangeType, style);
                 GUI.skin.label.fontStyle = FontStyle.Normal;
                 currentPos += 30;
             }
@@ -90,7 +90,7 @@ public class RoomDebuggerBox
         if (GUI.Button(new Rect(pos.x + size.x + horizontalOffset, 60, size.x * .4f, 30), "ADD"))
         {
             currentRoom.Animated = true;
-            tv.changeType = (ChangeType)selectedChangeType;
+            tv.ChangeType = (ChangeType)selectedChangeType;
             // tv.changeType = Enum.Parse(typeof(ChangeType), changeTypes[selectedChangeType]);// ChangeType.missing;
             MirrorChange newChange = new MirrorChange() { word = word, mirror = tv, active = true};
             currentRoom.AddChangeInRoomObjects(newChange);
