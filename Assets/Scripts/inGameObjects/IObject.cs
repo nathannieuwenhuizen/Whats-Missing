@@ -218,6 +218,9 @@ public interface IPickable {
     GameObject gameObject {get; }
     Rigidbody RigidBody { get; set; }
     RigidBodyInfo RigidBodyInfo { get;set;}    
+    public float HoldingDistance {get; }
+    public bool LooksWhenGrabbed  {get; }
+
 }
 
 ///<summary>

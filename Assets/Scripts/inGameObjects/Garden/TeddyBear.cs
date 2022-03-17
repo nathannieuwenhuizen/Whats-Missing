@@ -69,7 +69,7 @@ public class TeddyBear : InteractabelObject
         room.Player.Movement.EnableRotation = false;
         room.Player.Movement.enabled = false;
         StartCoroutine(room.Player.transform.AnimatingPos(endScenePosition.position, AnimationCurve.EaseInOut(0,0,1,1), 1f));
-        StartCoroutine(room.Player.transform.AnimatingLocalRotation(endScenePosition.rotation, AnimationCurve.EaseInOut(0,0,1,1), 1f));
+        StartCoroutine(room.Player.transform.AnimatingRotation(endScenePosition.rotation, AnimationCurve.EaseInOut(0,0,1,1), 1f));
         StartCoroutine(TeddybearCutscene());
 
 

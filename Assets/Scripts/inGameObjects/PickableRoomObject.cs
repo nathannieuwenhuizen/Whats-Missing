@@ -15,6 +15,7 @@ public class RigidBodyInfo {
     public bool UseGravity = true;
     public bool IsKinematic = true;
     public string tag = "";
+
     public void Save(Rigidbody rb) {
         Drag = rb.drag;
         AngularDrag = rb.angularDrag;
@@ -97,7 +98,11 @@ public class PickableRoomObject : InteractabelObject, IPickable
             rb.mass = value;
         }  
     }
+    protected float holdingDistance = 3f;
+    public float HoldingDistance => holdingDistance;
 
+    protected bool looksWhenGrabbed = false;
+    public bool LooksWhenGrabbed => looksWhenGrabbed;
 
     protected override void OnFocus()
     {

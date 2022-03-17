@@ -16,8 +16,7 @@ public class Hands : MonoBehaviour
     [SerializeField]
     private Player player;
 
-    [SerializeField]
-    private float pickupDistance = 3;
+    private float pickupDistance = 6;
     private float shrinkPickupDistance;
 
     private float massThreshhold = 1f;
@@ -121,14 +120,34 @@ public class Hands : MonoBehaviour
 
     private IEnumerator UpdatePhysics() {
         while (holdingObject != null) {
-            for(int i=0 ; i < 1f; i++) {
-                var speed = holdingObject.Touching ? 3f : 10f;
-                holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-                Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (PickupDistance * .5f);
-                Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, transform.position + offset, Time.deltaTime * speed);
-                holdingObject.RigidBody.MovePosition(midwayDestination);
-                yield return new WaitForFixedUpdate();
+
+            
+            var speed = holdingObject.Touching ? 3f : 10f;
+            holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (holdingObject.HoldingDistance);
+            Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, transform.position + offset, Time.deltaTime * speed);
+            holdingObject.RigidBody.MovePosition(midwayDestination);
+
+            // var speed = holdingObject.Touching ? 3f : 10f;
+            // holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            // Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (holdingObject.HoldingDistance * .5f);
+            // Vector3 midwayDestination = Vector3.Lerp(oldPos, transform.position + offset, Time.deltaTime * speed);
+            // holdingObject.RigidBody.MovePosition(transform.position + offset);
+
+            if (holdingObject.LooksWhenGrabbed) {
+                Quaternion currentRotation = holdingObject.RigidBody.rotation;
+
+                holdingObject.RigidBody.transform.LookAt(transform.position, transform.up);
+                holdingObject.RigidBody.transform.Rotate(-90, 90, -90);
+                Quaternion desiredRotation = holdingObject.RigidBody.rotation;
+
+                holdingObject.RigidBody.rotation = currentRotation;
+                holdingObject.RigidBody.MoveRotation(Quaternion.SlerpUnclamped(currentRotation, desiredRotation, Time.deltaTime * 10f));
+
+                // holdingObject.RigidBody.rotation.LookAt(transform.position, transform.up);
             }
+            
+            yield return new WaitForFixedUpdate();
         }   
     }
 

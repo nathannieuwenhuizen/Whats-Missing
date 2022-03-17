@@ -7,6 +7,9 @@ using UnityEngine;
 ///</summary>
 public class RenderTexturePlane : MonoBehaviour
 {
+
+    public delegate void OnTextureUpdate(RenderTexturePlane plane);
+    public static event OnTextureUpdate OnTextureUpdating;
     // referenses
     public Camera mainCamera;
     public Camera reflectionCamera;
@@ -16,6 +19,11 @@ public class RenderTexturePlane : MonoBehaviour
     private RenderTexture output_texture_high;
     private RenderTexture output_texture_mid;
     private RenderTexture output_texture_low;
+
+
+    public RenderTexture CurrentTexture {
+        get => reflectionCamera.targetTexture;
+    }
 
     // parameters
     public bool copyCameraParamerers;
@@ -57,7 +65,7 @@ public class RenderTexturePlane : MonoBehaviour
     protected Transform mainCamTransform;
     protected Transform reflectionCamTransform;
 
-    protected virtual void Start() {
+    protected virtual void Awake() {
         output_texture_high = CreateRenderTexture("highTexture", 1f);
         output_texture_mid = CreateRenderTexture("midTexture", .5f);
         output_texture_low = CreateRenderTexture("midTexture", .3f);
@@ -74,9 +82,8 @@ public class RenderTexturePlane : MonoBehaviour
         return newTexture;
     }
 
-    private void SetRenderTexture(RenderTexture texture) {
+    public void SetRenderTexture(RenderTexture texture) {
         if (reflectionCamera.targetTexture == texture) return;
-
         reflectionCamera.targetTexture = texture;            
         reflectionPlane.GetComponent<MeshRenderer>().material.SetTexture("_ReflectionTex", texture);
         // reflectionCamera.Render();
@@ -112,6 +119,8 @@ public class RenderTexturePlane : MonoBehaviour
                 timeInterval = 0;
                 UpdateLODTexture();
                 UpdateCamera();
+                OnTextureUpdating?.Invoke(this);
+
             } else {
                 reflectionCamera.enabled = false;
             }

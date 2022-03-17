@@ -67,8 +67,6 @@ public class InputManager : MonoBehaviour
         controls.Player.Click.started += ClickStart;
         controls.Player.Click.canceled += ClickEnd;
         controls.Player.Cancel.started += Cancel;
-        Debug.Log("input enabled!");
-
     } 
 
     private void OnDisable() {

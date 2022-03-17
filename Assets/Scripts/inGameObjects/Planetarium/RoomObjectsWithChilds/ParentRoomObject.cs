@@ -69,7 +69,7 @@ public class ParentRoomObject : RoomObject
         Vector3 mid = begin + (end - begin) * .5f;
         mid.y += 5f;
         StartCoroutine(deskObj.transform.AnimatingPosBezierCurve(end, mid, AnimationCurve.EaseInOut(0,0,1,1), duration));
-        yield return StartCoroutine(deskObj.transform.AnimatingLocalRotation(deskObj.oldRotation, AnimationCurve.EaseInOut(0,0,1,1), duration));
+        yield return StartCoroutine(deskObj.transform.AnimatingRotation(deskObj.oldRotation, AnimationCurve.EaseInOut(0,0,1,1), duration));
         if (rb != null) {
             rb.isKinematic = false;
             rb.useGravity = true;

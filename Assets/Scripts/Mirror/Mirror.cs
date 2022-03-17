@@ -14,6 +14,10 @@ public class Mirror: MonoBehaviour, IRoomObject
 
     [SerializeField]
     private PlanarReflection planarReflection;
+    public PlanarReflection PlanarReflection {
+        get { return planarReflection;}
+    }
+
     [SerializeField]
     private bool hidden = false;
 

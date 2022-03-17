@@ -37,13 +37,22 @@
             // reflectionCamera.nearClipPlane = Vector3.Distance(reflectionCamTransform.position, reflectionPlane.position);            
         }
 
+        public Vector3 delta;
+
         protected override void SetNearClipPlane() {
             Transform clipPlane = transform;
             int dot = System.Math.Sign(Vector3.Dot(clipPlane.forward, clipPlane.position - reflectionCamTransform.position));
 
             Vector3 cameraSpacePos = reflectionCamera.worldToCameraMatrix.MultiplyPoint(clipPlane.position);
-            int revert = clipPlane.position.y <= mainCamera.transform.position.y ? 1 : -1;
-            Vector3 cameraSpaceNormal = reflectionCamera.worldToCameraMatrix.MultiplyVector(clipPlane.up * revert) * dot;
+
+            delta =clipPlane.InverseTransformDirection(clipPlane.transform.position - mainCamera.transform.position);
+
+            int invert = delta.z > 0 ? -1 : 1;
+            // int invert = clipPlane.position.y <= mainCamera.transform.position.y ? 1 : -1;
+
+
+
+            Vector3 cameraSpaceNormal = reflectionCamera.worldToCameraMatrix.MultiplyVector(clipPlane.up * invert) * dot;
             float camSpaceDst = -Vector3.Dot(cameraSpacePos, cameraSpaceNormal);
             Vector4 clipPlaneCameraSpace = new Vector4(cameraSpaceNormal.x, cameraSpaceNormal.y, cameraSpaceNormal.z, camSpaceDst);
 

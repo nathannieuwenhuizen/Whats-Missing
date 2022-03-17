@@ -89,7 +89,7 @@ public static class TransformExtensions
     }
 
 
-    public static  IEnumerator AnimatingLocalRotation(this Transform transform, Quaternion endrotation,  AnimationCurve curve, float duration = .5f) {
+    public static  IEnumerator AnimatingRotation(this Transform transform, Quaternion endrotation,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;
         Quaternion beginrotation = transform.rotation;
         while (timePassed < duration) {
@@ -98,6 +98,17 @@ public static class TransformExtensions
             transform.rotation = Quaternion.SlerpUnclamped(beginrotation, endrotation , curve.Evaluate(timePassed / duration));
         }
         transform.rotation = endrotation;
+    }
+
+    public static  IEnumerator AnimatingLocalRotation(this Transform transform, Quaternion endrotation,  AnimationCurve curve, float duration = .5f) {
+        float timePassed = 0f;
+        Quaternion beginrotation = transform.localRotation;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            transform.localRotation = Quaternion.SlerpUnclamped(beginrotation, endrotation , curve.Evaluate(timePassed / duration));
+        }
+        transform.localRotation = endrotation;
     }
 
     public static  IEnumerator Shake(this Transform transform, float magintude, float frequence, float duration = .5f) {
@@ -122,7 +133,7 @@ public static class TransformExtensions
         return Quaternion.Euler(Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude));
     }
     public static Vector3 RandomVector (float amplitude = 1f) {
-        return new Vector3(Random.Range(0.0f, amplitude), Random.Range(0.0f, amplitude), Random.Range(0.0f, amplitude));
+        return new Vector3(Random.Range(-amplitude, amplitude), Random.Range(-amplitude, amplitude), Random.Range(-amplitude, amplitude));
     }
 
 
