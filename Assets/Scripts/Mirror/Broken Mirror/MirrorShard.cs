@@ -30,6 +30,9 @@ public class MirrorShard : PickableRoomObject
     [SerializeField]
     private PlanarReflection planarReflection;
 
+    [SerializeField]
+    private ParticleSystem shineParticle;
+
     public PlanarReflection PlanarReflection {
         get { return planarReflection;}
     }
@@ -85,6 +88,7 @@ public class MirrorShard : PickableRoomObject
         startParent = transform.parent;
         holdingDistance = 5f;
         Attached = true;
+        shineParticle.Stop();
         UpdateLetterPosition();
     }
 
@@ -108,6 +112,7 @@ public class MirrorShard : PickableRoomObject
         transform.parent = BossMirror.transform.parent;
         Attached = false;
         ActivateRigidBody();
+        shineParticle.Play();
         rb.velocity = Vector3.zero;
     }
 
@@ -136,6 +141,7 @@ public class MirrorShard : PickableRoomObject
     public override void Grab(Rigidbody connectedRigidBody)
     {
         base.Grab(connectedRigidBody); 
+        shineParticle.Stop();
     }
 
     public override void Release()
@@ -143,6 +149,8 @@ public class MirrorShard : PickableRoomObject
         base.Release();
         if (!Attached && Vector3.Distance(transform.position, bossMirror.transform.position) < distanceToAttachShardToMirror) {
             ReattachedToMirror();
+        } else {
+            shineParticle.Play();
         }
     }
 
