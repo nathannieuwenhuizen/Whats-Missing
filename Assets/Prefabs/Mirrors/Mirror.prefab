@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6183512172927064992}
   - component: {fileID: 5579167637780561891}
   - component: {fileID: 2118547333090414626}
+  - component: {fileID: 1984066704896730813}
   m_Layer: 0
   m_Name: header
   m_TagString: Untagged
@@ -26,17 +27,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305159887120163967}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.00045157684}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8251748351396818495}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -96.6}
-  m_SizeDelta: {x: -100, y: 70}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.0009031537, y: 160.69997}
+  m_SizeDelta: {x: 700, y: 70}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!23 &5579167637780561891
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -169,6 +170,18 @@ MonoBehaviour:
   m_maskType: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+--- !u!114 &1984066704896730813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305159887120163967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca82f3b632de25b448edfafec831e064, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &701469518759594925
 GameObject:
   m_ObjectHideFlags: 0
@@ -1312,6 +1325,7 @@ MonoBehaviour:
   reflectionPlane: {fileID: 7428264544274597559}
   copyCameraParamerers: 0
   verticalOffset: 0
+  delta: {x: 0, y: 0, z: 0}
 --- !u!1 &7193071366088268545
 GameObject:
   m_ObjectHideFlags: 0
@@ -1644,13 +1658,13 @@ MonoBehaviour:
   mirrorCanvas: {fileID: 6712448232541319356}
   planarReflection: {fileID: 460097391435947270}
   hidden: 0
-  changeType: 0
   isQuestion: 1
-  isOn: 0
-  roomIndexoffset: 0
+  mirrorData:
+    letters: 
+    changeType: 0
+    isOn: 0
+    huzzleWords: 1
   preAnswer: 
-  letters: 
-  huzzleWords: 1
   indicatorMesh: {fileID: 1872272011252159160}
   offColor: {r: 1, g: 0, b: 0, a: 1}
   onColor: {r: 0, g: 1, b: 0, a: 1}
@@ -1795,7 +1809,7 @@ MonoBehaviour:
   letterObjects: []
   selectedLetterObjects: []
   letterContainer: {fileID: 3925191476114449787}
-  headerText: {fileID: 2118547333090414626}
+  headerText: {fileID: 1984066704896730813}
   answerText: {fileID: 8999248243993425163}
   letterPrefab: {fileID: 548830241320449033, guid: 5100c7500cdcd6a46814649b43d88ada, type: 3}
   isInteractable: 0

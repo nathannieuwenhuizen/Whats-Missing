@@ -45,8 +45,10 @@ public class MirrorCanvas : MonoBehaviour
     public RectTransform letterContainer;
 
     [SerializeField]
-    private TMP_Text headerText;
-    public TMP_Text HeaderText { get => headerText; }
+    private HeaderText headerText;
+    public HeaderText HeaderText { get => headerText; }
+
+    private Vector3 headerPos;
 
     [SerializeField]
     private RectTransform answerText;
@@ -65,7 +67,7 @@ public class MirrorCanvas : MonoBehaviour
     }
     public TMP_FontAsset Font {
         set { 
-            headerText.font = value;
+            headerText.Text.font = value;
             foreach(Letter letter in selectedLetterObjects) 
                 letter.Text.font = value;
             foreach(Letter letter in letterObjects) 
@@ -102,7 +104,6 @@ public class MirrorCanvas : MonoBehaviour
     ///</summary>
     public void SetupText(ChangeType changeType) {
         string header = "missing";
-        string roomText = "";
         switch (changeType) {
             case ChangeType.missing:
                 header = "missing";
@@ -117,35 +118,21 @@ public class MirrorCanvas : MonoBehaviour
                 header = "altered";
                 break;
         }
-        HeaderText.text = "What's <b>" + header + "<b>" + roomText + "?";
+        if (mirror.isQuestion) {
+            HeaderText.Text.text = "What's <b>" + header + "</b>" + "?";
+            Font = questionFont;
+        } else {
+            HeaderText.Text.text = "<b> is " + header +  "!</b>";
+            Font = sentenceFont;
+        }
 
-        Font = mirror.isQuestion ? questionFont : sentenceFont;
     }
 
     private void Awake() {
         canvas = GetComponent<Canvas>();
         IsInteractable = false;
+        headerPos = headerText.transform.localPosition;
     }
-
-    ///<summary>
-    /// Updates the letters of the answer psotiion to make it more centered.
-    ///</summary>
-    public void UpdateAnswerTextPosition() {
-        if (selectedLetterObjects.Count == 0) return;
-        float totalWidth = -letterPadding;
-        foreach(Letter letter in selectedLetterObjects) {
-            totalWidth += letter.size.width + letterPadding;
-        }
-        float cPos = -(totalWidth + letterPadding + selectedLetterObjects[0].size.width) * .5f;
-        for(int i = 0; i < selectedLetterObjects.Count; i++) {
-            if (i != 0) {
-                cPos += selectedLetterObjects[i].size.width *.5f + letterPadding;
-            }
-            selectedLetterObjects[i].MoveTo(answerText.localPosition + new Vector3(cPos, 0, 0));
-            cPos += selectedLetterObjects[i].size.width *.5f + letterPadding;
-        }
-    }
-
 
     private void Update() {
         if (isInteractable)
@@ -221,7 +208,10 @@ public class MirrorCanvas : MonoBehaviour
         return code;
     }
 
-    public Vector3 GetLetterPosBasedOnIndex(int index, int length) {
+    ///<summary>
+    /// Calculates in which row and collomn indax the letter should be spawned in
+    ///</summary>
+    public Vector3 GetLetterSpawnPosBasedOnIndex(int index, int length) {
         //last row
         int y = Mathf.FloorToInt((float)index / (float)containerColloms);
 
@@ -232,10 +222,13 @@ public class MirrorCanvas : MonoBehaviour
             //toprows without the need to center
             x = Mathf.FloorToInt((float)index % (float)containerColloms);
         }
-        return GetLetterPosition(x,y);
+        return GetLetterSpawnPosition(x,y);
     }
 
-    private Vector3 GetLetterPosition(int xIndex, int yIndex) {
+    ///<summary>
+    /// Gets the position of the indexes.
+    ///</summary>
+    private Vector3 GetLetterSpawnPosition(int xIndex, int yIndex) {
 
         Vector3 result = new Vector3(0,0,0);
 
@@ -258,15 +251,18 @@ public class MirrorCanvas : MonoBehaviour
             letters = Extensions.Shuffle(letters);
         }
         for(int i = 0; i < letters.Length; i++) {
-            InitializeLetter(letters[i].ToString(), GetLetterPosBasedOnIndex(i, letters.Length));
+            InitializeLetter(letters[i].ToString(), GetLetterSpawnPosBasedOnIndex(i, letters.Length));
         }
         for(int i = 0; i < preAnswer.Length; i++) {
-            Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterPosBasedOnIndex(i, preAnswer.Length));
+            Letter answerLetter = InitializeLetter(preAnswer[i].ToString(), GetLetterSpawnPosBasedOnIndex(i, preAnswer.Length));
         }
         Word = preAnswer;
     }
 
-    public Letter InitializeLetter(string val, Vector3 pos) {
+    ///<summary>
+    /// Initializes a single letter.
+    ///</summary>
+    private Letter InitializeLetter(string val, Vector3 pos) {
         Letter newLetter = GameObject.Instantiate(letterPrefab).GetComponent<Letter>();
             newLetter.gameObject.name ="letter: " + val;
             newLetter.onLetterClick += LetterClicked;
@@ -280,6 +276,9 @@ public class MirrorCanvas : MonoBehaviour
             return newLetter;
     }
 
+    ///<summary>
+    /// Removes a selected letter back to its spawn position.
+    ///</summary>
     public void RemoveSelectedLetter(int index)
     {
         if (index < 0) return;
@@ -288,16 +287,20 @@ public class MirrorCanvas : MonoBehaviour
         letterObjects.Add(selectedLetterObjects[index]);
         selectedLetterObjects.Remove(selectedLetterObjects[index]);
     }
+
+    ///<summary>
+    ///  Fires when a letter has been clicked. (so the cursor has been lifted.)
+    ///</summary>
     public virtual void LetterClicked(Letter letter, bool canBeDragged = false)
     {
         if (letter.Dragged() && canBeDragged) {
-            Debug.Log("letter drag end at index " + passedLetterIndex);
             if (passedLetterIndex == -1) {
                 AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
 
                 letter.Deselect(true);
                 letter.PreClickSelected = false;
             } else {
+                Debug.Log("bug happening?");
                 AddLetterToAnswer(letter, passedLetterIndex);
             }
 
@@ -312,8 +315,9 @@ public class MirrorCanvas : MonoBehaviour
             }
         }
         
-        UpdateAnswerTextPosition();
+        UpdateAnswerTextPosition(null);
     }
+
     ///<summary>
     /// sets all the letters to their original place.
     ///</summary>
@@ -326,38 +330,57 @@ public class MirrorCanvas : MonoBehaviour
     public void UpdateLetterDrag(Letter draggedLetter) {
 
         passedLetterIndex = -1;
-        Debug.Log("answer pos y: " + answerText.transform.localPosition.y);
-        Debug.Log("dragged pos y: " + draggedLetter.Position.y);
         if (draggedLetter.Position.y > 80f) {
             passedLetterIndex = 0;
         }
 
-        if (selectedLetterObjects.Count == 0) return;
+        bool passed = UpdateAnswerTextPosition(draggedLetter);
+
+        if (passed == false && passedLetterIndex == 0) {
+            passedLetterIndex = selectedLetterObjects.Count;
+        }
+    }
+
+    ///<summary>
+    /// Updates the letters of the answer position to make it more centered.
+    ///</summary>
+    public bool UpdateAnswerTextPosition(Letter draggedLetter) {
+        bool passed = false;
+        if (selectedLetterObjects.Count == 0) return passed;
 
         float totalWidth = -letterPadding;
-
         foreach(Letter letter in selectedLetterObjects) {
             totalWidth += letter.size.width + letterPadding;
         }
-        totalWidth += draggedLetter.size.width + letterPadding;
-
-        bool passed = false;
+        if (draggedLetter) {
+            totalWidth += draggedLetter.size.width + letterPadding;
+        }
+        if (!mirror.isQuestion) {
+            headerText.Text.ForceMeshUpdate();
+            totalWidth += headerText.Text.GetRenderedValues(true).x;
+        }
         float cPos = -(totalWidth + letterPadding + selectedLetterObjects[0].size.width) * .5f;
         for(int i = 0; i < selectedLetterObjects.Count; i++) {
             if (i != 0) {
                 cPos += selectedLetterObjects[i].size.width *.5f + letterPadding;
             }
-            if (passed == false && passedLetterIndex == 0 && selectedLetterObjects[i].Position.x > draggedLetter.Position.x) {
-                passed = true;
-                passedLetterIndex = i;
-                cPos += draggedLetter.size.width *.5f + letterPadding;
+            if (draggedLetter != null) {
+                if (passed == false && passedLetterIndex == 0 && selectedLetterObjects[i].Position.x > draggedLetter.Position.x) {
+                    passed = true;
+                    passedLetterIndex = i;
+                    cPos += draggedLetter.size.width *.5f + letterPadding;
+                }
             }
             selectedLetterObjects[i].MoveTo(answerText.localPosition + new Vector3(cPos, 0, 0));
             cPos += selectedLetterObjects[i].size.width *.5f + letterPadding;
         }
-        if (passed == false && passedLetterIndex == 0) {
-            passedLetterIndex = selectedLetterObjects.Count;
+        if (!mirror.isQuestion){
+            headerText.Text.rectTransform.parent = answerText.transform;
+            headerText.MoveTo(new Vector3(cPos + headerText.Text.GetRenderedValues(true).x * .5f + 20f, 0, 0));
+            // headerText.Text.rectTransform.localPosition = new Vector3(cPos + headerText.Text.GetRenderedValues(true).x * .5f + 20f, 0, 0);
         }
+
+        return passed;
     }
 
     private float durationBeforeSecondHint = 0;
@@ -386,7 +409,6 @@ public class MirrorCanvas : MonoBehaviour
             Letter foundLetter = letterobjectsTemp.Find(l => l.LetterValue == (secondHintAnswer[i] + "") );
             letterobjectsTemp.Remove(foundLetter);
             answerLetters.Add(foundLetter);
-            // foundLetter.Color = Color.Lerp( new Color(0,.5f,0, 1f), Color.white, (float)i/ (float)secondHintAnswer.Length);
         }
         foreach(Letter letter in letterObjects) {
             letter.DefaultColor = new Color(1,1,1,1f);

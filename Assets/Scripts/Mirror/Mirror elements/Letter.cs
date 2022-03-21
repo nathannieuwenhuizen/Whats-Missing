@@ -128,11 +128,11 @@ public class Letter : MirrorButton, IPointerDownHandler
         pressedTime = Time.time;
         if (spawnPosition == Vector3.zero) spawnPosition = rt.localPosition;
         if (Selected) {
-            preClickSelected = true;
+            PreClickSelected = true;
             mirrorCanvas.RemoveSelectedLetter(mirrorCanvas.selectedLetterObjects.IndexOf(this));
             StopAllCoroutines();
         } else {
-            preClickSelected = false;
+            PreClickSelected = false;
         }
 
         StartCoroutine(Dragging());
@@ -196,7 +196,7 @@ public class Letter : MirrorButton, IPointerDownHandler
     private IEnumerator Moving(Vector3 pos) {
         while( movingIndex < movingDuration) {
             movingIndex += Time.unscaledDeltaTime;
-            rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, scaleAnimation.Evaluate(movingIndex/ movingDuration));
+            rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, scaleAnimationCurve.Evaluate(movingIndex/ movingDuration));
             yield return new WaitForEndOfFrame();
         }
         movingIndex = 1;

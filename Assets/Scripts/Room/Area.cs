@@ -172,16 +172,19 @@ public class Area : MonoBehaviour
                             }
                         }
                     } else {
-                        MirrorData changeMirrorData = roomLevel.roomInfo.changeMirror[changeMirrorIndex].Clone;
-                        mirror.MirrorData = changeMirrorData;
-                        newRoom.SecondHintAnswer =  changeMirrorData.letters;
-                        if(mirror.IsOn) {
-                            mirror.PreAnswer = mirror.MirrorData.letters;
-                            mirror.Letters = "";
-                        } else {
-                            mirror.Letters = mirror.MirrorData.letters;
+                        if (changeMirrorIndex < roomLevel.roomInfo.changeMirror.Length) {
+                            
+                            MirrorData changeMirrorData = roomLevel.roomInfo.changeMirror[changeMirrorIndex].Clone;
+                            mirror.MirrorData = changeMirrorData;
+                            newRoom.SecondHintAnswer =  changeMirrorData.letters;
+                            if(mirror.IsOn) {
+                                mirror.PreAnswer = mirror.MirrorData.letters;
+                                mirror.Letters = "";
+                            } else {
+                                mirror.Letters = mirror.MirrorData.letters;
+                            }
+                            changeMirrorIndex++;
                         }
-                        changeMirrorIndex++;
                     }
                 }
             }
