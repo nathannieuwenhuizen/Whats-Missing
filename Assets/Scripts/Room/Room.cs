@@ -61,6 +61,7 @@ public class Room : MonoBehaviour
     [SerializeField]
     private UnityEvent roomEnterEvent;
 
+    private bool isRoomFinished = false;
     private bool revealChangeAfterCompletion = true;
     public bool RevealChangeAfterCompletion {
         get { return revealChangeAfterCompletion;}
@@ -154,10 +155,10 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Spawns a changeline and waits for it to finish to implement the change.
     ///</summary>
-    public IEnumerator AnimateChangeEffect(float delay, Mirror tv, IChangable o, float duration, Action callback) {
+    public IEnumerator AnimateChangeEffect(float delay, IChangable o, float duration, Action callback) {
         yield return new WaitForSecondsRealtime(delay);
         ChangeLine changeLine = Instantiate(changeLineObject).GetComponent<ChangeLine>();
-        changeLine.SetDestination(tv.transform.position, o.Transform.position);
+        changeLine.SetDestination(animationStartPos(), o.Transform.position);
         yield return changeLine.MoveTowardsDestination();
 
         GameObject plop = Instantiate(plopParticle, o.Transform.position, Quaternion.identity);
@@ -166,9 +167,9 @@ public class Room : MonoBehaviour
     }
 
     ///<summary>
-    /// Checks in all object if it has the sme word as the change. If so it will send a callback with the Ichangable. Also returns true if any objects has the word.
+    /// Checks in all object if it has the same word as the change. If so it will send a callback with the Ichangable. Also returns true if any objects has the word.
     ///</summary>
-    public bool DoesObjectWordMatch(MirrorChange change, Action<IChangable> callBack) {
+    public bool ForEachObjectWithMirrorWord(IChange change, Action<IChangable> callBack) {
         bool result = false;
         float delay = 0;
         float totalTime = 1f;
@@ -176,7 +177,7 @@ public class Room : MonoBehaviour
 
         foreach (IChangable obj in allObjects)
         {
-            if (obj.Word == change.word || obj.AlternativeWords.Contains(change.word)) {
+            if (obj.Word == change.Word || obj.AlternativeWords.Contains(change.Word)) {
                 foundObjects.Add(obj);
                 result = true;
             }
@@ -185,13 +186,24 @@ public class Room : MonoBehaviour
         foreach (IChangable obj in foundObjects)
         {
             if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
-                    StartCoroutine(AnimateChangeEffect(delay, change.mirror, obj, 1f, () => {
+                    StartCoroutine(AnimateChangeEffect(delay, obj, 1f, () => {
                         callBack(obj);
                     }));
                     delay += (totalTime / (float)foundObjects.Count);
             } else callBack(obj);
         }
         return result;
+    }
+
+    ///<summary>
+    /// Where the changeline should spawn from
+    ///</summary>
+    public Vector3 animationStartPos() {
+        if (mirrors.Count > 0) {
+            return mirrors[0].transform.position;
+        } else {
+             return Vector3.zero;
+        }
     }
 
     ///<summary>
@@ -230,29 +242,22 @@ public class Room : MonoBehaviour
     ///<summary>
     /// removes a change to the room updating the objects
     ///</summary>
-    public void RemoveChangeInRoomObjects(MirrorChange change) {
-        DoesObjectWordMatch(change, (IChangable obj) => { obj.RemoveChange(change); });  
+    public void RemoveChangeInRoomObjects(IChange change) {
+        ForEachObjectWithMirrorWord(change, (IChangable obj) => { obj.RemoveChange(change); });  
     }
 
     ///<summary>
     /// adds the change to the room updating the objects
     ///</summary>
-    public void AddChangeInRoomObjects(MirrorChange change) {
-        DoesObjectWordMatch(change, (IChangable obj) => { obj.AddChange(change); });  
+    public void AddChangeInRoomObjects(IChange change) {
+        ForEachObjectWithMirrorWord(change, (IChangable obj) => { obj.AddChange(change); });  
     }
     
     ///<summary>
     /// Checks if a mirror question is correct with the changes that exist inside the room.
     ///</summary>
     public void CheckMirrorQuestion(Mirror selectedMirror) {
-        ChangeHandler checkChangeHandler = changeHandler;
-        if (checkChangeHandler.WordMatchesChanges(selectedMirror)) {
-                selectedMirror.IsOn = true;
-                CheckRoomCompletion();
-                return;
-        }
-        
-        selectedMirror.IsOn = false;
+        selectedMirror.IsOn = changeHandler.ContainsWord(selectedMirror);
         CheckRoomCompletion();
     }
 
@@ -262,16 +267,22 @@ public class Room : MonoBehaviour
     ///</summary>
     public void CheckRoomCompletion() {
         if (AllMirrorsAreOn()) {
-            hintStopwatch.Pause();
-            OnRoomComplete?.Invoke();
-            StartCoroutine(WaitBeforeOpeningDoor());
-            if (revealChangeAfterCompletion) {
-                changeHandler.DeactivateChanges(false);
+            if (!isRoomFinished) {
+                isRoomFinished = true;
+                hintStopwatch.Pause();
+                OnRoomComplete?.Invoke();
+                StartCoroutine(WaitBeforeOpeningDoor());
+                if (revealChangeAfterCompletion) {
+                    changeHandler.DeactivateChanges(false);
+                }
             }
         } else {
-            endDoor.Locked = true;
-            if (revealChangeAfterCompletion) {
-                changeHandler.ActivateChanges();
+            if (isRoomFinished) {
+                isRoomFinished = false;
+                endDoor.Locked = true;
+                if (revealChangeAfterCompletion) {
+                    changeHandler.ActivateChanges();
+                }
             }
         }
     }
@@ -331,10 +342,8 @@ public class Room : MonoBehaviour
             CheckRoomCompletion();
         } else {
             if (revealChangeAfterCompletion) {
-                if (AllMirrorsAreOn() == false)
+                if (!AllMirrorsAreOn())
                     changeHandler.ActivateChanges();
-                else 
-                    changeHandler.CheckAndActiveOtherRoomChanges();
             } else 
                 changeHandler.ActivateChanges();
         }
@@ -399,7 +408,7 @@ public class Room : MonoBehaviour
             if (!mirror.isQuestion) {
                 mirror.IsOn = changeHandler.MirrorChanges.Find(c => c.mirror == mirror) != null;
             } else {
-                mirror.IsOn = changeHandler.WordMatchesChanges(mirror);
+                mirror.IsOn = changeHandler.ContainsWord(mirror);
             }
         }
     }
@@ -422,8 +431,9 @@ public class Room : MonoBehaviour
     }
     public void AddPotionChange(Potion potion, IChangable changable) {
         if (!InArea) return;
-
         changeHandler.AddPotionChange(potion, changable);
+        UpdateMirrorStates();
+        CheckRoomCompletion();
     }
 
     ///<summary>

@@ -7,6 +7,8 @@ using UnityEngine;
 ///</summary>
 public class RoomObject : RoomEntity
 {
+    private bool active = true;
+
     [SerializeField]
     protected FlippingAxis flippingAxis = FlippingAxis.up;
     protected RoomObjectEventSender eventSender;
@@ -248,21 +250,25 @@ public class RoomObject : RoomEntity
     /// Enables all the components inside a gameobject and its children, only works on renderers, colliders and particle systems.
     ///</summary>
     private List<Renderer> disabledRenderers = new List<Renderer>();
-    public virtual void SetActive(bool active) {
-        if (!active)  disabledRenderers = gameObject.SetAllComponentsActive<Renderer>(false, null);
-        else gameObject.SetAllComponentsActive<Renderer>(true, disabledRenderers);
-
-        Debug.Log("disble renders count: " + disabledRenderers.Count);
-        gameObject.SetAllComponentsActive<Collider>(active, null);
-        gameObject.SetAllComponentsActive<ParticleSystem>(active, null);
-        gameObject.SetAllComponentsActive<Light>(active, null);
+    public virtual void SetActive(bool _active) {
+        if (active == _active) return;
+        active = _active;
+        Debug.Log("go name: " + gameObject.name);
+        if (!_active) {
+            disabledRenderers = gameObject.SetAllComponentsActive<Renderer>(_active, null);
+            Debug.Log("disabled renderers: " + disabledRenderers.Count);
+        } 
+        else {
+            gameObject.SetAllComponentsActive<Renderer>(_active, disabledRenderers);
+            disabledRenderers = new List<Renderer>();
+        }
+        gameObject.SetAllComponentsActive<Collider>(_active, null);
+        gameObject.SetAllComponentsActive<ParticleSystem>(_active, null);
+        gameObject.SetAllComponentsActive<Light>(_active, null);
+        
     }
 
     public Renderer GetObjectHeight() {
-        // if (GetComponent<Collider>() != null) {
-        //     return GetComponent<Collider>();
-        // } else if (GetComponentInChildren<Collider>() != null) {
-        //     return GetComponentInChildren<Collider>();
         if (GetComponent<Renderer>() != null) {
             return GetComponent<Renderer>();
         } else if (GetComponentInChildren<Renderer>() != null) {

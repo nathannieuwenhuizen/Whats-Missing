@@ -198,12 +198,12 @@ public interface IChangable : IMissable, IShrinkable, IEnlargable, IFlippable
     ///<summary>
     /// Adds the change of the entity.
     ///</summary>
-    void AddChange(Change change);
+    void AddChange(IChange change);
     void AddChange(MirrorChange change);
     ///<summary>
     /// Removes the change of the entity.
     ///</summary>
-    void RemoveChange(Change change);
+    void RemoveChange(IChange change);
 }
 
 

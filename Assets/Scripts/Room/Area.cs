@@ -143,6 +143,14 @@ public class Area : MonoBehaviour
         Transform origin = transform;
         int index = 0;
         foreach (RoomLevel roomLevel in roomLevels) {
+            // roomLevel.roomInfo.MirrorData = roomLevel.roomInfo.MirrorData;
+            // List<Change> temp = new List<Change>();
+            // foreach(MirrorData data in roomLevel.roomInfo.changeMirror) {
+            //     temp.Add(new Change() {word = data.letters, changeType = data.changeType, Active = data.isOn});
+            // }
+            // roomLevel.roomInfo.loadedChanges = temp.ToArray();
+
+
             bool completed = index < loadRoomIndex;
             index += 1;
 
@@ -151,17 +159,18 @@ public class Area : MonoBehaviour
             newRoom.name = "Room: " + (roomLevel.roomInfo != null ? roomLevel.name : roomLevel.prefab.name);
             newRoom.Area = this;
             newRoom.roomLevel = roomLevel;
-            int changeMirrorIndex = 0;
+            int mirrorIndex = 0;
             if (roomLevel.roomInfo != null) {
                 newRoom.RevealChangeAfterCompletion = roomLevel.roomInfo.revealChangesAfterFinish;
                 foreach (Mirror mirror in newRoom.GetAllObjectsInRoom<Mirror>())
                 {
-                    if (mirror.isQuestion) {
-                        MirrorData questionMirrorData = roomLevel.roomInfo.questionMirror[0].Clone;
+                    if (mirrorIndex < roomLevel.roomInfo.questionMirror.Length) {
+                        MirrorData questionMirrorData = roomLevel.roomInfo.questionMirror[mirrorIndex].Clone;
                         mirror.MirrorData = questionMirrorData;
+                        mirror.isQuestion = mirror.MirrorData.isQuestion;
 
-                        if (completed && roomLevel.roomInfo.changeMirror.Length > 0) {
-                            mirror.PreAnswer = roomLevel.roomInfo.changeMirror[0].letters;
+                        if (completed && roomLevel.roomInfo.loadedChanges.Length > 0) {
+                            mirror.PreAnswer = roomLevel.roomInfo.loadedChanges[0].word;
                             mirror.IsOn = true;
                         }  else {
                             if(mirror.IsOn) {
@@ -171,20 +180,7 @@ public class Area : MonoBehaviour
                                 mirror.Letters = mirror.MirrorData.letters;
                             }
                         }
-                    } else {
-                        if (changeMirrorIndex < roomLevel.roomInfo.changeMirror.Length) {
-                            
-                            MirrorData changeMirrorData = roomLevel.roomInfo.changeMirror[changeMirrorIndex].Clone;
-                            mirror.MirrorData = changeMirrorData;
-                            newRoom.SecondHintAnswer =  changeMirrorData.letters;
-                            if(mirror.IsOn) {
-                                mirror.PreAnswer = mirror.MirrorData.letters;
-                                mirror.Letters = "";
-                            } else {
-                                mirror.Letters = mirror.MirrorData.letters;
-                            }
-                            changeMirrorIndex++;
-                        }
+                        mirrorIndex++;
                     }
                 }
             }

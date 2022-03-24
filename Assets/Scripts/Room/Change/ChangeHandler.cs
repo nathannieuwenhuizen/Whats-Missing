@@ -26,14 +26,15 @@ public class ChangeHandler
 
     //changes made by the palyer, mirror or enviroment.
     private List<RoomChange> roomChanges = new List<RoomChange>();
-    public List<RoomChange> RoomObjectChanges { get => roomChanges; }
+    public List<RoomChange> RoomChanges { get => roomChanges; }
 
-
+    private List<IChange> changes = new List<IChange>();
+    public List<IChange> Changes { get => changes; }
 
     ///<summary>
     /// Returns the list of all changes that the room has with the mirrors at the time of the call.
     ///</summary>
-    private List<MirrorChange> LoadingChanges() {
+    private void LoadingChanges() {
         List<MirrorChange> result = new List<MirrorChange>();
         foreach (Mirror mirror in room.mirrors)
         {
@@ -44,11 +45,20 @@ public class ChangeHandler
                 }
             }
         }
-        return result;
+        mirrorChanges = result;
+        changes = new List<IChange>(room.roomLevel.roomInfo.loadedChanges);
+        foreach (IChange change in changes)
+        {
+            room.ForEachObjectWithMirrorWord(change, (IChangable obj) => {
+            List<string> allWords = new List<string>(obj.AlternativeWords);
+            allWords.Add(obj.Word);
+            change.AltarnativeWords = allWords.ToArray(); 
+            });
+        }
     }
     
     public void LoadChanges() {
-        mirrorChanges = LoadingChanges();
+        LoadingChanges();
     }
     ///<summary>
     /// Creates a mirror change and returns null if the change doesn't find any objects with the word.
@@ -57,11 +67,10 @@ public class ChangeHandler
         MirrorChange newChange = new MirrorChange(){
             word = selectedMirror.Word, 
             mirror = selectedMirror,
-            changeType = selectedMirror.MirrorData.changeType,
-            roomIndexOffset = 0
+            changeType = selectedMirror.MirrorData.changeType
             };
 
-        if (room.DoesObjectWordMatch(newChange, (IChangable obj) => {
+        if (room.ForEachObjectWithMirrorWord(newChange, (IChangable obj) => {
             List<string> allWords = new List<string>(obj.AlternativeWords);
             allWords.Add(obj.Word);
             newChange.alternativeWords = allWords.ToArray(); 
@@ -80,36 +89,19 @@ public class ChangeHandler
         for (int i = mirrorChanges.Count - 1; i >= 0; i--)
         {
             if (mirrorChanges[i].active == false) {
-                if (mirrorChanges[i].roomIndexOffset == 0) {
-                    room.AddChangeInRoomObjects(mirrorChanges[i]);
-                    mirrorChanges[i].active = true;
-                } else if (ConnectedRoomIsComplete(mirrorChanges[i]) == false) {
-                    room.AddChangeInRoomObjects(mirrorChanges[i]);
-                    mirrorChanges[i].active = true;
-                }
+                room.AddChangeInRoomObjects(mirrorChanges[i]);
+                mirrorChanges[i].active = true;
             }
         }
-    }
-
-    ///<summary>
-    /// Activate the other changes if the room connected to it is not finished.
-    ///</summary>
-    public void CheckAndActiveOtherRoomChanges() {
-        for (int i = mirrorChanges.Count - 1; i >= 0; i--)
+        for (int i = changes.Count - 1; i >= 0; i--)
         {
-            if (mirrorChanges[i].active == false) {
-                if (mirrorChanges[i].roomIndexOffset != 0) {
-                    if (ConnectedRoomIsComplete(mirrorChanges[i]) == false) {
-                        room.AddChangeInRoomObjects(mirrorChanges[i]);
-                        mirrorChanges[i].active = true;
-                    }
-                }
-            }
+            room.AddChangeInRoomObjects(changes[i]);
+            changes[i].Active = true;
         }
     }
 
     private bool ConnectedRoomIsComplete(Change change) {
-        return room.Area.Rooms[room.Area.Rooms.IndexOf(room) + change.roomIndexOffset].AllMirrorsAreOn();
+        return room.AllMirrorsAreOn();
     }
     
     ///<summary>
@@ -120,22 +112,21 @@ public class ChangeHandler
         for (int i = mirrorChanges.Count - 1; i >= 0; i--)
         {
             if (mirrorChanges[i].active) {
-                if (force || mirrorChanges[i].roomIndexOffset == 0) {
-                    room.RemoveChangeInRoomObjects(mirrorChanges[i]);
-                    mirrorChanges[i].active = false;
-                } else {
-                    if (ConnectedRoomIsComplete(mirrorChanges[i])) {
-                        room.RemoveChangeInRoomObjects(mirrorChanges[i]);
-                        mirrorChanges[i].active = false;
-                    }
-                }
+                room.RemoveChangeInRoomObjects(mirrorChanges[i]);
+                mirrorChanges[i].active = false;
             }
         }
+        for (int i = changes.Count - 1; i >= 0; i--)
+        {
+            room.RemoveChangeInRoomObjects(changes[i]);
+            changes[i].Active = false;
+        }
+
     }
     ///<summary>
     /// Returns true if the changes contains the word of the selected mirror
     ///</summary>
-    public bool WordMatchesChanges(Mirror mirror) {
+    public bool ContainsWord(Mirror mirror) {
         foreach (MirrorChange change in mirrorChanges) {
             if ((change.word == mirror.Word || change.alternativeWords.Contains(mirror.Word)) && change.mirror.MirrorData.changeType == mirror.ChangeType) {
                 return true;
@@ -143,6 +134,14 @@ public class ChangeHandler
         } 
         foreach (RoomChange change in roomChanges) {
             if ((change.roomObject.Word == mirror.Word || change.roomObject.AlternativeWords.Contains(mirror.Word)) && change.changeType == mirror.ChangeType) {
+                return true;
+            }
+        }
+        foreach (IChange change in Changes) {
+            Debug.Log("change " + change.AltarnativeWords);
+            Debug.Log("mirror " + mirror);
+
+            if ((change.Word == mirror.Word || (change.AltarnativeWords != null && change.AltarnativeWords.Contains(mirror.Word))) && change.ChangeType == mirror.ChangeType) {
                 return true;
             }
         }
@@ -171,7 +170,7 @@ public class ChangeHandler
 
         bool sameObject = false;
         if (index != -1) {
-            //same object? then just ignore the rest
+            //same object? then just ignore the rest and return
             sameObject = roomChanges[index].roomObject == changable;
             if (sameObject) return;
 

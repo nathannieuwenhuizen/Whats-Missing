@@ -60,6 +60,12 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
         ApplyChange(change.changeType);
     }
 
+    public virtual void AddChange(IChange change)
+    {
+        ApplyChange(change.ChangeType);
+        // throw new System.NotImplementedException();
+    }
+
     private void ApplyChange(ChangeType _type) {
         switch (_type) {
             case ChangeType.missing:
@@ -75,10 +81,9 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
                 OnFlipped();
                 break;
         }    
-
     }
-    public void RemoveChange(Change change) {
-        switch (change.changeType) {
+    public void RemoveChange(IChange change) {
+        switch (change.ChangeType) {
             case ChangeType.missing:
                 OnAppearing();
                 break;

@@ -82,6 +82,13 @@ public class RoomDebuggerBox
                 GUI.skin.label.fontStyle = FontStyle.Normal;
                 currentPos += 30;
             }
+            foreach(IChange change in currentRoom.ChangeHandler.Changes) {
+                GUI.color = change.Active ? Color.green : Color.red;
+                GUI.skin.label.fontStyle = FontStyle.Bold;
+                GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.Word + " | " + change.ChangeType, style);
+                GUI.skin.label.fontStyle = FontStyle.Normal;
+                currentPos += 30;
+            }
         }
         
         CreateBox(new Rect(pos.x + size.x, pos.y, size.x, size.y), "Edit changes");
