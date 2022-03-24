@@ -162,7 +162,7 @@ public class FPMovement : MonoBehaviour
     ///</summary>
     private IEnumerator MakeWindNoices() {
         bool windEffectEnabled = false;
-        SFXInstance windSound = AudioHandler.Instance.PlaySound(SFXFiles.wind_fall, .5f, 1, true);
+        SFXInstance windSound = AudioHandler.Instance?.PlaySound(SFXFiles.wind_fall, .5f, 1, true);
         windSound.Pause();
         yield return new WaitForSeconds(1f);
         while (InAir && EnableWalk)
