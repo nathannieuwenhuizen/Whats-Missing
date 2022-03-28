@@ -15,7 +15,12 @@ public class BossAI : MonoBehaviour {
     public BossEye BossEye {
         get { return eye;}
     }
-    public Light light;
+    [SerializeField]
+    private BossHead head;
+    public BossHead BossHead {
+        get { return head;}
+    }
+
     [SerializeField]
     private Boss boss;
     public Boss Boss {
@@ -32,6 +37,7 @@ public class BossAI : MonoBehaviour {
     }
 
     private void OnDrawGizmos() {
-        eye.OnDrawGizmos(boss);
+        eye?.OnDrawGizmos(boss);
+        bossBehavior?.Debug();
     }
 }

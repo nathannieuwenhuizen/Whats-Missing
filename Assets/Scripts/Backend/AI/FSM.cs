@@ -10,7 +10,7 @@ public interface IState
     void Start();
     void Run();
     void Exit();
-
+    void DrawDebug();
 }
 public class FSM
 {
@@ -23,6 +23,10 @@ public class FSM
     public void Update()
     {
         cState?.Run();
+    }
+
+    public void Debug() {
+        cState?.DrawDebug();
     }
 
     void SwitchState( IState _newState)

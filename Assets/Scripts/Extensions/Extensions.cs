@@ -40,6 +40,11 @@ public static class Extensions
             Random.Range(-maxValue, maxValue),
             Random.Range(-maxValue, maxValue));
     }
+    public static Vector2 RandomVector2(float maxValue) {
+        return new Vector2(
+            Random.Range(-maxValue, maxValue),
+            Random.Range(-maxValue, maxValue));
+    }
 
     public static Vector3 CalculateLinearBezierPoint(float t, Vector3 p0, Vector3 p1) {
         return p0 + t * (p1 - p0);
