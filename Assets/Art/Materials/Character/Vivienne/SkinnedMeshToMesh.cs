@@ -8,11 +8,12 @@ public class SkinnedMeshToMesh : MonoBehaviour
     public SkinnedMeshRenderer skinnedMesh;
     public VisualEffect VFXGraph;
     public float refreshRate;
-
+    [HideInInspector]
+    public Coroutine UpdateVFXCoroutine;
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(UpdateVFXGraph());
+        UpdateVFXCoroutine = StartCoroutine(UpdateVFXGraph());
     }
 
    IEnumerator UpdateVFXGraph()
@@ -29,5 +30,9 @@ public class SkinnedMeshToMesh : MonoBehaviour
 
             yield return new WaitForSeconds (refreshRate);
         }
+    }
+    public void StopVFX() {
+        StopCoroutine(UpdateVFXCoroutine);
+        VFXGraph.Stop();
     }
 }

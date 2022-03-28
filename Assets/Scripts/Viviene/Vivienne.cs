@@ -21,6 +21,7 @@ public class GhostPose {
 ///<summary>
 /// The garden ghost of Gregories daughter in the garden level
 ///</summary>
+[RequireComponent(typeof(SkinnedMeshToMesh))]
 public class Vivienne : AreaTrigger, IRoomObject
 {
 
@@ -32,12 +33,24 @@ public class Vivienne : AreaTrigger, IRoomObject
         {GhostAnimation.ducks, "Memory_Ducks"}
     };
 
+    private SkinnedMeshToMesh skinnedMeshToMesh;
+
+    [SerializeField]
+    private SkinnedMeshRenderer meshRenderer;
+
     [SerializeField]
     private Animator animator;
     [SerializeField]
     private GameObject book;
     [SerializeField]
     private GameObject marshmallow;
+
+    [Space]
+    [Header("disappear values")]
+    [SerializeField]
+    private bool disappearsWithContact = true;
+    [SerializeField]
+    private float dissappEarDurationInSeconds = 5f;
 
     [SerializeField]
     private GhostPose[] ghostPoses;
@@ -49,15 +62,19 @@ public class Vivienne : AreaTrigger, IRoomObject
 
     public bool InSpace { get; set; } = false;
 
+    private void Awake() {
+        skinnedMeshToMesh = GetComponent<SkinnedMeshToMesh>();
+    }
     public override void OnAreaEnter(Player player) {
         base.OnAreaEnter(player);
+        Debug.Log("trigger enter");
+        if (disappear) return;
+        disappear = true;
+        Vanish();
     }
 
     public override void OnAreaExit(Player player) {
         base.OnAreaExit(player);
-        if (disappear) return;
-        disappear = true;
-        Vanish();
     }
 
     public void OnRoomEnter()
@@ -93,6 +110,7 @@ public class Vivienne : AreaTrigger, IRoomObject
 
     public void OnRoomLeave()
     {
+        Debug.Log("disappear!");
         if (!disappear) {
             StopSound();
         }
@@ -104,7 +122,22 @@ public class Vivienne : AreaTrigger, IRoomObject
     
 
     public void Vanish() {
-        //do vnaish animation
+        //do vanish animation
+        if (!disappearsWithContact) return;
+
+        skinnedMeshToMesh.StopVFX();
+        StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
+        if (book.activeSelf) StartCoroutine(book.GetComponent<MeshRenderer>().material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
+        if (marshmallow.activeSelf) StartCoroutine(marshmallow.GetComponent<MeshRenderer>().material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
     }
 
+    private void OnDrawGizmos() {
+        if (meshRenderer != null) {
+            foreach(GhostPose pose in ghostPoses) {
+                if (pose.transform != null) {
+                    Gizmos.DrawWireMesh(meshRenderer.sharedMesh, pose.transform.position,  Quaternion.LookRotation(pose.transform.up, -pose.transform.right), meshRenderer.transform.lossyScale);
+                }
+            }
+        }
+    }
 }

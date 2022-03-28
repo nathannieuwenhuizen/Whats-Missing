@@ -134,6 +134,18 @@ public static class Extensions
         mat.SetFloat("Opacity", endVal);
     }
 
+    public static IEnumerator AnimatingNumberPropertyMaterial(this Material mat, string key,  float beginVal, float endVal,  AnimationCurve curve, float duration = .5f) {
+        mat.SetFloat(key, beginVal);
+        float timePassed = 0f;
+
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.unscaledDeltaTime;
+            mat.SetFloat(key, Mathf.LerpUnclamped(beginVal, endVal , curve.Evaluate(timePassed / duration)));
+        }
+        mat.SetFloat(key, endVal);
+    }
+
     public static void SetNearClipPlane(this Camera reflectionCamera, Transform transform, Camera mainCamera) {
         Transform clipPlane = transform; 
         int dot = System.Math.Sign(Vector3.Dot(clipPlane.forward, clipPlane.position - reflectionCamera.transform.position));

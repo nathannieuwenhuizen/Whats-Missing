@@ -46,7 +46,7 @@ public class BabyDuck : Duck
     private List<Duck> DetectDucks() {
         List<Duck> result = new List<Duck>(FindAllDucks());
         result.Remove(this);
-        Debug.Log("ducks length" + result.Count);
+        // Debug.Log("ducks length" + result.Count);
         return result;  
     }
     public override void Quack()
