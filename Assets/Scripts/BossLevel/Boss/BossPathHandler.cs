@@ -2,9 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+///<summary>
+/// A struct containing Mountain coordinates for the path handeler
+///</summary>
 [System.Serializable]
 public struct MountainCoordinate {
+    ///<summary>
+    /// The angle in degrees
+    ///</summary>
     public float angle;
+    public float Angle {
+        get { return angle % 360;}
+        set {
+            angle = value % 360;
+        }
+    }
+    ///<summary>
+    /// The world Y position
+    ///</summary>
     public float yPos;
     public Vector3 ToVector(BossPathHandler _pathHandeler) {
         Vector3 result = Vector3.zero;
@@ -13,14 +29,24 @@ public struct MountainCoordinate {
         float resultRadius = _pathHandeler.BottomRadius + (_pathHandeler.TopRadius - _pathHandeler.BottomRadius) * precentage;
 
         result.y = yPos;
-        result.x = _pathHandeler.transform.position.x + Mathf.Cos(angle * Mathf.Deg2Rad) * resultRadius;
-        result.z = _pathHandeler.transform.position.z + Mathf.Sin(angle * Mathf.Deg2Rad) * resultRadius;
+        result.x = _pathHandeler.transform.position.x + Mathf.Cos(Angle * Mathf.Deg2Rad) * resultRadius;
+        result.z = _pathHandeler.transform.position.z + Mathf.Sin(Angle * Mathf.Deg2Rad) * resultRadius;
         return result;
     }
 
     public static MountainCoordinate Lerp(MountainCoordinate begin, MountainCoordinate end, float index) {
+        float _angle = Mathf.Lerp(begin.Angle, end.Angle, index);
+        if (Mathf.Abs(begin.angle - end.angle) > 180f)
+        {
+            float beginAngle = begin.Angle;
+            float endAngle = end.Angle;
+            if (beginAngle < 180)beginAngle += 360;
+            if (endAngle < 180)endAngle += 360;
+            _angle = Mathf.Lerp(beginAngle, endAngle, index);
+
+        }
         return new MountainCoordinate() {
-            angle = Mathf.Lerp(begin.angle, end.angle, index),
+            angle = _angle,
             yPos = Mathf.Lerp(begin.yPos,end.yPos, index)
         };
     }
@@ -30,8 +56,8 @@ public struct MountainCoordinate {
         result.x = delta.x;
         result.z = delta.z;
         result = result.normalized;
-        float angle = 90 - Mathf.Atan2( _pathHandler.Height, (_pathHandler.BottomRadius - _pathHandler.TopRadius )) * Mathf.Rad2Deg;
-        result.y = Mathf.Sin( angle * Mathf.Deg2Rad);
+        float _angle = 90 - Mathf.Atan2( _pathHandler.Height, (_pathHandler.BottomRadius - _pathHandler.TopRadius )) * Mathf.Rad2Deg;
+        result.y = Mathf.Sin( _angle * Mathf.Deg2Rad);
         return result.normalized;
     }
     
@@ -41,9 +67,25 @@ public struct MountainCoordinate {
 
         return dot > 0;
     }
+
+    public static MountainCoordinate FromPosition(BossPathHandler pahtHandeler, Vector3 pos) {
+        
+        Vector3 delta = pos - pahtHandeler.transform.position;
+        delta.y = 0;
+        float angle = Vector3.Angle(delta, Vector3.right);
+        if (pos.z < pahtHandeler.transform.position.z) {
+            angle = 360 - angle;
+        }
+        return new MountainCoordinate() {
+            yPos = pos.y,
+            Angle = angle
+        };
+    }
 }
 
-
+///<summary>
+/// This is a path containing the begin and end points
+///</summary>
 [System.Serializable]
 public struct MountainPath {
     public MountainCoordinate begin;
@@ -115,11 +157,12 @@ public class BossPathHandler : MonoBehaviour
         DebugExtensions.DrawCircle(transform.position, bottomRadius, debugColor, 360, 20);
         DebugExtensions.DrawCircle(transform.position + new Vector3(0,height, 0), topRadius, debugColor, 360, 20);
         for (int j = 0; j < 360; j+= 90) {
-            MountainCoordinate coords = new MountainCoordinate() {angle = j, yPos = transform.position.y};
-            MountainCoordinate coordsEnd = new MountainCoordinate() {angle = j, yPos = transform.position.y + height};
+            MountainCoordinate coords = new MountainCoordinate() {Angle = j, yPos = transform.position.y};
+            MountainCoordinate coordsEnd = new MountainCoordinate() {Angle = j, yPos = transform.position.y + height};
             Debug.DrawLine(coords.ToVector(this), coordsEnd.ToVector(this), debugColor);
         }
 
+        path.begin = MountainCoordinate.FromPosition(this, boss.transform.position);
         path.DrawGizmo(this);
     }
 
