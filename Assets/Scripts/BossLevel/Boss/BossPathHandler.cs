@@ -22,7 +22,7 @@ public struct MountainCoordinate {
     /// The world Y position
     ///</summary>
     public float yPos;
-    public Vector3 ToVector(BossPathHandler _pathHandeler) {
+    public Vector3 ToVector(BossPathHandler _pathHandeler, float offset = 0) {
         Vector3 result = Vector3.zero;
 
         float precentage = Mathf.Clamp(yPos - _pathHandeler.transform.position.y, 0, _pathHandeler.Height) / _pathHandeler.Height;
@@ -31,6 +31,9 @@ public struct MountainCoordinate {
         result.y = yPos;
         result.x = _pathHandeler.transform.position.x + Mathf.Cos(Angle * Mathf.Deg2Rad) * resultRadius;
         result.z = _pathHandeler.transform.position.z + Mathf.Sin(Angle * Mathf.Deg2Rad) * resultRadius;
+
+        if (offset != 0) result += Normal(_pathHandeler) * offset;
+
         return result;
     }
 
@@ -94,11 +97,32 @@ public struct MountainPath {
 
     public MountainCoordinate[] generatePathPoints(BossPathHandler pathHandeler) {
         List<MountainCoordinate> coords = new List<MountainCoordinate>();
-        for (int k = 0; k < steps; k++) {
+        for (int k = 0; k <= steps; k++) {
             coords.Add( MountainCoordinate.Lerp(begin, end, (float)k/(float)steps));
         }
         return coords.ToArray();
 
+    }
+
+    public MountainCoordinate getClosestMountainCoord(MountainCoordinate[] coords, Vector3 pos, BossPathHandler pathHandeler) {
+        if (coords.Length == 0) return default(MountainCoordinate);
+
+        for (int j = coords.Length - 1; j >= 0; j--) {
+            if (coords[j].IsVisible(pathHandeler, pos)) {
+                return coords[j];
+            }
+        }
+        //boss is most likely inside the shape, so go towards closest point
+        MountainCoordinate chosen = coords[coords.Length - 1];
+        float closestDistance = Mathf.Infinity;
+        for (int j = 0; j < coords.Length; j++) {
+            float dist = (coords[j].ToVector(pathHandeler) - pos).magnitude;
+            if (dist < closestDistance) {
+                closestDistance = dist;
+                chosen = coords[j];
+            }
+        }
+        return chosen;
     }
     public void DrawGizmo(BossPathHandler pathHandeler) {
         Vector3 oldPos = begin.ToVector(pathHandeler);
@@ -122,6 +146,12 @@ public class BossPathHandler : MonoBehaviour
         get { return debugColor;}
     }
 
+    [Range(4, 100)]
+    [SerializeField]
+    private int debugLines = 10;
+    [SerializeField]
+    private bool enableDebug = true;
+
     [SerializeField]
     private float topRadius = 20f;
     public float TopRadius {
@@ -144,6 +174,10 @@ public class BossPathHandler : MonoBehaviour
 
     [SerializeField]
     private MountainPath path;
+    
+    public MountainPath Path {
+        get { return path;}
+    }
 
     [SerializeField]
     private Boss boss;
@@ -153,17 +187,19 @@ public class BossPathHandler : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
+        if (!enableDebug) return;
+
         Gizmos.color = debugColor;
         DebugExtensions.DrawCircle(transform.position, bottomRadius, debugColor, 360, 20);
         DebugExtensions.DrawCircle(transform.position + new Vector3(0,height, 0), topRadius, debugColor, 360, 20);
-        for (int j = 0; j < 360; j+= 90) {
+        for (int j = 0; j < 360; j+= (360 / debugLines)) {
             MountainCoordinate coords = new MountainCoordinate() {Angle = j, yPos = transform.position.y};
             MountainCoordinate coordsEnd = new MountainCoordinate() {Angle = j, yPos = transform.position.y + height};
             Debug.DrawLine(coords.ToVector(this), coordsEnd.ToVector(this), debugColor);
         }
 
         path.begin = MountainCoordinate.FromPosition(this, boss.transform.position);
-        path.DrawGizmo(this);
+        // path.DrawGizmo(this);
     }
 
     

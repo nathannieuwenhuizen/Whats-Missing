@@ -22,59 +22,68 @@ public class BossHead: MonoBehaviour
         desiredAim = Instantiate(new GameObject("desired aim"), transform.position + transform.forward * bossAI.BossEye.ViewRange, Quaternion.identity).transform;
         currentAim.SetParent(transform.parent);
         desiredAim.SetParent(bossAI.transform.parent);
+        steeringBehaviour.target = currentAim;
+        steeringBehaviour.desiredTarget = desiredAim;
     }
     public void Update()
     {
         if (steeringEnabled) {
-            UpdateSteeringBehaviour();
+            steeringBehaviour.UpdatePosition();
+            // UpdateSteeringBehaviour();
         }
         else currentAim.position = Vector3.Lerp(currentAim.position, desiredAim.position, Time.deltaTime * aimSpeed);
        
         transform.LookAt(currentAim, transform.up);
     }
 
-    Vector3 velocity = Vector3.zero;
-    Vector3 desiredVelocity = Vector3.zero;
-    private Vector3 steering;
-    [Header("steering behavior")]
     [SerializeField]
-    private float maxVelocity = .2f;
-    [SerializeField]
-    private float maxForce = 003f;
-    public float MaxForce {
-        get { return maxForce;}
-        set { maxForce = value; }
+    private SteeringBehaviour steeringBehaviour;
+    public SteeringBehaviour SteeringBehaviour {
+        get { return steeringBehaviour;}
     }
-    [SerializeField]
-    private float mass = 5f;
-    [SerializeField]
-    float slowingRadius = 5f;
-    [SerializeField]
-    float slowingAmplitude = .5f;
 
-    private void UpdateSteeringBehaviour() {
-        desiredVelocity = (desiredAim.position - currentAim.position);
+    // Vector3 velocity = Vector3.zero;
+    // Vector3 desiredVelocity = Vector3.zero;
+    // private Vector3 steering;
+    // [Header("steering behavior")]
+    // [SerializeField]
+    // private float maxVelocity = .2f;
+    // [SerializeField]
+    // private float maxForce = 003f;
+    // public float MaxForce {
+    //     get { return maxForce;}
+    //     set { maxForce = value; }
+    // }
+    // [SerializeField]
+    // private float mass = 5f;
+    // [SerializeField]
+    // float slowingRadius = 5f;
+    // [SerializeField]
+    // float slowingAmplitude = .5f;
+
+    // private void UpdateSteeringBehaviour() {
+    //     desiredVelocity = (desiredAim.position - currentAim.position);
 
         
-        // Check the distance to detect whether the character
-        float distance = desiredVelocity.magnitude;
-        // is inside the slowing area
-        if (distance < slowingRadius) {
-            // Inside the slowing area
-            desiredVelocity = desiredVelocity.normalized * maxVelocity * ((distance / slowingRadius) * slowingAmplitude);
-        } else {
-            // Outside the slowing area.
-            desiredVelocity = desiredVelocity.normalized * maxVelocity;
-        }
+    //     // Check the distance to detect whether the character
+    //     float distance = desiredVelocity.magnitude;
+    //     // is inside the slowing area
+    //     if (distance < slowingRadius) {
+    //         // Inside the slowing area
+    //         desiredVelocity = desiredVelocity.normalized * maxVelocity * ((distance / slowingRadius) * slowingAmplitude);
+    //     } else {
+    //         // Outside the slowing area.
+    //         desiredVelocity = desiredVelocity.normalized * maxVelocity;
+    //     }
 
-        steering = desiredVelocity - velocity;
-        if (steering.magnitude > maxForce) steering = steering.normalized * maxForce;
-        steering /= mass;
+    //     steering = desiredVelocity - velocity;
+    //     if (steering.magnitude > maxForce) steering = steering.normalized * maxForce;
+    //     steering /= mass;
 
-        velocity += steering;
+    //     velocity += steering;
 
-        currentAim.position += truncate(velocity);
-    }
+    //     currentAim.position += truncate(velocity);
+    // }
 
     public void SetAim(Vector3 pos, Vector2 relativeOffset) {
         Transform t = transform.parent;
@@ -97,12 +106,12 @@ public class BossHead: MonoBehaviour
         if (currentAim != null && desiredAim != null) {
             Gizmos.DrawSphere(currentAim.position, .5f);
             Gizmos.DrawSphere(desiredAim.position, .5f);
-            float multiply = (currentAim.position - desiredAim.position).magnitude / desiredVelocity.magnitude;
+            float multiply = (currentAim.position - desiredAim.position).magnitude / steeringBehaviour.DesiredVelocity.magnitude;
             Debug.DrawLine(currentAim.position, desiredAim.position, Gizmos.color);
             
-            Debug.DrawLine(currentAim.position, currentAim.position + velocity * multiply , Color.red);
-            Debug.DrawLine(currentAim.position + velocity * multiply, currentAim.position + desiredVelocity * multiply, Color.yellow);
-            Debug.DrawLine(currentAim.position, currentAim.position + desiredVelocity * multiply, Color.green);
+            Debug.DrawLine(currentAim.position, currentAim.position + steeringBehaviour.Velocity * multiply , Color.red);
+            Debug.DrawLine(currentAim.position + steeringBehaviour.Velocity * multiply, currentAim.position + steeringBehaviour.DesiredVelocity * multiply, Color.yellow);
+            Debug.DrawLine(currentAim.position, currentAim.position + steeringBehaviour.DesiredVelocity * multiply, Color.green);
         }
     }
 }

@@ -33,18 +33,29 @@ public static class Extensions
         return result;
     }
 
+    ///<summary>
+    /// Returns true if the angle between two vectors is on the left or right side
+    ///</summary>
     public static float AngleDir(Vector3 fwd, Vector3 targetDir,Vector3 up) {
-    Vector3 perp = Vector3.Cross(fwd, targetDir);
-    float dir = Vector3.Dot(perp, up);
-   
-    if (dir > 0.0f) {
-        return 1.0f;
-    } else if (dir < 0.0f) {
-        return -1.0f;
-    } else {
-        return 0.0f;
+        Vector3 perp = Vector3.Cross(fwd, targetDir);
+        float dir = Vector3.Dot(perp, up);
+    
+        if (dir > 0.0f) {
+            return 1.0f;
+        } else if (dir < 0.0f) {
+            return -1.0f;
+        } else {
+            return 0.0f;
+        }
     }
-}
+
+    ///<summary>
+    /// returns thrue if two numbers are nearly equal to eahc other based on the offset parameter
+    ///</summary>
+    public static bool NearlyEqual(this float a , float b, float offset)
+    {
+        return Mathf.Abs(a - b) <= offset;
+    }
 
 
     public static Vector3 RandomVector(float maxValue) {

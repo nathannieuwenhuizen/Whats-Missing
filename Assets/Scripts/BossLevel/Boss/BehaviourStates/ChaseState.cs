@@ -14,7 +14,7 @@ public class ChaseState : BaseBossState, IState
     private float sharpViewAngle = 10;
     public void Start()
     {
-        bossAI.BossHead.MaxForce *= 10f;
+        bossAI.BossHead.SteeringBehaviour.MaxForce *= 10f;
         oldViewAngle = bossAI.BossEye.ViewAngle;
         bossAI.BossEye.ViewAngle = sharpViewAngle;;
     }
@@ -30,7 +30,7 @@ public class ChaseState : BaseBossState, IState
 
     public void Exit()
     {
-        bossAI.BossHead.MaxForce /= 10f;
+        bossAI.BossHead.SteeringBehaviour.MaxForce /= 10f;
         bossAI.BossEye.ViewAngle = oldViewAngle;;
 
     }
