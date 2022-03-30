@@ -2,14 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class BaseBossState{
+    public BossAI bossAI;
+}
+
+public class BossBehaviours {
+    public BossBehaviours(BossAI _ai) {
+        lookingState = new LookingState() {bossAI = _ai };
+        chaseState = new ChaseState() {bossAI = _ai };
+
+    }
+
+    public LookingState lookingState; 
+    public ChaseState chaseState; 
+}
 ///<summary>
 /// Main Ai for the boss holding all the statesand behaviour trees
 ///</summary>
 public class BossAI : MonoBehaviour {
 
     //states
-    public FSM bossBehavior;
-    private LookingState lookingState;
+    private FSM stateMachine;
+
+    private BossBehaviours behaviours;
+    public BossBehaviours Behaviours {
+        get { return behaviours;}
+    }
     [SerializeField]
     private BossEye eye;
     public BossEye BossEye {
@@ -28,16 +46,17 @@ public class BossAI : MonoBehaviour {
         set { boss = value; }
     }
     public void Setup(Boss _boss) {
-        lookingState = new LookingState() {bossAI = this };
-        bossBehavior = new FSM(lookingState);
         boss = _boss;
+
+        behaviours = new BossBehaviours(this);
+        stateMachine = new FSM(behaviours.lookingState);
     }
     public void UpdateAI() {
-        bossBehavior.Update();
+        stateMachine.Update();
     }
 
     private void OnDrawGizmos() {
-        eye?.OnDrawGizmos(boss);
-        bossBehavior?.Debug();
+        eye?.OnDrawGizmos();
+        stateMachine?.Debug();
     }
 }

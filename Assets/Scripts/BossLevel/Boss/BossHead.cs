@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+///<summary>
+/// The boss head that rotates arround trying to see the player.
+/// A steering behavior handles the movement
+///</summary>
 public class BossHead: MonoBehaviour
 {
     private Transform currentAim;
@@ -14,8 +18,8 @@ public class BossHead: MonoBehaviour
     private bool steeringEnabled = false;
 
     private void Awake() {
-        currentAim = Instantiate(new GameObject("current aim"), transform.position + transform.forward * bossAI.BossEye.viewRange, Quaternion.identity).transform;
-        desiredAim = Instantiate(new GameObject("desired aim"), transform.position + transform.forward * bossAI.BossEye.viewRange, Quaternion.identity).transform;
+        currentAim = Instantiate(new GameObject("current aim"), transform.position + transform.forward * bossAI.BossEye.ViewRange, Quaternion.identity).transform;
+        desiredAim = Instantiate(new GameObject("desired aim"), transform.position + transform.forward * bossAI.BossEye.ViewRange, Quaternion.identity).transform;
         currentAim.SetParent(transform.parent);
         desiredAim.SetParent(bossAI.transform.parent);
     }
@@ -37,6 +41,10 @@ public class BossHead: MonoBehaviour
     private float maxVelocity = .2f;
     [SerializeField]
     private float maxForce = 003f;
+    public float MaxForce {
+        get { return maxForce;}
+        set { maxForce = value; }
+    }
     [SerializeField]
     private float mass = 5f;
     [SerializeField]
@@ -68,13 +76,12 @@ public class BossHead: MonoBehaviour
         currentAim.position += truncate(velocity);
     }
 
-    public void SetAim(Vector2 offset) {
+    public void SetAim(Vector3 pos, Vector2 relativeOffset) {
         Transform t = transform.parent;
-        Debug.Log("set aim" + offset.y);
-        desiredAim.transform.position = transform.position + 
-        t.forward * bossAI.BossEye.viewRange + 
-        t.up * offset.y + 
-        t.right * offset.x;
+        // Debug.Log("set aim" + relativeOffset.y);
+        desiredAim.transform.position = pos + 
+        t.up * relativeOffset.y + 
+        t.right * relativeOffset.x;
     }
 
     private Vector3 truncate(Vector3 vector) {
@@ -90,7 +97,7 @@ public class BossHead: MonoBehaviour
         if (currentAim != null && desiredAim != null) {
             Gizmos.DrawSphere(currentAim.position, .5f);
             Gizmos.DrawSphere(desiredAim.position, .5f);
-            float multiply = 10;
+            float multiply = (currentAim.position - desiredAim.position).magnitude / desiredVelocity.magnitude;
             Debug.DrawLine(currentAim.position, desiredAim.position, Gizmos.color);
             
             Debug.DrawLine(currentAim.position, currentAim.position + velocity * multiply , Color.red);

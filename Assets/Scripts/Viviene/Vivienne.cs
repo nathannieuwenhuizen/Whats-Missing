@@ -4,6 +4,14 @@ using UnityEngine;
 
 
 
+
+[System.Serializable]
+public class GhostPose {
+    public Transform transform;
+    public GhostAnimation ghosetAnimation;
+    public int levelIndex;
+}
+
 public enum GhostAnimation {
     fountain,
     fireplace,
@@ -12,12 +20,6 @@ public enum GhostAnimation {
     ducks
 }
 
-[System.Serializable]
-public class GhostPose {
-    public Transform transform;
-    public GhostAnimation ghosetAnimation;
-    public int levelIndex;
-}
 ///<summary>
 /// The garden ghost of Gregories daughter in the garden level
 ///</summary>
