@@ -45,6 +45,7 @@ public class BossBody : MonoBehaviour
 
         UpdateDestination();
         steeringBehaviour.UpdatePosition();
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(-path.getClosestMountainCoord(coords, transform.position, pathHandeler).Normal(pathHandeler)), Time.deltaTime);
 
     }
     private void OnDrawGizmos() {

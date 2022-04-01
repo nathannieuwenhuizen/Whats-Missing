@@ -37,7 +37,6 @@ public class LookingState : BaseBossState, IState
 
     public void Run()
     {
-        Debug.Log("ai " + bossAI);
         bossAI.BossEye.UpdateNoticing(bossAI.Boss.Player);
         if (bossAI.BossEye.NoticesPlayer) {
             OnStateSwitch?.Invoke(bossAI.Behaviours.chaseState);

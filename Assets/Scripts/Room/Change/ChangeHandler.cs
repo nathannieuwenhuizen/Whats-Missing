@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
 ///<summary>
 /// Is responsible for managing the changes inside the room. It activates, deactivates and creates them.
 ///</summary>
@@ -179,6 +178,7 @@ public class ChangeHandler
             roomChanges.RemoveAt(index);
 
         }
+        
         RoomChange newChange = new RoomChange() {changeType = potion.ChangeType, roomObject = changable, changeCausation = ChangeCausation.potion};
         roomChanges.Add(newChange);
         changable.AddChange(newChange);

@@ -47,7 +47,6 @@ public class BossAI : MonoBehaviour {
     }
     public void Setup(Boss _boss) {
         boss = _boss;
-
         behaviours = new BossBehaviours(this);
         stateMachine = new FSM(behaviours.lookingState);
     }

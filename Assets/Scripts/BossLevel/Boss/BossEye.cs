@@ -9,6 +9,14 @@ public class BossEye: MonoBehaviour {
     ///<summary>
     /// The range on which the boss can still view the player
     ///</summary>
+
+    [SerializeField]
+    private Transform fakeLight;
+    private readonly float sizeScale = 5f;
+    private readonly float angleScale = 27f;
+
+    [SerializeField]
+    private bool showGizmo = true;
     
     [Range(1, 200)]
     [SerializeField]
@@ -73,7 +81,6 @@ public class BossEye: MonoBehaviour {
                 if (!Physics.Raycast(transform.position, (player.Camera.transform.position - player.transform.up * 2f) - transform.position, out hit, dist)) {
                     return true;
                 }
-                // return true;
             }
         } 
         return false;
@@ -101,6 +108,7 @@ public class BossEye: MonoBehaviour {
 
     private Color debugColor;
     public void OnDrawGizmos() {
+        if (!showGizmo) return;
         if (boss != null) {
             bool inView = PlayerIsInView(boss.Player);
             Gizmos.color = debugColor = inView ? Color.yellow : Color.red;
@@ -134,8 +142,18 @@ public class BossEye: MonoBehaviour {
                 up = DebugDrawViewLine(up, transform.position + (transform.forward + transform.up * opposideLength).normalized * viewRange);
             }
             transform.rotation = oldRot;
-
+            UpdateFakeLightScale();
         }
+    }
+
+    private void UpdateFakeLightScale() {
+        if (fakeLight == null) return;
+        Vector3 scale = Vector3.one;
+        scale.y = ViewRange / sizeScale;
+        float angleResult = Mathf.Tan(viewAngle * Mathf.Deg2Rad);
+        scale.x = ViewRange / sizeScale * angleResult;
+        scale.z = ViewRange / sizeScale * angleResult;
+        fakeLight.localScale = scale;
     }
     private Vector3 DebugDrawViewLine(Vector3 origin, Vector3 dest) {
         Debug.DrawLine(origin, dest, debugColor);

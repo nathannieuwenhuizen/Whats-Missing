@@ -24,9 +24,10 @@ public class EndlessHallway : MonoBehaviour
     private Player player;
     
     private void SpawnChunks() {
-
+        
         Vector3 spawnPos = startChunk.transform.position;
         for(int i = 0; i < ammountOfChunks; i++) {
+            
             spawnPos += new Vector3(-chunkSize,0,0);
             GameObject newChunk = Instantiate(chunkPrefabs[Random.Range(0, chunkPrefabs.Length)], spawnPos, Quaternion.identity);
             newChunk.name = "chunk #" + i;
