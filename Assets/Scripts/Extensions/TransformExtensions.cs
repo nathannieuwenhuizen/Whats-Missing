@@ -111,23 +111,41 @@ public static class TransformExtensions
         transform.localRotation = endrotation;
     }
 
-    public static  IEnumerator Shake(this Transform transform, float magintude, float frequence, float duration = .5f) {
+    public static IEnumerator ShakeZRotation(this Transform transform, float magnitude, float frequence, float duration = .5f) {
+        float timePassed = 0f;
+        Quaternion start = transform.localRotation;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            // start = transform.localRotation;
+            // start.z = 0;
+
+            float currentMagnitude = Mathf.Sin(Mathf.PI * (timePassed / duration)) * magnitude;
+            transform.localRotation = start;
+            transform.Rotate( new Vector3(
+                0,0,
+                Mathf.Sin((timePassed * frequence) * (Mathf.PI * 2)) * currentMagnitude
+            ));
+        }
+        transform.localRotation = start;
+    }
+    public static IEnumerator ShakeLocalYPos(this Transform transform, float magnitude, float frequence, float duration = .5f) {
         float timePassed = 0f;
         while (timePassed < duration) {
             yield return new WaitForEndOfFrame();
             timePassed += Time.deltaTime;
-            float currentMagnitude = Mathf.Sin(Mathf.PI * (timePassed / duration)) * magintude;
-            transform.localRotation = Quaternion.Euler(
-                transform.localRotation.x,
-                transform.localRotation.y,
-                Mathf.Sin((timePassed * frequence) * (Mathf.PI * 2)) * currentMagnitude
+            float currentMagnitude = Mathf.Sin(Mathf.PI * (timePassed / duration)) * magnitude;
+            transform.localPosition = new Vector3(
+                transform.localPosition.x,
+                Mathf.Sin((timePassed * frequence) * (Mathf.PI * 2)) * currentMagnitude,
+                transform.localPosition.z
             );
         }
-        transform.localRotation = Quaternion.Euler(
-                transform.localRotation.x,
-                transform.localRotation.y,
-                0
-            );
+        transform.localPosition = new Vector3(
+            transform.localPosition.x,
+            0,
+            transform.localPosition.z
+        );
     }
     public static Quaternion RandomRotation (float amplitude = 1f) {
         return Quaternion.Euler(Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude));

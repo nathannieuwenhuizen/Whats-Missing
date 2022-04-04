@@ -21,11 +21,11 @@ public class RemoteController : MonoBehaviour
 
         focusedMirror = FocussedMirror();
         if (focusedMirror == null) {
-            if (oldMirror) oldMirror.MirrorCanvas.IsInteractable = false;
+            if (oldMirror) oldMirror.MirrorCanvas.IsFocused = false;
         } else {
             if (oldMirror != focusedMirror)  {
-                if (oldMirror) oldMirror.MirrorCanvas.IsInteractable = false;
-                focusedMirror.MirrorCanvas.IsInteractable = true;
+                if (oldMirror) oldMirror.MirrorCanvas.IsFocused = false;
+                focusedMirror.MirrorCanvas.IsFocused = true;
             }
         }
         oldMirror = focusedMirror;
@@ -48,7 +48,7 @@ public class RemoteController : MonoBehaviour
         isEnabled = false;
         oldMirror = null;
         if (focusedMirror != null) {
-            focusedMirror.MirrorCanvas.IsInteractable = false;
+            focusedMirror.MirrorCanvas.IsFocused = false;
             focusedMirror = null;
         }
     }

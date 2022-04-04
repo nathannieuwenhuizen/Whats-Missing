@@ -168,7 +168,7 @@ public class Letter : MirrorButton, IPointerDownHandler
             MirrorButton.SELECTED_BUTTON = this;
 
             //out of mirror view or click out
-            if (mirrorCanvas.IsInteractable == false || !Extensions.IsPressed(ControllerRebinds.controls.Player.Click)) {
+            if (mirrorCanvas.IsFocused == false || !Extensions.IsPressed(ControllerRebinds.controls.Player.Click)) {
                 LetterIsClicked();
             }
             yield return new WaitForEndOfFrame();

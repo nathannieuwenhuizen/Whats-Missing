@@ -67,8 +67,8 @@ public class RenderTexturePlane : MonoBehaviour
 
     protected virtual void Awake() {
         output_texture_high = CreateRenderTexture("highTexture", 1f);
-        output_texture_mid = CreateRenderTexture("midTexture", .5f);
-        output_texture_low = CreateRenderTexture("midTexture", .3f);
+        output_texture_mid = CreateRenderTexture("midTexture", 1f);
+        output_texture_low = CreateRenderTexture("midTexture", .5f);
 
         SetRenderTexture(output_texture_mid);
         IsActive = isActive;

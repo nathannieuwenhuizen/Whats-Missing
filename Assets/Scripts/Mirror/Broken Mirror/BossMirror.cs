@@ -2,13 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossMirror : Mirror
+public class BossMirror : Mirror, ITriggerArea
 {
     public delegate void BossMirrorEvent(BossMirror bossMirror);
     public static BossMirrorEvent OnBossMirrorShardAttached;
 
     [SerializeField]
     private MirrorShard[] shards;
+
+    [SerializeField]
+    private ParticleSystem explosionSmoke;
+    [SerializeField]
+    private ParticleSystem explosionShards;
 
     private MirrorData GetShardMirrorData() {
         string letters = "";
@@ -46,6 +51,7 @@ public class BossMirror : Mirror
     private void Start() {
         Word = "spirit";
         TogleVisibilityUnselectedObj(0);
+        MirrorCanvas.IsInteractable = false;
         // foreach(MirrorShard shard in shards) {
         //     shard.PlanarReflection.SetRenderTexture(PlanarReflection.reflectionCamera.targetTexture);
         // }
@@ -71,8 +77,10 @@ public class BossMirror : Mirror
         MirrorCanvas.DeselectLetters();
         TogleVisibilityUnselectedObj(1);
         for (int i = 0; i < shards.Length; i++) {
-            shards[i].DisconnectedFromMirror();
+            shards[i].DisconnectedFromMirror(4000);
         }
+        explosionSmoke.Emit(100);
+        explosionShards.Emit(60);
     }
 
     public void AttachMirrorShard(MirrorShard shard) {
@@ -92,5 +100,41 @@ public class BossMirror : Mirror
         }
         return result;
     }
+
+    public void OnAreaEnter(Player player)
+    {
+        if (introCutscene) return;
+        introCutscene = true;
+        StartCoroutine(ShakeBeforeExplosion());
+    }
+
+    public void OnAreaExit(Player player)
+    {
+
+    }
+
+    private float shakeDuration = 4f;
+    private Coroutine shakeCoroutine;
+
+    public bool InsideArea { get; set; }
+    private bool introCutscene;
+
+    private IEnumerator ShakeBeforeExplosion() {
+        Debug.Log("coroutine started");
+        Quaternion startRotation = transform.localRotation;
+        shakeCoroutine = StartCoroutine(transform.ShakeZRotation(10f, 3f, shakeDuration * 2));
+        foreach(MirrorShard shard in shards) {
+            shard.Shake(shakeDuration);
+        }
+        yield return StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(0,0,90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
+        // yield return new WaitForSeconds(shakeDuration);
+        foreach(MirrorShard shard in shards) {
+            shard.StopShake();
+        }
+        StopCoroutine(shakeCoroutine);
+        transform.localRotation = startRotation;
+        Explode();
+    }
+
 
 }

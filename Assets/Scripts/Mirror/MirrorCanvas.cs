@@ -61,10 +61,26 @@ public class MirrorCanvas : MonoBehaviour
         get { return isInteractable; }
         set { 
             isInteractable = value; 
-            GetComponent<GraphicRaycaster>().enabled = value;
-            GetComponent<CanvasGroup>().alpha = value ? 1 : .8f;
+            UpdateCanvvas();
         }
     }
+
+    private bool isFocused = false;
+    public bool IsFocused {
+        get { return isFocused; }
+        set { 
+            isFocused = value; 
+            UpdateCanvvas();
+        }
+    }
+
+    private void UpdateCanvvas() {
+        bool val = isInteractable && isFocused;
+        GetComponent<GraphicRaycaster>().enabled = val;
+        GetComponent<CanvasGroup>().alpha = val ? 1 : .8f;
+
+    }
+
     public TMP_FontAsset Font {
         set { 
             headerText.Text.font = value;
@@ -130,12 +146,12 @@ public class MirrorCanvas : MonoBehaviour
 
     private void Awake() {
         canvas = GetComponent<Canvas>();
-        IsInteractable = false;
+        IsFocused = false;
         headerPos = headerText.transform.localPosition;
     }
 
     private void Update() {
-        if (isInteractable)
+        if (isInteractable && isFocused)
         {
             CheckKeyboardInput();
             HighLightClosestLetter();

@@ -108,12 +108,12 @@ public class MirrorShard : PickableRoomObject
     }
 
 
-    public void DisconnectedFromMirror() {
+    public void DisconnectedFromMirror(float force = 0) {
         transform.parent = BossMirror.transform.parent;
         Attached = false;
-        ActivateRigidBody();
         shineParticle.Play();
-        rb.velocity = Vector3.zero;
+        ActivateRigidBody();
+        rb.velocity = bossMirror.transform.forward * force;
     }
 
     private void Update() {
@@ -183,7 +183,23 @@ public class MirrorShard : PickableRoomObject
                 // Gizmos.DrawWireSphere(meshRenderer.transform.position + transform.TransformDirection(letterCoords[i].letterDelta), .5f);
             }
         }
+    }
 
+    private Coroutine shakeCoroutine;
+    public void Shake(float duration) {
+        shakeCoroutine = StartCoroutine(Shaking(duration));
+    }
+    IEnumerator Shaking(float duration) {
+        yield return new WaitForSeconds(Random.Range(0,.5f));
+        yield return transform.ShakeLocalYPos(.05f, 2f, duration);
+    }
+    public void StopShake() {
+        transform.localPosition = new Vector3(
+            transform.localPosition.x,
+            0,
+            transform.localPosition.z
+        );
+        StopCoroutine(shakeCoroutine);
     }
 
 }
