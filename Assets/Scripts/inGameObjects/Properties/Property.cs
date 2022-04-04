@@ -30,6 +30,12 @@ public abstract class Property : RoomEntity
 
     public override void AddChange(MirrorChange change) {
         currentChange = change;
+        Debug.Log("adding change" + change);
+        base.AddChange(change);        
+    }
+    public override void AddChange(IChange change) {
+        currentChange = (MirrorChange)change;
+        Debug.Log("adding mirror change" + change);
         base.AddChange(change);        
     }
 

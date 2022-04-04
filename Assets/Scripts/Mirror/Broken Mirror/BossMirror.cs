@@ -12,7 +12,7 @@ public class BossMirror : Mirror
 
     private MirrorData GetShardMirrorData() {
         string letters = "";
-        MirrorData result = new MirrorData() {changeType = ChangeType.tooSmall, isOn = false, };
+        MirrorData result = new MirrorData() {changeType = ChangeType.missing, isOn = false, };
         foreach(MirrorShard shard in shards) {
             foreach(LetterCoords coords in shard.LetterCoords) {
                 letters = letters + coords.letterValue;
@@ -44,10 +44,20 @@ public class BossMirror : Mirror
         }
     }
     private void Start() {
+        Word = "spirit";
+        TogleVisibilityUnselectedObj(0);
         // foreach(MirrorShard shard in shards) {
         //     shard.PlanarReflection.SetRenderTexture(PlanarReflection.reflectionCamera.targetTexture);
         // }
+    }
 
+    public void TogleVisibilityUnselectedObj(float alpha) {
+        foreach (Letter letter in MirrorCanvas.letterObjects)
+        {
+            Color temp = letter.Color;
+            temp.a = alpha;
+            letter.Color = temp;
+        }
     }
 
     private void Update() {
@@ -58,6 +68,8 @@ public class BossMirror : Mirror
 
 
     public void Explode() {
+        MirrorCanvas.DeselectLetters();
+        TogleVisibilityUnselectedObj(1);
         for (int i = 0; i < shards.Length; i++) {
             shards[i].DisconnectedFromMirror();
         }

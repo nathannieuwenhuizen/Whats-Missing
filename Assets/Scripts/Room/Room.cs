@@ -15,7 +15,6 @@ public class Room : MonoBehaviour
 
     public RoomLevel roomLevel;
 
-    [SerializeField]
     private HintStopwatch hintStopwatch;
 
     private Area area;
@@ -23,14 +22,12 @@ public class Room : MonoBehaviour
         get { return area;}
         set { area = value; }
     }
-    [SerializeField]
     private ChangeHandler changeHandler;
     public ChangeHandler ChangeHandler {
         get { return changeHandler;}
     }
     private RoomStateHandler roomstateHandler;
 
-    [SerializeField]
     private SaveData beginState;
 
     public delegate void MakeRoomAction(Room _room, Change _change, bool _changeIsAdded, string previousWord = "");
@@ -68,6 +65,7 @@ public class Room : MonoBehaviour
         set { revealChangeAfterCompletion = value; }
     }
 
+    [HideInInspector]
     public List<Mirror> mirrors;
     public List<IChangable> allObjects;
 
@@ -82,19 +80,18 @@ public class Room : MonoBehaviour
     public List<Mirror> Mirrors {get { return mirrors;}}
 
     
-    [SerializeField]
     private GameObject changeLineObject;
 
-    [SerializeField]
     private GameObject plopParticle;
 
-    [SerializeField]
-    private Door endDoor;
+    //doors
     [SerializeField]
     private Door startDoor;
     public Door StartDoor {
         get { return startDoor;}
     }
+    [SerializeField]
+    private Door endDoor;
     public Door EndDoor {
         get { return endDoor;}
     }
@@ -108,9 +105,13 @@ public class Room : MonoBehaviour
         get => animated;
     }
 
-    void Awake() {
+    protected virtual void Awake() {
+        hintStopwatch = new HintStopwatch(this);
         changeHandler = new ChangeHandler(this);
         roomstateHandler = new RoomStateHandler(this);
+
+        changeLineObject = Resources.Load<GameObject>("RoomPrefabs/change_line");
+        plopParticle = Resources.Load<GameObject>("RoomPrefabs/plop_effect");
 
         endDoor.room = this;
         startDoor.room = this;
@@ -288,10 +289,13 @@ public class Room : MonoBehaviour
     }
     private IEnumerator WaitBeforeOpeningDoor() {
         yield return new WaitForSeconds(2f);
-        if (AllMirrorsAreOn() && !area.IsLastRoom(this)){
-            roomFinishedEvent?.Invoke();
-            endDoor.Locked = false;
+        if (area != null) {
+            if (AllMirrorsAreOn() && !area.IsLastRoom(this)){
+                roomFinishedEvent?.Invoke();
+                endDoor.Locked = false;
+            }
         }
+
     }
 
     public bool AllMirrorsAreOn() {

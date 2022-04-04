@@ -19,20 +19,11 @@ public class QualitySetting: MonoBehaviour {
 
         if(QUALITY_INDEX != -1) QualitySettings.SetQualityLevel(QUALITY_INDEX, true);
         qualityDropDown.value = QualitySettings.GetQualityLevel();
-
-        Debug.Log("chosen quality" + QUALITY_INDEX);
-
-
     }
     public static int QUALITY_INDEX 
     {
-        get {
-            int val = PlayerPrefs.GetInt("Quality", -1);
-            return val;
-        }
-        set {
-            PlayerPrefs.SetInt("Quality", value);
-        }
+        get => PlayerPrefs.GetInt("Quality", -1);
+        set => PlayerPrefs.SetInt("Quality", value);
     }
 
 
