@@ -14,7 +14,7 @@ public class FPMovement : MonoBehaviour
     public FPCamera FPCamera {
         get { 
             if (FPcamera == null) {
-                FPcamera = new FPCamera(transform, cameraPivot);
+                FPcamera = new FPCamera(this);
             }
             return FPcamera;
         }
@@ -31,32 +31,20 @@ public class FPMovement : MonoBehaviour
     [SerializeField]
     private IKPass IKPass;
 
-    private float cameraSensetivityFactor = 1f;
-
-    //camera movement offset values
-    private float cameraYOffset = 0.03f;
-    private float cameraStartYPos;
-    private float cameraYIndex = 0;
-    private float cameraZIndex = 0;
-    private bool cameraZRotationTilt = false;
-
     private bool kinematicMovement = true;
     public bool KinematicMovement {
         get { return kinematicMovement;}
         set { kinematicMovement = value; }
     }
-    public bool CameraZRotationTilt {
-        get { return cameraZRotationTilt;}
-        set { cameraZRotationTilt = value; }
-    }
-    private float cameraZRotationMagnitude = 10f;
-
 
     //gravity
     public float gravityScale = 1.0f; 
     public static float GLOBAL_GRAVITY = -9.81f * .8f;
 
     private ControlSettings controlSettings;
+    public ControlSettings ControlSettings {
+        get { return controlSettings;}
+    }
 
     private Rigidbody rb;
     public Rigidbody RB {
@@ -99,8 +87,6 @@ public class FPMovement : MonoBehaviour
     [SerializeField]
     private float jumpForce = 200f;
 
-    private int rotateSpeed = 2;
-
     private bool isRunning = false;
     private bool inAir = false;
     public bool InAir {
@@ -117,7 +103,6 @@ public class FPMovement : MonoBehaviour
     }
 
     private bool inCeiling = false;
-    private int verticalAngle = 80;
 
     private Coroutine windCoroutine;
 
@@ -126,10 +111,6 @@ public class FPMovement : MonoBehaviour
     public void SetMovement(Vector2 delta)
     {
         walkDelta = delta;
-    }
-    public void setMouseDelta(Vector2 delta)
-    {
-        mouseDelta = delta;
     }
 
     private float distanceToFloor = 0;
@@ -211,10 +192,10 @@ public class FPMovement : MonoBehaviour
 
 
     private void OnEnable() {
+        FPCamera.OnEnable();
         InputManager.OnStartRunning += StartRun;
         InputManager.OnEndRunning += EndRun;
         InputManager.OnMove += SetMovement;
-        InputManager.OnRotate += setMouseDelta;
         InputManager.OnJump += Jump;
         PauseScreen.OnPause += DisableMovment;
         PauseScreen.OnResume += EnableMovment;
@@ -223,15 +204,13 @@ public class FPMovement : MonoBehaviour
         // RoomDebugger.OnShow += DisableMovment;
         // RoomDebugger.OnHide += EnableMovment;
         SettingPanel.OnSave += ApplyMovementSettings;
-        PerspectiveProperty.onPerspectiveMissing += HalfCameraSensitiviy;
-        PerspectiveProperty.onPerspectiveAppearing += UnhalfCameraSensitiviy;
     }
 
     private void OnDisable() {
+        FPCamera.OnDisable();
         InputManager.OnStartRunning -= StartRun;
         InputManager.OnEndRunning -= EndRun;
         InputManager.OnMove -= SetMovement;
-        InputManager.OnRotate -= setMouseDelta;
         InputManager.OnJump -= Jump;
         PauseScreen.OnPause -= DisableMovment;
         PauseScreen.OnResume -= EnableMovment;
@@ -240,26 +219,17 @@ public class FPMovement : MonoBehaviour
         // RoomDebugger.OnShow -= DisableMovment;
         // RoomDebugger.OnHide -= EnableMovment;
         SettingPanel.OnSave -= ApplyMovementSettings;
-        PerspectiveProperty.onPerspectiveMissing -= HalfCameraSensitiviy;
-        PerspectiveProperty.onPerspectiveAppearing -= UnhalfCameraSensitiviy;
-
         FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
         if (windCoroutine != null) StopCoroutine(windCoroutine);
     }
 
-    private void HalfCameraSensitiviy() {
-        cameraSensetivityFactor = .5f;
-    }
-    private void UnhalfCameraSensitiviy() {
-        cameraSensetivityFactor = 1f;
-    }
 
     private void Awake() {
         waterSplash = new WaterSplash(waveEmitter);
         player = GetComponent<Player>();
         rb = GetComponent<Rigidbody>();
         ApplyMovementSettings(Settings.GetSettings());
-        cameraStartYPos = cameraPivot.localPosition.y;
+        FPCamera.Awake();
     }
 
     private void ApplyMovementSettings(Settings settings) {
@@ -268,19 +238,18 @@ public class FPMovement : MonoBehaviour
 
     private void Start()
     {
-        EnableCursor(false);
-
+        FPCamera.Start();
         oldPos = transform.position;
     }
     void Update()
     {
-        if (EnableRotation) UpdateRotation();
         if (EnableWalk) UpdateMovement();
-        if (rb.useGravity == false) {
-            InAir = !IsOnFloor();
-        } else {
-            InAir = !IsOnFloor();
-        }
+
+        InAir = !IsOnFloor();
+    }
+    private void LateUpdate() {
+        FPCamera.UpdateRotation();
+        
     }
 
     ///<summary>
@@ -324,7 +293,7 @@ public class FPMovement : MonoBehaviour
     ///</summary>
     private void UpdateWalking() {
         Vector3 delta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
-        if (!player.IsMissing && EnableHeadTilt)  UpdateCameraTilt(delta);
+        if (!player.IsMissing && EnableHeadTilt)  FPCamera.UpdateCameraTilt(delta, walkStepDistance);
         
         if (inAir) return;
 
@@ -344,31 +313,6 @@ public class FPMovement : MonoBehaviour
             return 2;
         } else if (on_grass) return 1;
         return 0;
-    }
-
-
-    ///<summary>
-    /// Changes the camera offset and rotation to mimic the walking bounce.
-    ///</summary>
-    private void UpdateCameraTilt(Vector3 delta) {
-        cameraYIndex = (delta.magnitude / walkStepDistance) * (Mathf.PI * 2);
-        float currentCameraYpos = Mathf.Sin(cameraYIndex) * cameraYOffset;
-        cameraPivot.localPosition = new Vector3(
-            0, 
-            cameraStartYPos + currentCameraYpos, 
-            0 
-        );
-
-        cameraZIndex += Time.deltaTime;
-        float zRotation = 0;
-        if (cameraZRotationTilt) {
-            zRotation = Mathf.Sin(cameraZIndex) * cameraZRotationMagnitude;
-        } 
-        cameraPivot.localRotation = Quaternion.Euler( new Vector3(
-            cameraPivot.localRotation.eulerAngles.x,
-            cameraPivot.localRotation.eulerAngles.y,
-            zRotation
-        ));
     }
 
     ///<summary>
@@ -422,31 +366,6 @@ public class FPMovement : MonoBehaviour
     }
 
     #endregion
-
-    ///<summary>
-    ///Updates the camera and player rotation based on the delta of input.
-    ///</summary>
-    private void UpdateRotation()
-    {
-        float inversionX = (controlSettings.Camera_x_invert ? -1 : 1);
-        //horizontal rotation
-        transform.Rotate(new Vector3(0, mouseDelta.x * rotateSpeed * controlSettings.Camera_sensetivity * inversionX * cameraSensetivityFactor , 0));
-
-        float inversionY = (controlSettings.Camera_y_invert ? -1 : 1);
-
-        //vertical rotation
-        cameraPivot.Rotate(new Vector3(-mouseDelta.y * rotateSpeed * controlSettings.Camera_sensetivity * inversionY * cameraSensetivityFactor, 0, 0));
-
-
-        //setting max angle cap
-        if (cameraPivot.localRotation.eulerAngles.x > 180)
-        {
-            cameraPivot.localRotation = Quaternion.Euler( new Vector3(Mathf.Max(cameraPivot.localRotation.eulerAngles.x, 360 - verticalAngle) , 0, 0));
-        } else
-        {
-            cameraPivot.localRotation = Quaternion.Euler(new Vector3(Mathf.Min(cameraPivot.localRotation.eulerAngles.x, verticalAngle), 0, 0));
-        }
-    }
 
     private void OnDrawGizmos() {
         Gizmos.color = IsOnFloor() ? Color.green : Color.red;

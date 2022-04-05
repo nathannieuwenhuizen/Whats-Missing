@@ -29,7 +29,7 @@ public class FSM
         cState?.DrawDebug();
     }
 
-    void SwitchState( IState _newState)
+    public void SwitchState( IState _newState)
     {
         if (cState != null)
         {

@@ -17,6 +17,14 @@ public class BossHead: MonoBehaviour
     [SerializeField]
     private bool steeringEnabled = false;
 
+    public bool SteeringEnabled {
+        get { return steeringEnabled;}
+        set { 
+            steeringEnabled = value; 
+            
+        }
+    }
+
     private void Awake() {
         currentAim = Instantiate(new GameObject("current aim"), transform.position + transform.forward * bossAI.BossEye.ViewRange, Quaternion.identity).transform;
         desiredAim = Instantiate(new GameObject("desired aim"), transform.position + transform.forward * bossAI.BossEye.ViewRange, Quaternion.identity).transform;

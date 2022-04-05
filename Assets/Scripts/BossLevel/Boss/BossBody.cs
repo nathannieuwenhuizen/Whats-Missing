@@ -1,56 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+///<summary>
+/// This handles the bossy body mesh. 
+///It (de) activates and handles he secondary physics, purely the astethics
+///</summary>
 public class BossBody : MonoBehaviour
 {
+    //metamorphose values
+    private bool hasMetamorphosed = false;
+    private float metamorphoseDuration = 2f;
+    private float metamorphoseDelay = 0f;
+    private string metamorphoseKey = "index";
     [SerializeField]
-    private SteeringBehaviour steeringBehaviour;
-
-    [SerializeField]
-    private BossPathHandler pathHandeler;
-    private MountainPath path;
-    private MountainCoordinate[] coords;
-
-    private Transform desiredPos;
+    private AnimationCurve metamorphoseCurve = AnimationCurve.EaseInOut(0,0,1,1);
 
     [SerializeField]
-    private Transform testPos;
+    private Renderer[] bodyRenders;
+    [SerializeField]
+    private Renderer[] metamorphosedRenders;
 
-    private void Awake() {
-        steeringBehaviour.target = transform;
-        desiredPos = Instantiate(new GameObject("desired position"), transform.position, Quaternion.identity).transform;
-        desiredPos.SetParent(transform.parent);
-        steeringBehaviour.desiredTarget = desiredPos;
-        path.steps = 10;
+
+    ///<summary>
+    /// Toggles all the renderers of the boss body making it invisible
+    ///</summary>
+    public void ToggleBody(bool visible) {
+        foreach (Renderer renderer in bodyRenders) renderer.enabled = visible;
+        foreach (Renderer renderer in metamorphosedRenders) renderer.enabled = visible;
     }
 
-    private void Start() {
-        SetAirDestinationPath(testPos.position);
+    ///<summary>
+    /// Time to transform!
+    ///</summary>
+    public void Metamorphose() {
+        if (hasMetamorphosed) return;
+        hasMetamorphosed = true;
+        StartCoroutine(Matemorphosing());
     }
 
-    public void SetAirDestinationPath(Vector3 pos) {
-        path.begin = MountainCoordinate.FromPosition(pathHandeler, transform.position);
-        path.end = MountainCoordinate.FromPosition(pathHandeler, pos);
-        coords = path.generatePathPoints(pathHandeler);
-        UpdateDestination();
-    }
-
-    public void UpdateDestination() {
-        desiredPos.position = path.getClosestMountainCoord(coords, transform.position, pathHandeler).ToVector(pathHandeler, 5f);
-    }
-
-    private void Update() {
-        SetAirDestinationPath(testPos.position);
-
-        UpdateDestination();
-        steeringBehaviour.UpdatePosition();
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(-path.getClosestMountainCoord(coords, transform.position, pathHandeler).Normal(pathHandeler)), Time.deltaTime);
-
-    }
-    private void OnDrawGizmos() {
-        if (pathHandeler != null) path.DrawGizmo(pathHandeler);
-        Gizmos.color = Color.green;
-        if (desiredPos != null) Gizmos.DrawSphere(desiredPos.position, 3f);
+    //does the coroutine showing all the extra tentacles
+    private IEnumerator Matemorphosing() {
+        yield return new WaitForSeconds(metamorphoseDelay);
+        foreach(Renderer renderer in metamorphosedRenders) {
+            float randomDelay = Random.Range(0,.5f);
+            StartCoroutine(renderer.material.AnimatingNumberPropertyMaterial(metamorphoseKey, 0, 1, metamorphoseCurve, 
+            metamorphoseDuration - randomDelay * metamorphoseDuration , 
+            randomDelay * metamorphoseDuration ));
+        }
+        yield return new WaitForSeconds(metamorphoseDuration);
     }
 }

@@ -13,6 +13,7 @@ public class IdleState : BaseBossState, IState
     public void Start()
     {
         bossAI.BossEye.LightIsOn = false;
+        bossAI.Boss.Body.ToggleBody(false);
     }
 
     public void Run()
@@ -21,6 +22,6 @@ public class IdleState : BaseBossState, IState
 
     public void Exit()
     {
-
+        bossAI.Boss.Body.ToggleBody(true);
     }
 }

@@ -11,12 +11,14 @@ public class BossBehaviours {
         lookingState = new LookingState() {bossAI = _ai };
         chaseState = new ChaseState() {bossAI = _ai };
         idleState = new IdleState() {bossAI = _ai };
+        bossIntro = new BossIntroState() {bossAI = _ai };
 
     }
 
     public LookingState lookingState; 
     public ChaseState chaseState; 
     public IdleState idleState; 
+    public BossIntroState bossIntro; 
 }
 ///<summary>
 /// Main Ai for the boss holding all the statesand behaviour trees
@@ -30,22 +32,16 @@ public class BossAI : MonoBehaviour {
     public BossBehaviours Behaviours {
         get { return behaviours;}
     }
-    [SerializeField]
-    private BossEye eye;
     public BossEye BossEye {
-        get { return eye;}
+        get { return boss.Eye;}
     }
-    [SerializeField]
-    private BossHead head;
     public BossHead BossHead {
-        get { return head;}
+        get { return boss.Head;}
     }
 
-    [SerializeField]
     private Boss boss;
     public Boss Boss {
         get { return boss;}
-        set { boss = value; }
     }
     public void Setup(Boss _boss) {
         boss = _boss;
@@ -57,12 +53,12 @@ public class BossAI : MonoBehaviour {
     }
 
     private void OnDrawGizmos() {
-        eye?.OnDrawGizmos();
         stateMachine?.Debug();
     }
 
     private void DoIntro(BossMirror mirror) {
-        
+        boss.transform.position = mirror.transform.position + new Vector3(0,-15,0);
+        stateMachine.SwitchState(behaviours.bossIntro);
     }
 
     private void OnEnable() {

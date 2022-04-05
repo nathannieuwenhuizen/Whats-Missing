@@ -158,7 +158,8 @@ public static class Extensions
         mat.SetFloat("Opacity", endVal);
     }
 
-    public static IEnumerator AnimatingNumberPropertyMaterial(this Material mat, string key,  float beginVal, float endVal,  AnimationCurve curve, float duration = .5f) {
+    public static IEnumerator AnimatingNumberPropertyMaterial(this Material mat, string key,  float beginVal, float endVal,  AnimationCurve curve, float duration = .5f, float delay = 0) {
+        yield return new WaitForSeconds(delay);
         mat.SetFloat(key, beginVal);
         float timePassed = 0f;
 

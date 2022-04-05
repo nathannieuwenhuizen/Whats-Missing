@@ -50,7 +50,7 @@ public class Lungs : MonoBehaviour
     private void StartChoking() {
         player.CharacterAnimationPlayer.SetTorsoAnimation(true, "choke");
         chokeSFX = AudioHandler.Instance.Play3DSound(SFXFiles.player_choking, transform, 1f, 1f, true, false, 100f, false);
-        player.Movement.CameraZRotationTilt = true;
+        player.Movement.FPCamera.CameraZRotationTilt = true;
         chokeCoroutine = StartCoroutine(Chocking());
         currentVignette.color = Color.black;
         currentVignette.smoothnes = 1;
@@ -153,7 +153,7 @@ public class Lungs : MonoBehaviour
     }
 
     private void EndChoking() {
-        player.Movement.CameraZRotationTilt = false;
+        player.Movement.FPCamera.CameraZRotationTilt = false;
         player.CharacterAnimationPlayer.SetTorsoAnimation(false);
 
 
