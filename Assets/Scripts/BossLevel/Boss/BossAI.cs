@@ -10,11 +10,13 @@ public class BossBehaviours {
     public BossBehaviours(BossAI _ai) {
         lookingState = new LookingState() {bossAI = _ai };
         chaseState = new ChaseState() {bossAI = _ai };
+        idleState = new IdleState() {bossAI = _ai };
 
     }
 
     public LookingState lookingState; 
     public ChaseState chaseState; 
+    public IdleState idleState; 
 }
 ///<summary>
 /// Main Ai for the boss holding all the statesand behaviour trees
@@ -48,7 +50,7 @@ public class BossAI : MonoBehaviour {
     public void Setup(Boss _boss) {
         boss = _boss;
         behaviours = new BossBehaviours(this);
-        stateMachine = new FSM(behaviours.lookingState);
+        stateMachine = new FSM(behaviours.idleState);
     }
     public void UpdateAI() {
         stateMachine.Update();
@@ -57,5 +59,18 @@ public class BossAI : MonoBehaviour {
     private void OnDrawGizmos() {
         eye?.OnDrawGizmos();
         stateMachine?.Debug();
+    }
+
+    private void DoIntro(BossMirror mirror) {
+        
+    }
+
+    private void OnEnable() {
+        BossMirror.OnMirrorExplode += DoIntro;
+    }
+
+    private void OnDisable() {
+        BossMirror.OnMirrorExplode += DoIntro;
+        
     }
 }

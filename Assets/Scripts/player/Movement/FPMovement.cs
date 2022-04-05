@@ -9,6 +9,17 @@ using UnityEngine;
 ///</summary>
 public class FPMovement : MonoBehaviour
 {
+
+    private FPCamera FPcamera;
+    public FPCamera FPCamera {
+        get { 
+            if (FPcamera == null) {
+                FPcamera = new FPCamera(transform, cameraPivot);
+            }
+            return FPcamera;
+        }
+    }
+
     ///<summary>
     /// Range of the foot on the ground beofre it consider itself in the air
     ///</summary>
@@ -126,7 +137,6 @@ public class FPMovement : MonoBehaviour
     /** Enables the cursor */
     private void EnableCursor(bool enabled = false)
     {
-        
         Cursor.lockState = enabled ? CursorLockMode.None : CursorLockMode.Locked;
         Cursor.visible = enabled;
     }
