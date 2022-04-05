@@ -122,11 +122,14 @@ public class Player : RoomObject
         PerspectiveProperty.onPerspectiveAppearing += HideHead;
         PerspectiveProperty.onPerspectiveMissing += ShowHead;
         SettingPanel.OnSave += ApplyCameraSettings;
+        CharacterAnimationPlayer?.OnEnable();
     }
     private void OnDisable() {
         PerspectiveProperty.onPerspectiveAppearing -= HideHead;
         PerspectiveProperty.onPerspectiveMissing -= ShowHead;
         SettingPanel.OnSave -= ApplyCameraSettings;
+        CharacterAnimationPlayer?.OnDisable();
+
     }
 
     ///<summary>

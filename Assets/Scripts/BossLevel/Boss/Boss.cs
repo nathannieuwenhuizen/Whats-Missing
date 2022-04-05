@@ -27,5 +27,4 @@ public class Boss : RoomObject
         Word = "spirit";
         AlternativeWords = new string[] { "spirit", "spirits", "boss" };
     }
-
 }

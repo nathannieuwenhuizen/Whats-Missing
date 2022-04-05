@@ -6,6 +6,13 @@ public class BossMirror : Mirror, ITriggerArea
 {
     public delegate void BossMirrorEvent(BossMirror bossMirror);
     public static BossMirrorEvent OnBossMirrorShardAttached;
+    public static BossMirrorEvent OnMirrorShake;
+    public static BossMirrorEvent OnMirrorExplode;
+
+    private Rigidbody rb;
+    
+    [SerializeField]
+    private GameObject stencilBuffer;
 
     [SerializeField]
     private MirrorShard[] shards;
@@ -27,8 +34,14 @@ public class BossMirror : Mirror, ITriggerArea
         return result;
     }
 
-    protected void Awake() {
+    private void Awake() {
         base.Awake();
+
+        stencilBuffer.SetActive(false);
+
+        rb = GetComponent<Rigidbody>();
+        rb.isKinematic = true;
+        
         for (int i = 0; i < shards.Length; i++) {
             shards[i].BossMirror = this;
         }
@@ -74,6 +87,9 @@ public class BossMirror : Mirror, ITriggerArea
 
 
     public void Explode() {
+        rb.isKinematic = false;
+        rb.velocity = transform.forward * 10;
+
         MirrorCanvas.DeselectLetters();
         TogleVisibilityUnselectedObj(1);
         for (int i = 0; i < shards.Length; i++) {
@@ -81,6 +97,8 @@ public class BossMirror : Mirror, ITriggerArea
         }
         explosionSmoke.Emit(100);
         explosionShards.Emit(60);
+        OnMirrorExplode?.Invoke(this);
+
     }
 
     public void AttachMirrorShard(MirrorShard shard) {
@@ -105,6 +123,7 @@ public class BossMirror : Mirror, ITriggerArea
     {
         if (introCutscene) return;
         introCutscene = true;
+        OnMirrorShake?.Invoke(this);
         StartCoroutine(ShakeBeforeExplosion());
     }
 
@@ -114,26 +133,34 @@ public class BossMirror : Mirror, ITriggerArea
     }
 
     private float shakeDuration = 4f;
+    public float ShakeDuration {
+        get { return shakeDuration;}
+    }
     private Coroutine shakeCoroutine;
 
     public bool InsideArea { get; set; }
     private bool introCutscene;
 
     private IEnumerator ShakeBeforeExplosion() {
-        Debug.Log("coroutine started");
+        stencilBuffer.SetActive(true);
         Quaternion startRotation = transform.localRotation;
         shakeCoroutine = StartCoroutine(transform.ShakeZRotation(10f, 3f, shakeDuration * 2));
         foreach(MirrorShard shard in shards) {
             shard.Shake(shakeDuration);
         }
-        yield return StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(0,0,90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
-        // yield return new WaitForSeconds(shakeDuration);
+        StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(0,0,90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
+        yield return new WaitForSeconds(shakeDuration);
         foreach(MirrorShard shard in shards) {
             shard.StopShake();
         }
         StopCoroutine(shakeCoroutine);
         transform.localRotation = startRotation;
         Explode();
+
+        //wait a little bit to deactivate the stencil buffer mask
+        yield return new WaitForSeconds(1f);
+        stencilBuffer.SetActive(false);
+
     }
 
 

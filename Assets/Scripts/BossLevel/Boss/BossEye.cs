@@ -6,14 +6,25 @@ using UnityEngine;
 /// The values of the boss looking state are defined here.
 ///</summary>
 public class BossEye: MonoBehaviour {
-    ///<summary>
-    /// The range on which the boss can still view the player
-    ///</summary>
+    //used to determine the fake light aspects
+    private readonly float sizeAspect = 5f;
+    private readonly float angleAspect = 27f;
 
     [SerializeField]
     private Transform fakeLight;
-    private readonly float sizeScale = 5f;
-    private readonly float angleScale = 27f;
+    [SerializeField]
+    private MeshRenderer fakeLightRenderer;
+
+    [SerializeField]
+    private bool lightIsOn = false;
+    public bool LightIsOn {
+        get { return lightIsOn;}
+        set { 
+            lightIsOn = value; 
+            UpdateFakeLight();
+        }
+    }
+
 
     [SerializeField]
     private bool showGizmo = true;
@@ -23,7 +34,10 @@ public class BossEye: MonoBehaviour {
     private float viewRange = 10;
     public float ViewRange {
         get { return viewRange;}
-        set => viewRange = value;
+        set {
+            viewRange = value;
+            UpdateFakeLight();
+        }
     }
     ///<summary>
     /// The angle the boss can still see the player
@@ -33,7 +47,18 @@ public class BossEye: MonoBehaviour {
     private float viewAngle = 25;
     public float ViewAngle {
         get { return viewAngle;}
-        set { viewAngle = value; }
+        set { viewAngle = value; 
+            UpdateFakeLight();
+        }
+    }
+    [ColorUsage(true, true)]
+    [SerializeField]
+    private Color viewColor;
+    public Color ViewColor {
+        get { return viewColor;}
+        set { viewColor = value; 
+            UpdateFakeLight();
+        }
     }
 
     ///<summary>
@@ -103,6 +128,7 @@ public class BossEye: MonoBehaviour {
         }
     }
 
+
     public bool NoticesPlayer { get => noticingValue >= noticingThreshold; }
     public bool DoesntNoticesPlayer { get => noticingValue <= 0; }
 
@@ -142,18 +168,23 @@ public class BossEye: MonoBehaviour {
                 up = DebugDrawViewLine(up, transform.position + (transform.forward + transform.up * opposideLength).normalized * viewRange);
             }
             transform.rotation = oldRot;
-            UpdateFakeLightScale();
+            UpdateFakeLight();
         }
     }
-
-    private void UpdateFakeLightScale() {
+    private void UpdateFakeLight() {
         if (fakeLight == null) return;
+
+        fakeLight.gameObject.SetActive(lightIsOn);
         Vector3 scale = Vector3.one;
-        scale.y = ViewRange / sizeScale;
+        scale.y = ViewRange / sizeAspect;
         float angleResult = Mathf.Tan(viewAngle * Mathf.Deg2Rad);
-        scale.x = ViewRange / sizeScale * angleResult;
-        scale.z = ViewRange / sizeScale * angleResult;
+        scale.x = ViewRange / sizeAspect * angleResult;
+        scale.z = ViewRange / sizeAspect * angleResult;
         fakeLight.localScale = scale;
+
+        if (fakeLightRenderer != null) {
+            fakeLightRenderer.sharedMaterial.SetColor("_color", viewColor);
+        } 
     }
     private Vector3 DebugDrawViewLine(Vector3 origin, Vector3 dest) {
         Debug.DrawLine(origin, dest, debugColor);

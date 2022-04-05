@@ -56,7 +56,7 @@ public class MirrorCanvas : MonoBehaviour
     private GameObject letterPrefab;
 
     [SerializeField]
-    private bool isInteractable = false;
+    private bool isInteractable = true;
     public bool IsInteractable {
         get { return isInteractable; }
         set { 
