@@ -34,12 +34,21 @@ public class Boss : RoomObject
     public BossAI AI {
         get { return ai;}
     }
+
+    private BossVoice bossVoice;
+    public BossVoice BossVoice {
+        get { return bossVoice;}
+    }
+
     protected override void Awake() {
+        bossVoice = new BossVoice(transform);
+
         ai = GetComponent<BossAI>();
         ai.Setup(this);
     }
     private void Update() {
         AI.UpdateAI();
+        bossVoice.Update();
     }
 
     private void OnDrawGizmos() {

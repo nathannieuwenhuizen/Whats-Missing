@@ -19,7 +19,6 @@ public class EndlessHallway : MonoBehaviour
 
     private List<GameObject> chunks = new List<GameObject>();
 
-
     [SerializeField]
     private Player player;
     

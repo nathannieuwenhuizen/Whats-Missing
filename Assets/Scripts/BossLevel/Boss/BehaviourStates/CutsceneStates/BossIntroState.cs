@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BossIntroState : BossCutsceneState
 {
+        public BossAI bossAI { get; set; }
+
     public override void Start()
     {
         base.Start();

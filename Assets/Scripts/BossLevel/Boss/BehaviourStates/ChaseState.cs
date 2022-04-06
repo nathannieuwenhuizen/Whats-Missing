@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ChaseState : BaseBossState, IState
 {
+        public BossAI bossAI { get; set; }
+
     public ILiveStateDelegate OnStateSwitch { get; set; }
 
     public void DrawDebug()

@@ -8,6 +8,8 @@ using UnityEngine;
 public class LookingState : BaseBossState, IState
 {
     public ILiveStateDelegate OnStateSwitch { get; set; }
+    public BossAI bossAI { get; set; }
+
     public Coroutine lookCoroutine;
 
     private float minLookDuration = 1f;

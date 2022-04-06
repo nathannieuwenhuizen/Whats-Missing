@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseBossState{
-    public BossAI bossAI;
+public interface BaseBossState{
+    public BossAI bossAI {get; set;}
 }
 
 public class BossBehaviours {
@@ -46,7 +46,7 @@ public class BossAI : MonoBehaviour {
     public void Setup(Boss _boss) {
         boss = _boss;
         behaviours = new BossBehaviours(this);
-        stateMachine = new FSM(behaviours.idleState);
+        stateMachine = new FSM(behaviours.lookingState);
     }
     public void UpdateAI() {
         stateMachine.Update();

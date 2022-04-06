@@ -5,6 +5,7 @@ using UnityEngine;
 public class BossCutsceneState : BaseBossState, IState
 {
     public ILiveStateDelegate OnStateSwitch { get; set; }
+    public BossAI bossAI { get; set; }
 
     public delegate void BossCutSceneDelegate(Boss boss);
     public static BossCutSceneDelegate OnBossCutsceneStart;

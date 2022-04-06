@@ -5,6 +5,7 @@ using UnityEngine;
 public class IdleState : BaseBossState, IState
 {
     public ILiveStateDelegate OnStateSwitch { get; set; }
+    public BossAI bossAI { get; set; }
 
     public void DrawDebug()
     {
