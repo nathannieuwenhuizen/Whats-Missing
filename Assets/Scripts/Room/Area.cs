@@ -143,16 +143,12 @@ public class Area : MonoBehaviour
         Transform origin = transform;
         int index = 0;
         foreach (RoomLevel roomLevel in roomLevels) {
-            // roomLevel.roomInfo.MirrorData = roomLevel.roomInfo.MirrorData;
-            // List<Change> temp = new List<Change>();
-            // foreach(MirrorData data in roomLevel.roomInfo.changeMirror) {
-            //     temp.Add(new Change() {word = data.letters, changeType = data.changeType, Active = data.isOn});
-            // }
-            // roomLevel.roomInfo.loadedChanges = temp.ToArray();
-
 
             bool completed = index < loadRoomIndex;
             index += 1;
+
+            //dont load room in that are behind the player progression
+            // if (index < loadRoomIndex - 2) continue;
 
             //make new room
             Room newRoom = Instantiate(roomLevel.prefab.gameObject, transform).GetComponent<Room>();
