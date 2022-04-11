@@ -137,9 +137,6 @@ public class ChangeHandler
             }
         }
         foreach (IChange change in Changes) {
-            Debug.Log("change " + change.AltarnativeWords);
-            Debug.Log("mirror " + mirror);
-
             if ((change.Word == mirror.Word || (change.AltarnativeWords != null && change.AltarnativeWords.Contains(mirror.Word))) && change.ChangeType == mirror.ChangeType) {
                 return true;
             }
@@ -153,7 +150,6 @@ public class ChangeHandler
     ///</summary>
     public void UpdateRoomObjectChanges(RoomObject _roomObject, ChangeType _changeType, bool _enabled) {
         int index = roomChanges.FindIndex(x => x.roomObject == (IChangable)_roomObject);
-        Debug.Log("index: " + index);
         if (_enabled) {
             if (index == -1) roomChanges.Add(new RoomChange() { roomObject = _roomObject, changeType = _changeType});
             
@@ -165,8 +161,6 @@ public class ChangeHandler
     public void AddPotionChange(Potion potion, IChangable changable) {
         //check if existing change has been made by same potion
         int index = roomChanges.FindIndex(x => x.changeCausation == ChangeCausation.potion && x.changeType == potion.ChangeType);
-        Debug.Log("index: " + index);
-
         bool sameObject = false;
         if (index != -1) {
             //same object? then just ignore the rest and return
@@ -179,8 +173,19 @@ public class ChangeHandler
 
         }
         
+        //add change
         RoomChange newChange = new RoomChange() {changeType = potion.ChangeType, roomObject = changable, changeCausation = ChangeCausation.potion};
         roomChanges.Add(newChange);
         changable.AddChange(newChange);
     }
+
+    public void AddBossChange(IChange _change) {
+        Changes.Add(_change);
+        room.AddChangeInRoomObjects(_change);
+    }
+    public void RemoveBossChange(IChange _change) {
+        Changes.Remove(_change);
+        room.RemoveChangeInRoomObjects(_change);
+    }
+    
 }

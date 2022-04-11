@@ -266,7 +266,7 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Handles if the door should be open or not. 
     ///</summary>
-    public void CheckRoomCompletion() {
+    public virtual void CheckRoomCompletion() {
         if (AllMirrorsAreOn()) {
             if (!isRoomFinished) {
                 isRoomFinished = true;

@@ -49,7 +49,12 @@ public class BossRoom : Room
          
         BlackScreenOverlay.START_COLOR = Color.white;
         OnRespawn?.Invoke();
-    }    
+    }
+
+    public override void CheckRoomCompletion()
+    {
+        // base.CheckRoomCompletion();
+    }
 
 
 }

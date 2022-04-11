@@ -29,6 +29,25 @@ public class Change : IChange {
     public string[] AltarnativeWords { get => alternativeWords; set => alternativeWords = value; }
     string IChange.Word { get => word; set => word = value; }
     ChangeType IChange.ChangeType { get => changeType; set => changeType = value; }
+
+    public static string GetChangeTypeText(ChangeType changeType) {
+        string result = "";
+        switch (changeType) {
+            case ChangeType.missing:
+                result = "missing";
+                break;
+            case ChangeType.flipped:
+                result = "flipped";
+                break;
+            case ChangeType.tooBig:
+                result = "altered";
+                break;
+            case ChangeType.tooSmall:
+                result = "altered";
+                break;
+        }
+        return result;
+    }
 }
 
 [System.Serializable]
@@ -41,7 +60,8 @@ public class MirrorChange : Change {
 
 public enum ChangeCausation {
     environment,
-    potion
+    potion,
+    boss
 }
 
 [System.Serializable]

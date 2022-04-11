@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Febucci.UI;
+
 using UnityEngine;
 ///<summary>
 /// The main script of the boss. 
@@ -14,6 +16,21 @@ public class Boss : RoomObject
     public Player Player {
         get { return player;}
     }
+
+    [SerializeField]
+    private BossRoom bossRoom;
+
+    [SerializeField]
+    private TextAnimatorPlayer textAnimatorPlayer;
+    public TextAnimatorPlayer TextAnimatorPlayer {
+        get { return textAnimatorPlayer;}
+    }
+    [SerializeField]
+    private BossChangesHandler bossChangeHandler;
+    public BossChangesHandler BossChangesHandler {
+        get { return bossChangeHandler;}
+    }
+
     [Header("Boss parts")]
     [SerializeField]
     private BossEye eye;
@@ -35,6 +52,7 @@ public class Boss : RoomObject
         get { return ai;}
     }
 
+
     private BossVoice bossVoice;
     public BossVoice BossVoice {
         get { return bossVoice;}
@@ -42,6 +60,7 @@ public class Boss : RoomObject
 
     protected override void Awake() {
         bossVoice = new BossVoice(transform);
+        bossChangeHandler = new BossChangesHandler(textAnimatorPlayer, bossRoom, this);
 
         ai = GetComponent<BossAI>();
         ai.Setup(this);
@@ -49,6 +68,9 @@ public class Boss : RoomObject
     private void Update() {
         AI.UpdateAI();
         bossVoice.Update();
+        if (Input.GetKeyDown(KeyCode.L)) {
+            bossChangeHandler.CreateChange("gravity" ,ChangeType.missing);
+        }
     }
 
     private void OnDrawGizmos() {
