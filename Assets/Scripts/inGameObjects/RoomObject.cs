@@ -63,10 +63,10 @@ public class RoomObject : RoomEntity
                 transform.localScale = Vector3.zero;
             break;
             case MissingChangeEffect.dissolve:
-                foreach (Material mat in getMaterials())
-                {
-                    StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
-                }
+                foreach (Material mat in getMaterials()) StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+                
+                foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(disolvingParticles(item));
+                
                 yield return new WaitForSeconds(animationDuration);
             break;
         }
@@ -96,16 +96,33 @@ public class RoomObject : RoomEntity
                 yield return this.AnimatingRoomObjectScale(DesiredScale(), AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
             break;
             case MissingChangeEffect.dissolve:
-                foreach (Material mat in getMaterials())
-                {
-                    StartCoroutine(mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
-                }
+                foreach (Material mat in getMaterials()) StartCoroutine(mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+                foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(disolvingParticles(item));
                 yield return new WaitForSeconds(animationDuration);
             break;
         }
         OnAppearingFinish();
     }
 
+    private IEnumerator disolvingParticles(MeshRenderer renderer) {
+        ParticleSystem particleSystem = Instantiate(Resources.Load<GameObject>("RoomPrefabs/dissolve_particle")).GetComponent<ParticleSystem>();
+        // particleSystem.shape.shapeType = ParticleSystemShapeType.MeshRenderer;
+        ParticleSystem.ShapeModule shape = particleSystem.shape;
+        shape.meshRenderer = renderer;
+        shape.shapeType = ParticleSystemShapeType.MeshRenderer;
+        shape.mesh = renderer.GetComponent<MeshFilter>().mesh;
+
+        particleSystem.Play();
+        float maxEmission = 50;
+        float index = 0;
+        while(index < animationDuration * .5f) {
+            index += Time.deltaTime;
+            particleSystem.emissionRate = Mathf.Sin((index/ animationDuration *.5f) * Mathf.PI) * maxEmission;
+            yield return new WaitForEndOfFrame();
+        }
+        particleSystem.Stop();
+        Destroy(particleSystem.gameObject, particleSystem.main.startLifetime.Evaluate(0));
+    }
     
 
     ///<summary>
@@ -253,7 +270,6 @@ public class RoomObject : RoomEntity
     public virtual void SetActive(bool _active) {
         if (active == _active) return;
         active = _active;
-        Debug.Log("go name: " + gameObject.name);
         if (!_active) {
             disabledRenderers = gameObject.SetAllComponentsActive<Renderer>(_active, null);
             Debug.Log("disabled renderers: " + disabledRenderers.Count);
