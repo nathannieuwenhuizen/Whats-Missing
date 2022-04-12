@@ -47,7 +47,7 @@ public class Hands : MonoBehaviour
         if (!isEnabled) return;
         
         //check objects to interact with.
-        IInteractable interactableObj = FocussedObject<IInteractable>();
+        IInteractable interactableObj = FocussedObject();
         if (interactableObj != default(IInteractable)) {
             IPickable pickable = interactableObj.Gameobject.GetComponent<IPickable>();
             if (pickable != default(IPickable) && pickable.TooHeavy(this) == false) {
@@ -156,8 +156,10 @@ public class Hands : MonoBehaviour
             UpdateFocusedObject();
     }
     private void UpdateFocusedObject() {
-        IInteractable interactableObj = FocussedObject<IInteractable>();
+        Debug.Log("update");
+        IInteractable interactableObj = FocussedObject();
         if (interactableObj != default(IInteractable)) {
+            Debug.Log(interactableObj.Gameobject.name);
             if (interactableObj != currentInteractable && interactableObj.Interactable) {
                 if (currentInteractable != default(IInteractable))
                     currentInteractable.Focused = false;
@@ -184,17 +186,24 @@ public class Hands : MonoBehaviour
 
 
     //raycast froward from the camera to any object that has the component T with it.
-    private T FocussedObject<T>() {
+    private IInteractable FocussedObject() {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, PickupDistance)) {
-            if (hit.collider.gameObject.GetComponent<T>() != null) {
-                return hit.collider.gameObject.GetComponent<T>();
+        IInteractable result = default(IInteractable);
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 20f)) {
+            if (hit.collider.gameObject.GetComponent<IInteractable>() != null) {
+                result =  hit.collider.gameObject.GetComponent<IInteractable>();
             } else if (hit.collider.transform.parent != null) {
-                if (hit.collider.transform.parent.GetComponent<T>() != null) 
-                    return hit.collider.transform.parent.GetComponent<T>();
+                if (hit.collider.transform.parent.GetComponent<IInteractable>() != null) 
+                    result = hit.collider.transform.parent.GetComponent<IInteractable>();
             }
         }
-        return default(T);
+        
+
+        if (result != default(IInteractable)) {
+            float distance = Vector3.Distance(transform.position,hit.point);
+            if (distance < result.InteractableDistance) return result;
+        } 
+        return default(IInteractable);
     }
 
 }

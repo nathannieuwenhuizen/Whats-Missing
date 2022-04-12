@@ -236,6 +236,8 @@ public interface IInteractable {
     bool Interactable {get; set; }
     GameObject Gameobject { get; }
 
+    float InteractableDistance {get; set;}
+
     ///<summary>
     /// This function gets called when the player clicks on the interactable object while playing.
     ///</summary>

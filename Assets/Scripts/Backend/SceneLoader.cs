@@ -5,9 +5,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum LoadingStyle {
+    none,
+    mainScreen,
+    cornerIcon
+}
+
 public class SceneLoader : MonoBehaviour
 {
-    public static bool ANIMATING = false;
+    public static LoadingStyle LOADING_STYLE = LoadingStyle.none;
     [SerializeField]
     private CanvasGroup group;
 
@@ -23,10 +29,9 @@ public class SceneLoader : MonoBehaviour
     private float animationDelay = 0f;
 
     private void Start() {
-        if (SceneLoader.ANIMATING) {
-            SceneLoader.ANIMATING = false;
-            StartCoroutine(LoadOut(() => {
-            }));
+        if (SceneLoader.LOADING_STYLE != LoadingStyle.none) {
+            StartCoroutine(LoadOut(() => {}));
+            SceneLoader.LOADING_STYLE = LoadingStyle.none;
         } else {
             AudioHandler.Instance.AudioManager.AudioListenerVolume = 1;
         }
@@ -48,7 +53,7 @@ public class SceneLoader : MonoBehaviour
 
     public IEnumerator LoadingSceneAsyncMainLoadingScreen(string sceneName)
     {
-        SceneLoader.ANIMATING = true;
+        SceneLoader.LOADING_STYLE = LoadingStyle.mainScreen;
         loadingIcon.gameObject.SetActive(false);
         isLoading = true;
         yield return StartCoroutine(FadeCanvasGroup(group, 1f, animationDuration, animationDelay));
@@ -63,7 +68,7 @@ public class SceneLoader : MonoBehaviour
     }
     public IEnumerator LoadingSceneAsyncWithCornerLoadingIcon(string sceneName)
     {
-        SceneLoader.ANIMATING = true;
+        SceneLoader.LOADING_STYLE = LoadingStyle.cornerIcon;
         cornerLoadingIcon.gameObject.SetActive(false);
         isLoading = true;
         yield return new WaitForEndOfFrame();
@@ -110,17 +115,30 @@ public class SceneLoader : MonoBehaviour
 
     }
 
-
+    ///<summary>
+    /// When the new scene gets loaded i, the loading screen should fisrt be visible and then fade out
+    ///</summary>
     private IEnumerator LoadOut(Action callback)
     {
-        group.alpha = 1;
+        if (LOADING_STYLE == LoadingStyle.mainScreen)
+        {
+            group.alpha = 1;
+            loadingIcon.gameObject.SetActive(true);
+        } else if (LOADING_STYLE == LoadingStyle.cornerIcon) {
+            cornerLoadingIcon.gameObject.SetActive(true);
+
+        }
         AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(.3f);
         AudioHandler.Instance.FadeListener(1);
-        yield return StartCoroutine(FadeCanvasGroup(group, 0, .5f));
+        if (LOADING_STYLE == LoadingStyle.mainScreen)
+            yield return StartCoroutine(FadeCanvasGroup(group, 0, .5f));
+        
+        cornerLoadingIcon.gameObject.SetActive(false);
         callback();
     }
+    
     public IEnumerator FadeCanvasGroup(CanvasGroup group, float end, float duration, float delay = 0) {
         yield return new WaitForSecondsRealtime(delay);
         float index = 0;

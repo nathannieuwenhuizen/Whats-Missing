@@ -45,7 +45,7 @@ public interface IAudioManager {
     ///Stops the 2D sound
     ///</summary>
     public void StopSound(string key);
-    public IEnumerator FadeVolume(AudioSource audioS, float begin, float end, float duration);
+    public IEnumerator FadeVolume(SFXInstance audioS, float begin, float end, float duration);
 
     //-----------music
 

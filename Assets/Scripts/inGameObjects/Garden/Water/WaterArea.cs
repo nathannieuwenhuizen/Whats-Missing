@@ -14,14 +14,12 @@ public class WaterArea : MonoBehaviour, ITriggerArea
     {
         IN_WATER = true;
         WATER_TRANSFORM = transform;
-        // FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_water;
     }
 
     public void OnAreaExit(Player player)
     {
         IN_WATER = false;
         WATER_TRANSFORM = null;
-        // FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
     }
 
 }

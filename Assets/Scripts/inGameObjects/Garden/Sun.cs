@@ -36,6 +36,7 @@ public class Sun : RoomObject
         set { 
             // if (sunEnabled == value) return;
             sunEnabled = value; 
+            // Debug.Log("sun enabled = " + value);
             sunBody.SetActive(value);
             if (value) {
                 if (fireSound == null) 
@@ -55,12 +56,8 @@ public class Sun : RoomObject
     private void Awake() {
         lightIntensityShrink = light.intensity;
         lightIntensityLarge = lightIntensityShrink * 3f;
-    }
-
-
-    private void Start() {
-        deathTrigger.OnAreaEnterEvent.AddListener(DeathBySun);
         SunEnabled = false;
+        deathTrigger.OnAreaEnterEvent.AddListener(DeathBySun);
     }
 
     private void DeathBySun() {

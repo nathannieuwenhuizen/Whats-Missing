@@ -53,6 +53,8 @@ public class InteractabelObject : RoomObject, IInteractable
         Outline.OutlineColor = value;
     } }
 
+    public float InteractableDistance { get; set; } = 6f;
+
     ///<summary>
     /// When the cursor hovers over the mesh of the object. It makes the outline appear.
     ///</summary>
