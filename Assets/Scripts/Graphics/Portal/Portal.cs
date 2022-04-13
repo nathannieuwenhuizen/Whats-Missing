@@ -30,7 +30,7 @@ public class Portal : RenderTexturePlane
             Vector3 objPos = transform.InverseTransformPoint(player.transform.position);
             if (objPos.y < positionOffset)
             {
-                Teleport();
+                Teleport(player);
             } 
         }
     }
@@ -54,7 +54,8 @@ public class Portal : RenderTexturePlane
         }
     }
 
-    private void Teleport() {
+    public void Teleport(Player _player) {
+        player = _player;
         OnPortalLeave();
         connectedPortal.OnPortalEnter(player);
 

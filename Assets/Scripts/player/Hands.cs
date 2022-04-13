@@ -156,7 +156,6 @@ public class Hands : MonoBehaviour
             UpdateFocusedObject();
     }
     private void UpdateFocusedObject() {
-        Debug.Log("update");
         IInteractable interactableObj = FocussedObject();
         if (interactableObj != default(IInteractable)) {
             Debug.Log(interactableObj.Gameobject.name);

@@ -8,6 +8,8 @@ public class Area : MonoBehaviour
 
     public static bool AUTO_SAVE_WHEN_DESTROY = true;
 
+    [SerializeField]
+    private GameObject defaultRoom;
 
     [SerializeField]
     private Vector3 roomPositionOffset;
@@ -110,6 +112,7 @@ public class Area : MonoBehaviour
     }
 
     private void Awake() {
+        if (defaultRoom != null) Destroy(defaultRoom);
         AUTO_SAVE_WHEN_DESTROY = true;
         LoadProgress();
         InitializeRooms();

@@ -135,6 +135,9 @@ public class SwimState : IState
         if (_duck.Velocity.magnitude < MinVelocity) {
             _duck.Velocity = _duck.Velocity.normalized * MinVelocity;
         }
+        Vector3 temp = _duck.Velocity;
+        temp.y = 0;
+        _duck.Velocity = temp;
         _duck.transform.position += _duck.Velocity * Time.deltaTime * Room.TimeScale;
 
 

@@ -7,6 +7,7 @@ using UnityEngine;
 ///</summary>
 public class RoomObject : RoomEntity
 {
+    public static bool PARTICLES_SHOWN = false;
     private bool active = true;
 
     [SerializeField]
@@ -64,13 +65,16 @@ public class RoomObject : RoomEntity
             break;
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials()) StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
-                
-                foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(disolvingParticles(item));
-                
+                ShowDisovleParticles();
                 yield return new WaitForSeconds(animationDuration);
             break;
         }
         OnMissingFinish();
+    }
+    private void ShowDisovleParticles() {
+        if (PARTICLES_SHOWN) return;
+        PARTICLES_SHOWN = true;
+        foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(disolvingParticles(item));
     }
 
     protected virtual Material[] getMaterials() {
@@ -97,7 +101,7 @@ public class RoomObject : RoomEntity
             break;
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials()) StartCoroutine(mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
-                foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(disolvingParticles(item));
+                ShowDisovleParticles();
                 yield return new WaitForSeconds(animationDuration);
             break;
         }
@@ -121,6 +125,7 @@ public class RoomObject : RoomEntity
             yield return new WaitForEndOfFrame();
         }
         particleSystem.Stop();
+        PARTICLES_SHOWN = false;
         Destroy(particleSystem.gameObject, particleSystem.main.startLifetime.Evaluate(0));
     }
     

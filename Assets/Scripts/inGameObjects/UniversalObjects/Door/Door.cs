@@ -176,13 +176,16 @@ public class Door : InteractabelObject
             UpdatePlayerWalkingPosition(walkingCurve.Evaluate(index / duration), player);
             yield return new WaitForEndOfFrame();
         }
-        player.Movement.EnableWalk = true;
-        player.Movement.RB.isKinematic = false;
-        UpdatePlayerWalkingPosition(2, player);
-
+        UpdatePlayerWalkingPosition(1, player);
+        yield return new WaitForEndOfFrame();
+        OnWalkingEnd(player);
         while(inAnimation) yield return new WaitForEndOfFrame();
         
         IN_WALKING_ANIMATION = false;
+    }
+    public virtual void OnWalkingEnd(Player player) {
+        player.Movement.EnableWalk = true;
+        player.Movement.RB.isKinematic = false;
     }
 
     public bool PlayerIsAtStartSide() {

@@ -92,6 +92,10 @@ public class FPMovement : MonoBehaviour
     public bool InAir {
         get { return inAir;}
         set { 
+            if (!value) {
+                if (windSound != null) windSound.Stop(true);
+                windParticles.Stop();
+            }
             if (inAir == value) return;
             inAir = value; 
             player.CharacterAnimationPlayer.SetBool("inAir", inAir);
@@ -151,9 +155,10 @@ public class FPMovement : MonoBehaviour
     ///<summary>
     ///Checks on whether to make the windparticles and wind noices when falling from higher altitudes.
     ///</summary>
+    SFXInstance windSound;
     private IEnumerator MakeWindNoices() {
         bool windEffectEnabled = false;
-        SFXInstance windSound = AudioHandler.Instance?.PlaySound(SFXFiles.wind_fall, .5f, 1, true);
+        windSound = AudioHandler.Instance?.PlaySound(SFXFiles.wind_fall, .5f, 1, true);
         windSound.Pause();
         yield return new WaitForSeconds(1f);
         while (InAir && EnableWalk)

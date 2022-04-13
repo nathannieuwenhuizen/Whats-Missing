@@ -67,14 +67,13 @@ public class Mirror: MonoBehaviour, IRoomObject
     public bool IsOn {
         get { return mirrorData.isOn; }
         set { 
-            if (mirrorData.isOn != value) {
-                mirrorData.isOn = value; 
-                if (value) {
-                    ConfirmationSucceeded();
-                } else {
-                    ConfirmationFailed();
-                }
+            if (value) {
+                ConfirmationSucceeded();
+            } else {
+                ConfirmationFailed();
             }
+
+            mirrorData.isOn = value; 
             UpdateIndicatorLight();
         }
     }
@@ -143,6 +142,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     }
 
     public void ConfirmationFailed() {
+        Debug.Log("cofirmation failed" + room.Animated);
         if (room.Animated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);
 

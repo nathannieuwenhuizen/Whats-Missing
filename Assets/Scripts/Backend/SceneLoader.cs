@@ -99,10 +99,18 @@ public class SceneLoader : MonoBehaviour
 
     private void OnEnable() {
         AlchemyItem.OnAlchemyEndScene += GoToSecondLevel;
+        PauseScreen.OnQuit += BackToMenu;
+    }
+
+
+    private void BackToMenu() {
+        LoadNewSceneAnimated("Menu");
     }
 
     private void OnDisable() {
         AlchemyItem.OnAlchemyEndScene -= GoToSecondLevel;
+        PauseScreen.OnQuit -= BackToMenu;
+
     }
 
 
