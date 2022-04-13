@@ -30,8 +30,10 @@ public class SceneLoader : MonoBehaviour
 
     private void Start() {
         if (SceneLoader.LOADING_STYLE != LoadingStyle.none) {
-            StartCoroutine(LoadOut(() => {}));
-            SceneLoader.LOADING_STYLE = LoadingStyle.none;
+            StartCoroutine(LoadOut(() => {
+                SceneLoader.LOADING_STYLE = LoadingStyle.none;
+            }));
+            
         } else {
             AudioHandler.Instance.AudioManager.AudioListenerVolume = 1;
         }
@@ -132,8 +134,9 @@ public class SceneLoader : MonoBehaviour
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(.3f);
         AudioHandler.Instance.FadeListener(1);
-        if (LOADING_STYLE == LoadingStyle.mainScreen)
+        if (LOADING_STYLE == LoadingStyle.mainScreen) 
             yield return StartCoroutine(FadeCanvasGroup(group, 0, .5f));
+        
         
         cornerLoadingIcon.gameObject.SetActive(false);
         callback();
