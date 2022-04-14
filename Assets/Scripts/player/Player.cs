@@ -213,8 +213,8 @@ public class Player : RoomObject
         }
     }
     private void OnTriggerEnter(Collider other) {
-        if (other.GetComponent<Portal>() != null) {
-            other.GetComponent<Portal>().OnPortalEnter(this);
+        if (other.GetComponent<IPortal>() != null) {
+            other.GetComponent<IPortal>().OnPortalEnter(this);
         }
         if (other.GetComponent<ITriggerArea>() != null) {
             other.GetComponent<ITriggerArea>().OnAreaEnter(this);
@@ -222,8 +222,8 @@ public class Player : RoomObject
     }
 
     private void OnTriggerExit(Collider other) {
-        if (other.GetComponent<Portal>() != null) {
-            other.GetComponent<Portal>().OnPortalLeave();
+        if (other.GetComponent<IPortal>() != null) {
+            other.GetComponent<IPortal>().OnPortalLeave();
         }
         if (other.GetComponent<ITriggerArea>() != null) {
             other.GetComponent<ITriggerArea>().OnAreaExit(this);
