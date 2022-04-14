@@ -23,9 +23,12 @@ public class RoomObject : RoomEntity
     public delegate void OnMissingEvent();
 
     public override float CurrentScale { 
-        get { return transform.localScale.x; }
+        get { return Mathf.Abs(transform.localScale.x); }
         set {
-            transform.localScale = Vector3.one * value;
+            transform.localScale = new Vector3(
+                transform.localScale.x >= 0 ? 1 : -1,
+                transform.localScale.y >= 0 ? 1 : -1,
+                transform.localScale.z >= 0 ? 1 : -1) * value;
         } 
     }
 
@@ -148,7 +151,7 @@ public class RoomObject : RoomEntity
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
-        transform.localScale = Vector3.one * DesiredScale();
+        CurrentScale = DesiredScale();
     }
 
     ///<summary>
@@ -284,6 +287,7 @@ public class RoomObject : RoomEntity
             disabledRenderers = new List<Renderer>();
         }
         gameObject.SetAllComponentsActive<Collider>(_active, null);
+        gameObject.SetAllComponentsActive<Rigidbody>(_active, null);
         gameObject.SetAllComponentsActive<ParticleSystem>(_active, null);
         gameObject.SetAllComponentsActive<Light>(_active, null);
         

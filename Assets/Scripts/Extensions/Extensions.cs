@@ -124,6 +124,8 @@ public static class Extensions
                 (childCompnent as Light).enabled = active;
             if (childCompnent  is Collider)
                 (childCompnent as Collider).enabled = active;
+            if (childCompnent  is Rigidbody)
+                (childCompnent as Rigidbody).isKinematic = !active;
             if (childCompnent  is ParticleSystem)
                 if (active && (childCompnent as ParticleSystem).loop) (childCompnent as ParticleSystem).Play();
                 else (childCompnent as ParticleSystem).Stop();
