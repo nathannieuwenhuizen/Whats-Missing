@@ -13,12 +13,13 @@ public class ChaseState : BaseBossState, IState
 
     }
     private float oldViewAngle;
-    private float sharpViewAngle = 10;
+    private float sharpViewAngle = 8;
     public void Start()
     {
-        bossAI.BossHead.SteeringBehaviour.MaxForce *= 10f;
+        bossAI.BossHead.SteeringBehaviour.MaxForce *= 20f;
         oldViewAngle = bossAI.BossEye.ViewAngle;
-        bossAI.BossEye.ViewAngle = sharpViewAngle;;
+
+        bossAI.BossEye.AnimateViewAngle(sharpViewAngle);
     }
 
     public void Run()
@@ -32,9 +33,8 @@ public class ChaseState : BaseBossState, IState
 
     public void Exit()
     {
-        bossAI.BossHead.SteeringBehaviour.MaxForce /= 10f;
-        bossAI.BossEye.ViewAngle = oldViewAngle;;
-
+        bossAI.BossHead.SteeringBehaviour.MaxForce /= 20f;
+        bossAI.BossEye.AnimateViewAngle(oldViewAngle);
     }
 
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,8 +18,8 @@ public static class Extensions
     }
 
     public static string Shuffle(string _list)  
-    {  
-        Random.InitState(_list.Length);
+    {
+        UnityEngine.Random.InitState(_list.Length);
         string result = "";
         int rngIndex;
         int test = 0;
@@ -26,7 +27,7 @@ public static class Extensions
 
         while (chars.Count > 0 && test < 100) {  
             test++;
-            rngIndex = Mathf.FloorToInt(Random.Range(0, chars.Count));
+            rngIndex = Mathf.FloorToInt(UnityEngine.Random.Range(0, chars.Count));
             result += chars[rngIndex];
             chars.RemoveAt(rngIndex);
         } 
@@ -60,14 +61,14 @@ public static class Extensions
 
     public static Vector3 RandomVector(float maxValue) {
         return new Vector3(
-            Random.Range(-maxValue, maxValue),
-            Random.Range(-maxValue, maxValue),
-            Random.Range(-maxValue, maxValue));
+            UnityEngine.Random.Range(-maxValue, maxValue),
+            UnityEngine.Random.Range(-maxValue, maxValue),
+            UnityEngine.Random.Range(-maxValue, maxValue));
     }
     public static Vector2 RandomVector2(float maxValue) {
         return new Vector2(
-            Random.Range(-maxValue, maxValue),
-            Random.Range(-maxValue, maxValue));
+            UnityEngine.Random.Range(-maxValue, maxValue),
+            UnityEngine.Random.Range(-maxValue, maxValue));
     }
 
     public static Vector3 CalculateLinearBezierPoint(float t, Vector3 p0, Vector3 p1) {
@@ -131,6 +132,57 @@ public static class Extensions
                 else (childCompnent as ParticleSystem).Stop();
         }
         return result;
+    }
+
+    public static IEnumerator AnimateCallBack(float begin, float end, AnimationCurve curve, Action<float> callback, float animationDuration) {
+        callback(begin);
+        float index = 0f;
+        while (index < animationDuration) {
+            yield return new WaitForEndOfFrame();
+            index += Time.unscaledDeltaTime;
+            callback(Mathf.LerpUnclamped(begin, end, curve.Evaluate(index / animationDuration)));
+        }
+        callback(end);
+    }
+    public static IEnumerator AnimateCallBack(Color begin, Color end, AnimationCurve curve, Action<Color> callback, float animationDuration) {
+        callback(begin);
+        float index = 0f;
+        while (index < animationDuration) {
+            yield return new WaitForEndOfFrame();
+            index += Time.unscaledDeltaTime;
+            callback(Color.LerpUnclamped(begin, end, curve.Evaluate(index / animationDuration)));
+        }
+        callback(end);
+    }
+    public static IEnumerator AnimateCallBack(Vector3 begin, Vector3 end, AnimationCurve curve, Action<Vector3> callback, float animationDuration) {
+        callback(begin);
+        float index = 0f;
+        while (index < animationDuration) {
+            yield return new WaitForEndOfFrame();
+            index += Time.unscaledDeltaTime;
+            callback(Vector3.LerpUnclamped(begin, end, curve.Evaluate(index / animationDuration)));
+        }
+        callback(end);
+    }
+    public static IEnumerator AnimateCallBack(Vector2 begin, Vector2 end, AnimationCurve curve, Action<Vector2> callback, float animationDuration) {
+        callback(begin);
+        float index = 0f;
+        while (index < animationDuration) {
+            yield return new WaitForEndOfFrame();
+            index += Time.unscaledDeltaTime;
+            callback(Vector2.LerpUnclamped(begin, end, curve.Evaluate(index / animationDuration)));
+        }
+        callback(end);
+    }
+    public static IEnumerator AnimateCallBack(Quaternion begin, Quaternion end, AnimationCurve curve, Action<Quaternion> callback, float animationDuration) {
+        callback(begin);
+        float index = 0f;
+        while (index < animationDuration) {
+            yield return new WaitForEndOfFrame();
+            index += Time.unscaledDeltaTime;
+            callback(Quaternion.SlerpUnclamped(begin, end, curve.Evaluate(index / animationDuration)));
+        }
+        callback(end);
     }
 
 

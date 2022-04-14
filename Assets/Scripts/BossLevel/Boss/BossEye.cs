@@ -10,6 +10,10 @@ public class BossEye: MonoBehaviour {
     private readonly float sizeAspect = 5f;
     private readonly float angleAspect = 27f;
 
+    //noticing values
+    public bool NoticesPlayer { get => noticingValue >= noticingThreshold; }
+    public bool DoesntNoticesPlayer { get => noticingValue <= 0; }
+
     [SerializeField]
     private Transform fakeLight;
     [SerializeField]
@@ -24,6 +28,10 @@ public class BossEye: MonoBehaviour {
             UpdateFakeLight();
         }
     }
+    [SerializeField]
+    private AnimationCurve viewAngleAnimationCurve;
+    private Coroutine viewAngleCoroutine;
+    private Coroutine viewRangeCoroutine;
 
 
     [SerializeField]
@@ -128,9 +136,34 @@ public class BossEye: MonoBehaviour {
         }
     }
 
+    public void AnimateViewAngle(float desiredAngle) {
+        if (viewAngleCoroutine != null) StopCoroutine(viewAngleCoroutine);
+        viewAngleCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewAngle, desiredAngle, viewAngleAnimationCurve, (float val) => viewAngle = val, 1f));
+    }
+    public void AnimateViewRagee(float desiredRange) {
+        if (viewRangeCoroutine != null) StopCoroutine(viewRangeCoroutine);
+        viewRangeCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewRange, desiredRange, viewAngleAnimationCurve, (float val) => viewRange = val, 1f));
+    }
 
-    public bool NoticesPlayer { get => noticingValue >= noticingThreshold; }
-    public bool DoesntNoticesPlayer { get => noticingValue <= 0; }
+
+    ///<summary>
+    /// Updates the fake light by changing the mesh
+    ///</summary>
+    private void UpdateFakeLight() {
+        if (fakeLight == null) return;
+
+        fakeLight.gameObject.SetActive(lightIsOn);
+        Vector3 scale = Vector3.one;
+        scale.y = ViewRange / sizeAspect;
+        float angleResult = Mathf.Tan(viewAngle * Mathf.Deg2Rad);
+        scale.x = ViewRange / sizeAspect * angleResult;
+        scale.z = ViewRange / sizeAspect * angleResult;
+        fakeLight.localScale = scale;
+
+        if (fakeLightRenderer != null) {
+            fakeLightRenderer.sharedMaterial.SetColor("_color", viewColor);
+        } 
+    }
 
     private Color debugColor;
     public void OnDrawGizmos() {
@@ -171,21 +204,7 @@ public class BossEye: MonoBehaviour {
             UpdateFakeLight();
         }
     }
-    private void UpdateFakeLight() {
-        if (fakeLight == null) return;
 
-        fakeLight.gameObject.SetActive(lightIsOn);
-        Vector3 scale = Vector3.one;
-        scale.y = ViewRange / sizeAspect;
-        float angleResult = Mathf.Tan(viewAngle * Mathf.Deg2Rad);
-        scale.x = ViewRange / sizeAspect * angleResult;
-        scale.z = ViewRange / sizeAspect * angleResult;
-        fakeLight.localScale = scale;
-
-        if (fakeLightRenderer != null) {
-            fakeLightRenderer.sharedMaterial.SetColor("_color", viewColor);
-        } 
-    }
     private Vector3 DebugDrawViewLine(Vector3 origin, Vector3 dest) {
         Debug.DrawLine(origin, dest, debugColor);
         return dest;

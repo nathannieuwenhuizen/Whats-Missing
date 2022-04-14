@@ -280,7 +280,6 @@ public class RoomObject : RoomEntity
         active = _active;
         if (!_active) {
             disabledRenderers = gameObject.SetAllComponentsActive<Renderer>(_active, null);
-            Debug.Log("disabled renderers: " + disabledRenderers.Count);
         } 
         else {
             gameObject.SetAllComponentsActive<Renderer>(_active, disabledRenderers);
