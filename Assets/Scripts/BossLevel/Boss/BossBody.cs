@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+namespace Boss {
+
 ///<summary>
 /// This handles the bossy body mesh. 
 ///It (de) activates and handles he secondary physics, purely the astethics
@@ -49,4 +52,5 @@ public class BossBody : MonoBehaviour
         }
         yield return new WaitForSeconds(metamorphoseDuration);
     }
+}
 }

@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+namespace Boss {
 
-public class ChaseState : BaseBossState, IState
+public class ChaseState : IBaseBossState, IState
 {
         public BossAI bossAI { get; set; }
 
@@ -36,5 +37,7 @@ public class ChaseState : BaseBossState, IState
         bossAI.BossHead.SteeringBehaviour.MaxForce /= 20f;
         bossAI.BossEye.AnimateViewAngle(oldViewAngle);
     }
+
+}
 
 }

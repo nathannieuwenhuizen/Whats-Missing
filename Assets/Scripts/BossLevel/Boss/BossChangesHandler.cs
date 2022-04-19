@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Febucci.UI;
 using UnityEngine;
+namespace Boss {
 
 ///<summary>
 /// Handles the boss change attacks
@@ -61,4 +62,5 @@ public class BossChangesHandler
         bossRoom.ChangeHandler.RemoveBossChange(acitvatedChange);
         acitvatedChange = null;
     }
+}
 }

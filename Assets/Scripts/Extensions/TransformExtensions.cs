@@ -147,6 +147,18 @@ public static class TransformExtensions
             transform.localPosition.z
         );
     }
+
+    public static Quaternion Clamp (Quaternion q, float angle = 90f) {
+        Vector3 v = new Vector3(
+            q.eulerAngles.x,
+            q.eulerAngles.y,
+            q.eulerAngles.z);
+        v.x = Mathf.Clamp(v.x, -angle, angle);
+        v.y = Mathf.Clamp(v.y, -angle, angle);
+        v.z = Mathf.Clamp(v.z, -angle, angle);
+        return Quaternion.Euler(v);
+    }
+
     public static Quaternion RandomRotation (float amplitude = 1f) {
         return Quaternion.Euler(Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude));
     }

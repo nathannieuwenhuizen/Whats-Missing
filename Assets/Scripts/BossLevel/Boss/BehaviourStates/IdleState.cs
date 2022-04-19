@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+namespace Boss {
 
-public class IdleState : BaseBossState, IState
+public class IdleState : IBaseBossState, IState
 {
     public ILiveStateDelegate OnStateSwitch { get; set; }
     public BossAI bossAI { get; set; }
@@ -25,4 +26,6 @@ public class IdleState : BaseBossState, IState
     {
         bossAI.Boss.Body.ToggleBody(true);
     }
+}
+
 }

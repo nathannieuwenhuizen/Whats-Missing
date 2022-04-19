@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Boss {
+
 ///<summary>
 /// The boss head that rotates arround trying to see the player.
 /// A steering behavior handles the movement
@@ -21,7 +23,6 @@ public class BossHead: MonoBehaviour
         get { return steeringEnabled;}
         set { 
             steeringEnabled = value; 
-            
         }
     }
 
@@ -39,8 +40,14 @@ public class BossHead: MonoBehaviour
             steeringBehaviour.UpdatePosition();
         }
         else currentAim.position = Vector3.Lerp(currentAim.position, desiredAim.position, Time.deltaTime * aimSpeed);
-       
+
+        Quaternion oldRot = transform.localRotation;
         transform.LookAt(currentAim, transform.up);
+
+        if (Vector3.Angle(transform.forward, transform.parent.forward) > 90f) {
+            transform.localRotation = oldRot;
+        }
+
     }
 
     [SerializeField]
@@ -49,12 +56,12 @@ public class BossHead: MonoBehaviour
         get { return steeringBehaviour;}
     }
 
-    public void SetAim(Vector3 pos, Vector2 relativeOffset) {
-        Transform t = transform.parent;
-        // Debug.Log("set aim" + relativeOffset.y);
+    public void SetAim(Vector3 pos, Vector2 relativeOffset, bool localPos = false) {
+        desiredAim.transform.SetParent(localPos ? transform.parent : bossAI.transform.parent);
+        
         desiredAim.transform.position = pos + 
-        t.up * relativeOffset.y + 
-        t.right * relativeOffset.x;
+        transform.parent.up * relativeOffset.y + 
+        transform.parent.right * relativeOffset.x;
     }
 
     private void OnDrawGizmos() {
@@ -70,4 +77,11 @@ public class BossHead: MonoBehaviour
             Debug.DrawLine(currentAim.position, currentAim.position + steeringBehaviour.DesiredVelocity * multiply, Color.green);
         }
     }
+
+    public bool IsAtPosition(float offset = .1f, float velocityOffset = .1f) {
+        if (Vector3.Distance(transform.position, desiredAim.position) < offset) return false;
+        return true;
+    }
+}
+
 }

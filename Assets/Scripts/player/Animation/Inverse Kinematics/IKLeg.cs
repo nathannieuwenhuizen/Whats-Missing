@@ -68,7 +68,6 @@ public class IKLeg : IKLimb
 
             animator.SetIKPosition(IKGoal,currentHit.point + currentHit.normal * GroundOffset);
             animator.SetIKRotation(IKGoal,Quaternion.LookRotation(transform.forward, currentHit.normal));
-            animator.SetIKPosition("", Vector3.zero);
         }
     }
 

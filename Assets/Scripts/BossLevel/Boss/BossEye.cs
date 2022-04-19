@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Boss {
+
 ///<summary>
 /// The values of the boss looking state are defined here.
 ///</summary>
 public class BossEye: MonoBehaviour {
     //used to determine the fake light aspects
-    private readonly float sizeAspect = 5f;
+    private readonly float sizeAspect = 4f;
     private readonly float angleAspect = 27f;
 
     //noticing values
@@ -209,4 +211,6 @@ public class BossEye: MonoBehaviour {
         Debug.DrawLine(origin, dest, debugColor);
         return dest;
     }
+}
+
 }

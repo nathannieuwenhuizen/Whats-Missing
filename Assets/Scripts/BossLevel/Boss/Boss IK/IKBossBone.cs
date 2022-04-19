@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+namespace Boss {
 
 public interface IIKBossBone {
     public Animator animator {get; set;}
@@ -29,5 +30,7 @@ public class IKBossBone : MonoBehaviour, IIKBossBone
     {
         if (animator == null || IsActive == false) return;
     }
+
+}
 
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Febucci.UI;
+using Boss;
 
 public class DialoguePlayer : MonoBehaviour
 {

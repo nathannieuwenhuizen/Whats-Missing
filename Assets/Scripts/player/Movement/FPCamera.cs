@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Boss;
 using UnityEngine;
 ///<summary>
 /// Handles all the camera mvoement and rotations. 
@@ -172,14 +173,14 @@ public class FPCamera
     }
 
 
-    private void OnBossCutSceneStart(Boss boss) {
+    private void OnBossCutSceneStart(Boss.Boss boss) {
         UseSteeringBehaviour = true;
         currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward;
         SteeringBehaviour.Velocity = Vector3.zero;
         steeringTarget = boss.transform;
     }
 
-    private void OnBossCutSceneEnd(Boss boss) {
+    private void OnBossCutSceneEnd(Boss.Boss boss) {
         UseSteeringBehaviour = false;
     }
 

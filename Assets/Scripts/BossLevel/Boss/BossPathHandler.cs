@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Boss {
 
 ///<summary>
 /// A struct containing Mountain coordinates for the path handeler
@@ -204,5 +205,7 @@ public class BossPathHandler : MonoBehaviour
 
     
 
+
+}
 
 }

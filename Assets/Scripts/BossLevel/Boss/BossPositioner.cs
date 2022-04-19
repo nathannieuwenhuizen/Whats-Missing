@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Boss {
+
 ///<summary>
 /// Handles the boss position, using steering behaviour with the mountain coordinates
 ///</summary>
@@ -15,10 +17,10 @@ public class BossPositioner : MonoBehaviour
     private MountainPath path;
     private MountainCoordinate[] coords;
 
-    private Transform desiredPos;
+    private Transform desiredTempPos;
 
     [SerializeField]
-    private Transform test;
+    private Transform desiredPos;
 
     [SerializeField]
     private bool useSteering = false;
@@ -29,31 +31,45 @@ public class BossPositioner : MonoBehaviour
 
     private void Awake() {
         steeringBehaviour.target = transform;
-        desiredPos = Instantiate(new GameObject("desired boss position"), transform.position, Quaternion.identity).transform;
-        desiredPos.SetParent(transform.parent);
-        steeringBehaviour.desiredTarget = desiredPos;
+        desiredTempPos = Instantiate(new GameObject("desired boss position"), transform.position, Quaternion.identity).transform;
+        desiredTempPos.SetParent(transform.parent);
+        steeringBehaviour.desiredTarget = desiredTempPos;
         path.steps = 10;
     }
 
     private void Start() {
-        SetAirDestinationPath(test.position);
+        SetDestinationPath(desiredPos);
     }
 
-    public void SetAirDestinationPath(Vector3 pos) {
+
+    ///<summary>
+    /// Sets the destination of the positioner so that it can go from one palce to another.
+    ///</summary>
+    public void SetDestinationPath(Transform _tr) {
+        desiredPos = _tr;
         path.begin = MountainCoordinate.FromPosition(pathHandeler, transform.position);
-        path.end = MountainCoordinate.FromPosition(pathHandeler, pos);
+        path.end = MountainCoordinate.FromPosition(pathHandeler, desiredPos.position);
         coords = path.generatePathPoints(pathHandeler);
-        UpdateDestination();
+        UpdateTempDestination();
     }
 
-    public void UpdateDestination() {
-        desiredPos.position = path.getClosestMountainCoord(coords, transform.position, pathHandeler).ToVector(pathHandeler, 5f);
+    private void UpdateTempDestination() {
+        desiredTempPos.position = path.getClosestMountainCoord(coords, transform.position, pathHandeler).ToVector(pathHandeler, 5f);
+    }
+
+    public Vector3 GetDesiredPosition(float _offset) {
+        return path.end.ToVector(pathHandeler, _offset);
+    }
+
+    public bool isAtPosition(float offset = .1f, float velocityOffset = .1f) {
+        if (Vector3.Distance(transform.position, desiredTempPos.position) > offset) return false;
+        if (steeringBehaviour.Velocity.magnitude > velocityOffset) return false;
+        return true;
     }
 
     private void Update() {
         if (useSteering) {
-            SetAirDestinationPath(test.position);
-            UpdateDestination();
+            UpdateTempDestination();
             steeringBehaviour.UpdatePosition();
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(-path.getClosestMountainCoord(coords, transform.position, pathHandeler).Normal(pathHandeler)), Time.deltaTime);
         }
@@ -61,6 +77,8 @@ public class BossPositioner : MonoBehaviour
     private void OnDrawGizmos() {
         if (pathHandeler != null) path.DrawGizmo(pathHandeler);
         Gizmos.color = Color.green;
-        if (desiredPos != null) Gizmos.DrawSphere(desiredPos.position, 3f);
+        if (desiredTempPos != null) Gizmos.DrawSphere(desiredTempPos.position, 3f);
     }
+}
+
 }

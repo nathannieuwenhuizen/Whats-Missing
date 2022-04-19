@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+namespace Boss {
 
-public class BossCutsceneState : BaseBossState, IState
+public class BossCutsceneState : IBaseBossState, IState
 {
     public ILiveStateDelegate OnStateSwitch { get; set; }
     public BossAI bossAI { get; set; }
@@ -30,4 +31,5 @@ public class BossCutsceneState : BaseBossState, IState
         OnBossCutsceneEnd?.Invoke(bossAI.Boss);
     }
 
+}
 }

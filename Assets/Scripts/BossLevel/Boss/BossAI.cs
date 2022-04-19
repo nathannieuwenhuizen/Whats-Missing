@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface BaseBossState{
+namespace Boss {
+
+public interface IBaseBossState{
     public BossAI bossAI {get; set;}
 }
 
@@ -12,6 +14,7 @@ public class BossBehaviours {
         chaseState = new ChaseState() {bossAI = _ai };
         idleState = new IdleState() {bossAI = _ai };
         bossIntro = new BossIntroState() {bossAI = _ai };
+        wanderState = new WanderState() {bossAI = _ai, wanderingPath = _ai.testPath };
 
     }
 
@@ -19,11 +22,14 @@ public class BossBehaviours {
     public ChaseState chaseState; 
     public IdleState idleState; 
     public BossIntroState bossIntro; 
+    public WanderState wanderState; 
 }
 ///<summary>
 /// Main Ai for the boss holding all the statesand behaviour trees
 ///</summary>
 public class BossAI : MonoBehaviour {
+
+    public WanderingPath testPath;
 
     //states
     private FSM stateMachine;
@@ -46,7 +52,9 @@ public class BossAI : MonoBehaviour {
     public void Setup(Boss _boss) {
         boss = _boss;
         behaviours = new BossBehaviours(this);
-        stateMachine = new FSM(behaviours.lookingState);
+    }
+    public void InitializeStateMachine() {
+        stateMachine = new FSM(behaviours.wanderState);
     }
     public void UpdateAI() {
         stateMachine.Update();
@@ -69,4 +77,5 @@ public class BossAI : MonoBehaviour {
         BossMirror.OnMirrorExplode += DoIntro;
         
     }
+}
 }

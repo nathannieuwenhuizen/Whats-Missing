@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using Febucci.UI;
-
 using UnityEngine;
+
+namespace Boss {
 ///<summary>
 /// The main script of the boss. 
 ///</summary>
 [RequireComponent(typeof(BossAI))]
+[RequireComponent(typeof(BossPositioner))]
 public class Boss : RoomObject
 {   
     [Header("Boss info")]
@@ -29,6 +31,11 @@ public class Boss : RoomObject
     private BossChangesHandler bossChangeHandler;
     public BossChangesHandler BossChangesHandler {
         get { return bossChangeHandler;}
+    }
+
+    private BossPositioner bossPositioner;
+    public BossPositioner BossPositioner {
+        get { return bossPositioner;}
     }
 
     [Header("Boss parts")]
@@ -61,10 +68,15 @@ public class Boss : RoomObject
     protected override void Awake() {
         bossVoice = new BossVoice(transform);
         bossChangeHandler = new BossChangesHandler(textAnimatorPlayer, bossRoom, this);
+        bossPositioner = GetComponent<BossPositioner>();
 
         ai = GetComponent<BossAI>();
         ai.Setup(this);
     }
+    private void Start() { 
+        ai.InitializeStateMachine();
+    }
+
     private void Update() {
         AI.UpdateAI();
         bossVoice.Update();
@@ -81,4 +93,5 @@ public class Boss : RoomObject
         Word = "spirit";
         AlternativeWords = new string[] { "spirit", "spirits", "boss" };
     }
+}
 }

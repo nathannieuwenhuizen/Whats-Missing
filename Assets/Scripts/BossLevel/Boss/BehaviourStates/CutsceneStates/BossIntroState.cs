@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+namespace Boss {
 
 public class BossIntroState : BossCutsceneState
 {
@@ -20,4 +21,5 @@ public class BossIntroState : BossCutsceneState
 
         OnStateSwitch?.Invoke(bossAI.Behaviours.lookingState);
     }
+}
 }
