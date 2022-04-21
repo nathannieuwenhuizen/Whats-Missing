@@ -14,6 +14,8 @@ public class NavMeshBehaviour : IMovementBehavior
     private NavMeshAgent navMeshAgent;
     private Boss.Boss boss;
 
+    private float rotationSpeed = 2f;
+
     private bool movementUpdateEnabled = true;
     public bool MovementEnabled {
         get { return movementUpdateEnabled;}
@@ -28,6 +30,8 @@ public class NavMeshBehaviour : IMovementBehavior
         transform = _transform;
         desiredTempPos = _desiredTempPos;
         navMeshAgent = transform.GetComponent<NavMeshAgent>();
+        navMeshAgent.updateRotation = false;
+        navMeshAgent.updateUpAxis = false;
     }
 
     public void SetDestinationPath(Vector3 _end, Vector3 _begin = default)
@@ -43,11 +47,41 @@ public class NavMeshBehaviour : IMovementBehavior
 
     public void UpdateTempDestination()
     {
-        navMeshAgent.SetDestination(desiredPos.position);
+        if (navMeshAgent.enabled) navMeshAgent.SetDestination(desiredPos.position);
     }
     public void Update() {
         if (MovementEnabled) {
-                UpdateTempDestination();
+            UpdateTempDestination();
+            UpdateRotation();
         }
+    }
+
+    public Vector3 GetClosestPointOnPath()
+    {
+        NavMeshHit myNavHit;
+        if(NavMesh.SamplePosition(transform.position, out myNavHit, 100, -1 ))
+            return  myNavHit.position + (Vector3.up * navMeshAgent.height);
+        return transform.position;   
+    }
+
+    public bool ReachedDestination(float _distanceThreshhold)
+    {
+        if (navMeshAgent.enabled == false) return false;
+
+        if (navMeshAgent.remainingDistance > _distanceThreshhold || navMeshAgent.remainingDistance == 0) return false;
+        return true;
+    }
+
+    public void UpdateRotation()
+    {
+        NavMeshHit myNavHit;
+        Vector3 turnTowardNavSteeringTarget = navMeshAgent.velocity;
+        Vector3 direction = navMeshAgent.velocity; // (turnTowardNavSteeringTarget - transform.position).normalized;
+        if(NavMesh.SamplePosition(navMeshAgent.nextPosition, out myNavHit, .1f, -1 ))
+            direction = myNavHit.normal;
+        
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
     }
 }

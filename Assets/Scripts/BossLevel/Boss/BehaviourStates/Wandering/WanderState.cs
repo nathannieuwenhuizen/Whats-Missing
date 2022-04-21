@@ -6,6 +6,7 @@ namespace Boss {
 
 public class WanderState : LookingState, IState
 {
+
     public WanderingPath wanderingPath;
 
     private int currentPoseIndex = 0;
@@ -18,6 +19,7 @@ public class WanderState : LookingState, IState
     }
 
     public Coroutine wanderingCoroutine;
+    public Coroutine takeOffCoroutine;
     private float minLookDuration = 1f;
 
     private BossHead bossHead;
@@ -36,10 +38,16 @@ public class WanderState : LookingState, IState
         positioner = bossAI.Boss.BossPositioner;
         bossHead = bossAI.Boss.Head;
 
-        positioner.BodyMovementType = BodyMovementType.steeringBehaviour;
-        CurrentPoseIndex = 0;
         wanderingCoroutine = bossAI.StartCoroutine(Wandering());
 
+        CurrentPoseIndex = 0;
+        //takeoff if the boss is at the ground
+        if (bossAI.Boss.BossPositioner.InAir == false) {
+            positioner.BodyMovementType = BodyMovementType.airSteering;
+            CurrentPoseIndex = 0;
+            takeOffCoroutine = bossAI.StartCoroutine(positioner.TakeOff(() => {}));
+            positioner.CurrentMovementBehaviour.bodyOrientation = BodyOrientation.toShape;
+        }
     }
 
     public override void Exit()
@@ -78,9 +86,7 @@ public class WanderState : LookingState, IState
     /// Returns true if the boss body is at the desired pose
     ///</summary>
     private bool IsAtPose(WanderPose pose) {
-        Debug.Log("positioner at pose " + positioner.isAtPosition(.1f));
-        Debug.Log("head at pose " + bossHead.IsAtPosition(.1f));
-        if (positioner.isAtPosition(.1f, 1f) == false) return false;
+        if (positioner.isAtPosition(.1f) == false) return false;
         if (bossHead.IsAtPosition(.1f, 1f) == false) return false;
         return true;
     }

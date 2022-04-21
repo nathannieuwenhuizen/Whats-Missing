@@ -20,7 +20,7 @@ public class BossCutsceneState : IBaseBossState, IState
     {
         OnBossCutsceneStart?.Invoke(bossAI.Boss);
         bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.none;
-        bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.none;
+        bossAI.Boss.BossPositioner.MovementEnabled = false;
     }
 
     public virtual void Run()
@@ -30,6 +30,7 @@ public class BossCutsceneState : IBaseBossState, IState
 
     public virtual void Exit()
     {
+        bossAI.Boss.BossPositioner.MovementEnabled = true;
         OnBossCutsceneEnd?.Invoke(bossAI.Boss);
     }
 

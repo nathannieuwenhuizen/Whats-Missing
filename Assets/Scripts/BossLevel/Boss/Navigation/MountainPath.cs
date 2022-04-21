@@ -14,7 +14,7 @@ namespace Boss {
         private MountainCoordinate[] coords;
         public MountainCoordinate[] Coords {
             get { 
-                if (coords == null) coords = new MountainCoordinate[]{ begin, end};
+                if (coords == null) coords = new MountainCoordinate[]{};
                 return coords;
             }
         }
@@ -43,7 +43,7 @@ namespace Boss {
         }
 
         public MountainCoordinate GetClosestMountainCoord(Vector3 _pos, BossPathHandler _pathHandeler) {
-            if (coords.Length == 0) return default(MountainCoordinate);
+            if (Coords.Length == 0) return default(MountainCoordinate);
 
             if (_pathHandeler.OnSurface == false) {
                 for (int j = coords.Length - 1; j >= 0; j--) 

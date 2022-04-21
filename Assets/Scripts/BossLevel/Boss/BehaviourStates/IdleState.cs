@@ -17,7 +17,7 @@ public class IdleState : IBaseBossState, IState
         bossAI.BossEye.LightIsOn = false;
         bossAI.Boss.Body.ToggleBody(false);
         bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.none;
-        bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.none;
+        bossAI.Boss.BossPositioner.MovementEnabled = false;
     }
 
     public void Run()
@@ -26,6 +26,7 @@ public class IdleState : IBaseBossState, IState
 
     public void Exit()
     {
+        bossAI.Boss.BossPositioner.MovementEnabled = true;
         bossAI.Boss.Body.ToggleBody(true);
     }
 }

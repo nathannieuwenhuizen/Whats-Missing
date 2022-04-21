@@ -2,11 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace ForcefieldDemo
 {
-    public class Forcefield : MonoBehaviour
+    public class Forcefield : MonoBehaviour, ITriggerArea
     {    
+        public delegate void ForcefieldEvent();
+        public static ForcefieldEvent OnForceFieldEnter;
+        public static ForcefieldEvent OnForceFieldExit;
+        private NavMeshObstacle navMeshObstacle;
 
         [SerializeField] 
         private Collider sphereCollider;
@@ -74,6 +79,7 @@ namespace ForcefieldDemo
             get { return isOn;}
             set { 
                 isOn = value; 
+                navMeshObstacle.enabled = value;
                 if (disolveCoroutine != null) StopCoroutine(disolveCoroutine);
                 disolveCoroutine = StartCoroutine(Dissolving(value));
             }
@@ -169,6 +175,8 @@ namespace ForcefieldDemo
             set { meshRenderer.material.SetFloat("Dissolve", value); }
         }
 
+        public bool InsideArea { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
 
         // impact Forcefield, passing in hit point and direction
         public void ApplyImpact(Vector3 position, Vector3 direction)
@@ -222,6 +230,16 @@ namespace ForcefieldDemo
             {
                 UpdateMouse();
             }
+        }
+
+        public void OnAreaEnter(Player player)
+        {
+            OnForceFieldEnter?.Invoke();
+        }
+
+        public void OnAreaExit(Player player)
+        {
+            OnForceFieldExit?.Invoke();
         }
     }
 }

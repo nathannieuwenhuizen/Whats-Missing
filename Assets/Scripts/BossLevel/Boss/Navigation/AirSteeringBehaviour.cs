@@ -29,38 +29,48 @@ public class AirSteeringBehaviour : IMovementBehavior
         path.steps = 10;
     }
 
-    public void SetDestinationPath(Vector3 _end, Vector3 _begin = default)
-    {
+    public void SetDestinationPath(Vector3 _end, Vector3 _begin = default){
         path.begin = MountainCoordinate.FromPosition(pathHandeler, _begin == default(Vector3) ? transform.position : _begin);
         path.end = MountainCoordinate.FromPosition(pathHandeler, _end);
         path.generatePathPoints(pathHandeler);
         UpdateTempDestination();
     }
 
-    public void SetDestinationPath(Transform _target, Vector3 _begin = default)
-    {
+    public void SetDestinationPath(Transform _target, Vector3 _begin = default){
         desiredPos = _target;
         SetDestinationPath(desiredPos.position, _begin);
     }
 
-    public void UpdateTempDestination()
-    {
+    public void UpdateTempDestination(){
         desiredTempPos.position = path.GetClosestMountainCoord(transform.position, pathHandeler).ToVector(pathHandeler, 5f);
     }
     public void Update() {
         if (MovementEnabled) {
             UpdateTempDestination();
-                steeringBehaviour.UpdatePosition();
-                if (bodyOrientation != BodyOrientation.none) {
-                    MountainCoordinate coord = path.GetClosestMountainCoord(transform.position, pathHandeler);
-                    Vector3 normal = -coord.Normal(pathHandeler);
-                    if (bodyOrientation == BodyOrientation.toShape)
-                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(normal), Time.deltaTime);
-                    else if (bodyOrientation == BodyOrientation.toPath) {
-                        Vector3 pointDirection = path.GetPathDirection(coord, pathHandeler);
-                        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(normal, pointDirection), Time.deltaTime);
-                    }
-                }
+            steeringBehaviour.UpdatePosition();
+            UpdateRotation();
+        }
+    }
+
+    public Vector3 GetClosestPointOnPath(){
+        // return MountainCoordinate.FromPosition(pathHandeler, transform.position).ToVector(pathHandeler);
+        return path.GetClosestMountainCoord(transform.position, pathHandeler).ToVector(pathHandeler);    
+    }
+
+    public bool ReachedDestination(float _distanceThreshhold){
+        if (Vector3.Distance(transform.position, desiredTempPos.position) > _distanceThreshhold) return false;
+        if (steeringBehaviour.Velocity.magnitude > 1f) return false;
+        return true;
+    }
+
+    public void UpdateRotation(){
+        MountainCoordinate coord = path.GetClosestMountainCoord(transform.position, pathHandeler);
+        Vector3 normal = -coord.Normal(pathHandeler);
+        if (bodyOrientation == BodyOrientation.toShape)
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(normal), Time.deltaTime);
+        else if (bodyOrientation == BodyOrientation.toPath) {
+            Vector3 pointDirection = path.GetPathDirection(coord, pathHandeler);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(normal, pointDirection), Time.deltaTime);
         }
     }
 }

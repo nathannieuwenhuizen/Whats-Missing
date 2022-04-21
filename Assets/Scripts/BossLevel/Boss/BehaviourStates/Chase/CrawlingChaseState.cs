@@ -23,12 +23,9 @@ public class CrawlingChaseState : BaseChaseState
         positioner = bossAI.Boss.BossPositioner;
         positioner.BodyOrientation = BodyOrientation.toPath;
 
-        UpdateBossChasePath(true);
 
-        positioner.BodyMovementType = BodyMovementType.navMesh;
-        positioner.MovementEnabled = false;
-        Debug.Log("start crawling");
-        landingCoroutine = positioner.StartCoroutine(positioner.Landing(positioner.GetClosestMountainCoordOfBoss(), () => {
+        landingCoroutine = positioner.StartCoroutine(positioner.Landing(() => {
+            UpdateBossChasePath(true);
             positioner.MovementEnabled = true;
         }));
 
@@ -40,7 +37,8 @@ public class CrawlingChaseState : BaseChaseState
     private void UpdateBossChasePath(bool _resetBeginPos = false) {
         if (_resetBeginPos) startChasePos = bossAI.transform.position +  Vector3.up * (Boss.BOSS_GROUND_OFFSET);
 
-        positioner.SetDestinationPath(bossAI.Boss.Player.transform.position + Vector3.up * (Boss.BOSS_GROUND_OFFSET), startChasePos);
+        positioner.SetDestinationPath(bossAI.Boss.Player.transform, startChasePos);
+        // positioner.SetDestinationPath(bossAI.Boss.Player.transform.position + Vector3.up * (Boss.BOSS_GROUND_OFFSET), startChasePos);
     }
 
     public override void Run()
@@ -48,6 +46,12 @@ public class CrawlingChaseState : BaseChaseState
         base.Run();
         if (positioner.MovementEnabled) {
             UpdateBossChasePath(false);
+        }
+        if (Input.GetKeyDown(KeyCode.R)) {
+            OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
+        }
+        if (positioner.isAtPosition(3f)) {
+            Debug.Log("Attack!");
         }
     }
 
