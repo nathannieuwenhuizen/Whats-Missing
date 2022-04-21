@@ -10,7 +10,10 @@ namespace Boss {
 [RequireComponent(typeof(BossAI))]
 [RequireComponent(typeof(BossPositioner))]
 public class Boss : RoomObject
-{   
+{       
+    public const float BOSS_SIZE = 8f;
+    public const float BOSS_GROUND_OFFSET = 20f;
+
     [Header("Boss info")]
     [Space]
     [SerializeField]

@@ -19,6 +19,8 @@ public class BossCutsceneState : IBaseBossState, IState
     public virtual void Start()
     {
         OnBossCutsceneStart?.Invoke(bossAI.Boss);
+        bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.none;
+        bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.none;
     }
 
     public virtual void Run()

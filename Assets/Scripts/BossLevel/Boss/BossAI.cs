@@ -11,7 +11,7 @@ public interface IBaseBossState{
 public class BossBehaviours {
     public BossBehaviours(BossAI _ai) {
         lookingState = new LookingState() {bossAI = _ai };
-        chaseState = new ChaseState() {bossAI = _ai };
+        chaseState = new CrawlingChaseState() {bossAI = _ai };
         idleState = new IdleState() {bossAI = _ai };
         bossIntro = new BossIntroState() {bossAI = _ai };
         wanderState = new WanderState() {bossAI = _ai, wanderingPath = _ai.testPath };
@@ -19,7 +19,7 @@ public class BossBehaviours {
     }
 
     public LookingState lookingState; 
-    public ChaseState chaseState; 
+    public CrawlingChaseState chaseState; 
     public IdleState idleState; 
     public BossIntroState bossIntro; 
     public WanderState wanderState; 
@@ -54,7 +54,7 @@ public class BossAI : MonoBehaviour {
         behaviours = new BossBehaviours(this);
     }
     public void InitializeStateMachine() {
-        stateMachine = new FSM(behaviours.wanderState);
+        stateMachine = new FSM(behaviours.chaseState);
     }
     public void UpdateAI() {
         stateMachine.Update();

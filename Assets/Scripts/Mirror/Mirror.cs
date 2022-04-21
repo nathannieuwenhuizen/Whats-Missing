@@ -99,9 +99,9 @@ public class Mirror: MonoBehaviour, IRoomObject
     /// Updates the light indicator on whether the mirror is on.
     ///</summary>
     public void UpdateIndicatorLight() {
-        Color colour = IsOn ? onColor : offColor;
-        colour *= 3.0f;
-        indicatorMesh.material.SetColor("_EmissionColor", colour);
+        Color color = IsOn ? onColor : offColor;
+        color *= 3.0f;
+        indicatorMesh.material.SetColor("_EmissionColor", color);
     }
     protected void Awake() {
         // planarReflection.IsActive = false;
@@ -142,7 +142,6 @@ public class Mirror: MonoBehaviour, IRoomObject
     }
 
     public void ConfirmationFailed() {
-        Debug.Log("cofirmation failed" + room.Animated);
         if (room.Animated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);
 

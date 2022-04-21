@@ -54,6 +54,9 @@ public class SteeringBehaviour
         get { return slowingAmplitude;}
     }
 
+    ///<summary>
+    /// The transform that will have the steering behaviour
+    ///</summary>
     public Transform target;
     public Transform desiredTarget;
 
@@ -62,6 +65,10 @@ public class SteeringBehaviour
         if (_desiredTarget != null) desiredTarget = _desiredTarget;
     }
 
+
+    ///<summary>
+    /// Updates the position based on the sterring behaviour of the target transform
+    ///</summary>
     public void UpdatePosition() {
         desiredVelocity = (desiredTarget.position - target.position);
 
@@ -92,6 +99,13 @@ public class SteeringBehaviour
             vector = vector.normalized * distance;
         }
         return vector;
+    }
+
+    ///<summary>
+    /// Resets the velocity
+    ///</summary>
+    public void Reset() {
+        velocity = Vector3.zero;
     }
 
 }

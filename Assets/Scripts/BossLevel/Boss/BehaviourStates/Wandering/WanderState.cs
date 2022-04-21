@@ -34,9 +34,9 @@ public class WanderState : LookingState, IState
     {
         base.Start();
         positioner = bossAI.Boss.BossPositioner;
-        positioner.UseSteering = true;
         bossHead = bossAI.Boss.Head;
 
+        positioner.BodyMovementType = BodyMovementType.steeringBehaviour;
         CurrentPoseIndex = 0;
         wanderingCoroutine = bossAI.StartCoroutine(Wandering());
 
@@ -46,7 +46,6 @@ public class WanderState : LookingState, IState
     {
         base.Exit();
         bossAI.StopCoroutine(wanderingCoroutine);
-        positioner.UseSteering = false;
 
     }
 

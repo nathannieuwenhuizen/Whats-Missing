@@ -16,6 +16,8 @@ public class IdleState : IBaseBossState, IState
     {
         bossAI.BossEye.LightIsOn = false;
         bossAI.Boss.Body.ToggleBody(false);
+        bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.none;
+        bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.none;
     }
 
     public void Run()
