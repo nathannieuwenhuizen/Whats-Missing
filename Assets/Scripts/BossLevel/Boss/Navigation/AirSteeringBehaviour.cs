@@ -9,6 +9,14 @@ public class AirSteeringBehaviour : IMovementBehavior
     public bool MovementEnabled { get; set; } = true;
     public BodyOrientation bodyOrientation {get; set;} = BodyOrientation.toShape;
 
+    private float speedScale = 1f;
+    public float SpeedScale { 
+        get => SpeedScale;
+        set {
+            speedScale = value;
+        } 
+    }
+
     private BossPathHandler pathHandeler;
     private MountainPath path;
     private Transform transform;

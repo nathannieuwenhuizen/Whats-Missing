@@ -3,32 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Boss {
 
-public class BossCutsceneState : IBaseBossState, IState
+public class BossCutsceneState : BaseBossState, IState
 {
-    public ILiveStateDelegate OnStateSwitch { get; set; }
-    public BossAI bossAI { get; set; }
-
     public delegate void BossCutSceneDelegate(Boss boss);
     public static BossCutSceneDelegate OnBossCutsceneStart;
     public static BossCutSceneDelegate OnBossCutsceneEnd;
     
-    public virtual void DrawDebug()
+    public override void DrawDebug()
     {
-
+        base.DrawDebug();
     }
-    public virtual void Start()
+    public override void Start()
     {
+        stateName = "Cutscene";
+
         OnBossCutsceneStart?.Invoke(bossAI.Boss);
         bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.none;
         bossAI.Boss.BossPositioner.MovementEnabled = false;
     }
 
-    public virtual void Run()
+    public override void Run()
     {
 
     }
 
-    public virtual void Exit()
+    public override void Exit()
     {
         bossAI.Boss.BossPositioner.MovementEnabled = true;
         OnBossCutsceneEnd?.Invoke(bossAI.Boss);

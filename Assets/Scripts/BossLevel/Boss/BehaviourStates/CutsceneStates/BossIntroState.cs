@@ -5,10 +5,9 @@ namespace Boss {
 
 public class BossIntroState : BossCutsceneState
 {
-        public BossAI bossAI { get; set; }
-
     public override void Start()
     {
+        stateName = "Intro cutscene";
         base.Start();
         bossAI.StartCoroutine(TestAnimation());
     }
@@ -19,7 +18,7 @@ public class BossIntroState : BossCutsceneState
         yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(-20,40,0), AnimationCurve.EaseInOut(0,0,1,1), 3f);
         yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(-30,30,0), AnimationCurve.EaseInOut(0,0,1,1), 4f);
 
-        OnStateSwitch?.Invoke(bossAI.Behaviours.lookingState);
+        OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
     }
 }
 }

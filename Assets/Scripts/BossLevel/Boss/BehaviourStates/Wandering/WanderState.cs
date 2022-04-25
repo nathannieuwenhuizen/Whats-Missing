@@ -35,6 +35,7 @@ public class WanderState : LookingState, IState
     public override void Start()
     {
         base.Start();
+        stateName = "Wandering";
         positioner = bossAI.Boss.BossPositioner;
         bossHead = bossAI.Boss.Head;
 

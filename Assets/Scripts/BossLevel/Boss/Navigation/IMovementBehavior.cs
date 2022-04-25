@@ -11,6 +11,8 @@ public interface IMovementBehavior
     public Transform desiredPos {get; set; }
     public bool MovementEnabled {get; set; }
 
+    public float SpeedScale{get; set; }
+
     public void UpdateTempDestination();
     public void Update();
     public void UpdateRotation();

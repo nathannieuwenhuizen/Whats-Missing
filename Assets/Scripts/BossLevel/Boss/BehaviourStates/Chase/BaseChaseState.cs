@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Boss {
 
-public class BaseChaseState : IBaseBossState, IState
+public class BaseChaseState : BaseBossState
 {
-    public BossAI bossAI { get; set; }
-    public ILiveStateDelegate OnStateSwitch { get; set; }
 
-    public virtual void DrawDebug()
+    public override void DrawDebug()
     {
-
+        base.DrawDebug();
     }
     private float oldViewAngle;
     private float sharpViewAngle = 8;
-    public virtual void Start()
+    public override void Start()
     {
         bossAI.BossHead.SteeringBehaviour.MaxForce *= 20f;
         oldViewAngle = bossAI.BossEye.ViewAngle;
@@ -22,7 +20,7 @@ public class BaseChaseState : IBaseBossState, IState
         bossAI.BossEye.AnimateViewAngle(sharpViewAngle);
     }
 
-    public virtual void Run()
+    public override void Run()
     {
         bossAI.BossHead.SetAim(bossAI.Boss.Player.Camera.transform.position, Vector2.zero);
         bossAI.BossEye.UpdateNoticing(bossAI.Boss.Player);
@@ -31,7 +29,7 @@ public class BaseChaseState : IBaseBossState, IState
         }
     }
 
-    public virtual void Exit()
+    public override void Exit()
     {
         bossAI.BossHead.SteeringBehaviour.MaxForce /= 20f;
         bossAI.BossEye.AnimateViewAngle(oldViewAngle);

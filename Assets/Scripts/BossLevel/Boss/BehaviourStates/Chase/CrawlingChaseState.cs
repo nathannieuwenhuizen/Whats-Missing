@@ -11,6 +11,8 @@ public class CrawlingChaseState : BaseChaseState
     private BossPositioner positioner;
     private Coroutine landingCoroutine;
     private Vector3 startChasePos;
+    private float attackRange = 3f;
+
 
     public override void DrawDebug()
     {
@@ -22,6 +24,7 @@ public class CrawlingChaseState : BaseChaseState
         base.Start();
         positioner = bossAI.Boss.BossPositioner;
         positioner.BodyOrientation = BodyOrientation.toPath;
+        stateName = "Chase";
 
 
         landingCoroutine = positioner.StartCoroutine(positioner.Landing(() => {
@@ -50,10 +53,16 @@ public class CrawlingChaseState : BaseChaseState
         if (Input.GetKeyDown(KeyCode.R)) {
             OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
         }
-        if (positioner.isAtPosition(3f)) {
+
+        if (bossAI.PlayerIsInForceField)
+            OnStateSwitch?.Invoke(bossAI.Behaviours.chagerAtShieldState);
+        
+        if (positioner.isAtPosition(attackRange)) {
             Debug.Log("Attack!");
         }
     }
+
+
 
     public override void Exit()
     {

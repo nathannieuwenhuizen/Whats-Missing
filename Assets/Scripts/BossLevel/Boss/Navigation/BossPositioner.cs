@@ -82,6 +82,11 @@ public class BossPositioner : MonoBehaviour
         }
     }
 
+    public float SpeedScale {
+        get { return CurrentMovementBehaviour.SpeedScale;}
+        set { CurrentMovementBehaviour.SpeedScale = value; }
+    }
+
 
     public BodyOrientation BodyOrientation {
         get { return CurrentMovementBehaviour.bodyOrientation;}

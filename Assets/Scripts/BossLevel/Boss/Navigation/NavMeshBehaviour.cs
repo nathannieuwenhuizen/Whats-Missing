@@ -4,6 +4,25 @@ using UnityEngine;
 using UnityEngine.AI;
 using Boss;
 
+public struct NavMeshValues {
+    public float speed;
+    public float acceleration;
+    public float angularSpeed;
+
+    public static NavMeshValues Save(NavMeshAgent _agent) {
+        return new NavMeshValues() {
+            speed = _agent.speed,
+            acceleration = _agent.acceleration,
+            angularSpeed = _agent.angularSpeed
+        };
+    }
+    public void SetValues(NavMeshAgent _agent, float _scale = 1f) {
+        _agent.speed = speed * _scale;
+        _agent.acceleration = acceleration * _scale;
+        _agent.angularSpeed = angularSpeed * _scale;
+    }
+}
+
 public class NavMeshBehaviour : IMovementBehavior
 {
     public Transform desiredPos { get; set; }
@@ -24,7 +43,16 @@ public class NavMeshBehaviour : IMovementBehavior
             navMeshAgent.enabled = movementUpdateEnabled;
         }
     }
+    private NavMeshValues startNavMeshValues;
 
+    private float speedScale = 1f;
+    public float SpeedScale { 
+        get => SpeedScale;
+        set {
+            speedScale = value;
+            startNavMeshValues.SetValues(navMeshAgent, value);
+        } 
+    }
 
     public NavMeshBehaviour(Transform _transform, Transform _desiredTempPos) {
         transform = _transform;
@@ -32,6 +60,7 @@ public class NavMeshBehaviour : IMovementBehavior
         navMeshAgent = transform.GetComponent<NavMeshAgent>();
         navMeshAgent.updateRotation = false;
         navMeshAgent.updateUpAxis = false;
+        startNavMeshValues = NavMeshValues.Save(navMeshAgent);
     }
 
     public void SetDestinationPath(Vector3 _end, Vector3 _begin = default)
