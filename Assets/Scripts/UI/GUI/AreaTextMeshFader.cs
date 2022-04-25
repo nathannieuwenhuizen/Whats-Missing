@@ -12,10 +12,11 @@ public class AreaTextMeshFader : TextMeshFader, ITriggerArea, IRoomObject
     [SerializeField]
     private bool isTVTutorial = false;
 
+    private bool hasBeenFaded = false; 
+
     public bool InsideArea { get; set; } = false;
 
-    private bool inSpace = false;
-    public bool InSpace {get => inSpace; }
+    public bool InSpace {get; set; } = false;
 
     protected override void Start() {
         base.Start();
@@ -23,6 +24,9 @@ public class AreaTextMeshFader : TextMeshFader, ITriggerArea, IRoomObject
     }
     public override void FadeIn()
     {
+        if (hasBeenFaded) return;
+        hasBeenFaded = true;
+
         base.FadeIn();
         if (isTVTutorial) {
             isTVTutorial = false;
@@ -32,7 +36,7 @@ public class AreaTextMeshFader : TextMeshFader, ITriggerArea, IRoomObject
 
     public void OnAreaEnter(Player player)
     {
-        if (inSpace) {
+        if (InSpace) {
             FadeIn();
         }
         InsideArea = true;
@@ -40,16 +44,17 @@ public class AreaTextMeshFader : TextMeshFader, ITriggerArea, IRoomObject
 
     public void OnAreaExit(Player player)
     {
+        // if (inSpace) {
+        //     FadeOut();
+        // }
         InsideArea = false;
     }
 
     public void OnRoomEnter()
     {
-        inSpace = true;
     }
 
     public void OnRoomLeave()
     {
-        inSpace = false;
     }
 }

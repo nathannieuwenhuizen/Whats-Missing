@@ -8,7 +8,7 @@ public class RoomLevel : ScriptableObject
 {
     [Header("Prefab of the room")]
     public Room prefab;
-    [Header("Room info (can be null)")]
+    [Header("Room info")]
     public RoomData roomInfo;
 }
 
@@ -16,7 +16,7 @@ public class RoomLevel : ScriptableObject
 public class RoomData {
     public bool revealChangesAfterFinish = true;
     public MirrorData[] questionMirror;
-    public MirrorData[] changeMirror;
+    public Change[] loadedChanges;
     [Header("Hints")]
     public float durationBeforeHint = 60f;
     public string hintText;
@@ -27,8 +27,13 @@ public class RoomData {
 [System.Serializable]
 public class MirrorData {
     public string letters;
-    [Range(-1,1)]
-    public int roomIndexoffset = 0;
     public ChangeType changeType = ChangeType.missing;
     public bool isOn = false;
+    public bool huzzleWords = true;
+    public bool isQuestion = true;
+
+    //was nessecary because the scrptable objects kept changing in playmode
+    public MirrorData Clone {
+        get => new MirrorData() {letters = letters, changeType = changeType, isOn = isOn, huzzleWords = huzzleWords };
+    }
 }

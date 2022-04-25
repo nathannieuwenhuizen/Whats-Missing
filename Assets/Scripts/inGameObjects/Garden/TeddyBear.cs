@@ -33,8 +33,10 @@ public class TeddyBear : InteractabelObject
         Word = "teddybear";
         AlternativeWords = new string[] {"bear", "teddy"};
     }
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         rigidBody.isKinematic = true;
+        InteractableDistance = 10f;
     }
 
     public override void OnEnlarge()
@@ -75,21 +77,6 @@ public class TeddyBear : InteractabelObject
 
         AudioHandler.Instance.PlaySound(SFXFiles.grave_cutscene);
 
-        // StartCoroutine(PlayCutsceneAudio(1f , () => {
-        //     AudioHandler.Instance.PlaySound(SFXFiles.knee_on_dirt, .2f, .9f);
-        // }));
-        // StartCoroutine(PlayCutsceneAudio(3f , () => {
-        //     AudioHandler.Instance.PlaySound(SFXFiles.pulling_pocket, .5f);
-        // }));
-        // StartCoroutine(PlayCutsceneAudio(5.4f , () => {
-        //     AudioHandler.Instance.PlaySound(SFXFiles.music_box, .3f);
-        // }));
-        // StartCoroutine(PlayCutsceneAudio(7.8f , () => {
-        //     AudioHandler.Instance.PlaySound(SFXFiles.music_box_on_ground, 1f);
-        // }));
-        // StartCoroutine(PlayCutsceneAudio(8f , () => {
-        //     AudioHandler.Instance.PlayUISound(SFXFiles.gregory_cry, .7f);
-        // }));
         StartCoroutine(PlayCutsceneAudio(11f , () => {
             AudioHandler.Instance.FadeListener(0, 5f);
         }));

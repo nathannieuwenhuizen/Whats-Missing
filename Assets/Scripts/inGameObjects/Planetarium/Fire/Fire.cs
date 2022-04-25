@@ -118,7 +118,7 @@ public class Fire : RoomObject
 
     public override IEnumerator AnimateEnlarging()
     {
-        StartCoroutine(fireSpreadObject.AnimatingScale(Vector3.one * fireSpreadScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+        StartCoroutine(fireSpreadObject.AnimatingLocalScale(Vector3.one * fireSpreadScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
         return base.AnimateEnlarging();
     }
     public override void OnEnlargingFinish()

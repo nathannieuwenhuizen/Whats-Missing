@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class TransformExtensions
 {
-    public static  IEnumerator AnimatingScale(this Transform transform, Vector3 endScale,  AnimationCurve curve, float duration = .5f) {
+    public static  IEnumerator AnimatingLocalScale(this Transform transform, Vector3 endScale,  AnimationCurve curve, float duration = .5f) {
         float timePassed = 0f;
         Vector3 beginScale = transform.localScale;
         while (timePassed < duration) {
@@ -83,7 +83,7 @@ public static class TransformExtensions
         while (index < duration) {
             yield return new WaitForEndOfFrame();
             index += Time.deltaTime;
-            transform.position = Extensions.CalculateQuadraticBezierPoint(index / duration,  begin, mid, end);
+            transform.position = Extensions.CalculateQuadraticBezierPoint(curve.Evaluate(index / duration),  begin, mid, end);
         }
         transform.position = end;
     }
@@ -100,24 +100,58 @@ public static class TransformExtensions
         transform.rotation = endrotation;
     }
 
-    public static  IEnumerator Shake(this Transform transform, float magintude, float frequence, float duration = .5f) {
+    public static  IEnumerator AnimatingLocalRotation(this Transform transform, Quaternion endrotation,  AnimationCurve curve, float duration = .5f) {
+        float timePassed = 0f;
+        Quaternion beginrotation = transform.localRotation;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            transform.localRotation = Quaternion.SlerpUnclamped(beginrotation, endrotation , curve.Evaluate(timePassed / duration));
+        }
+        transform.localRotation = endrotation;
+    }
+
+    public static IEnumerator ShakeZRotation(this Transform transform, float magnitude, float frequence, float duration = .5f) {
+        float timePassed = 0f;
+        Quaternion start = transform.localRotation;
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            // start = transform.localRotation;
+            // start.z = 0;
+
+            float currentMagnitude = Mathf.Sin(Mathf.PI * (timePassed / duration)) * magnitude;
+            transform.localRotation = start;
+            transform.Rotate( new Vector3(
+                0,0,
+                Mathf.Sin((timePassed * frequence) * (Mathf.PI * 2)) * currentMagnitude
+            ));
+        }
+        transform.localRotation = start;
+    }
+    public static IEnumerator ShakeLocalYPos(this Transform transform, float magnitude, float frequence, float duration = .5f) {
         float timePassed = 0f;
         while (timePassed < duration) {
             yield return new WaitForEndOfFrame();
             timePassed += Time.deltaTime;
-            float currentMagnitude = Mathf.Sin(Mathf.PI * (timePassed / duration)) * magintude;
-            transform.localRotation = Quaternion.Euler(
-                transform.localRotation.x,
-                transform.localRotation.y,
-                Mathf.Sin((timePassed * frequence) * (Mathf.PI * 2)) * currentMagnitude
+            float currentMagnitude = Mathf.Sin(Mathf.PI * (timePassed / duration)) * magnitude;
+            transform.localPosition = new Vector3(
+                transform.localPosition.x,
+                Mathf.Sin((timePassed * frequence) * (Mathf.PI * 2)) * currentMagnitude,
+                transform.localPosition.z
             );
         }
-        transform.localRotation = Quaternion.Euler(
-                transform.localRotation.x,
-                transform.localRotation.y,
-                0
-            );
-
+        transform.localPosition = new Vector3(
+            transform.localPosition.x,
+            0,
+            transform.localPosition.z
+        );
+    }
+    public static Quaternion RandomRotation (float amplitude = 1f) {
+        return Quaternion.Euler(Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude));
+    }
+    public static Vector3 RandomVector (float amplitude = 1f) {
+        return new Vector3(Random.Range(-amplitude, amplitude), Random.Range(-amplitude, amplitude), Random.Range(-amplitude, amplitude));
     }
 
 

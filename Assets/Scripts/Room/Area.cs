@@ -143,45 +143,40 @@ public class Area : MonoBehaviour
         Transform origin = transform;
         int index = 0;
         foreach (RoomLevel roomLevel in roomLevels) {
+
             bool completed = index < loadRoomIndex;
             index += 1;
+
+            //dont load room in that are behind the player progression
+            // if (index < loadRoomIndex - 2) continue;
 
             //make new room
             Room newRoom = Instantiate(roomLevel.prefab.gameObject, transform).GetComponent<Room>();
             newRoom.name = "Room: " + (roomLevel.roomInfo != null ? roomLevel.name : roomLevel.prefab.name);
             newRoom.Area = this;
             newRoom.roomLevel = roomLevel;
-            int changeMirrorIndex = 0;
+            int mirrorIndex = 0;
             if (roomLevel.roomInfo != null) {
                 newRoom.RevealChangeAfterCompletion = roomLevel.roomInfo.revealChangesAfterFinish;
                 foreach (Mirror mirror in newRoom.GetAllObjectsInRoom<Mirror>())
                 {
-                    if (mirror.isQuestion) {
-                        if (completed && roomLevel.roomInfo.changeMirror.Length > 0) {
-                            mirror.PreAnswer = roomLevel.roomInfo.changeMirror[0].letters;
+                    if (mirrorIndex < roomLevel.roomInfo.questionMirror.Length) {
+                        MirrorData questionMirrorData = roomLevel.roomInfo.questionMirror[mirrorIndex].Clone;
+                        mirror.MirrorData = questionMirrorData;
+                        mirror.isQuestion = mirror.MirrorData.isQuestion;
+
+                        if (completed && roomLevel.roomInfo.loadedChanges.Length > 0) {
+                            mirror.PreAnswer = roomLevel.roomInfo.loadedChanges[0].word;
                             mirror.IsOn = true;
                         }  else {
-                            mirror.IsOn = roomLevel.roomInfo.questionMirror[0].isOn;
                             if(mirror.IsOn) {
-                                mirror.PreAnswer = roomLevel.roomInfo.questionMirror[0].letters;
+                                mirror.PreAnswer = mirror.MirrorData.letters;
+                                mirror.Letters = "";
                             } else {
-                                mirror.Letters = roomLevel.roomInfo.questionMirror[0].letters;
+                                mirror.Letters = mirror.MirrorData.letters;
                             }
                         }
-                        mirror.changeType = roomLevel.roomInfo.questionMirror[0].changeType;
-                        mirror.roomIndexoffset = roomLevel.roomInfo.questionMirror[0].roomIndexoffset;
-                    } else {
-                        MirrorData changeMirrorData = roomLevel.roomInfo.changeMirror[changeMirrorIndex];
-                        newRoom.SecondHintAnswer =  changeMirrorData.letters;
-                        mirror.IsOn = changeMirrorData.isOn;
-                        if (changeMirrorData.isOn) {
-                            mirror.PreAnswer = changeMirrorData.letters;
-                        } else {
-                            mirror.Letters = changeMirrorData.letters;
-                        }
-                        mirror.changeType = changeMirrorData.changeType;
-                        mirror.roomIndexoffset = changeMirrorData.roomIndexoffset;
-                        changeMirrorIndex++;
+                        mirrorIndex++;
                     }
                 }
             }

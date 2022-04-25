@@ -19,14 +19,14 @@ public class EndlessHallway : MonoBehaviour
 
     private List<GameObject> chunks = new List<GameObject>();
 
-
     [SerializeField]
     private Player player;
     
     private void SpawnChunks() {
-
+        
         Vector3 spawnPos = startChunk.transform.position;
         for(int i = 0; i < ammountOfChunks; i++) {
+            
             spawnPos += new Vector3(-chunkSize,0,0);
             GameObject newChunk = Instantiate(chunkPrefabs[Random.Range(0, chunkPrefabs.Length)], spawnPos, Quaternion.identity);
             newChunk.name = "chunk #" + i;
@@ -44,7 +44,6 @@ public class EndlessHallway : MonoBehaviour
 
         float delta = Mathf.Abs(startChunk.transform.position.x - player.transform.position.x );
         int indexDifference = Mathf.FloorToInt(delta / chunkSize);
-        // Debug.Log("is behind = " +  StartChunkIsBehind());
         if (StartChunkIsBehind()) {
             if (indexDifference > 1) SetPlayerBack(indexDifference - 1);
         } else {

@@ -18,12 +18,15 @@ public class BlackScreenOverlay : MonoBehaviour
     private void OnEnable() {
         Player.OnDie += DeathFade;
         Area.OnRespawn += RemoveOverlay;
+        BossRoom.OnRespawn += RemoveOverlay;
+
         AlchemyItem.OnPickingAlchemyItem += FadeToWhite;
 
     }
     private void OnDisable() {
         Player.OnDie -= DeathFade;
         Area.OnRespawn -= RemoveOverlay;
+        BossRoom.OnRespawn -= RemoveOverlay;
         AlchemyItem.OnPickingAlchemyItem -= FadeToWhite;
     }
 

@@ -8,8 +8,6 @@ public class Gravity : Property
 
     [SerializeField]
     private Room room;
-    [SerializeField]
-    private Material shockWaveMaterial;
 
     public static OnPropertyToggle onGravityMissing;
 
@@ -72,7 +70,8 @@ public class Gravity : Property
     
     public List<Rigidbody> SortedByDistanceRigidBodies() {
         List<Rigidbody> allRigidbodies = room.GetAllObjectsInRoom<Rigidbody>();
-        if (currentChange.mirror != null)
+        Debug.Log("current change: " + currentChange);
+        if (currentChange != null &&  currentChange.mirror != null)
             allRigidbodies.Sort(delegate(Rigidbody a, Rigidbody b) {
                 return Vector3.Distance(a.transform.position, currentChange.mirror.transform.position) >
                     Vector3.Distance(b.transform.position, currentChange.mirror.transform.position) ? 1 : -1;

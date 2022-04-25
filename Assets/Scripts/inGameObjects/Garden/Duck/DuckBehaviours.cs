@@ -58,6 +58,11 @@ public class StaringState : IState
     {
         _duck.Quack();
     }
+    public void DrawDebug()
+    {
+
+    }
+
 }
 
 public class SwimState : IState
@@ -148,6 +153,11 @@ public class SwimState : IState
         Debug.DrawRay(_duck.transform.position, _duck.Velocity.normalized * 2, Color.green);
         Debug.DrawRay(_duck.transform.position, desiredVelocity.normalized * 2, Color.magenta);
     }
+
+    public void DrawDebug()
+    {
+
+    }
 }
 
 public class FollowState : IState
@@ -221,6 +231,10 @@ public class FollowState : IState
             yield return new WaitForSeconds(Random.Range(2, 10));
             _duck.Quack();
         }
+    }
+        public void DrawDebug()
+    {
+
     }
 
 

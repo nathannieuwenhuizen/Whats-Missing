@@ -13,9 +13,10 @@ public class Hands : MonoBehaviour
     public delegate void FocusedAction(bool whiteColor);
     public static event FocusedAction OnFocus; 
     public static event FocusedAction OnUnfocus; 
-
     [SerializeField]
-    private float pickupDistance = 3;
+    private Player player;
+
+    private float pickupDistance = 6;
     private float shrinkPickupDistance;
 
     private float massThreshhold = 1f;
@@ -24,11 +25,10 @@ public class Hands : MonoBehaviour
         set { massThreshhold = value; }
     }
 
-    private bool shrinked = false;
 
     public float PickupDistance {
         get {
-            return shrinked ? shrinkPickupDistance : pickupDistance;
+            return pickupDistance / player.NormalScale * player.CurrentScale;
         }
     }
 
@@ -47,7 +47,7 @@ public class Hands : MonoBehaviour
         if (!isEnabled) return;
         
         //check objects to interact with.
-        IInteractable interactableObj = FocussedObject<IInteractable>();
+        IInteractable interactableObj = FocussedObject();
         if (interactableObj != default(IInteractable)) {
             IPickable pickable = interactableObj.Gameobject.GetComponent<IPickable>();
             if (pickable != default(IPickable) && pickable.TooHeavy(this) == false) {
@@ -62,7 +62,6 @@ public class Hands : MonoBehaviour
         holdingObject = obj;
         oldPos = holdingObject.gameObject.transform.position;
         obj.Grab(rigidbody);
-        AudioHandler.Instance?.PlaySound(SFXFiles.player_grab, .5f);
         StartCoroutine(UpdateVelocity());
         StartCoroutine(UpdatePhysics()); 
     }
@@ -72,8 +71,6 @@ public class Hands : MonoBehaviour
         InputManager.OnClickUp += Release;
         PauseScreen.OnPause += DisableClick;
         PauseScreen.OnResume += EnableClick;
-        Player.OnPlayerShrink += PlayerHasShrunk;
-        Player.OnPlayerUnShrink += PlayerHasUnShrunk;
     }
 
     private void OnDisable() {
@@ -81,16 +78,6 @@ public class Hands : MonoBehaviour
         InputManager.OnClickUp -= Release;
         PauseScreen.OnPause -= DisableClick;
         PauseScreen.OnResume -= EnableClick;
-        Player.OnPlayerShrink -= PlayerHasShrunk;
-        Player.OnPlayerUnShrink -= PlayerHasUnShrunk;
-    }
-
-    private void PlayerHasShrunk() {
-        shrinked = true;
-
-    }
-    private void PlayerHasUnShrunk() {
-        shrinked = false;
     }
 
     private void EnableClick() {
@@ -133,14 +120,34 @@ public class Hands : MonoBehaviour
 
     private IEnumerator UpdatePhysics() {
         while (holdingObject != null) {
-            for(int i=0 ; i < 1f; i++) {
-                var speed = holdingObject.Touching ? 3f : 10f;
-                holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-                Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (PickupDistance * .5f);
-                Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, transform.position + offset, Time.deltaTime * speed);
-                holdingObject.RigidBody.MovePosition(midwayDestination);
-                yield return new WaitForFixedUpdate();
+
+            
+            var speed = holdingObject.Touching ? 3f : 10f;
+            holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (holdingObject.HoldingDistance);
+            Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, transform.position + offset, Time.deltaTime * speed);
+            holdingObject.RigidBody.MovePosition(midwayDestination);
+
+            // var speed = holdingObject.Touching ? 3f : 10f;
+            // holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
+            // Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (holdingObject.HoldingDistance * .5f);
+            // Vector3 midwayDestination = Vector3.Lerp(oldPos, transform.position + offset, Time.deltaTime * speed);
+            // holdingObject.RigidBody.MovePosition(transform.position + offset);
+
+            if (holdingObject.LooksWhenGrabbed) {
+                Quaternion currentRotation = holdingObject.RigidBody.rotation;
+
+                holdingObject.RigidBody.transform.LookAt(transform.position, transform.up);
+                holdingObject.RigidBody.transform.Rotate(-90, 90, -90);
+                Quaternion desiredRotation = holdingObject.RigidBody.rotation;
+
+                holdingObject.RigidBody.rotation = currentRotation;
+                holdingObject.RigidBody.MoveRotation(Quaternion.SlerpUnclamped(currentRotation, desiredRotation, Time.deltaTime * 10f));
+
+                // holdingObject.RigidBody.rotation.LookAt(transform.position, transform.up);
             }
+            
+            yield return new WaitForFixedUpdate();
         }   
     }
 
@@ -149,8 +156,10 @@ public class Hands : MonoBehaviour
             UpdateFocusedObject();
     }
     private void UpdateFocusedObject() {
-        IInteractable interactableObj = FocussedObject<IInteractable>();
+        Debug.Log("update");
+        IInteractable interactableObj = FocussedObject();
         if (interactableObj != default(IInteractable)) {
+            Debug.Log(interactableObj.Gameobject.name);
             if (interactableObj != currentInteractable && interactableObj.Interactable) {
                 if (currentInteractable != default(IInteractable))
                     currentInteractable.Focused = false;
@@ -177,17 +186,24 @@ public class Hands : MonoBehaviour
 
 
     //raycast froward from the camera to any object that has the component T with it.
-    private T FocussedObject<T>() {
+    private IInteractable FocussedObject() {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, PickupDistance)) {
-            if (hit.collider.gameObject.GetComponent<T>() != null) {
-                return hit.collider.gameObject.GetComponent<T>();
+        IInteractable result = default(IInteractable);
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 20f)) {
+            if (hit.collider.gameObject.GetComponent<IInteractable>() != null) {
+                result =  hit.collider.gameObject.GetComponent<IInteractable>();
             } else if (hit.collider.transform.parent != null) {
-                if (hit.collider.transform.parent.GetComponent<T>() != null) 
-                    return hit.collider.transform.parent.GetComponent<T>();
+                if (hit.collider.transform.parent.GetComponent<IInteractable>() != null) 
+                    result = hit.collider.transform.parent.GetComponent<IInteractable>();
             }
         }
-        return default(T);
+        
+
+        if (result != default(IInteractable)) {
+            float distance = Vector3.Distance(transform.position,hit.point);
+            if (distance < result.InteractableDistance) return result;
+        } 
+        return default(IInteractable);
     }
 
 }

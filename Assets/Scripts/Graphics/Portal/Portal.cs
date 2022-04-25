@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class Portal : MonoBehaviour
+public class Portal : RenderTexturePlane
 {
-    // referenses
-
     [SerializeField]
     private Collider[] connectedColliders;
 
     private bool insidePortal = false;
-    private bool portalHasbeenRendered = false;
-    public bool PortalHasbeenRendered {
-        get { return portalHasbeenRendered;}
-    }
 
     private Player player;
     private static readonly Quaternion halfTurn = Quaternion.Euler(0.0f, 0.0f, 180.0f);
@@ -23,60 +17,13 @@ public class Portal : MonoBehaviour
 
     public Portal connectedPortal;
     
-    private Camera mainCamera;
-    public Camera reflectionCamera;
-    public Transform reflectionPlane;
     private RenderTexture outputTexture;
 
-    // parameters
-    public bool copyCameraParamerers;
-    public float verticalOffset;
-    private bool isReady;
-
-    private bool inView = false;
-    public bool InView {
-        get { return inView;}
-        set { 
-            inView = value; 
-            reflectionCamera.gameObject.SetActive(value);
-        }
-    }
-    private bool isActive = true;
-    public bool IsActive {
-        get { return isActive;}
-        set { 
-            isActive = value; 
-            if (value == false) {
-                InView = false;
-            }
-        }
-    }
-
-    // cache
-    private Transform mainCamTransform;
-    private Transform reflectionCamTransform;
-
-    private void Start() {
-        if (outputTexture == null) {
-            outputTexture = new RenderTexture(Screen.width, Screen.height, 32, RenderTextureFormat.ARGB64);
-            outputTexture.depth = 32;
-            outputTexture.name = "my texture2";
-            outputTexture.Create();
-        }
-        reflectionCamera.targetTexture = outputTexture;
-        reflectionPlane.GetComponent<MeshRenderer>().material.SetTexture("_ReflectionTex", outputTexture);
-
-        IsActive = isActive;
-    }
-
-
-    private void LateUpdate()
+    protected override void LateUpdate()
     {
-        if (!isActive) return;
-        
-        InView = IncameraRange();
+        if (connectedPortal != null) base.LateUpdate();
 
-    
+        if (!isActive) return;
         if (!InView) return;
         
         if (insidePortal && player != null) {
@@ -85,14 +32,6 @@ public class Portal : MonoBehaviour
             {
                 Teleport();
             } 
-        }
-
-        if (isReady && mainCamera != null && connectedPortal != null){
-            RenderPortal();
-        }
-        else {
-            mainCamera = Camera.main;
-            OnValidate();
         }
     }
 
@@ -116,7 +55,6 @@ public class Portal : MonoBehaviour
     }
 
     private void Teleport() {
-        Debug.Log("teleport!");
         OnPortalLeave();
         connectedPortal.OnPortalEnter(player);
 
@@ -137,7 +75,7 @@ public class Portal : MonoBehaviour
 
     
 
-    private void RenderPortal()
+    protected override void UpdateCamera()
     {
         // take main camera directions and position world space
         Vector3 cameraDirectionWorldSpace = mainCamTransform.forward;
@@ -168,12 +106,10 @@ public class Portal : MonoBehaviour
         reflectionCamTransform.position = cameraPositionWorldSpace;
         reflectionCamTransform.LookAt(cameraPositionWorldSpace + cameraDirectionWorldSpace, cameraUpWorldSpace);
         SetNearClipPlane();
-
-        portalHasbeenRendered = true;
-        // reflectionCamera.nearClipPlane = Vector3.Distance(reflectionCamTransform.position, reflectionPlane.position);            
     }
 
-    private void SetNearClipPlane() {
+    protected override void SetNearClipPlane() {
+        
         Transform clipPlane = connectedPortal.transform;
         int dot = System.Math.Sign(Vector3.Dot(clipPlane.forward, clipPlane.position - reflectionCamTransform.position));
 
@@ -185,51 +121,5 @@ public class Portal : MonoBehaviour
 
         reflectionCamera.orthographic = true;
         reflectionCamera.projectionMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
-    }
-
-   
-
-    public bool IncameraRange() {
-
-        if (mainCamera == null) {
-            mainCamera = Camera.main;
-            OnValidate();
-        }
-
-        Renderer renderer = reflectionPlane.GetComponent<MeshRenderer>();
-        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
-        float offset = transform.InverseTransformPoint(Camera.main.transform.position).y;
-        if(GeometryUtility.TestPlanesAABB(planes, renderer.bounds)){
-            return true;
-        } else {
-            return false;   
-        }
-    }
-
-    private void OnValidate()
-    {
-        if (mainCamera != null)
-        {
-            mainCamTransform = mainCamera.transform;
-            isReady = true;
-        }
-        else
-            isReady = false;
-
-        if (reflectionCamera != null)
-        {
-            reflectionCamTransform = reflectionCamera.transform;
-            isReady = true;
-        }
-        else
-            isReady = false;
-
-        if(isReady && copyCameraParamerers)
-        {
-            copyCameraParamerers = !copyCameraParamerers;
-            reflectionCamera.CopyFrom(mainCamera);
-
-            reflectionCamera.targetTexture = outputTexture;
-        }
     }
 }

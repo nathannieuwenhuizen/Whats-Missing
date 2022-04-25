@@ -14,22 +14,28 @@ public abstract class Property : RoomEntity
     public static event OnShockwave onShockwave;
 
 
-    protected Change currentChange;
+    protected MirrorChange currentChange;
 
     public override void OnAppearing()
     {
         base.OnAppearing();
-        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
+        InvokeShockwave();
     }
 
     public override void OnMissing()
     {
         base.OnMissing();
-        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
+        InvokeShockwave();
     }
 
-    public override void AddChange(Change change) {
+    public override void AddChange(MirrorChange change) {
         currentChange = change;
+        Debug.Log("adding change" + change);
+        base.AddChange(change);        
+    }
+    public override void AddChange(IChange change) {
+        // currentChange = (MirrorChange)change;
+        // Debug.Log("adding mirror change" + change);
         base.AddChange(change);        
     }
 
@@ -38,25 +44,29 @@ public abstract class Property : RoomEntity
     public override void OnShrinking()
     {
         base.OnShrinking();
-        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
+        InvokeShockwave();
     }
 
     public override void OnShrinkRevert()
     {
         base.OnShrinkRevert();
-        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
+        InvokeShockwave();
     }
 
     public override void OnEnlarge()
     {
         base.OnEnlarge();
-        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
+        InvokeShockwave();
     }
 
     public override void OnEnlargeRevert()
     {
         base.OnEnlargeRevert();
-        if (Animated) onShockwave?.Invoke(currentChange.mirror.transform);
+        InvokeShockwave();
+    }
+
+    private void InvokeShockwave() {
+        if (Animated && currentChange != null) onShockwave?.Invoke(currentChange.mirror.transform);
     }
 
     #endregion

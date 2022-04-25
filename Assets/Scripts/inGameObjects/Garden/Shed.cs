@@ -11,6 +11,6 @@ public class Shed : RoomObject
     }
     private void Reset() {
         Word = "shed";
-        AlternativeWords = new string[] { "sheds" };
+        AlternativeWords = new string[] { "sheds", "house", "home", "building", "homes", "houses", "buildings" };
     }
 }

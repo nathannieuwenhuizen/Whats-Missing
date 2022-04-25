@@ -26,7 +26,10 @@ public class InteractabelObject : RoomObject, IInteractable
         get { return outlineEnabled;}
         set { outlineEnabled = value; }
     }
-
+    
+    ///<summary>
+    /// If the pickable object can be interacted with
+    ///</summary>
     public bool Interactable {get; set; } = true;
 
     public bool Focused { 
@@ -49,6 +52,8 @@ public class InteractabelObject : RoomObject, IInteractable
         focusedColor = value;
         Outline.OutlineColor = value;
     } }
+
+    public float InteractableDistance { get; set; } = 6f;
 
     ///<summary>
     /// When the cursor hovers over the mesh of the object. It makes the outline appear.

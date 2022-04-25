@@ -52,7 +52,7 @@ public class AlchemyItem : InteractabelObject
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q)) {
-            // StartCoroutine(room.Player.Camera.transform.Shake(5f, 10, 4));
+            StartCoroutine(room.Player.Camera.transform.ShakeZRotation(5f, 10, 4));
         } 
         if (!animate) return;
 
@@ -86,7 +86,7 @@ public class AlchemyItem : InteractabelObject
         yield return new WaitForSeconds(1f);
         // AudioHandler.Instance.PlaySound(SFXFiles.rumble_ground, 1f, .2f);
 
-        StartCoroutine(room.Player.Camera.transform.Shake(5f, 10, 7));
+        StartCoroutine(room.Player.Camera.transform.ShakeZRotation(5f, 10, 7));
         StartCoroutine(AnimateBloomIntensity(5f, 60));
         StartCoroutine(AnimateChromaticAttribution(1f, 1));
         yield return new WaitForSeconds(5f);

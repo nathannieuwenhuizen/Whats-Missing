@@ -36,13 +36,14 @@ public class Sun : RoomObject
         set { 
             // if (sunEnabled == value) return;
             sunEnabled = value; 
+            // Debug.Log("sun enabled = " + value);
             sunBody.SetActive(value);
             if (value) {
                 if (fireSound == null) 
                     fireSound = AudioHandler.Instance?.Play3DSound(SFXFiles.sun_burning, transform, shrinkSoundVolume, 1f, true, true, 200);
-                fireSound.AudioSource.Play();
+                fireSound.Play();
             } else {
-                fireSound?.AudioSource.Stop();
+                fireSound?.Stop();
             }
 
         }
@@ -55,12 +56,8 @@ public class Sun : RoomObject
     private void Awake() {
         lightIntensityShrink = light.intensity;
         lightIntensityLarge = lightIntensityShrink * 3f;
-    }
-
-
-    private void Start() {
-        deathTrigger.OnAreaEnterEvent.AddListener(DeathBySun);
         SunEnabled = false;
+        deathTrigger.OnAreaEnterEvent.AddListener(DeathBySun);
     }
 
     private void DeathBySun() {
@@ -107,7 +104,7 @@ public class Sun : RoomObject
     {
         base.OnShrinkingFinish();
         if(soundCoroutine != null) StopCoroutine(soundCoroutine);
-        if (fireSound != null) fireSound.AudioSource.volume = shrinkSoundVolume;
+        // if (fireSound != null) fireSound.AudioSource.volume = shrinkSoundVolume;
         light.intensity = lightIntensityShrink;
 
         lightningProperty.OnMissingFinish();
@@ -127,7 +124,7 @@ public class Sun : RoomObject
 
     public override IEnumerator AnimateShrinkRevert()
     {
-        if (fireSound != null) soundCoroutine = StartCoroutine(fireSound.AudioSource.FadeSFXVolume(1f, AnimationCurve.EaseInOut(0,0,1,1), animationDuration * .5f));
+        // if (fireSound != null) soundCoroutine = StartCoroutine(fireSound.AudioSource.FadeSFXVolume(1f, AnimationCurve.EaseInOut(0,0,1,1), animationDuration * .5f));
         StartCoroutine(light.AnimateLightIntensity(lightIntensityLarge, AnimationCurve.EaseInOut(0,0,1,1), animationDuration * .5f));
         return base.AnimateShrinkRevert();
     }

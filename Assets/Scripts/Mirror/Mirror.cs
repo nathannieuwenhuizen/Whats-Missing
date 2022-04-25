@@ -14,17 +14,22 @@ public class Mirror: MonoBehaviour, IRoomObject
 
     [SerializeField]
     private PlanarReflection planarReflection;
+    public PlanarReflection PlanarReflection {
+        get { return planarReflection;}
+    }
+
     [SerializeField]
     private bool hidden = false;
 
     [Header("Room settings")]
-    public ChangeType changeType = ChangeType.missing;
     public bool isQuestion = true;
-    [SerializeField]
-    private bool isOn = false;
 
-    [Range(-1,1)]
-    public int roomIndexoffset = 0;
+    [SerializeField]
+    private MirrorData mirrorData;
+    public MirrorData MirrorData {
+        get { return mirrorData;}
+        set { mirrorData = value; }
+    }
 
     [SerializeField]
     private string preAnswer;
@@ -33,15 +38,10 @@ public class Mirror: MonoBehaviour, IRoomObject
         set { preAnswer = value; }
     }
 
-    [SerializeField]
-    protected string letters;
     public string Letters {
-        get { return letters; }
-        set { letters = value; }
+        get { return mirrorData.letters; }
+        set { mirrorData.letters = value; }
     }
-
-    [SerializeField]
-    private bool huzzleWords = true;
 
     [Header("color indicator")]
     [SerializeField]
@@ -53,6 +53,11 @@ public class Mirror: MonoBehaviour, IRoomObject
 
     public int id {get; set; }
 
+    public ChangeType ChangeType {
+        get { return mirrorData.changeType;}
+        set { mirrorData.changeType = value; }
+    }
+
     private string previousWord = "";
     public string PreviousWord {
         get { return previousWord;}
@@ -60,10 +65,10 @@ public class Mirror: MonoBehaviour, IRoomObject
     }
 
     public bool IsOn {
-        get { return isOn; }
+        get { return mirrorData.isOn; }
         set { 
-            if (isOn != value) {
-                isOn = value; 
+            if (mirrorData.isOn != value) {
+                mirrorData.isOn = value; 
                 if (value) {
                     ConfirmationSucceeded();
                 } else {
@@ -89,15 +94,18 @@ public class Mirror: MonoBehaviour, IRoomObject
 
 
     private bool inSpace = true;
-    public bool InSpace { get => inSpace; }
+    public bool InSpace { get => inSpace; set => inSpace = value; }
 
     ///<summary>
     /// Updates the light indicator on whether the mirror is on.
     ///</summary>
     public void UpdateIndicatorLight() {
-        Color colour = isOn ? onColor : offColor;
+        Color colour = IsOn ? onColor : offColor;
         colour *= 3.0f;
         indicatorMesh.material.SetColor("_EmissionColor", colour);
+    }
+    protected void Awake() {
+        // planarReflection.IsActive = false;
     }
 
     ///<summary>
@@ -105,9 +113,8 @@ public class Mirror: MonoBehaviour, IRoomObject
     ///</summary>
     public void SetupCanvas()
     {
-        Debug.Log("seeting up letters = " + letters);
-        mirrorCanvas.InitializeLetters(huzzleWords, letters, preAnswer);
-        mirrorCanvas.SetupText(changeType, roomIndexoffset);
+        mirrorCanvas.InitializeLetters(mirrorData.huzzleWords, Letters, preAnswer);
+        mirrorCanvas.SetupText( ChangeType);
     }
 
 
@@ -119,7 +126,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     {
         if (isQuestion) room.CheckMirrorQuestion(this);
         else {
-            if (!isOn) room.AddMirrorChange(this); else {
+            if (!IsOn) room.AddMirrorChange(this); else {
                 room.RemoveMirrorChange(this);
                 room.AddMirrorChange(this);
             }

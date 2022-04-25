@@ -15,6 +15,7 @@ public class RigidBodyInfo {
     public bool UseGravity = true;
     public bool IsKinematic = true;
     public string tag = "";
+
     public void Save(Rigidbody rb) {
         Drag = rb.drag;
         AngularDrag = rb.angularDrag;
@@ -42,6 +43,8 @@ public class RigidBodyInfo {
 ///</summary>
 public class PickableRoomObject : InteractabelObject, IPickable
 {
+    private bool grabbed = false;
+
     protected Rigidbody rb;     
     protected override void Awake()
     {
@@ -62,6 +65,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
             rb = value;
         }
     }
+
+    protected string grabSound = SFXFiles.player_grab;
+
     [SerializeField]
     private RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
     public RigidBodyInfo RigidBodyInfo { get => rigidBodyInfo; set => rigidBodyInfo = value; }
@@ -81,6 +87,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     public override void OnMissing()
     {
+        if (grabbed) Release();
         DeactivateRigidBody();
         base.OnMissing();
     }
@@ -91,7 +98,11 @@ public class PickableRoomObject : InteractabelObject, IPickable
             rb.mass = value;
         }  
     }
+    protected float holdingDistance = 3f;
+    public float HoldingDistance => holdingDistance;
 
+    protected bool looksWhenGrabbed = false;
+    public bool LooksWhenGrabbed => looksWhenGrabbed;
 
     protected override void OnFocus()
     {
@@ -107,8 +118,11 @@ public class PickableRoomObject : InteractabelObject, IPickable
         touching = true;
     }
 
-    public void Grab(Rigidbody connectedRigidBody)
+    public virtual void Grab(Rigidbody connectedRigidBody)
     {        
+        grabbed = true;
+        AudioHandler.Instance?.PlaySound(grabSound);
+
         OutlineEnabled = false;
         RigidBodyInfo.Save(rb);
         rb.drag = 100f;
@@ -142,8 +156,10 @@ public class PickableRoomObject : InteractabelObject, IPickable
     ///<summary>
     /// Releases the object activating the body.
     ///</summary>
-    public void Release()
+    public virtual void Release()
     {
+        if (!grabbed) return;
+        grabbed = false;
         OutlineEnabled = true;
         ActivateRigidBody();
     }

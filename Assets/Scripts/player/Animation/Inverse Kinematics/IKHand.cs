@@ -71,7 +71,7 @@ public class IKHand: IKLimb
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, HAND_RANGE) && rigidBody.velocity.magnitude < 8.5f)
         {    
-            if (hit.transform.tag == Tags.Picked) {
+            if (hit.transform.tag == Tags.Picked || hit.collider.isTrigger) {
                 HasContact = false;
                 return;
             }

@@ -12,19 +12,23 @@ public class MirrorButton : MonoBehaviour, IPointerUpHandler
     public static MirrorButton SELECTED_BUTTON;
     
     public static bool BUTTON_DRAGGED = false;
-    protected bool canBeClicked = true;
+    protected bool interactable = true;
+    public bool Interactable {
+        get { return interactable;}
+        set { interactable = value; }
+    }
     protected Vector3 normalScale = Vector3.one;
 
-    protected AnimationCurve scaleAnimation = AnimationCurve.EaseInOut(0,0,1,1);
+    protected AnimationCurve scaleAnimationCurve = AnimationCurve.EaseInOut(0,0,1,1);
 
     protected RectTransform rt;
 
     public virtual void OnHover() {
-        if (!canBeClicked || BUTTON_DRAGGED) return;
+        if (!interactable || BUTTON_DRAGGED) return;
         MirrorButton.SELECTED_BUTTON = this;
     }
     public virtual void OnUnhover() {
-        if (!canBeClicked || BUTTON_DRAGGED ) return;
+        if (!interactable || BUTTON_DRAGGED ) return;
         if (MirrorButton.SELECTED_BUTTON == this) MirrorButton.SELECTED_BUTTON = null;
     }
     public virtual void Awake() {
@@ -37,7 +41,7 @@ public class MirrorButton : MonoBehaviour, IPointerUpHandler
         Vector3 begin = rt.localScale;
         while( index < duration) {
             index += Time.unscaledDeltaTime;
-            rt.localScale = Vector3.LerpUnclamped(begin, endScale, scaleAnimation.Evaluate(index/ duration));
+            rt.localScale = Vector3.LerpUnclamped(begin, endScale, scaleAnimationCurve.Evaluate(index/ duration));
             yield return new WaitForEndOfFrame();
         }
         rt.localScale = endScale;

@@ -18,15 +18,15 @@ public class Spirit : MonoBehaviour
     private bool intoMirrorPlayed = false;
 
     public void EnableSpirit(bool val) {
-        if (val) {
-            if (spiritSound == null)
-                spiritSound = AudioHandler.Instance.Play3DSound(SFXFiles.evil_spirit, transform, 0f, 1f, true, true);
-            else spiritSound.AudioSource.Play();
-            StartCoroutine(spiritSound.AudioSource.FadeSFXVolume(.1f, AnimationCurve.EaseInOut(0,0,1,1), .5f));
-        }
-        else {
-            StartCoroutine(spiritSound.AudioSource.FadeSFXVolume(0, AnimationCurve.EaseInOut(0,0,1,1), 3f));
-        }
+        // if (val) {
+        //     if (spiritSound == null)
+        //         spiritSound = AudioHandler.Instance.Play3DSound(SFXFiles.evil_spirit, transform, 0f, 1f, true, true);
+        //     else spiritSound.AudioSource.Play();
+        //     StartCoroutine(spiritSound.AudioSource.FadeSFXVolume(.1f, AnimationCurve.EaseInOut(0,0,1,1), .5f));
+        // }
+        // else {
+        //     StartCoroutine(spiritSound.AudioSource.FadeSFXVolume(0, AnimationCurve.EaseInOut(0,0,1,1), 3f));
+        // }
         foreach(ParticleSystem ps in particles) {
             if (val) {
                 ps.Play();
@@ -63,7 +63,7 @@ public class Spirit : MonoBehaviour
         StartCoroutine(playAnimation("into_mirror", 2.5f, () => {
             EnableSpirit(false);
             Destroy(gameObject, 5f);
-            Destroy(spiritSound.AudioSource.gameObject, 5f);
+            // Destroy(spiritSound.AudioSource.gameObject, 5f);
         }));
 
     }

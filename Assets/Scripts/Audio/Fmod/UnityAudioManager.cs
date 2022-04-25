@@ -195,7 +195,7 @@ public class UnityAudioManager : MonoBehaviour, IAudioManager
                 Destroy(MusicSource);
                 MusicSource = tempSource;
             } else {
-                MusicSource.clip = selectedMusic.Clip;
+            MusicSource.clip = selectedMusic.Clip;
                 MusicSource.Play();
                 yield return StartCoroutine(FadeVolume(MusicSource, 0, volume, totalDuration / 2f));
             }
@@ -215,6 +215,10 @@ public class UnityAudioManager : MonoBehaviour, IAudioManager
             yield return new WaitForFixedUpdate();
         }
         audioS.volume = end * AudioSetting.MUSIC;
+    }    
+    public IEnumerator FadeVolume(SFXInstance audioS, float begin, float end, float duration)
+    {
+        yield return FadeVolume(audioS.AudioSource, begin, end, duration);
     }
 
     public void PauseMusic()

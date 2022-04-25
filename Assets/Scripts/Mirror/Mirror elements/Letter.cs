@@ -71,13 +71,13 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     public override void OnHover() {
         base.OnHover();
-        if (!canBeClicked || BUTTON_DRAGGED) return;
+        if (!interactable || BUTTON_DRAGGED) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(hoverScale));
     }
     public override void OnUnhover() {
         base.OnUnhover();
-        if (!canBeClicked || BUTTON_DRAGGED) return;
+        if (!interactable || BUTTON_DRAGGED) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(normalScale));
     }
@@ -128,11 +128,11 @@ public class Letter : MirrorButton, IPointerDownHandler
         pressedTime = Time.time;
         if (spawnPosition == Vector3.zero) spawnPosition = rt.localPosition;
         if (Selected) {
-            preClickSelected = true;
+            PreClickSelected = true;
             mirrorCanvas.RemoveSelectedLetter(mirrorCanvas.selectedLetterObjects.IndexOf(this));
             StopAllCoroutines();
         } else {
-            preClickSelected = false;
+            PreClickSelected = false;
         }
 
         StartCoroutine(Dragging());
@@ -140,7 +140,7 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     void LetterIsClicked()
     {
-        if (!canBeClicked || !pressed) return;
+        if (!interactable || !pressed) return;
         pressed = false;
         bool dragged = Dragged();
         OnLetterClickAction?.Invoke(this);
@@ -168,7 +168,7 @@ public class Letter : MirrorButton, IPointerDownHandler
             MirrorButton.SELECTED_BUTTON = this;
 
             //out of mirror view or click out
-            if (mirrorCanvas.IsInteractable == false || !Extensions.IsPressed(ControllerRebinds.controls.Player.Click)) {
+            if (mirrorCanvas.IsFocused == false || !Extensions.IsPressed(ControllerRebinds.controls.Player.Click)) {
                 LetterIsClicked();
             }
             yield return new WaitForEndOfFrame();
@@ -196,7 +196,7 @@ public class Letter : MirrorButton, IPointerDownHandler
     private IEnumerator Moving(Vector3 pos) {
         while( movingIndex < movingDuration) {
             movingIndex += Time.unscaledDeltaTime;
-            rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, scaleAnimation.Evaluate(movingIndex/ movingDuration));
+            rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, scaleAnimationCurve.Evaluate(movingIndex/ movingDuration));
             yield return new WaitForEndOfFrame();
         }
         movingIndex = 1;

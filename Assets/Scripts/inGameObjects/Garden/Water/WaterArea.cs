@@ -6,20 +6,20 @@ public class WaterArea : MonoBehaviour, ITriggerArea
 {
     public bool InsideArea { get; set;} = false;
     public static bool IN_WATER = false;
-
+    public static Transform WATER_TRANSFORM;
     private void OnDisable() {
         IN_WATER = false;
     }
     public void OnAreaEnter(Player player)
     {
         IN_WATER = true;
-        // FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_water;
+        WATER_TRANSFORM = transform;
     }
 
     public void OnAreaExit(Player player)
     {
         IN_WATER = false;
-        // FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
+        WATER_TRANSFORM = null;
     }
 
 }

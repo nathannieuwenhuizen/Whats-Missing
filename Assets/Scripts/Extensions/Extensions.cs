@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public static class Extensions
 {
 
-
     public static Vector3 CalculateQuadraticBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2) {
         float u = 1 - t;
         float tt = t * t;
@@ -34,10 +33,39 @@ public static class Extensions
         return result;
     }
 
+    ///<summary>
+    /// Returns true if the angle between two vectors is on the left or right side
+    ///</summary>
+    public static float AngleDir(Vector3 fwd, Vector3 targetDir,Vector3 up) {
+        Vector3 perp = Vector3.Cross(fwd, targetDir);
+        float dir = Vector3.Dot(perp, up);
+    
+        if (dir > 0.0f) {
+            return 1.0f;
+        } else if (dir < 0.0f) {
+            return -1.0f;
+        } else {
+            return 0.0f;
+        }
+    }
+
+    ///<summary>
+    /// returns thrue if two numbers are nearly equal to eahc other based on the offset parameter
+    ///</summary>
+    public static bool NearlyEqual(this float a , float b, float offset)
+    {
+        return Mathf.Abs(a - b) <= offset;
+    }
+
 
     public static Vector3 RandomVector(float maxValue) {
         return new Vector3(
             Random.Range(-maxValue, maxValue),
+            Random.Range(-maxValue, maxValue),
+            Random.Range(-maxValue, maxValue));
+    }
+    public static Vector2 RandomVector2(float maxValue) {
+        return new Vector2(
             Random.Range(-maxValue, maxValue),
             Random.Range(-maxValue, maxValue));
     }
@@ -79,6 +107,31 @@ public static class Extensions
         camera.fieldOfView = endview;
     }
 
+    public static List<T> SetAllComponentsActive<T>(this GameObject go, bool active, List<T> exclude) {
+        if (exclude == default(List<T>)) exclude = new List<T>();
+        List<T> result = new List<T>();
+        foreach (T childCompnent in go.GetComponentsInChildren<T>())
+        {
+            if (childCompnent  is Renderer)
+            {
+                if((childCompnent as Renderer).enabled == false && active == false) {
+                    // Debug.Log("child components is false enabled: " + (childCompnent as Renderer).enabled);
+                    result.Add(childCompnent); //TODO: Check why this doesnt work
+                }
+                if(!exclude.Contains(childCompnent)) (childCompnent as Renderer).enabled = active;
+            }
+            if (childCompnent  is Light)
+                (childCompnent as Light).enabled = active;
+            if (childCompnent  is Collider)
+                (childCompnent as Collider).enabled = active;
+            if (childCompnent  is ParticleSystem)
+                if (active && (childCompnent as ParticleSystem).loop) (childCompnent as ParticleSystem).Play();
+                else (childCompnent as ParticleSystem).Stop();
+        }
+        return result;
+    }
+
+
 
     public static  IEnumerator AnimatingDissolveMaterial(this Material mat, float beginVal, float endVal,  AnimationCurve curve, float duration = .5f, float edgeWidth = .05f) {
         mat.SetFloat("EdgeWidth", edgeWidth);
@@ -103,6 +156,19 @@ public static class Extensions
             mat.SetFloat("Opacity", Mathf.LerpUnclamped(beginVal, endVal , curve.Evaluate(timePassed / duration)));
         }
         mat.SetFloat("Opacity", endVal);
+    }
+
+    public static IEnumerator AnimatingNumberPropertyMaterial(this Material mat, string key,  float beginVal, float endVal,  AnimationCurve curve, float duration = .5f, float delay = 0) {
+        yield return new WaitForSeconds(delay);
+        mat.SetFloat(key, beginVal);
+        float timePassed = 0f;
+
+        while (timePassed < duration) {
+            yield return new WaitForEndOfFrame();
+            timePassed += Time.unscaledDeltaTime;
+            mat.SetFloat(key, Mathf.LerpUnclamped(beginVal, endVal , curve.Evaluate(timePassed / duration)));
+        }
+        mat.SetFloat(key, endVal);
     }
 
     public static void SetNearClipPlane(this Camera reflectionCamera, Transform transform, Camera mainCamera) {

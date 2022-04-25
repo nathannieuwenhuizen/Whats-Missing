@@ -25,6 +25,7 @@ public class PortalDoor : Door
         get { return portal;}
     }
 
+
     private void SetPortalState(bool val) {
         if (delayDeactivationCoroutine != null) StopCoroutine(delayDeactivationCoroutine);
         portal.IsActive = val;
@@ -47,6 +48,7 @@ public class PortalDoor : Door
             }
  
             base.Locked = value; 
+            SetPortalState(!value);
         }
     }
     private void Awake() {
@@ -97,7 +99,7 @@ public class PortalDoor : Door
 
     public override void OnRoomEnter()
     {
-        SetPortalState(true);
+        SetPortalState(!locked);
         base.OnRoomEnter();
     }
 

@@ -108,7 +108,7 @@ public class AudioHandler : Singleton<AudioHandler>
     ///<summary>
     ///Internal enumerator that fades a AudooSource clip.
     ///</summary>
-    public IEnumerator FadeVolume(AudioSource audioS, float begin, float end, float duration)
+    public IEnumerator FadeVolume(SFXInstance audioS, float begin, float end, float duration)
     {
         yield return am.FadeVolume(audioS, begin, end, duration);
     }

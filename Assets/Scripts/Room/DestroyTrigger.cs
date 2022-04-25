@@ -6,9 +6,11 @@ using UnityEngine;
 public class DestroyTrigger : MonoBehaviour, IRoomObject
 {
 
-    public bool InSpace => throw new System.NotImplementedException();
     private Collider coll;
     private Rigidbody rb;
+
+    public bool InSpace { get; set; }
+
     private void Awake() {
         coll = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();

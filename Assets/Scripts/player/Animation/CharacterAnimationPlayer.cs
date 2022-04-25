@@ -103,6 +103,37 @@ public class CharacterAnimationPlayer
         animationView = _animationView;
     }
 
+    public void OnEnable() {
+        BossMirror.OnMirrorShake += OnBossMirrorShake;
+        BossMirror.OnMirrorExplode += OnBossMirrorExplode;
+    }
+    public void OnDisable() {
+        BossMirror.OnMirrorShake -= OnBossMirrorShake;
+        BossMirror.OnMirrorExplode += OnBossMirrorExplode;
+
+    }
+
+    private void OnBossMirrorShake(BossMirror bossMirror) {
+        PlayCutSceneAnimation("", false);
+        bossMirror.StartCoroutine(InBossCutScene(bossMirror));
+    }
+    private IEnumerator InBossCutScene(BossMirror bossMirror) {
+        yield return new WaitForSeconds( bossMirror.ShakeDuration - .5f);
+        PlayCutSceneAnimation("boss_intro_1", false);
+
+        yield return new WaitForSeconds(2f);
+        PlayCutSceneAnimation("boss_intro_2", false);
+        yield return new WaitForSeconds(.5f);
+        PlayCutSceneAnimation("boss_intro_3", false);
+
+        yield return new WaitForSeconds(2f);
+        EndOfCutSceneAnimation();
+
+    }
+    private void OnBossMirrorExplode(BossMirror bossMirror) {
+
+    }
+
     ///<summary>
     /// Called when the cutscene animation has ended. Disabling the cutscene ui and enabling the ingame ui.
     ///</summary>

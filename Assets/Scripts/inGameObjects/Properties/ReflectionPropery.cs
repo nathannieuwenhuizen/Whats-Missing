@@ -28,6 +28,7 @@ public class ReflectionPropery : Property
             mr.sharedMaterials = materials;
             mr.UpdateGIMaterials();
         }
+        Debug.Log("update reflection mat missing");
         base.OnMissing();
     }
 
