@@ -79,11 +79,11 @@ public class Boss : RoomObject
         ai.Setup(this);
     }
     private void Start() { 
-        ai.InitializeStateMachine();
+        // ai.InitializeStateMachine();
     }
 
     private void Update() {
-        AI.UpdateAI();
+        // AI.UpdateAI();
         bossVoice.Update();
         if (Input.GetKeyDown(KeyCode.L)) {
             bossChangeHandler.CreateChange("gravity" ,ChangeType.missing);
