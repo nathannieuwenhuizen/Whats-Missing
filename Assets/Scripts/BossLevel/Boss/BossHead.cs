@@ -12,6 +12,10 @@ public class BossHead: MonoBehaviour
 {
     private Transform currentAim;
     private Transform desiredAim;
+    
+    [SerializeField]
+    private IKBossBone headBone;
+
     [SerializeField]
     private BossAI bossAI;
 
@@ -27,9 +31,9 @@ public class BossHead: MonoBehaviour
     }
 
     private void Awake() {
-        currentAim = Instantiate(new GameObject("current aim"), transform.position + transform.forward * bossAI.BossEye.ViewRange, Quaternion.identity).transform;
-        desiredAim = Instantiate(new GameObject("desired aim"), transform.position + transform.forward * bossAI.BossEye.ViewRange, Quaternion.identity).transform;
-        currentAim.SetParent(transform.parent);
+        currentAim = Instantiate(new GameObject("head current aim"), transform.position + transform.forward * 10f, Quaternion.identity).transform;
+        desiredAim = Instantiate(new GameObject("head desired aim"), transform.position + transform.forward * 10f, Quaternion.identity).transform;
+        currentAim.SetParent(bossAI.transform.parent);
         desiredAim.SetParent(bossAI.transform.parent);
         steeringBehaviour.target = currentAim;
         steeringBehaviour.desiredTarget = desiredAim;
@@ -47,7 +51,7 @@ public class BossHead: MonoBehaviour
         if (Vector3.Angle(transform.forward, transform.parent.forward) > 90f) {
             transform.localRotation = oldRot;
         }
-
+        // headBone.IKLookPosition =  currentAim.position;
     }
 
     [SerializeField]

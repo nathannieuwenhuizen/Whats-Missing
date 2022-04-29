@@ -9,6 +9,7 @@ public class BossWiggleBone : MonoBehaviour
     [SerializeField]
     private bool childHaveSameValuesAsMainBone = true;
 
+
     private SoxAtkJiggleBone mainBone;
     [SerializeField]
     private SoxAtkJiggleBone[] bones;

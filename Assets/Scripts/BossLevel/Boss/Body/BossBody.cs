@@ -23,6 +23,11 @@ public class BossBody : MonoBehaviour
     [SerializeField]
     private Renderer[] metamorphosedRenders;
 
+    [SerializeField]
+    private BossWiggleBone[] mainBossWiggleBones;
+    [SerializeField]
+    private BossWiggleBone[] secondairWiggleBones;
+
 
     ///<summary>
     /// Toggles all the renderers of the boss body making it invisible
@@ -30,6 +35,11 @@ public class BossBody : MonoBehaviour
     public void ToggleBody(bool visible) {
         foreach (Renderer renderer in bodyRenders) renderer.enabled = visible;
         foreach (Renderer renderer in metamorphosedRenders) renderer.enabled = visible;
+    }
+
+    public void ToggleWiggle(bool enabled, bool subEnabled = false) {
+        foreach (BossWiggleBone bone in mainBossWiggleBones) bone.enabled = enabled;
+        foreach (BossWiggleBone bone in secondairWiggleBones) bone.enabled = subEnabled;
     }
 
     ///<summary>

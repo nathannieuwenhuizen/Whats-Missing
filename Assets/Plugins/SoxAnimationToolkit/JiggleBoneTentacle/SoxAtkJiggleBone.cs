@@ -32,29 +32,29 @@ public class SoxAtkJiggleBone : MonoBehaviour {
 
     public SimType m_simType = SimType.Simple;
 
-    public float m_targetDistance = 3.0f;
+    public float m_targetDistance = .015f;
     public bool m_targetFlip = false;
 
     private const float mc_tensionMul = 0.1f;
     private float m_tensionProxy;
-    public float m_tension = 30.0f;
+    public float m_tension = 60.0f;
     [Range(0.0f, 1.0f)]
-    public float m_inercia = 0.85f;
+    public float m_inercia = 0.5f;
 
     // 최적화를 위해 옵션이 바뀔 때에만 미리 세팅해두는 값, 업벡터는 월드가 아닌 오브젝트를 참조할 경우 매 프레임 세팅되기도 한다.
     private Vector3 m_upVector;
 
-    public Axis m_lookAxis = Axis.Z;
+    public Axis m_lookAxis = Axis.Y;
     public bool m_lookAxisFlip = false;
 
-    public Axis m_sourceUpAxis = Axis.Y;
+    public Axis m_sourceUpAxis = Axis.Z;
     public bool m_sourceUpAxisFlip = false;
     // m_lookAxis와 m_sourceUpAxis가 같아지면 바로 전 m_sourceUpAxis로 되돌리기 위해 바로 이전 m_sourceUpAxis를 기억하는 변수
     private Axis m_sourceUpAxisBefore;
 
     public bool m_upWorld = false;
     public Transform m_upNode;
-    public Axis m_upNodeAxis = Axis.Y;
+    public Axis m_upNodeAxis = Axis.Z;
     private bool m_upNodeAutoSet = false; // 최초 지글본 적용시 부모를 업노드로 자동 지정했는지 체크(1회만 해야함)
 
     public enum UpnodeControl { LookAt, AxisAlignment }
@@ -80,7 +80,7 @@ public class SoxAtkJiggleBone : MonoBehaviour {
 
     public bool m_optShowGizmosAtPlaying = false;
     public bool m_optShowGizmosAtEditor = true;
-    public float m_optGizmoSize = 0.1f;
+    public float m_optGizmoSize = 0.003f;
     public bool m_optShowHiddenNodes = false;
 
     // 히든 노드를 보이고 안보이고 하는 변화가 지글본에서 발생하는데
@@ -310,6 +310,12 @@ public class SoxAtkJiggleBone : MonoBehaviour {
             JiggleBoneUpdateTree();
         }
     }
+    private void FixedUpdate() {
+        if (m_ifHead)
+        {
+            JiggleBoneUpdateTree();
+        }
+    }
 
     // 이 함수는 텐터클에서 호출될 수 있다 (텐터클에게 순서를 양보한 경우)
     public void JiggleBoneUpdateTree()
@@ -487,7 +493,7 @@ public class SoxAtkJiggleBone : MonoBehaviour {
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         if (!this.gameObject.activeInHierarchy || !this.enabled)
             return;

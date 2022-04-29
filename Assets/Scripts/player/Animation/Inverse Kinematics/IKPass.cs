@@ -8,6 +8,10 @@ using UnityEngine;
 ///</summary>
 public class IKPass : MonoBehaviour
 {
+
+    public delegate void IkPassEvent();
+    public static IkPassEvent OnIKUpdate;
+
     [SerializeField]
     private FPMovement movement;
 
@@ -80,9 +84,11 @@ public class IKPass : MonoBehaviour
         LookWeight = end;
     }
 
+
     //a callback for calculating IK
     void OnAnimatorIK()
     {
+        // OnIKUpdate?.Invoke();
         if(animator) {
             //if the IK is active, set the position and rotation directly to the goal. 
             if(ikActive) {
