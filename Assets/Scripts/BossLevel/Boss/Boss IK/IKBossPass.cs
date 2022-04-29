@@ -8,32 +8,52 @@ namespace Boss {
     public class IKBossPass : MonoBehaviour
     {
         private Animator animator;
-        [SerializeField]
-        private IKBossBone headBone;
         public Animator Animator { get => animator; set => animator = value; }
 
         [SerializeField]
         private Transform test;
 
+        [SerializeField]
         private IKBossHead ikBossHead;
+        public IKBossHead IKBossHead {
+            get { return ikBossHead;}
+        }
+
+
         [SerializeField]
         private IKBossLeg leftLeg;
         public IKBossLeg LeftLeg {
             get { return leftLeg;}
         }
+
         [SerializeField]
         private IKBossLeg rightLeg;
-
         public IKBossLeg RightLeg {
             get { return RightLeg;}
+        }
+
+        [SerializeField]
+        private IKBossArm rightArm;
+        public IKBossArm RightArm {
+            get { return rightArm;}
+        }
+
+        [SerializeField]
+        private IKBossArm leftArm;
+        public IKBossArm LeftArm {
+            get { return leftArm;}
         }
 
         void Awake () 
         {
             animator = GetComponent<Animator>();
-            ikBossHead = new IKBossHead(transform);
+
+            ikBossHead = new IKBossHead(transform, test);
+
             leftLeg = new IKBossLeg(transform, AvatarIKGoal.LeftFoot);
             rightLeg = new IKBossLeg(transform, AvatarIKGoal.RightFoot);
+            leftArm = new IKBossArm(transform, AvatarIKGoal.LeftHand);
+            rightArm = new IKBossArm(transform, AvatarIKGoal.RightHand);
         }
 
         private void OnEnable() {
@@ -55,10 +75,11 @@ namespace Boss {
 
             leftLeg.UpdateIK(animator);
             rightLeg.UpdateIK(animator);
-            // headBone.UpdateIK(animator);
 
-            // ikBossHead.IKLookPosition = test.position;
-            // ikBossHead.UpdateIK(animator);
+            leftArm.UpdateIK(animator);
+            rightArm.UpdateIK(animator);
+
+            ikBossHead.UpdateIK(animator);
 
             // animator.SetLookAtWeight(1, 0, 1, 0);
             // animator.SetLookAtPosition(test.position);
@@ -70,6 +91,9 @@ namespace Boss {
         private void OnDrawGizmos() {
             if (leftLeg != null ) {
                 leftLeg.OnDrawGizmos();
+                rightLeg.OnDrawGizmos();
+                leftArm.OnDrawGizmos();
+                rightArm.OnDrawGizmos();
             }
         }
         

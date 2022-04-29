@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Boss {
 
-    public enum IKAxis {
-        up, forward, right
-    }
-
     public interface IIKBossBone {
         public bool IsActive { get; set;}
         public float Weight {get; set; }
@@ -19,7 +15,6 @@ namespace Boss {
         public void UpdateIK(Animator _animator);
         public void UpdatePositionIK(Animator _animator);
         public void UpdateRotationIK(Animator _animator);
-        public IKAxis UpAxis {get;}
 
         public AvatarIKGoal IKGoal {get;}
         public void OnDrawGizmos();
@@ -30,7 +25,7 @@ namespace Boss {
     /// A basic boss bone
     ///</summary>
     [System.Serializable]
-    public class IKBossBone : IIKBossBone
+    public abstract class IKBossBone : IIKBossBone
     {
 
         public bool IsActive { get; set; } = true;
@@ -45,14 +40,9 @@ namespace Boss {
         public Vector3 test = Vector3.zero;
 
         [SerializeField]
-        private IKAxis upAxis = IKAxis.up;
-        public IKAxis UpAxis => upAxis;
-
-        [SerializeField]
         protected AvatarIKGoal ikGoal;
         public AvatarIKGoal IKGoal => ikGoal;
 
-        private Quaternion desiredRotation;
         protected Transform transform;
         protected Transform boneTransform;
 
@@ -68,11 +58,6 @@ namespace Boss {
 
         public IKBossBone(Transform _transform) {
             transform = _transform;
-        }
-
-        public void LateUpdate() {
-            // transform.localRotation = Quaternion.Euler(0,0,0);
-            // desiredRotation = GetIkRotation();
         }
 
         ///<summary>
@@ -104,7 +89,7 @@ namespace Boss {
         ///</summary>
         public virtual void UpdateRotationIK(Animator _animator)
         {
-            if (IKLookDirection == Vector3.zero || boneTransform == null) return;
+            if (IKLookDirection == Vector3.zero) return;
             _animator.SetIKRotationWeight(IKGoal, Weight);
 
             Vector3 slopeCorrected = -Vector3.Cross(IKLookDirection, transform.right);
@@ -112,31 +97,6 @@ namespace Boss {
             _animator.SetIKRotation(IKGoal, rotation);
         }
 
-        ///<summary>
-        /// Calculates the rotation based on the posititon
-        ///</summary>
-        private Quaternion GetIkRotation() {
-            var result = -transform.InverseTransformDirection(IKLookDirection - transform.position);
-            var rotation = Quaternion.LookRotation(result, Vector3.up);
-            return rotation;
-        }
-
-
-        ///<summary>
-        ///  Gets the axis direction based on the parameter.
-        ///</summary>
-        private Vector3 GetAxisDirection() {
-            Vector3 result = transform.up;
-            switch(upAxis) {
-                case IKAxis.forward:
-                result = transform.forward;
-                break;
-                case IKAxis.right:
-                result = transform.right;
-                break;
-            }
-            return result;
-        }
 
         public virtual void OnDrawGizmos()
         {
