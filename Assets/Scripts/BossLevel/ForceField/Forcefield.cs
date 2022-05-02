@@ -79,7 +79,7 @@ namespace ForcefieldDemo
             get { return isOn;}
             set { 
                 isOn = value; 
-                navMeshObstacle.enabled = value;
+                if (navMeshObstacle) navMeshObstacle.enabled = value;
                 if (disolveCoroutine != null) StopCoroutine(disolveCoroutine);
                 disolveCoroutine = StartCoroutine(Dissolving(value));
             }

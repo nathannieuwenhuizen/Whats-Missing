@@ -34,7 +34,7 @@ public class BossMirror : Mirror, ITriggerArea
         return result;
     }
 
-    private void Awake() {
+    protected override void Awake() {
         base.Awake();
 
         stencilBuffer.SetActive(false);
@@ -142,6 +142,7 @@ public class BossMirror : Mirror, ITriggerArea
     private bool introCutscene;
 
     private IEnumerator ShakeBeforeExplosion() {
+        //activate stencil buffer
         stencilBuffer.SetActive(true);
         Quaternion startRotation = transform.localRotation;
         shakeCoroutine = StartCoroutine(transform.ShakeZRotation(10f, 3f, shakeDuration * 2));
@@ -160,6 +161,10 @@ public class BossMirror : Mirror, ITriggerArea
         //wait a little bit to deactivate the stencil buffer mask
         yield return new WaitForSeconds(1f);
         stencilBuffer.SetActive(false);
+
+        //position bossmirror to original state
+        StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(0,0,0), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
+
 
     }
 

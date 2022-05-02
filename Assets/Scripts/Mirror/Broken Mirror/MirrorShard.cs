@@ -25,6 +25,14 @@ public class MirrorShard : PickableRoomObject
     private Vector3 startLocalPos;
     private Transform startParent;
 
+    private Vector3 fallPositionStart = Vector3.zero;
+    private Vector3 fallPositionMid;
+    [SerializeField]
+    private Transform fallPositionEnd;
+    [SerializeField]
+    private AnimationCurve fallCurve;
+    private float explosionuration = 5f;
+
     [SerializeField]
     private MeshRenderer meshRenderer;
     [SerializeField]
@@ -113,7 +121,28 @@ public class MirrorShard : PickableRoomObject
         Attached = false;
         shineParticle.Play();
         ActivateRigidBody();
-        rb.velocity = bossMirror.transform.forward * force;
+        // rb.velocity = bossMirror.transform.forward * force;
+        SetBezierDestination(transform.position, fallPositionEnd.position);
+        StartCoroutine(Exploding());
+    }
+    private IEnumerator Exploding() {
+        float index = 0;
+        while (index < explosionuration) {
+            index += Time.deltaTime;
+            transform.position = Extensions.CalculateQuadraticBezierPoint(fallCurve.Evaluate(index / explosionuration), fallPositionStart, fallPositionMid, fallPositionEnd.position);
+            rb.velocity = Vector3.zero;
+            yield return new WaitForFixedUpdate();
+        }
+        rb.position = fallPositionEnd.position;
+        rb.rotation = fallPositionEnd.rotation;
+    }
+
+
+    public void SetBezierDestination( Vector3 begin, Vector3 end) {
+        fallPositionStart = begin;
+        fallPositionEnd.position = end;
+        fallPositionMid = begin + ((end - begin) / 2f);
+        fallPositionMid.y = begin.y + 150f;
     }
 
     private void Update() {
@@ -129,7 +158,7 @@ public class MirrorShard : PickableRoomObject
 
     ///<summary>
     /// Updates the leer position to make it look like it is part of the parent
-    ///</summary>
+    ///</summary>w
     private void UpdateLetterPosition() {
         for (int i = 0; i < letterCoords.Length; i++) {
             Letter letter = letterCoords[i].letter;
@@ -180,8 +209,10 @@ public class MirrorShard : PickableRoomObject
                 #if UNITY_EDITOR
                 Handles.Label(meshRenderer.transform.position + transform.TransformDirection(letterCoords[i].letterDelta), letterCoords[i].letterValue);
                 #endif
-                // Gizmos.DrawWireSphere(meshRenderer.transform.position + transform.TransformDirection(letterCoords[i].letterDelta), .5f);
             }
+        }
+        if (fallPositionEnd != null) {
+            DebugExtensions.DrawBezierCurve(fallPositionStart, fallPositionMid, fallPositionEnd.position);
         }
     }
 

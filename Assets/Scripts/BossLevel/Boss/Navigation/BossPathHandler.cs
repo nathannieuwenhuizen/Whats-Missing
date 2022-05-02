@@ -6,6 +6,7 @@ namespace Boss {
 
 public class BossPathHandler : MonoBehaviour
 {
+    [SerializeField]
     private Color debugColor = new Color(1,1,1,.5f);
     public Color DebugColor {
         get { return debugColor;}
@@ -61,7 +62,7 @@ public class BossPathHandler : MonoBehaviour
         get { return boss;}
     }
 
-    private void OnDrawGizmos() {
+    private void OnDrawGizmosSelected() {
         if (!enableDebug) return;
 
         Gizmos.color = debugColor;

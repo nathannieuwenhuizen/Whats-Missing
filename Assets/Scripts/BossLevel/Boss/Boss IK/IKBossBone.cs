@@ -31,13 +31,11 @@ namespace Boss {
         public bool IsActive { get; set; } = true;
         [Range(0,1)]
         [SerializeField]
-        private float weight = 1f;
-        public float Weight { get => weight; set => weight = value; }
+        private float boneWeight = 1f;
+        public float Weight { get => boneWeight; set => boneWeight = value; }
         public float WeightAnimationDuration { get; set; } = .5f;
         public Vector3 IKPosition { get; set; } = Vector3.zero;
         public Vector3 IKLookDirection { get; set; } = Vector3.zero;
-
-        public Vector3 test = Vector3.zero;
 
         [SerializeField]
         protected AvatarIKGoal ikGoal;

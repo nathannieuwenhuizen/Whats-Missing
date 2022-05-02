@@ -139,7 +139,7 @@ public class BossPositioner : MonoBehaviour
     private void OnDrawGizmos() {
         if (pathHandeler != null) path.DrawGizmo(pathHandeler);
         Gizmos.color = Color.green;
-        if (desiredTempPos != null) Gizmos.DrawSphere(desiredTempPos.position, 3f);
+        if (desiredTempPos != null) Gizmos.DrawWireSphere(desiredTempPos.position, .5f);
     }
 
     public IEnumerator Landing(Action callback) {

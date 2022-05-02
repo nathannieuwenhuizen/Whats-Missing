@@ -103,7 +103,7 @@ public class Mirror: MonoBehaviour, IRoomObject
         color *= 3.0f;
         indicatorMesh.material.SetColor("_EmissionColor", color);
     }
-    protected void Awake() {
+    protected virtual void Awake() {
         // planarReflection.IsActive = false;
     }
 

@@ -13,7 +13,7 @@ public class WanderPose {
 public class WanderingPath : MonoBehaviour {
     public WanderPose[] poses;
     
-    private void OnDrawGizmos() {
+    private void OnDrawGizmosSelected() {
         if (poses.Length < 1) return;
         
         if (poses[0].position == null) return;
@@ -27,7 +27,7 @@ public class WanderingPath : MonoBehaviour {
                 Vector3 endPos = startpos;
                 if (poses.Length - 2 < i ) endPos = poses[0].position.position;
                 else if (poses[i + 1].position != null) endPos = poses[i + 1].position.position;
-                Debug.DrawLine(startpos, endPos);
+                Debug.DrawLine(startpos, endPos, Color.yellow);
                 startpos = endPos;
             }
         }
