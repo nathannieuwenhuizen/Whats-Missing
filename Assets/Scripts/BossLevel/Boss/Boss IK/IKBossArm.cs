@@ -10,7 +10,7 @@ namespace Boss {
     public class IKBossArm : IKBossLimb
     {
         private float armOffset = 1.5f;
-        public IKBossArm(Transform _transform, AvatarIKGoal _ikGoal) : base(_transform, _ikGoal)
+        public IKBossArm(Transform _transform, IKBossPass _ikPass, AvatarIKGoal _ikGoal) : base(_transform, _ikPass, _ikGoal)
         {
             transform = _transform;
             ikGoal = _ikGoal;

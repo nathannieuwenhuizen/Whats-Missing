@@ -33,11 +33,17 @@ public abstract class LookingState : BaseBossState, IState
 
     }
 
+    protected void BeginChaseOnGround() {
+        bossAI.Behaviours.landingState.nextState = bossAI.Behaviours.crawlingChaseState;
+        OnStateSwitch?.Invoke(bossAI.Behaviours.landingState);
+    }
+
+
     public override void Run()
     {
         bossAI.BossEye.UpdateNoticing(bossAI.Boss.Player);
         if (bossAI.BossEye.NoticesPlayer) {
-            OnStateSwitch?.Invoke(bossAI.Behaviours.crawlingChaseState);
+            BeginChaseOnGround();
         }
     }
 

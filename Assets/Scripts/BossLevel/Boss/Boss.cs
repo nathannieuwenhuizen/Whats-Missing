@@ -9,6 +9,7 @@ namespace Boss {
     ///</summary>
     [RequireComponent(typeof(BossAI))]
     [RequireComponent(typeof(BossPositioner))]
+    // [RequireComponent(typeof(Rigidbody))]
     public class Boss : RoomObject
     {       
         public const float BOSS_SIZE = 8f;

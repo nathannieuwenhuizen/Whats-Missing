@@ -11,7 +11,7 @@ namespace Boss {
         private Transform test;
         private float angleCap = 80f;
 
-        public IKBossHead(Transform _transform, Transform _test) : base(_transform)
+        public IKBossHead(Transform _transform, IKBossPass _ikPass, Transform _test) : base(_transform, _ikPass)
         {
             transform = _transform;
             test = _test;

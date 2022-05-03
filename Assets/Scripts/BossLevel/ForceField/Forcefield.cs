@@ -6,12 +6,15 @@ using UnityEngine.AI;
 
 namespace ForcefieldDemo
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class Forcefield : MonoBehaviour, ITriggerArea
     {    
         public delegate void ForcefieldEvent();
         public static ForcefieldEvent OnForceFieldEnter;
         public static ForcefieldEvent OnForceFieldExit;
         private NavMeshObstacle navMeshObstacle;
+
+        private Rigidbody rb;
 
         [SerializeField] 
         private Collider sphereCollider;
@@ -53,16 +56,24 @@ namespace ForcefieldDemo
         [SerializeField]
         private MeshRenderer meshRenderer;
         [SerializeField]
+        private MeshRenderer mirrorMeshRenderer;
+        [SerializeField]
         private ParticleSystem burstParticle;
         [SerializeField]
         private ParticleSystem ringsParticle;
 
+
+        private void Awake() {
+            rb = GetComponent<Rigidbody>();
+            mirrorMeshRenderer.material.SetInt("_enableIntersection", 0);
+        }
         void Start()
         {
             meshRenderer.enabled = false;
             sphereCollider.enabled = false;
             Dissolve = 1;
             isOn = false;
+            IsOn = true;
 
             Radius = meshRenderer.transform.lossyScale.y * .5f;
             fillIdle = Fill;
@@ -73,6 +84,10 @@ namespace ForcefieldDemo
             }
             coolDownWindow = 0;
 
+        }
+        private void FixedUpdate() {
+            rb.angularVelocity = Vector3.zero;
+            rb.velocity = Vector3.zero;
         }
 
         public bool IsOn {
@@ -132,24 +147,28 @@ namespace ForcefieldDemo
         {
             int onOff = (state) ? 1 : 0;
             meshRenderer?.material.SetFloat("_enableRipple", onOff);
+            mirrorMeshRenderer?.material.SetFloat("_enableRipple", onOff);
         }
 
         public void EnableRimGlow(bool state = false)
         {
             int onOff = (state) ? 1 : 0;
             meshRenderer?.material.SetFloat("_enableRimGlow", onOff);
+            mirrorMeshRenderer?.material.SetFloat("_enableRimGlow", onOff);
         }
 
         public void EnableScanLine(bool state = false)
         {
             int onOff = (state) ? 1 : 0;
             meshRenderer?.material.SetFloat("_enableScanLine", onOff);
+            mirrorMeshRenderer?.material.SetFloat("_enableScanLine", onOff);
         }
 
         public void EnableFillTexture(bool state = false)
         {
             int onOff = (state) ? 1 : 0;
             meshRenderer?.material.SetFloat("_enableFillTexture", onOff);
+            mirrorMeshRenderer?.material.SetFloat("_enableFillTexture", onOff);
         }
 
         public void EnableIntersection(bool state = false)
@@ -172,7 +191,10 @@ namespace ForcefieldDemo
         }
         public float Dissolve {
             get { return meshRenderer.material.GetFloat("Dissolve");}
-            set { meshRenderer.material.SetFloat("Dissolve", value); }
+            set { 
+                meshRenderer.material.SetFloat("Dissolve", value); 
+                mirrorMeshRenderer.material.SetFloat("Dissolve", value); 
+            }
         }
 
         public bool InsideArea { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -230,6 +252,25 @@ namespace ForcefieldDemo
             {
                 UpdateMouse();
             }
+        }
+
+
+        private bool hasBeenResetted = true;
+        public IEnumerator ResettingForceField() {
+            hasBeenResetted = false;
+            yield return new WaitForSeconds(2f);
+            hasBeenResetted = true;
+        }
+        private void OnTriggerEnter(Collider other) {
+            // boss collides with forcefield
+            if (!hasBeenResetted) return;
+            StartCoroutine(ResettingForceField());
+
+            Vector3 position = other.ClosestPoint(transform.position);
+            Vector3 normal = (position - transform.position).normalized;
+            ApplyImpact(position, normal);
+
+            
         }
 
         public void OnAreaEnter(Player player)

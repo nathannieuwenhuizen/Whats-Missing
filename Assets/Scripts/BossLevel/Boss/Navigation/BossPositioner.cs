@@ -29,7 +29,7 @@ public class BossPositioner : MonoBehaviour
     public static BossPositionEvent OnBossLanding;
     public static BossPositionEvent OnBossTakeOff;
 
-    private bool inAir;
+    private bool inAir = true;
     public bool InAir {
         get { return inAir;}
     }

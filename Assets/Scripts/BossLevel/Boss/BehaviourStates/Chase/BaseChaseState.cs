@@ -11,7 +11,8 @@ public class BaseChaseState : BaseBossState
         base.DrawDebug();
     }
     private float oldViewAngle;
-    private float sharpViewAngle = 8;
+    private float sharpViewAngle = 15f;
+    private bool showCutsceneBeforeChase = false;
     public override void Start()
     {
         bossAI.BossHead.SteeringBehaviour.MaxForce *= 20f;
@@ -33,6 +34,7 @@ public class BaseChaseState : BaseBossState
     {
         bossAI.BossHead.SteeringBehaviour.MaxForce /= 20f;
         bossAI.BossEye.AnimateViewAngle(oldViewAngle);
+        bossAI.BossEye.noticingValue = 0;
     }
 
 }

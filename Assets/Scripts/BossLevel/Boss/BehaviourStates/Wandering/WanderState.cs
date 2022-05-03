@@ -38,23 +38,27 @@ public class WanderState : LookingState, IState
         stateName = "Wandering";
         positioner = bossAI.Boss.BossPositioner;
         bossHead = bossAI.Boss.Head;
+        MirrorShard.OnPickedUp += ShardHasBeenPickedUp;
 
         wanderingCoroutine = bossAI.StartCoroutine(Wandering());
 
         CurrentPoseIndex = 0;
-        //takeoff if the boss is at the ground
-        if (bossAI.Boss.BossPositioner.InAir == false) {
-            positioner.BodyMovementType = BodyMovementType.airSteering;
-            CurrentPoseIndex = 0;
-            takeOffCoroutine = bossAI.StartCoroutine(positioner.TakeOff(() => {}));
-            positioner.CurrentMovementBehaviour.bodyOrientation = BodyOrientation.toShape;
-        }
+        Boss.Body.IKPass.SetLimbsActive(false);
+        positioner.CurrentMovementBehaviour.bodyOrientation = BodyOrientation.toShape;
+        positioner.BodyMovementType = BodyMovementType.airSteering;
     }
+    
+    public void ShardHasBeenPickedUp(MirrorShard _shard) {
+        BeginChaseOnGround();
+    }
+
+
 
     public override void Exit()
     {
         base.Exit();
         bossAI.StopCoroutine(wanderingCoroutine);
+        MirrorShard.OnPickedUp -= ShardHasBeenPickedUp;
 
     }
 
@@ -62,6 +66,7 @@ public class WanderState : LookingState, IState
     {
         base.Run();
     }
+
     public IEnumerator Wandering() {
         while (true) {
             while (IsAtPose(wanderingPath.poses[currentPoseIndex]) == false) { 

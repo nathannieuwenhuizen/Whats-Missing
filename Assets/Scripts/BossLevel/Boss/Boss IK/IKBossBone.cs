@@ -6,7 +6,7 @@ namespace Boss {
     public interface IIKBossBone {
         public bool IsActive { get; set;}
         public float Weight {get; set; }
-        public IEnumerator AnimateWeight(float end);
+
         public float WeightAnimationDuration { get; set;}
         
         public Vector3 IKPosition {get; set; }
@@ -27,12 +27,24 @@ namespace Boss {
     [System.Serializable]
     public abstract class IKBossBone : IIKBossBone
     {
+        private bool isActive = false;
+        private Coroutine weightCoroutine;
+        private IKBossPass ikPass;
 
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { 
+            get { return isActive; } 
+            set {
+                isActive = value;
+                if (weightCoroutine != null) 
+                    ikPass.StopCoroutine(weightCoroutine);
+                ikPass.StartCoroutine(AnimateWeight(value ? 1 : 0));
+            }
+        }
+
         [Range(0,1)]
         [SerializeField]
-        private float boneWeight = 1f;
-        public float Weight { get => boneWeight; set => boneWeight = value; }
+        private float weight = 0f;
+        public float Weight { get => weight; set => weight = value; }
         public float WeightAnimationDuration { get; set; } = .5f;
         public Vector3 IKPosition { get; set; } = Vector3.zero;
         public Vector3 IKLookDirection { get; set; } = Vector3.zero;
@@ -47,15 +59,16 @@ namespace Boss {
         ///<summary>
         /// Simply animates the weight values
         ///</summary>
-        public IEnumerator AnimateWeight(float _end)
+        private IEnumerator AnimateWeight(float _end)
         {
             yield return Extensions.AnimateCallBack(Weight, _end, AnimationCurve.EaseInOut(0,0,1,1), (float val) => {
                 Weight = val;
             }, 1f);
         }
 
-        public IKBossBone(Transform _transform) {
+        public IKBossBone(Transform _transform, IKBossPass _ikPass) {
             transform = _transform;
+            ikPass = _ikPass;
         }
 
         ///<summary>
@@ -63,7 +76,7 @@ namespace Boss {
         ///</summary>
         public virtual void UpdateIK(Animator _animator)
         {
-            if (_animator == null || IsActive == false) return;
+            if (_animator == null) return;
             if (Weight == 0) return;
 
             UpdatePositionIK(_animator);

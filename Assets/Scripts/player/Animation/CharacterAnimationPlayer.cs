@@ -78,7 +78,7 @@ public class CharacterAnimationPlayer
     /// Plays an animation by triggering it while also calling the cutscene ui.
     /// TODO: make sure the callbacks works after the animation has finished playing.
     ///</summary>
-    public void PlayCutSceneAnimation(string trigger, bool applyRoonAnimation = false, Action callback = null) {
+    public void PlayCutSceneAnimation(string trigger, bool applyRootAnimation = false, Action callback = null) {
         OnCutsceneStart?.Invoke();
 
         SetTorsoAnimation(false);
@@ -93,7 +93,7 @@ public class CharacterAnimationPlayer
         player.Camera.transform.localRotation = animationView.localRotation;
         player.StartCoroutine(player.Camera.AnimatingFieldOfView(80, AnimationCurve.EaseInOut(0,0,1,1), 2f));
         animator.SetTrigger(trigger);
-        animator.applyRootMotion = applyRoonAnimation;
+        animator.applyRootMotion = applyRootAnimation;
     }
 
     public void SetAnimator(Animator _animator, Transform _animationView) {
@@ -106,39 +106,51 @@ public class CharacterAnimationPlayer
     public void OnEnable() {
         BossMirror.OnMirrorShake += OnBossMirrorShake;
         BossMirror.OnMirrorExplode += OnBossMirrorExplode;
+        Boss.BossCutsceneState.OnBossCutsceneStart += OnBossCutsceneStart;
+        Boss.BossCutsceneState.OnBossCutsceneEnd += OnBossCutsceneEnd;
+
     }
     public void OnDisable() {
         BossMirror.OnMirrorShake -= OnBossMirrorShake;
-        BossMirror.OnMirrorExplode += OnBossMirrorExplode;
-
+        BossMirror.OnMirrorExplode -= OnBossMirrorExplode;
+        Boss.BossCutsceneState.OnBossCutsceneStart -= OnBossCutsceneStart;
+        Boss.BossCutsceneState.OnBossCutsceneEnd -= OnBossCutsceneEnd;
     }
 
     private void OnBossMirrorShake(BossMirror bossMirror) {
         PlayCutSceneAnimation("", false);
         bossMirror.StartCoroutine(InBossCutScene(bossMirror));
     }
+    private bool inBossCutscene = false;
     private IEnumerator InBossCutScene(BossMirror bossMirror) {
+        Debug.Log("in boss cutscene!");
+        inBossCutscene = true;
         yield return new WaitForSeconds( bossMirror.ShakeDuration - .5f);
+        Debug.Log("in boss cutscene for realz");
         PlayCutSceneAnimation("boss_intro_1", false);
-
         yield return new WaitForSeconds(2f);
         PlayCutSceneAnimation("boss_intro_2", false);
         yield return new WaitForSeconds(.5f);
         PlayCutSceneAnimation("boss_intro_3", false);
-
-        yield return new WaitForSeconds(2f);
-        EndOfCutSceneAnimation();
-
+        inBossCutscene = false;
     }
     private void OnBossMirrorExplode(BossMirror bossMirror) {
 
     }
 
+    public void OnBossCutsceneStart(Boss.Boss boss) {
+        if (inBossCutscene) return;
+        PlayCutSceneAnimation("", false);
+    }
+    public void OnBossCutsceneEnd(Boss.Boss boss) {
+        EndOfCutSceneAnimation();
+    }
+
     ///<summary>
     /// Called when the cutscene animation has ended. Disabling the cutscene ui and enabling the ingame ui.
     ///</summary>
-
     public void EndOfCutSceneAnimation() {
+
         OnCutsceneEnd?.Invoke();
         player.Camera.transform.SetParent(cameraParent);
         player.Movement.EnableRotation = true;

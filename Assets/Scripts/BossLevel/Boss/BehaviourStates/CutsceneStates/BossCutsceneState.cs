@@ -8,7 +8,9 @@ public class BossCutsceneState : BaseBossState, IState
     public delegate void BossCutSceneDelegate(Boss boss);
     public static BossCutSceneDelegate OnBossCutsceneStart;
     public static BossCutSceneDelegate OnBossCutsceneEnd;
-    
+    public bool withCutscene {
+            get; set;
+        } = true;
     public override void DrawDebug()
     {
         base.DrawDebug();
@@ -16,8 +18,7 @@ public class BossCutsceneState : BaseBossState, IState
     public override void Start()
     {
         stateName = "Cutscene";
-
-        OnBossCutsceneStart?.Invoke(bossAI.Boss);
+        if (withCutscene) OnBossCutsceneStart?.Invoke(bossAI.Boss);
         bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.none;
         bossAI.Boss.BossPositioner.MovementEnabled = false;
     }
@@ -30,7 +31,8 @@ public class BossCutsceneState : BaseBossState, IState
     public override void Exit()
     {
         bossAI.Boss.BossPositioner.MovementEnabled = true;
-        OnBossCutsceneEnd?.Invoke(bossAI.Boss);
+        Debug.Log("boss cutscene exit");
+        if (withCutscene) OnBossCutsceneEnd?.Invoke(bossAI.Boss);
     }
 
 }

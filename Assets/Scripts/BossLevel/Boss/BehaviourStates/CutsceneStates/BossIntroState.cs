@@ -10,6 +10,7 @@ public class BossIntroState : BossCutsceneState
         stateName = "Intro cutscene";
         base.Start();
         bossAI.StartCoroutine(TestAnimation());
+        
     }
     public IEnumerator TestAnimation() {
         yield return new WaitForEndOfFrame();

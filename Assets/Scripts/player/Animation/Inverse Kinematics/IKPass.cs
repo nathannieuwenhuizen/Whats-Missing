@@ -78,7 +78,7 @@ public class IKPass : MonoBehaviour
         AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
         while (index < headDuration) {
             index += Time.deltaTime;
-            headDuration = Mathf.Lerp(start,end, curve.Evaluate(index / headDuration));
+            LookWeight = Mathf.Lerp(start,end, curve.Evaluate(index / headDuration));
             yield return new WaitForEndOfFrame();
         }
         LookWeight = end;

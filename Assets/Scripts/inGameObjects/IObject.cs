@@ -213,12 +213,14 @@ public interface IChangable : IMissable, IShrinkable, IEnlargable, IFlippable
 public interface IPickable {
     void Grab(Rigidbody connectedRB);
     void Release();
+    bool CanBeReleased();
     bool Touching {get;}
     bool TooHeavy(Hands hands);
     GameObject gameObject {get; }
     Rigidbody RigidBody { get; set; }
     RigidBodyInfo RigidBodyInfo { get;set;}    
     public float HoldingDistance {get; }
+    public Vector3 HoldingOffset {get;set;}
     public bool LooksWhenGrabbed  {get; }
 
 }

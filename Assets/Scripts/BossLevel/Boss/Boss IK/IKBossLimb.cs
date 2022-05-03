@@ -31,7 +31,7 @@ namespace Boss {
         public virtual IKLimbInfo LimbInfo => new IKLimbInfo() {RayDistance = 5f, limbOffset = 1.8f, distanceBetweenContacts = 3f};
         
 
-        public IKBossLimb(Transform _transform, AvatarIKGoal _ikGoal) : base(_transform)
+        public IKBossLimb(Transform _transform, IKBossPass _ikPass, AvatarIKGoal _ikGoal) : base(_transform, _ikPass)
         {
             transform = _transform;
             ikGoal = _ikGoal;

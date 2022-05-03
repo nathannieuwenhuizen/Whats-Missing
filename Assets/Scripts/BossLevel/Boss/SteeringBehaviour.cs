@@ -57,6 +57,7 @@ public class SteeringBehaviour
     ///<summary>
     /// The transform that will have the steering behaviour
     ///</summary>
+    [Header("can be zero")]
     public Transform target;
     public Transform desiredTarget;
 

@@ -9,7 +9,7 @@ namespace Boss {
     [System.Serializable]
     public class IKBossLeg : IKBossLimb
     {
-        public IKBossLeg(Transform _transform, AvatarIKGoal _ikGoal) : base(_transform, _ikGoal)
+        public IKBossLeg(Transform _transform, IKBossPass _ikPass, AvatarIKGoal _ikGoal) : base(_transform, _ikPass, _ikGoal)
         {
             transform = _transform;
             ikGoal = _ikGoal;

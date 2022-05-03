@@ -98,6 +98,7 @@ public class Hands : MonoBehaviour
     //Releases the holding object
     public void Release() {
         if (holdingObject == null) return;
+        if (holdingObject.CanBeReleased() == false) return;
 
         if (velocity.magnitude > maxThrowForce) {
             velocity = velocity.normalized * maxThrowForce;
@@ -120,19 +121,12 @@ public class Hands : MonoBehaviour
 
     private IEnumerator UpdatePhysics() {
         while (holdingObject != null) {
-
             
             var speed = holdingObject.Touching ? 3f : 10f;
             holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-            Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (holdingObject.HoldingDistance);
+            Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (holdingObject.HoldingDistance) + transform.TransformDirection(holdingObject.HoldingOffset);
             Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, transform.position + offset, Time.deltaTime * speed);
             holdingObject.RigidBody.MovePosition(midwayDestination);
-
-            // var speed = holdingObject.Touching ? 3f : 10f;
-            // holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-            // Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (holdingObject.HoldingDistance * .5f);
-            // Vector3 midwayDestination = Vector3.Lerp(oldPos, transform.position + offset, Time.deltaTime * speed);
-            // holdingObject.RigidBody.MovePosition(transform.position + offset);
 
             if (holdingObject.LooksWhenGrabbed) {
                 Quaternion currentRotation = holdingObject.RigidBody.rotation;

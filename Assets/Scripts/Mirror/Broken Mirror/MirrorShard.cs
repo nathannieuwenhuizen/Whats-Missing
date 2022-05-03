@@ -17,6 +17,10 @@ public class LetterCoords {
 public class MirrorShard : PickableRoomObject
 {
 
+    public delegate void OnMirroShardPickEvent(MirrorShard _shard);
+    public static OnMirroShardPickEvent OnPickedUp;
+    private bool hasAlreadyBeenPickedUp = false;
+
     private float distanceToAttachShardToMirror = 8f;
     private float attachingDuration = 2f;
     [SerializeField]
@@ -87,6 +91,7 @@ public class MirrorShard : PickableRoomObject
         base.Awake();
         planarReflection = GetComponent<PlanarReflection>();
         planarReflection.IsActive = false;
+        HoldingOffset = new Vector3(0,-1.5f, 0);
     }
     
 
@@ -117,7 +122,7 @@ public class MirrorShard : PickableRoomObject
 
 
     public void DisconnectedFromMirror(float force = 0) {
-        transform.parent = BossMirror.transform.parent;
+        transform.parent = BossMirror.transform.parent.parent;
         Attached = false;
         shineParticle.Play();
         ActivateRigidBody();
@@ -171,12 +176,16 @@ public class MirrorShard : PickableRoomObject
     {
         base.Grab(connectedRigidBody); 
         shineParticle.Stop();
+        if (!hasAlreadyBeenPickedUp) {
+            hasAlreadyBeenPickedUp = true;
+            OnPickedUp?.Invoke(this);
+        }
     }
 
     public override void Release()
     {  
-        base.Release();
         if (!Attached && Vector3.Distance(transform.position, bossMirror.transform.position) < distanceToAttachShardToMirror) {
+            base.Release();
             ReattachedToMirror();
         } else {
             shineParticle.Play();
@@ -232,5 +241,8 @@ public class MirrorShard : PickableRoomObject
         );
         StopCoroutine(shakeCoroutine);
     }
-
+    public override bool CanBeReleased()
+    {
+        return !Attached && Vector3.Distance(transform.position, bossMirror.transform.position) < distanceToAttachShardToMirror;
+    }
 }

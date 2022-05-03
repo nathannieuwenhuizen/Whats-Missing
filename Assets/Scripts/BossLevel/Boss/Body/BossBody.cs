@@ -38,6 +38,12 @@ namespace Boss {
         private BossWiggleBone[] mainBossWiggleBones;
         [SerializeField]
         private BossWiggleBone[] metamorphosedBones;
+        
+        [SerializeField]
+        private IKBossPass ikBossPass;
+        public IKBossPass IKPass {
+            get { return ikBossPass;}
+        }
 
 
         ///<summary>

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
@@ -28,6 +29,12 @@ public class WanderingPath : MonoBehaviour {
                 if (poses.Length - 2 < i ) endPos = poses[0].position.position;
                 else if (poses[i + 1].position != null) endPos = poses[i + 1].position.position;
                 Debug.DrawLine(startpos, endPos, Color.yellow);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(startpos, .5f);
+                #if UNITY_EDITOR
+                Handles.Label(poses[i].position.position, i.ToString());
+                #endif
+
                 startpos = endPos;
             }
         }

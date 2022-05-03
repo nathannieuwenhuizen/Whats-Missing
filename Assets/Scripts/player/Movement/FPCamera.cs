@@ -152,6 +152,9 @@ public class FPCamera
     {
         if (useSteeringBehaviour) {
             UpdateSteeringBehaviour();
+            Quaternion rotatationofCam = cameraPivot.transform.localRotation;
+            transform.Rotate(new Vector3(0,rotatationofCam.y,0));
+            cameraPivot.Rotate(new Vector3(0,-rotatationofCam.y,0));
             return;
         }
         if (!EnableRotation) return; 

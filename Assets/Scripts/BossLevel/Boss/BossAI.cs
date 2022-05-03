@@ -7,6 +7,9 @@ namespace Boss {
 
 public abstract class BaseBossState : IState{
     public BossAI bossAI {get; set;}
+    protected Boss Boss { get{ return bossAI.Boss; }}
+    protected BossPositioner BossPositioner { get{ return bossAI.Boss.BossPositioner; }}
+
     public ILiveStateDelegate OnStateSwitch { get; set; }
     private GUIStyle debugStyle;
     public string stateName = "[no state name specified]";
@@ -45,6 +48,8 @@ public class BossBehaviours {
 
         crawlingChaseState = new CrawlingChaseState() {bossAI = _ai };
         chagerAtShieldState = new ChrageAtShieldState() {bossAI = _ai };
+        landingState = new LandingState() {bossAI = _ai };
+        takeoffState = new TakeOffState() {bossAI = _ai };
     }
 
     //intro
@@ -53,6 +58,10 @@ public class BossBehaviours {
 
     //stealth
     public WanderState wanderState; 
+
+    //movement
+    public LandingState landingState;
+    public TakeOffState takeoffState;
 
     //chase
     public CrawlingChaseState crawlingChaseState; 

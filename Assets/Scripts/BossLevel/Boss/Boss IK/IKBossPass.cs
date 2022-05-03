@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace Boss {
 
-[RequireComponent(typeof(Animator))]
+    ///<summary>
+    /// The globsl ik pass for the boss.
+    ///</summary>
+    [RequireComponent(typeof(Animator))]
     public class IKBossPass : MonoBehaviour
     {
         private Animator animator;
@@ -48,13 +51,22 @@ namespace Boss {
         {
             animator = GetComponent<Animator>();
 
-            ikBossHead = new IKBossHead(transform, test);
+            ikBossHead = new IKBossHead(transform, this, test);
 
-            leftLeg = new IKBossLeg(transform, AvatarIKGoal.LeftFoot);
-            rightLeg = new IKBossLeg(transform, AvatarIKGoal.RightFoot);
-            leftArm = new IKBossArm(transform, AvatarIKGoal.LeftHand);
-            rightArm = new IKBossArm(transform, AvatarIKGoal.RightHand);
+            leftLeg = new IKBossLeg(transform, this, AvatarIKGoal.LeftFoot);
+            rightLeg = new IKBossLeg(transform, this, AvatarIKGoal.RightFoot);
+            leftArm = new IKBossArm(transform, this, AvatarIKGoal.LeftHand);
+            rightArm = new IKBossArm(transform, this, AvatarIKGoal.RightHand);
         }
+
+        public void SetLimbsActive(bool _val) {
+            rightArm.IsActive = _val;
+            leftArm.IsActive = _val;
+            
+            rightLeg.IsActive = _val;
+            leftLeg.IsActive = _val;
+        }
+
 
         private void OnEnable() {
             IKPass.OnIKUpdate += OnAnimatorIK;
@@ -81,12 +93,6 @@ namespace Boss {
             rightArm.UpdateIK(animator);
 
             ikBossHead.UpdateIK(animator);
-
-            // animator.SetLookAtWeight(1, 0, 1, 0);
-            // animator.SetLookAtPosition(test.position);
-
-            // animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
-            // animator.SetIKPosition(AvatarIKGoal.LeftFoot, test.position); 
         }
 
         private void OnDrawGizmos() {
