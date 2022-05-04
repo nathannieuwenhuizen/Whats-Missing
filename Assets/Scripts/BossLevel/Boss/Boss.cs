@@ -14,7 +14,7 @@ namespace Boss {
     {       
         public const float BOSS_SIZE = 8f;
         public const float BOSS_GROUND_OFFSET = 20f;
-        public const float BOSS_ATTACK_PLAYER_RANGE = 5f;
+        public const float BOSS_ATTACK_PLAYER_RANGE = 10f;
         public const float BOSS_ATTACK_SHIELD_RANGE = 5f;
 
         [Header("Boss info")]
@@ -75,6 +75,7 @@ namespace Boss {
             bossVoice = new BossVoice(transform);
             bossChangeHandler = new BossChangesHandler(textAnimatorPlayer, bossRoom, this);
             bossPositioner = GetComponent<BossPositioner>();
+            Body.boss = this;
 
             ai = GetComponent<BossAI>();
             ai.Setup(this);

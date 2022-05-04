@@ -70,6 +70,20 @@ public class BossEye: MonoBehaviour {
             UpdateFakeLight();
         }
     }
+    [Range(0,1)]
+    [SerializeField]
+    private float viewAlpha ;
+    public float ViewAlpha {
+        get { return viewAlpha;}
+        set { 
+            viewAlpha = Mathf.Clamp01(value); 
+            UpdateFakeLight();
+        }
+    }
+
+    private float GetColorIntensity() {
+        return (viewColor.r + viewColor.g + viewColor.b) / 3f;
+    }
 
     ///<summary>
     /// The current value on how much the boss notices the palyer
@@ -142,9 +156,14 @@ public class BossEye: MonoBehaviour {
         if (viewAngleCoroutine != null) StopCoroutine(viewAngleCoroutine);
         viewAngleCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewAngle, desiredAngle, viewAngleAnimationCurve, (float val) => viewAngle = val, 1f));
     }
-    public void AnimateViewRagee(float desiredRange) {
+    public void AnimateViewRange(float desiredRange) {
         if (viewRangeCoroutine != null) StopCoroutine(viewRangeCoroutine);
         viewRangeCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewRange, desiredRange, viewAngleAnimationCurve, (float val) => viewRange = val, 1f));
+    }
+
+    public void AnimateViewAlpha(float desiredAlpha) {
+        if (viewRangeCoroutine != null) StopCoroutine(viewRangeCoroutine);
+        viewRangeCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewAlpha, desiredAlpha, viewAngleAnimationCurve, (float val) => viewAlpha = val, 1f));
     }
 
 
@@ -164,11 +183,14 @@ public class BossEye: MonoBehaviour {
 
         if (fakeLightRenderer != null) {
             fakeLightRenderer.sharedMaterial.SetColor("_color", viewColor);
+            fakeLightRenderer.sharedMaterial.SetFloat("_opacity", viewAlpha);
         } 
     }
 
+
     private Color debugColor;
     public void OnDrawGizmos() {
+        // Debug.Log("color intensity: " + GetColorIntensity());
         if (!showGizmo) return;
         if (boss != null) {
             bool inView = PlayerIsInView(boss.Player);

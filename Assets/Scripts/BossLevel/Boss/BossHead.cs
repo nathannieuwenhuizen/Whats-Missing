@@ -10,6 +10,10 @@ namespace Boss {
 ///</summary>
 public class BossHead: MonoBehaviour
 {
+
+    public delegate void HeadAimUpdateEvent(Vector3 _position);
+    public static HeadAimUpdateEvent OnHeadAimUpdate;
+
     private Transform currentAim;
     private Transform desiredAim;
     
@@ -47,6 +51,7 @@ public class BossHead: MonoBehaviour
 
         Quaternion oldRot = transform.localRotation;
         transform.LookAt(currentAim, transform.up);
+        OnHeadAimUpdate?.Invoke(currentAim.position);
 
         if (Vector3.Angle(transform.forward, transform.parent.forward) > 90f) {
             transform.localRotation = oldRot;

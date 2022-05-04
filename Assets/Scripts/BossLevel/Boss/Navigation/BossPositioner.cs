@@ -69,6 +69,8 @@ public class BossPositioner : MonoBehaviour
             airMovementBehaviour.MovementEnabled = false;
             navMeshMovementBehaviour.MovementEnabled = false;
             CurrentMovementBehaviour.MovementEnabled = value;
+            navMeshAgent.enabled = movementType == BodyMovementType.navMesh && value;
+
         }
     }
 
@@ -126,7 +128,7 @@ public class BossPositioner : MonoBehaviour
         return path.GetClosestMountainCoord(transform.position, pathHandeler);
     }
 
-    public bool isAtPosition(float _offset = .1f) {
+    public bool AtPosition(float _offset = .1f) {
         return CurrentMovementBehaviour.ReachedDestination(_offset);
     }
 

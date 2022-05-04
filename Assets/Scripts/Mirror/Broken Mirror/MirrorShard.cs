@@ -208,6 +208,7 @@ public class MirrorShard : PickableRoomObject
         StartCoroutine(transform.AnimatingLocalRotation(Quaternion.Euler(0,0,0), AnimationCurve.EaseInOut(0,0,1,1), attachingDuration));
         yield return StartCoroutine(transform.AnimatingLocalPos(startLocalPos, AnimationCurve.EaseInOut(0,0,1,1), attachingDuration));
         Attached = true;
+        bossMirror.AttachMirrorShard(this);
         animating = false;
     }
 

@@ -47,7 +47,7 @@ public class BossBehaviours {
         wanderState = new WanderState() {bossAI = _ai, wanderingPath = _ai.testPath };
 
         crawlingChaseState = new CrawlingChaseState() {bossAI = _ai };
-        chagerAtShieldState = new ChrageAtShieldState() {bossAI = _ai };
+        chagerAtShieldState = new ChargeAtShieldState() {bossAI = _ai };
         landingState = new LandingState() {bossAI = _ai };
         takeoffState = new TakeOffState() {bossAI = _ai };
     }
@@ -65,17 +65,14 @@ public class BossBehaviours {
 
     //chase
     public CrawlingChaseState crawlingChaseState; 
-    public ChrageAtShieldState chagerAtShieldState; 
+    public ChargeAtShieldState chagerAtShieldState; 
 }
 ///<summary>
 /// Main Ai for the boss holding all the statesand behaviour trees
 ///</summary>
 public class BossAI : MonoBehaviour {
 
-    private bool playerIsInForceField = false;
-    public bool PlayerIsInForceField {
-        get { return playerIsInForceField;}
-    }
+    public static bool PlayerIsInForceField = false;
 
     public WanderingPath testPath;
 
@@ -102,7 +99,7 @@ public class BossAI : MonoBehaviour {
         behaviours = new BossBehaviours(this);
     }
     public void InitializeStateMachine() {
-        stateMachine = new FSM(behaviours.idleState);
+        stateMachine = new FSM(behaviours.crawlingChaseState);
     }
     public void UpdateAI() {
         stateMachine?.Update();
@@ -114,27 +111,32 @@ public class BossAI : MonoBehaviour {
 
     private void DoIntro(BossMirror mirror) {
         boss.transform.position = mirror.transform.position + new Vector3(0,-15,0);
+        boss.transform.LookAt(boss.Player.transform.position, Vector3.up);
+        boss.transform.rotation = Quaternion.Euler(0, boss.transform.rotation.eulerAngles.y,0);
+        
         stateMachine.SwitchState(behaviours.bossIntro);
     }
 
 
     public void PlayerIsInsdeForceField() {
-        playerIsInForceField = true;
+        Debug.Log("force field enter");
+        PlayerIsInForceField = true;
     }
     public void PlayerIsOutsideForceField() {
-        playerIsInForceField = true;
+        Debug.Log("force field exit");
+        PlayerIsInForceField = false;
     }
 
     private void OnEnable() {
         BossMirror.OnMirrorExplode += DoIntro;
         ForcefieldDemo.Forcefield.OnForceFieldEnter += PlayerIsInsdeForceField;
-        ForcefieldDemo.Forcefield.OnForceFieldEnter += PlayerIsOutsideForceField;
+        ForcefieldDemo.Forcefield.OnForceFieldExit += PlayerIsOutsideForceField;
     }
 
     private void OnDisable() {
         BossMirror.OnMirrorExplode += DoIntro;
         ForcefieldDemo.Forcefield.OnForceFieldEnter -= PlayerIsInsdeForceField;
-        ForcefieldDemo.Forcefield.OnForceFieldEnter -= PlayerIsOutsideForceField;
+        ForcefieldDemo.Forcefield.OnForceFieldExit -= PlayerIsOutsideForceField;
         
     }
 }

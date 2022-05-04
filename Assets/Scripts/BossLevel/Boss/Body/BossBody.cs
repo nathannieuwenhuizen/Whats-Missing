@@ -32,6 +32,14 @@ namespace Boss {
 
         [SerializeField]
         private ArmRenders armRenders;
+
+        [SerializeField]
+        private BossHitBox[] hitBoxes;
+
+        private BossAnimator bossAnimator;
+        public BossAnimator BossAnimator {
+            get { return bossAnimator;}
+        }
         
 
         [SerializeField]
@@ -44,7 +52,15 @@ namespace Boss {
         public IKBossPass IKPass {
             get { return ikBossPass;}
         }
+        
 
+        [HideInInspector]
+        public Boss boss;
+
+        private void Start() {
+            bossAnimator = new BossAnimator(boss, IKPass);
+            ToggleDeathColliders(false);
+        }
 
         ///<summary>
         /// Toggles all the renderers of the boss body making it invisible
@@ -52,7 +68,15 @@ namespace Boss {
         public void ToggleBody(bool _visible) {
             foreach (Renderer renderer in bodyRenders) renderer.enabled = _visible;
             foreach (Renderer renderer in metamorphosedRenders) renderer.enabled = _visible && hasMetamorphosed;
-            if (_visible) ToggleSyth(hasMetamorphosed);
+            // if (_visible) ToggleSyth(hasMetamorphosed);
+            // if (!_visible) ToggleSyth(false);
+        }
+
+        ///<summary>
+        /// Toggles all hitboxes of the 
+        ///</summary>
+        public void ToggleDeathColliders(bool _enabled) {
+            foreach (BossHitBox hitbox in hitBoxes) hitbox.Coll.enabled = _enabled;
         }
 
         ///<summary>

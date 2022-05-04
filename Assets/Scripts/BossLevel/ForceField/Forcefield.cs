@@ -17,7 +17,7 @@ namespace ForcefieldDemo
         private Rigidbody rb;
 
         [SerializeField] 
-        private Collider sphereCollider;
+        private Collider[] sphereColliders;
         [SerializeField]
         private bool isOn = false;
         private Coroutine disolveCoroutine;
@@ -70,9 +70,10 @@ namespace ForcefieldDemo
         void Start()
         {
             meshRenderer.enabled = false;
-            sphereCollider.enabled = false;
+            ToggleColliders(false);
             Dissolve = 1;
             isOn = false;
+
             IsOn = true;
 
             Radius = meshRenderer.transform.lossyScale.y * .5f;
@@ -101,14 +102,19 @@ namespace ForcefieldDemo
         }  
 
         private IEnumerator Dissolving(bool turningOn) {
-            sphereCollider.enabled = true;
+            ToggleColliders(true);
             meshRenderer.enabled = true;
             yield return StartCoroutine(meshRenderer.material.AnimatingDissolveMaterial(Dissolve, turningOn ? 0 : 1, AnimationCurve.EaseInOut(0,0,1,1), 2f));
-            sphereCollider.enabled = isOn;
+            ToggleColliders(IsOn);
+
             if (IsOn) ringsParticle.Play();
             else ringsParticle.Stop();
             meshRenderer.enabled = isOn;
         }   
+
+        public void ToggleColliders(bool _value) {
+            foreach(Collider col in sphereColliders) col.enabled = _value;
+        }
 
 
         #region DIAGNOSTIC 
@@ -247,39 +253,40 @@ namespace ForcefieldDemo
             if (Input.GetKeyDown(KeyCode.L))
                     if (!IsOn) IsOn = true;
 
-
+#if UNITY_EDITOR
             if (clickToImpact)
-            {
                 UpdateMouse();
-            }
+#endif
         }
 
 
-        private bool hasBeenResetted = true;
-        public IEnumerator ResettingForceField() {
-            hasBeenResetted = false;
+        private bool hasBeenCooldowned = true;
+        public IEnumerator Cooldown() {
+            hasBeenCooldowned = false;
             yield return new WaitForSeconds(2f);
-            hasBeenResetted = true;
+            hasBeenCooldowned = true;
         }
         private void OnTriggerEnter(Collider other) {
             // boss collides with forcefield
-            if (!hasBeenResetted) return;
-            StartCoroutine(ResettingForceField());
+            if (!other.isTrigger) return;
+
+            if (!hasBeenCooldowned) return;
+            StartCoroutine(Cooldown());
 
             Vector3 position = other.ClosestPoint(transform.position);
             Vector3 normal = (position - transform.position).normalized;
             ApplyImpact(position, normal);
-
-            
         }
 
         public void OnAreaEnter(Player player)
         {
+            Debug.Log("force field enter");
             OnForceFieldEnter?.Invoke();
         }
 
         public void OnAreaExit(Player player)
         {
+            Debug.Log("force field exit");
             OnForceFieldExit?.Invoke();
         }
     }

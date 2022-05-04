@@ -10,7 +10,6 @@ namespace Boss {
     {
         private BossPositioner positioner;
         private Vector3 startChasePos;
-        private float attackRange = 3f;
 
 
         public override void DrawDebug()
@@ -23,6 +22,7 @@ namespace Boss {
             base.Start();
             positioner = bossAI.Boss.BossPositioner;
             positioner.BodyOrientation = BodyOrientation.toPath;
+            positioner.BodyMovementType = BodyMovementType.navMesh;
             stateName = "Chase";
             positioner.MovementEnabled = true;
             UpdateBossChasePath(true);
@@ -42,35 +42,16 @@ namespace Boss {
         public override void Run()
         {
             base.Run();
+            if (positioner.AtPosition(Boss.BOSS_ATTACK_PLAYER_RANGE)) Attack();
+            
             if (positioner.MovementEnabled) {
                 UpdateBossChasePath(false);
             }
-            if (Input.GetKeyDown(KeyCode.R)) {
-                OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
-            }
-
-            if (bossAI.PlayerIsInForceField)
+            
+            if (BossAI.PlayerIsInForceField)
                 OnStateSwitch?.Invoke(bossAI.Behaviours.chagerAtShieldState);
             
-            if (positioner.isAtPosition(attackRange)) {
-                Attack();
-                Debug.Log("Attack!");
-            }
         }
-
-        private bool isAttacking = false;
-        
-        private void Attack() {
-            if (isAttacking) return;
-            bossAI.StartCoroutine(Attacking());
-        }
-
-        public IEnumerator Attacking() {
-            isAttacking = true;
-            yield return new WaitForSeconds(3f);
-            isAttacking = false;
-        }
-
 
 
         public override void Exit()

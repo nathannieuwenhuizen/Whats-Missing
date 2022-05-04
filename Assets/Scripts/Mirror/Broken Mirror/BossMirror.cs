@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class BossMirror : Mirror, ITriggerArea
 {
+    public delegate void MirrorShardEvent(int _ammount, int _total);
+    public static MirrorShardEvent OnMirrorShardAmmountUpdate;
+    
     public delegate void BossMirrorEvent(BossMirror bossMirror);
     public static BossMirrorEvent OnBossMirrorShardAttached;
     public static BossMirrorEvent OnMirrorShake;
@@ -103,6 +107,7 @@ public class BossMirror : Mirror, ITriggerArea
 
     public void AttachMirrorShard(MirrorShard shard) {
         OnBossMirrorShardAttached?.Invoke(this);
+        OnMirrorShardAmmountUpdate?.Invoke(AmmountOfShardsAttached(), shards.Length);
     }
 
     public bool MirrorIsComplete() {
@@ -112,11 +117,12 @@ public class BossMirror : Mirror, ITriggerArea
         return true;
     }
     public int AmmountOfShardsAttached() {
-        int result = 0;
-        foreach(MirrorShard shard in shards) {
-            if (shard.Attached) result++;
-        }
-        return result;
+        return shards.Where( s => s.Animated == true).ToArray().Length;
+        // int result = 0;
+        // foreach(MirrorShard shard in shards) {
+        //     if (shard.Attached) result++;
+        // }
+        // return result;
     }
 
     public void OnAreaEnter(Player player)

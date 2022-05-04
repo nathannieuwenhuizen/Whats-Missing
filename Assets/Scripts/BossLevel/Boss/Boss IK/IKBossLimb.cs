@@ -25,6 +25,14 @@ namespace Boss {
 
         private bool hasContact = false;
 
+        private bool enableRayCast = false;
+        public bool EnableRayCast {
+            get { return enableRayCast;}
+            set {
+                enableRayCast = value;
+            }
+        }
+
         public RaycastHit ContactInfo => contactInfo;
 
 
@@ -35,41 +43,22 @@ namespace Boss {
         {
             transform = _transform;
             ikGoal = _ikGoal;
+            boneTransform = SetBoneTransform(_ikPass.Animator); 
         }
 
 
         public override void UpdateIK(Animator _animator)
         {
-            if (boneTransform == null) boneTransform = SetBoneTransform(_animator);
-
-            hasContact = CastRay();
-            if (hasContact) {
-                if (Vector3.Distance(IKPosition, GetContactPosition()) > LimbInfo.distanceBetweenContacts) {
-                    IKPosition = GetContactPosition();
-                    IKLookDirection = contactInfo.normal;
+            if (EnableRayCast) {
+                hasContact = CastRay();
+                if (hasContact) {
+                    if (Vector3.Distance(IKPosition, GetContactPosition()) > LimbInfo.distanceBetweenContacts) {
+                        IKPosition = GetContactPosition();
+                        IKLookDirection = contactInfo.normal;
+                    }
                 }
             }
             base.UpdateIK(_animator);
-        }
-
-        private Transform SetBoneTransform(Animator _animator) {
-            Transform result = default(Transform);
-            switch (ikGoal)
-            {
-                case AvatarIKGoal.LeftFoot:
-                result = _animator.GetBoneTransform(HumanBodyBones.LeftFoot);
-                break;
-                case AvatarIKGoal.RightFoot:
-                result = _animator.GetBoneTransform(HumanBodyBones.RightFoot);
-                break;
-                case AvatarIKGoal.LeftHand:
-                result = _animator.GetBoneTransform(HumanBodyBones.LeftHand);
-                break;
-                case AvatarIKGoal.RightHand:
-                result = _animator.GetBoneTransform(HumanBodyBones.RightHand);
-                break;
-            }
-            return result;
         }
 
         private Vector3 GetContactPosition() {
@@ -90,17 +79,19 @@ namespace Boss {
         public override void OnDrawGizmos()
         {
             base.OnDrawGizmos();
-            if (hasContact) {
-                Gizmos.color = Color.green;
-                Gizmos.DrawSphere(RayCastPosition(), .1f);
-                Gizmos.DrawSphere(GetContactPosition(), .1f);
-                Debug.DrawLine(RayCastPosition(), GetContactPosition(), Color.green);
-                // Debug.DrawLine(contactInfo.point, GetContactPosition(), Color.green);
-            }
-            else {
-                Gizmos.color = Color.red;
-                Gizmos.DrawSphere(RayCastPosition(), .1f);
-                Debug.DrawLine(RayCastPosition(), RayCastPosition() + RayCastDirection().normalized * LimbInfo.RayDistance, Color.red);
+            if (EnableRayCast) {
+                if (hasContact) {
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawSphere(RayCastPosition(), .1f);
+                    Gizmos.DrawSphere(GetContactPosition(), .1f);
+                    Debug.DrawLine(RayCastPosition(), GetContactPosition(), Color.green);
+                    // Debug.DrawLine(contactInfo.point, GetContactPosition(), Color.green);
+                }
+                else {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawSphere(RayCastPosition(), .1f);
+                    Debug.DrawLine(RayCastPosition(), RayCastPosition() + RayCastDirection().normalized * LimbInfo.RayDistance, Color.red);
+                }
             }
         }
 

@@ -31,6 +31,7 @@ public class BlackScreenOverlay : MonoBehaviour
     }
 
     public void DeathFade(bool withAnimation, bool toPreviousLevel) {
+        Debug.Log("fade to white");
         if (withAnimation) {
             image.color = Color.black;
             StartCoroutine(group.FadeCanvasGroup(1, 1.5f, 1f));

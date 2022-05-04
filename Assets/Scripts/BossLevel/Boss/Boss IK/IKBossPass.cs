@@ -68,17 +68,15 @@ namespace Boss {
         }
 
 
-        private void OnEnable() {
-            IKPass.OnIKUpdate += OnAnimatorIK;
-        }
+        // private void OnEnable() {
+        //     IKPass.OnIKUpdate += OnAnimatorIK;
+        // }
 
-        private void OnDisable() {
-            IKPass.OnIKUpdate -= OnAnimatorIK;
-            
-        }
+        // private void OnDisable() {
+        //     IKPass.OnIKUpdate -= OnAnimatorIK;  
+        // }
 
         private void LateUpdate() {
-            // OnAnimatorIK();
             ikBossHead.UpdateIK(animator);
         }
 
@@ -101,7 +99,23 @@ namespace Boss {
                 rightLeg.OnDrawGizmos();
                 leftArm.OnDrawGizmos();
                 rightArm.OnDrawGizmos();
+                ikBossHead.OnDrawGizmos();
             }
+        }
+
+        private void OnEnable() {
+            leftLeg.OnEnable();
+            rightLeg.OnEnable();
+            leftArm.OnEnable();
+            rightArm.OnEnable();
+            ikBossHead.OnEnable();
+        }
+        private void OnDisable() {
+            leftLeg.OnDisable();
+            rightLeg.OnDisable();
+            leftArm.OnDisable();
+            rightArm.OnDisable();
+            ikBossHead.OnDisable();
         }
         
     }

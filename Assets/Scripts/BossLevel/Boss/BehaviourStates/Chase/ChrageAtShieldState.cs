@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Boss {
 
-public class ChrageAtShieldState : BaseChaseState
+public class ChargeAtShieldState : BaseChaseState
 {
     private BossPositioner positioner;
 
@@ -23,7 +23,11 @@ public class ChrageAtShieldState : BaseChaseState
         base.Start();
         positioner = bossAI.Boss.BossPositioner;
         positioner.BodyOrientation = BodyOrientation.toPath;
-        bossAI.StartCoroutine(Extensions.AnimateCallBack(1f, 10f, AnimationCurve.EaseInOut(0,0,1,1), (float _val) => {
+        positioner.SetDestinationPath(bossAI.Boss.Player.transform, Boss.transform.position);
+
+
+
+        bossAI.StartCoroutine(Extensions.AnimateCallBack(1f, 3f, AnimationCurve.EaseInOut(0,0,1,1), (float _val) => {
             positioner.SpeedScale = _val;
         }, 2f));
     }
@@ -31,8 +35,9 @@ public class ChrageAtShieldState : BaseChaseState
     public override void Run()
     {
         base.Run();
+        if (positioner.AtPosition(Boss.BOSS_ATTACK_SHIELD_RANGE)) Attack();
 
-        if (positioner.isAtPosition(Boss.BOSS_ATTACK_SHIELD_RANGE)) {
+        if (positioner.AtPosition(Boss.BOSS_ATTACK_SHIELD_RANGE)) {
             Debug.Log("Attack!");
         }
     }

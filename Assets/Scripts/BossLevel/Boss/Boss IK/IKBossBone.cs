@@ -69,6 +69,8 @@ namespace Boss {
         public IKBossBone(Transform _transform, IKBossPass _ikPass) {
             transform = _transform;
             ikPass = _ikPass;
+            boneTransform = SetBoneTransform(_ikPass.Animator); 
+
         }
 
         ///<summary>
@@ -82,6 +84,39 @@ namespace Boss {
             UpdatePositionIK(_animator);
             UpdateRotationIK(_animator);
         }
+
+        public virtual void OnEnable() {
+        }
+
+        public virtual void OnDisable() {
+        }
+
+        ///<summary>
+        /// Gets the transform of the bone this class is asigned to
+        ///</summary>
+        protected Transform SetBoneTransform(Animator _animator) {
+            Transform result = default(Transform);
+            switch (ikGoal)
+            {
+                case AvatarIKGoal.LeftFoot:
+                result = _animator.GetBoneTransform(HumanBodyBones.LeftFoot);
+                break;
+                case AvatarIKGoal.RightFoot:
+                result = _animator.GetBoneTransform(HumanBodyBones.RightFoot);
+                break;
+                case AvatarIKGoal.LeftHand:
+                result = _animator.GetBoneTransform(HumanBodyBones.LeftHand);
+                break;
+                case AvatarIKGoal.RightHand:
+                result = _animator.GetBoneTransform(HumanBodyBones.RightHand);
+                break;
+                default:
+                result = _animator.GetBoneTransform(HumanBodyBones.Head);
+                break;
+            }
+            return result;
+        }
+
 
 
         ///<summary>

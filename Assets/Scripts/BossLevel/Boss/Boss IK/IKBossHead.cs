@@ -23,21 +23,35 @@ namespace Boss {
             base.UpdatePositionIK(_animator);
         }
         private bool updateRotation = false;
+
         public override void UpdateRotationIK(Animator _animator)
         {
-            // updateRotation = !updateRotation;
-            // if (!updateRotation) return;
-
-            Transform t = _animator.GetBoneTransform(HumanBodyBones.Spine);// _animator.GetBoneTransform(HumanBodyBones.Head);
-            Transform t2 = _animator.GetBoneTransform(HumanBodyBones.Head);
-            Quaternion animatinRotation = Quaternion.Euler( new Vector3(t2.localEulerAngles.x, t2.localEulerAngles.y, t2.localEulerAngles.z));;
-
             _animator.SetLookAtWeight(Weight, 0, .55f, 0, 0.5f);
-            IKLookDirection = test.position - t2.position;
 
-            Vector3 relativeDelta = t.position - t2.position;
-            _animator.SetLookAtPosition(test.position - relativeDelta);
+            Transform t = _animator.GetBoneTransform(HumanBodyBones.Spine);
 
+            // IKLookDirection = test.position - boneTransform.position;
+            Vector3 relativeDelta = t.position - boneTransform.position;
+
+            _animator.SetLookAtPosition(IKLookDirection - relativeDelta);
+
+        }
+
+        public override void OnEnable()
+        {
+            base.OnEnable();
+            BossHead.OnHeadAimUpdate += SetAimPosition;
+        }
+
+        public override void OnDisable()
+        {
+            base.OnDisable();
+            BossHead.OnHeadAimUpdate -= SetAimPosition;
+        }
+
+        private void SetAimPosition(Vector3 _position) {
+            Weight = 1;
+            IKLookDirection = _position;
         }
     }
 }
