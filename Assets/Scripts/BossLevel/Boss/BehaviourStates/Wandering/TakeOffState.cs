@@ -14,10 +14,15 @@ namespace Boss {
 
         public override void Start()
         {
-            stateName = "Take off";
-            
             base.Start();
+            stateName = "Take off";
+
+            bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.toShape;
+            bossAI.Boss.BossPositioner.MovementEnabled = true;
+            bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.airSteering;
+
             if (bossAI.Boss.BossPositioner.InAir == false) {
+                BossPositioner.SetDestinationPath(bossAI.transform.position, bossAI.transform.position);
                 takeOffCoroutine = BossPositioner.StartCoroutine(BossPositioner.TakeOff(() => {
                     OnStateSwitch?.Invoke(nextState);
                 }));

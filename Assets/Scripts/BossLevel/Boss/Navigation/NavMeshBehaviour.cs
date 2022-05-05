@@ -113,4 +113,15 @@ public class NavMeshBehaviour : IMovementBehavior
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
     }
+
+    public void DrawGizmo()
+    {
+        if (navMeshAgent != null) {
+            if (navMeshAgent.destination.x < 10000f) {
+                Debug.Log("navmesh destination" + navMeshAgent.destination);
+                Debug.DrawLine(transform.position, navMeshAgent.destination, Color.green);
+                Gizmos.DrawWireSphere(navMeshAgent.destination, .5f); 
+            }
+        }
+    }
 }

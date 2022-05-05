@@ -280,14 +280,22 @@ namespace ForcefieldDemo
 
         public void OnAreaEnter(Player player)
         {
-            Debug.Log("force field enter");
             OnForceFieldEnter?.Invoke();
         }
 
         public void OnAreaExit(Player player)
         {
-            Debug.Log("force field exit");
             OnForceFieldExit?.Invoke();
+        }
+
+        public Vector3 EdgePosition(Vector3 from) {
+            Vector3 result = transform.position;
+
+            Vector3 delta = from - transform.position;
+            delta.y = 0;
+            result = delta.normalized * (meshRenderer.transform.lossyScale.y * .5f);
+
+            return result;
         }
     }
 }

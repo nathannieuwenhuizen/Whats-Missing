@@ -44,8 +44,11 @@ public class WanderState : LookingState, IState
 
         CurrentPoseIndex = 0;
         Boss.Body.IKPass.SetLimbsActive(false);
+        Boss.Head.SteeringEnabled = false;
         positioner.CurrentMovementBehaviour.bodyOrientation = BodyOrientation.toShape;
         positioner.BodyMovementType = BodyMovementType.airSteering;
+        positioner.InAir = true;
+
     }
     
     public void ShardHasBeenPickedUp(MirrorShard _shard) {
@@ -85,7 +88,7 @@ public class WanderState : LookingState, IState
         positioner.SetDestinationPath(wanderingPath.poses[currentPoseIndex].position);
         if (wanderingPath.poses[currentPoseIndex].aimPosition != null) bossHead.SetAim(wanderingPath.poses[currentPoseIndex].aimPosition.position, Vector2.zero);
         //if no aim psoition is set, then let the boss look forward
-        else bossHead.SetAim(bossHead.transform.position + -bossHead.transform.forward * 5f, Vector2.zero, true);
+        else bossHead.SetAim(bossHead.transform.position + Boss.transform.forward * 10f, Vector2.zero, true);
     }
 
     ///<summary>

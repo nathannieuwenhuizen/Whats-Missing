@@ -96,9 +96,9 @@ public class SteeringBehaviour
 
     private Vector3 truncate(Vector3 vector) {
         float distance = (target.position - desiredTarget.position).magnitude;
-        if (distance < vector.magnitude) {
-            vector = vector.normalized * distance;
-        }
+        // if (distance < vector.magnitude) {
+        //     vector = vector.normalized * distance;
+        // }
         return vector;
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Febucci.UI;
+using ForcefieldDemo;
 using UnityEngine;
 
 namespace Boss {
@@ -23,6 +24,12 @@ namespace Boss {
         private Player player;
         public Player Player {
             get { return player;}
+        }
+
+        [SerializeField]
+        private Forcefield forceField;
+        public Forcefield Forcefield {
+            get { return forceField;}
         }
 
         [SerializeField]

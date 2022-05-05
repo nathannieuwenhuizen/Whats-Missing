@@ -99,7 +99,7 @@ public class BossAI : MonoBehaviour {
         behaviours = new BossBehaviours(this);
     }
     public void InitializeStateMachine() {
-        stateMachine = new FSM(behaviours.crawlingChaseState);
+        stateMachine = new FSM(behaviours.wanderState);
     }
     public void UpdateAI() {
         stateMachine?.Update();

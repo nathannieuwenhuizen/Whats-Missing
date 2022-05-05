@@ -35,10 +35,14 @@ public class BossHead: MonoBehaviour
     }
 
     private void Awake() {
-        currentAim = Instantiate(new GameObject("head current aim"), transform.position + transform.forward * 10f, Quaternion.identity).transform;
-        desiredAim = Instantiate(new GameObject("head desired aim"), transform.position + transform.forward * 10f, Quaternion.identity).transform;
+        currentAim = new GameObject("head current aim").transform;
+        currentAim.position = transform.position + transform.forward * 10f;
         currentAim.SetParent(bossAI.transform.parent);
+
+        desiredAim = new GameObject("head desired aim").transform;
+        desiredAim.position = transform.position + transform.forward * 10f;
         desiredAim.SetParent(bossAI.transform.parent);
+        
         steeringBehaviour.target = currentAim;
         steeringBehaviour.desiredTarget = desiredAim;
     }

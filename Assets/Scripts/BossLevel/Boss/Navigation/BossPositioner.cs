@@ -32,6 +32,7 @@ public class BossPositioner : MonoBehaviour
     private bool inAir = true;
     public bool InAir {
         get { return inAir;}
+        set { inAir = value; }
     }
 
     [SerializeField]
@@ -97,8 +98,9 @@ public class BossPositioner : MonoBehaviour
 
     private void Awake() {
         boss = GetComponent<Boss>();
-
-        desiredTempPos = Instantiate(new GameObject("desired boss position"), transform.position, Quaternion.identity).transform;
+        Debug.Log("awake");
+        desiredTempPos = new GameObject("desired temp position").transform;
+        desiredTempPos.position = transform.position;
         navMeshAgent = GetComponent<NavMeshAgent>();
 
         airMovementBehaviour = new AirSteeringBehaviour(transform, desiredTempPos, steeringBehaviour, pathHandeler);
@@ -139,9 +141,7 @@ public class BossPositioner : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-        if (pathHandeler != null) path.DrawGizmo(pathHandeler);
-        Gizmos.color = Color.green;
-        if (desiredTempPos != null) Gizmos.DrawWireSphere(desiredTempPos.position, .5f);
+        if(CurrentMovementBehaviour != null) CurrentMovementBehaviour.DrawGizmo();
     }
 
     public IEnumerator Landing(Action callback) {

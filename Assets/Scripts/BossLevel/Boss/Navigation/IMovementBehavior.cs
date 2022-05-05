@@ -26,4 +26,6 @@ public interface IMovementBehavior
 
     public bool ReachedDestination(float _distanceThreshhold);
 
+    public void DrawGizmo();
+
 }

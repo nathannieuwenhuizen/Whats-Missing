@@ -25,6 +25,7 @@ namespace Boss {
             positioner.BodyMovementType = BodyMovementType.navMesh;
             stateName = "Chase";
             positioner.MovementEnabled = true;
+            positioner.InAir = false;
             UpdateBossChasePath(true);
 
         }
@@ -47,6 +48,9 @@ namespace Boss {
             if (positioner.MovementEnabled) {
                 UpdateBossChasePath(false);
             }
+            // if (Input.GetKeyDown(KeyCode.C)) {
+            //     OnStateSwitch?.Invoke(bossAI.Behaviours.chagerAtShieldState);
+            // }
             
             if (BossAI.PlayerIsInForceField)
                 OnStateSwitch?.Invoke(bossAI.Behaviours.chagerAtShieldState);

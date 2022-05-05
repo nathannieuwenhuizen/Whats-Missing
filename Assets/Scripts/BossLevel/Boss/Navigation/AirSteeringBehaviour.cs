@@ -81,4 +81,9 @@ public class AirSteeringBehaviour : IMovementBehavior
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(normal, pointDirection), Time.deltaTime);
         }
     }
+
+    public void DrawGizmo()
+    {
+        if (pathHandeler != null) path.DrawGizmo(pathHandeler);
+    }
 }

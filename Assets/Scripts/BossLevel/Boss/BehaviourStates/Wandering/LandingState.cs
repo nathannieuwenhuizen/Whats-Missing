@@ -20,7 +20,6 @@ namespace Boss {
 
             if (bossAI.Boss.BossPositioner.InAir) {
                 BossPositioner.SetDestinationPath(bossAI.Boss.Player.transform, bossAI.transform.position +  Vector3.up * (Boss.BOSS_GROUND_OFFSET));
-                Debug.Log("landing on a position");
                 landingCoroutine = BossPositioner.StartCoroutine(BossPositioner.Landing(() => {
                     OnStateSwitch?.Invoke(nextState);
                 }));
