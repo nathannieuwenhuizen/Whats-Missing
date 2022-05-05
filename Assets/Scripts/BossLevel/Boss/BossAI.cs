@@ -47,7 +47,7 @@ public class BossBehaviours {
         wanderState = new WanderState() {bossAI = _ai, wanderingPath = _ai.testPath };
 
         crawlingChaseState = new CrawlingChaseState() {bossAI = _ai };
-        chagerAtShieldState = new ChargeAtShieldState() {bossAI = _ai };
+        chargeAtShieldState = new ChargeAtShieldState() {bossAI = _ai };
         landingState = new LandingState() {bossAI = _ai };
         takeoffState = new TakeOffState() {bossAI = _ai };
     }
@@ -65,7 +65,7 @@ public class BossBehaviours {
 
     //chase
     public CrawlingChaseState crawlingChaseState; 
-    public ChargeAtShieldState chagerAtShieldState; 
+    public ChargeAtShieldState chargeAtShieldState; 
 }
 ///<summary>
 /// Main Ai for the boss holding all the statesand behaviour trees

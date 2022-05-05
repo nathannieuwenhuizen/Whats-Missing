@@ -53,7 +53,7 @@ namespace Boss {
             // }
             
             if (BossAI.PlayerIsInForceField)
-                OnStateSwitch?.Invoke(bossAI.Behaviours.chagerAtShieldState);
+                OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
             
         }
 
