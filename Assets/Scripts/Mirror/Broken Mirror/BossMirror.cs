@@ -11,6 +11,7 @@ public class BossMirror : Mirror, ITriggerArea
     public delegate void BossMirrorEvent(BossMirror bossMirror);
     public static BossMirrorEvent OnBossMirrorShardAttached;
     public static BossMirrorEvent OnMirrorShake;
+    public static BossMirrorEvent OnMirrorComplete;
     public static BossMirrorEvent OnMirrorExplode;
 
     private Rigidbody rb;
@@ -108,6 +109,9 @@ public class BossMirror : Mirror, ITriggerArea
     public void AttachMirrorShard(MirrorShard shard) {
         OnBossMirrorShardAttached?.Invoke(this);
         OnMirrorShardAmmountUpdate?.Invoke(AmmountOfShardsAttached(), shards.Length);
+        if (AmmountOfShardsAttached() == shards.Length) {
+            OnMirrorComplete?.Invoke(this);
+        }
     }
 
     public bool MirrorIsComplete() {
@@ -117,14 +121,9 @@ public class BossMirror : Mirror, ITriggerArea
         return true;
     }
     public int AmmountOfShardsAttached() {
-        return shards.Where( s => s.Animated == true).ToArray().Length;
-        // int result = 0;
-        // foreach(MirrorShard shard in shards) {
-        //     if (shard.Attached) result++;
-        // }
-        // return result;
+        return shards.Where( s => s.Attached == true).ToArray().Length;
     }
-
+    
     public void OnAreaEnter(Player player)
     {
         if (introCutscene) return;

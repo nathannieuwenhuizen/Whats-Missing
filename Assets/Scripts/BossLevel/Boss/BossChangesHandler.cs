@@ -52,7 +52,7 @@ public class BossChangesHandler
     }
     private void ApplyChange() {
         bossRoom.ChangeHandler.AddBossChange(acitvatedChange);
-        changeParticle.Emit(500);
+        changeParticle.Emit(50);
         OnShockwave?.Invoke(boss.transform);
 
     }

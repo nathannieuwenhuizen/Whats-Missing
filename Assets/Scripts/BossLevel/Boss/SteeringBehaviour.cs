@@ -70,8 +70,14 @@ public class SteeringBehaviour
     ///<summary>
     /// Updates the position based on the sterring behaviour of the target transform
     ///</summary>
-    public void UpdatePosition() {
-        desiredVelocity = (desiredTarget.position - target.position);
+    public void UpdatePosition(float _speed = 1f, Vector3 _desiredPosition = default(Vector3)) {
+
+        float _maxVelocity = maxVelocity * _speed;
+        float _maxForce = maxForce * _speed;
+
+        if (_desiredPosition == default(Vector3))
+            desiredVelocity = (desiredTarget.position - target.position);
+        else desiredVelocity = (_desiredPosition - target.position);
 
         
         // Check the distance to detect whether the character
@@ -79,14 +85,14 @@ public class SteeringBehaviour
         // is inside the slowing area
         if (distance < slowingRadius) {
             // Inside the slowing area
-            desiredVelocity = desiredVelocity.normalized * maxVelocity * ((distance / slowingRadius) * slowingAmplitude);
+            desiredVelocity = desiredVelocity.normalized * _maxVelocity * ((distance / slowingRadius) * slowingAmplitude);
         } else {
             // Outside the slowing area.
-            desiredVelocity = desiredVelocity.normalized * maxVelocity;
+            desiredVelocity = desiredVelocity.normalized * _maxVelocity;
         }
 
         steering = desiredVelocity - velocity;
-        if (steering.magnitude > maxForce) steering = steering.normalized * maxForce;
+        if (steering.magnitude > _maxForce) steering = steering.normalized * _maxForce;
         steering /= mass;
 
         velocity += steering;

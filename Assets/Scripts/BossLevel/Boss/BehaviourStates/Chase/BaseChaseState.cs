@@ -17,6 +17,7 @@ public class BaseChaseState : BaseBossState
     public override void Start()
     {
         bossAI.BossHead.SteeringEnabled = false;
+        Boss.Head.LookAtPlayer = true;
         oldViewAngle = bossAI.BossEye.ViewAngle;
         oldViewAlpha = bossAI.BossEye.ViewAlpha;
 

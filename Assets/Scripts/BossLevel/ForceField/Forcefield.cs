@@ -12,6 +12,7 @@ namespace ForcefieldDemo
         public delegate void ForcefieldEvent();
         public static ForcefieldEvent OnForceFieldEnter;
         public static ForcefieldEvent OnForceFieldExit;
+        public static ForcefieldEvent OnForceFieldImpact;
         private NavMeshObstacle navMeshObstacle;
 
         private Rigidbody rb;
@@ -66,6 +67,7 @@ namespace ForcefieldDemo
         private void Awake() {
             rb = GetComponent<Rigidbody>();
             mirrorMeshRenderer.material.SetInt("_enableIntersection", 0);
+            StartCoroutine(Cooldown());
         }
         void Start()
         {
@@ -211,6 +213,8 @@ namespace ForcefieldDemo
         {
             if (meshRenderer != null)
             {
+                OnForceFieldImpact?.Invoke();
+
                 EnableRipple(true);
                 meshRenderer.material.SetFloat("_impactRippleMaxRadius", impactRippleMaxRadius);
                 ImapctAmplitude = impactRippleAmplitude;
@@ -250,6 +254,8 @@ namespace ForcefieldDemo
 
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.Q)) ApplyImpact(Vector3.zero, Vector3.one);
+
             if (Input.GetKeyDown(KeyCode.L))
                     if (!IsOn) IsOn = true;
 
@@ -260,21 +266,22 @@ namespace ForcefieldDemo
         }
 
 
-        private bool hasBeenCooldowned = true;
+        private bool coolDowned = true;
         public IEnumerator Cooldown() {
-            hasBeenCooldowned = false;
+            coolDowned = false;
             yield return new WaitForSeconds(2f);
-            hasBeenCooldowned = true;
+            coolDowned = true;
         }
         private void OnTriggerEnter(Collider other) {
             // boss collides with forcefield
             if (!other.isTrigger) return;
 
-            if (!hasBeenCooldowned) return;
+            if (!coolDowned) return;
             StartCoroutine(Cooldown());
 
             Vector3 position = other.ClosestPoint(transform.position);
             Vector3 normal = (position - transform.position).normalized;
+            Debug.Log("something triggered me: " + other.name);
             ApplyImpact(position, normal);
         }
 
@@ -287,6 +294,21 @@ namespace ForcefieldDemo
         {
             OnForceFieldExit?.Invoke();
         }
+
+        private void OnEnable() {
+            StartCoroutine(Cooldown()); // prevent apply impact bug
+            BossMirror.OnMirrorComplete += DeactivateShield;
+        }
+
+        private void OnDisable() {
+            BossMirror.OnMirrorComplete -= DeactivateShield;
+        }
+
+        public void DeactivateShield(BossMirror _mirror) {
+            IsOn = false;
+        }
+
+
 
         public Vector3 EdgePosition(Vector3 from) {
             Vector3 result = transform.position;

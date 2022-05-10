@@ -4,69 +4,6 @@ using UnityEditor;
 using UnityEngine;
 
 namespace Boss {
-
-public abstract class BaseBossState : IState{
-    public BossAI bossAI {get; set;}
-    protected Boss Boss { get{ return bossAI.Boss; }}
-    protected BossPositioner BossPositioner { get{ return bossAI.Boss.BossPositioner; }}
-
-    public ILiveStateDelegate OnStateSwitch { get; set; }
-    private GUIStyle debugStyle;
-    public string stateName = "[no state name specified]";
-        public virtual void DrawDebug()
-        {
-#if UNITY_EDITOR
-            debugStyle = new GUIStyle();
-            debugStyle.normal.textColor = Color.white;
-            debugStyle.fontSize = 20;
-            debugStyle.border = new RectOffset(5,5,5,5);
-            GUI.backgroundColor = Color.black;
-            Handles.Label(bossAI.transform.position, stateName, debugStyle);
-#endif        
-        }
-
-        public virtual void Exit()
-        {
-        }
-
-        public virtual void Run()
-        {
-        }
-
-        public virtual void Start()
-        {
-
-        }
-    }
-
-public class BossBehaviours {
-    public BossBehaviours(BossAI _ai) {
-        idleState = new IdleState() {bossAI = _ai };
-        bossIntro = new BossIntroState() {bossAI = _ai };
-
-        wanderState = new WanderState() {bossAI = _ai, wanderingPath = _ai.testPath };
-
-        crawlingChaseState = new CrawlingChaseState() {bossAI = _ai };
-        chargeAtShieldState = new ChargeAtShieldState() {bossAI = _ai };
-        landingState = new LandingState() {bossAI = _ai };
-        takeoffState = new TakeOffState() {bossAI = _ai };
-    }
-
-    //intro
-    public IdleState idleState; 
-    public BossIntroState bossIntro; 
-
-    //stealth
-    public WanderState wanderState; 
-
-    //movement
-    public LandingState landingState;
-    public TakeOffState takeoffState;
-
-    //chase
-    public CrawlingChaseState crawlingChaseState; 
-    public ChargeAtShieldState chargeAtShieldState; 
-}
 ///<summary>
 /// Main Ai for the boss holding all the statesand behaviour trees
 ///</summary>
@@ -74,10 +11,25 @@ public class BossAI : MonoBehaviour {
 
     public static bool PlayerIsInForceField = false;
 
-    public WanderingPath testPath;
+    [SerializeField]
+    private WanderingPaths paths;
+
+    [HideInInspector]
+    public WanderingPath CurrentWanderingPath;
+
+    [SerializeField]
+    private Transform reactionPosition;
+    public Transform ReactionPosition {
+        get { return reactionPosition;}
+    }
+
 
     //states
     private FSM stateMachine;
+
+    public FSM StateMachine {
+        get { return stateMachine;}
+    }
 
     private BossBehaviours behaviours;
     public BossBehaviours Behaviours {
@@ -97,6 +49,7 @@ public class BossAI : MonoBehaviour {
     public void Setup(Boss _boss) {
         boss = _boss;
         behaviours = new BossBehaviours(this);
+        CurrentWanderingPath = paths.firstShardPath;
     }
     public void InitializeStateMachine() {
         stateMachine = new FSM(behaviours.wanderState);
@@ -119,24 +72,70 @@ public class BossAI : MonoBehaviour {
 
 
     public void PlayerIsInsdeForceField() {
-        Debug.Log("force field enter");
         PlayerIsInForceField = true;
     }
+
     public void PlayerIsOutsideForceField() {
-        Debug.Log("force field exit");
         PlayerIsInForceField = false;
+    }
+
+    ///<summary>
+    /// Boss reacts when the shards is getting collected.
+    ///</summary>
+    public void MirrorShardRecolectReaction(BossMirror _bossMirror) {
+        int shardNumber = _bossMirror.AmmountOfShardsAttached();
+        Debug.Log("shard recollect: " + shardNumber);
+        switch(shardNumber) {
+            case 0:
+            CurrentWanderingPath = paths.firstShardPath;           
+            break;
+            case 1:
+            CurrentWanderingPath = paths.secondShardPath;           
+            break;
+            case 2:
+            CurrentWanderingPath = paths.thirdShardPath;           
+            stateMachine.SwitchState(behaviours.transformationState);
+            break;
+            case 3:
+            CurrentWanderingPath = paths.fourthShardPath;  
+            stateMachine.SwitchState(behaviours.removeLightState);
+            break;
+            case 4:    
+            CurrentWanderingPath = paths.fifthShardPath;   
+            stateMachine.SwitchState(behaviours.removeLightState);
+            break;        
+            case 5:    
+            //go instant into end chase mdoe
+            break;
+        }
+    }
+    public void MirrShardPickupEvent(MirrorShard _shard) {
+        switch (_shard.ShardIndex) {
+            case 4:
+            stateMachine.SwitchState(behaviours.removeAirState);
+            break;
+        }
     }
 
     private void OnEnable() {
         BossMirror.OnMirrorExplode += DoIntro;
+        BossMirror.OnMirrorExplode += MirrorShardRecolectReaction;
+        MirrorShard.OnPickedUp += MirrShardPickupEvent;
+
+        BossMirror.OnBossMirrorShardAttached += MirrorShardRecolectReaction;
         ForcefieldDemo.Forcefield.OnForceFieldEnter += PlayerIsInsdeForceField;
         ForcefieldDemo.Forcefield.OnForceFieldExit += PlayerIsOutsideForceField;
     }
 
     private void OnDisable() {
         BossMirror.OnMirrorExplode += DoIntro;
+        BossMirror.OnMirrorExplode -= MirrorShardRecolectReaction;
+        MirrorShard.OnPickedUp -= MirrShardPickupEvent;
+
         ForcefieldDemo.Forcefield.OnForceFieldEnter -= PlayerIsInsdeForceField;
         ForcefieldDemo.Forcefield.OnForceFieldExit -= PlayerIsOutsideForceField;
+        BossMirror.OnBossMirrorShardAttached -= MirrorShardRecolectReaction;
+
         
     }
 }

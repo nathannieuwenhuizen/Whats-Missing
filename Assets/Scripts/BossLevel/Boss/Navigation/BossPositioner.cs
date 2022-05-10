@@ -87,7 +87,11 @@ public class BossPositioner : MonoBehaviour
 
     public float SpeedScale {
         get { return CurrentMovementBehaviour.SpeedScale;}
-        set { CurrentMovementBehaviour.SpeedScale = value; }
+        set { 
+            navMeshMovementBehaviour.SpeedScale = value;
+            airMovementBehaviour.SpeedScale = value;
+            CurrentMovementBehaviour.SpeedScale = value; 
+        }
     }
 
 
@@ -144,11 +148,15 @@ public class BossPositioner : MonoBehaviour
         if(CurrentMovementBehaviour != null) CurrentMovementBehaviour.DrawGizmo();
     }
 
-    public IEnumerator Landing(Action callback) {
+    public IEnumerator Landing(Action callback, Transform _endPos = null) {
         OnBossLanding?.Invoke();
         BodyMovementType = BodyMovementType.navMesh;
         MovementEnabled = false;
-        yield return StartCoroutine(transform.AnimatingPos(CurrentMovementBehaviour.GetClosestPointOnPath(), landingCurve, 2f));
+        Vector3 endPos = CurrentMovementBehaviour.GetClosestPointOnPath();
+        if (_endPos != null) {
+            // endPos = airMovementBehaviour.
+        }
+        yield return StartCoroutine(transform.AnimatingPos(endPos, landingCurve, 2f));
         MovementEnabled = true;
         callback();
     }

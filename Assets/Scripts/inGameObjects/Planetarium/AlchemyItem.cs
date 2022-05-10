@@ -51,9 +51,6 @@ public class AlchemyItem : InteractabelObject
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            StartCoroutine(room.Player.Camera.transform.ShakeZRotation(5f, 10, 4));
-        } 
         if (!animate) return;
 
         transform.Rotate(new Vector3(0,rotationSpeed,0));

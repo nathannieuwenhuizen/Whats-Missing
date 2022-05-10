@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -111,7 +112,7 @@ public static class TransformExtensions
         transform.localRotation = endrotation;
     }
 
-    public static IEnumerator ShakeZRotation(this Transform transform, float magnitude, float frequence, float duration = .5f) {
+    public static IEnumerator ShakeZRotation(this Transform transform, float magnitude, float frequence, float duration = .5f, Action callback = default(Action)) {
         float timePassed = 0f;
         Quaternion start = transform.localRotation;
         while (timePassed < duration) {
@@ -127,7 +128,8 @@ public static class TransformExtensions
                 Mathf.Sin((timePassed * frequence) * (Mathf.PI * 2)) * currentMagnitude
             ));
         }
-        transform.localRotation = start;
+        transform.localRotation = Quaternion.Euler(transform.localEulerAngles.x, transform.localEulerAngles.y, start.z);
+        if (callback != default(Action)) callback();
     }
     public static IEnumerator ShakeLocalYPos(this Transform transform, float magnitude, float frequence, float duration = .5f) {
         float timePassed = 0f;
@@ -160,10 +162,10 @@ public static class TransformExtensions
     }
 
     public static Quaternion RandomRotation (float amplitude = 1f) {
-        return Quaternion.Euler(Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude), Random.Range(0.0f, 360.0f * amplitude));
+        return Quaternion.Euler(UnityEngine.Random.Range(0.0f, 360.0f * amplitude), UnityEngine.Random.Range(0.0f, 360.0f * amplitude), UnityEngine.Random.Range(0.0f, 360.0f * amplitude));
     }
     public static Vector3 RandomVector (float amplitude = 1f) {
-        return new Vector3(Random.Range(-amplitude, amplitude), Random.Range(-amplitude, amplitude), Random.Range(-amplitude, amplitude));
+        return new Vector3(UnityEngine.Random.Range(-amplitude, amplitude), UnityEngine.Random.Range(-amplitude, amplitude), UnityEngine.Random.Range(-amplitude, amplitude));
     }
 
 

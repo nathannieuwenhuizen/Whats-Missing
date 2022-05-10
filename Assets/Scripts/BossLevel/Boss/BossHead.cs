@@ -18,20 +18,33 @@ public class BossHead: MonoBehaviour
     private Transform desiredAim;
     
     [SerializeField]
-    private IKBossBone headBone;
-
-    [SerializeField]
     private BossAI bossAI;
 
     private float aimSpeed = 2f;
     [SerializeField]
-    private bool steeringEnabled = false;
+    private bool steeringEnabled = true;
 
     public bool SteeringEnabled {
         get { return steeringEnabled;}
         set { 
             steeringEnabled = value; 
         }
+    }
+
+    private bool lookAtPlayer = false;
+    ///<summary>
+    /// If the boss head looks at the player or not.
+    ///</summary>
+    public bool LookAtPlayer {
+        get { return lookAtPlayer;}
+        set { lookAtPlayer = value; }
+    }
+
+    ///<summary>
+    /// Returns the desired position, can be the player or the current target depending on the values of the bosshead script
+    ///</summary>
+    private Vector3 getDesriedPosition() {
+        return lookAtPlayer ? bossAI.Boss.Player.Camera.transform.position :desiredAim.position;
     }
 
     private void Awake() {
@@ -46,12 +59,15 @@ public class BossHead: MonoBehaviour
         steeringBehaviour.target = currentAim;
         steeringBehaviour.desiredTarget = desiredAim;
     }
+
     public void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Q)) LookAtPlayer = !LookAtPlayer;
+
         if (steeringEnabled) {
-            steeringBehaviour.UpdatePosition();
+            steeringBehaviour.UpdatePosition(aimSpeed, getDesriedPosition());
         }
-        else currentAim.position = Vector3.Lerp(currentAim.position, desiredAim.position, Time.deltaTime * aimSpeed);
+        else currentAim.position = Vector3.Lerp(currentAim.position, getDesriedPosition(), Time.deltaTime * aimSpeed);
 
         Quaternion oldRot = transform.localRotation;
         transform.LookAt(currentAim, transform.up);
@@ -60,7 +76,6 @@ public class BossHead: MonoBehaviour
         if (Vector3.Angle(transform.forward, transform.parent.forward) > 90f) {
             transform.localRotation = oldRot;
         }
-        // headBone.IKLookPosition =  currentAim.position;
     }
 
     [SerializeField]
@@ -69,21 +84,25 @@ public class BossHead: MonoBehaviour
         get { return steeringBehaviour;}
     }
 
+
+    ///<summary>
+    /// Sets the aim of the desired aim. 
+    ///</summary>
     public void SetAim(Vector3 pos, Vector2 relativeOffset, bool localPos = false) {
         desiredAim.transform.SetParent(localPos ? transform.parent : bossAI.transform.parent);
         
         desiredAim.transform.position = pos + 
         transform.parent.up * relativeOffset.y + 
         transform.parent.right * relativeOffset.x;
-    }
+}
 
     private void OnDrawGizmos() {
         Gizmos.color = Color.blue;
         if (currentAim != null && desiredAim != null) {
             Gizmos.DrawSphere(currentAim.position, .5f);
             Gizmos.DrawSphere(desiredAim.position, .5f);
-            float multiply = (currentAim.position - desiredAim.position).magnitude / steeringBehaviour.DesiredVelocity.magnitude;
-            Debug.DrawLine(currentAim.position, desiredAim.position, Gizmos.color);
+            float multiply = (currentAim.position - getDesriedPosition()).magnitude / steeringBehaviour.DesiredVelocity.magnitude;
+            Debug.DrawLine(currentAim.position, getDesriedPosition(), Gizmos.color);
             
             Debug.DrawLine(currentAim.position, currentAim.position + steeringBehaviour.Velocity * multiply , Color.red);
             Debug.DrawLine(currentAim.position + steeringBehaviour.Velocity * multiply, currentAim.position + steeringBehaviour.DesiredVelocity * multiply, Color.yellow);
@@ -92,7 +111,10 @@ public class BossHead: MonoBehaviour
     }
 
     public bool IsAtPosition(float offset = .1f, float velocityOffset = .1f) {
-        if (Vector3.Distance(transform.position, desiredAim.position) < offset) return false;
+        if (Vector3.Distance(currentAim.position, desiredAim.position) > offset) return false;
+        if (steeringEnabled) {
+            // if (SteeringBehaviour.Velocity.magnitude > velocityOffset) return false;
+        }
         return true;
     }
 }

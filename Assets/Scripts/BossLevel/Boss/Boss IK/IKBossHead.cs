@@ -33,7 +33,7 @@ namespace Boss {
             // IKLookDirection = test.position - boneTransform.position;
             Vector3 relativeDelta = t.position - boneTransform.position;
 
-            _animator.SetLookAtPosition(IKLookDirection - relativeDelta);
+            _animator.SetLookAtPosition(IKLookDirection + relativeDelta);
 
         }
 

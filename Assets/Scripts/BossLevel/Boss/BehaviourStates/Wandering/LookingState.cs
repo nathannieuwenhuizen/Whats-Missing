@@ -33,7 +33,7 @@ public abstract class LookingState : BaseBossState, IState
 
     }
 
-    protected void BeginChaseOnGround() {
+    protected virtual void BeginChaseOnGround() {
         bossAI.Behaviours.landingState.nextState = bossAI.Behaviours.crawlingChaseState;
         OnStateSwitch?.Invoke(bossAI.Behaviours.landingState);
     }

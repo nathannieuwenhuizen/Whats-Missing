@@ -117,8 +117,8 @@ public class NavMeshBehaviour : IMovementBehavior
     public void DrawGizmo()
     {
         if (navMeshAgent != null) {
-            if (navMeshAgent.destination.x < 10000f) {
-                Debug.Log("navmesh destination" + navMeshAgent.destination);
+            if (navMeshAgent.destination.x < 10000f) { //otherwise bug for the mathf infinity :/
+                // Debug.Log("navmesh destination" + navMeshAgent.destination);
                 Debug.DrawLine(transform.position, navMeshAgent.destination, Color.green);
                 Gizmos.DrawWireSphere(navMeshAgent.destination, .5f); 
             }

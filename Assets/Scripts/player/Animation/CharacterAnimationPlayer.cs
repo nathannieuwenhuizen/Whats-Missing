@@ -19,6 +19,11 @@ public class CharacterAnimationPlayer
     private Player player;
     private Transform cameraParent;
 
+    private bool inCutscene = false;
+    public bool InCutScene {
+        get { return inCutscene;}
+    }
+
     public CharacterAnimationPlayer(Player _player, Animator _animator, Transform _animationView, IKPass _IKPass) {
         animator = _animator;
         animationView = _animationView;
@@ -82,6 +87,7 @@ public class CharacterAnimationPlayer
         OnCutsceneStart?.Invoke();
 
         SetTorsoAnimation(false);
+        inCutscene = true;
         IKPass.IKActive = false;
         player.Movement.EnableRotation = false;
         player.Movement.EnableWalk = false;
@@ -152,6 +158,7 @@ public class CharacterAnimationPlayer
     public void EndOfCutSceneAnimation() {
 
         OnCutsceneEnd?.Invoke();
+        inCutscene = false;
         player.Camera.transform.SetParent(cameraParent);
         player.Movement.EnableRotation = true;
         player.Movement.EnableWalk = true;

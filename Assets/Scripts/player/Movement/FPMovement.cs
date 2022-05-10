@@ -28,6 +28,10 @@ public class FPMovement : MonoBehaviour
     private Vector2 lerpedVelocity;
 
     private Player player;
+
+    public Player Player {
+        get { return player;}
+    }
     [SerializeField]
     private IKPass IKPass;
 

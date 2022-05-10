@@ -37,15 +37,13 @@ public class BossPathHandler : MonoBehaviour
         get { return height;}
     }
 
-    [Space]
-    [Header("path")]
-
-    [SerializeField]
-    private MountainPath path;
-    
-    public MountainPath Path {
-        get { return path;}
-    }
+    // [Space]
+    // [Header("path")]
+    // [SerializeField]
+    // private MountainPath path;
+    // public MountainPath Path {
+    //     get { return path;}
+    // }
 
     [SerializeField]
     private bool onSurface;
@@ -73,10 +71,10 @@ public class BossPathHandler : MonoBehaviour
             MountainCoordinate coordsEnd = new MountainCoordinate() {Angle = j, yPos = transform.position.y + height};
             Debug.DrawLine(coords.ToPrimitiveVector(this), coordsEnd.ToPrimitiveVector(this), debugColor);
         }
-        if (enablePathDebug){
-            path.begin = MountainCoordinate.FromPosition(this, boss.transform.position);
-            path.DrawGizmo(this);
-        }
+        // if (enablePathDebug){
+        //     path.begin = MountainCoordinate.FromPosition(this, boss.transform.position);
+        //     path.DrawGizmo(this);
+        // }
     }
 
 }

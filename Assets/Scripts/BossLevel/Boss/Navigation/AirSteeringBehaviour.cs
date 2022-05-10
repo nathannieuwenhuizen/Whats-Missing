@@ -55,7 +55,7 @@ public class AirSteeringBehaviour : IMovementBehavior
     public void Update() {
         if (MovementEnabled) {
             UpdateTempDestination();
-            steeringBehaviour.UpdatePosition();
+            steeringBehaviour.UpdatePosition(speedScale);
             UpdateRotation();
         }
     }

@@ -27,7 +27,10 @@ public class FPCamera
 
     public bool CameraZRotationTilt {
         get { return cameraZRotationTilt;}
-        set { cameraZRotationTilt = value; }
+        set { 
+            cameraZRotationTilt = value; 
+            if (!value) ResetCameraTilt();
+        }
     }
     private float cameraZRotationMagnitude = 10f;
 
@@ -43,8 +46,8 @@ public class FPCamera
         get { return useSteeringBehaviour;}
         set { 
             if (currentAim == null) {
-                currentAim = Object.Instantiate(new GameObject("camera aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, transform).transform;
-                desiredAim = Object.Instantiate(new GameObject("camera desired aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, transform).transform;
+                currentAim = Object.Instantiate(new GameObject("camera aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, FPMovement.transform.parent).transform;
+                desiredAim = Object.Instantiate(new GameObject("camera desired aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, FPMovement.transform.parent).transform;
             }
             currentAim.position = cameraPivot.position + cameraPivot.forward;
             useSteeringBehaviour = value; 
@@ -85,6 +88,7 @@ public class FPCamera
         InputManager.OnRotate += setMouseDelta;
         BossCutsceneState.OnBossCutsceneStart += OnBossCutSceneStart;
         BossCutsceneState.OnBossCutsceneEnd += OnBossCutSceneEnd;
+        ForcefieldDemo.Forcefield.OnForceFieldImpact += ApplyLittleShake;
     }
 
     public void OnDisable() {
@@ -93,6 +97,7 @@ public class FPCamera
         InputManager.OnRotate -= setMouseDelta;
         BossCutsceneState.OnBossCutsceneStart += OnBossCutSceneStart;
         BossCutsceneState.OnBossCutsceneEnd += OnBossCutSceneEnd;
+        ForcefieldDemo.Forcefield.OnForceFieldImpact -= ApplyLittleShake;
     }
 
 
@@ -136,10 +141,18 @@ public class FPCamera
         if (cameraZRotationTilt) {
             zRotation = Mathf.Sin(cameraZIndex) * cameraZRotationMagnitude;
         } 
+        if (!cameraIsShaking)
+            cameraPivot.localRotation = Quaternion.Euler( new Vector3(
+                cameraPivot.localRotation.eulerAngles.x,
+                cameraPivot.localRotation.eulerAngles.y,
+                zRotation
+            ));
+    }
+    private void ResetCameraTilt() {
         cameraPivot.localRotation = Quaternion.Euler( new Vector3(
             cameraPivot.localRotation.eulerAngles.x,
             cameraPivot.localRotation.eulerAngles.y,
-            zRotation
+            0
         ));
     }
 
@@ -152,9 +165,15 @@ public class FPCamera
     {
         if (useSteeringBehaviour) {
             UpdateSteeringBehaviour();
-            Quaternion rotatationofCam = cameraPivot.transform.localRotation;
-            transform.Rotate(new Vector3(0,rotatationofCam.y,0));
-            cameraPivot.Rotate(new Vector3(0,-rotatationofCam.y,0));
+            if (FPMovement.Player.CharacterAnimationPlayer.InCutScene) {
+                Quaternion rotatationofCam = cameraPivot.transform.localRotation;
+                transform.Rotate(new Vector3(0,rotatationofCam.y,0));
+                cameraPivot.Rotate(new Vector3(0,-rotatationofCam.y,0));
+            } else {
+                Vector3 rotatationofCam = cameraPivot.transform.localEulerAngles;
+                transform.Rotate(new Vector3(0,rotatationofCam.y,0));
+                cameraPivot.Rotate(new Vector3(0,-rotatationofCam.y,0));
+            }
             return;
         }
         if (!EnableRotation) return; 
@@ -170,9 +189,17 @@ public class FPCamera
 
         //setting max angle cap
         if (cameraPivot.localRotation.eulerAngles.x > 180)
-            cameraPivot.localRotation = Quaternion.Euler( new Vector3(Mathf.Max(cameraPivot.localRotation.eulerAngles.x, 360 - verticalAngle) , 0, 0));
+            cameraPivot.localRotation = Quaternion.Euler( new Vector3(Mathf.Max(cameraPivot.localRotation.eulerAngles.x, 360 - verticalAngle) , 0, cameraPivot.localRotation.eulerAngles.z));
         else
-            cameraPivot.localRotation = Quaternion.Euler(new Vector3(Mathf.Min(cameraPivot.localRotation.eulerAngles.x, verticalAngle), 0, 0));
+            cameraPivot.localRotation = Quaternion.Euler(new Vector3(Mathf.Min(cameraPivot.localRotation.eulerAngles.x, verticalAngle), 0, cameraPivot.localRotation.eulerAngles.z));
+    }
+
+    private bool cameraIsShaking = false;
+    public void ApplyLittleShake() {
+        cameraIsShaking = true;
+        FPMovement.StartCoroutine(cameraPivot.ShakeZRotation(1f, 10, .5f, () => {
+            cameraIsShaking = false;
+        }));
     }
 
 

@@ -6,9 +6,6 @@ namespace Boss {
 
 public class WanderState : LookingState, IState
 {
-
-    public WanderingPath wanderingPath;
-
     private int currentPoseIndex = 0;
     private int CurrentPoseIndex {
         get => currentPoseIndex;
@@ -29,13 +26,18 @@ public class WanderState : LookingState, IState
     public override void DrawDebug()
     {
         base.DrawDebug();
-        
     }
 
-    public override void Start()
+        protected override void BeginChaseOnGround()
+        {
+            bossAI.Behaviours.landingState.landingPos = bossAI.CurrentWanderingPath.LandingPos;
+            base.BeginChaseOnGround();
+        }
+
+        public override void Start()
     {
         base.Start();
-        stateName = "Wandering";
+        stateName = "Wandering: " + bossAI.CurrentWanderingPath.name;
         positioner = bossAI.Boss.BossPositioner;
         bossHead = bossAI.Boss.Head;
         MirrorShard.OnPickedUp += ShardHasBeenPickedUp;
@@ -44,7 +46,8 @@ public class WanderState : LookingState, IState
 
         CurrentPoseIndex = 0;
         Boss.Body.IKPass.SetLimbsActive(false);
-        Boss.Head.SteeringEnabled = false;
+        Boss.Head.SteeringEnabled = true;
+        Boss.Head.LookAtPlayer = false;
         positioner.CurrentMovementBehaviour.bodyOrientation = BodyOrientation.toShape;
         positioner.BodyMovementType = BodyMovementType.airSteering;
         positioner.InAir = true;
@@ -72,21 +75,22 @@ public class WanderState : LookingState, IState
 
     public IEnumerator Wandering() {
         while (true) {
-            while (IsAtPose(wanderingPath.poses[currentPoseIndex]) == false) { 
+            while (IsAtPose(bossAI.CurrentWanderingPath.poses[currentPoseIndex]) == false) { 
                 yield return new WaitForEndOfFrame();
             }
             yield return new WaitForSeconds(minLookDuration);
-            GoToNextPose();
+            if (IsAtPose(bossAI.CurrentWanderingPath.poses[currentPoseIndex]))
+                GoToNextPose();
         }
     }
 
     private void GoToNextPose() {
-        CurrentPoseIndex = (CurrentPoseIndex + 1) % wanderingPath.poses.Length;
+        CurrentPoseIndex = (CurrentPoseIndex + 1) % bossAI.CurrentWanderingPath.poses.Length;
     }
 
     private void UpdateDestination() {
-        positioner.SetDestinationPath(wanderingPath.poses[currentPoseIndex].position);
-        if (wanderingPath.poses[currentPoseIndex].aimPosition != null) bossHead.SetAim(wanderingPath.poses[currentPoseIndex].aimPosition.position, Vector2.zero);
+        positioner.SetDestinationPath(bossAI.CurrentWanderingPath.poses[currentPoseIndex].position);
+        if (bossAI.CurrentWanderingPath.poses[currentPoseIndex].aimPosition != null) bossHead.SetAim(bossAI.CurrentWanderingPath.poses[currentPoseIndex].aimPosition.position, Vector2.zero);
         //if no aim psoition is set, then let the boss look forward
         else bossHead.SetAim(bossHead.transform.position + Boss.transform.forward * 10f, Vector2.zero, true);
     }
@@ -96,7 +100,7 @@ public class WanderState : LookingState, IState
     ///</summary>
     private bool IsAtPose(WanderPose pose) {
         if (positioner.AtPosition(.1f) == false) return false;
-        if (bossHead.IsAtPosition(.1f, 1f) == false) return false;
+        if (bossHead.IsAtPosition(.1f, .5f) == false) return false;
         return true;
     }
 }

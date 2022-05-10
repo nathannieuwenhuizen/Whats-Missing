@@ -96,12 +96,12 @@ namespace Boss {
             armRenders.arm.enabled = !_val;
         }
         private void Update() {
-            if (Input.GetKeyDown(KeyCode.O)) {
-                ToggleBody(true);
-            }
-            if (Input.GetKeyDown(KeyCode.P)) {
-                ToggleBody(false);
-            }
+            // if (Input.GetKeyDown(KeyCode.O)) {
+            //     ToggleBody(true);
+            // }
+            // if (Input.GetKeyDown(KeyCode.P)) {
+            //     ToggleBody(false);
+            // }
         }
 
         ///<summary>

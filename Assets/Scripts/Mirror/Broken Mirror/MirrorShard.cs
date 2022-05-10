@@ -82,6 +82,10 @@ public class MirrorShard : PickableRoomObject
         set { bossMirror = value; }
     }
 
+    public int ShardIndex {
+        get {return BossMirror.AmmountOfShardsAttached();}
+    }
+
     private void Reset() {
         Word = "shard";
         AlternativeWords = new string[] {"shards"};

@@ -20,10 +20,11 @@ namespace Boss {
             bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.toShape;
             bossAI.Boss.BossPositioner.MovementEnabled = true;
             bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.airSteering;
+            Boss.Head.LookAtPlayer = false;
 
             if (bossAI.Boss.BossPositioner.InAir == false) {
-                BossPositioner.SetDestinationPath(bossAI.transform.position, bossAI.transform.position);
-                takeOffCoroutine = BossPositioner.StartCoroutine(BossPositioner.TakeOff(() => {
+                Positioner.SetDestinationPath(bossAI.transform.position, bossAI.transform.position);
+                takeOffCoroutine = Positioner.StartCoroutine(Positioner.TakeOff(() => {
                     OnStateSwitch?.Invoke(nextState);
                 }));
             } else {

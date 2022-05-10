@@ -14,7 +14,8 @@ namespace Boss {
     public class Boss : RoomObject
     {       
         public const float BOSS_SIZE = 8f;
-        public const float BOSS_GROUND_OFFSET = 20f;
+        public const float BOSS_HEIGHT = 17f;
+        public const float BOSS_GROUND_OFFSET = 2f;
         public const float BOSS_ATTACK_PLAYER_RANGE = 10f;
         public const float BOSS_ATTACK_SHIELD_RANGE = 5f;
 
@@ -106,6 +107,12 @@ namespace Boss {
         private void Reset() {
             Word = "spirit";
             AlternativeWords = new string[] { "spirit", "spirits", "boss" };
+        }
+
+        public override void OnMissing()
+        {
+            ai.StateMachine.SwitchState(ai.Behaviours.dieState);
+            // base.OnMissing();
         }
     }
 }
