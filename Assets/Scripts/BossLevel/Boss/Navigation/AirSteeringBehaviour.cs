@@ -86,4 +86,20 @@ public class AirSteeringBehaviour : IMovementBehavior
     {
         if (pathHandeler != null) path.DrawGizmo(pathHandeler);
     }
+
+    public Vector3 GetClosestPointOnPath(Vector3 _position)
+    {
+        return path.GetClosestMountainCoord(_position, pathHandeler).ToVector(pathHandeler);    
+    }
+
+    ///<summary>
+    /// Returns the distance of the whole path.
+    ///</summary>
+    public float GetPathLength()
+    {
+        float result = 0;
+        for ( int i = 1; i < path.Coords.Length; ++i )
+            result += Vector3.Distance( path.Coords[i-1].ToVector(pathHandeler), path.Coords[i].ToVector(pathHandeler));
+        return result;
+    }
 }

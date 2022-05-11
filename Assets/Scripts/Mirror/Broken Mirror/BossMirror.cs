@@ -92,8 +92,8 @@ public class BossMirror : Mirror, ITriggerArea
 
 
     public void Explode() {
-        rb.isKinematic = false;
-        rb.velocity = transform.forward * 10;
+        // rb.isKinematic = false;
+        // rb.velocity = transform.forward * 10;
 
         MirrorCanvas.DeselectLetters();
         TogleVisibilityUnselectedObj(1);
@@ -109,6 +109,8 @@ public class BossMirror : Mirror, ITriggerArea
     public void AttachMirrorShard(MirrorShard shard) {
         OnBossMirrorShardAttached?.Invoke(this);
         OnMirrorShardAmmountUpdate?.Invoke(AmmountOfShardsAttached(), shards.Length);
+        MirrorCanvas.IsInteractable = true;
+
         if (AmmountOfShardsAttached() == shards.Length) {
             OnMirrorComplete?.Invoke(this);
         }
@@ -154,7 +156,7 @@ public class BossMirror : Mirror, ITriggerArea
         foreach(MirrorShard shard in shards) {
             shard.Shake(shakeDuration);
         }
-        StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(0,0,90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
+        StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z + 90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
         yield return new WaitForSeconds(shakeDuration);
         foreach(MirrorShard shard in shards) {
             shard.StopShake();
@@ -168,8 +170,7 @@ public class BossMirror : Mirror, ITriggerArea
         stencilBuffer.SetActive(false);
 
         //position bossmirror to original state
-        StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(0,0,0), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
-
+        StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z - 90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
 
     }
 

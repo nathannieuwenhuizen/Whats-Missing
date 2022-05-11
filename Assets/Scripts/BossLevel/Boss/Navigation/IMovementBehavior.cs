@@ -23,6 +23,9 @@ public interface IMovementBehavior
     public BodyOrientation bodyOrientation {get; set;}
 
     public Vector3 GetClosestPointOnPath();
+    public Vector3 GetClosestPointOnPath(Vector3 _position);
+
+    public float GetPathLength();
 
     public bool ReachedDestination(float _distanceThreshhold);
 

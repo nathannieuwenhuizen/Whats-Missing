@@ -93,41 +93,6 @@ public class InputManager : MonoBehaviour
     void Update()
     {
         //controller
-        
-        //mouse
-        // if (Input.GetButtonDown("Fire1")) {
-        //     OnClickDown?.Invoke();
-        // }
-        // if (Input.GetButtonUp("Fire1"))  {
-        //     OnClickUp?.Invoke();
-        // }
-
-        
-        //movement
-        // if (Input.GetButtonDown("Jump")) {
-        //     OnJump?.Invoke();
-        // }
-        // if (Time.timeScale == 1) {
-        //     OnMove?.Invoke(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
-        // }
-        // else {
-        //     OnMove?.Invoke(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
-        // }
-        // //running
-        // if (Input.GetButtonDown("Run")) {
-        //     OnStartRunning?.Invoke();
-        // }
-        // if (Input.GetButtonUp("Run")) {
-        //     OnEndRunning?.Invoke();
-        // }
-
-        //rotate
-        // OnRotate?.Invoke(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
-
-        //Cancel
-        // if (Input.GetButtonDown("Cancel")) {
-        //     OnCancel?.Invoke();
-        // }
     
         //Undo
         if (Input.GetKeyDown(KeyCode.Z)) {

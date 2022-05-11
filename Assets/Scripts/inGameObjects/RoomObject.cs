@@ -180,12 +180,14 @@ public class RoomObject : RoomEntity
 
     public override IEnumerator AnimateShrinking()
     {
+        Debug.Log("shrinking animate");
         yield return this.AnimatingRoomObjectScale( shrinkScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnShrinkingFinish();
     }
 
     public override void OnShrinkingFinish()
     {
+        Debug.Log("shrinking finish");
         CurrentScale = shrinkScale;
     }
 

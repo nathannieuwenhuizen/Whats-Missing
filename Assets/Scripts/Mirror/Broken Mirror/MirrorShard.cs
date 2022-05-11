@@ -226,7 +226,11 @@ public class MirrorShard : PickableRoomObject
             }
         }
         if (fallPositionEnd != null) {
+            SetBezierDestination(fallPositionStart, fallPositionEnd.position);
             DebugExtensions.DrawBezierCurve(fallPositionStart, fallPositionMid, fallPositionEnd.position);
+            #if UNITY_EDITOR
+            Handles.Label(fallPositionEnd.position, gameObject.name);
+            #endif
         }
     }
 

@@ -72,7 +72,7 @@ public class Area : MonoBehaviour
 
             if (rooms.IndexOf(currentRoom) == 0) {
                 if (areaIndex == 0) OnFirstAreaEnter?.Invoke();
-                else OnSecondAreaEnter?.Invoke();
+                else if (areaIndex == 1) OnSecondAreaEnter?.Invoke();
             }
             loadRoomState = false;
         }

@@ -152,11 +152,11 @@ public class BossPositioner : MonoBehaviour
         OnBossLanding?.Invoke();
         BodyMovementType = BodyMovementType.navMesh;
         MovementEnabled = false;
-        Vector3 endPos = CurrentMovementBehaviour.GetClosestPointOnPath();
+        Vector3 _landingPosition = CurrentMovementBehaviour.GetClosestPointOnPath();
         if (_endPos != null) {
-            // endPos = airMovementBehaviour.
+            _landingPosition = CurrentMovementBehaviour.GetClosestPointOnPath(_endPos.position);
         }
-        yield return StartCoroutine(transform.AnimatingPos(endPos, landingCurve, 2f));
+        yield return StartCoroutine(transform.AnimatingPos(_landingPosition, landingCurve, 2f));
         MovementEnabled = true;
         callback();
     }

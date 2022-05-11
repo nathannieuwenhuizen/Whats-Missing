@@ -37,13 +37,14 @@ public class WanderState : LookingState, IState
         public override void Start()
     {
         base.Start();
+        
         stateName = "Wandering: " + bossAI.CurrentWanderingPath.name;
+        bossAI.CurrentWanderingPath.showGizmo = true;
         positioner = bossAI.Boss.BossPositioner;
         bossHead = bossAI.Boss.Head;
         MirrorShard.OnPickedUp += ShardHasBeenPickedUp;
 
         wanderingCoroutine = bossAI.StartCoroutine(Wandering());
-
         CurrentPoseIndex = 0;
         Boss.Body.IKPass.SetLimbsActive(false);
         Boss.Head.SteeringEnabled = true;
@@ -63,6 +64,7 @@ public class WanderState : LookingState, IState
     public override void Exit()
     {
         base.Exit();
+        bossAI.CurrentWanderingPath.showGizmo = false;
         bossAI.StopCoroutine(wanderingCoroutine);
         MirrorShard.OnPickedUp -= ShardHasBeenPickedUp;
 

@@ -124,4 +124,24 @@ public class NavMeshBehaviour : IMovementBehavior
             }
         }
     }
+
+    public Vector3 GetClosestPointOnPath(Vector3 _position)
+    {
+        NavMeshHit myNavHit;
+        if(NavMesh.SamplePosition(_position, out myNavHit, 100, -1 )){
+            return  myNavHit.position;
+        }
+        return _position;       
+    }
+       
+    public float GetPathLength()
+    {
+        NavMeshPath path = navMeshAgent.path;
+        float result = 0.0f;
+        if (( path.status != NavMeshPathStatus.PathInvalid ) && ( path.corners.Length > 1 ))
+            for ( int i = 1; i < path.corners.Length; ++i )
+                result += Vector3.Distance( path.corners[i-1], path.corners[i] );
+       
+        return result;
+    }
 }

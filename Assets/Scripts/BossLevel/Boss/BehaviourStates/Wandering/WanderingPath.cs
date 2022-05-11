@@ -21,6 +21,7 @@ public class WanderingPaths {
 }
 
 public class WanderingPath : MonoBehaviour {
+    
     public WanderPose[] poses;
     [SerializeField]
     private SkinnedMeshRenderer gizmosRenderer;
@@ -31,13 +32,24 @@ public class WanderingPath : MonoBehaviour {
     }
 
     [SerializeField]
-    private bool showGizmo = true;
+    public bool showGizmo = true;
     
+
+    private void Awake() {
+        showGizmo = false;
+    }
     private void OnDrawGizmos() {
-        if (poses.Length < 1) return;
+        if (poses.Length < 1 || !showGizmo) return;
         
         if (poses[0].position == null) return;
         
+        //draw landing pos
+        if (LandingPos != null) {
+            Gizmos.DrawWireSphere(LandingPos.position, 1f);
+            #if UNITY_EDITOR
+            Handles.Label(LandingPos.position, "landing pos");
+            #endif
+        }
         Gizmos.color = Color.yellow;
         Vector3 startpos = poses[0].position.position;
         for (int i = 0; i < poses.Length; i++)
@@ -51,6 +63,7 @@ public class WanderingPath : MonoBehaviour {
                 if (poses[i].aimPosition != null) {
                     Debug.DrawLine(poses[i].position.position, poses[i].aimPosition.position);
                 }
+
 
                 //draw boss mesh for more visualisation
                 if (gizmosRenderer != null) {

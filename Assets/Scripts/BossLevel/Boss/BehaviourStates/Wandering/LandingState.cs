@@ -22,12 +22,11 @@ namespace Boss {
             Boss.Head.LookAtPlayer = true;
 
 
-
             if (bossAI.Boss.BossPositioner.InAir) {
                 Positioner.SetDestinationPath(bossAI.Boss.Player.transform, landingPos != null ? landingPos.position : bossAI.transform.position +  Vector3.up * (Boss.BOSS_GROUND_OFFSET));
                 landingCoroutine = Positioner.StartCoroutine(Positioner.Landing(() => {
                     OnStateSwitch?.Invoke(nextState);
-                }));
+                }, bossAI.CurrentWanderingPath.LandingPos));
             }
             else {
                 OnStateSwitch?.Invoke(nextState);

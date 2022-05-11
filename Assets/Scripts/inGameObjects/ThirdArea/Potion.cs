@@ -46,7 +46,12 @@ public class Potion : PickableRoomObject
         base.Awake();
         grabSound = SFXFiles.potion_grab;
         ClearAimLine();
-
+        StartCoroutine(DeactivateRigidVelocity());
+    }
+    public IEnumerator DeactivateRigidVelocity() {
+        rb.isKinematic = true;
+        yield return new WaitForSeconds(.5f);
+        rb.isKinematic = false;
     }
 
     public override void OnRoomEnter()
@@ -146,7 +151,6 @@ public class Potion : PickableRoomObject
             RaycastHit hit;
             if (Physics.SphereCast(startingPoint -movementVector,.5f, ((startingPoint -movementVector) -oldPos).normalized * .1f, out hit, ((startingPoint -movementVector) -oldPos).magnitude)) {
                 if (hit.transform.parent != transform) {
-                    Debug.Log("hit object: " + hit.transform.name);
                     linePoints.Add(hit.point);
                     hitted = true;
                     aimHitObject.transform.position = hit.point;
