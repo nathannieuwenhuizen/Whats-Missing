@@ -38,6 +38,7 @@ public class Fire : RoomObject
         WarmthProperty.OnWarmthAppearing += SetFireOn;
         AirProperty.OnAirMissing += SetFireOff;
         AirProperty.OnAirAppearing += SetFireOn;
+        Water.OnWaterBigEnd += SetFireOff;
     }
 
     private void OnDisable() {
@@ -48,6 +49,8 @@ public class Fire : RoomObject
         WarmthProperty.OnWarmthAppearing -= SetFireOn;
         AirProperty.OnAirMissing -= SetFireOff;
         AirProperty.OnAirAppearing -= SetFireOn;
+        Water.OnWaterBigEnd -= SetFireOff;
+
         if (fireSound != null) fireSound.Stop(true);
     }
 
@@ -76,6 +79,10 @@ public class Fire : RoomObject
         if (fireSound != null)
             fireSound.Play();
 
+        if (IsEnlarged) {
+            OnEnlargeRevert();
+        }
+
     }
 
 
@@ -97,6 +104,8 @@ public class Fire : RoomObject
     private void ToggleFireSpread(bool val) {
         if (fireSpreadObject == null) return;
 
+
+        Debug.Log("toggle fire spread: " + val);
         fireSpreadObject.gameObject.SetActive(val);
         smokeParticle.gameObject.SetActive(val);
         colliderObj.gameObject.SetActive(val);
@@ -109,7 +118,7 @@ public class Fire : RoomObject
     public override void OnEnlarge()
     {
         if (smokeCoroutine != null) StopCoroutine(smokeCoroutine);
-
+        Debug.Log("fire enlarge");
         ToggleFireSpread(true);
         fireSpreadObject.transform.transform.localScale = Vector3.zero;
 

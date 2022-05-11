@@ -52,6 +52,8 @@ public class WanderState : LookingState, IState
         positioner.CurrentMovementBehaviour.bodyOrientation = BodyOrientation.toShape;
         positioner.BodyMovementType = BodyMovementType.airSteering;
         positioner.InAir = true;
+        bossAI.BossEye.AnimateViewAlpha(1f);
+
 
     }
     
@@ -67,6 +69,7 @@ public class WanderState : LookingState, IState
         bossAI.CurrentWanderingPath.showGizmo = false;
         bossAI.StopCoroutine(wanderingCoroutine);
         MirrorShard.OnPickedUp -= ShardHasBeenPickedUp;
+        bossAI.BossEye.AnimateViewAlpha(0f);
 
     }
 

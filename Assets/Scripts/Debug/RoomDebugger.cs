@@ -43,7 +43,15 @@ public class RoomDebugger : MonoBehaviour
         }
     }
     private void OnGUI() {
-        if (visible) debuggerBox.Draw(area.gameObject.activeSelf ? area.CurrentRoom : room, mirror);
+        if (!visible) return;
+        if (area  != null) {
+            if (area.gameObject.activeSelf) {
+                debuggerBox.Draw(area.CurrentRoom, mirror);
+                return;
+            }
+        }
+        debuggerBox.Draw(room, mirror);
+
     }
     private void OnDisable() {
         visible = true;

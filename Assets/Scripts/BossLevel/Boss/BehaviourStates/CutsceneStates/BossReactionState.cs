@@ -17,16 +17,16 @@ namespace Boss {
             Positioner.BodyMovementType = BodyMovementType.airSteering;
             Positioner.SetDestinationPath(bossAI.ReactionPosition.position, bossAI.transform.position);
             bossAI.StartCoroutine(GoToReactionPose());
-            Positioner.SpeedScale = 5f;
         }
         public IEnumerator GoToReactionPose() {
+            Positioner.SpeedScale = 5f;
             while(Positioner.AtPosition(5f)) {
                 yield return new WaitForFixedUpdate();
             }
+            Positioner.SpeedScale = 1f;
             DoReaction();
         }
         public virtual void DoReaction() {
-            Positioner.SpeedScale = 1f;
         }
 
         public override void Exit()

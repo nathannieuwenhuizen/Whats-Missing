@@ -15,6 +15,10 @@ public class BossMirror : Mirror, ITriggerArea
     public static BossMirrorEvent OnMirrorExplode;
 
     private Rigidbody rb;
+
+    private Player player;
+
+    private bool followPlayer = false;
     
     [SerializeField]
     private GameObject stencilBuffer;
@@ -88,6 +92,13 @@ public class BossMirror : Mirror, ITriggerArea
         if (Input.GetKeyDown(KeyCode.X)) {
             Explode();
         }
+        if (followPlayer && player != null) {
+            Vector3 delta = transform.position - player.transform.position;
+            delta.y = 0;
+            Quaternion aimRotation = Quaternion.LookRotation(delta, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, aimRotation, Time.deltaTime);
+            // transform.LookAt(player.transform.position, Vector3.up);
+        }
     }
 
 
@@ -98,7 +109,7 @@ public class BossMirror : Mirror, ITriggerArea
         MirrorCanvas.DeselectLetters();
         TogleVisibilityUnselectedObj(1);
         for (int i = 0; i < shards.Length; i++) {
-            shards[i].DisconnectedFromMirror(4000);
+            shards[i].DisconnectedFromMirror();
         }
         explosionSmoke.Emit(100);
         explosionShards.Emit(60);
@@ -114,6 +125,32 @@ public class BossMirror : Mirror, ITriggerArea
         if (AmmountOfShardsAttached() == shards.Length) {
             OnMirrorComplete?.Invoke(this);
         }
+
+        MirrorCanvas.DeselectLetters();
+        Confirm();
+        UpdateMirrorHeader();
+
+    }
+
+    private void UpdateMirrorHeader() {
+        switch (AmmountOfShardsAttached()) {
+            case 1:
+            MirrorData.changeType = ChangeType.tooSmall;
+            break;
+            case 2:
+            MirrorData.changeType = ChangeType.tooBig;
+            break;
+            case 3:
+            MirrorData.changeType = ChangeType.missing;
+            break;
+            case 4:
+            MirrorData.changeType = ChangeType.missing;
+            break;
+            case 5:
+            MirrorData.changeType = ChangeType.missing;
+            break;
+        }
+        MirrorCanvas.SetupText(MirrorData.changeType);
     }
 
     public bool MirrorIsComplete() {
@@ -126,13 +163,16 @@ public class BossMirror : Mirror, ITriggerArea
         return shards.Where( s => s.Attached == true).ToArray().Length;
     }
     
-    public void OnAreaEnter(Player player)
+    public void OnAreaEnter(Player _player)
     {
         if (introCutscene) return;
         introCutscene = true;
         OnMirrorShake?.Invoke(this);
         StartCoroutine(ShakeBeforeExplosion());
+        player = _player;
     }
+
+
 
     public void OnAreaExit(Player player)
     {
@@ -170,8 +210,8 @@ public class BossMirror : Mirror, ITriggerArea
         stencilBuffer.SetActive(false);
 
         //position bossmirror to original state
-        StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z - 90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
-
+        yield return StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z - 90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
+        followPlayer = true;
     }
 
 

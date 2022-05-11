@@ -39,12 +39,15 @@ namespace Boss {
 
         public IEnumerator DoAttackAnimation() {
             SetTrigger("attack");
+            yield return new WaitForFixedUpdate();
+            Debug.Log("animation clip lenght: " + animator.GetCurrentAnimatorStateInfo(0).length);
             IKPass.RightArm.EnableRayCast = false;
             float index = 0;
             while (index < 3f) {
                 index += Time.deltaTime;
                 IKPass.RightArm.IKPosition = boss.Player.transform.position;
                 IKPass.RightArm.Weight = animator.GetFloat("attackWeight");
+                boss.Body.ToggleDeathColliders(IKPass.RightArm.Weight > 0);
                 yield return new WaitForFixedUpdate();
             }
         }

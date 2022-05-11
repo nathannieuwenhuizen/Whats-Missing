@@ -167,16 +167,6 @@ public class FPCamera
     {
         if (useSteeringBehaviour) {
             UpdateSteeringBehaviour();
-            if (FPMovement.Player.CharacterAnimationPlayer.CameraIsInModel()) {
-                // Quaternion rotatationofCam = cameraPivot.transform.localRotation;
-                // transform.Rotate(new Vector3(0,-rotatationofCam.y,0));
-                // cameraPivot.Rotate(new Vector3(0,-rotatationofCam.y,0));
-            } else {
-                Debug.Log("in camera cutscene");
-                // Quaternion rotatationofCam = cameraPivot.transform.localRotation;
-                // transform.Rotate(new Vector3(0,-rotatationofCam.y,0));
-                // cameraPivot.Rotate(new Vector3(0,-rotatationofCam.y,0));
-            }
             return;
         }
         if (!EnableRotation) return; 

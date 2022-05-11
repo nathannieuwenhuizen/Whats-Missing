@@ -22,7 +22,6 @@ public class BaseChaseState : BaseBossState
         oldViewAlpha = bossAI.BossEye.ViewAlpha;
 
         bossAI.BossEye.AnimateViewAngle(sharpViewAngle);
-        bossAI.BossEye.AnimateViewAlpha(0);
     }
 
     public override void Run()
@@ -46,7 +45,6 @@ public class BaseChaseState : BaseBossState
         bossAI.BossHead.SteeringEnabled = true;
 
         bossAI.BossEye.AnimateViewAngle(oldViewAngle);
-        bossAI.BossEye.AnimateViewAlpha(oldViewAlpha);
         bossAI.BossEye.noticingValue = 0;
     }
         private bool isAttacking = false;
@@ -58,9 +56,9 @@ public class BaseChaseState : BaseBossState
         protected virtual IEnumerator Attacking() {
             isAttacking = true;
             Boss.BossPositioner.MovementEnabled = false;
-            bossAI.Boss.Body.ToggleDeathColliders(true);
+            // bossAI.Boss.Body.ToggleDeathColliders(true);
             yield return bossAI.StartCoroutine(Boss.Body.BossAnimator.DoAttackAnimation());
-            bossAI.Boss.Body.ToggleDeathColliders(false);
+            // bossAI.Boss.Body.ToggleDeathColliders(false);
             isAttacking = false;
             Boss.BossPositioner.MovementEnabled = true;
         }

@@ -202,7 +202,10 @@ public class PickableRoomObject : InteractabelObject, IPickable
         base.OnFlippingRevertFinish();
     }
 
-    public bool TooHeavy(Hands hands) => hands.MassThreshhold < rb.mass;
+    public bool TooHeavy(Hands hands)  {
+        if (rb == null) return false;
+        return hands.MassThreshhold < rb.mass;
+    } 
 
     public virtual bool CanBeReleased() => true;
     

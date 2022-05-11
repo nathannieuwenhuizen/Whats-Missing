@@ -53,6 +53,9 @@ public class InteractabelObject : RoomObject, IInteractable
         Outline.OutlineColor = value;
     } }
 
+    ///<summary>
+    /// Distance on when the play can interact with the item. Default is set to 6 units
+    ///</summary>
     public float InteractableDistance { get; set; } = 6f;
 
     ///<summary>
