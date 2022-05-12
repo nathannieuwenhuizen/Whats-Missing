@@ -254,10 +254,8 @@ namespace ForcefieldDemo
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Q)) ApplyImpact(Vector3.zero, Vector3.one);
-
-            if (Input.GetKeyDown(KeyCode.L))
-                    if (!IsOn) IsOn = true;
+            // if (Input.GetKeyDown(KeyCode.L))
+            //         if (!IsOn) IsOn = true;
 
 #if UNITY_EDITOR
             if (clickToImpact)

@@ -89,9 +89,6 @@ public class BossMirror : Mirror, ITriggerArea
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.X)) {
-            Explode();
-        }
         if (followPlayer && player != null) {
             Vector3 delta = transform.position - player.transform.position;
             delta.y = 0;
@@ -192,7 +189,7 @@ public class BossMirror : Mirror, ITriggerArea
         //activate stencil buffer
         stencilBuffer.SetActive(true);
         Quaternion startRotation = transform.localRotation;
-        shakeCoroutine = StartCoroutine(transform.ShakeZRotation(10f, 3f, shakeDuration * 2));
+        shakeCoroutine = StartCoroutine(transform.ShakeZRotation(6f, 5f, shakeDuration * 2));
         foreach(MirrorShard shard in shards) {
             shard.Shake(shakeDuration);
         }

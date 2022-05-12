@@ -19,7 +19,7 @@ namespace Boss {
             bossAI.StartCoroutine(GoToReactionPose());
         }
         public IEnumerator GoToReactionPose() {
-            Positioner.SpeedScale = 5f;
+            Positioner.SpeedScale = 10f;
             while(Positioner.AtPosition(5f)) {
                 yield return new WaitForFixedUpdate();
             }

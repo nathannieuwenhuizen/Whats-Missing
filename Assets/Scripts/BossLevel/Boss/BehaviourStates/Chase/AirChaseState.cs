@@ -1,12 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Boss;
 using UnityEngine;
-
 
 namespace Boss {
 
-    public class CrawlingChaseState : BaseChaseState
+    public class AirChaseState : BaseChaseState
     {
         private Vector3 startChasePos;
         public override void DrawDebug()
@@ -18,10 +16,10 @@ namespace Boss {
         {
             base.Start();
             Positioner.BodyOrientation = BodyOrientation.toPath;
-            Positioner.BodyMovementType = BodyMovementType.navMesh;
-            stateName = "Crawling Chase";
+            Positioner.BodyMovementType = BodyMovementType.freeFloat;
+            stateName = "Air Chase Chase";
             Positioner.MovementEnabled = true;
-            Positioner.InAir = false;
+            Positioner.InAir = true;
             UpdateBossChasePath(true);
 
         }

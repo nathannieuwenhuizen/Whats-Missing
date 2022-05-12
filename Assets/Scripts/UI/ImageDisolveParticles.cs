@@ -27,12 +27,6 @@ public class ImageDisolveParticles : MonoBehaviour
         }
     }
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.T)) {
-            Disolve();
-        }
-    }
-
     //TODO: make sure it also workds with rect transform scale and oddset anchors, it only works on (.5, .5)
     private void SetparticlesAtImagePosition() {
         Vector3 cameraPos = particleCamera.ScreenToWorldPoint(image.rectTransform.position);

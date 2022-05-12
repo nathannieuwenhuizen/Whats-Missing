@@ -18,8 +18,8 @@ namespace Boss {
             yield return new WaitForEndOfFrame();
             Vector3 start = bossAI.Boss.transform.position;
             yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(0,50,0), AnimationCurve.EaseInOut(0,0,1,1), 1.5f);
-            yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(-20,40,0), AnimationCurve.EaseInOut(0,0,1,1), 3f);
-            yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(-30,30,0), AnimationCurve.EaseInOut(0,0,1,1), 4f);
+            // yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(-20,40,0), AnimationCurve.EaseInOut(0,0,1,1), 3f);
+            // yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(-30,30,0), AnimationCurve.EaseInOut(0,0,1,1), 4f);
 
             OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
         }

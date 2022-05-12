@@ -30,6 +30,11 @@ public class WanderingPath : MonoBehaviour {
     public Transform LandingPos {
         get { return landingPosition;}
     }
+    [SerializeField]
+    private Boss.BodyMovementType bossMovementType = Boss.BodyMovementType.airSteering;
+    public Boss.BodyMovementType BossMovementType {
+        get { return bossMovementType; }
+    }
 
     [SerializeField]
     public bool showGizmo = true;
@@ -67,7 +72,10 @@ public class WanderingPath : MonoBehaviour {
 
                 //draw boss mesh for more visualisation
                 if (gizmosRenderer != null) {
-                    Gizmos.DrawWireMesh(gizmosRenderer.sharedMesh, poses[i].position.position + Vector3.up * Boss.Boss.BOSS_HEIGHT,  Quaternion.LookRotation(-poses[i].position.position, -Vector3.right), 
+                    // Gizmos.DrawWireMesh(gizmosRenderer.sharedMesh, poses[i].position.position + Vector3.up * Boss.Boss.BOSS_HEIGHT, Quaternion.identity, gizmosRenderer.transform.lossyScale);//  Quaternion.LookRotation(-poses[i].position.position, -Vector3.right), 
+                    Vector3 aim = -poses[i].position.position; 
+                    aim.y = 0;
+                    Gizmos.DrawWireMesh(gizmosRenderer.sharedMesh, poses[i].position.position + Vector3.up * Boss.Boss.BOSS_HEIGHT,  Quaternion.LookRotation(aim, -Vector3.right), 
                     gizmosRenderer.transform.lossyScale);
                 }
 

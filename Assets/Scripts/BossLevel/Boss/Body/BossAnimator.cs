@@ -40,7 +40,9 @@ namespace Boss {
         public IEnumerator DoAttackAnimation() {
             SetTrigger("attack");
             yield return new WaitForFixedUpdate();
-            Debug.Log("animation clip lenght: " + animator.GetCurrentAnimatorStateInfo(0).length);
+            float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
+
+            Debug.Log("animation clip lenght: " + clipLength);
             IKPass.RightArm.EnableRayCast = false;
             float index = 0;
             while (index < 3f) {
@@ -50,6 +52,7 @@ namespace Boss {
                 boss.Body.ToggleDeathColliders(IKPass.RightArm.Weight > 0);
                 yield return new WaitForFixedUpdate();
             }
+            Debug.Log("end of attack");
         }
     }
 }

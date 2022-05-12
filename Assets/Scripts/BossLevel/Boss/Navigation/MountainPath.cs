@@ -20,7 +20,7 @@ namespace Boss {
         }
 
 
-        public MountainCoordinate[] generatePathPoints(BossPathHandler pathHandeler) {
+        public MountainCoordinate[] generatePathPoints(BossMountain pathHandeler) {
             List<MountainCoordinate> tempList = new List<MountainCoordinate>();
             for (int k = 0; k <= steps; k++) {
                 tempList.Add( MountainCoordinate.Lerp(begin, end, (float)k/(float)steps));
@@ -29,7 +29,7 @@ namespace Boss {
             return coords;
 
         }
-        public Vector3 GetPathDirection(MountainCoordinate coord, BossPathHandler pathHandler) {
+        public Vector3 GetPathDirection(MountainCoordinate coord, BossMountain pathHandler) {
             Vector3 result = Vector3.forward;
             int index = coord.getIndexFromArray(coords);
             if (index != -1) {
@@ -42,7 +42,7 @@ namespace Boss {
             return result.normalized;
         }
 
-        public MountainCoordinate GetClosestMountainCoord(Vector3 _pos, BossPathHandler _pathHandeler) {
+        public MountainCoordinate GetClosestMountainCoord(Vector3 _pos, BossMountain _pathHandeler) {
             if (Coords.Length == 0) return default(MountainCoordinate);
 
             if (_pathHandeler.OnSurface == false) {
@@ -59,7 +59,7 @@ namespace Boss {
             return GetClosestCoordOnDistance(_pathHandeler, _pos);
         }
 
-        public MountainCoordinate GetClosestCoordOnDistance(BossPathHandler _pathHandeler, Vector3 _pos) {
+        public MountainCoordinate GetClosestCoordOnDistance(BossMountain _pathHandeler, Vector3 _pos) {
             MountainCoordinate chosen = coords[coords.Length - 1];
             float closestDistance = Mathf.Infinity;
             for (int j = 0; j < coords.Length; j++) {
@@ -72,7 +72,7 @@ namespace Boss {
             return chosen;
         }
 
-        public void DrawGizmo(BossPathHandler pathHandeler) {
+        public void DrawGizmo(BossMountain pathHandeler) {
             Vector3 oldPos = begin.ToVector(pathHandeler);
             generatePathPoints(pathHandeler);
             foreach(MountainCoordinate coord in coords) {

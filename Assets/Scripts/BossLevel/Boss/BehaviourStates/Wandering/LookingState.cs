@@ -9,7 +9,6 @@ namespace Boss {
 public abstract class LookingState : BaseBossState, IState
 {
     protected BossEye eye;
-    private Player player;
 
     public override void DrawDebug()
     {
@@ -38,12 +37,19 @@ public abstract class LookingState : BaseBossState, IState
         OnStateSwitch?.Invoke(bossAI.Behaviours.landingState);
     }
 
+    protected virtual void BeginChase() {
+        //checks if player is inside the mountain, if not, then it will go into the air chase state
+        if (Positioner.BossMountain.InsideShape(bossAI.Boss.Player.transform.position)) 
+            BeginChaseOnGround();
+        else OnStateSwitch?.Invoke(bossAI.Behaviours.airChaseState);
+    }
+
 
     public override void Run()
     {
         bossAI.BossEye.UpdateNoticing(bossAI.Boss.Player);
         if (bossAI.BossEye.NoticesPlayer) {
-            BeginChaseOnGround();
+            BeginChase();
         }
     }
 

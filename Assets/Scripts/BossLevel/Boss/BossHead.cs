@@ -62,7 +62,6 @@ public class BossHead: MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q)) LookAtPlayer = !LookAtPlayer;
 
         if (steeringEnabled) {
             steeringBehaviour.UpdatePosition(aimSpeed, getDesriedPosition());

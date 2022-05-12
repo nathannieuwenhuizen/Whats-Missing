@@ -52,10 +52,13 @@ public class BossAI : MonoBehaviour {
         CurrentWanderingPath = paths.firstShardPath;
     }
     public void InitializeStateMachine() {
-        stateMachine = new FSM(behaviours.idleState);
+        stateMachine = new FSM(behaviours.wanderState);
     }
     public void UpdateAI() {
         stateMachine?.Update();
+        if (Input.GetKeyDown(KeyCode.T)) {
+            stateMachine.SwitchState(behaviours.transformationState);
+        }
     }
 
     private void OnDrawGizmos() {

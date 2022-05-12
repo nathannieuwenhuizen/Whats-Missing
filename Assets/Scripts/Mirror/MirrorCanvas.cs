@@ -377,7 +377,7 @@ public class MirrorCanvas : MonoBehaviour
             cPos += selectedLetterObjects[i].size.width *.5f + letterPadding;
         }
         if (!mirror.isQuestion){
-            headerText.Text.rectTransform.parent = answerText.transform;
+            headerText.Text.rectTransform.SetParent(answerText.transform);
             headerText.MoveTo(new Vector3(cPos + headerText.Text.GetRenderedValues(true).x * .5f + 20f, 0, 0));
             // headerText.Text.rectTransform.localPosition = new Vector3(cPos + headerText.Text.GetRenderedValues(true).x * .5f + 20f, 0, 0);
         }

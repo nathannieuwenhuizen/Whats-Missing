@@ -16,15 +16,15 @@ public class TrailerCam : MonoBehaviour
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.C)) {
-            if (isMoving) {
-                isMoving = false;
-            } else {
-                isMoving = true;
-                transform.position = startPos;
-                transform.rotation = startRot;
-            }
-        }
+        // if (Input.GetKeyDown(KeyCode.C)) {
+        //     if (isMoving) {
+        //         isMoving = false;
+        //     } else {
+        //         isMoving = true;
+        //         transform.position = startPos;
+        //         transform.rotation = startRot;
+        //     }
+        // }
 
         if (isMoving) {
             transform.Translate(transform.right * Time.deltaTime * 1f);

@@ -13,7 +13,6 @@ public class BaseChaseState : BaseBossState
     private float oldViewAngle;
     private float oldViewAlpha;
     private float sharpViewAngle = 15f;
-    private bool showCutsceneBeforeChase = false;
     public override void Start()
     {
         bossAI.BossHead.SteeringEnabled = false;
@@ -29,12 +28,11 @@ public class BaseChaseState : BaseBossState
         bossAI.BossHead.SetAim(bossAI.Boss.Player.Camera.transform.position, Vector2.zero);
         bossAI.BossEye.UpdateNoticing(bossAI.Boss.Player);
         if (bossAI.BossEye.DoesntNoticesPlayer) {
-            // OnStateSwitch?.Invoke(bossAI.Behaviours.lookingState);
+            // StopChase();
         }
     }
 
     protected void StopChase() {
-        Debug.Log("stop chase");
         bossAI.Behaviours.takeoffState.withCutscene = false;
         bossAI.Behaviours.takeoffState.nextState = bossAI.Behaviours.wanderState;
         OnStateSwitch?.Invoke(bossAI.Behaviours.takeoffState);
@@ -55,12 +53,12 @@ public class BaseChaseState : BaseBossState
 
         protected virtual IEnumerator Attacking() {
             isAttacking = true;
-            Boss.BossPositioner.MovementEnabled = false;
+            // Boss.BossPositioner.MovementEnabled = false;
             // bossAI.Boss.Body.ToggleDeathColliders(true);
             yield return bossAI.StartCoroutine(Boss.Body.BossAnimator.DoAttackAnimation());
             // bossAI.Boss.Body.ToggleDeathColliders(false);
             isAttacking = false;
-            Boss.BossPositioner.MovementEnabled = true;
+            // Boss.BossPositioner.MovementEnabled = true;
         }
     }
 

@@ -17,14 +17,14 @@ public class AirSteeringBehaviour : IMovementBehavior
         } 
     }
 
-    private BossPathHandler pathHandeler;
+    private BossMountain pathHandeler;
     private MountainPath path;
     private Transform transform;
     private Transform desiredTempPos;
     private SteeringBehaviour steeringBehaviour;
 
 
-    public AirSteeringBehaviour(Transform _transform, Transform _desiredTempPos, SteeringBehaviour _steeringBehaviour, BossPathHandler _pathHandeler) {
+    public AirSteeringBehaviour(Transform _transform, Transform _desiredTempPos, SteeringBehaviour _steeringBehaviour, BossMountain _pathHandeler) {
         transform = _transform;
         desiredTempPos = _desiredTempPos;
         steeringBehaviour = _steeringBehaviour;

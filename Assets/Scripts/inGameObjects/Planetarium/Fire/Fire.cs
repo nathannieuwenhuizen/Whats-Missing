@@ -104,8 +104,6 @@ public class Fire : RoomObject
     private void ToggleFireSpread(bool val) {
         if (fireSpreadObject == null) return;
 
-
-        Debug.Log("toggle fire spread: " + val);
         fireSpreadObject.gameObject.SetActive(val);
         smokeParticle.gameObject.SetActive(val);
         colliderObj.gameObject.SetActive(val);

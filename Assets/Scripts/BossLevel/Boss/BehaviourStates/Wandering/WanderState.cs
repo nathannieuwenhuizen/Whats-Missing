@@ -50,7 +50,7 @@ public class WanderState : LookingState, IState
         Boss.Head.SteeringEnabled = true;
         Boss.Head.LookAtPlayer = false;
         positioner.CurrentMovementBehaviour.bodyOrientation = BodyOrientation.toShape;
-        positioner.BodyMovementType = BodyMovementType.airSteering;
+        positioner.BodyMovementType = bossAI.CurrentWanderingPath.BossMovementType;
         positioner.InAir = true;
         bossAI.BossEye.AnimateViewAlpha(1f);
 
@@ -58,7 +58,7 @@ public class WanderState : LookingState, IState
     }
     
     public void ShardHasBeenPickedUp(MirrorShard _shard) {
-        BeginChaseOnGround();
+        BeginChase();
     }
 
 

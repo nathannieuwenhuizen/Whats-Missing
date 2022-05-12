@@ -46,6 +46,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
     private bool grabbed = false;
 
     protected Rigidbody rb;     
+    private Transform oldParent;
     protected override void Awake()
     {
         base.Awake();
@@ -122,7 +123,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
     }
 
     public virtual void Grab(Rigidbody connectedRigidBody)
-    {        
+    {
+        oldParent = transform.parent;
+        transform.SetParent(connectedRigidBody.transform.parent);        
         grabbed = true;
         AudioHandler.Instance?.PlaySound(grabSound);
 
@@ -162,6 +165,8 @@ public class PickableRoomObject : InteractabelObject, IPickable
     public virtual void Release()
     {
         if (!grabbed) return;
+
+        transform.SetParent(oldParent);
         grabbed = false;
         OutlineEnabled = true;
         ActivateRigidBody();

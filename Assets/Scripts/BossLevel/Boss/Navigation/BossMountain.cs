@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Boss {
 
-public class BossPathHandler : MonoBehaviour
+public class BossMountain : MonoBehaviour
 {
     [SerializeField]
     private Color debugColor = new Color(1,1,1,.5f);
@@ -19,6 +19,8 @@ public class BossPathHandler : MonoBehaviour
     private bool enableDebug = true;
     [SerializeField]
     private bool enablePathDebug = true;
+
+    public Transform test;
 
     [SerializeField]
     private float topRadius = 20f;
@@ -52,6 +54,16 @@ public class BossPathHandler : MonoBehaviour
         set { onSurface = value; }
     }
 
+    public bool InsideShape(Vector3 _position){
+        float precentage = (_position.y - transform.position.y) / height;
+        float radius = Mathf.Lerp(bottomRadius, topRadius, precentage);
+        Vector3 delta = _position - transform.position;
+        delta.y = 0;
+        return delta.magnitude < radius;
+        // return false;
+    }
+    // public Vector3 GetAimPosition
+
 
     [SerializeField]
     private Boss boss;
@@ -60,7 +72,7 @@ public class BossPathHandler : MonoBehaviour
         get { return boss;}
     }
 
-    private void OnDrawGizmosSelected() {
+    private void OnDrawGizmos() {
         if (!enableDebug) return;
 
         Gizmos.color = debugColor;
@@ -75,6 +87,11 @@ public class BossPathHandler : MonoBehaviour
         //     path.begin = MountainCoordinate.FromPosition(this, boss.transform.position);
         //     path.DrawGizmo(this);
         // }
+
+        if (test != null) {
+            Gizmos.color = InsideShape(test.position) ? Color.green : Color.red;
+            Gizmos.DrawSphere(test.position, 2f);
+        }
     }
 
 }

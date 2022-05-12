@@ -206,12 +206,13 @@ public class MirrorShard : PickableRoomObject
             hasAlreadyBeenPickedUp = true;
             OnPickedUp?.Invoke(this);
         }
+        ToggleAllColliders(false);
     }
 
     public void ToggleVisibilty(bool _visible) {
         for (int i = 0; i < letterCoords.Length; i++) {
             Letter letter = letterCoords[i].letter;
-            letter.gameObject.SetActive(_visible);
+            if (letter != null) letter.gameObject.SetActive(_visible);
         }
         meshRenderer.enabled = _visible;
         GetComponentInChildren<MeshRenderer>().enabled = _visible;
@@ -224,6 +225,13 @@ public class MirrorShard : PickableRoomObject
             ReattachedToMirror();
         } else {
             shineParticle.Play();
+        }
+        ToggleAllColliders(false);
+    }
+
+    private void ToggleAllColliders(bool _val) {
+        foreach(Collider col in GetComponentsInChildren<Collider>()){
+            col.enabled = _val;
         }
     }
 
