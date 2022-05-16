@@ -200,7 +200,7 @@ public class FPCamera
         UseSteeringBehaviour = true;
         currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward;
         SteeringBehaviour.Velocity = Vector3.zero;
-        steeringTarget = boss.transform;
+        steeringTarget = boss.Head.transform;
     }
 
     private void OnBossCutSceneEnd(Boss.Boss boss) {

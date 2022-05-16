@@ -108,17 +108,17 @@ public class NavMeshBehaviour : IMovementBehavior
         Vector3 direction = navMeshAgent.velocity; // (turnTowardNavSteeringTarget - transform.position).normalized;
         if(NavMesh.SamplePosition(navMeshAgent.nextPosition, out myNavHit, .1f, -1 ))
             direction = myNavHit.normal;
-        
-        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
+        if (direction.magnitude != 0) {
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+        }
     }
 
     public void DrawGizmo()
     {
         if (navMeshAgent != null) {
             if (navMeshAgent.destination.x < 10000f) { //otherwise bug for the mathf infinity :/
-                // Debug.Log("navmesh destination" + navMeshAgent.destination);
                 Debug.DrawLine(transform.position, navMeshAgent.destination, Color.green);
                 Gizmos.DrawWireSphere(navMeshAgent.destination, .5f); 
             }

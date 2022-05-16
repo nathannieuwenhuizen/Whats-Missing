@@ -38,7 +38,6 @@ public class WanderState : LookingState, IState
     {
         base.Start();
         
-        stateName = "Wandering: " + bossAI.CurrentWanderingPath.name;
         bossAI.CurrentWanderingPath.showGizmo = true;
         positioner = bossAI.Boss.BossPositioner;
         bossHead = bossAI.Boss.Head;
@@ -76,6 +75,7 @@ public class WanderState : LookingState, IState
     public override void Run()
     {
         base.Run();
+        stateName = "Wandering: " + bossAI.CurrentWanderingPath.name;
     }
 
     public IEnumerator Wandering() {

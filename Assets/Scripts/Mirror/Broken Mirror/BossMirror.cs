@@ -5,11 +5,10 @@ using System.Linq;
 
 public class BossMirror : Mirror, ITriggerArea
 {
-    public delegate void MirrorShardEvent(int _ammount, int _total);
-    public static MirrorShardEvent OnMirrorShardAmmountUpdate;
     
     public delegate void BossMirrorEvent(BossMirror bossMirror);
     public static BossMirrorEvent OnBossMirrorShardAttached;
+    public static BossMirrorEvent OnMirrorShardAmmountUpdate;
     public static BossMirrorEvent OnMirrorShake;
     public static BossMirrorEvent OnMirrorComplete;
     public static BossMirrorEvent OnMirrorExplode;
@@ -25,6 +24,9 @@ public class BossMirror : Mirror, ITriggerArea
 
     [SerializeField]
     private MirrorShard[] shards;
+    public MirrorShard[] Shards {
+        get { return shards;}
+    }
 
     [SerializeField]
     private ParticleSystem explosionSmoke;
@@ -116,7 +118,7 @@ public class BossMirror : Mirror, ITriggerArea
 
     public void AttachMirrorShard(MirrorShard shard) {
         OnBossMirrorShardAttached?.Invoke(this);
-        OnMirrorShardAmmountUpdate?.Invoke(AmmountOfShardsAttached(), shards.Length);
+        OnMirrorShardAmmountUpdate?.Invoke(this);
         MirrorCanvas.IsInteractable = true;
 
         if (AmmountOfShardsAttached() == shards.Length) {
@@ -209,6 +211,7 @@ public class BossMirror : Mirror, ITriggerArea
         //position bossmirror to original state
         yield return StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z - 90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
         followPlayer = true;
+        OnMirrorShardAmmountUpdate?.Invoke(this);
     }
 
 

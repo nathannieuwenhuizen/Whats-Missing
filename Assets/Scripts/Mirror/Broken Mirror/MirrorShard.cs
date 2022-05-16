@@ -66,6 +66,13 @@ public class MirrorShard : PickableRoomObject
     private bool attached = true;
     private bool animating = false;
 
+
+    private bool focusedShard = false;
+    public bool Focusedshard {
+        get { return focusedShard;}
+        set { focusedShard = value; }
+    }
+
     ///<summary>
     /// If it is attached to the mirror or not
     ///</summary>
@@ -127,6 +134,7 @@ public class MirrorShard : PickableRoomObject
 
     private void OnDisable() {
         RenderTexturePlane.OnTextureUpdating -= UpdateTexture;
+        Outline.enabled = false;
         ToggleVisibilty(false);
     }
 
@@ -174,8 +182,9 @@ public class MirrorShard : PickableRoomObject
         fallPositionMid = begin + ((end - begin) / 2f);
         fallPositionMid.y = begin.y + 150f;
     }
-
     private void Update() {
+        if (!isVisible) return;
+
         if (!attached || animating) {
             UpdateLetterPosition();
         } 
@@ -183,7 +192,21 @@ public class MirrorShard : PickableRoomObject
             transform.localPosition = startLocalPos;
             transform.localRotation = Quaternion.Euler(Vector3.zero);
         }
+        
+        UpdateOutline();
     }
+
+    private void UpdateOutline() {
+    	if (!attached && !animating && focusedShard) {
+            Outline.OutlineWidth = -5f;
+            Outline.OutlineMode = Outline.Mode.OutlineHidden;
+
+        } else {
+            Outline.OutlineWidth = 0;
+            Outline.OutlineMode = Outline.Mode.OutlineHidden;
+        }
+    }
+
 
 
     ///<summary>
@@ -209,13 +232,16 @@ public class MirrorShard : PickableRoomObject
         ToggleAllColliders(false);
     }
 
+    private bool isVisible = true;
+
     public void ToggleVisibilty(bool _visible) {
+        isVisible = _visible;
         for (int i = 0; i < letterCoords.Length; i++) {
             Letter letter = letterCoords[i].letter;
             if (letter != null) letter.gameObject.SetActive(_visible);
         }
-        meshRenderer.enabled = _visible;
-        GetComponentInChildren<MeshRenderer>().enabled = _visible;
+        if (!_visible) Outline.OutlineWidth = 0;
+        ToggleAllRenders(_visible);
     }
 
     public override void Release()
@@ -231,6 +257,12 @@ public class MirrorShard : PickableRoomObject
 
     private void ToggleAllColliders(bool _val) {
         foreach(Collider col in GetComponentsInChildren<Collider>()){
+            col.enabled = _val;
+        }
+    }
+    private void ToggleAllRenders(bool _val) {
+        meshRenderer.enabled = _val;
+        foreach(Renderer col in GetComponentsInChildren<Renderer>()){
             col.enabled = _val;
         }
     }

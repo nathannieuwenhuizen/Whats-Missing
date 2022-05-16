@@ -20,7 +20,7 @@ namespace Boss {
         }
         public IEnumerator GoToReactionPose() {
             Positioner.SpeedScale = 10f;
-            while(Positioner.AtPosition(5f)) {
+            while(Positioner.AtPosition(1f)) {
                 yield return new WaitForFixedUpdate();
             }
             Positioner.SpeedScale = 1f;
