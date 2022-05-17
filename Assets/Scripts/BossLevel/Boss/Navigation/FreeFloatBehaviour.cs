@@ -7,7 +7,6 @@ namespace Boss {
     {
         public Transform desiredPos { get; set; }
         public bool MovementEnabled { get; set; } = true;
-        public BodyOrientation bodyOrientation {get; set;} = BodyOrientation.toShape;
 
         private float speedScale = 1f;
 
@@ -65,13 +64,6 @@ namespace Boss {
             SetDestinationPath(desiredPos.position, _begin);
         }
 
-        public void UpdateRotation()
-        {
-            Vector3 pointDirection = steeringBehaviour.Velocity;
-            pointDirection.y = 0;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(pointDirection, Vector3.up), Time.deltaTime);
-        }
-
         public void UpdateTempDestination()
         {
             desiredTempPos.position = desiredPos.position;
@@ -82,12 +74,22 @@ namespace Boss {
             if (MovementEnabled) {
                 UpdateTempDestination();
                 steeringBehaviour.UpdatePosition(speedScale);
-                UpdateRotation();
+                // UpdateRotation();
             }    
         }
         public void DrawGizmo()
         {
             Debug.DrawLine(transform.position, steeringBehaviour.desiredTarget.position, Color.yellow);
+        }
+
+        public Quaternion PathRotation()
+        {
+            Vector3 pointDirection = steeringBehaviour.Velocity;
+            pointDirection.y = 0;
+            if (pointDirection.magnitude < .1f) {
+                return transform.rotation;
+            }
+            return Quaternion.LookRotation(pointDirection, Vector3.up);
         }
     }
 }

@@ -9,7 +9,8 @@ namespace Boss {
 public enum BodyOrientation {
     none,
     toShape,
-    toPath
+    toPath,
+    toPlayer
 }
 
 public enum BodyMovementType {
@@ -96,30 +97,31 @@ public static BossPositionEvent OnBossTakeOff;
         get { return movementType;}
         set { 
             movementType = value; 
-            
             navMeshAgent.enabled = movementType == BodyMovementType.navMesh && MovementEnabled;
         }
     }
 
+    private float speedScale = 1f;
     public float SpeedScale {
-        get { return CurrentMovementBehaviour.SpeedScale;}
+        get { return speedScale;}
         set { 
+            speedScale = value;
             navMeshMovementBehaviour.SpeedScale = value;
             airMovementBehaviour.SpeedScale = value;
             freefloatMovementBehaviour.SpeedScale = value;
-            CurrentMovementBehaviour.SpeedScale = value; 
         }
     }
 
-
+    private BodyOrientation bodyOrientation = BodyOrientation.none;
     public BodyOrientation BodyOrientation {
-        get { return CurrentMovementBehaviour.bodyOrientation;}
-        set { CurrentMovementBehaviour.bodyOrientation = value; }
+        get { return bodyOrientation;}
+        set { 
+            bodyOrientation = value;
+        }
     }
 
     private void Awake() {
         boss = GetComponent<Boss>();
-        Debug.Log("awake");
         desiredTempPos = new GameObject("desired temp position").transform;
         desiredTempPos.position = transform.position;
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -159,7 +161,29 @@ public static BossPositionEvent OnBossTakeOff;
     private void Update() {
         if (MovementEnabled) {
             CurrentMovementBehaviour.Update();
+            UpdateRotation();
         }
+    }
+
+    public void UpdateRotation() {
+        Quaternion desiredRotation = transform.rotation;
+        switch (bodyOrientation) {
+            case BodyOrientation.toShape:
+            MountainCoordinate coord = MountainCoordinate.FromPosition(bossMountain, transform.position);
+            Vector3 normal = -coord.Normal(bossMountain);
+            desiredRotation = Quaternion.LookRotation(normal);
+            Debug.Log("update normal " + SpeedScale);
+            break;
+            case BodyOrientation.toPlayer:
+            Vector3 delta = boss.Player.transform.position - transform.position;
+            delta.y = 0;
+            desiredRotation = Quaternion.LookRotation(delta, Vector3.up);
+            break;
+            case BodyOrientation.toPath:
+            desiredRotation = CurrentMovementBehaviour.PathRotation();
+            break;
+        }
+        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime);
     }
 
     private void OnDrawGizmos() {

@@ -19,8 +19,6 @@ public class WanderState : LookingState, IState
     public Coroutine takeOffCoroutine;
     private float minLookDuration = 1f;
 
-    private BossHead bossHead;
-    private BossPositioner positioner;
 
 
     public override void DrawDebug()
@@ -39,8 +37,6 @@ public class WanderState : LookingState, IState
         base.Start();
         
         bossAI.CurrentWanderingPath.showGizmo = true;
-        positioner = bossAI.Boss.BossPositioner;
-        bossHead = bossAI.Boss.Head;
         MirrorShard.OnPickedUp += ShardHasBeenPickedUp;
 
         wanderingCoroutine = bossAI.StartCoroutine(Wandering());
@@ -48,9 +44,9 @@ public class WanderState : LookingState, IState
         Boss.Body.IKPass.SetLimbsActive(false);
         Boss.Head.SteeringEnabled = true;
         Boss.Head.LookAtPlayer = false;
-        positioner.CurrentMovementBehaviour.bodyOrientation = BodyOrientation.toShape;
-        positioner.BodyMovementType = bossAI.CurrentWanderingPath.BossMovementType;
-        positioner.InAir = true;
+        Positioner.BodyOrientation = BodyOrientation.toShape;
+        Positioner.BodyMovementType = bossAI.CurrentWanderingPath.BossMovementType;
+        Positioner.InAir = true;
         bossAI.BossEye.AnimateViewAlpha(1f);
 
 
@@ -94,18 +90,18 @@ public class WanderState : LookingState, IState
     }
 
     private void UpdateDestination() {
-        positioner.SetDestinationPath(bossAI.CurrentWanderingPath.poses[currentPoseIndex].position);
-        if (bossAI.CurrentWanderingPath.poses[currentPoseIndex].aimPosition != null) bossHead.SetAim(bossAI.CurrentWanderingPath.poses[currentPoseIndex].aimPosition.position, Vector2.zero);
+        Positioner.SetDestinationPath(bossAI.CurrentWanderingPath.poses[currentPoseIndex].position);
+        if (bossAI.CurrentWanderingPath.poses[currentPoseIndex].aimPosition != null) Boss.Head.SetAim(bossAI.CurrentWanderingPath.poses[currentPoseIndex].aimPosition.position, Vector2.zero);
         //if no aim psoition is set, then let the boss look forward
-        else bossHead.SetAim(bossHead.transform.position + Boss.transform.forward * 10f, Vector2.zero, true);
+        else Boss.Head.SetAim(Boss.Head.transform.position + Boss.transform.forward * 10f, Vector2.zero, true);
     }
 
     ///<summary>
     /// Returns true if the boss body is at the desired pose
     ///</summary>
     private bool IsAtPose(WanderPose pose) {
-        if (positioner.AtPosition(.1f) == false) return false;
-        if (bossHead.IsAtPosition(.1f, .5f) == false) return false;
+        if (Positioner.AtPosition(.1f) == false) return false;
+        if (Boss.Head.IsAtPosition(.1f, .5f) == false) return false;
         return true;
     }
 }

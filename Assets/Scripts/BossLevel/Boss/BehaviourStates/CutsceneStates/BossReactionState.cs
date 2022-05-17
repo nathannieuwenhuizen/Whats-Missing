@@ -13,7 +13,7 @@ namespace Boss {
             stateName = "Boss Reaction cutscene";
             base.Start();
             Positioner.MovementEnabled = true;
-            Positioner.BodyOrientation = BodyOrientation.toShape;
+            Positioner.BodyOrientation = BodyOrientation.toPlayer;
             Positioner.BodyMovementType = BodyMovementType.airSteering;
             Positioner.SetDestinationPath(bossAI.ReactionPosition.position, bossAI.transform.position);
             bossAI.StartCoroutine(GoToReactionPose());

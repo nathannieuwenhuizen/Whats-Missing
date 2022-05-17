@@ -117,7 +117,7 @@ public class MirrorShard : PickableRoomObject
     
 
     private void Start() {
-        grabSound = SFXFiles.mirorrshard_grab;
+        grabSound = SFXFiles.mirorshard_grab;
         looksWhenGrabbed = true;
         startLocalPos =transform.localPosition;
         startParent = transform.parent;
@@ -286,7 +286,7 @@ public class MirrorShard : PickableRoomObject
         yield return StartCoroutine(transform.AnimatingLocalPos(startLocalPos, AnimationCurve.EaseInOut(0,0,1,1), attachingDuration));
         Attached = true;
         bossMirror.AttachMirrorShard(this);
-        AudioHandler.Instance?.PlaySound(SFXFiles.mirorrshard_place);
+        AudioHandler.Instance?.PlaySound(SFXFiles.mirorshard_place);
         animating = false;
     }
 

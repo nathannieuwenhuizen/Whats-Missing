@@ -26,14 +26,11 @@ public struct NavMeshValues {
 public class NavMeshBehaviour : IMovementBehavior
 {
     public Transform desiredPos { get; set; }
-    public BodyOrientation bodyOrientation {get; set;} = BodyOrientation.toShape;
 
     private Transform transform;
     private Transform desiredTempPos;
     private NavMeshAgent navMeshAgent;
     private Boss.Boss boss;
-
-    private float rotationSpeed = 2f;
 
     private bool movementUpdateEnabled = true;
     public bool MovementEnabled {
@@ -81,7 +78,7 @@ public class NavMeshBehaviour : IMovementBehavior
     public void Update() {
         if (MovementEnabled) {
             UpdateTempDestination();
-            UpdateRotation();
+            // UpdateRotation();
         }
     }
 
@@ -99,20 +96,6 @@ public class NavMeshBehaviour : IMovementBehavior
 
         if (navMeshAgent.remainingDistance > _distanceThreshhold || navMeshAgent.remainingDistance == 0) return false;
         return true;
-    }
-
-    public void UpdateRotation()
-    {
-        NavMeshHit myNavHit;
-        Vector3 turnTowardNavSteeringTarget = navMeshAgent.velocity;
-        Vector3 direction = navMeshAgent.velocity; // (turnTowardNavSteeringTarget - transform.position).normalized;
-        if(NavMesh.SamplePosition(navMeshAgent.nextPosition, out myNavHit, .1f, -1 ))
-            direction = myNavHit.normal;
-
-        if (direction.magnitude != 0) {
-            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-        }
     }
 
     public void DrawGizmo()
@@ -143,5 +126,19 @@ public class NavMeshBehaviour : IMovementBehavior
                 result += Vector3.Distance( path.corners[i-1], path.corners[i] );
        
         return result;
+    }
+
+    public Quaternion PathRotation()
+    {
+        NavMeshHit myNavHit;
+        Vector3 turnTowardNavSteeringTarget = navMeshAgent.velocity;
+        Vector3 direction = navMeshAgent.velocity; // (turnTowardNavSteeringTarget - transform.position).normalized;
+        if(NavMesh.SamplePosition(navMeshAgent.nextPosition, out myNavHit, .1f, -1 ))
+            direction = myNavHit.normal;
+
+        if (direction.magnitude != 0) {
+            return Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
+        }
+        return transform.rotation;
     }
 }

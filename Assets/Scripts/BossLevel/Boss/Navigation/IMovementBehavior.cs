@@ -15,15 +15,14 @@ public interface IMovementBehavior
 
     public void UpdateTempDestination();
     public void Update();
-    public void UpdateRotation();
 
     public void SetDestinationPath(Vector3 _end, Vector3 _begin = default(Vector3));
     public void SetDestinationPath(Transform _target, Vector3 _begin = default(Vector3));
 
-    public BodyOrientation bodyOrientation {get; set;}
-
     public Vector3 GetClosestPointOnPath();
     public Vector3 GetClosestPointOnPath(Vector3 _position);
+
+    public Quaternion PathRotation();
 
     public float GetPathLength();
 

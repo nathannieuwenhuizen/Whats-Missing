@@ -7,7 +7,6 @@ public class AirSteeringBehaviour : IMovementBehavior
 {
     public Transform desiredPos { get; set; }
     public bool MovementEnabled { get; set; } = true;
-    public BodyOrientation bodyOrientation {get; set;} = BodyOrientation.toShape;
 
     private float speedScale = 1f;
     public float SpeedScale { 
@@ -17,7 +16,7 @@ public class AirSteeringBehaviour : IMovementBehavior
         } 
     }
 
-    private BossMountain pathHandeler;
+    private BossMountain bossMountain;
     private MountainPath path;
     private Transform transform;
     private Transform desiredTempPos;
@@ -28,7 +27,7 @@ public class AirSteeringBehaviour : IMovementBehavior
         transform = _transform;
         desiredTempPos = _desiredTempPos;
         steeringBehaviour = _steeringBehaviour;
-        pathHandeler = _pathHandeler;
+        bossMountain = _pathHandeler;
 
         steeringBehaviour.target = transform;
         steeringBehaviour.desiredTarget = desiredTempPos;
@@ -38,9 +37,9 @@ public class AirSteeringBehaviour : IMovementBehavior
     }
 
     public void SetDestinationPath(Vector3 _end, Vector3 _begin = default){
-        path.begin = MountainCoordinate.FromPosition(pathHandeler, _begin == default(Vector3) ? transform.position : _begin);
-        path.end = MountainCoordinate.FromPosition(pathHandeler, _end);
-        path.generatePathPoints(pathHandeler);
+        path.begin = MountainCoordinate.FromPosition(bossMountain, _begin == default(Vector3) ? transform.position : _begin);
+        path.end = MountainCoordinate.FromPosition(bossMountain, _end);
+        path.generatePathPoints(bossMountain);
         UpdateTempDestination();
     }
 
@@ -50,19 +49,19 @@ public class AirSteeringBehaviour : IMovementBehavior
     }
 
     public void UpdateTempDestination(){
-        desiredTempPos.position = path.GetClosestMountainCoord(transform.position, pathHandeler).ToVector(pathHandeler, 5f);
+        desiredTempPos.position = path.GetClosestMountainCoord(transform.position, bossMountain).ToVector(bossMountain, 5f);
     }
     public void Update() {
         if (MovementEnabled) {
             UpdateTempDestination();
             steeringBehaviour.UpdatePosition(speedScale);
-            UpdateRotation();
+            // UpdateRotation();
         }
     }
 
     public Vector3 GetClosestPointOnPath(){
         // return MountainCoordinate.FromPosition(pathHandeler, transform.position).ToVector(pathHandeler);
-        return path.GetClosestMountainCoord(transform.position, pathHandeler).ToVector(pathHandeler);    
+        return path.GetClosestMountainCoord(transform.position, bossMountain).ToVector(bossMountain);    
     }
 
     public bool ReachedDestination(float _distanceThreshhold){
@@ -71,25 +70,14 @@ public class AirSteeringBehaviour : IMovementBehavior
         return true;
     }
 
-    public void UpdateRotation(){
-        MountainCoordinate coord = path.GetClosestMountainCoord(transform.position, pathHandeler);
-        Vector3 normal = -coord.Normal(pathHandeler);
-        if (bodyOrientation == BodyOrientation.toShape)
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(normal), Time.deltaTime);
-        else if (bodyOrientation == BodyOrientation.toPath) {
-            Vector3 pointDirection = path.GetPathDirection(coord, pathHandeler);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(normal, pointDirection), Time.deltaTime);
-        }
-    }
-
     public void DrawGizmo()
     {
-        if (pathHandeler != null) path.DrawGizmo(pathHandeler);
+        if (bossMountain != null) path.DrawGizmo(bossMountain);
     }
 
     public Vector3 GetClosestPointOnPath(Vector3 _position)
     {
-        return path.GetClosestMountainCoord(_position, pathHandeler).ToVector(pathHandeler);    
+        return path.GetClosestMountainCoord(_position, bossMountain).ToVector(bossMountain);    
     }
 
     ///<summary>
@@ -99,7 +87,15 @@ public class AirSteeringBehaviour : IMovementBehavior
     {
         float result = 0;
         for ( int i = 1; i < path.Coords.Length; ++i )
-            result += Vector3.Distance( path.Coords[i-1].ToVector(pathHandeler), path.Coords[i].ToVector(pathHandeler));
+            result += Vector3.Distance( path.Coords[i-1].ToVector(bossMountain), path.Coords[i].ToVector(bossMountain));
         return result;
+    }
+
+    public Quaternion PathRotation()
+    {
+        MountainCoordinate coord = path.GetClosestMountainCoord(transform.position, bossMountain);
+        Vector3 normal = -coord.Normal(bossMountain);
+        Vector3 pointDirection = path.GetPathDirection(coord, bossMountain);
+        return Quaternion.LookRotation(normal, pointDirection);
     }
 }

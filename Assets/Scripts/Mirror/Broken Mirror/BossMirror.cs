@@ -105,7 +105,7 @@ public class BossMirror : Mirror, ITriggerArea
     public void Explode() {
         // rb.isKinematic = false;
         // rb.velocity = transform.forward * 10;
-        AudioHandler.Instance?.Play3DSound(SFXFiles.mirorr_break, transform);
+        AudioHandler.Instance?.Play3DSound(SFXFiles.miror_break, transform);
 
         MirrorCanvas.DeselectLetters();
         TogleVisibilityUnselectedObj(1);
@@ -190,6 +190,7 @@ public class BossMirror : Mirror, ITriggerArea
     private bool introCutscene;
 
     private IEnumerator ShakeBeforeExplosion() {
+        AudioHandler.Instance?.PlaySound(SFXFiles.mirror_shake);
         //activate stencil buffer
         stencilBuffer.SetActive(true);
         Quaternion startRotation = transform.localRotation;

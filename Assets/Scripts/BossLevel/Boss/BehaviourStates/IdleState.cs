@@ -26,6 +26,7 @@ public class IdleState : BaseBossState, IState
 
     public override void Exit()
     {
+        bossAI.BossEye.LightIsOn = true;
         bossAI.Boss.BossPositioner.MovementEnabled = true;
         bossAI.Boss.Body.ToggleBody(true);
     }

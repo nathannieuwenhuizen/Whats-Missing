@@ -55,8 +55,11 @@ public class BaseChaseState : BaseBossState
             isAttacking = true;
             // Boss.BossPositioner.MovementEnabled = false;
             // bossAI.Boss.Body.ToggleDeathColliders(true);
+            BodyOrientation oldOrientation = Positioner.BodyOrientation;
+            Positioner.BodyOrientation = BodyOrientation.toPlayer;
             yield return bossAI.StartCoroutine(Boss.Body.BossAnimator.DoAttackAnimation());
-            // bossAI.Boss.Body.ToggleDeathColliders(false);
+            Positioner.BodyOrientation = oldOrientation;
+
             isAttacking = false;
             // Boss.BossPositioner.MovementEnabled = true;
         }

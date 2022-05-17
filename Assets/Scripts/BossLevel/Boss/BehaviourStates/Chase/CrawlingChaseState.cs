@@ -9,6 +9,7 @@ namespace Boss {
     public class CrawlingChaseState : BaseChaseState
     {
         private Vector3 startChasePos;
+        private float distanceToChrageAtShield = 30f;
         public override void DrawDebug()
         {
             base.DrawDebug();
@@ -44,7 +45,15 @@ namespace Boss {
             UpdateBossChasePath(false);
             
             if (BossAI.PlayerIsInForceField)
-                OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
+            {
+                float dist = Positioner.CurrentMovementBehaviour.GetPathLength();
+                Debug.Log("distance: " + dist);
+                if (dist < distanceToChrageAtShield) {
+                    OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
+                } else {
+                    StopChase();
+                }
+            }
             
         }
 
