@@ -21,6 +21,8 @@ public class Fire : RoomObject
 
     private Coroutine smokeCoroutine;
 
+    [SerializeField]
+    private bool palyerFireSound = true;
     protected void Awake() {
         ToggleFireSpread(false);
         normalScale = transform.localScale.x;
@@ -60,7 +62,8 @@ public class Fire : RoomObject
         if (fireSound == null) {
             fireSound =  AudioHandler.Instance.Play3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
         }
-        fireSound.Play();
+        if (palyerFireSound) fireSound.Play();
+        else fireSound.Stop();
     }
 
     private void SetFireOn() {

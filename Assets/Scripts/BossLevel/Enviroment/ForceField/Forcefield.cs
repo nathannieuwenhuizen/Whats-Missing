@@ -213,6 +213,7 @@ namespace ForcefieldDemo
         {
             if (meshRenderer != null)
             {
+                AudioHandler.Instance?.PlaySound(SFXFiles.magic_shield_block);
                 OnForceFieldImpact?.Invoke();
 
                 EnableRipple(true);

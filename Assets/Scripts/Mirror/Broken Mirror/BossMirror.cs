@@ -59,6 +59,8 @@ public class BossMirror : Mirror, ITriggerArea
         MirrorData = GetShardMirrorData();
         SetupCanvas();
         
+        MirrorCanvas.IsInteractable = false;
+
         //assign the correct letter classes to the shards
         List<Letter> temp = new List<Letter>(MirrorCanvas.letterObjects);
         foreach(MirrorShard shard in shards) {
@@ -75,7 +77,6 @@ public class BossMirror : Mirror, ITriggerArea
     private void Start() {
         Word = "spirit";
         TogleVisibilityUnselectedObj(0);
-        MirrorCanvas.IsInteractable = false;
         // foreach(MirrorShard shard in shards) {
         //     shard.PlanarReflection.SetRenderTexture(PlanarReflection.reflectionCamera.targetTexture);
         // }
@@ -104,6 +105,7 @@ public class BossMirror : Mirror, ITriggerArea
     public void Explode() {
         // rb.isKinematic = false;
         // rb.velocity = transform.forward * 10;
+        AudioHandler.Instance?.Play3DSound(SFXFiles.mirorr_break, transform);
 
         MirrorCanvas.DeselectLetters();
         TogleVisibilityUnselectedObj(1);
@@ -191,7 +193,7 @@ public class BossMirror : Mirror, ITriggerArea
         //activate stencil buffer
         stencilBuffer.SetActive(true);
         Quaternion startRotation = transform.localRotation;
-        shakeCoroutine = StartCoroutine(transform.ShakeZRotation(6f, 5f, shakeDuration * 2));
+        shakeCoroutine = StartCoroutine(transform.ShakeZRotation(3f, 5f, shakeDuration * 2));
         foreach(MirrorShard shard in shards) {
             shard.Shake(shakeDuration);
         }

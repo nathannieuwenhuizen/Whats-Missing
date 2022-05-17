@@ -13,6 +13,16 @@ public class CharacterAnimationPlayer
     public static event CutSceneAction OnCutsceneEnd;
 
     private Coroutine torsoCoroutine;
+    private float cameraZoom = 60f;
+    private Coroutine zoomCoroutine;
+    public float CameraZoom {
+        get { return cameraZoom;}
+        set { 
+            cameraZoom = value; 
+            if (zoomCoroutine != null) player.StopCoroutine(zoomCoroutine);
+            zoomCoroutine = player.StartCoroutine(player.Camera.AnimatingFieldOfView(cameraZoom, AnimationCurve.EaseInOut(0,0,1,1), .5f));
+        }
+    }
     private Animator animator;
     private IKPass IKPass;
     private Transform animationView;
@@ -98,7 +108,8 @@ public class CharacterAnimationPlayer
         player.Camera.transform.SetParent(animationView);
         player.Camera.transform.localPosition = animationView.localPosition;
         player.Camera.transform.localRotation = animationView.localRotation;
-        player.StartCoroutine(player.Camera.AnimatingFieldOfView(80, AnimationCurve.EaseInOut(0,0,1,1), 2f));
+        CameraZoom = 80f;
+        // player.StartCoroutine(player.Camera.AnimatingFieldOfView(cameraZoom, AnimationCurve.EaseInOut(0,0,1,1), 2f));
         animator.SetTrigger(trigger);
         animator.applyRootMotion = applyRootAnimation;
     }
@@ -148,6 +159,7 @@ public class CharacterAnimationPlayer
     public void OnBossCutsceneStart(Boss.Boss boss) {
         if (inBossCutscene) return;
         PlayCutSceneAnimation("", false);
+        CameraZoom = 50f;
     }
     public void OnBossCutsceneEnd(Boss.Boss boss) {
         EndOfCutSceneAnimation();
@@ -163,7 +175,8 @@ public class CharacterAnimationPlayer
         player.Camera.transform.SetParent(cameraParent);
         player.Movement.EnableRotation = true;
         player.Movement.EnableWalk = true;
-        player.StartCoroutine(player.Camera.AnimatingFieldOfView(60, AnimationCurve.EaseInOut(0,0,1,1), .5f));
+        CameraZoom = 60f;
+        // player.StartCoroutine(player.Camera.AnimatingFieldOfView(60, AnimationCurve.EaseInOut(0,0,1,1), .5f));
         player.Movement.CameraPivot.localPosition = new Vector3(0,player.Movement.CameraPivot.transform.localPosition.y,0);
         animator.applyRootMotion = false;
         animator.transform.localPosition = Vector3.zero;

@@ -45,6 +45,7 @@ public class AudioHandler : Singleton<AudioHandler>
     ///</summary>
     public SFXInstance PlaySound(string key, float volume = 1f, float pitch = 1f, bool loop = false, bool ignoreListenerVolume = false)
     {
+        Debug.Log("sound played: " + key);
         return am.PlaySound(key, volume, pitch, loop, ignoreListenerVolume);
     }
 
@@ -56,6 +57,7 @@ public class AudioHandler : Singleton<AudioHandler>
     }
 
     public SFXInstance Play3DSound(string key, Transform parent, float volume = 1f, float pitch = 1f, bool loop = false, bool asInstance = true, float soundMaxDistance = 100f,  bool ignoreListenerVolume = false) {
+        Debug.Log("sound 3d played: " + key);
         return am.Play3DSound(key, parent, volume, pitch, loop, asInstance, soundMaxDistance, ignoreListenerVolume);
     }
     public void Stop3DSound(SFXInstance instance, bool destroy = true) {

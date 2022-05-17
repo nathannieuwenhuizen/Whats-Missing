@@ -426,7 +426,7 @@ public class MirrorCanvas : MonoBehaviour
     }
 
     public void AddLetterToAnswer(Letter letter, int index = -1) {
-        if (mirror.Room != null && mirror.Room.Animated) {
+        if (mirror.Room != null && mirror.Room.Animated && isInteractable) {
             AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .5f, 
             .8f + (.4f * ((float)selectedLetterObjects.Count / (float)(letterObjects.Count + selectedLetterObjects.Count)))
             );
