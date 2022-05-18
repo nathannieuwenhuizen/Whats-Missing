@@ -23,7 +23,6 @@ public enum GhostAnimation {
 ///<summary>
 /// The garden ghost of Gregories daughter in the garden level
 ///</summary>
-[RequireComponent(typeof(SkinnedMeshToMesh))]
 public class Vivienne : AreaTrigger, IRoomObject
 {
 
