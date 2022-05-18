@@ -21,6 +21,7 @@ public class WanderingPaths {
 }
 
 public class WanderingPath : MonoBehaviour {
+    
     public WanderPose[] poses;
     [SerializeField]
     private SkinnedMeshRenderer gizmosRenderer;
@@ -29,15 +30,31 @@ public class WanderingPath : MonoBehaviour {
     public Transform LandingPos {
         get { return landingPosition;}
     }
+    [SerializeField]
+    private Boss.BodyMovementType bossMovementType = Boss.BodyMovementType.airSteering;
+    public Boss.BodyMovementType BossMovementType {
+        get { return bossMovementType; }
+    }
 
     [SerializeField]
-    private bool showGizmo = true;
+    public bool showGizmo = true;
     
+
+    private void Awake() {
+        showGizmo = false;
+    }
     private void OnDrawGizmos() {
-        if (poses.Length < 1) return;
+        if (poses.Length < 1 || !showGizmo) return;
         
         if (poses[0].position == null) return;
         
+        //draw landing pos
+        if (LandingPos != null) {
+            Gizmos.DrawWireSphere(LandingPos.position, 1f);
+            #if UNITY_EDITOR
+            Handles.Label(LandingPos.position, "landing pos");
+            #endif
+        }
         Gizmos.color = Color.yellow;
         Vector3 startpos = poses[0].position.position;
         for (int i = 0; i < poses.Length; i++)
@@ -52,9 +69,15 @@ public class WanderingPath : MonoBehaviour {
                     Debug.DrawLine(poses[i].position.position, poses[i].aimPosition.position);
                 }
 
+
                 //draw boss mesh for more visualisation
                 if (gizmosRenderer != null) {
-                    Gizmos.DrawWireMesh(gizmosRenderer.sharedMesh, poses[i].position.position + Vector3.up * Boss.Boss.BOSS_HEIGHT,  Quaternion.LookRotation(-poses[i].position.position, -Vector3.right), 
+                    // Gizmos.DrawWireMesh(gizmosRenderer.sharedMesh, poses[i].position.position + Vector3.up * Boss.Boss.BOSS_HEIGHT, Quaternion.identity, gizmosRenderer.transform.lossyScale);//  Quaternion.LookRotation(-poses[i].position.position, -Vector3.right), 
+                    Vector3 aim = -poses[i].position.position; 
+                    aim.y = 0;
+                    Quaternion aimRot = Quaternion.LookRotation(aim, -Vector3.up);
+                    // aimRot.y
+                    Gizmos.DrawWireMesh(gizmosRenderer.sharedMesh, poses[i].position.position + Vector3.up * Boss.Boss.BOSS_HEIGHT, Quaternion.Euler(aimRot.eulerAngles.x,aimRot.eulerAngles.y,aimRot.eulerAngles.z - 90), 
                     gizmosRenderer.transform.lossyScale);
                 }
 

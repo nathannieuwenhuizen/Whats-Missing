@@ -51,6 +51,14 @@ public static class Extensions
     }
 
     ///<summary>
+    /// Remaps the flaot values to scale it.
+    ///</summary>
+    public static float Map(float s, float a1, float a2, float b1, float b2)
+    {
+        return b1 + (s-a1)*(b2-b1)/(a2-a1);
+    }
+
+    ///<summary>
     /// returns thrue if two numbers are nearly equal to eahc other based on the offset parameter
     ///</summary>
     public static bool NearlyEqual(this float a , float b, float offset)

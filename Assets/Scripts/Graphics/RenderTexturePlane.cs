@@ -52,6 +52,8 @@ public class RenderTexturePlane : MonoBehaviour
 
     private float timeInterval = 0;
     public float RenderInterval () {
+        if (QualitySettings.GetQualityLevel() >= 2) return 0;
+        
         float distance = Vector3.Distance(mainCamera.transform.position, transform.position);
         if (distance < 20f) {
             return 0; //render every frame

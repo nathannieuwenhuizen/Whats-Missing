@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class DemoText : MonoBehaviour
 {
+    [SerializeField]
+    private SceneLoader sceneLoader;
     private CanvasGroup group;
 
     private void Awake() {
@@ -32,11 +34,17 @@ public class DemoText : MonoBehaviour
     }
 
     private IEnumerator WaitForExit() {
-        while(true) {
-            if (Input.GetKeyDown(KeyCode.Escape)) {
-                SceneLoader.QuitGame();
+        StartCoroutine(group.FadeCanvasGroup(1, 3f, 7f));
+        float index = 0;
+        bool clicked = false;
+        while(index < 10f) {
+            index += Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.Escape) && !clicked) {
+                clicked = true;
+                sceneLoader.LoadNewSceneAnimated(Scenes.MENU_SCENE_NAME);
             }
             yield return new WaitForEndOfFrame();
         }
+        if (!clicked) sceneLoader.LoadNewSceneAnimated(Scenes.MENU_SCENE_NAME);
     }
 }

@@ -39,6 +39,7 @@ public class TimeProperty : Property
             obj.RigidBodyInfo.IsKinematic = false;
             obj.RigidBodyInfo.UseGravity = true;
             obj.ActivateRigidBody();
+            obj.RigidBody.isKinematic = false;
         }
 
         onTimeAppearing?.Invoke();

@@ -95,14 +95,6 @@ namespace Boss {
             armRenders.sythe.enabled = _val;
             armRenders.arm.enabled = !_val;
         }
-        private void Update() {
-            // if (Input.GetKeyDown(KeyCode.O)) {
-            //     ToggleBody(true);
-            // }
-            // if (Input.GetKeyDown(KeyCode.P)) {
-            //     ToggleBody(false);
-            // }
-        }
 
         ///<summary>
         /// Time to transform!

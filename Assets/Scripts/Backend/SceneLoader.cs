@@ -60,7 +60,8 @@ public class SceneLoader : MonoBehaviour
         SceneLoader.LOADING_STYLE = LoadingStyle.mainScreen;
         loadingIcon.gameObject.SetActive(false);
         isLoading = true;
-        StartCoroutine(Extensions.AnimatingNumberPropertyMaterial(group.GetComponent<Image>().material, "_Alpha", 0, 1, AnimationCurve.EaseInOut(0,0,1,1)));
+        group.gameObject.SetActive(true);
+        // StartCoroutine(Extensions.AnimatingNumberPropertyMaterial(group.GetComponent<Image>().material, "_Alpha", 0, 1, AnimationCurve.EaseInOut(0,0,1,1)));
         yield return StartCoroutine(FadeCanvasGroup(group, 1f, animationDuration, animationDelay));
         loadingIcon.gameObject.SetActive(true);
         yield return new WaitForEndOfFrame();

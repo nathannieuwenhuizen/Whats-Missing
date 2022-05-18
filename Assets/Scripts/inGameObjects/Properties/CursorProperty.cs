@@ -73,6 +73,14 @@ public class CursorProperty : Property
     #endregion
 
     #region  Enlarging
+    public override void OnEnlarge() {
+        base.OnEnlarge();
+        foreach(CanvasGroup uiGroup in ingameCanvasElements) {
+            uiGroup.GetComponent<CursorUI>().CanHighLight = false;
+            RectTransform rt = uiGroup.GetComponent<RectTransform>();
+            rt.localScale = Vector3.one * LargeScale;
+        }
+    }
 
     public override IEnumerator AnimateEnlarging()
     {
@@ -91,7 +99,6 @@ public class CursorProperty : Property
             RectTransform rt = uiGroup.GetComponent<RectTransform>();
             rt.localScale = Vector3.one * LargeScale;
         }
-        Debug.Log( "set big cursor");
         Cursor.SetCursor(bigMouseTexture, Vector2.zero, CursorMode.ForceSoftware);
         base.OnEnlargingFinish();
     }

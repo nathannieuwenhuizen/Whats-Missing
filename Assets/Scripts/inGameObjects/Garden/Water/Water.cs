@@ -8,6 +8,7 @@ public class Water : RoomObject
 
     public delegate void WaterEvent();
     public static WaterEvent OnWaterBig;
+    public static WaterEvent OnWaterBigEnd;
     public static WaterEvent OnWaterNormal;
 
     private Material watermaterial;
@@ -54,6 +55,7 @@ public class Water : RoomObject
 
     public override IEnumerator AnimateEnlarging()
     {
+        AudioHandler.Instance?.PlaySound(SFXFiles.water_rise);
         StartCoroutine(mainLand_water.transform.AnimatingLocalPos(mainLand_water_large_altitude, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
         return base.AnimateEnlarging();
     }
@@ -61,6 +63,7 @@ public class Water : RoomObject
     public override void OnEnlargingFinish()
     {
         base.OnEnlargingFinish();
+        OnWaterBigEnd?.Invoke();
         mainLand_water.transform.localPosition = mainLand_water_large_altitude;
 
     }
@@ -74,6 +77,7 @@ public class Water : RoomObject
 
     public override IEnumerator AnimateEnlargeRevert()
     {
+        AudioHandler.Instance?.PlaySound(SFXFiles.water_lower);
         StartCoroutine(mainLand_water.transform.AnimatingLocalPos(mainLand_water_shrink_altitude, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
         return base.AnimateEnlargeRevert();
     }

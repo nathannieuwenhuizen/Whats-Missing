@@ -8,10 +8,8 @@ namespace Boss {
 
     public class CrawlingChaseState : BaseChaseState
     {
-        private BossPositioner positioner;
         private Vector3 startChasePos;
-
-
+        private float distanceToChrageAtShield = 30f;
         public override void DrawDebug()
         {
             base.DrawDebug();
@@ -20,12 +18,11 @@ namespace Boss {
         public override void Start()
         {
             base.Start();
-            positioner = bossAI.Boss.BossPositioner;
-            positioner.BodyOrientation = BodyOrientation.toPath;
-            positioner.BodyMovementType = BodyMovementType.navMesh;
-            stateName = "Chase";
-            positioner.MovementEnabled = true;
-            positioner.InAir = false;
+            Positioner.BodyOrientation = BodyOrientation.toPath;
+            Positioner.BodyMovementType = BodyMovementType.navMesh;
+            stateName = "Crawling Chase";
+            Positioner.MovementEnabled = true;
+            Positioner.InAir = false;
             UpdateBossChasePath(true);
 
         }
@@ -36,24 +33,27 @@ namespace Boss {
         private void UpdateBossChasePath(bool _resetBeginPos = false) {
             if (_resetBeginPos) startChasePos = bossAI.transform.position +  Vector3.up * (Boss.BOSS_GROUND_OFFSET);
 
-            positioner.SetDestinationPath(bossAI.Boss.Player.transform, startChasePos);
+            Positioner.SetDestinationPath(bossAI.Boss.Player.transform, startChasePos);
             // positioner.SetDestinationPath(bossAI.Boss.Player.transform.position + Vector3.up * (Boss.BOSS_GROUND_OFFSET), startChasePos);
         }
 
         public override void Run()
         {
             base.Run();
-            if (positioner.AtPosition(Boss.BOSS_ATTACK_PLAYER_RANGE)) Attack();
+            if (Positioner.AtPosition(Boss.BOSS_ATTACK_PLAYER_RANGE)) Attack();
             
-            if (positioner.MovementEnabled) {
-                UpdateBossChasePath(false);
-            }
-            // if (Input.GetKeyDown(KeyCode.C)) {
-            //     OnStateSwitch?.Invoke(bossAI.Behaviours.chagerAtShieldState);
-            // }
+            UpdateBossChasePath(false);
             
             if (BossAI.PlayerIsInForceField)
-                OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
+            {
+                float dist = Positioner.CurrentMovementBehaviour.GetPathLength();
+                Debug.Log("distance: " + dist);
+                if (dist < distanceToChrageAtShield) {
+                    OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
+                } else {
+                    StopChase();
+                }
+            }
             
         }
 
@@ -61,9 +61,6 @@ namespace Boss {
         public override void Exit()
         {
             base.Exit();
-            // positioner.BodyMovementType = BodyMovementType.none;
-            positioner.BodyOrientation = BodyOrientation.toShape;
-
         }
     }
 }

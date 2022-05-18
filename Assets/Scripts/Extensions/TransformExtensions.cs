@@ -118,11 +118,8 @@ public static class TransformExtensions
         while (timePassed < duration) {
             yield return new WaitForEndOfFrame();
             timePassed += Time.deltaTime;
-            // start = transform.localRotation;
-            // start.z = 0;
-
             float currentMagnitude = Mathf.Sin(Mathf.PI * (timePassed / duration)) * magnitude;
-            transform.localRotation = start;
+            // transform.localRotation = start;
             transform.Rotate( new Vector3(
                 0,0,
                 Mathf.Sin((timePassed * frequence) * (Mathf.PI * 2)) * currentMagnitude

@@ -266,11 +266,12 @@ public class FPMovement : MonoBehaviour
     ///</summary>
     private void UpdateMovement()
     {
+        float speed =  ((isRunning ? runSpeed : walkSpeed) * WalkMultiplier);// * (WaterArea.IN_WATER ? .5f : 1f));
         Vector3 dir = transform.TransformDirection(
             new Vector3(
-                walkDelta.x * (isRunning ? runSpeed : walkSpeed * WalkMultiplier), 
+                walkDelta.x * speed, 
                 rb.velocity.y, 
-                walkDelta.y * (isRunning ? runSpeed : walkSpeed * WalkMultiplier)
+                walkDelta.y * speed
             ));
         if (!kinematicMovement) {
             if (walkDelta.x != 0 || walkDelta.y != 0) rb.velocity = Vector3.Lerp(rb.velocity, dir, Time.deltaTime * 10f);

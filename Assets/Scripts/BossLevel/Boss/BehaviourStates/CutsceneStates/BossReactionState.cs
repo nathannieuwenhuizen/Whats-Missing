@@ -13,20 +13,20 @@ namespace Boss {
             stateName = "Boss Reaction cutscene";
             base.Start();
             Positioner.MovementEnabled = true;
-            Positioner.BodyOrientation = BodyOrientation.toShape;
+            Positioner.BodyOrientation = BodyOrientation.toPlayer;
             Positioner.BodyMovementType = BodyMovementType.airSteering;
             Positioner.SetDestinationPath(bossAI.ReactionPosition.position, bossAI.transform.position);
             bossAI.StartCoroutine(GoToReactionPose());
-            Positioner.SpeedScale = 5f;
         }
         public IEnumerator GoToReactionPose() {
-            while(Positioner.AtPosition(5f)) {
+            Positioner.SpeedScale = 10f;
+            while(Positioner.AtPosition(1f)) {
                 yield return new WaitForFixedUpdate();
             }
+            Positioner.SpeedScale = 1f;
             DoReaction();
         }
         public virtual void DoReaction() {
-            Positioner.SpeedScale = 1f;
         }
 
         public override void Exit()

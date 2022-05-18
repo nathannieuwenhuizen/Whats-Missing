@@ -5,22 +5,28 @@ using System.Linq;
 
 public class BossMirror : Mirror, ITriggerArea
 {
-    public delegate void MirrorShardEvent(int _ammount, int _total);
-    public static MirrorShardEvent OnMirrorShardAmmountUpdate;
     
     public delegate void BossMirrorEvent(BossMirror bossMirror);
     public static BossMirrorEvent OnBossMirrorShardAttached;
+    public static BossMirrorEvent OnMirrorShardAmmountUpdate;
     public static BossMirrorEvent OnMirrorShake;
     public static BossMirrorEvent OnMirrorComplete;
     public static BossMirrorEvent OnMirrorExplode;
 
     private Rigidbody rb;
+
+    private Player player;
+
+    private bool followPlayer = false;
     
     [SerializeField]
     private GameObject stencilBuffer;
 
     [SerializeField]
     private MirrorShard[] shards;
+    public MirrorShard[] Shards {
+        get { return shards;}
+    }
 
     [SerializeField]
     private ParticleSystem explosionSmoke;
@@ -53,6 +59,8 @@ public class BossMirror : Mirror, ITriggerArea
         MirrorData = GetShardMirrorData();
         SetupCanvas();
         
+        MirrorCanvas.IsInteractable = false;
+
         //assign the correct letter classes to the shards
         List<Letter> temp = new List<Letter>(MirrorCanvas.letterObjects);
         foreach(MirrorShard shard in shards) {
@@ -69,7 +77,6 @@ public class BossMirror : Mirror, ITriggerArea
     private void Start() {
         Word = "spirit";
         TogleVisibilityUnselectedObj(0);
-        MirrorCanvas.IsInteractable = false;
         // foreach(MirrorShard shard in shards) {
         //     shard.PlanarReflection.SetRenderTexture(PlanarReflection.reflectionCamera.targetTexture);
         // }
@@ -85,20 +92,25 @@ public class BossMirror : Mirror, ITriggerArea
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.X)) {
-            Explode();
+        if (followPlayer && player != null) {
+            Vector3 delta = transform.position - player.transform.position;
+            delta.y = 0;
+            Quaternion aimRotation = Quaternion.LookRotation(delta, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, aimRotation, Time.deltaTime);
+            // transform.LookAt(player.transform.position, Vector3.up);
         }
     }
 
 
     public void Explode() {
-        rb.isKinematic = false;
-        rb.velocity = transform.forward * 10;
+        // rb.isKinematic = false;
+        // rb.velocity = transform.forward * 10;
+        AudioHandler.Instance?.Play3DSound(SFXFiles.miror_break, transform);
 
         MirrorCanvas.DeselectLetters();
         TogleVisibilityUnselectedObj(1);
         for (int i = 0; i < shards.Length; i++) {
-            shards[i].DisconnectedFromMirror(4000);
+            shards[i].DisconnectedFromMirror();
         }
         explosionSmoke.Emit(100);
         explosionShards.Emit(60);
@@ -108,10 +120,38 @@ public class BossMirror : Mirror, ITriggerArea
 
     public void AttachMirrorShard(MirrorShard shard) {
         OnBossMirrorShardAttached?.Invoke(this);
-        OnMirrorShardAmmountUpdate?.Invoke(AmmountOfShardsAttached(), shards.Length);
+        OnMirrorShardAmmountUpdate?.Invoke(this);
+        MirrorCanvas.IsInteractable = true;
+
         if (AmmountOfShardsAttached() == shards.Length) {
             OnMirrorComplete?.Invoke(this);
         }
+
+        MirrorCanvas.DeselectLetters();
+        Confirm();
+        UpdateMirrorHeader();
+
+    }
+
+    private void UpdateMirrorHeader() {
+        switch (AmmountOfShardsAttached()) {
+            case 1:
+            MirrorData.changeType = ChangeType.tooSmall;
+            break;
+            case 2:
+            MirrorData.changeType = ChangeType.tooBig;
+            break;
+            case 3:
+            MirrorData.changeType = ChangeType.missing;
+            break;
+            case 4:
+            MirrorData.changeType = ChangeType.missing;
+            break;
+            case 5:
+            MirrorData.changeType = ChangeType.missing;
+            break;
+        }
+        MirrorCanvas.SetupText(MirrorData.changeType);
     }
 
     public bool MirrorIsComplete() {
@@ -124,13 +164,16 @@ public class BossMirror : Mirror, ITriggerArea
         return shards.Where( s => s.Attached == true).ToArray().Length;
     }
     
-    public void OnAreaEnter(Player player)
+    public void OnAreaEnter(Player _player)
     {
         if (introCutscene) return;
         introCutscene = true;
         OnMirrorShake?.Invoke(this);
         StartCoroutine(ShakeBeforeExplosion());
+        player = _player;
     }
+
+
 
     public void OnAreaExit(Player player)
     {
@@ -147,14 +190,15 @@ public class BossMirror : Mirror, ITriggerArea
     private bool introCutscene;
 
     private IEnumerator ShakeBeforeExplosion() {
+        AudioHandler.Instance?.PlaySound(SFXFiles.mirror_shake);
         //activate stencil buffer
         stencilBuffer.SetActive(true);
         Quaternion startRotation = transform.localRotation;
-        shakeCoroutine = StartCoroutine(transform.ShakeZRotation(10f, 3f, shakeDuration * 2));
+        shakeCoroutine = StartCoroutine(transform.ShakeZRotation(3f, 5f, shakeDuration * 2));
         foreach(MirrorShard shard in shards) {
             shard.Shake(shakeDuration);
         }
-        StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(0,0,90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
+        StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z + 90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
         yield return new WaitForSeconds(shakeDuration);
         foreach(MirrorShard shard in shards) {
             shard.StopShake();
@@ -168,9 +212,9 @@ public class BossMirror : Mirror, ITriggerArea
         stencilBuffer.SetActive(false);
 
         //position bossmirror to original state
-        StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(0,0,0), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
-
-
+        yield return StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z - 90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
+        followPlayer = true;
+        OnMirrorShardAmmountUpdate?.Invoke(this);
     }
 
 

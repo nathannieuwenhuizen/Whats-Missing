@@ -13,7 +13,6 @@ public class BaseChaseState : BaseBossState
     private float oldViewAngle;
     private float oldViewAlpha;
     private float sharpViewAngle = 15f;
-    private bool showCutsceneBeforeChase = false;
     public override void Start()
     {
         bossAI.BossHead.SteeringEnabled = false;
@@ -22,7 +21,6 @@ public class BaseChaseState : BaseBossState
         oldViewAlpha = bossAI.BossEye.ViewAlpha;
 
         bossAI.BossEye.AnimateViewAngle(sharpViewAngle);
-        bossAI.BossEye.AnimateViewAlpha(0);
     }
 
     public override void Run()
@@ -30,12 +28,11 @@ public class BaseChaseState : BaseBossState
         bossAI.BossHead.SetAim(bossAI.Boss.Player.Camera.transform.position, Vector2.zero);
         bossAI.BossEye.UpdateNoticing(bossAI.Boss.Player);
         if (bossAI.BossEye.DoesntNoticesPlayer) {
-            // OnStateSwitch?.Invoke(bossAI.Behaviours.lookingState);
+            // StopChase();
         }
     }
 
     protected void StopChase() {
-        Debug.Log("stop chase");
         bossAI.Behaviours.takeoffState.withCutscene = false;
         bossAI.Behaviours.takeoffState.nextState = bossAI.Behaviours.wanderState;
         OnStateSwitch?.Invoke(bossAI.Behaviours.takeoffState);
@@ -46,7 +43,6 @@ public class BaseChaseState : BaseBossState
         bossAI.BossHead.SteeringEnabled = true;
 
         bossAI.BossEye.AnimateViewAngle(oldViewAngle);
-        bossAI.BossEye.AnimateViewAlpha(oldViewAlpha);
         bossAI.BossEye.noticingValue = 0;
     }
         private bool isAttacking = false;
@@ -57,12 +53,15 @@ public class BaseChaseState : BaseBossState
 
         protected virtual IEnumerator Attacking() {
             isAttacking = true;
-            Boss.BossPositioner.MovementEnabled = false;
-            bossAI.Boss.Body.ToggleDeathColliders(true);
+            // Boss.BossPositioner.MovementEnabled = false;
+            // bossAI.Boss.Body.ToggleDeathColliders(true);
+            BodyOrientation oldOrientation = Positioner.BodyOrientation;
+            Positioner.BodyOrientation = BodyOrientation.toPlayer;
             yield return bossAI.StartCoroutine(Boss.Body.BossAnimator.DoAttackAnimation());
-            bossAI.Boss.Body.ToggleDeathColliders(false);
+            Positioner.BodyOrientation = oldOrientation;
+
             isAttacking = false;
-            Boss.BossPositioner.MovementEnabled = true;
+            // Boss.BossPositioner.MovementEnabled = true;
         }
     }
 

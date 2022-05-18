@@ -70,7 +70,8 @@ public class Mirror: MonoBehaviour, IRoomObject
             if (value) {
                 ConfirmationSucceeded();
             } else {
-                ConfirmationFailed();
+                // if (mirrorData.isOn != value)
+                    ConfirmationFailed();
             }
 
             mirrorData.isOn = value; 

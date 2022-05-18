@@ -77,7 +77,7 @@ namespace Boss {
         // }
 
         private void LateUpdate() {
-            ikBossHead.UpdateIK(animator);
+            // ikBossHead.UpdateIK(animator);
         }
 
 

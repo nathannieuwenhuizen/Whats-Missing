@@ -12,7 +12,7 @@ public class Lungs : MonoBehaviour
     private Player player;
 
     private float chokeIndex = 0;
-    private float chokeDuration = 30;
+    private float chokeDuration = 30f;
     private Coroutine chokeCoroutine; 
     private SFXInstance chokeSFX;
 
@@ -20,7 +20,7 @@ public class Lungs : MonoBehaviour
     private SFXInstance playerVoiceBurnSFX;
 
     private float burnIndex = 0;
-    private float burnDuration = 25f;
+    private float burnDuration = 15f;
     private Coroutine burnCoroutine; 
     private bool burning = false;
 

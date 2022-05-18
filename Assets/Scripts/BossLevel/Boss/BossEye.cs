@@ -34,6 +34,7 @@ public class BossEye: MonoBehaviour {
     private AnimationCurve viewAngleAnimationCurve;
     private Coroutine viewAngleCoroutine;
     private Coroutine viewRangeCoroutine;
+    private Coroutine viewAlphaCoroutine;
 
 
     [SerializeField]
@@ -76,7 +77,7 @@ public class BossEye: MonoBehaviour {
     public float ViewAlpha {
         get { return viewAlpha;}
         set { 
-            viewAlpha = Mathf.Clamp01(value); 
+            viewAlpha = value; 
             UpdateFakeLight();
         }
     }
@@ -154,16 +155,16 @@ public class BossEye: MonoBehaviour {
 
     public void AnimateViewAngle(float desiredAngle) {
         if (viewAngleCoroutine != null) StopCoroutine(viewAngleCoroutine);
-        viewAngleCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewAngle, desiredAngle, viewAngleAnimationCurve, (float val) => viewAngle = val, 1f));
+        viewAngleCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewAngle, desiredAngle, viewAngleAnimationCurve, (float val) => ViewAngle = val, 1f));
     }
     public void AnimateViewRange(float desiredRange) {
         if (viewRangeCoroutine != null) StopCoroutine(viewRangeCoroutine);
-        viewRangeCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewRange, desiredRange, viewAngleAnimationCurve, (float val) => viewRange = val, 1f));
+        viewRangeCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewRange, desiredRange, viewAngleAnimationCurve, (float val) => ViewRange = val, 1f));
     }
 
     public void AnimateViewAlpha(float desiredAlpha) {
-        if (viewRangeCoroutine != null) StopCoroutine(viewRangeCoroutine);
-        viewRangeCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewAlpha, desiredAlpha, viewAngleAnimationCurve, (float val) => viewAlpha = val, 1f));
+        if (viewAlphaCoroutine != null) StopCoroutine(viewAlphaCoroutine);
+        viewAlphaCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewAlpha, desiredAlpha, viewAngleAnimationCurve, (float val) => ViewAlpha = val, 1f));
     }
 
 
@@ -183,7 +184,7 @@ public class BossEye: MonoBehaviour {
 
         if (fakeLightRenderer != null) {
             fakeLightRenderer.sharedMaterial.SetColor("_color", viewColor);
-            fakeLightRenderer.sharedMaterial.SetFloat("_opacity", viewAlpha);
+            fakeLightRenderer.sharedMaterial.SetFloat("_alpha", viewAlpha);
         } 
     }
 

@@ -56,7 +56,7 @@ public class RoomDebuggerBox
 
 
     //draw function of the box
-    public void Draw(Room currentRoom, Mirror tv)
+    public void Draw(Room currentRoom, Mirror mirror)
     {
 
         style = new GUIStyle();
@@ -74,20 +74,22 @@ public class RoomDebuggerBox
         currentPos += 30;
 
         if (currentRoom != null) {
-
-            foreach(MirrorChange change in currentRoom.ChangeHandler.MirrorChanges) {
-                GUI.color = change.active ? Color.green : Color.red;
-                GUI.skin.label.fontStyle = FontStyle.Bold;
-                GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.word + " | " + change.mirror.ChangeType, style);
-                GUI.skin.label.fontStyle = FontStyle.Normal;
-                currentPos += 30;
-            }
-            foreach(IChange change in currentRoom.ChangeHandler.Changes) {
-                GUI.color = change.Active ? Color.green : Color.red;
-                GUI.skin.label.fontStyle = FontStyle.Bold;
-                GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.Word + " | " + change.ChangeType, style);
-                GUI.skin.label.fontStyle = FontStyle.Normal;
-                currentPos += 30;
+            if (currentRoom.ChangeHandler.Changes != null) 
+            {
+                foreach(MirrorChange change in currentRoom.ChangeHandler.MirrorChanges) {
+                    GUI.color = change.active ? Color.green : Color.red;
+                    GUI.skin.label.fontStyle = FontStyle.Bold;
+                    GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.word + " | " + change.mirror.ChangeType, style);
+                    GUI.skin.label.fontStyle = FontStyle.Normal;
+                    currentPos += 30;
+                }
+                foreach(IChange change in currentRoom.ChangeHandler.Changes) {
+                    GUI.color = change.Active ? Color.green : Color.red;
+                    GUI.skin.label.fontStyle = FontStyle.Bold;
+                    GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.Word + " | " + change.ChangeType, style);
+                    GUI.skin.label.fontStyle = FontStyle.Normal;
+                    currentPos += 30;
+                }
             }
         }
         
@@ -97,9 +99,9 @@ public class RoomDebuggerBox
         if (GUI.Button(new Rect(pos.x + size.x + horizontalOffset, 60, size.x * .4f, 30), "ADD"))
         {
             currentRoom.Animated = true;
-            tv.ChangeType = (ChangeType)selectedChangeType;
-            // tv.changeType = Enum.Parse(typeof(ChangeType), changeTypes[selectedChangeType]);// ChangeType.missing;
-            MirrorChange newChange = new MirrorChange() { word = word, mirror = tv, active = true};
+            mirror.ChangeType = (ChangeType)selectedChangeType;
+            // mirror.ChangeType = Enum.Parse(typeof(ChangeType), changeTypes[selectedChangeType]);// ChangeType.missing;
+            MirrorChange newChange = new MirrorChange() { word = word, mirror = mirror, active = true, changeType = mirror.ChangeType};
             currentRoom.AddChangeInRoomObjects(newChange);
             currentRoom.ChangeHandler.MirrorChanges.Add(newChange);
         }        

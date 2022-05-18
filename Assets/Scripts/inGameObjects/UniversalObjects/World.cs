@@ -28,19 +28,6 @@ public class World : Property
 
     private bool flipped = false;
 
-    private void Awake() {
-        // curvedWorldController.enabled = false;
-    }
-
-    private void Update() {
-        // if (Input.GetKeyDown(KeyCode.F)) {
-        //     Animated = true;
-        //     flipped = !flipped;
-        //     if (flipped) OnFlipped();
-        //     else OnFlippingRevert();
-        // }
-    }
-
     private void SetupRotation() {
         oldParentRoom = room.transform.parent;
         oldParentRotatePoint = rotationPoint.parent;

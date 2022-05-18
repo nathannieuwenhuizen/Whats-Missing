@@ -9,12 +9,23 @@ namespace Boss {
 public enum BodyOrientation {
     none,
     toShape,
-    toPath
+    toPath,
+    toPlayer
 }
 
 public enum BodyMovementType {
+    ///<summary>
+    /// Uses air steering on the mountain surface.
+    ///</summary>
     airSteering,
-    navMesh
+    ///<summary>
+    /// Ground based navigation movement
+    ///</summary>
+    navMesh,
+    ///<summary>
+    /// Free floating in the air. Doesnt check collission.
+    ///</summary>
+    freeFloat
 }
 
 ///<summary>
@@ -27,7 +38,7 @@ public class BossPositioner : MonoBehaviour
 
     public delegate void BossPositionEvent();
     public static BossPositionEvent OnBossLanding;
-    public static BossPositionEvent OnBossTakeOff;
+public static BossPositionEvent OnBossTakeOff;
 
     private bool inAir = true;
     public bool InAir {
@@ -42,7 +53,10 @@ public class BossPositioner : MonoBehaviour
     private AnimationCurve landingCurve;
 
     [SerializeField]
-    private BossPathHandler pathHandeler;
+    private BossMountain bossMountain;
+    public BossMountain BossMountain {
+        get { return bossMountain;}
+    }
     private MountainPath path;
 
     private Transform desiredTempPos;
@@ -57,9 +71,11 @@ public class BossPositioner : MonoBehaviour
 
     private AirSteeringBehaviour airMovementBehaviour;
     private NavMeshBehaviour navMeshMovementBehaviour;
+    private FreeFloatBehaviour freefloatMovementBehaviour;
     public IMovementBehavior CurrentMovementBehaviour {
         get {
             if (BodyMovementType == BodyMovementType.airSteering) return airMovementBehaviour;
+            else if (BodyMovementType == BodyMovementType.freeFloat) return freefloatMovementBehaviour;
             return navMeshMovementBehaviour;
         }
     }
@@ -69,6 +85,7 @@ public class BossPositioner : MonoBehaviour
         set { 
             airMovementBehaviour.MovementEnabled = false;
             navMeshMovementBehaviour.MovementEnabled = false;
+            freefloatMovementBehaviour.MovementEnabled = false;
             CurrentMovementBehaviour.MovementEnabled = value;
             navMeshAgent.enabled = movementType == BodyMovementType.navMesh && value;
 
@@ -80,35 +97,38 @@ public class BossPositioner : MonoBehaviour
         get { return movementType;}
         set { 
             movementType = value; 
-            
             navMeshAgent.enabled = movementType == BodyMovementType.navMesh && MovementEnabled;
         }
     }
 
+    private float speedScale = 1f;
     public float SpeedScale {
-        get { return CurrentMovementBehaviour.SpeedScale;}
+        get { return speedScale;}
         set { 
+            speedScale = value;
             navMeshMovementBehaviour.SpeedScale = value;
             airMovementBehaviour.SpeedScale = value;
-            CurrentMovementBehaviour.SpeedScale = value; 
+            freefloatMovementBehaviour.SpeedScale = value;
         }
     }
 
-
+    private BodyOrientation bodyOrientation = BodyOrientation.none;
     public BodyOrientation BodyOrientation {
-        get { return CurrentMovementBehaviour.bodyOrientation;}
-        set { CurrentMovementBehaviour.bodyOrientation = value; }
+        get { return bodyOrientation;}
+        set { 
+            bodyOrientation = value;
+        }
     }
 
     private void Awake() {
         boss = GetComponent<Boss>();
-        Debug.Log("awake");
         desiredTempPos = new GameObject("desired temp position").transform;
         desiredTempPos.position = transform.position;
         navMeshAgent = GetComponent<NavMeshAgent>();
 
-        airMovementBehaviour = new AirSteeringBehaviour(transform, desiredTempPos, steeringBehaviour, pathHandeler);
+        airMovementBehaviour = new AirSteeringBehaviour(transform, desiredTempPos, steeringBehaviour, bossMountain);
         navMeshMovementBehaviour = new NavMeshBehaviour(transform, desiredTempPos);
+        freefloatMovementBehaviour = new FreeFloatBehaviour(transform, desiredTempPos, steeringBehaviour);
 
         BodyMovementType = movementType;        
     }
@@ -131,7 +151,7 @@ public class BossPositioner : MonoBehaviour
     }
 
     public MountainCoordinate GetClosestMountainCoordOfBoss() {
-        return path.GetClosestMountainCoord(transform.position, pathHandeler);
+        return path.GetClosestMountainCoord(transform.position, bossMountain);
     }
 
     public bool AtPosition(float _offset = .1f) {
@@ -141,7 +161,29 @@ public class BossPositioner : MonoBehaviour
     private void Update() {
         if (MovementEnabled) {
             CurrentMovementBehaviour.Update();
+            UpdateRotation();
         }
+    }
+
+    public void UpdateRotation() {
+        Quaternion desiredRotation = transform.rotation;
+        switch (bodyOrientation) {
+            case BodyOrientation.toShape:
+            MountainCoordinate coord = MountainCoordinate.FromPosition(bossMountain, transform.position);
+            Vector3 normal = -coord.Normal(bossMountain);
+            desiredRotation = Quaternion.LookRotation(normal);
+            Debug.Log("update normal " + SpeedScale);
+            break;
+            case BodyOrientation.toPlayer:
+            Vector3 delta = boss.Player.transform.position - transform.position;
+            delta.y = 0;
+            desiredRotation = Quaternion.LookRotation(delta, Vector3.up);
+            break;
+            case BodyOrientation.toPath:
+            desiredRotation = CurrentMovementBehaviour.PathRotation();
+            break;
+        }
+        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime);
     }
 
     private void OnDrawGizmos() {
@@ -152,11 +194,11 @@ public class BossPositioner : MonoBehaviour
         OnBossLanding?.Invoke();
         BodyMovementType = BodyMovementType.navMesh;
         MovementEnabled = false;
-        Vector3 endPos = CurrentMovementBehaviour.GetClosestPointOnPath();
+        Vector3 _landingPosition = CurrentMovementBehaviour.GetClosestPointOnPath();
         if (_endPos != null) {
-            // endPos = airMovementBehaviour.
+            _landingPosition = CurrentMovementBehaviour.GetClosestPointOnPath(_endPos.position);
         }
-        yield return StartCoroutine(transform.AnimatingPos(endPos, landingCurve, 2f));
+        yield return StartCoroutine(transform.AnimatingPos(_landingPosition, landingCurve, 2f));
         MovementEnabled = true;
         callback();
     }

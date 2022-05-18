@@ -25,7 +25,9 @@ public class MirrorShardUI : MonoBehaviour
         StartCoroutine(group.FadeCanvasGroup(1, 1f, 0));
     }
     
-    public void UpdateUI(int _ammountOfShards, int _totalAmmountOfShards) {
+    public void UpdateUI(BossMirror _bossMirror) {
+        int _ammountOfShards = _bossMirror.AmmountOfShardsAttached() ;
+        int _totalAmmountOfShards = _bossMirror.Shards.Length;
         if (wordCoroutine != null)
             StopCoroutine(wordCoroutine);
         wordCoroutine = StartCoroutine(TransitionWord(_ammountOfShards.ToString(), _totalAmmountOfShards.ToString()));

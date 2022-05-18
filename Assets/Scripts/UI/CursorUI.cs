@@ -11,6 +11,9 @@ public class CursorUI : MonoBehaviour
     private bool hidden = false;
     private bool canHighLight = true;
 
+    ///<summary>
+    /// If the cursor can highlight if the player can click on an interactable object. (becomming bigger/smaller)
+    ///</summary>
     public bool CanHighLight {
         get { return canHighLight;}
         set { canHighLight = value; }

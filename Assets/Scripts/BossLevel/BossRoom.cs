@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossRoom : Room
 {
-    public delegate void RoomEvent();
+    public delegate void RoomEvent(bool withColor);
     public static RoomEvent OnRespawn;
     
     [SerializeField]
@@ -48,7 +48,7 @@ public class BossRoom : Room
         Player.Respawn();
          
         BlackScreenOverlay.START_COLOR = Color.white;
-        OnRespawn?.Invoke();
+        OnRespawn?.Invoke(true);
     }
 
     public override void CheckRoomCompletion()
