@@ -86,7 +86,7 @@ public class AlchemyItem : InteractabelObject
         StartCoroutine(room.Player.Camera.transform.ShakeZRotation(5f, 10, 7));
         StartCoroutine(AnimateBloomIntensity(5f, 60));
         StartCoroutine(AnimateChromaticAttribution(1f, 1));
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(6f);
         // AudioHandler.Instance.StopSound(SFXFiles.rumble_ground);
         cutsceneAudio.Stop();
         AudioHandler.Instance.AudioManager.StopAllAudio();

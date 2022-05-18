@@ -56,6 +56,7 @@ public class Gravity : Property
     {
         yield return AnimatGravityToggle((rb) => {
             rb.useGravity = true;
+            rb.useGravity = true;
         });
         yield return base.AnimateAppearing();
     }

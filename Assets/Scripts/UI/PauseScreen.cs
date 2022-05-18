@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -143,6 +144,7 @@ public class PauseScreen : MonoBehaviour
 
     public void GoToSettings() {
         settingPanel.Open();
+        Debug.Log("show animation false: " + subPausePanel);
         subPausePanel.ShowAnimation(false);
     }
 

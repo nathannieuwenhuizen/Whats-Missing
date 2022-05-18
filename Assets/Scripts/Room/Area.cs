@@ -23,10 +23,11 @@ public class Area : MonoBehaviour
     public delegate void UndoActionEvent(Room _room);
     public static UndoActionEvent OnUndo;
     public delegate void RoomEvent();
+    public delegate void RoomRespawnEvent(bool withColor);
     public static RoomEvent OnNewRoomEnter;
     public static RoomEvent OnFirstAreaEnter;
     public static RoomEvent OnSecondAreaEnter;
-    public static RoomEvent OnRespawn;
+    public static RoomRespawnEvent OnRespawn;
 
     [SerializeField]
     private RoomDirectionalLight directionalLight;
@@ -134,7 +135,7 @@ public class Area : MonoBehaviour
         if (loadRoomIndex == 0) {
             player.Respawn();
             BlackScreenOverlay.START_COLOR = startColor;
-            OnRespawn?.Invoke();
+            OnRespawn?.Invoke(true);
         }
     }
 
@@ -159,7 +160,10 @@ public class Area : MonoBehaviour
             newRoom.Area = this;
             newRoom.roomLevel = roomLevel;
             int mirrorIndex = 0;
+
+
             if (roomLevel.roomInfo != null) {
+                if (roomLevel.roomInfo.loadedChanges.Length > 0) newRoom.SecondHintAnswer = roomLevel.roomInfo.loadedChanges[0].word;
                 newRoom.RevealChangeAfterCompletion = roomLevel.roomInfo.revealChangesAfterFinish;
                 foreach (Mirror mirror in newRoom.GetAllObjectsInRoom<Mirror>())
                 {
@@ -231,21 +235,23 @@ public class Area : MonoBehaviour
         if(index == 0) {
             CurrentRoom = rooms[0];
             player.transform.position = CurrentRoom.StartDoor.EndPos();
+            player.transform.rotation = Quaternion.Euler(new Vector3(0,CurrentRoom.StartDoor.transform.eulerAngles.y - 180f,0));
         } else if (toPreviousLevel){
 
             furthestCurrentRoomIndex = index - 1;
             CurrentRoom = rooms[index - 1];
             player.transform.position = CurrentRoom.EndDoor.StartPos();
+            player.transform.rotation = Quaternion.Euler(new Vector3(0,CurrentRoom.EndDoor.transform.eulerAngles.y - 180f, 0));
+
         } else {
             CurrentRoom = rooms[index - 1];
             CurrentRoom = rooms[index];
             player.transform.position = CurrentRoom.StartDoor.EndPos();
-            // player.transform.rotation = CurrentRoom.StartDoor.transform.rotation;
-            player.transform.rotation = Quaternion.Euler(new Vector3(0,CurrentRoom.StartDoor.transform.rotation.y - 90f,0));
+            Debug.Log("rotation = " + CurrentRoom.StartDoor.transform.eulerAngles.y);
+            player.transform.rotation = Quaternion.Euler(new Vector3(0,CurrentRoom.StartDoor.transform.eulerAngles.y - 180f,0));
         }
          
-        BlackScreenOverlay.START_COLOR = Color.white;
-        OnRespawn?.Invoke();
+        OnRespawn?.Invoke(false);
     }
 
     private void OnEnable() {
