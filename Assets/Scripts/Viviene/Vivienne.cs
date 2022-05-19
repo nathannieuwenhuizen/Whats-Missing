@@ -68,7 +68,6 @@ public class Vivienne : AreaTrigger, IRoomObject
     }
     public override void OnAreaEnter(Player player) {
         base.OnAreaEnter(player);
-        Debug.Log("trigger enter");
         if (disappear) return;
         disappear = true;
         Vanish();

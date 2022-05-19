@@ -83,7 +83,7 @@ public class AlchemyItem : InteractabelObject
         yield return new WaitForSeconds(1f);
         // AudioHandler.Instance.PlaySound(SFXFiles.rumble_ground, 1f, .2f);
 
-        StartCoroutine(room.Player.Camera.transform.ShakeZRotation(5f, 10, 7));
+        StartCoroutine(room.Player.Camera.transform.ShakeZRotation(2f, 10, 7));
         StartCoroutine(AnimateBloomIntensity(5f, 60));
         StartCoroutine(AnimateChromaticAttribution(1f, 1));
         yield return new WaitForSeconds(6f);
