@@ -100,6 +100,7 @@ public class CursorProperty : Property
             rt.localScale = Vector3.one * LargeScale;
         }
         Cursor.SetCursor(bigMouseTexture, Vector2.zero, CursorMode.ForceSoftware);
+        Cursor.visible = false;
         base.OnEnlargingFinish();
     }
 
@@ -122,6 +123,7 @@ public class CursorProperty : Property
             rt.localScale = Vector3.one * normalScale;
         }
         Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+        Cursor.visible = false;
     }
     #endregion
 

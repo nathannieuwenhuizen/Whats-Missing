@@ -23,7 +23,7 @@ public class Fire : RoomObject
 
     [SerializeField]
     private bool palyerFireSound = true;
-    protected void Awake() {
+    protected override void Awake() {
         ToggleFireSpread(false);
         normalScale = transform.localScale.x;
         largeScale = normalScale * 2f;
@@ -119,7 +119,6 @@ public class Fire : RoomObject
     public override void OnEnlarge()
     {
         if (smokeCoroutine != null) StopCoroutine(smokeCoroutine);
-        Debug.Log("fire enlarge");
         ToggleFireSpread(true);
         fireSpreadObject.transform.transform.localScale = Vector3.zero;
 

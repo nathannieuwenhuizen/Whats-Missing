@@ -22,6 +22,9 @@ public class UnityAudioManager : MonoBehaviour, IAudioManager
         set { AudioListener.volume = value; }
     }
 
+    SFXInstance IAudioManager.Music => default(SFXInstance);
+
+
     public SFXInstance GetSFXInstance(string key)
     {
         SFXInstance selectedAudio = soundEffectInstances.Find(x => x.name == key);

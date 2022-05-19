@@ -54,6 +54,10 @@ public interface IAudioManager {
     ///</summary>
     public float MusicVolume {get; set;}
     ///<summary>
+    /// Volume of the music
+    ///</summary>
+    public SFXInstance Music {get;}
+    ///<summary>
     ///Pauses the music
     ///</summary>
     public void PauseMusic();

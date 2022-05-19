@@ -43,7 +43,6 @@ public class TimeProperty : Property
         }
 
         onTimeAppearing?.Invoke();
-        AudioHandler.Instance.PitchMultiplier = 1f;
     }
     private void OnDisable() {
         if (InSpace) Room.TimeScale = 1f;
@@ -51,7 +50,6 @@ public class TimeProperty : Property
 
     public override void OnEnlarge()
     {
-        AudioHandler.Instance.PitchMultiplier = 1.5f;
         Room.TimeScale = largeScale;
         onTimeAppearing?.Invoke();
         base.OnEnlarge();
@@ -59,7 +57,6 @@ public class TimeProperty : Property
 
     public override void OnEnlargeRevert()
     {
-        AudioHandler.Instance.PitchMultiplier = 1f;
         Room.TimeScale = 1f;
         onTimeAppearing?.Invoke();
         base.OnEnlargeRevert();

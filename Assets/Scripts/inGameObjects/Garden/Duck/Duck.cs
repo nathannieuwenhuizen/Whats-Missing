@@ -16,7 +16,7 @@ public class Duck : RoomObject
 
     [SerializeField]
     private TrailRenderer trail;
-    private float lifeTimeTrail;
+    private float lifeTimeTrail = .5f;
 
     [SerializeField]
     private DuckSwimArea swimArea;
@@ -120,7 +120,7 @@ public class Duck : RoomObject
 
     private void UpdateTrailLifeTime() {
         if (Room.TimeScale <= 0) return;
-        trail.time = lifeTimeTrail * (1/ Room.TimeScale);
+        if (trail != null) trail.time = lifeTimeTrail * (1/ Room.TimeScale);
     }
 
     private void Update() {
