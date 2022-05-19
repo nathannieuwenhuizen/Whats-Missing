@@ -255,9 +255,9 @@ public class FPMovement : MonoBehaviour
         if (EnableWalk) UpdateMovement();
 
         InAir = !IsOnFloor();
+        FPCamera.UpdateRotation();
     }
     private void LateUpdate() {
-        FPCamera.UpdateRotation();
         
     }
 

@@ -118,16 +118,18 @@ public class Hands : MonoBehaviour
             yield return new WaitForSecondsRealtime(.1f);
         }
     }
-
+    private Vector3 test;
     private IEnumerator UpdatePhysics() {
         while (holdingObject != null) {
-            
+            Transform t = Camera.main.transform;
+
             var speed = holdingObject.Touching ? 3f : 10f;
             holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
-            Vector3 offset = transform.TransformDirection(new Vector3(0,0,1)).normalized * (holdingObject.HoldingDistance) + transform.TransformDirection(holdingObject.HoldingOffset);
-            Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, transform.position + offset, Time.deltaTime * speed);
+            Vector3 offset = t.TransformDirection(new Vector3(0,0,1)).normalized * (holdingObject.HoldingDistance) + t.TransformDirection(holdingObject.HoldingOffset);
+            Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, t.position + offset, Time.deltaTime * speed);
             holdingObject.RigidBody.MovePosition(midwayDestination);
-
+            // Debug.Log(t.forward);
+            test = midwayDestination;
             if (holdingObject.LooksWhenGrabbed) {
                 Quaternion currentRotation = holdingObject.RigidBody.rotation;
 
@@ -141,8 +143,13 @@ public class Hands : MonoBehaviour
                 // holdingObject.RigidBody.rotation.LookAt(transform.position, transform.up);
             }
             
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }   
+    }
+    private void OnDrawGizmosSelected() {
+        if (holdingObject != null && test != null) {
+            Gizmos.DrawSphere(test, 1f);
+        }
     }
 
     private void Update() {

@@ -124,8 +124,8 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     public virtual void Grab(Rigidbody connectedRigidBody)
     {
-        oldParent = transform.parent;
-        transform.SetParent(connectedRigidBody.transform.parent);        
+        // oldParent = transform.parent;
+        // transform.SetParent(connectedRigidBody.transform.parent);        
         grabbed = true;
         AudioHandler.Instance?.PlaySound(grabSound);
 
@@ -166,7 +166,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
     {
         if (!grabbed) return;
 
-        transform.SetParent(oldParent);
+        // transform.SetParent(oldParent);
         grabbed = false;
         OutlineEnabled = true;
         ActivateRigidBody();
