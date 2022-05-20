@@ -28,6 +28,10 @@ public class FPMovement : MonoBehaviour
     private Vector2 lerpedVelocity;
 
     private Player player;
+
+    public Player Player {
+        get { return player;}
+    }
     [SerializeField]
     private IKPass IKPass;
 
@@ -92,6 +96,10 @@ public class FPMovement : MonoBehaviour
     public bool InAir {
         get { return inAir;}
         set { 
+            if (!value) {
+                if (windSound != null) windSound.Stop(true);
+                windParticles.Stop();
+            }
             if (inAir == value) return;
             inAir = value; 
             player.CharacterAnimationPlayer.SetBool("inAir", inAir);
@@ -151,10 +159,11 @@ public class FPMovement : MonoBehaviour
     ///<summary>
     ///Checks on whether to make the windparticles and wind noices when falling from higher altitudes.
     ///</summary>
+    SFXInstance windSound;
     private IEnumerator MakeWindNoices() {
         bool windEffectEnabled = false;
-        SFXInstance windSound = AudioHandler.Instance?.PlaySound(SFXFiles.wind_fall, .5f, 1, true);
-        windSound.Pause();
+        if (windSound == null) windSound = AudioHandler.Instance?.PlaySound(SFXFiles.wind_fall, .5f, 1, true);
+        windSound.Play();
         yield return new WaitForSeconds(1f);
         while (InAir && EnableWalk)
         {
@@ -246,9 +255,9 @@ public class FPMovement : MonoBehaviour
         if (EnableWalk) UpdateMovement();
 
         InAir = !IsOnFloor();
+        FPCamera.UpdateRotation();
     }
     private void LateUpdate() {
-        FPCamera.UpdateRotation();
         
     }
 
@@ -257,11 +266,12 @@ public class FPMovement : MonoBehaviour
     ///</summary>
     private void UpdateMovement()
     {
+        float speed =  ((isRunning ? runSpeed : walkSpeed) * WalkMultiplier);// * (WaterArea.IN_WATER ? .5f : 1f));
         Vector3 dir = transform.TransformDirection(
             new Vector3(
-                walkDelta.x * (isRunning ? runSpeed : walkSpeed * WalkMultiplier), 
+                walkDelta.x * speed, 
                 rb.velocity.y, 
-                walkDelta.y * (isRunning ? runSpeed : walkSpeed * WalkMultiplier)
+                walkDelta.y * speed
             ));
         if (!kinematicMovement) {
             if (walkDelta.x != 0 || walkDelta.y != 0) rb.velocity = Vector3.Lerp(rb.velocity, dir, Time.deltaTime * 10f);

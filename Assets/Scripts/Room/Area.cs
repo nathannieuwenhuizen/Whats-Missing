@@ -8,6 +8,8 @@ public class Area : MonoBehaviour
 
     public static bool AUTO_SAVE_WHEN_DESTROY = true;
 
+    [SerializeField]
+    private GameObject defaultRoom;
 
     [SerializeField]
     private Vector3 roomPositionOffset;
@@ -21,10 +23,11 @@ public class Area : MonoBehaviour
     public delegate void UndoActionEvent(Room _room);
     public static UndoActionEvent OnUndo;
     public delegate void RoomEvent();
+    public delegate void RoomRespawnEvent(bool withColor);
     public static RoomEvent OnNewRoomEnter;
     public static RoomEvent OnFirstAreaEnter;
     public static RoomEvent OnSecondAreaEnter;
-    public static RoomEvent OnRespawn;
+    public static RoomRespawnEvent OnRespawn;
 
     [SerializeField]
     private RoomDirectionalLight directionalLight;
@@ -64,19 +67,18 @@ public class Area : MonoBehaviour
             } else {
                 UpdateRoomActiveStates(true);
             }
-
+            UpdateRoomMusic(rooms.IndexOf(currentRoom));
             currentRoom.OnRoomEnter(player, loadRoomState);
             if(directionalLight != null) directionalLight.RotateToMatchRoon(currentRoom.transform);
 
             if (rooms.IndexOf(currentRoom) == 0) {
                 if (areaIndex == 0) OnFirstAreaEnter?.Invoke();
-                else OnSecondAreaEnter?.Invoke();
+                else if (areaIndex == 1) OnSecondAreaEnter?.Invoke();
             }
             loadRoomState = false;
         }
     }
     
-
     private void UpdateRoomActiveStates(bool includingNextRoom = false) {
         int currentIndex = rooms.IndexOf(currentRoom);
         for (int i = 0; i < rooms.Count; i++) {
@@ -110,6 +112,7 @@ public class Area : MonoBehaviour
     }
 
     private void Awake() {
+        if (defaultRoom != null) Destroy(defaultRoom);
         AUTO_SAVE_WHEN_DESTROY = true;
         LoadProgress();
         InitializeRooms();
@@ -117,23 +120,41 @@ public class Area : MonoBehaviour
     
     void Start()
     {
-        AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
-        AudioHandler.Instance.FadeListener(1f);
-        AudioHandler.Instance.PlayMusic(areaIndex == 0? MusicFiles.planetarium : MusicFiles.garden, .5f);
+        PlayAreaMusic();
 
-        player.transform.position = rooms[loadRoomIndex].StartDoor.EndPos();
-        player.transform.rotation = rooms[loadRoomIndex].StartDoor.transform.rotation;
-        player.transform.Rotate(0,180,0);// = rooms[startingRoomIndex].StartDoor.transform.rotation;
-        //playerPos = rooms[startingRoomIndex].StartPos.position;
+        SetupPlayerPos();
+
         if(directionalLight != null) directionalLight.animating = false;
         CurrentRoom = rooms[loadRoomIndex];
         if(directionalLight != null) directionalLight.animating = true;
+
         if (loadRoomIndex == 0) {
             player.Respawn();
             BlackScreenOverlay.START_COLOR = startColor;
-            OnRespawn?.Invoke();
+            OnRespawn?.Invoke(true);
         }
     }
+
+    ///<summary>
+    /// Plays the area music according in which area you're in
+    ///</summary>
+    private void PlayAreaMusic() {
+        AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
+        AudioHandler.Instance.FadeListener(1f);
+        AudioHandler.Instance.PlayMusic(areaIndex == 0? MusicFiles.planetarium : MusicFiles.garden, .5f, loadRoomIndex == 0 ? 5.5f : 0f);
+    }
+
+    ///<summary>
+    /// Sets the player positionn and rotation to the room start door. Called at the start.
+    ///</summary>
+    private void SetupPlayerPos() {
+        player.transform.position = rooms[loadRoomIndex].StartDoor.EndPos();
+        player.transform.rotation = rooms[loadRoomIndex].StartDoor.transform.rotation;
+        player.transform.Rotate(0,180,0);
+    }
+
+
+    
 
     ///<summary>
     /// Loads and initializes all rooms from the inspector values.
@@ -156,7 +177,10 @@ public class Area : MonoBehaviour
             newRoom.Area = this;
             newRoom.roomLevel = roomLevel;
             int mirrorIndex = 0;
+
+
             if (roomLevel.roomInfo != null) {
+                if (roomLevel.roomInfo.loadedChanges.Length > 0) newRoom.SecondHintAnswer = roomLevel.roomInfo.loadedChanges[0].word;
                 newRoom.RevealChangeAfterCompletion = roomLevel.roomInfo.revealChangesAfterFinish;
                 foreach (Mirror mirror in newRoom.GetAllObjectsInRoom<Mirror>())
                 {
@@ -228,21 +252,23 @@ public class Area : MonoBehaviour
         if(index == 0) {
             CurrentRoom = rooms[0];
             player.transform.position = CurrentRoom.StartDoor.EndPos();
+            player.transform.rotation = Quaternion.Euler(new Vector3(0,CurrentRoom.StartDoor.transform.eulerAngles.y - 180f,0));
         } else if (toPreviousLevel){
 
             furthestCurrentRoomIndex = index - 1;
             CurrentRoom = rooms[index - 1];
             player.transform.position = CurrentRoom.EndDoor.StartPos();
+            player.transform.rotation = Quaternion.Euler(new Vector3(0,CurrentRoom.EndDoor.transform.eulerAngles.y - 180f, 0));
+
         } else {
             CurrentRoom = rooms[index - 1];
             CurrentRoom = rooms[index];
             player.transform.position = CurrentRoom.StartDoor.EndPos();
-            // player.transform.rotation = CurrentRoom.StartDoor.transform.rotation;
-            player.transform.rotation = Quaternion.Euler(new Vector3(0,CurrentRoom.StartDoor.transform.rotation.y - 90f,0));
+            Debug.Log("rotation = " + CurrentRoom.StartDoor.transform.eulerAngles.y);
+            player.transform.rotation = Quaternion.Euler(new Vector3(0,CurrentRoom.StartDoor.transform.eulerAngles.y - 180f,0));
         }
          
-        BlackScreenOverlay.START_COLOR = Color.white;
-        OnRespawn?.Invoke();
+        OnRespawn?.Invoke(false);
     }
 
     private void OnEnable() {
@@ -266,15 +292,23 @@ public class Area : MonoBehaviour
     public void ResetRoom() {
         //CurrentRoom.ResetRoom();
     }
+    float testParam;
+    public void UpdateRoomMusic(float _roomIndex) {
+        if (areaIndex == 1){
+            _roomIndex = (float)_roomIndex / (float)rooms.Count * 26f;
+            Debug.Log("room music: " + _roomIndex);
+            if (AudioHandler.Instance?.AudioManager.Music != null) 
+                AudioHandler.Instance?.AudioManager.Music.FMODInstance.setParameterByName(FMODParams.LEVEL2_MUSIC, _roomIndex, true);
+        }
+    }
 
     public void SaveProgress() {
         // SaveData.current = SaveData.GetStateOfRoom(currentRoom);
         SaveData.current.roomIndex = rooms.IndexOf(currentRoom);
         SaveData.current.areaIndex = areaIndex;
         SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
-
-        Debug.Log("save progress!");
     }
+
 
     private void OnDestroy() {
         if (AUTO_SAVE_WHEN_DESTROY) SaveProgress();
@@ -312,26 +346,8 @@ public class Area : MonoBehaviour
 
         if (door.room == currentRoom && door == currentRoom.EndDoor) {
             //next room
-            if (index == rooms.Count - 1) {
-                //loop room 
-                Vector3 localPos = CurrentRoom.EndDoor.transform.InverseTransformPoint(player.transform.position);
-                player.transform.position = rooms[index - 1].EndDoor.transform.TransformPoint(localPos);
-                player.transform.Rotate(0,90,0);
-                if(directionalLight != null) {
-                    directionalLight.animating = false;
-                    directionalLight.RotateToMatchRoon(rooms[index - 1].transform);
-                    directionalLight.animating = true;
-                }
-                
-                CurrentRoom = rooms[index];
-                rooms[index - 1].EndDoor.GoingThrough();
-                StartCoroutine(rooms[index - 1].EndDoor.Walking(1.5f, player));
-
-                return;
-            } else {
-                furthestCurrentRoomIndex = index + 1;
-                CurrentRoom = rooms[index + 1];
-            }
+            furthestCurrentRoomIndex = index + 1;
+            CurrentRoom = rooms[index + 1]; 
         } else {
             //start door to previous room
             if (door == currentRoom.StartDoor) {

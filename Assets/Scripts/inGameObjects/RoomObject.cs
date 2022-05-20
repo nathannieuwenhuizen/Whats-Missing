@@ -7,6 +7,7 @@ using UnityEngine;
 ///</summary>
 public class RoomObject : RoomEntity
 {
+    public static bool PARTICLES_SHOWN = false;
     private bool active = true;
 
     [SerializeField]
@@ -22,9 +23,12 @@ public class RoomObject : RoomEntity
     public delegate void OnMissingEvent();
 
     public override float CurrentScale { 
-        get { return transform.localScale.x; }
+        get { return Mathf.Abs(transform.localScale.x); }
         set {
-            transform.localScale = Vector3.one * value;
+            transform.localScale = new Vector3(
+                transform.localScale.x >= 0 ? 1 : -1,
+                transform.localScale.y >= 0 ? 1 : -1,
+                transform.localScale.z >= 0 ? 1 : -1) * value;
         } 
     }
 
@@ -64,13 +68,16 @@ public class RoomObject : RoomEntity
             break;
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials()) StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
-                
-                foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(disolvingParticles(item));
-                
+                ShowDisovleParticles();
                 yield return new WaitForSeconds(animationDuration);
             break;
         }
         OnMissingFinish();
+    }
+    private void ShowDisovleParticles() {
+        if (PARTICLES_SHOWN) return;
+        PARTICLES_SHOWN = true;
+        foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(disolvingParticles(item));
     }
 
     protected virtual Material[] getMaterials() {
@@ -97,7 +104,7 @@ public class RoomObject : RoomEntity
             break;
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials()) StartCoroutine(mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
-                foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(disolvingParticles(item));
+                ShowDisovleParticles();
                 yield return new WaitForSeconds(animationDuration);
             break;
         }
@@ -121,6 +128,7 @@ public class RoomObject : RoomEntity
             yield return new WaitForEndOfFrame();
         }
         particleSystem.Stop();
+        PARTICLES_SHOWN = false;
         Destroy(particleSystem.gameObject, particleSystem.main.startLifetime.Evaluate(0));
     }
     
@@ -143,7 +151,7 @@ public class RoomObject : RoomEntity
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
-        transform.localScale = Vector3.one * DesiredScale();
+        CurrentScale = DesiredScale();
     }
 
     ///<summary>
@@ -172,12 +180,14 @@ public class RoomObject : RoomEntity
 
     public override IEnumerator AnimateShrinking()
     {
+        Debug.Log("shrinking animate");
         yield return this.AnimatingRoomObjectScale( shrinkScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnShrinkingFinish();
     }
 
     public override void OnShrinkingFinish()
     {
+        Debug.Log("shrinking finish");
         CurrentScale = shrinkScale;
     }
 
@@ -272,13 +282,13 @@ public class RoomObject : RoomEntity
         active = _active;
         if (!_active) {
             disabledRenderers = gameObject.SetAllComponentsActive<Renderer>(_active, null);
-            Debug.Log("disabled renderers: " + disabledRenderers.Count);
         } 
         else {
             gameObject.SetAllComponentsActive<Renderer>(_active, disabledRenderers);
             disabledRenderers = new List<Renderer>();
         }
         gameObject.SetAllComponentsActive<Collider>(_active, null);
+        gameObject.SetAllComponentsActive<Rigidbody>(_active, null);
         gameObject.SetAllComponentsActive<ParticleSystem>(_active, null);
         gameObject.SetAllComponentsActive<Light>(_active, null);
         

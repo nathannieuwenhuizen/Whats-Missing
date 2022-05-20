@@ -14,8 +14,20 @@ public class LetterCoords {
     public Letter letter;
 }
 
+[System.Serializable]
+public class ShardPositionInfo {
+    public Transform fallPosition;
+    public bool setAsParent = false;
+    public bool useGravityAfterFall = true;
+    public bool visibleAfterFalling = true;
+}
+
 public class MirrorShard : PickableRoomObject
 {
+
+    public delegate void OnMirroShardPickEvent(MirrorShard _shard);
+    public static OnMirroShardPickEvent OnPickedUp;
+    private bool hasAlreadyBeenPickedUp = false;
 
     private float distanceToAttachShardToMirror = 8f;
     private float attachingDuration = 2f;
@@ -24,6 +36,15 @@ public class MirrorShard : PickableRoomObject
 
     private Vector3 startLocalPos;
     private Transform startParent;
+
+    private Vector3 fallPositionStart = Vector3.zero;
+    private Vector3 fallPositionMid;
+
+    [SerializeField]
+    private ShardPositionInfo positionInfo;
+    [SerializeField]
+    private AnimationCurve fallCurve;
+    private float explosionuration = 5f;
 
     [SerializeField]
     private MeshRenderer meshRenderer;
@@ -44,6 +65,13 @@ public class MirrorShard : PickableRoomObject
     }
     private bool attached = true;
     private bool animating = false;
+
+
+    private bool focusedShard = false;
+    public bool Focusedshard {
+        get { return focusedShard;}
+        set { focusedShard = value; }
+    }
 
     ///<summary>
     /// If it is attached to the mirror or not
@@ -70,6 +98,10 @@ public class MirrorShard : PickableRoomObject
         set { bossMirror = value; }
     }
 
+    public int ShardIndex {
+        get {return BossMirror.AmmountOfShardsAttached();}
+    }
+
     private void Reset() {
         Word = "shard";
         AlternativeWords = new string[] {"shards"};
@@ -79,14 +111,18 @@ public class MirrorShard : PickableRoomObject
         base.Awake();
         planarReflection = GetComponent<PlanarReflection>();
         planarReflection.IsActive = false;
+        HoldingOffset = new Vector3(0,-1.5f, 0);
+        InteractableDistance = 10f;
     }
     
 
     private void Start() {
+        grabSound = SFXFiles.mirorshard_grab;
         looksWhenGrabbed = true;
         startLocalPos =transform.localPosition;
         startParent = transform.parent;
         holdingDistance = 5f;
+        
         Attached = true;
         shineParticle.Stop();
         UpdateLetterPosition();
@@ -94,10 +130,13 @@ public class MirrorShard : PickableRoomObject
 
     private void OnEnable() {
         RenderTexturePlane.OnTextureUpdating += UpdateTexture;
+        ToggleVisibilty(true);
     }
 
     private void OnDisable() {
         RenderTexturePlane.OnTextureUpdating -= UpdateTexture;
+        Outline.enabled = false;
+        ToggleVisibilty(false);
     }
 
     private void UpdateTexture(RenderTexturePlane _plane) {
@@ -108,15 +147,45 @@ public class MirrorShard : PickableRoomObject
     }
 
 
-    public void DisconnectedFromMirror(float force = 0) {
-        transform.parent = BossMirror.transform.parent;
+    public void DisconnectedFromMirror() {
+        transform.parent = BossMirror.transform.parent.parent;
         Attached = false;
         shineParticle.Play();
         ActivateRigidBody();
-        rb.velocity = bossMirror.transform.forward * force;
+        SetBezierDestination(transform.position, positionInfo.fallPosition.position);
+        StartCoroutine(Exploding());
+    }
+    private IEnumerator Exploding() {
+        float index = 0;
+        while (index < explosionuration) {
+            index += Time.deltaTime;
+            transform.position = Extensions.CalculateQuadraticBezierPoint(fallCurve.Evaluate(index / explosionuration), fallPositionStart, fallPositionMid, positionInfo.fallPosition.position);
+            rb.velocity = Vector3.zero;
+            yield return new WaitForFixedUpdate();
+        }
+        rb.position = positionInfo.fallPosition.position;
+        rb.rotation = positionInfo.fallPosition.rotation;
+        if (positionInfo.setAsParent) {
+            transform.SetParent(positionInfo.fallPosition);
+        }
+        rb.useGravity = positionInfo.useGravityAfterFall;
+        rb.isKinematic = !positionInfo.useGravityAfterFall; //might change later
+
+        if (!positionInfo.visibleAfterFalling) {
+            ToggleVisibilty(false);
+        }
     }
 
+
+    public void SetBezierDestination( Vector3 begin, Vector3 end) {
+        fallPositionStart = begin;
+        positionInfo.fallPosition.position = end;
+        fallPositionMid = begin + ((end - begin) / 2f);
+        fallPositionMid.y = begin.y + 150f;
+    }
     private void Update() {
+        if (!isVisible) return;
+
         if (!attached || animating) {
             UpdateLetterPosition();
         } 
@@ -124,12 +193,26 @@ public class MirrorShard : PickableRoomObject
             transform.localPosition = startLocalPos;
             transform.localRotation = Quaternion.Euler(Vector3.zero);
         }
+        
+        UpdateOutline();
     }
+
+    private void UpdateOutline() {
+    	if (!attached && !animating && focusedShard) {
+            Outline.OutlineWidth = -5f;
+            Outline.OutlineMode = Outline.Mode.OutlineHidden;
+
+        } else {
+            Outline.OutlineWidth = 0;
+            Outline.OutlineMode = Outline.Mode.OutlineHidden;
+        }
+    }
+
 
 
     ///<summary>
     /// Updates the leer position to make it look like it is part of the parent
-    ///</summary>
+    ///</summary>w
     private void UpdateLetterPosition() {
         for (int i = 0; i < letterCoords.Length; i++) {
             Letter letter = letterCoords[i].letter;
@@ -138,19 +221,51 @@ public class MirrorShard : PickableRoomObject
         }
     }
 
+
     public override void Grab(Rigidbody connectedRigidBody)
     {
         base.Grab(connectedRigidBody); 
+        AudioHandler.Instance?.Play3DSound(grabSound, transform);
         shineParticle.Stop();
+        if (!hasAlreadyBeenPickedUp) {
+            hasAlreadyBeenPickedUp = true;
+            OnPickedUp?.Invoke(this);
+        }
+        ToggleAllColliders(false);
+    }
+
+    private bool isVisible = true;
+
+    public void ToggleVisibilty(bool _visible) {
+        isVisible = _visible;
+        for (int i = 0; i < letterCoords.Length; i++) {
+            Letter letter = letterCoords[i].letter;
+            if (letter != null) letter.gameObject.SetActive(_visible);
+        }
+        if (!_visible) Outline.OutlineWidth = 0;
+        ToggleAllRenders(_visible);
     }
 
     public override void Release()
     {  
-        base.Release();
         if (!Attached && Vector3.Distance(transform.position, bossMirror.transform.position) < distanceToAttachShardToMirror) {
+            base.Release();
             ReattachedToMirror();
         } else {
             shineParticle.Play();
+        }
+        ToggleAllColliders(false);
+    }
+
+    private void ToggleAllColliders(bool _val) {
+        foreach(Collider col in GetComponentsInChildren<Collider>()){
+            col.enabled = _val;
+        }
+    }
+    private void ToggleAllRenders(bool _val) {
+        meshRenderer.enabled = _val;
+        foreach(Renderer col in GetComponentsInChildren<Renderer>()){
+            col.enabled = _val;
         }
     }
 
@@ -170,6 +285,8 @@ public class MirrorShard : PickableRoomObject
         StartCoroutine(transform.AnimatingLocalRotation(Quaternion.Euler(0,0,0), AnimationCurve.EaseInOut(0,0,1,1), attachingDuration));
         yield return StartCoroutine(transform.AnimatingLocalPos(startLocalPos, AnimationCurve.EaseInOut(0,0,1,1), attachingDuration));
         Attached = true;
+        bossMirror.AttachMirrorShard(this);
+        AudioHandler.Instance?.PlaySound(SFXFiles.mirorshard_place);
         animating = false;
     }
 
@@ -180,8 +297,14 @@ public class MirrorShard : PickableRoomObject
                 #if UNITY_EDITOR
                 Handles.Label(meshRenderer.transform.position + transform.TransformDirection(letterCoords[i].letterDelta), letterCoords[i].letterValue);
                 #endif
-                // Gizmos.DrawWireSphere(meshRenderer.transform.position + transform.TransformDirection(letterCoords[i].letterDelta), .5f);
             }
+        }
+        if (positionInfo.fallPosition != null) {
+            SetBezierDestination(fallPositionStart, positionInfo.fallPosition.position);
+            DebugExtensions.DrawBezierCurve(fallPositionStart, fallPositionMid, positionInfo.fallPosition.position);
+            #if UNITY_EDITOR
+            Handles.Label(positionInfo.fallPosition.position, gameObject.name);
+            #endif
         }
     }
 
@@ -201,5 +324,8 @@ public class MirrorShard : PickableRoomObject
         );
         StopCoroutine(shakeCoroutine);
     }
-
+    public override bool CanBeReleased()
+    {
+        return !Attached && Vector3.Distance(transform.position, bossMirror.transform.position) < distanceToAttachShardToMirror;
+    }
 }

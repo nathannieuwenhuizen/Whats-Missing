@@ -13,11 +13,26 @@ public class CharacterAnimationPlayer
     public static event CutSceneAction OnCutsceneEnd;
 
     private Coroutine torsoCoroutine;
+    private float cameraZoom = 60f;
+    private Coroutine zoomCoroutine;
+    public float CameraZoom {
+        get { return cameraZoom;}
+        set { 
+            cameraZoom = value; 
+            if (zoomCoroutine != null) player.StopCoroutine(zoomCoroutine);
+            zoomCoroutine = player.StartCoroutine(player.Camera.AnimatingFieldOfView(cameraZoom, AnimationCurve.EaseInOut(0,0,1,1), .5f));
+        }
+    }
     private Animator animator;
     private IKPass IKPass;
     private Transform animationView;
     private Player player;
     private Transform cameraParent;
+
+    private bool inAnimationCutscene = false;
+    public bool InCutScene {
+        get { return inAnimationCutscene;}
+    }
 
     public CharacterAnimationPlayer(Player _player, Animator _animator, Transform _animationView, IKPass _IKPass) {
         animator = _animator;
@@ -78,10 +93,12 @@ public class CharacterAnimationPlayer
     /// Plays an animation by triggering it while also calling the cutscene ui.
     /// TODO: make sure the callbacks works after the animation has finished playing.
     ///</summary>
-    public void PlayCutSceneAnimation(string trigger, bool applyRoonAnimation = false, Action callback = null) {
+    public void PlayCutSceneAnimation(string trigger, bool applyRootAnimation = false, Action callback = null) {
         OnCutsceneStart?.Invoke();
 
         SetTorsoAnimation(false);
+        if (trigger != "") inAnimationCutscene = true;
+
         IKPass.IKActive = false;
         player.Movement.EnableRotation = false;
         player.Movement.EnableWalk = false;
@@ -91,9 +108,10 @@ public class CharacterAnimationPlayer
         player.Camera.transform.SetParent(animationView);
         player.Camera.transform.localPosition = animationView.localPosition;
         player.Camera.transform.localRotation = animationView.localRotation;
-        player.StartCoroutine(player.Camera.AnimatingFieldOfView(80, AnimationCurve.EaseInOut(0,0,1,1), 2f));
+        CameraZoom = 80f;
+        // player.StartCoroutine(player.Camera.AnimatingFieldOfView(cameraZoom, AnimationCurve.EaseInOut(0,0,1,1), 2f));
         animator.SetTrigger(trigger);
-        animator.applyRootMotion = applyRoonAnimation;
+        animator.applyRootMotion = applyRootAnimation;
     }
 
     public void SetAnimator(Animator _animator, Transform _animationView) {
@@ -106,48 +124,67 @@ public class CharacterAnimationPlayer
     public void OnEnable() {
         BossMirror.OnMirrorShake += OnBossMirrorShake;
         BossMirror.OnMirrorExplode += OnBossMirrorExplode;
+        Boss.BossCutsceneState.OnBossCutsceneStart += OnBossCutsceneStart;
+        Boss.BossCutsceneState.OnBossCutsceneEnd += OnBossCutsceneEnd;
+
     }
     public void OnDisable() {
         BossMirror.OnMirrorShake -= OnBossMirrorShake;
-        BossMirror.OnMirrorExplode += OnBossMirrorExplode;
-
+        BossMirror.OnMirrorExplode -= OnBossMirrorExplode;
+        Boss.BossCutsceneState.OnBossCutsceneStart -= OnBossCutsceneStart;
+        Boss.BossCutsceneState.OnBossCutsceneEnd -= OnBossCutsceneEnd;
     }
 
     private void OnBossMirrorShake(BossMirror bossMirror) {
         PlayCutSceneAnimation("", false);
         bossMirror.StartCoroutine(InBossCutScene(bossMirror));
     }
+    private bool inBossCutscene = false;
     private IEnumerator InBossCutScene(BossMirror bossMirror) {
+        Debug.Log("in boss cutscene!");
+        inBossCutscene = true;
         yield return new WaitForSeconds( bossMirror.ShakeDuration - .5f);
-        PlayCutSceneAnimation("boss_intro_1", false);
-
-        yield return new WaitForSeconds(2f);
-        PlayCutSceneAnimation("boss_intro_2", false);
-        yield return new WaitForSeconds(.5f);
-        PlayCutSceneAnimation("boss_intro_3", false);
-
-        yield return new WaitForSeconds(2f);
-        EndOfCutSceneAnimation();
-
+        Debug.Log("in boss cutscene for realz");
+        // PlayCutSceneAnimation("boss_intro_1", false);
+        // yield return new WaitForSeconds(2f);
+        // PlayCutSceneAnimation("boss_intro_2", false);
+        // yield return new WaitForSeconds(.5f);
+        // PlayCutSceneAnimation("boss_intro_3", false);
+        inBossCutscene = false;
     }
     private void OnBossMirrorExplode(BossMirror bossMirror) {
 
     }
 
+    public void OnBossCutsceneStart(Boss.Boss boss) {
+        if (inBossCutscene) return;
+        PlayCutSceneAnimation("", false);
+        CameraZoom = 50f;
+    }
+    public void OnBossCutsceneEnd(Boss.Boss boss) {
+        EndOfCutSceneAnimation();
+    }
+
     ///<summary>
     /// Called when the cutscene animation has ended. Disabling the cutscene ui and enabling the ingame ui.
     ///</summary>
-
     public void EndOfCutSceneAnimation() {
+
         OnCutsceneEnd?.Invoke();
+        inAnimationCutscene = false;
         player.Camera.transform.SetParent(cameraParent);
         player.Movement.EnableRotation = true;
         player.Movement.EnableWalk = true;
-        player.StartCoroutine(player.Camera.AnimatingFieldOfView(60, AnimationCurve.EaseInOut(0,0,1,1), .5f));
+        CameraZoom = 60f;
+        // player.StartCoroutine(player.Camera.AnimatingFieldOfView(60, AnimationCurve.EaseInOut(0,0,1,1), .5f));
         player.Movement.CameraPivot.localPosition = new Vector3(0,player.Movement.CameraPivot.transform.localPosition.y,0);
         animator.applyRootMotion = false;
         animator.transform.localPosition = Vector3.zero;
         IKPass.IKActive = true;
 
+    }
+
+    public bool CameraIsInModel() {
+        return player.Camera.transform.parent == animationView;
     }
 }

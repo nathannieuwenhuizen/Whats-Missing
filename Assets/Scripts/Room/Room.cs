@@ -420,11 +420,14 @@ public class Room : MonoBehaviour
     private void OnEnable() {
         RoomObjectEventSender.OnAltered += UpdateRoomObjectChanges;
         Potion.OnChanging += AddPotionChange;
+        if (hintStopwatch != null) hintStopwatch.OnEnable();
     }
 
     private void OnDisable() {
         RoomObjectEventSender.OnAltered -= UpdateRoomObjectChanges;
         Potion.OnChanging -= AddPotionChange;
+        if (hintStopwatch != null) hintStopwatch.OnDisable();
+
     }
 
     public void UpdateRoomObjectChanges(RoomObject _roomObject, ChangeType _changeType, bool _enabled) {

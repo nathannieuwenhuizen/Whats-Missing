@@ -35,10 +35,10 @@ public class Constilation : RoomObject
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.C)) {
-            mainPivot.rotation = mianstartRotation;
-            pivot.rotation = startRotation;
-        }
+        // if (Input.GetKeyDown(KeyCode.C)) {
+        //     mainPivot.rotation = mianstartRotation;
+        //     pivot.rotation = startRotation;
+        // }
 
         pivot.Rotate(rotationVector * Time.deltaTime * Room.TimeScale);
         mainPivot.Rotate(mainRotationVector * Time.deltaTime * Room.TimeScale);

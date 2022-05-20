@@ -46,6 +46,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
     private bool grabbed = false;
 
     protected Rigidbody rb;     
+    private Transform oldParent;
     protected override void Awake()
     {
         base.Awake();
@@ -104,6 +105,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
     protected bool looksWhenGrabbed = false;
     public bool LooksWhenGrabbed => looksWhenGrabbed;
 
+    private Vector3 holdingOffset = new Vector3(0,0,0);
+    public Vector3 HoldingOffset { get => holdingOffset; set => holdingOffset = value; }
+
     protected override void OnFocus()
     {
         //todo: check if mass isnt too high with what the player can handle.
@@ -119,7 +123,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
     }
 
     public virtual void Grab(Rigidbody connectedRigidBody)
-    {        
+    {
+        // oldParent = transform.parent;
+        // transform.SetParent(connectedRigidBody.transform.parent);        
         grabbed = true;
         AudioHandler.Instance?.PlaySound(grabSound);
 
@@ -159,6 +165,8 @@ public class PickableRoomObject : InteractabelObject, IPickable
     public virtual void Release()
     {
         if (!grabbed) return;
+
+        // transform.SetParent(oldParent);
         grabbed = false;
         OutlineEnabled = true;
         ActivateRigidBody();
@@ -199,7 +207,13 @@ public class PickableRoomObject : InteractabelObject, IPickable
         base.OnFlippingRevertFinish();
     }
 
-    public bool TooHeavy(Hands hands) => hands.MassThreshhold < rb.mass;
+    public bool TooHeavy(Hands hands)  {
+        if (rb == null) return false;
+        return hands.MassThreshhold < rb.mass;
+    } 
+
+    public virtual bool CanBeReleased() => true;
     
+
     #endregion
 }

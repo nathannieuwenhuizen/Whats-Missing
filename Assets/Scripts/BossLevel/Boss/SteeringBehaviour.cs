@@ -54,6 +54,10 @@ public class SteeringBehaviour
         get { return slowingAmplitude;}
     }
 
+    ///<summary>
+    /// The transform that will have the steering behaviour
+    ///</summary>
+    [Header("can be zero")]
     public Transform target;
     public Transform desiredTarget;
 
@@ -62,8 +66,18 @@ public class SteeringBehaviour
         if (_desiredTarget != null) desiredTarget = _desiredTarget;
     }
 
-    public void UpdatePosition() {
-        desiredVelocity = (desiredTarget.position - target.position);
+
+    ///<summary>
+    /// Updates the position based on the sterring behaviour of the target transform
+    ///</summary>
+    public void UpdatePosition(float _speed = 1f, Vector3 _desiredPosition = default(Vector3)) {
+
+        float _maxVelocity = maxVelocity * _speed;
+        float _maxForce = maxForce * _speed;
+
+        if (_desiredPosition == default(Vector3))
+            desiredVelocity = (desiredTarget.position - target.position);
+        else desiredVelocity = (_desiredPosition - target.position);
 
         
         // Check the distance to detect whether the character
@@ -71,14 +85,14 @@ public class SteeringBehaviour
         // is inside the slowing area
         if (distance < slowingRadius) {
             // Inside the slowing area
-            desiredVelocity = desiredVelocity.normalized * maxVelocity * ((distance / slowingRadius) * slowingAmplitude);
+            desiredVelocity = desiredVelocity.normalized * _maxVelocity * ((distance / slowingRadius) * slowingAmplitude);
         } else {
             // Outside the slowing area.
-            desiredVelocity = desiredVelocity.normalized * maxVelocity;
+            desiredVelocity = desiredVelocity.normalized * _maxVelocity;
         }
 
         steering = desiredVelocity - velocity;
-        if (steering.magnitude > maxForce) steering = steering.normalized * maxForce;
+        if (steering.magnitude > _maxForce) steering = steering.normalized * _maxForce;
         steering /= mass;
 
         velocity += steering;
@@ -88,10 +102,17 @@ public class SteeringBehaviour
 
     private Vector3 truncate(Vector3 vector) {
         float distance = (target.position - desiredTarget.position).magnitude;
-        if (distance < vector.magnitude) {
-            vector = vector.normalized * distance;
-        }
+        // if (distance < vector.magnitude) {
+        //     vector = vector.normalized * distance;
+        // }
         return vector;
+    }
+
+    ///<summary>
+    /// Resets the velocity
+    ///</summary>
+    public void Reset() {
+        velocity = Vector3.zero;
     }
 
 }

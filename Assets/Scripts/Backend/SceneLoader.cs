@@ -29,6 +29,8 @@ public class SceneLoader : MonoBehaviour
     private float animationDelay = 0f;
 
     private void Start() {
+        // group.GetComponent<Image>().material.SetFloat("_Alpha", 0);
+
         if (SceneLoader.LOADING_STYLE != LoadingStyle.none) {
             StartCoroutine(LoadOut(() => {
                 SceneLoader.LOADING_STYLE = LoadingStyle.none;
@@ -58,6 +60,8 @@ public class SceneLoader : MonoBehaviour
         SceneLoader.LOADING_STYLE = LoadingStyle.mainScreen;
         loadingIcon.gameObject.SetActive(false);
         isLoading = true;
+        group.gameObject.SetActive(true);
+        // StartCoroutine(Extensions.AnimatingNumberPropertyMaterial(group.GetComponent<Image>().material, "_Alpha", 0, 1, AnimationCurve.EaseInOut(0,0,1,1)));
         yield return StartCoroutine(FadeCanvasGroup(group, 1f, animationDuration, animationDelay));
         loadingIcon.gameObject.SetActive(true);
         yield return new WaitForEndOfFrame();
@@ -99,10 +103,18 @@ public class SceneLoader : MonoBehaviour
 
     private void OnEnable() {
         AlchemyItem.OnAlchemyEndScene += GoToSecondLevel;
+        PauseScreen.OnQuit += BackToMenu;
+    }
+
+
+    private void BackToMenu() {
+        LoadNewSceneAnimated("Menu");
     }
 
     private void OnDisable() {
         AlchemyItem.OnAlchemyEndScene -= GoToSecondLevel;
+        PauseScreen.OnQuit -= BackToMenu;
+
     }
 
 
@@ -134,8 +146,10 @@ public class SceneLoader : MonoBehaviour
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(.3f);
         AudioHandler.Instance.FadeListener(1);
-        if (LOADING_STYLE == LoadingStyle.mainScreen) 
+        if (LOADING_STYLE == LoadingStyle.mainScreen) {
+            StartCoroutine(Extensions.AnimatingNumberPropertyMaterial(group.GetComponent<Image>().material, "_Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1)));
             yield return StartCoroutine(FadeCanvasGroup(group, 0, .5f));
+        }
         
         
         cornerLoadingIcon.gameObject.SetActive(false);

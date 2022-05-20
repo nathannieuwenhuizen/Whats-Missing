@@ -67,14 +67,14 @@ public class Mirror: MonoBehaviour, IRoomObject
     public bool IsOn {
         get { return mirrorData.isOn; }
         set { 
-            if (mirrorData.isOn != value) {
-                mirrorData.isOn = value; 
-                if (value) {
-                    ConfirmationSucceeded();
-                } else {
+            if (value) {
+                ConfirmationSucceeded();
+            } else {
+                // if (mirrorData.isOn != value)
                     ConfirmationFailed();
-                }
             }
+
+            mirrorData.isOn = value; 
             UpdateIndicatorLight();
         }
     }
@@ -100,11 +100,11 @@ public class Mirror: MonoBehaviour, IRoomObject
     /// Updates the light indicator on whether the mirror is on.
     ///</summary>
     public void UpdateIndicatorLight() {
-        Color colour = IsOn ? onColor : offColor;
-        colour *= 3.0f;
-        indicatorMesh.material.SetColor("_EmissionColor", colour);
+        Color color = IsOn ? onColor : offColor;
+        color *= 3.0f;
+        indicatorMesh.material.SetColor("_EmissionColor", color);
     }
-    protected void Awake() {
+    protected virtual void Awake() {
         // planarReflection.IsActive = false;
     }
 

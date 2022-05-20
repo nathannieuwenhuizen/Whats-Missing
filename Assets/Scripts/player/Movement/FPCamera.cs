@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Boss;
 using UnityEngine;
 ///<summary>
 /// Handles all the camera mvoement and rotations. 
@@ -14,6 +15,8 @@ public class FPCamera
     private bool EnableRotation { get => FPMovement.EnableRotation; }
 
     private float cameraSensetivityFactor = 2f;
+    
+    private Transform startParent;
 
     //camera movement offset values
     private float cameraYOffset = 0.03f;
@@ -26,7 +29,10 @@ public class FPCamera
 
     public bool CameraZRotationTilt {
         get { return cameraZRotationTilt;}
-        set { cameraZRotationTilt = value; }
+        set { 
+            cameraZRotationTilt = value; 
+            if (!value) ResetCameraTilt();
+        }
     }
     private float cameraZRotationMagnitude = 10f;
 
@@ -42,8 +48,8 @@ public class FPCamera
         get { return useSteeringBehaviour;}
         set { 
             if (currentAim == null) {
-                currentAim = Object.Instantiate(new GameObject("camera aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, transform).transform;
-                desiredAim = Object.Instantiate(new GameObject("camera desired aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, transform).transform;
+                currentAim = Object.Instantiate(new GameObject("camera aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, FPMovement.transform.parent).transform;
+                desiredAim = Object.Instantiate(new GameObject("camera desired aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, FPMovement.transform.parent).transform;
             }
             currentAim.position = cameraPivot.position + cameraPivot.forward;
             useSteeringBehaviour = value; 
@@ -84,6 +90,7 @@ public class FPCamera
         InputManager.OnRotate += setMouseDelta;
         BossCutsceneState.OnBossCutsceneStart += OnBossCutSceneStart;
         BossCutsceneState.OnBossCutsceneEnd += OnBossCutSceneEnd;
+        ForcefieldDemo.Forcefield.OnForceFieldImpact += ApplyLittleShake;
     }
 
     public void OnDisable() {
@@ -92,6 +99,7 @@ public class FPCamera
         InputManager.OnRotate -= setMouseDelta;
         BossCutsceneState.OnBossCutsceneStart += OnBossCutSceneStart;
         BossCutsceneState.OnBossCutsceneEnd += OnBossCutSceneEnd;
+        ForcefieldDemo.Forcefield.OnForceFieldImpact -= ApplyLittleShake;
     }
 
 
@@ -135,10 +143,18 @@ public class FPCamera
         if (cameraZRotationTilt) {
             zRotation = Mathf.Sin(cameraZIndex) * cameraZRotationMagnitude;
         } 
+        if (!cameraIsShaking)
+            cameraPivot.localRotation = Quaternion.Euler( new Vector3(
+                cameraPivot.localRotation.eulerAngles.x,
+                cameraPivot.localRotation.eulerAngles.y,
+                zRotation
+            ));
+    }
+    private void ResetCameraTilt() {
         cameraPivot.localRotation = Quaternion.Euler( new Vector3(
             cameraPivot.localRotation.eulerAngles.x,
             cameraPivot.localRotation.eulerAngles.y,
-            zRotation
+            0
         ));
     }
 
@@ -166,26 +182,37 @@ public class FPCamera
 
         //setting max angle cap
         if (cameraPivot.localRotation.eulerAngles.x > 180)
-            cameraPivot.localRotation = Quaternion.Euler( new Vector3(Mathf.Max(cameraPivot.localRotation.eulerAngles.x, 360 - verticalAngle) , 0, 0));
+            cameraPivot.localRotation = Quaternion.Euler( new Vector3(Mathf.Max(cameraPivot.localRotation.eulerAngles.x, 360 - verticalAngle) , 0, cameraPivot.localRotation.eulerAngles.z));
         else
-            cameraPivot.localRotation = Quaternion.Euler(new Vector3(Mathf.Min(cameraPivot.localRotation.eulerAngles.x, verticalAngle), 0, 0));
+            cameraPivot.localRotation = Quaternion.Euler(new Vector3(Mathf.Min(cameraPivot.localRotation.eulerAngles.x, verticalAngle), 0, cameraPivot.localRotation.eulerAngles.z));
+    }
+
+    private bool cameraIsShaking = false;
+    public void ApplyLittleShake() {
+        cameraIsShaking = true;
+        FPMovement.StartCoroutine(cameraPivot.ShakeZRotation(1f, 10, .5f, () => {
+            cameraIsShaking = false;
+        }));
     }
 
 
-    private void OnBossCutSceneStart(Boss boss) {
+    private void OnBossCutSceneStart(Boss.Boss boss) {
         UseSteeringBehaviour = true;
         currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward;
         SteeringBehaviour.Velocity = Vector3.zero;
-        steeringTarget = boss.transform;
+        steeringTarget = boss.Head.transform;
     }
 
-    private void OnBossCutSceneEnd(Boss boss) {
+    private void OnBossCutSceneEnd(Boss.Boss boss) {
         UseSteeringBehaviour = false;
     }
 
     public void UpdateSteeringBehaviour() {
         desiredAim.position = steeringTarget.position;
         SteeringBehaviour.UpdatePosition();
-        cameraPivot.LookAt(currentAim, transform.up);
+        transform.LookAt(currentAim, Vector3.up);
+        transform.localRotation = Quaternion.Euler( new Vector3(0, transform.localRotation.eulerAngles.y, 0));
+
+        cameraPivot.LookAt(currentAim, Vector3.up);
     }
 }

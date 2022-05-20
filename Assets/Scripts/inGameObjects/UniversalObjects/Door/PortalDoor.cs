@@ -79,6 +79,14 @@ public class PortalDoor : Door
         return Vector3.Distance(transform.position, player.transform.position) > 15f;
     }
 
+    public override void OnWalkingEnd(Player player)
+    {
+        if (!WentThroughPortal(player)) {
+            portal.Teleport(player);
+        }
+        base.OnWalkingEnd(player);
+    }
+
     private void LateUpdate() {
         if (!inSpace || Door.IN_WALKING_ANIMATION) return;
 

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Febucci.UI;
 using UnityEngine;
+namespace Boss {
 
 ///<summary>
 /// Handles the boss change attacks
@@ -47,18 +48,21 @@ public class BossChangesHandler
             yield return new WaitForSeconds(1f);
         }
         acitvatedChange = _change;
-        textAnimator.ShowText(_change.Word + " is " + Change.GetChangeTypeText(_change.ChangeType));
+        // textAnimator.ShowText(_change.Word + " is " + Change.GetChangeTypeText(_change.ChangeType));
+        yield return new WaitForSeconds(1f);
+        ApplyChange();
     }
     private void ApplyChange() {
         bossRoom.ChangeHandler.AddBossChange(acitvatedChange);
-        changeParticle.Emit(500);
+        changeParticle.Emit(50);
         OnShockwave?.Invoke(boss.transform);
 
     }
 
     public void RemoveChange() {
-        textAnimator.StartDisappearingText();
+        // textAnimator.StartDisappearingText();
         bossRoom.ChangeHandler.RemoveBossChange(acitvatedChange);
         acitvatedChange = null;
     }
+}
 }

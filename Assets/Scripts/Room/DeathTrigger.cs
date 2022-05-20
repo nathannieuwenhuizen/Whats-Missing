@@ -5,9 +5,15 @@ using UnityEngine;
 public class DeathTrigger : AreaTrigger, IRoomObject
 {
     public bool InSpace { get; set; }
-    private Collider collider;
+    private Collider coll;
+    public Collider Coll {
+        get { 
+            if (coll == null) coll = GetComponent<Collider>();
+            return coll;
+        }
+    }
     private void Awake() {
-        collider = GetComponent<Collider>();
+        coll = GetComponent<Collider>();
     }
     public override void OnAreaEnter(Player player)
     {
@@ -16,13 +22,13 @@ public class DeathTrigger : AreaTrigger, IRoomObject
         player.Die(false);
     }
 
-    public void OnRoomEnter()
+    public virtual void OnRoomEnter()
     {
-        collider.enabled = true;
+        coll.enabled = true;
     }
 
-    public void OnRoomLeave()
+    public virtual void OnRoomLeave()
     {
-        collider.enabled = false;
+        coll.enabled = false;
     }
 }

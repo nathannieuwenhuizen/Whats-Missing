@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
-public class Portal : RenderTexturePlane
+public class Portal : RenderTexturePlane, IPortal
 {
     [SerializeField]
     private Collider[] connectedColliders;
 
-    private bool insidePortal = false;
 
     private Player player;
     private static readonly Quaternion halfTurn = Quaternion.Euler(0.0f, 0.0f, 180.0f);
@@ -19,6 +18,9 @@ public class Portal : RenderTexturePlane
     
     private RenderTexture outputTexture;
 
+    public IPortal ConnectedPortal { get => connectedPortal; }
+    public bool InsidePortal { get; set; } = false;
+
     protected override void LateUpdate()
     {
         if (connectedPortal != null) base.LateUpdate();
@@ -26,11 +28,11 @@ public class Portal : RenderTexturePlane
         if (!isActive) return;
         if (!InView) return;
         
-        if (insidePortal && player != null) {
+        if (InsidePortal && player != null) {
             Vector3 objPos = transform.InverseTransformPoint(player.transform.position);
             if (objPos.y < positionOffset)
             {
-                Teleport();
+                Teleport(player);
             } 
         }
     }
@@ -38,7 +40,7 @@ public class Portal : RenderTexturePlane
     public void OnPortalEnter(Player _player) {
         player = _player;
 
-        insidePortal = true;
+        InsidePortal = true;
         foreach (Collider coll in connectedColliders)
         {
             coll.enabled = false;
@@ -47,14 +49,15 @@ public class Portal : RenderTexturePlane
 
     public void OnPortalLeave() {
 
-        insidePortal = false;
+        InsidePortal = false;
         foreach (Collider coll in connectedColliders)
         {
             coll.enabled = true;
         }
     }
 
-    private void Teleport() {
+    public void Teleport(Player _player) {
+        player = _player;
         OnPortalLeave();
         connectedPortal.OnPortalEnter(player);
 

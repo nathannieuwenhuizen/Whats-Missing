@@ -15,6 +15,7 @@
 
 using System.Collections;
 using System.Linq;
+using Boss;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 

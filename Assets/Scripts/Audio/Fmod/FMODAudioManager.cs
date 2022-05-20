@@ -18,6 +18,8 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
             UpdateBanks();
         } }
 
+    SFXInstance IAudioManager.Music => Music;
+
     public SFXInstance Music;
 
     public void FadeMusic(MusicFiles newMusic, float duration, bool waitForOtherMusictoFadeOut = false)

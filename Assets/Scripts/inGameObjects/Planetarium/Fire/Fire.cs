@@ -21,7 +21,9 @@ public class Fire : RoomObject
 
     private Coroutine smokeCoroutine;
 
-    protected void Awake() {
+    [SerializeField]
+    private bool palyerFireSound = true;
+    protected override void Awake() {
         ToggleFireSpread(false);
         normalScale = transform.localScale.x;
         largeScale = normalScale * 2f;
@@ -38,6 +40,7 @@ public class Fire : RoomObject
         WarmthProperty.OnWarmthAppearing += SetFireOn;
         AirProperty.OnAirMissing += SetFireOff;
         AirProperty.OnAirAppearing += SetFireOn;
+        Water.OnWaterBigEnd += SetFireOff;
     }
 
     private void OnDisable() {
@@ -48,6 +51,8 @@ public class Fire : RoomObject
         WarmthProperty.OnWarmthAppearing -= SetFireOn;
         AirProperty.OnAirMissing -= SetFireOff;
         AirProperty.OnAirAppearing -= SetFireOn;
+        Water.OnWaterBigEnd -= SetFireOff;
+
         if (fireSound != null) fireSound.Stop(true);
     }
 
@@ -57,7 +62,8 @@ public class Fire : RoomObject
         if (fireSound == null) {
             fireSound =  AudioHandler.Instance.Play3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
         }
-        fireSound.Play();
+        if (palyerFireSound) fireSound.Play();
+        else fireSound.Stop();
     }
 
     private void SetFireOn() {
@@ -75,6 +81,10 @@ public class Fire : RoomObject
         }
         if (fireSound != null)
             fireSound.Play();
+
+        if (IsEnlarged) {
+            OnEnlargeRevert();
+        }
 
     }
 
@@ -109,7 +119,6 @@ public class Fire : RoomObject
     public override void OnEnlarge()
     {
         if (smokeCoroutine != null) StopCoroutine(smokeCoroutine);
-
         ToggleFireSpread(true);
         fireSpreadObject.transform.transform.localScale = Vector3.zero;
 

@@ -99,6 +99,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
     }
 
     public IEnumerator WaitingForMirrorComplete() {
+        mirrorComplete = false;
         yield return new WaitForSeconds(3);
         if (!mirrorComplete) {
             ShowTutorial(mouseUI);

@@ -11,7 +11,7 @@ public class Desk : ParentRoomObject
 
     private void Reset() {
         Word = "desk";
-        AlternativeWords = new string[] { "desks", "bureau", "table" };
+        AlternativeWords = new string[] { "desks", "table" };
         flippingAxis = FlippingAxis.up; 
     }
 }

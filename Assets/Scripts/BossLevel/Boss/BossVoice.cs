@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Boss {
+
 public class BossVoice
 {
 
@@ -9,7 +11,7 @@ public class BossVoice
     public delegate void BossVoiceEvent(Line line);
     public static BossVoiceEvent OnLineStart;
     public static BossVoiceEvent OnLineEnd;
-    public  Dialogue dialogue;
+    public Dialogue dialogue;
 
     private Transform transform;
     public BossVoice(Transform _transform) {
@@ -31,4 +33,5 @@ public class BossVoice
         }
     }
 
+}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,8 +18,8 @@ public static class Extensions
     }
 
     public static string Shuffle(string _list)  
-    {  
-        Random.InitState(_list.Length);
+    {
+        UnityEngine.Random.InitState(_list.Length);
         string result = "";
         int rngIndex;
         int test = 0;
@@ -26,7 +27,7 @@ public static class Extensions
 
         while (chars.Count > 0 && test < 100) {  
             test++;
-            rngIndex = Mathf.FloorToInt(Random.Range(0, chars.Count));
+            rngIndex = Mathf.FloorToInt(UnityEngine.Random.Range(0, chars.Count));
             result += chars[rngIndex];
             chars.RemoveAt(rngIndex);
         } 
@@ -50,6 +51,14 @@ public static class Extensions
     }
 
     ///<summary>
+    /// Remaps the flaot values to scale it.
+    ///</summary>
+    public static float Map(float s, float a1, float a2, float b1, float b2)
+    {
+        return b1 + (s-a1)*(b2-b1)/(a2-a1);
+    }
+
+    ///<summary>
     /// returns thrue if two numbers are nearly equal to eahc other based on the offset parameter
     ///</summary>
     public static bool NearlyEqual(this float a , float b, float offset)
@@ -60,14 +69,14 @@ public static class Extensions
 
     public static Vector3 RandomVector(float maxValue) {
         return new Vector3(
-            Random.Range(-maxValue, maxValue),
-            Random.Range(-maxValue, maxValue),
-            Random.Range(-maxValue, maxValue));
+            UnityEngine.Random.Range(-maxValue, maxValue),
+            UnityEngine.Random.Range(-maxValue, maxValue),
+            UnityEngine.Random.Range(-maxValue, maxValue));
     }
     public static Vector2 RandomVector2(float maxValue) {
         return new Vector2(
-            Random.Range(-maxValue, maxValue),
-            Random.Range(-maxValue, maxValue));
+            UnityEngine.Random.Range(-maxValue, maxValue),
+            UnityEngine.Random.Range(-maxValue, maxValue));
     }
 
     public static Vector3 CalculateLinearBezierPoint(float t, Vector3 p0, Vector3 p1) {
@@ -124,11 +133,64 @@ public static class Extensions
                 (childCompnent as Light).enabled = active;
             if (childCompnent  is Collider)
                 (childCompnent as Collider).enabled = active;
+            if (childCompnent  is Rigidbody)
+                (childCompnent as Rigidbody).isKinematic = !active;
             if (childCompnent  is ParticleSystem)
                 if (active && (childCompnent as ParticleSystem).loop) (childCompnent as ParticleSystem).Play();
                 else (childCompnent as ParticleSystem).Stop();
         }
         return result;
+    }
+
+    public static IEnumerator AnimateCallBack(float begin, float end, AnimationCurve curve, Action<float> callback, float animationDuration) {
+        callback(begin);
+        float index = 0f;
+        while (index < animationDuration) {
+            yield return new WaitForEndOfFrame();
+            index += Time.unscaledDeltaTime;
+            callback(Mathf.LerpUnclamped(begin, end, curve.Evaluate(index / animationDuration)));
+        }
+        callback(end);
+    }
+    public static IEnumerator AnimateCallBack(Color begin, Color end, AnimationCurve curve, Action<Color> callback, float animationDuration) {
+        callback(begin);
+        float index = 0f;
+        while (index < animationDuration) {
+            yield return new WaitForEndOfFrame();
+            index += Time.unscaledDeltaTime;
+            callback(Color.LerpUnclamped(begin, end, curve.Evaluate(index / animationDuration)));
+        }
+        callback(end);
+    }
+    public static IEnumerator AnimateCallBack(Vector3 begin, Vector3 end, AnimationCurve curve, Action<Vector3> callback, float animationDuration) {
+        callback(begin);
+        float index = 0f;
+        while (index < animationDuration) {
+            yield return new WaitForEndOfFrame();
+            index += Time.unscaledDeltaTime;
+            callback(Vector3.LerpUnclamped(begin, end, curve.Evaluate(index / animationDuration)));
+        }
+        callback(end);
+    }
+    public static IEnumerator AnimateCallBack(Vector2 begin, Vector2 end, AnimationCurve curve, Action<Vector2> callback, float animationDuration) {
+        callback(begin);
+        float index = 0f;
+        while (index < animationDuration) {
+            yield return new WaitForEndOfFrame();
+            index += Time.unscaledDeltaTime;
+            callback(Vector2.LerpUnclamped(begin, end, curve.Evaluate(index / animationDuration)));
+        }
+        callback(end);
+    }
+    public static IEnumerator AnimateCallBack(Quaternion begin, Quaternion end, AnimationCurve curve, Action<Quaternion> callback, float animationDuration) {
+        callback(begin);
+        float index = 0f;
+        while (index < animationDuration) {
+            yield return new WaitForEndOfFrame();
+            index += Time.unscaledDeltaTime;
+            callback(Quaternion.SlerpUnclamped(begin, end, curve.Evaluate(index / animationDuration)));
+        }
+        callback(end);
     }
 
 

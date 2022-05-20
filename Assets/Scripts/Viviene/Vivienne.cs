@@ -68,7 +68,6 @@ public class Vivienne : AreaTrigger, IRoomObject
     }
     public override void OnAreaEnter(Player player) {
         base.OnAreaEnter(player);
-        Debug.Log("trigger enter");
         if (disappear) return;
         disappear = true;
         Vanish();
@@ -111,7 +110,6 @@ public class Vivienne : AreaTrigger, IRoomObject
 
     public void OnRoomLeave()
     {
-        Debug.Log("disappear!");
         if (!disappear) {
             StopSound();
         }
@@ -130,7 +128,9 @@ public class Vivienne : AreaTrigger, IRoomObject
         StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
         if (book.activeSelf) StartCoroutine(book.GetComponent<MeshRenderer>().material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
         if (marshmallow.activeSelf) StartCoroutine(marshmallow.GetComponent<MeshRenderer>().material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
+        Destroy(gameObject, dissappEarDurationInSeconds);
     }
+
 
     private void OnDrawGizmos() {
         if (meshRenderer != null) {

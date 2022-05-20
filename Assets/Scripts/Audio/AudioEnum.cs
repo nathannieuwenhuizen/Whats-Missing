@@ -66,6 +66,9 @@ public static class SFXFiles {
     public static string fountain = "event:/SFX/Environment/Garden/Fountain";
     public static string wind = "event:/SFX/Environment/Garden/Wind";
 
+    //water
+    public static string water_rise = "event:/SFX/Environment/Garden/Water/Water_rise";
+    public static string water_lower = "event:/SFX/Environment/Garden/Water/Water_low";
 
     //grave
     public static string knee_on_dirt = "Knee_on_dirt";
@@ -80,6 +83,16 @@ public static class SFXFiles {
     public static string potion_grab = "event:/SFX/Environment/Third_area/Potion_grab";
     public static string potion_throw = "event:/SFX/Environment/Third_area/Potion_throw";
     public static string potion_break = "event:/SFX/Environment/Third_area/Potion_break";
+
+
+    //boss
+    public static string mirror_shake = "event:/SFX/Boss/Environment/Mirror/Mirror_shake";
+    public static string miror_break = "event:/SFX/Boss/Environment/Mirror/Mirror_break";
+    public static string mirorshard_grab = "event:/SFX/Boss/Environment/Mirror/Mirrorsshard_grab";
+    public static string mirorshard_place = "event:/SFX/Boss/Environment/Mirror/Mirrorshard_place";
+    public static string rock_explosion = "event:/SFX/Boss/Environment/Rock_smash";
+    public static string magic_shield_block = "event:/SFX/Boss/Environment/Magic_shield_block";
+
 
 
 

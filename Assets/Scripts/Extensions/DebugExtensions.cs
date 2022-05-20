@@ -15,4 +15,22 @@ public static class DebugExtensions
             begin = end;
         }
     }
+
+    public static void DrawBezierCurve(Vector3 point0, Vector3 point1, Vector3 point2) {
+        int numberOfPoints = 50;
+        Gizmos.DrawWireSphere(point0, .5f);
+        Gizmos.DrawWireSphere(point1, .5f);
+        Gizmos.DrawWireSphere(point2, .5f);
+        Vector3 beginPos = point0;
+        if (point0 != null && point1 != null && point2 != null) {
+
+            for (int i = 1; i < numberOfPoints + 1; i++)
+            {
+                float t = i / (float)numberOfPoints;
+                Vector3 newPos =  Extensions.CalculateQuadraticBezierPoint(t, point0, point1, point2);
+                Debug.DrawLine(beginPos, newPos);
+                beginPos = newPos;
+            }
+        }
+    }
 }

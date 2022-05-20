@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace Boss {
+
 ///<summary>
 /// The values of the boss looking state are defined here.
 ///</summary>
 public class BossEye: MonoBehaviour {
     //used to determine the fake light aspects
-    private readonly float sizeAspect = 5f;
+    private readonly float sizeAspect = 4f;
     private readonly float angleAspect = 27f;
+
+    //noticing values
+    public bool NoticesPlayer { get => noticingValue >= noticingThreshold; }
+    public bool DoesntNoticesPlayer { get => noticingValue <= 0; }
 
     [SerializeField]
     private Transform fakeLight;
@@ -24,6 +30,11 @@ public class BossEye: MonoBehaviour {
             UpdateFakeLight();
         }
     }
+    [SerializeField]
+    private AnimationCurve viewAngleAnimationCurve;
+    private Coroutine viewAngleCoroutine;
+    private Coroutine viewRangeCoroutine;
+    private Coroutine viewAlphaCoroutine;
 
 
     [SerializeField]
@@ -59,6 +70,20 @@ public class BossEye: MonoBehaviour {
         set { viewColor = value; 
             UpdateFakeLight();
         }
+    }
+    [Range(0,1)]
+    [SerializeField]
+    private float viewAlpha ;
+    public float ViewAlpha {
+        get { return viewAlpha;}
+        set { 
+            viewAlpha = value; 
+            UpdateFakeLight();
+        }
+    }
+
+    private float GetColorIntensity() {
+        return (viewColor.r + viewColor.g + viewColor.b) / 3f;
     }
 
     ///<summary>
@@ -128,12 +153,45 @@ public class BossEye: MonoBehaviour {
         }
     }
 
+    public void AnimateViewAngle(float desiredAngle) {
+        if (viewAngleCoroutine != null) StopCoroutine(viewAngleCoroutine);
+        viewAngleCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewAngle, desiredAngle, viewAngleAnimationCurve, (float val) => ViewAngle = val, 1f));
+    }
+    public void AnimateViewRange(float desiredRange) {
+        if (viewRangeCoroutine != null) StopCoroutine(viewRangeCoroutine);
+        viewRangeCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewRange, desiredRange, viewAngleAnimationCurve, (float val) => ViewRange = val, 1f));
+    }
 
-    public bool NoticesPlayer { get => noticingValue >= noticingThreshold; }
-    public bool DoesntNoticesPlayer { get => noticingValue <= 0; }
+    public void AnimateViewAlpha(float desiredAlpha) {
+        if (viewAlphaCoroutine != null) StopCoroutine(viewAlphaCoroutine);
+        viewAlphaCoroutine = StartCoroutine(Extensions.AnimateCallBack(viewAlpha, desiredAlpha, viewAngleAnimationCurve, (float val) => ViewAlpha = val, 1f));
+    }
+
+
+    ///<summary>
+    /// Updates the fake light by changing the mesh
+    ///</summary>
+    private void UpdateFakeLight() {
+        if (fakeLight == null) return;
+
+        fakeLight.gameObject.SetActive(lightIsOn);
+        Vector3 scale = Vector3.one;
+        scale.y = ViewRange / sizeAspect;
+        float angleResult = Mathf.Tan(viewAngle * Mathf.Deg2Rad);
+        scale.x = ViewRange / sizeAspect * angleResult;
+        scale.z = ViewRange / sizeAspect * angleResult;
+        fakeLight.localScale = scale;
+
+        if (fakeLightRenderer != null) {
+            fakeLightRenderer.sharedMaterial.SetColor("_color", viewColor);
+            fakeLightRenderer.sharedMaterial.SetFloat("_alpha", viewAlpha);
+        } 
+    }
+
 
     private Color debugColor;
     public void OnDrawGizmos() {
+        // Debug.Log("color intensity: " + GetColorIntensity());
         if (!showGizmo) return;
         if (boss != null) {
             bool inView = PlayerIsInView(boss.Player);
@@ -171,23 +229,11 @@ public class BossEye: MonoBehaviour {
             UpdateFakeLight();
         }
     }
-    private void UpdateFakeLight() {
-        if (fakeLight == null) return;
 
-        fakeLight.gameObject.SetActive(lightIsOn);
-        Vector3 scale = Vector3.one;
-        scale.y = ViewRange / sizeAspect;
-        float angleResult = Mathf.Tan(viewAngle * Mathf.Deg2Rad);
-        scale.x = ViewRange / sizeAspect * angleResult;
-        scale.z = ViewRange / sizeAspect * angleResult;
-        fakeLight.localScale = scale;
-
-        if (fakeLightRenderer != null) {
-            fakeLightRenderer.sharedMaterial.SetColor("_color", viewColor);
-        } 
-    }
     private Vector3 DebugDrawViewLine(Vector3 origin, Vector3 dest) {
         Debug.DrawLine(origin, dest, debugColor);
         return dest;
     }
+}
+
 }

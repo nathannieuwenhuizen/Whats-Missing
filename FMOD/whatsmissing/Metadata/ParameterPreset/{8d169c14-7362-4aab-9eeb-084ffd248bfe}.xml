@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{8d169c14-7362-4aab-9eeb-084ffd248bfe}">
+		<property name="name">
+			<value>Grimness</value>
+		</property>
+		<relationship name="folder">
+			<destination>{e7dcb437-4a38-435a-a942-7a2a56e01771}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{26f42533-707c-4c07-b322-4c72225ab388}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{26f42533-707c-4c07-b322-4c72225ab388}">
+		<property name="maximum">
+			<value>26</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="seekSpeed">
+			<value>5.8000001907348633</value>
+		</property>
+		<relationship name="automators">
+			<destination>{da8f35aa-3f11-4ebc-8c6e-854011b53d3d}</destination>
+		</relationship>
+		<relationship name="modulators">
+			<destination>{5cff1b19-7d6f-4768-9d9b-a2099db63ecb}</destination>
+		</relationship>
+	</object>
+	<object class="Automator" id="{da8f35aa-3f11-4ebc-8c6e-854011b53d3d}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>cursorPosition</value>
+		</property>
+		<relationship name="automationCurves">
+			<destination>{9f2d3519-47bf-4ebc-adc2-0c26b63d5707}</destination>
+		</relationship>
+	</object>
+	<object class="LFOModulator" id="{5cff1b19-7d6f-4768-9d9b-a2099db63ecb}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>cursorPosition</value>
+		</property>
+		<property name="shape">
+			<value>6</value>
+		</property>
+		<property name="rate">
+			<value>0.0599999987</value>
+		</property>
+		<property name="depth">
+			<value>49.5</value>
+		</property>
+		<relationship name="automators">
+			<destination>{4d251071-89d2-4505-9f23-56dbd77f464d}</destination>
+		</relationship>
+	</object>
+	<object class="AutomationCurve" id="{9f2d3519-47bf-4ebc-adc2-0c26b63d5707}">
+		<relationship name="parameter">
+			<destination>{8694c32f-1e80-45cc-8dc8-e33639300e9f}</destination>
+		</relationship>
+		<relationship name="automationPoints">
+			<destination>{b9b092c7-fdd2-4d2a-a8b7-dfd3f7fe3d85}</destination>
+			<destination>{372664e2-297f-4c87-acbc-5ef227bc96b3}</destination>
+		</relationship>
+	</object>
+	<object class="Automator" id="{4d251071-89d2-4505-9f23-56dbd77f464d}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>depth</value>
+		</property>
+		<relationship name="automationCurves">
+			<destination>{e700ff9b-d824-40b9-8ec9-71dbe98275fa}</destination>
+		</relationship>
+	</object>
+	<object class="AutomationPoint" id="{b9b092c7-fdd2-4d2a-a8b7-dfd3f7fe3d85}">
+		<property name="position">
+			<value>26</value>
+		</property>
+		<property name="value">
+			<value>26</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{372664e2-297f-4c87-acbc-5ef227bc96b3}">
+		<property name="position">
+			<value>1</value>
+		</property>
+		<property name="value">
+			<value>0</value>
+		</property>
+	</object>
+	<object class="AutomationCurve" id="{e700ff9b-d824-40b9-8ec9-71dbe98275fa}">
+		<relationship name="parameter">
+			<destination>{8694c32f-1e80-45cc-8dc8-e33639300e9f}</destination>
+		</relationship>
+		<relationship name="automationPoints">
+			<destination>{4cb7e308-e66e-4ab3-989d-e3507bd5d22c}</destination>
+			<destination>{1105d7e6-8fc0-4a9e-8acf-2596ead628e8}</destination>
+			<destination>{dccc0fba-7f4c-4587-ba9a-3800c0c0222b}</destination>
+		</relationship>
+	</object>
+	<object class="AutomationPoint" id="{4cb7e308-e66e-4ab3-989d-e3507bd5d22c}">
+		<property name="position">
+			<value>13</value>
+		</property>
+		<property name="value">
+			<value>50</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{1105d7e6-8fc0-4a9e-8acf-2596ead628e8}">
+		<property name="position">
+			<value>26</value>
+		</property>
+		<property name="value">
+			<value>20</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{dccc0fba-7f4c-4587-ba9a-3800c0c0222b}">
+		<property name="position">
+			<value>1</value>
+		</property>
+		<property name="value">
+			<value>6</value>
+		</property>
+	</object>
+</objects>

@@ -377,7 +377,7 @@ public class MirrorCanvas : MonoBehaviour
             cPos += selectedLetterObjects[i].size.width *.5f + letterPadding;
         }
         if (!mirror.isQuestion){
-            headerText.Text.rectTransform.parent = answerText.transform;
+            headerText.Text.rectTransform.SetParent(answerText.transform);
             headerText.MoveTo(new Vector3(cPos + headerText.Text.GetRenderedValues(true).x * .5f + 20f, 0, 0));
             // headerText.Text.rectTransform.localPosition = new Vector3(cPos + headerText.Text.GetRenderedValues(true).x * .5f + 20f, 0, 0);
         }
@@ -426,7 +426,7 @@ public class MirrorCanvas : MonoBehaviour
     }
 
     public void AddLetterToAnswer(Letter letter, int index = -1) {
-        if (mirror.Room != null && mirror.Room.Animated) {
+        if (mirror.Room != null && mirror.Room.Animated && isInteractable) {
             AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .5f, 
             .8f + (.4f * ((float)selectedLetterObjects.Count / (float)(letterObjects.Count + selectedLetterObjects.Count)))
             );
