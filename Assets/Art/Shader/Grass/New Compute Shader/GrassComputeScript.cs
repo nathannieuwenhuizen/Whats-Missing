@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEditor;
 
-[ExecuteInEditMode]
+[ExecuteAlways]
 public class GrassComputeScript : MonoBehaviour
 {
     [Header("Components")]
@@ -362,7 +362,7 @@ public class GrassComputeScript : MonoBehaviour
     private void SetGrassDataUpdate()
     {
         // Compute Shader
-        //  m_InstantiatedComputeShader.SetMatrix("_LocalToWorld", transform.localToWorldMatrix);
+        m_InstantiatedComputeShader.SetMatrix("_LocalToWorld", transform.localToWorldMatrix);
         m_InstantiatedComputeShader.SetFloat("_Time", Time.time);
 
         if (interactors.Length > 0)

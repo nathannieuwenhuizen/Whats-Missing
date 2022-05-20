@@ -121,6 +121,11 @@ public class GrassPainter : MonoBehaviour
 
     void SetupMesh()
     {
+        if (mesh == null)
+        {
+            mesh = new Mesh();
+        }
+
         mesh.GetVertices(positions);
         i = positions.Count;
         mesh.GetIndices(indicies, 0);
