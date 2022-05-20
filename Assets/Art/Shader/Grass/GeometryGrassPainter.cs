@@ -75,14 +75,7 @@ public class GeometryGrassPainter : MonoBehaviour
         filter.mesh = mesh;
     }
 #if UNITY_EDITOR
-    void OnFocus()
-    {
-        // Remove delegate listener if it has previously
-        // been assigned.
-        SceneView.duringSceneGui -= this.OnScene;
-        // Add (or re-add) the delegate.
-        SceneView.duringSceneGui += this.OnScene;
-    }
+    
 
     void OnDisable()
     {
@@ -109,6 +102,7 @@ public class GeometryGrassPainter : MonoBehaviour
 
     void OnScene(SceneView scene)
     {
+        
         // only allow painting while this object is selected
         if ((Selection.Contains(gameObject)))
         {
