@@ -62,6 +62,18 @@ public class GeometryGrassPainter : MonoBehaviour
     public Vector3 hitNormal;
 
     int[] indi;
+
+    private void Start() {
+        // set all info to mesh
+        mesh = new Mesh();
+        mesh.SetVertices(positions);
+        indi = indicies.ToArray();
+        mesh.SetIndices(indi, MeshTopology.Points, 0);
+        mesh.SetUVs(0, length);
+        mesh.SetColors(colors);
+        mesh.SetNormals(normals);
+        filter.mesh = mesh;
+    }
 #if UNITY_EDITOR
     void OnFocus()
     {
@@ -72,7 +84,7 @@ public class GeometryGrassPainter : MonoBehaviour
         SceneView.duringSceneGui += this.OnScene;
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         // When the window is destroyed, remove the delegate
         // so that it will no longer do any drawing.
