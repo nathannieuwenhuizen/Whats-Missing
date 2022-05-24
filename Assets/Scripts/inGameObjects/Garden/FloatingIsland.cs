@@ -2,15 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FloatingIsland : RoomObject, ITriggerArea
+public enum IslandType {
+    main,
+    windmill,
+    grave
+}
+public class FloatingIsland : RoomObject, ITriggerArea, IRoomObject
 {
+    public delegate void OnRoomEnterEvent(FloatingIsland _floatingIsland);
+
+    public static OnRoomEnterEvent OnRoomEntering;
+
+    [Space]
+    [Header("island info")]
+    [SerializeField]
+    private Room room;
+    public Room Room {
+        get { return room;}
+    }
+    public IslandType IslandType;
+
+    [SerializeField]
+    private Renderer[] renderers;
+    public Renderer[] Renderers {
+        get { return renderers;}
+    }
+
     public bool InsideArea { get; set; }
     // private Transform oldParent;
 
-    [SerializeField]
     private Animator animator;
 
-    private void Awake() {
+    protected override void Awake() {
         animator = GetComponent<Animator>();
     }
 
@@ -18,6 +41,11 @@ public class FloatingIsland : RoomObject, ITriggerArea
         Word = "ground";
         AlternativeWords = new string[] { "island" };
     }
+    public override void OnRoomEnter() {
+        base.OnRoomEnter();
+        OnRoomEntering?.Invoke(this);
+    }
+    
 
     public void OnAreaEnter(Player player)
     {

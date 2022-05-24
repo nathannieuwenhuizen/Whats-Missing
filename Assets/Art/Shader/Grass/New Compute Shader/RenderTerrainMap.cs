@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[ExecuteInEditMode]
+[ExecuteAlways]
 public class RenderTerrainMap : MonoBehaviour
 {
 
@@ -12,7 +12,7 @@ public class RenderTerrainMap : MonoBehaviour
     LayerMask layer;
     // objects to render
     [SerializeField]
-    Renderer[] renderers;
+    public Renderer[] renderers;
     // unity terrain to render
     [SerializeField]
     Terrain[] terrains;
@@ -86,6 +86,8 @@ public class RenderTerrainMap : MonoBehaviour
     {
         DrawToMap("_TerrainDiffuse");
     }
+
+    public Vector3 test;
 
     void DrawToMap(string target)
     {

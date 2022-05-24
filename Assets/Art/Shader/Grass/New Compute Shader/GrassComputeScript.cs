@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEditor;
 
-[ExecuteInEditMode]
+[ExecuteAlways]
 public class GrassComputeScript : MonoBehaviour
 {
     [Header("Components")]
@@ -170,7 +170,6 @@ public class GrassComputeScript : MonoBehaviour
             return;
 
         }
-
         m_Initialized = true;
 
         // Instantiate the shaders so they can point to their own buffers
@@ -282,7 +281,7 @@ public class GrassComputeScript : MonoBehaviour
     {
         // If in edit mode, we need to update the shaders each Update to make sure settings changes are applied
         // Don't worry, in edit mode, Update isn't called each frame
-        if (Application.isPlaying == false)
+        if (Application.isPlaying == false || true)
         {
             OnDisable();
             OnEnable();
@@ -299,8 +298,6 @@ public class GrassComputeScript : MonoBehaviour
         // Clear the draw and indirect args buffers of last frame's data
         m_DrawBuffer.SetCounterValue(0);
         m_ArgsBuffer.SetData(argsBufferReset);
-
-
 
         // Update the shader with frame specific data
         SetGrassDataUpdate();
