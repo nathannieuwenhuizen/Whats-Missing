@@ -24,6 +24,12 @@ public class MirrorCanvas : MonoBehaviour
     [SerializeField]
     private TMP_FontAsset questionFont;
 
+    [Header("buttons")]
+    [SerializeField]
+    private Button comfirmationButton;
+    [SerializeField]
+    private Button resetButton;
+
     public delegate void MirrorcanvasEvent(string hintText, float duration);
     public static MirrorcanvasEvent OnShowHint;
 
@@ -61,7 +67,8 @@ public class MirrorCanvas : MonoBehaviour
         get { return isInteractable; }
         set { 
             isInteractable = value; 
-            UpdateCanvvas();
+            Debug.Log("is interactable = " + value);
+            UpdateCanvas();
         }
     }
 
@@ -70,15 +77,17 @@ public class MirrorCanvas : MonoBehaviour
         get { return isFocused; }
         set { 
             isFocused = value; 
-            UpdateCanvvas();
+            UpdateCanvas();
         }
     }
 
-    private void UpdateCanvvas() {
+    private void UpdateCanvas() {
         bool val = isInteractable && isFocused;
         GetComponent<GraphicRaycaster>().enabled = val;
         GetComponent<CanvasGroup>().alpha = val ? 1 : .8f;
 
+        comfirmationButton.gameObject.SetActive(IsInteractable);
+        resetButton.gameObject.SetActive(IsInteractable);
     }
 
     public TMP_FontAsset Font {
