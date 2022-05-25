@@ -25,6 +25,7 @@ public static class SFXFiles {
     public static string player_footstep_water = "Player_footstep_water";
     public static string player_footstep_grass = "Player_footstep_grass";
     public static string stairs_footstep = "Stairs_footstep";
+    public static string player_fall_death = "event:/SFX/Player/Play_fall_death";
 
     
     //planetarium

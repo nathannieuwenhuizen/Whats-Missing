@@ -26,6 +26,9 @@ public class FPMovement : MonoBehaviour
     public static float FOOT_RANGE = 1f;
     public bool on_grass = false;
     private Vector2 lerpedVelocity;
+    public Vector2 LerpedVelocity {
+        get { return lerpedVelocity;}
+    }
 
     private Player player;
 

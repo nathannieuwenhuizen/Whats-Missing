@@ -11,43 +11,54 @@ public class ComputeGrass : MonoBehaviour
 
     private GrassComputeScript grass;
 
+    private float normalWindSpeed;
+    private float normalWindStrength;
 
     private void Awake() {
         startPos = transform.position;
         grass = GetComponentInChildren<GrassComputeScript>();
+        normalWindSpeed = grass.windSpeed;
+        normalWindStrength = grass.windStrength;
     }
+    public void OnLargeWind() {
+        grass.windSpeed = normalWindSpeed * 10f;
+        grass.windStrength = normalWindStrength * 10f;
+    }
+    public void OnNormalWind() {
+        grass.windSpeed = normalWindSpeed;
+        grass.windStrength = normalWindStrength;
+    }
+
+    private void UpdateGrassTimeScale() {
+        grass.windSpeed = normalWindSpeed * Room.TimeScale;
+    }
+
     private void OnEnable() {
         FloatingIsland.OnRoomEntering += UpdateGrassPosition;
         Wind.OnWindNormal += OnNormalWind;
         Wind.OnWindEnlarged += OnLargeWind;
-    }
+        TimeProperty.onTimeMissing += UpdateGrassTimeScale;
+        TimeProperty.onTimeAppearing += UpdateGrassTimeScale;
 
-    public void OnLargeWind() {
-        grass.windSpeed *= 10f;
-        grass.windStrength *= 10f;
-    }
-    public void OnNormalWind() {
-        grass.windSpeed /= 10f;
-        grass.windStrength /= 10f;
     }
 
     private void OnDisable() {
         FloatingIsland.OnRoomEntering -= UpdateGrassPosition;
         Wind.OnWindNormal -= OnNormalWind;
         Wind.OnWindEnlarged -= OnLargeWind;
+        TimeProperty.onTimeMissing -= UpdateGrassTimeScale;
+        TimeProperty.onTimeAppearing -= UpdateGrassTimeScale;
 
     }
 
     public void UpdateGrassPosition(FloatingIsland _floatingIsland) {
         if (startPos == null) startPos = transform.position;
+
         Debug.Log("update position");
-        // transform.position = _floatingIsland.Room.transform.position + new Vector3(0,.1f,0) + startPos;
         
         transform.SetParent(_floatingIsland.Room.transform);
         transform.localPosition = startPos + new Vector3(14.2f,0,0);
         transform.localRotation = Quaternion.Euler(0,0,0);
-
-        // transform.rotation = _floatingIsland.Room.transform.rotation;
         if (_floatingIsland.IslandType == islandType) {
             transform.SetParent(_floatingIsland.transform);
         } else {

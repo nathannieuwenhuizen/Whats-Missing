@@ -173,14 +173,34 @@ public class CharacterAnimationPlayer
         OnCutsceneEnd?.Invoke();
         inAnimationCutscene = false;
         player.Camera.transform.SetParent(cameraParent);
-        player.Movement.EnableRotation = true;
-        player.Movement.EnableWalk = true;
+        // player.Movement.EnableRotation = true;
+        // player.Movement.EnableWalk = true;
         CameraZoom = 60f;
+        player.StartCoroutine(AnimateEndOfCutscene(() => {
+            player.Movement.EnableRotation = true;
+            player.Movement.EnableWalk = true;
+            animator.applyRootMotion = false;
+            IKPass.IKActive = true;
+        }));
+
         // player.StartCoroutine(player.Camera.AnimatingFieldOfView(60, AnimationCurve.EaseInOut(0,0,1,1), .5f));
-        player.Movement.CameraPivot.localPosition = new Vector3(0,player.Movement.CameraPivot.transform.localPosition.y,0);
-        animator.applyRootMotion = false;
-        animator.transform.localPosition = Vector3.zero;
-        IKPass.IKActive = true;
+        // player.Movement.CameraPivot.localPosition = new Vector3(0,player.Movement.CameraPivot.transform.localPosition.y,0);
+        // animator.applyRootMotion = false;
+        // animator.transform.localPosition = Vector3.zero;
+        // IKPass.IKActive = true;
+
+    }
+    public IEnumerator AnimateEndOfCutscene(Action _callback) {
+        player.StartCoroutine(player.Movement.CameraPivot.AnimatingLocalPos(new Vector3(0,player.Movement.CameraPivot.transform.localPosition.y,0), AnimationCurve.EaseInOut(0,0,1,1)));
+        player.StartCoroutine(player.Movement.CameraPivot.AnimatingLocalRotation(Quaternion.Euler(0,0,0), AnimationCurve.EaseInOut(0,0,1,1)));
+        player.StartCoroutine(animator.transform.AnimatingLocalPos(Vector3.zero, AnimationCurve.EaseInOut(0,0,1,1)));
+
+        yield return new WaitForSeconds(.5f);
+        _callback.Invoke();
+        // player.Movement.EnableRotation = true;
+        // player.Movement.EnableWalk = true;
+        // animator.applyRootMotion = false;
+        // IKPass.IKActive = true;
 
     }
 

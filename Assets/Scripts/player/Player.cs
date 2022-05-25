@@ -145,6 +145,7 @@ public class Player : RoomObject
         } else {
             movement.EnableRotation = false;
             movement.EnableWalk = false;
+            AudioHandler.Instance.PlaySound(SFXFiles.player_fall_death);
         }
         OnDie?.Invoke(withAnimation, toPreviousLevel);
     }

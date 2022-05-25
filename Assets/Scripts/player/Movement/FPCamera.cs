@@ -132,10 +132,11 @@ public class FPCamera
     public void UpdateCameraTilt(Vector3 delta, float walkStepDistance) {
         cameraYIndex = (delta.magnitude / walkStepDistance) * (Mathf.PI * 2);
         float currentCameraYpos = Mathf.Sin(cameraYIndex) * cameraYOffset;
+        float z = 0 + Mathf.Clamp(FPMovement.LerpedVelocity.magnitude - .5f, 0f, 1f) * .3f;
         cameraPivot.localPosition = new Vector3(
             0, 
             cameraStartYPos + currentCameraYpos, 
-            0 
+            z
         );
 
         cameraZIndex += Time.deltaTime;
