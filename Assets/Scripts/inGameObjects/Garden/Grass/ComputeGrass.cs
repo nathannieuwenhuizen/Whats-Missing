@@ -9,20 +9,33 @@ public class ComputeGrass : MonoBehaviour
 
     private Vector3 startPos;
 
+    private GrassComputeScript grass;
+
 
     private void Awake() {
         startPos = transform.position;
+        grass = GetComponentInChildren<GrassComputeScript>();
     }
     private void OnEnable() {
         FloatingIsland.OnRoomEntering += UpdateGrassPosition;
+        Wind.OnWindNormal += OnNormalWind;
+        Wind.OnWindEnlarged += OnLargeWind;
     }
 
-    private void OnDestroy() {
-        
+    public void OnLargeWind() {
+        grass.windSpeed *= 10f;
+        grass.windStrength *= 10f;
+    }
+    public void OnNormalWind() {
+        grass.windSpeed /= 10f;
+        grass.windStrength /= 10f;
     }
 
     private void OnDisable() {
         FloatingIsland.OnRoomEntering -= UpdateGrassPosition;
+        Wind.OnWindNormal -= OnNormalWind;
+        Wind.OnWindEnlarged -= OnLargeWind;
+
     }
 
     public void UpdateGrassPosition(FloatingIsland _floatingIsland) {
