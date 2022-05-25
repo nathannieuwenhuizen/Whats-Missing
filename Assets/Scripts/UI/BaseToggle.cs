@@ -10,6 +10,14 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Toggle))]
 public class BaseToggle : MonoBehaviour, IPointerEnterHandler, ISelectHandler, IDeselectHandler, IPointerExitHandler
 {
+
+    private bool canPlaySound = true;
+    public IEnumerator DelayBeforeAbleToPlaySound() {
+        canPlaySound = false;
+        yield return new WaitForSeconds(.5f);
+        canPlaySound = true;
+    }
+
     [SerializeField]
     private Sprite sprite_idle_Off;
     [SerializeField]
@@ -26,13 +34,15 @@ public class BaseToggle : MonoBehaviour, IPointerEnterHandler, ISelectHandler, I
     // Start is called before the first frame update
     void Awake()
     {
+        StartCoroutine(DelayBeforeAbleToPlaySound());
         toggle = GetComponent<Toggle>();
         toggle.onValueChanged.AddListener(OnToggle);
         UpdateImage(false);
+
     }
 
     private void OnToggle(bool val) {
-        if (AudioHandler.Instance != null) AudioHandler.Instance.PlayUISound(val ? SFXFiles.toggle_on : SFXFiles.toggle_off,  1f, val ?  1f : .8f);
+        if (canPlaySound) if (AudioHandler.Instance != null) AudioHandler.Instance.PlayUISound(val ? SFXFiles.toggle_on : SFXFiles.toggle_off,  1f, val ?  1f : .8f);
         UpdateImage(true);
     }
 

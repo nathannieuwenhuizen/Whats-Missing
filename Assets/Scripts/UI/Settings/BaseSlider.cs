@@ -10,6 +10,14 @@ using UnityEngine.UI;
 public class BaseSlider : MonoBehaviour, IPointerUpHandler, ISelectHandler, IDeselectHandler, IPointerDownHandler
 {
 
+    private bool canPlaySound = true;
+
+    public IEnumerator DelayBeforeAbleToPlaySound() {
+        canPlaySound = false;
+        yield return new WaitForSeconds(.5f);
+        canPlaySound = true;
+    }
+
     [SerializeField]
     private Image knob;
 
@@ -23,6 +31,7 @@ public class BaseSlider : MonoBehaviour, IPointerUpHandler, ISelectHandler, IDes
     // Start is called before the first frame update
 
     private void Awake() {
+        StartCoroutine(DelayBeforeAbleToPlaySound());
         idleSprite = knob.sprite;
     }
     void Start()
@@ -33,7 +42,7 @@ public class BaseSlider : MonoBehaviour, IPointerUpHandler, ISelectHandler, IDes
     public void OnPointerUp(PointerEventData eventData)
     {
         knob.sprite = idleSprite;
-        AudioHandler.Instance.PlayUISound(SFXFiles.slider_select, 1f,  .8f + .4f *(slider.value / slider.maxValue));
+        if (canPlaySound) AudioHandler.Instance.PlayUISound(SFXFiles.slider_select, 1f,  .8f + .4f *(slider.value / slider.maxValue));
     }
 
     public void OnSelect(BaseEventData eventData)

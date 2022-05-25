@@ -44,10 +44,9 @@ public class LegendaPanel : MonoBehaviour
         // text.text = word.ToLower();
         // yield return text.AnimateTextAlpha(1, .5f, 0);
 
-        if (word == "") {
-            animationPlayer.StartDisappearingText();
-            yield return new WaitForSeconds(.2f);
-        } else {
+        animationPlayer.StartDisappearingText();
+        yield return new WaitForSeconds(.3f);
+        if (word != "") {
             animationPlayer.ShowText(word);
         }
 
