@@ -32,7 +32,7 @@ public class SkinnedMeshToMesh : MonoBehaviour
         }
     }
     public void StopVFX() {
-        StopCoroutine(UpdateVFXCoroutine);
+        if (UpdateVFXCoroutine != null) StopCoroutine(UpdateVFXCoroutine);
         VFXGraph.Stop();
     }
 }

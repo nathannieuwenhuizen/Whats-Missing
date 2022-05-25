@@ -103,7 +103,7 @@ public class World : Property
                 newMat.DisableKeyword("_EMISSION");
             }
             Debug.Log("surface: " + surfaceType);
-            materialHolders.Add (new MaterialHolders() {renderer = renderer, materials = renderer.sharedMaterials});
+            materialHolders.Add (new MaterialHolders() {renderer = renderer, startMaterials = renderer.sharedMaterials});
             renderer.materials = new Material[] {newMat};
             renderer.material.mainTexture = tex;
             renderer.UpdateGIMaterials();
@@ -112,7 +112,7 @@ public class World : Property
     }
     private void RemoveCurveMaterial() {
         foreach(MaterialHolders holder in materialHolders) {
-            holder.renderer.materials = holder.materials;
+            holder.renderer.materials = holder.startMaterials;
             holder.renderer.UpdateGIMaterials();
         }
 

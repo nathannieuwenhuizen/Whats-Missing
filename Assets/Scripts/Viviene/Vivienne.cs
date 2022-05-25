@@ -65,6 +65,7 @@ public class Vivienne : AreaTrigger, IRoomObject
 
     private void Awake() {
         skinnedMeshToMesh = GetComponent<SkinnedMeshToMesh>();
+        skinnedMeshToMesh.StopVFX();
     }
     public override void OnAreaEnter(Player player) {
         base.OnAreaEnter(player);

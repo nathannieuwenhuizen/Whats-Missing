@@ -2,16 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Febucci.UI;
 
 public class LegendaPanel : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text text;
 
+    [SerializeField]
+    private TextAnimatorPlayer animationPlayer;
+
+
     private CanvasGroup group;
 
     private Coroutine wordCoroutine;
     private void Awake() {
+        animationPlayer = GetComponentInChildren<TextAnimatorPlayer>();
         group = GetComponent<CanvasGroup>();
     }
 
@@ -27,15 +33,24 @@ public class LegendaPanel : MonoBehaviour
     public void UpdateText(string word) {
         if (wordCoroutine != null)
             StopCoroutine(wordCoroutine);
+
         wordCoroutine = StartCoroutine(TransitionWord(word));
     }
 
     private IEnumerator TransitionWord(string word) {
-        if (group.alpha > .5f) {
-            yield return text.AnimateTextAlpha(0, .2f, 0);
+        // if (group.alpha > .5f) {
+        //     yield return text.AnimateTextAlpha(0, .2f, 0);
+        // }
+        // text.text = word.ToLower();
+        // yield return text.AnimateTextAlpha(1, .5f, 0);
+
+        if (word == "") {
+            animationPlayer.StartDisappearingText();
+            yield return new WaitForSeconds(.2f);
+        } else {
+            animationPlayer.ShowText(word);
         }
-        text.text = word.ToLower();
-        yield return text.AnimateTextAlpha(1, .5f, 0);
+
     }
 
     private void OnEnable() {
