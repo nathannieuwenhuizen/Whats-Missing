@@ -15,6 +15,7 @@ public class RoomLevel : ScriptableObject
 [System.Serializable]
 public class RoomData {
     public bool revealChangesAfterFinish = true;
+    public bool doCutsceneOnRevealingChanges = true;
     public MirrorData[] questionMirror;
     public Change[] loadedChanges;
     [Header("Hints")]

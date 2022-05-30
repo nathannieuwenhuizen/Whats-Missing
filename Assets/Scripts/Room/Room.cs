@@ -159,6 +159,7 @@ public class Room : MonoBehaviour
     public IEnumerator AnimateChangeEffect(float delay, IChangable o, float duration, Action callback) {
         yield return new WaitForSecondsRealtime(delay);
         ChangeLine changeLine = Instantiate(changeLineObject).GetComponent<ChangeLine>();
+        // if (roomLevel.roomInfo.)
         changeLine.SetDestination(animationStartPos(), o.Transform.position);
         yield return changeLine.MoveTowardsDestination();
 

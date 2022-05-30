@@ -204,6 +204,18 @@ public class FPCamera
         steeringTarget = boss.Head.transform;
     }
 
+    private void ShowAimCutscene(Transform _target, float duration) {
+        UseSteeringBehaviour = true;
+        currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward * 5f;
+        SteeringBehaviour.Velocity = Vector3.zero;
+        steeringTarget = _target.transform;
+        StartCoroutine(TempAimCutscene(duration));
+    }
+    private IEnumerator TempAimCutscene(float duration) {
+        yield return new WaitForSeconds(duration);
+        UseSteeringBehaviour = false;
+    }
+
     private void OnBossCutSceneEnd(Boss.Boss boss) {
         UseSteeringBehaviour = false;
     }

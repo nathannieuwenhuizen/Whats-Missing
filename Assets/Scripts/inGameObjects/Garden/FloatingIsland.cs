@@ -43,8 +43,11 @@ public class FloatingIsland : RoomObject, ITriggerArea, IRoomObject
     }
     public override void OnRoomEnter() {
         base.OnRoomEnter();
+        animator.Rebind();
+        animator.Update(0f);
         OnRoomEntering?.Invoke(this);
     }
+
     
 
     public void OnAreaEnter(Player player)

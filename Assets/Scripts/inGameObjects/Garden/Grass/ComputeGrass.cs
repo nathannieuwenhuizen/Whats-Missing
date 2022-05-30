@@ -61,6 +61,9 @@ public class ComputeGrass : MonoBehaviour
         transform.localRotation = Quaternion.Euler(0,0,0);
         if (_floatingIsland.IslandType == islandType) {
             transform.SetParent(_floatingIsland.transform);
+            // Vector3 delta = _floatingIsland.transform.position - _floatingIsland.Room.transform.position;
+            // transform.localPosition = (startPos + new Vector3(14.2f,0,0) - delta) * 0.01f;
+            // transform.localRotation = Quaternion.Euler(0,0,0);
         } else {
         }
         
