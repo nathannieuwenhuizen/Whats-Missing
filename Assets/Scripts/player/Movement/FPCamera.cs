@@ -209,7 +209,7 @@ public class FPCamera
         currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward * 5f;
         SteeringBehaviour.Velocity = Vector3.zero;
         steeringTarget = _target.transform;
-        StartCoroutine(TempAimCutscene(duration));
+        // StartCoroutine(TempAimCutscene(duration));
     }
     private IEnumerator TempAimCutscene(float duration) {
         yield return new WaitForSeconds(duration);
