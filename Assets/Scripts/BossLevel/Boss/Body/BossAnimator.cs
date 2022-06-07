@@ -1,8 +1,28 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Boss {
+
+    ///<summary>
+    /// Lits of all the animation parameters the boss has
+    ///</summary>
+    public static class BossAnimatorParam{
+        //states and triggers
+        public static readonly string TRIGGER_INTRO = "intro";
+        public static readonly string TRIGGER_ATTACK = "attack";
+        public static readonly string TRIGGER_TRANSFORM = "transform";
+        public static readonly string TRIGGER_DEATH = "death";
+        public static readonly string BOOL_INAIR = "inAir";
+
+        //inverse kinematics
+        public static readonly string FLOAT_IK_LF = "ik_lf";
+        public static readonly string FLOAT_IK_RF = "ik_rf";
+        public static readonly string FLOAT_IK_LH = "ik_lh";
+        public static readonly string FLOAT_IK_RH = "ik_rh";
+        public static readonly string FLOAT_ATTACKWEIGHT = "attackWeight";
+    }
     public class BossAnimator
     {
         private Animator animator;
@@ -37,8 +57,15 @@ namespace Boss {
             animator.SetInteger(_key, _val);
         }
 
+        public IEnumerator DoTriggerAnimation(string _triggerKey, bool _applyRootMotion, float _delayBeforeCallback, Action _callback) {
+            SetTrigger(_triggerKey, _applyRootMotion);
+            yield return new WaitForFixedUpdate();
+            yield return new WaitForSeconds(_delayBeforeCallback);
+            _callback();
+        }
+
         public IEnumerator DoAttackAnimation() {
-            SetTrigger("attack");
+            SetTrigger(BossAnimatorParam.TRIGGER_ATTACK);
             yield return new WaitForFixedUpdate();
             float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
 
@@ -48,7 +75,7 @@ namespace Boss {
             while (index < 3f) {
                 index += Time.deltaTime;
                 IKPass.RightArm.IKPosition = boss.Player.transform.position;
-                IKPass.RightArm.Weight = animator.GetFloat("attackWeight");
+                IKPass.RightArm.Weight = animator.GetFloat(BossAnimatorParam.FLOAT_ATTACKWEIGHT);
                 boss.Body.ToggleDeathColliders(IKPass.RightArm.Weight > 0);
                 yield return new WaitForFixedUpdate();
             }

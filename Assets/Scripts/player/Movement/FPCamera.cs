@@ -24,7 +24,10 @@ public class FPCamera
     private float cameraYIndex = 0;
     private float cameraZIndex = 0;
     private int verticalAngle = 80;
+
     private Transform steeringTarget;
+    private float steeringOffset = 0f;
+
     private bool cameraZRotationTilt = false;
 
     public bool CameraZRotationTilt {
@@ -211,7 +214,8 @@ public class FPCamera
         UseSteeringBehaviour = true;
         currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward;
         SteeringBehaviour.Velocity = Vector3.zero;
-        steeringTarget = boss.Head.transform;
+        steeringTarget = boss.Eye.transform;
+        steeringOffset = 10f;
     }
 
     private void ShowAimCutscene(Transform _target, float duration) {
@@ -231,7 +235,7 @@ public class FPCamera
     }
 
     public void UpdateSteeringBehaviour() {
-        desiredAim.position = steeringTarget.position;
+        desiredAim.position = steeringTarget.position - steeringTarget.up * steeringOffset;
         SteeringBehaviour.UpdatePosition();
         transform.LookAt(currentAim, Vector3.up);
         transform.localRotation = Quaternion.Euler( new Vector3(0, transform.localRotation.eulerAngles.y, 0));

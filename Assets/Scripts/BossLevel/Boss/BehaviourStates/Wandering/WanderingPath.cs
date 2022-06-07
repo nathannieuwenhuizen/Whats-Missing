@@ -44,7 +44,7 @@ public class WanderingPath : MonoBehaviour {
         showGizmo = false;
     }
     private void OnDrawGizmos() {
-        if (poses.Length < 1 || !showGizmo) return;
+        if (poses.Length < 1 || !showGizmo || Application.isPlaying == false) return;
         
         if (poses[0].position == null) return;
         
