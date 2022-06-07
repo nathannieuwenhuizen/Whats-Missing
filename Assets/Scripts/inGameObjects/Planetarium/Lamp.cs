@@ -35,6 +35,8 @@ public class Lamp : InteractabelObject
         cordStartPos = cord.localPosition;
         cordStartPos.z += animationOffset;
         cord.localPosition = cordStartPos;
+        largeScale = 400;
+        animationDuration = 2f;
     }
 
     private IEnumerator CordAnimation() {

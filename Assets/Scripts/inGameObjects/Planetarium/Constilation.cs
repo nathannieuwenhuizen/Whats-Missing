@@ -24,7 +24,8 @@ public class Constilation : RoomObject
 
     private Quaternion mianstartRotation;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         mianstartRotation = mainPivot.rotation;
         startRotation = pivot.rotation;
     }

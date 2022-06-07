@@ -16,6 +16,7 @@ public class RoomLevel : ScriptableObject
 public class RoomData {
     public bool revealChangesAfterFinish = true;
     public bool doCutsceneOnRevealingChanges = true;
+    public bool alwaysAnimate = false;
     public MirrorData[] questionMirror;
     public Change[] loadedChanges;
     [Header("Hints")]

@@ -104,6 +104,7 @@ public class Room : MonoBehaviour
         }
         get => animated;
     }
+    private bool changeLineAnimated = true;
 
     protected virtual void Awake() {
         hintStopwatch = new HintStopwatch(this);
@@ -187,7 +188,7 @@ public class Room : MonoBehaviour
 
         foreach (IChangable obj in foundObjects)
         {
-            if (obj.Animated && obj.Transform.GetComponent<Property>() == null) {
+            if (obj.Animated && obj.Transform.GetComponent<Property>() == null && changeLineAnimated) {
                     StartCoroutine(AnimateChangeEffect(delay, obj, 1f, () => {
                         callBack(obj);
                     }));
@@ -254,6 +255,25 @@ public class Room : MonoBehaviour
     public void AddChangeInRoomObjects(IChange change) {
         ForEachObjectWithMirrorWord(change, (IChangable obj) => { obj.AddChange(change); });  
     }
+
+
+    // private void Update() {
+    //     if (Input.GetKeyDown(KeyCode.P)) {
+    //         StartCoroutine(Test());
+    //     }
+    // }
+
+    // public IEnumerator Test() {
+    //     IChange newChange = new Change() { word = "books" };
+    //     AddChangeInRoomObjects(newChange);
+    //     yield return new WaitForSeconds(2f);
+    //     IChange newChange2 = new Change() { word = "lamp", changeType = ChangeType.tooBig };
+    //     AddChangeInRoomObjects(newChange2);
+    //     yield return new WaitForSeconds(6f);
+    //     IChange newChange3 = new Change() { word = "color" };
+    //     AddChangeInRoomObjects(newChange3);
+    //     yield return new WaitForSeconds(1f);
+    // }
     
     ///<summary>
     /// Checks if a mirror question is correct with the changes that exist inside the room.
@@ -322,7 +342,8 @@ public class Room : MonoBehaviour
         OnRoomEntering?.Invoke();
 
         hintStopwatch.Resume();
-        Animated = false;
+        changeLineAnimated = false;
+        Animated = roomLevel.roomInfo.alwaysAnimate ? true : false;
 
         if (loadSaveData) {
             roomstateHandler.LoadState(SaveData.current);
@@ -356,7 +377,9 @@ public class Room : MonoBehaviour
 
         beginState = SaveData.GetStateOfRoom(this);
         
+        changeLineAnimated = true;
         Animated = true;
+
 
         roomEnterEvent?.Invoke();
     }

@@ -161,6 +161,10 @@ public class FPCamera
 
 
 
+    private Vector3 currentMouseRotDeltaX;
+    private Vector3 currentMouseRotDeltaY;
+    private float lerpSpeed = 20f;
+    private bool lerped = false;
     ///<summary>
     ///Updates the camera and player rotation based on the delta of input.
     ///</summary>
@@ -174,11 +178,17 @@ public class FPCamera
 
         //horizontal rotation
         float inversionX = (controlSettings.Camera_x_invert ? -1 : 1);
-        transform.Rotate(new Vector3(0, mouseDelta.x * controlSettings.Camera_sensetivity * inversionX * cameraSensetivityFactor , 0));
+        currentMouseRotDeltaX =Vector3.Lerp(currentMouseRotDeltaX, 
+        new Vector3(0, mouseDelta.x * controlSettings.Camera_sensetivity * inversionX * cameraSensetivityFactor , 0), Time.deltaTime * lerpSpeed);
+        if (lerped) transform.Rotate(currentMouseRotDeltaX);
+        else transform.Rotate(new Vector3(0, mouseDelta.x * controlSettings.Camera_sensetivity * inversionX * cameraSensetivityFactor , 0));
 
         //vertical rotation
         float inversionY = (controlSettings.Camera_y_invert ? -1 : 1);
-        cameraPivot.Rotate(new Vector3(-mouseDelta.y * controlSettings.Camera_sensetivity * inversionY * cameraSensetivityFactor, 0, 0));
+        currentMouseRotDeltaY =Vector3.Lerp(currentMouseRotDeltaY, 
+        new Vector3(-mouseDelta.y * controlSettings.Camera_sensetivity * inversionY * cameraSensetivityFactor, 0, 0), Time.deltaTime * lerpSpeed);
+        if (lerped) cameraPivot.Rotate(currentMouseRotDeltaY);
+        else cameraPivot.Rotate(new Vector3(-mouseDelta.y * controlSettings.Camera_sensetivity * inversionY * cameraSensetivityFactor, 0, 0));
 
 
         //setting max angle cap

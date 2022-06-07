@@ -200,7 +200,6 @@ public class Area : MonoBehaviour
                                 mirror.Letters = mirror.MirrorData.letters;
                             }
                         }
-                        Debug.Log(mirror.MirrorData.isInteractable);
                         mirror.MirrorCanvas.IsInteractable = mirror.MirrorData.isInteractable;
                         mirrorIndex++;
                     }
