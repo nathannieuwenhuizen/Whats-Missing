@@ -133,9 +133,10 @@ public class NavMeshBehaviour : IMovementBehavior
         NavMeshHit myNavHit;
         Vector3 turnTowardNavSteeringTarget = navMeshAgent.velocity;
         Vector3 direction = navMeshAgent.velocity; // (turnTowardNavSteeringTarget - transform.position).normalized;
-        if(NavMesh.SamplePosition(navMeshAgent.nextPosition, out myNavHit, .1f, -1 ))
-            direction = myNavHit.normal;
+        // if(NavMesh.SamplePosition(navMeshAgent.nextPosition, out myNavHit, .1f, -1 ))
+        //     direction = myNavHit.normal;
 
+        Debug.Log("direction navmesh = " + direction);
         if (direction.magnitude != 0) {
             return Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
         }

@@ -19,7 +19,7 @@ namespace Boss {
             yield return new WaitForSeconds(2f);
             Boss.Head.LookAtPlayer = true;
             Vector3 start = bossAI.Boss.transform.position;
-            yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(0,0,-50), AnimationCurve.EaseInOut(0,0,1,1), 6f);
+            yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(0,10,-20), AnimationCurve.EaseInOut(0,0,1,1), 6f);
             // yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(0,40,-20), AnimationCurve.EaseInOut(0,0,1,1), 3f);
             // yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(-30,30,0), AnimationCurve.EaseInOut(0,0,1,1), 4f);
 

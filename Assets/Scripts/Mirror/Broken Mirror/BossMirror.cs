@@ -80,6 +80,17 @@ public class BossMirror : Mirror, ITriggerArea
         // foreach(MirrorShard shard in shards) {
         //     shard.PlanarReflection.SetRenderTexture(PlanarReflection.reflectionCamera.targetTexture);
         // }
+
+        // StartCoroutine(SkipIntro());
+    }
+
+    public IEnumerator SkipIntro() {
+        yield return new WaitForSeconds(.1f);
+        introCutscene = true;
+        for (int i = 0; i < shards.Length; i++) {
+            shards[i].animated = false;
+            shards[i].DisconnectedFromMirror();
+        }
     }
 
     public void TogleVisibilityUnselectedObj(float alpha) {

@@ -24,7 +24,7 @@ public class ShardPositionInfo {
 
 public class MirrorShard : PickableRoomObject
 {
-
+    public bool animated = true;
     public delegate void OnMirroShardPickEvent(MirrorShard _shard);
     public static OnMirroShardPickEvent OnPickedUp;
     private bool hasAlreadyBeenPickedUp = false;
@@ -157,19 +157,22 @@ public class MirrorShard : PickableRoomObject
     }
     private IEnumerator Exploding() {
         float index = 0;
-        while (index < explosionuration) {
+        while (index < explosionuration && animated) {
             index += Time.deltaTime;
             transform.position = Extensions.CalculateQuadraticBezierPoint(fallCurve.Evaluate(index / explosionuration), fallPositionStart, fallPositionMid, positionInfo.fallPosition.position);
-            rb.velocity = Vector3.zero;
+            if (rb) rb.velocity = Vector3.zero;
             yield return new WaitForFixedUpdate();
         }
-        rb.position = positionInfo.fallPosition.position;
-        rb.rotation = positionInfo.fallPosition.rotation;
+        transform.position = positionInfo.fallPosition.position;
+        transform.rotation = positionInfo.fallPosition.rotation;
         if (positionInfo.setAsParent) {
             transform.SetParent(positionInfo.fallPosition);
         }
-        rb.useGravity = positionInfo.useGravityAfterFall;
-        rb.isKinematic = !positionInfo.useGravityAfterFall; //might change later
+        rb = GetComponent<Rigidbody>();
+        if (rb) {
+            rb.useGravity = positionInfo.useGravityAfterFall;
+            rb.isKinematic = !positionInfo.useGravityAfterFall; //might change later
+        }
 
         if (!positionInfo.visibleAfterFalling) {
             ToggleVisibilty(false);

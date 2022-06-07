@@ -14,6 +14,10 @@ namespace Boss {
             stateName = "Transformation cutscene";
             base.DoReaction();
             bossAI.StartCoroutine(Transforming());
+            bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_TRANSFORM, true, 10f, () => {
+                OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
+            }));
+
         }
         ///<summary>
         /// Boss does the transformation, applying the fire change and transforming their body to get extra tentacles.

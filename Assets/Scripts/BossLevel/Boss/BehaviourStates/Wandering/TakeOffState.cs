@@ -21,6 +21,7 @@ namespace Boss {
             bossAI.Boss.BossPositioner.MovementEnabled = true;
             bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.airSteering;
             Boss.Head.LookAtPlayer = false;
+            Boss.Body.BossAnimator.SetBool(BossAnimatorParam.BOOL_INAIR, true);
 
             if (bossAI.Boss.BossPositioner.InAir == false) {
                 Positioner.SetDestinationPath(bossAI.transform.position, bossAI.transform.position);

@@ -8,12 +8,17 @@ namespace Boss {
 
     public class DieState : BossCutsceneState
     {
-        public override void Start()
+    public override void Start()
         {
             stateName = "Die cutscene";
             base.Start();
             bossAI.StartCoroutine(TestAnimation());
             Boss.Head.LookAtPlayer = false;
+
+            bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_DEATH, true, 10f, () => {
+                // OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
+            }));
+
         }
         public IEnumerator TestAnimation() {
             yield return new WaitForEndOfFrame();

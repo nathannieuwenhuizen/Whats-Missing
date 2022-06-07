@@ -215,7 +215,8 @@ public class FPCamera
         currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward;
         SteeringBehaviour.Velocity = Vector3.zero;
         steeringTarget = boss.Eye.transform;
-        steeringOffset = 10f;
+        steeringOffset = 5f;
+        
     }
 
     private void ShowAimCutscene(Transform _target, float duration) {

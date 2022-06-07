@@ -159,7 +159,7 @@ public class CharacterAnimationPlayer
     public void OnBossCutsceneStart(Boss.Boss boss) {
         if (inBossCutscene) return;
         PlayCutSceneAnimation("", false);
-        CameraZoom = 50f;
+        CameraZoom = 70f;
     }
     public void OnBossCutsceneEnd(Boss.Boss boss) {
         EndOfCutSceneAnimation();
