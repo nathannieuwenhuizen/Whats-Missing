@@ -10,6 +10,7 @@ namespace Boss {
         public MountainCoordinate begin;
         public MountainCoordinate end;
         public int steps;
+        public const float offset = 5f;
 
         private MountainCoordinate[] coords;
         public MountainCoordinate[] Coords {
@@ -46,9 +47,14 @@ namespace Boss {
             if (Coords.Length == 0) return default(MountainCoordinate);
 
             if (_pathHandeler.OnSurface == false) {
-                for (int j = coords.Length - 1; j >= 0; j--) 
-                    if (coords[j].NormalIsVisible(_pathHandeler, _pos)) 
-                        return coords[j];
+                // for (int j = coords.Length - 1; j >= 0; j--) 
+                //     if (coords[j].NormalIsVisible(_pathHandeler, _pos)) 
+                //         return coords[j];
+                MountainCoordinate coord = coords[0];
+                for (int j = 0; j < coords.Length - 1; j++) 
+                    if (coords[j].PathNormalIsVisible(_pathHandeler, this, _pos)) 
+                        coord = coords[j];
+                    return coord;
             } else {
                 int index = GetClosestCoordOnDistance(_pathHandeler, _pos).getIndexFromArray(coords);
                 return coords[Mathf.Clamp(index + 1, 0, coords.Length - 1)];
@@ -63,7 +69,7 @@ namespace Boss {
             MountainCoordinate chosen = coords[coords.Length - 1];
             float closestDistance = Mathf.Infinity;
             for (int j = 0; j < coords.Length; j++) {
-                float dist = (coords[j].ToPrimitiveVector(_pathHandeler) - _pos).magnitude;
+                float dist = (coords[j].ToShapeVector(_pathHandeler) - _pos).magnitude;
                 if (dist < closestDistance) {
                     closestDistance = dist;
                     chosen = coords[j];
@@ -79,11 +85,12 @@ namespace Boss {
                 // Debug.DrawLine(oldPos, coord.ToVector(pathHandeler), pathHandeler.DebugColor);
                 // oldPos = coord.ToVector(pathHandeler);
 
-                Color normalColor = normalColor = coord.NormalIsVisible(pathHandeler, pathHandeler.Boss.transform.position) ? Color.green : Color.red;
+                Color normalColor = normalColor = coord.PathNormalIsVisible(pathHandeler, this, pathHandeler.Boss.transform.position) ? Color.green : Color.red;
                 Color directionColor = coord.DirectionIsVisible(pathHandeler, pathHandeler.Boss.transform.position, this) ? Color.green : Color.red;
                  
 
-                Debug.DrawLine(coord.ToVector(pathHandeler), coord.ToVector(pathHandeler) + coord.Normal(pathHandeler) * 5f, normalColor);
+                // Debug.DrawLine(coord.ToVector(pathHandeler), coord.ToVector(pathHandeler) + coord.Normal(pathHandeler) * offset, normalColor);
+                Debug.DrawLine(coord.ToVector(pathHandeler), coord.ToVector(pathHandeler) + coord.PathNormal(pathHandeler, this) * offset, normalColor);
                 Debug.DrawLine(coord.ToVector(pathHandeler), coord.ToVector(pathHandeler) + GetPathDirection(coord, pathHandeler) * 5f, directionColor);
                 Gizmos.DrawSphere(coord.ToVector(pathHandeler), .5f);
             }

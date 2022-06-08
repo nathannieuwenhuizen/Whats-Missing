@@ -14,7 +14,7 @@ namespace Boss {
             base.Start();
             Positioner.MovementEnabled = true;
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
-            Positioner.BodyMovementType = BodyMovementType.airSteering;
+            Positioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
             Positioner.SetDestinationPath(bossAI.ReactionPosition.position, bossAI.transform.position);
             bossAI.StartCoroutine(GoToReactionPose());
         }

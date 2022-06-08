@@ -36,7 +36,7 @@ public class ChargeAtShieldState : BaseChaseState
         public override void Run()
         {
             // base.Run();
-            if (positioner.AtPosition(Boss.BOSS_ATTACK_SHIELD_RANGE)) Attack();
+            if (positioner.AtPosition(Boss.BOSS_ATTACK_SHIELD_RANGE)) MeleeAttack();
 
         }
 

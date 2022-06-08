@@ -67,7 +67,6 @@ public class MirrorCanvas : MonoBehaviour
         get { return isInteractable; }
         set { 
             isInteractable = value; 
-            Debug.Log("is interactable = " + value);
             UpdateCanvas();
         }
     }

@@ -25,7 +25,7 @@ public class DialogueLoader {
     public static Dialogue LoadResourceTextfile(string path)
     {
         TextAsset targetFile = Resources.Load<TextAsset>(path);
-        Debug.Log("target file: " + targetFile.text);
+        // Debug.Log("target file: " + targetFile.text);
         return JsonUtility.FromJson<Dialogue>(targetFile.text);
     }
 }

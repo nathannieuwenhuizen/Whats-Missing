@@ -46,7 +46,7 @@ public class BaseChaseState : BaseBossState
         bossAI.BossEye.noticingValue = 0;
     }
         private bool isAttacking = false;
-        protected void Attack() {
+        protected void MeleeAttack() {
             if (isAttacking) return;
             bossAI.StartCoroutine(Attacking());
         }

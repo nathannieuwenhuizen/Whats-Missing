@@ -73,6 +73,7 @@ public class AirSteeringBehaviour : IMovementBehavior
     public void DrawGizmo()
     {
         if (bossMountain != null) path.DrawGizmo(bossMountain);
+        Gizmos.DrawSphere(desiredTempPos.position, 1f);
     }
 
     public Vector3 GetClosestPointOnPath(Vector3 _position)

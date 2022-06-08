@@ -31,7 +31,7 @@ public class WanderingPath : MonoBehaviour {
         get { return landingPosition;}
     }
     [SerializeField]
-    private Boss.BodyMovementType bossMovementType = Boss.BodyMovementType.airSteering;
+    private Boss.BodyMovementType bossMovementType = Boss.BodyMovementType.airSteeringAtMountain;
     public Boss.BodyMovementType BossMovementType {
         get { return bossMovementType; }
     }
@@ -75,9 +75,9 @@ public class WanderingPath : MonoBehaviour {
                     // Gizmos.DrawWireMesh(gizmosRenderer.sharedMesh, poses[i].position.position + Vector3.up * Boss.Boss.BOSS_HEIGHT, Quaternion.identity, gizmosRenderer.transform.lossyScale);//  Quaternion.LookRotation(-poses[i].position.position, -Vector3.right), 
                     Vector3 aim = -poses[i].position.position; 
                     aim.y = 0;
-                    Quaternion aimRot = Quaternion.LookRotation(aim, -Vector3.up);
+                    Quaternion aimRot = Quaternion.LookRotation(aim, Vector3.up);
                     // aimRot.y
-                    Gizmos.DrawWireMesh(gizmosRenderer.sharedMesh, poses[i].position.position + Vector3.up * Boss.Boss.BOSS_HEIGHT, Quaternion.Euler(aimRot.eulerAngles.x,aimRot.eulerAngles.y,aimRot.eulerAngles.z - 90), 
+                    Gizmos.DrawWireMesh(gizmosRenderer.sharedMesh, poses[i].position.position + Vector3.up * Boss.Boss.BOSS_HEIGHT, Quaternion.Euler(aimRot.eulerAngles.x,aimRot.eulerAngles.y - 90,aimRot.eulerAngles.z - 90), 
                     gizmosRenderer.transform.lossyScale);
                 }
 

@@ -17,7 +17,7 @@ public enum BodyMovementType {
     ///<summary>
     /// Uses air steering on the mountain surface.
     ///</summary>
-    airSteering,
+    airSteeringAtMountain,
     ///<summary>
     /// Ground based navigation movement
     ///</summary>
@@ -74,7 +74,7 @@ public static BossPositionEvent OnBossTakeOff;
     private FreeFloatBehaviour freefloatMovementBehaviour;
     public IMovementBehavior CurrentMovementBehaviour {
         get {
-            if (BodyMovementType == BodyMovementType.airSteering) return airMovementBehaviour;
+            if (BodyMovementType == BodyMovementType.airSteeringAtMountain) return airMovementBehaviour;
             else if (BodyMovementType == BodyMovementType.freeFloat) return freefloatMovementBehaviour;
             return navMeshMovementBehaviour;
         }
@@ -92,7 +92,7 @@ public static BossPositionEvent OnBossTakeOff;
         }
     }
 
-    BodyMovementType movementType = BodyMovementType.airSteering;
+    BodyMovementType movementType = BodyMovementType.airSteeringAtMountain;
     public BodyMovementType BodyMovementType {
         get { return movementType;}
         set { 
@@ -172,7 +172,6 @@ public static BossPositionEvent OnBossTakeOff;
             MountainCoordinate coord = MountainCoordinate.FromPosition(bossMountain, transform.position);
             Vector3 normal = -coord.Normal(bossMountain);
             desiredRotation = Quaternion.LookRotation(normal);
-            Debug.Log("update normal " + SpeedScale);
             break;
             case BodyOrientation.toPlayer:
             Vector3 delta = boss.Player.transform.position - transform.position;
@@ -205,7 +204,7 @@ public static BossPositionEvent OnBossTakeOff;
     public IEnumerator TakeOff(Action callback) {
         inAir = true;
         OnBossTakeOff?.Invoke();
-        BodyMovementType = BodyMovementType.airSteering;
+        BodyMovementType = BodyMovementType.airSteeringAtMountain;
         MovementEnabled = false;
         yield return StartCoroutine(transform.AnimatingPos(CurrentMovementBehaviour.GetClosestPointOnPath(), landingCurve, 2f));
         MovementEnabled = true;

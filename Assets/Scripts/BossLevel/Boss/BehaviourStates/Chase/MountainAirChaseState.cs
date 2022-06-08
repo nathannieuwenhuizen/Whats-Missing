@@ -4,9 +4,10 @@ using UnityEngine;
 
 namespace Boss {
 
-    public class AirChaseState : BaseChaseState
+    public class MountainAirChaseState : BaseChaseState
     {
         private Vector3 startChasePos;
+        private Vector3 destinationChasePos;
         public override void DrawDebug()
         {
             base.DrawDebug();
@@ -15,30 +16,31 @@ namespace Boss {
         public override void Start()
         {
             base.Start();
-            Positioner.BodyOrientation = BodyOrientation.toPath;
-            Positioner.BodyMovementType = BodyMovementType.freeFloat;
-            stateName = "Air Chase Chase";
+            Positioner.BodyOrientation = BodyOrientation.toPlayer;
+            Positioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
+            stateName = "Mountain Air Chase Chase";
             Positioner.MovementEnabled = true;
             Positioner.InAir = true;
+
+
+            MountainAttackPose.OnPlayerEnteringAttackArea += UpdateDestination;
             UpdateBossChasePath(true);
-
         }
 
-        ///<summary>
-        /// Calculates for the boss, if the reset bool is true, the begin pos will be again set to the boss current position.
-        ///</summary>
+        public void UpdateDestination(Vector3 _position) {
+            destinationChasePos = _position;
+            UpdateBossChasePath(false);
+            Debug.Log("new chase pos");
+        }
+
         private void UpdateBossChasePath(bool _resetBeginPos = false) {
-            if (_resetBeginPos) startChasePos = bossAI.transform.position +  Vector3.up * (Boss.BOSS_GROUND_OFFSET);
-
-            Positioner.SetDestinationPath(bossAI.Boss.Player.transform, startChasePos);
-            // positioner.SetDestinationPath(bossAI.Boss.Player.transform.position + Vector3.up * (Boss.BOSS_GROUND_OFFSET), startChasePos);
+            if (_resetBeginPos) startChasePos = bossAI.transform.position;
+            Positioner.SetDestinationPath(destinationChasePos, startChasePos);
         }
-
         public override void Run()
         {
             base.Run();
             if (Positioner.AtPosition(Boss.BOSS_MELEE_ATTACK_RANGE)) MeleeAttack();
-            
             UpdateBossChasePath(false);
             
             if (BossAI.PlayerIsInForceField)
@@ -49,6 +51,7 @@ namespace Boss {
 
         public override void Exit()
         {
+            MountainAttackPose.OnPlayerEnteringAttackArea -= UpdateDestination;
             base.Exit();
         }
     }

@@ -99,8 +99,6 @@ public class ControllerRebinds : MonoBehaviour
             controls.LoadBindingOverridesFromJson(data);
         }
 
-        Debug.Log("rebinds are loaded");
-
         OnRebindChanged?.Invoke(controls);
 
         return controls;

@@ -17,7 +17,7 @@ public class BossVoice
     public BossVoice(Transform _transform) {
         transform = _transform;
         dialogue = DialogueLoader.LoadResourceTextfile(resourceDialoguePath);
-        Debug.Log("dialogue lengths" + dialogue.lines.Length);
+        // Debug.Log("dialogue lengths" + dialogue.lines.Length);
     }
 
     public void Talk(string _id) {

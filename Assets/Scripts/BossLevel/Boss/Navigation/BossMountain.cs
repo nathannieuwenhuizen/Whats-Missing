@@ -72,7 +72,7 @@ public class BossMountain : MonoBehaviour
         get { return boss;}
     }
 
-    private void OnDrawGizmos() {
+    private void OnDrawGizmosSelected() {
         if (!enableDebug) return;
 
         Gizmos.color = debugColor;

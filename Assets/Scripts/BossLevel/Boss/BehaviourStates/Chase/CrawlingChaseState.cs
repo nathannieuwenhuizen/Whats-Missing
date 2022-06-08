@@ -40,7 +40,7 @@ namespace Boss {
         public override void Run()
         {
             base.Run();
-            if (Positioner.AtPosition(Boss.BOSS_ATTACK_PLAYER_RANGE)) Attack();
+            if (Positioner.AtPosition(Boss.BOSS_MELEE_ATTACK_RANGE)) MeleeAttack();
             
             UpdateBossChasePath(false);
             

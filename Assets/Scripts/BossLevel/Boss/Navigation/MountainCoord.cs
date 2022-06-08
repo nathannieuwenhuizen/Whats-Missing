@@ -18,11 +18,23 @@ public struct MountainCoordinate {
             angle = value % 360;
         }
     }
+
+    private float pathOffset;
+    public float PathOffset {
+        get { return pathOffset;}
+        set { pathOffset = value; }
+    } 
     ///<summary>
     /// The world Y position
     ///</summary>
     public float yPos;
-    public Vector3 ToPrimitiveVector(BossMountain _pathHandeler, float offset = 0) {
+    public Vector3 ToShapeVector(BossMountain _pathHandeler, float offset = 0) {
+        Vector3 result = Vector3.zero;
+        result = ToPrimitiveVector(_pathHandeler);
+        if (offset != 0 || pathOffset != 0) result += Normal(_pathHandeler) * (offset+ pathOffset);
+        return result;
+    }
+    public Vector3 ToPrimitiveVector(BossMountain _pathHandeler) {
         Vector3 result = Vector3.zero;
 
         float precentage = Mathf.Clamp(yPos - _pathHandeler.transform.position.y, 0, _pathHandeler.Height) / _pathHandeler.Height;
@@ -31,14 +43,12 @@ public struct MountainCoordinate {
         result.y = yPos;
         result.x = _pathHandeler.transform.position.x + Mathf.Cos(Angle * Mathf.Deg2Rad) * resultRadius;
         result.z = _pathHandeler.transform.position.z + Mathf.Sin(Angle * Mathf.Deg2Rad) * resultRadius;
-
-        if (offset != 0) result += Normal(_pathHandeler) * offset;
-
         return result;
     }
+    
     public Vector3 ToVector(BossMountain _pathHandeler, float offset = 0) {
         if (_pathHandeler.OnSurface) return CalculateRayCastedVector(_pathHandeler);
-        return ToPrimitiveVector(_pathHandeler, offset);
+        return ToShapeVector(_pathHandeler, offset);
     }
 
     private Vector3 raycastedNormal;
@@ -46,7 +56,7 @@ public struct MountainCoordinate {
     /// Returns the vector of the path that sticks at the mesh that is inside the shape
     ///</summary>
     public Vector3 CalculateRayCastedVector(BossMountain _pathHandeler) {
-        Vector3 result = ToPrimitiveVector(_pathHandeler, 0);
+        Vector3 result = ToPrimitiveVector(_pathHandeler);
         RaycastHit hit;
         if (Physics.SphereCast(result, Boss.BOSS_SIZE * .9f, -PrimitiveNormal(_pathHandeler), out hit, _pathHandeler.BottomRadius)) {
             result = hit.point + PrimitiveNormal(_pathHandeler) * Boss.BOSS_SIZE;
@@ -65,6 +75,10 @@ public struct MountainCoordinate {
 
     public static MountainCoordinate Lerp(MountainCoordinate begin, MountainCoordinate end, float index) {
         float _angle = Mathf.Lerp(begin.Angle, end.Angle, index);
+        float _pathOffset = 0;
+        if (index > 0 && index < 1) {
+            _pathOffset = Mathf.Sin(index * Mathf.PI) * 10f;
+        }
         if (Mathf.Abs(begin.angle - end.angle) > 180f)
         {
             float beginAngle = begin.Angle;
@@ -76,7 +90,8 @@ public struct MountainCoordinate {
         }
         return new MountainCoordinate() {
             angle = _angle,
-            yPos = Mathf.Lerp(begin.yPos,end.yPos, index)
+            yPos = Mathf.Lerp(begin.yPos,end.yPos, index),
+            pathOffset = _pathOffset
         };
     }
 
@@ -88,6 +103,18 @@ public struct MountainCoordinate {
         return PrimitiveNormal(_pathHandler);
     }
     
+    public  Vector3 PathNormal(BossMountain _pathHandler, MountainPath _path) {
+        Vector3 result= Vector3.zero;
+        Vector3 a = _path.GetPathDirection(this, _pathHandler);
+        Vector3 b = Vector3.up;
+        result = Vector3.Cross(a, b).normalized;
+        result.y = PrimitiveNormal(_pathHandler).y;
+
+        Vector3 delta = ToVector(_pathHandler);
+
+        bool dot = Vector3.Dot(delta, result) > 0;
+        return result.normalized * (dot ? 1 : -1);
+}
     private Vector3 PrimitiveNormal(BossMountain _pathHandler) {
         Vector3 result= Vector3.zero;
         Vector3 delta = ToPrimitiveVector(_pathHandler) - _pathHandler.transform.position;
@@ -96,12 +123,19 @@ public struct MountainCoordinate {
         result = result.normalized;
         float _angle = 90 - Mathf.Atan2( _pathHandler.Height, (_pathHandler.BottomRadius - _pathHandler.TopRadius )) * Mathf.Rad2Deg;
         result.y = Mathf.Sin( _angle * Mathf.Deg2Rad);
+
         return result.normalized;
     }
     
     public bool NormalIsVisible(BossMountain _pathhandeler, Vector3 _viewPos) {
         Vector3 delta = _viewPos - ToVector(_pathhandeler);
         float dot = Vector3.Dot(delta, Normal(_pathhandeler));
+        return dot > 0;
+    }
+
+    public bool PathNormalIsVisible(BossMountain _pathhandeler, MountainPath _path, Vector3 _viewPos) {
+        Vector3 delta = _viewPos - ToVector(_pathhandeler);
+        float dot = Vector3.Dot(delta, PathNormal(_pathhandeler, _path));
         return dot > 0;
     }
 

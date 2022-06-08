@@ -293,7 +293,7 @@ public class MirrorShard : PickableRoomObject
         animating = false;
     }
 
-    private void OnDrawGizmos() {
+    private void OnDrawGizmosSelected() {
         if (letterCoords != null) {
             Gizmos.color = Color.white;
             for (int i = 0; i < letterCoords.Length; i++) {

@@ -19,7 +19,7 @@ namespace Boss {
 
             bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.toShape;
             bossAI.Boss.BossPositioner.MovementEnabled = true;
-            bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.airSteering;
+            bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
             Boss.Head.LookAtPlayer = false;
             Boss.Body.BossAnimator.SetBool(BossAnimatorParam.BOOL_INAIR, true);
 

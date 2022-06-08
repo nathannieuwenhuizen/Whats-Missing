@@ -21,7 +21,7 @@ namespace Boss {
 #if UNITY_EDITOR
             debugStyle = new GUIStyle();
             debugStyle.normal.textColor = Color.white;
-            debugStyle.fontSize = 20;
+            debugStyle.fontSize = 10;
             debugStyle.border = new RectOffset(5,5,5,5);
             GUI.backgroundColor = Color.black;
             Handles.Label(bossAI.transform.position, stateName, debugStyle);

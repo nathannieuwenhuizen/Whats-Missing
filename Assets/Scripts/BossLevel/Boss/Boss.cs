@@ -14,9 +14,10 @@ namespace Boss {
     public class Boss : RoomObject
     {       
         public const float BOSS_SIZE = 8f;
-        public const float BOSS_HEIGHT = 17f;
+        public const float BOSS_HEIGHT = 17f * .7f;
         public const float BOSS_GROUND_OFFSET = 2f;
-        public const float BOSS_ATTACK_PLAYER_RANGE = 10f;
+        public const float BOSS_MELEE_ATTACK_RANGE = 10f;
+        public const float BOSS_LASER_ATTACK_RANGE = 30f;
         public const float BOSS_ATTACK_SHIELD_RANGE = 5f;
 
         [Header("Boss info")]

@@ -19,6 +19,7 @@ namespace Boss {
 
             crawlingChaseState = new CrawlingChaseState() {bossAI = _ai };
             airChaseState = new AirChaseState() {bossAI = _ai };
+            mountainAirChaseState = new MountainAirChaseState() {bossAI = _ai };
             chargeAtShieldState = new ChargeAtShieldState() {bossAI = _ai };
 
             landingState = new LandingState() {bossAI = _ai };
@@ -45,6 +46,7 @@ namespace Boss {
         //chase
         public CrawlingChaseState crawlingChaseState; 
         public AirChaseState airChaseState; 
+        public MountainAirChaseState mountainAirChaseState; 
         public ChargeAtShieldState chargeAtShieldState; 
     }
 }

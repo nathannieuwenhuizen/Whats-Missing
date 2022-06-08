@@ -81,7 +81,7 @@ public class BossMirror : Mirror, ITriggerArea
         //     shard.PlanarReflection.SetRenderTexture(PlanarReflection.reflectionCamera.targetTexture);
         // }
 
-        // StartCoroutine(SkipIntro());
+        StartCoroutine(SkipIntro());
     }
 
     public IEnumerator SkipIntro() {
