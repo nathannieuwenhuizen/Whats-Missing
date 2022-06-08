@@ -8,8 +8,8 @@ namespace Boss {
     {
         public override void OnAreaEnter(Player player)
         {
-            if (BossAI.PlayerIsInForceField == false)
-                base.OnAreaEnter(player);
+            // if (BossAI.PlayerIsInForceField == false)
+                // base.OnAreaEnter(player);
         }
         public override void OnRoomEnter()
         {

@@ -76,7 +76,7 @@ public struct MountainCoordinate {
     public static MountainCoordinate Lerp(MountainCoordinate begin, MountainCoordinate end, float index) {
         float _angle = Mathf.Lerp(begin.Angle, end.Angle, index);
         float _pathOffset = 0;
-        if (index > 0 && index < 1) {
+        if (index > 0 && index < 1 && Mathf.Abs(begin.angle - end.angle) > 5f) {
             _pathOffset = Mathf.Sin(index * Mathf.PI) * 10f;
         }
         if (Mathf.Abs(begin.angle - end.angle) > 180f)

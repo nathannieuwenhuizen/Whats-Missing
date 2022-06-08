@@ -48,11 +48,12 @@ public class BaseChaseState : BaseBossState
         private bool isAttacking = false;
         protected void MeleeAttack() {
             if (isAttacking) return;
+            isAttacking = true;
+            Debug.Log("do melee attack");
             bossAI.StartCoroutine(Attacking());
         }
 
         protected virtual IEnumerator Attacking() {
-            isAttacking = true;
             // Boss.BossPositioner.MovementEnabled = false;
             // bossAI.Boss.Body.ToggleDeathColliders(true);
             BodyOrientation oldOrientation = Positioner.BodyOrientation;

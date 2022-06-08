@@ -74,6 +74,8 @@ public class SteeringBehaviour
 
         float _maxVelocity = maxVelocity * _speed;
         float _maxForce = maxForce * _speed;
+        float _mass = mass / _speed;
+        float _slowingAmplitude = slowingAmplitude / _speed;
 
         if (_desiredPosition == default(Vector3))
             desiredVelocity = (desiredTarget.position - target.position);
@@ -85,7 +87,7 @@ public class SteeringBehaviour
         // is inside the slowing area
         if (distance < slowingRadius) {
             // Inside the slowing area
-            desiredVelocity = desiredVelocity.normalized * _maxVelocity * ((distance / slowingRadius) * slowingAmplitude);
+            desiredVelocity = desiredVelocity.normalized * _maxVelocity * ((distance / slowingRadius) * _slowingAmplitude);
         } else {
             // Outside the slowing area.
             desiredVelocity = desiredVelocity.normalized * _maxVelocity;
@@ -93,7 +95,7 @@ public class SteeringBehaviour
 
         steering = desiredVelocity - velocity;
         if (steering.magnitude > _maxForce) steering = steering.normalized * _maxForce;
-        steering /= mass;
+        steering /= _mass;
 
         velocity += steering;
 

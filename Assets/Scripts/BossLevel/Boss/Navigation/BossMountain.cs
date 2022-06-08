@@ -59,7 +59,7 @@ public class BossMountain : MonoBehaviour
         float radius = Mathf.Lerp(bottomRadius, topRadius, precentage);
         Vector3 delta = _position - transform.position;
         delta.y = 0;
-        return delta.magnitude < radius;
+        return delta.magnitude < radius * 1.3f;
         // return false;
     }
     // public Vector3 GetAimPosition

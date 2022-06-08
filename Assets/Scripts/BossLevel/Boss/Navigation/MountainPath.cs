@@ -51,7 +51,7 @@ namespace Boss {
                 //     if (coords[j].NormalIsVisible(_pathHandeler, _pos)) 
                 //         return coords[j];
                 MountainCoordinate coord = coords[0];
-                for (int j = 0; j < coords.Length - 1; j++) 
+                for (int j = 0; j < coords.Length; j++) 
                     if (coords[j].PathNormalIsVisible(_pathHandeler, this, _pos)) 
                         coord = coords[j];
                     return coord;

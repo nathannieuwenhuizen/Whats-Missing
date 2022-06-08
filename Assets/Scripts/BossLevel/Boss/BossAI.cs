@@ -31,6 +31,11 @@ public class BossAI : MonoBehaviour {
         get { return stateMachine;}
     }
 
+    private Vector3 mountainAttackPosition;
+    public Vector3 MountainAttackPosition {
+        get { return mountainAttackPosition;}
+    }
+
     private BossBehaviours behaviours;
     public BossBehaviours Behaviours {
         get { return behaviours;}
@@ -120,10 +125,15 @@ public class BossAI : MonoBehaviour {
         }
     }
 
+    private void UpdateMountainAttackPosition(Vector3 _pos) {
+        mountainAttackPosition = _pos;
+    }
+
     private void OnEnable() {
         BossMirror.OnMirrorExplode += DoIntro;
         BossMirror.OnMirrorExplode += MirrorShardRecolectReaction;
         MirrorShard.OnPickedUp += MirrShardPickupEvent;
+        MountainAttackPose.OnPlayerEnteringAttackArea += UpdateMountainAttackPosition;
 
         BossMirror.OnBossMirrorShardAttached += MirrorShardRecolectReaction;
         ForcefieldDemo.Forcefield.OnForceFieldEnter += PlayerIsInsdeForceField;
@@ -134,6 +144,7 @@ public class BossAI : MonoBehaviour {
         BossMirror.OnMirrorExplode += DoIntro;
         BossMirror.OnMirrorExplode -= MirrorShardRecolectReaction;
         MirrorShard.OnPickedUp -= MirrShardPickupEvent;
+        MountainAttackPose.OnPlayerEnteringAttackArea -= UpdateMountainAttackPosition;
 
         ForcefieldDemo.Forcefield.OnForceFieldEnter -= PlayerIsInsdeForceField;
         ForcefieldDemo.Forcefield.OnForceFieldExit -= PlayerIsOutsideForceField;
