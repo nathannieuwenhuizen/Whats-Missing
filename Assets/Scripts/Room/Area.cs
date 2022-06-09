@@ -19,11 +19,16 @@ public class Area : MonoBehaviour
     private Color startColor = Color.black;
     [SerializeField]
     private int areaIndex = 0;
+    [SerializeField]
+    private bool isDemo = false;
 
     public delegate void UndoActionEvent(Room _room);
     public static UndoActionEvent OnUndo;
     public delegate void RoomEvent();
     public delegate void RoomRespawnEvent(bool withColor);
+    public delegate void NextAreaEvent(int _index);
+    public static NextAreaEvent OnNextArea;
+    public static NextAreaEvent OnEndOfDemo;
     public static RoomEvent OnNewRoomEnter;
     public static RoomEvent OnFirstAreaEnter;
     public static RoomEvent OnSecondAreaEnter;
@@ -45,9 +50,6 @@ public class Area : MonoBehaviour
     [SerializeField]
     private int loadRoomIndex = 0;
     private int furthestCurrentRoomIndex;
-
-    [SerializeField]
-    private UnityEvent areaFinishedEvent;
 
     private bool loadRoomState = false;
 
@@ -277,6 +279,8 @@ public class Area : MonoBehaviour
         Door.OnDoorOpen += ShowNextRoom;
         InputManager.OnUndo += UndoAction;
         Player.OnDie += ResetPlayer;
+        TeddyBear.OnCutsceneEnd += EndOfArea;
+        AlchemyItem.OnAlchemyEndScene += EndOfArea;
         InputManager.OnReset += ResetRoom;
     }
 
@@ -286,6 +290,9 @@ public class Area : MonoBehaviour
         InputManager.OnUndo -= UndoAction;
         Player.OnDie -= ResetPlayer;
         InputManager.OnReset -= ResetRoom;
+
+        TeddyBear.OnCutsceneEnd -= EndOfArea;
+        AlchemyItem.OnAlchemyEndScene -= EndOfArea;
 
         if (AUTO_SAVE_WHEN_DESTROY) SaveProgress();
     }
@@ -359,6 +366,14 @@ public class Area : MonoBehaviour
             }
         }
         StartCoroutine(door.Walking(1.5f, player));
+    }
+
+    ///<summary>
+    /// Go to next level. Or ned of demo
+    ///</summary>
+    public void EndOfArea() {
+        if (isDemo) OnEndOfDemo?.Invoke(areaIndex);
+        else OnNextArea?.Invoke(areaIndex);
     }
 
 }

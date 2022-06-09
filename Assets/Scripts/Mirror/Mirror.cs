@@ -134,7 +134,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     }
 
     public void ConfirmationSucceeded() {
-        if (room.Animated)
+        if (room.Animated && room.ChangeLineAnimated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_true, .5f);
 
         foreach(Letter letter in mirrorCanvas.selectedLetterObjects) {
@@ -143,7 +143,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     }
 
     public void ConfirmationFailed() {
-        if (room.Animated)
+        if (room.Animated && room.ChangeLineAnimated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);
 
         // mirrorCanvas.DeselectLetters();

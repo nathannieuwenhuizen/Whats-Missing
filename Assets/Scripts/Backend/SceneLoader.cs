@@ -102,19 +102,18 @@ public class SceneLoader : MonoBehaviour
     }
 
     private void OnEnable() {
-        AlchemyItem.OnAlchemyEndScene += GoToSecondLevel;
+        Area.OnNextArea += GoToNextLevel;
         PauseScreen.OnQuit += BackToMenu;
     }
 
 
     private void BackToMenu() {
-        LoadNewSceneAnimated("Menu");
+        LoadNewSceneAnimated(Scenes.MENU_SCENE_NAME);
     }
 
     private void OnDisable() {
-        AlchemyItem.OnAlchemyEndScene -= GoToSecondLevel;
+        Area.OnNextArea -= GoToNextLevel;
         PauseScreen.OnQuit -= BackToMenu;
-
     }
 
 
@@ -126,7 +125,18 @@ public class SceneLoader : MonoBehaviour
         Area.AUTO_SAVE_WHEN_DESTROY = false;
         LoadNewScene(Scenes.SECOND_LEVEL_SCENE_NAME, false);
         // LoadingSceneAsync(Scenes.SECOND_LEVEL_SCENE_NAME);
+    }
 
+    ///<summary>
+    /// Loads the next scene based on the area index
+    ///</summary>
+    private void GoToNextLevel(int _currentAreaIndex) {
+        SaveData.current.areaIndex = _currentAreaIndex + 1;
+        SaveData.current.roomIndex = 0;
+        SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
+
+        Area.AUTO_SAVE_WHEN_DESTROY = false;
+        LoadNewScene(Scenes.GetSceneNameBasedOnAreaIndex(_currentAreaIndex + 1), false);
     }
 
     ///<summary>

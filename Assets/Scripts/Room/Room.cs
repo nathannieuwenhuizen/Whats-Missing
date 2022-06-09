@@ -105,6 +105,9 @@ public class Room : MonoBehaviour
         get => animated;
     }
     private bool changeLineAnimated = true;
+    public bool ChangeLineAnimated {
+        get { return changeLineAnimated;}
+    }
 
     protected virtual void Awake() {
         hintStopwatch = new HintStopwatch(this);

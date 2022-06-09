@@ -90,7 +90,7 @@ public class Menu : MonoBehaviour
     }
 
     public void ContinueGame() {
-        sceneLoader.LoadNewSceneAnimated(saveData.areaIndex == 0 ? Scenes.FIRST_LEVEL_SCENE_NAME : Scenes.SECOND_LEVEL_SCENE_NAME);
+        sceneLoader.LoadNewSceneAnimated(Scenes.GetSceneNameBasedOnAreaIndex(saveData.areaIndex));
     }
 
     public void OpenNewGameWarning() {

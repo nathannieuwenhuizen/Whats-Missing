@@ -15,14 +15,19 @@ public class DemoText : MonoBehaviour
         group.blocksRaycasts = false;
     }
     private void OnEnable() {
+        Area.OnEndOfDemo += ShowDemoText;
         AlchemyItem.OnAlchemyEndScene += FadeToWhite;
-        TeddyBear.OnCutsceneEnd += FadeToBlack;
     }
     private void OnDisable() {
+        Area.OnEndOfDemo -= ShowDemoText;
         AlchemyItem.OnAlchemyEndScene -= FadeToWhite;
-        TeddyBear.OnCutsceneEnd -= FadeToBlack;
-
     }
+
+    private void ShowDemoText(int _areaIndex) {
+        StartCoroutine(group.FadeCanvasGroup(1, 3f, 1));
+        StartCoroutine(WaitForExit());
+    }
+
     public void FadeToWhite() {
         StartCoroutine(group.FadeCanvasGroup(1, 3f, 1));
         StartCoroutine(WaitForExit());
