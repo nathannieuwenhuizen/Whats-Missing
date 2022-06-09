@@ -7,6 +7,8 @@ namespace Boss {
     {
         public Transform desiredPos { get; set; }
         public bool MovementEnabled { get; set; } = true;
+        public bool WithPathOffset { get; set; } = true;
+
 
         private float speedScale = 1f;
 

@@ -49,7 +49,6 @@ public class BaseChaseState : BaseBossState
         protected void MeleeAttack() {
             if (isAttacking) return;
             isAttacking = true;
-            Debug.Log("do melee attack");
             bossAI.StartCoroutine(Attacking());
         }
 

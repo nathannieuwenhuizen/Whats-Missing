@@ -31,8 +31,8 @@ public class BossAI : MonoBehaviour {
         get { return stateMachine;}
     }
 
-    private Vector3 mountainAttackPosition;
-    public Vector3 MountainAttackPosition {
+    private MountainAttackPose mountainAttackPosition;
+    public MountainAttackPose MountainAttackPosition {
         get { return mountainAttackPosition;}
     }
 
@@ -125,7 +125,7 @@ public class BossAI : MonoBehaviour {
         }
     }
 
-    private void UpdateMountainAttackPosition(Vector3 _pos) {
+    private void UpdateMountainAttackPosition(MountainAttackPose _pos) {
         mountainAttackPosition = _pos;
     }
 

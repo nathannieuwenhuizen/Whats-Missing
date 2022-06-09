@@ -16,6 +16,8 @@ public class AirSteeringBehaviour : IMovementBehavior
         } 
     }
 
+    public bool WithPathOffset { get; set; } = true;
+
     private BossMountain bossMountain;
     private MountainPath path;
     private Transform transform;
@@ -39,7 +41,7 @@ public class AirSteeringBehaviour : IMovementBehavior
     public void SetDestinationPath(Vector3 _end, Vector3 _begin = default){
         path.begin = MountainCoordinate.FromPosition(bossMountain, _begin == default(Vector3) ? transform.position : _begin);
         path.end = MountainCoordinate.FromPosition(bossMountain, _end);
-        path.generatePathPoints(bossMountain);
+        path.generatePathPoints(bossMountain, WithPathOffset);
         UpdateTempDestination();
     }
 

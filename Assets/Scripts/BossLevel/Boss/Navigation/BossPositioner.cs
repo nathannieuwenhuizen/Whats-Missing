@@ -141,12 +141,14 @@ public static BossPositionEvent OnBossTakeOff;
     ///<summary>
     /// Sets the destination of the positioner so that it can go from one place to another.
     ///</summary>
-    public void SetDestinationPath(Transform _target, Vector3 _begin = default(Vector3)) {
+    public void SetDestinationPath(Transform _target, Vector3 _begin = default(Vector3), bool _withPathOffset = true) {
         desiredPos = _target;
+        CurrentMovementBehaviour.WithPathOffset = _withPathOffset;
         CurrentMovementBehaviour.SetDestinationPath(desiredPos, _begin);
     }
     
-    public void SetDestinationPath(Vector3 _end, Vector3 _begin = default(Vector3)) {
+    public void SetDestinationPath(Vector3 _end, Vector3 _begin = default(Vector3), bool _withPathOffset = true) {
+        CurrentMovementBehaviour.WithPathOffset = _withPathOffset;
         CurrentMovementBehaviour.SetDestinationPath(_end, _begin);
     }
 

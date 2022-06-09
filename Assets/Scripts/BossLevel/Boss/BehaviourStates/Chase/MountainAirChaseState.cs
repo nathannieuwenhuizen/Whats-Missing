@@ -6,6 +6,9 @@ namespace Boss {
 
     public class MountainAirChaseState : BaseChaseState
     {
+        private MountainAttackPose oldAttackPose;
+
+        private bool withPathOffset = true;
         private Vector3 startChasePos;
         public override void DrawDebug()
         {
@@ -20,32 +23,58 @@ namespace Boss {
             stateName = "Mountain Air Chase Chase";
             Positioner.MovementEnabled = true;
             Positioner.InAir = true;
-            Positioner.SpeedScale = 2.5f;
+            Positioner.SpeedScale = 2f;
 
 
             MountainAttackPose.OnPlayerEnteringAttackArea += UpdateDestination;
             UpdateBossChasePath(true);
         }
 
-        public void UpdateDestination(Vector3 _position) {
-            UpdateBossChasePath(true);
+        public void UpdateDestination(MountainAttackPose _pose) {
+            if (oldAttackPose != _pose) {
+                withPathOffset = true;
+                UpdateBossChasePath(true);
+                Positioner.SpeedScale = 2f;
+
+            }
+            oldAttackPose = _pose;
+            
             Debug.Log("new chase pos");
         }
 
         private void UpdateBossChasePath(bool _resetBeginPos = false) {
             if (_resetBeginPos) startChasePos = bossAI.transform.position;
-            Positioner.SetDestinationPath(bossAI.MountainAttackPosition, startChasePos);
+            Positioner.SetDestinationPath(bossAI.MountainAttackPosition.BeginPosition, startChasePos, withPathOffset);
         }
         public override void Run()
         {
             base.Run();
+            //check to do melee attack.
             if (Vector3.Distance(bossAI.transform.position, bossAI.Boss.Player.transform.position) < Boss.BOSS_MELEE_ATTACK_RANGE) MeleeAttack();
-            UpdateBossChasePath(false);
             
+            //go to charge at shield phase from here
             if (BossAI.PlayerIsInForceField)
                 OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
             
+            //move towards the player
+            if (withPathOffset) {
+                if (Positioner.AtPosition(.5f)) {
+                    withPathOffset = false;
+                    startChasePos = bossAI.transform.position;
+                }
+            } else {
+                GoAsCloseToPlayer();
+                // UpdateBossChasePath(true);
+            }
         }
+
+        private void GoAsCloseToPlayer() {
+            Positioner.SpeedScale = 1f;
+            Debug.Log("go to player");
+            // if (!Positioner.AtPosition(.5f)) startChasePos = bossAI.transform.position;
+            Positioner.SetDestinationPath(bossAI.MountainAttackPosition.PosClosestToPlayerButWithinRange(Positioner.BossMountain, bossAI.Boss.Player), startChasePos, false);
+        }
+
 
 
         public override void Exit()

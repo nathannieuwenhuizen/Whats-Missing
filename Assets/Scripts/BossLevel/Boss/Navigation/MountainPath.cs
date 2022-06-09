@@ -21,10 +21,12 @@ namespace Boss {
         }
 
 
-        public MountainCoordinate[] generatePathPoints(BossMountain pathHandeler) {
+        public MountainCoordinate[] generatePathPoints(BossMountain pathHandeler, bool _withPathOffset = true) {
             List<MountainCoordinate> tempList = new List<MountainCoordinate>();
             for (int k = 0; k <= steps; k++) {
-                tempList.Add( MountainCoordinate.Lerp(begin, end, (float)k/(float)steps));
+                MountainCoordinate coord = MountainCoordinate.Lerp(begin, end, (float)k/(float)steps);
+                if (_withPathOffset == false) coord.PathOffset = 0;
+                tempList.Add( coord);
             }
             coords = tempList.ToArray();
             return coords;

@@ -40,6 +40,9 @@ public class NavMeshBehaviour : IMovementBehavior
             navMeshAgent.enabled = movementUpdateEnabled;
         }
     }
+
+    public bool WithPathOffset { get; set; } = true;
+
     private NavMeshValues startNavMeshValues;
 
     private float speedScale = 1f;

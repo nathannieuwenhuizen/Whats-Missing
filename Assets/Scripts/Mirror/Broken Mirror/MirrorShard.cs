@@ -87,7 +87,8 @@ public class MirrorShard : PickableRoomObject
                 ActivateRigidBody();
             }
             foreach(LetterCoords coords in letterCoords) coords.letter.Interactable = value;
-            planarReflection.IsActive = !value;
+            // planarReflection.IsActive = !value;
+            planarReflection.IsActive = false;
 
         }
     }
