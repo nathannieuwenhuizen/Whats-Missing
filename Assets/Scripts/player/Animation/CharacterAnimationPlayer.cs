@@ -156,12 +156,12 @@ public class CharacterAnimationPlayer
 
     }
 
-    public void OnBossCutsceneStart(Boss.Boss boss) {
+    public void OnBossCutsceneStart(Boss.Boss boss, float zoom) {
         if (inBossCutscene) return;
         PlayCutSceneAnimation("", false);
-        CameraZoom = 70f;
+        CameraZoom = zoom;
     }
-    public void OnBossCutsceneEnd(Boss.Boss boss) {
+    public void OnBossCutsceneEnd(Boss.Boss boss, float zoom) {
         EndOfCutSceneAnimation();
     }
 

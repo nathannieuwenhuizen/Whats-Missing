@@ -62,7 +62,7 @@ public class WanderState : LookingState, IState
     {
         base.Exit();
         bossAI.CurrentWanderingPath.showGizmo = false;
-        bossAI.StopCoroutine(wanderingCoroutine);
+        if (wanderingCoroutine != null) bossAI.StopCoroutine(wanderingCoroutine);
         MirrorShard.OnPickedUp -= ShardHasBeenPickedUp;
         bossAI.BossEye.AnimateViewAlpha(0f);
 

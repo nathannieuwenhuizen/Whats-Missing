@@ -28,6 +28,9 @@ public class SteeringBehaviour
     private float maxVelocity = .2f;
     public float MaxVelocity {
         get { return maxVelocity;}
+        set {
+            maxVelocity = value;
+        }
     }
 
     [SerializeField]

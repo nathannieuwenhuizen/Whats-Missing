@@ -42,6 +42,7 @@ namespace Boss {
             Debug.Log("new chase pos");
         }
 
+
         private void UpdateBossChasePath(bool _resetBeginPos = false) {
             if (_resetBeginPos) startChasePos = bossAI.transform.position;
             Positioner.SetDestinationPath(bossAI.MountainAttackPosition.BeginPosition, startChasePos, withPathOffset);

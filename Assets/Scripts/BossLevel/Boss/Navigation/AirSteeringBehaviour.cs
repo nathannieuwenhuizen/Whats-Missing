@@ -17,6 +17,7 @@ public class AirSteeringBehaviour : IMovementBehavior
     }
 
     public bool WithPathOffset { get; set; } = true;
+    public float BasePathOffset { get; set; } = 5f;
 
     private BossMountain bossMountain;
     private MountainPath path;
@@ -41,7 +42,7 @@ public class AirSteeringBehaviour : IMovementBehavior
     public void SetDestinationPath(Vector3 _end, Vector3 _begin = default){
         path.begin = MountainCoordinate.FromPosition(bossMountain, _begin == default(Vector3) ? transform.position : _begin);
         path.end = MountainCoordinate.FromPosition(bossMountain, _end);
-        path.generatePathPoints(bossMountain, WithPathOffset);
+        path.generatePathPoints(bossMountain, WithPathOffset, BasePathOffset);
         UpdateTempDestination();
     }
 
@@ -51,7 +52,7 @@ public class AirSteeringBehaviour : IMovementBehavior
     }
 
     public void UpdateTempDestination(){
-        desiredTempPos.position = path.GetClosestMountainCoord(transform.position, bossMountain).ToVector(bossMountain, 5f);
+        desiredTempPos.position = path.GetClosestMountainCoord(transform.position, bossMountain).ToVector(bossMountain, BasePathOffset);
     }
     public void Update() {
         if (MovementEnabled) {
@@ -67,7 +68,9 @@ public class AirSteeringBehaviour : IMovementBehavior
     }
 
     public bool ReachedDestination(float _distanceThreshhold){
-        if (Vector3.Distance(transform.position, desiredTempPos.position) > _distanceThreshhold) return false;
+        Vector3 pos = path.end.ToShapeVector(bossMountain) + path.end.Normal(bossMountain) * BasePathOffset;
+        Debug.Log("distance = " + Vector3.Distance(transform.position, pos));
+        if (Vector3.Distance(transform.position, pos) > _distanceThreshhold) return false;
         if (steeringBehaviour.Velocity.magnitude > 1f) return false;
         return true;
     }

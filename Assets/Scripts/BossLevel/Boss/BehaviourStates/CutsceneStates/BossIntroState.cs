@@ -7,6 +7,7 @@ namespace Boss {
     {
         public override void Start()
         {
+            zoomValue = 70f;
             stateName = "Intro cutscene";
             base.Start();
             bossAI.StartCoroutine(TestAnimation());

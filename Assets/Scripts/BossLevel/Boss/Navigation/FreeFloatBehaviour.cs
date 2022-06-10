@@ -21,6 +21,8 @@ namespace Boss {
         private Transform transform;
         private Transform desiredTempPos;
         private SteeringBehaviour steeringBehaviour;
+        public float BasePathOffset { get; set; } = 5f;
+
 
         public FreeFloatBehaviour(Transform _transform, Transform _desiredTempPos, SteeringBehaviour _steeringBehaviour) {
             transform = _transform;
@@ -49,7 +51,7 @@ namespace Boss {
 
         public bool ReachedDestination(float _distanceThreshhold)
         {
-            if (Vector3.Distance(transform.position, desiredTempPos.position) > _distanceThreshhold) return false;
+            if (Vector3.Distance(transform.position, desiredPos.position) > _distanceThreshhold) return false;
             if (steeringBehaviour.Velocity.magnitude > 1f) return false;
             return true;
         }
@@ -63,6 +65,7 @@ namespace Boss {
         public void SetDestinationPath(Transform _target, Vector3 _begin = default)
         {
             desiredPos = _target;
+            steeringBehaviour.desiredTarget = desiredPos;
             SetDestinationPath(desiredPos.position, _begin);
         }
 

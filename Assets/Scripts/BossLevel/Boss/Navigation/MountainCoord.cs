@@ -106,6 +106,7 @@ public struct MountainCoordinate {
     public  Vector3 PathNormal(BossMountain _pathHandler, MountainPath _path) {
         Vector3 result= Vector3.zero;
         Vector3 a = _path.GetPathDirection(this, _pathHandler);
+        // Vector3 b = _path.begin.ToVector(_pathHandler);
         Vector3 b = Vector3.up;
         result = Vector3.Cross(a, b).normalized;
         result.y = PrimitiveNormal(_pathHandler).y;

@@ -48,6 +48,9 @@ public static BossPositionEvent OnBossTakeOff;
 
     [SerializeField]
     private SteeringBehaviour steeringBehaviour;
+    public SteeringBehaviour SteeringBehaviour {
+        get { return steeringBehaviour;}
+    }
 
     [SerializeField]
     private AnimationCurve landingCurve;
@@ -60,11 +63,10 @@ public static BossPositionEvent OnBossTakeOff;
     private MountainPath path;
 
     private Transform desiredTempPos;
+    private Transform desiredPos;
 
     private Boss boss;
 
-    [SerializeField]
-    private Transform desiredPos;
 
     private NavMeshAgent navMeshAgent;
 
@@ -83,9 +85,9 @@ public static BossPositionEvent OnBossTakeOff;
     public bool MovementEnabled {
         get { return CurrentMovementBehaviour.MovementEnabled;}
         set { 
-            airMovementBehaviour.MovementEnabled = false;
-            navMeshMovementBehaviour.MovementEnabled = false;
-            freefloatMovementBehaviour.MovementEnabled = false;
+            airMovementBehaviour.MovementEnabled = value;
+            navMeshMovementBehaviour.MovementEnabled = value;
+            freefloatMovementBehaviour.MovementEnabled = value;
             CurrentMovementBehaviour.MovementEnabled = value;
             navMeshAgent.enabled = movementType == BodyMovementType.navMesh && value;
 
@@ -124,11 +126,15 @@ public static BossPositionEvent OnBossTakeOff;
         boss = GetComponent<Boss>();
         desiredTempPos = new GameObject("desired temp position").transform;
         desiredTempPos.position = transform.position;
+        desiredPos = new GameObject("desired position").transform;
+        desiredPos.position = transform.position;
+
         navMeshAgent = GetComponent<NavMeshAgent>();
 
         airMovementBehaviour = new AirSteeringBehaviour(transform, desiredTempPos, steeringBehaviour, bossMountain);
         navMeshMovementBehaviour = new NavMeshBehaviour(transform, desiredTempPos);
         freefloatMovementBehaviour = new FreeFloatBehaviour(transform, desiredTempPos, steeringBehaviour);
+        airMovementBehaviour.desiredPos = navMeshMovementBehaviour.desiredPos = freefloatMovementBehaviour.desiredPos = desiredPos;
 
         BodyMovementType = movementType;        
     }
@@ -141,14 +147,16 @@ public static BossPositionEvent OnBossTakeOff;
     ///<summary>
     /// Sets the destination of the positioner so that it can go from one place to another.
     ///</summary>
-    public void SetDestinationPath(Transform _target, Vector3 _begin = default(Vector3), bool _withPathOffset = true) {
+    public void SetDestinationPath(Transform _target, Vector3 _begin = default(Vector3), bool _withPathOffset = true, float _basePathOffset = 5f) {
         desiredPos = _target;
         CurrentMovementBehaviour.WithPathOffset = _withPathOffset;
+        CurrentMovementBehaviour.BasePathOffset = _basePathOffset;
         CurrentMovementBehaviour.SetDestinationPath(desiredPos, _begin);
     }
     
-    public void SetDestinationPath(Vector3 _end, Vector3 _begin = default(Vector3), bool _withPathOffset = true) {
+    public void SetDestinationPath(Vector3 _end, Vector3 _begin = default(Vector3), bool _withPathOffset = true, float _basePathOffset = 5f) {
         CurrentMovementBehaviour.WithPathOffset = _withPathOffset;
+        CurrentMovementBehaviour.BasePathOffset = _basePathOffset;
         CurrentMovementBehaviour.SetDestinationPath(_end, _begin);
     }
 

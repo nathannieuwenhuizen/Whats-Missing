@@ -6,28 +6,29 @@ namespace Boss {
     {
         public override void Start()
         {
+            zoomValue = 45f;
+            stateName = "Transformation cutscene";
             base.Start();
         }
 
         public override void DoReaction()
         {
-            stateName = "Transformation cutscene";
+            stateName = "Transformation cutscene start";
+            Body.Metamorphose();
+
             base.DoReaction();
             bossAI.StartCoroutine(Transforming());
-            bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_TRANSFORM, true, 10f, () => {
+            bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_TRANSFORM, true, 6f, () => {
                 OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
             }));
-
         }
         ///<summary>
         /// Boss does the transformation, applying the fire change and transforming their body to get extra tentacles.
         ///</summary>
         private IEnumerator Transforming() {
-            Body.Metamorphose();
-            yield return new WaitForSeconds(3f);
-            bossAI.Boss.BossChangesHandler.CreateChange("fire", ChangeType.tooBig);
-            yield return new WaitForSeconds(3f);
-            OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
+            yield return new WaitForSeconds(4.2f);
+            Boss.Body.Arm.Toggle(true);
+            // OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
         }
     }
 }

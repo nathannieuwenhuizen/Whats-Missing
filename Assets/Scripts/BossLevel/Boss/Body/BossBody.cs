@@ -9,6 +9,11 @@ namespace Boss {
         public Renderer arm;
         [SerializeField]
         public Renderer sythe;
+
+        public void Toggle(bool _toSythe) {
+            arm.gameObject.SetActive(!_toSythe);
+            sythe.gameObject.SetActive(_toSythe);
+        }
     }
 
     ///<summary>
@@ -21,17 +26,24 @@ namespace Boss {
         private bool hasMetamorphosed = false;
         private float metamorphoseDuration = 2f;
         private float metamorphoseDelay = 0f;
-        private string metamorphoseKey = "index";
+        private readonly string growKey = "_grow";
+        private readonly string shineKey = "_shine_power";
+        private readonly string glowKey = "_glow_power";
+
+
         [SerializeField]
         private AnimationCurve metamorphoseCurve = AnimationCurve.EaseInOut(0,0,1,1);
 
         [SerializeField]
         private Renderer[] bodyRenders;
         [SerializeField]
-        private Renderer[] metamorphosedRenders;
+        private Renderer[] tentacleRenderers;
 
         [SerializeField]
         private ArmRenders armRenders;
+        public ArmRenders Arm {
+            get { return armRenders;}
+        }
 
         [SerializeField]
         private BossHitBox[] hitBoxes;
@@ -60,6 +72,7 @@ namespace Boss {
         private void Start() {
             bossAnimator = new BossAnimator(boss, IKPass);
             ToggleDeathColliders(false);
+            Grow = 0;
         }
 
         ///<summary>
@@ -67,7 +80,7 @@ namespace Boss {
         ///</summary>
         public void ToggleBody(bool _visible) {
             foreach (Renderer renderer in bodyRenders) renderer.enabled = _visible;
-            foreach (Renderer renderer in metamorphosedRenders) renderer.enabled = _visible && hasMetamorphosed;
+            foreach (Renderer renderer in tentacleRenderers) renderer.enabled = _visible && hasMetamorphosed;
             // if (_visible) ToggleSyth(hasMetamorphosed);
             // if (!_visible) ToggleSyth(false);
         }
@@ -105,16 +118,55 @@ namespace Boss {
             StartCoroutine(Matemorphosing());
         }
 
+        private float armShine;
+        public float ArmShine {
+            get { return armShine;}
+            set { 
+                armShine = value; 
+                armRenders.arm.material.SetFloat("_shine_power", value);
+                armRenders.sythe.material.SetFloat("_shine_power", value);
+            }
+        }
+        private float grow;
+        public float Grow {
+            get { return grow;}
+            set { 
+                grow = value; 
+                foreach(Renderer tentacle in tentacleRenderers) {
+                    tentacle.material.SetFloat(growKey, value);
+                }
+            }
+        }
+        private float glow;
+        public float Glow {
+            get { return glow;}
+            set { 
+                glow = value; 
+                foreach(Renderer renderers in bodyRenders) {
+                    renderers.material.SetFloat(glowKey, value);
+                }
+            }
+        }
+
+
         //does the coroutine showing all the extra tentacles
         private IEnumerator Matemorphosing() {
-            yield return new WaitForSeconds(metamorphoseDelay);
-            foreach(Renderer renderer in metamorphosedRenders) {
-                float randomDelay = Random.Range(0,.5f);
-                StartCoroutine(renderer.material.AnimatingNumberPropertyMaterial(metamorphoseKey, 0, 1, metamorphoseCurve, 
-                metamorphoseDuration - randomDelay * metamorphoseDuration , 
-                randomDelay * metamorphoseDuration ));
+            float index = 0;
+            Grow = 0f;
+
+            while (index < 10f) {
+                Glow = bossAnimator.Animator.GetFloat(glowKey);
+                ArmShine = bossAnimator.Animator.GetFloat(shineKey);
+                if (Grow < .99f) {
+                    Grow = bossAnimator.Animator.GetFloat(growKey);
+                }
+
+                index += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
             }
-            yield return new WaitForSeconds(metamorphoseDuration);
+            ArmShine = 0;
+            Grow = 1f;
+            Glow = 1;
         }
     }
 }

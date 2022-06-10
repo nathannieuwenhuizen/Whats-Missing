@@ -26,6 +26,7 @@ public struct NavMeshValues {
 public class NavMeshBehaviour : IMovementBehavior
 {
     public Transform desiredPos { get; set; }
+    public float BasePathOffset { get; set; } = 5f;
 
     private Transform transform;
     private Transform desiredTempPos;

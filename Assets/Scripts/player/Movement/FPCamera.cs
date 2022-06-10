@@ -15,6 +15,7 @@ public class FPCamera
     private bool EnableRotation { get => FPMovement.EnableRotation; }
 
     private float cameraSensetivityFactor = 2f;
+    private float steeringSpeed = 4f;
     
     private Transform startParent;
 
@@ -210,7 +211,7 @@ public class FPCamera
     }
 
 
-    private void OnBossCutSceneStart(Boss.Boss boss) {
+    private void OnBossCutSceneStart(Boss.Boss boss, float zoom) {
         UseSteeringBehaviour = true;
         currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward;
         SteeringBehaviour.Velocity = Vector3.zero;
@@ -231,13 +232,14 @@ public class FPCamera
         UseSteeringBehaviour = false;
     }
 
-    private void OnBossCutSceneEnd(Boss.Boss boss) {
+    private void OnBossCutSceneEnd(Boss.Boss boss, float zoom) {
         UseSteeringBehaviour = false;
     }
 
+
     public void UpdateSteeringBehaviour() {
         desiredAim.position = steeringTarget.position - steeringTarget.up * steeringOffset;
-        SteeringBehaviour.UpdatePosition();
+        SteeringBehaviour.UpdatePosition(steeringSpeed);
         transform.LookAt(currentAim, Vector3.up);
         transform.localRotation = Quaternion.Euler( new Vector3(0, transform.localRotation.eulerAngles.y, 0));
 

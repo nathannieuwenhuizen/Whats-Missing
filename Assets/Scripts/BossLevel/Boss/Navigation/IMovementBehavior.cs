@@ -13,6 +13,7 @@ public interface IMovementBehavior
 
     public float SpeedScale{get; set; }
     public bool WithPathOffset { get; set; }
+    public float BasePathOffset { get; set; }
 
     public void UpdateTempDestination();
     public void Update();

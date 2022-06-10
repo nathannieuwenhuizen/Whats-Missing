@@ -61,9 +61,9 @@ public class BossAI : MonoBehaviour {
     }
     public void UpdateAI() {
         stateMachine?.Update();
-        // if (Input.GetKeyDown(KeyCode.T)) {
-        //     stateMachine.SwitchState(behaviours.transformationState);
-        // }
+        if (Input.GetKeyDown(KeyCode.T)) {
+            stateMachine.SwitchState(behaviours.transformationState);
+        }
     }
 
     private void OnDrawGizmos() {

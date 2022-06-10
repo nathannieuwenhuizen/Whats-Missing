@@ -10,7 +10,7 @@ namespace Boss {
         public MountainCoordinate begin;
         public MountainCoordinate end;
         public int steps;
-        public const float offset = 5f;
+        public float basePathOffset;
 
         private MountainCoordinate[] coords;
         public MountainCoordinate[] Coords {
@@ -21,8 +21,12 @@ namespace Boss {
         }
 
 
-        public MountainCoordinate[] generatePathPoints(BossMountain pathHandeler, bool _withPathOffset = true) {
+        public MountainCoordinate[] generatePathPoints(BossMountain pathHandeler, bool _withPathOffset = true, float _basePathOffset = 5f) {
+            basePathOffset = _basePathOffset;
+            
             List<MountainCoordinate> tempList = new List<MountainCoordinate>();
+            // steps = Mathf.RoundToInt(Mathf.Clamp(Mathf.Abs(begin.angle - end.angle) / 10f, 2f, 36f));
+            steps = 20;
             for (int k = 0; k <= steps; k++) {
                 MountainCoordinate coord = MountainCoordinate.Lerp(begin, end, (float)k/(float)steps);
                 if (_withPathOffset == false) coord.PathOffset = 0;
@@ -92,7 +96,8 @@ namespace Boss {
                  
 
                 // Debug.DrawLine(coord.ToVector(pathHandeler), coord.ToVector(pathHandeler) + coord.Normal(pathHandeler) * offset, normalColor);
-                Debug.DrawLine(coord.ToVector(pathHandeler), coord.ToVector(pathHandeler) + coord.PathNormal(pathHandeler, this) * offset, normalColor);
+                Debug.DrawLine(coord.ToVector(pathHandeler), coord.ToVector(pathHandeler) + coord.PathNormal(pathHandeler, this) * 5f, normalColor);
+                Debug.DrawLine(coord.ToVector(pathHandeler), coord.ToVector(pathHandeler) + coord.Normal(pathHandeler) * basePathOffset, normalColor);
                 Debug.DrawLine(coord.ToVector(pathHandeler), coord.ToVector(pathHandeler) + GetPathDirection(coord, pathHandeler) * 5f, directionColor);
                 Gizmos.DrawSphere(coord.ToVector(pathHandeler), .5f);
             }

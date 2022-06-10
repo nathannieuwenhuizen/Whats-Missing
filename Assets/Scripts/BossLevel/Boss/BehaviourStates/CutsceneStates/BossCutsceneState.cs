@@ -4,9 +4,10 @@ using UnityEngine;
 namespace Boss {
     public class BossCutsceneState : BaseBossState, IState
     {
-        public delegate void BossCutSceneDelegate(Boss boss);
+        public delegate void BossCutSceneDelegate(Boss boss, float zoomValue = 50f);
         public static BossCutSceneDelegate OnBossCutsceneStart;
         public static BossCutSceneDelegate OnBossCutsceneEnd;
+        public float zoomValue = 50f;
         public bool withCutscene {
                 get; set;
             } = true;
@@ -17,7 +18,7 @@ namespace Boss {
         public override void Start()
         {
             stateName = "Cutscene";
-            if (withCutscene) OnBossCutsceneStart?.Invoke(bossAI.Boss);
+            if (withCutscene) OnBossCutsceneStart?.Invoke(bossAI.Boss, zoomValue);
             bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.none;
             bossAI.Boss.BossPositioner.MovementEnabled = false;
         }

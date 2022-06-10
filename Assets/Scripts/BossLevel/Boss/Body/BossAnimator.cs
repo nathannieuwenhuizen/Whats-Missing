@@ -35,6 +35,10 @@ namespace Boss {
             animator = _IKPass.Animator;
         }
 
+        public Animator Animator {
+            get { return animator;}
+        }
+
         ///<summary>
         /// Sets a trigger of the animator
         ///</summary>
