@@ -7,32 +7,29 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Miss_mantis_tenticles
-  m_Shader: {fileID: -6465566751694194690, guid: 64b3dcf03722c0045bc452e655943257, type: 3}
+  m_Name: Miss_mantis_mat
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - Texture2D_336c2cdfed3349ccb53f3917a016b8cc:
-        m_Texture: {fileID: 2800000, guid: 39f3621e444fe83468ae04af7b02a682, type: 3}
+    - Texture2D_cd64a4beeebd420ab548ed163f8fab21:
+        m_Texture: {fileID: 2800000, guid: 9435fd47a581f114b989de5a7b34eb62, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - Texture2D_57832b71537e4d548f2e156fd0c539ba:
-        m_Texture: {fileID: 2800000, guid: 2e582bfd0e460dd4cb36d825bbb29ce5, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - Texture2D_c799b9c276fd40ecb741cd831d565f74:
-        m_Texture: {fileID: 2800000, guid: 80e8a5770e2a4a04d923c7b8658dbab3, type: 3}
+    - Texture2D_cde24e9aba7647019b89584cfda4e0b7:
+        m_Texture: {fileID: 2800000, guid: 0ea816f22067de943bfb78df1d9fc046, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 80e8a5770e2a4a04d923c7b8658dbab3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0ea816f22067de943bfb78df1d9fc046, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -52,11 +49,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 39f3621e444fe83468ae04af7b02a682, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9435fd47a581f114b989de5a7b34eb62, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 80e8a5770e2a4a04d923c7b8658dbab3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0ea816f22067de943bfb78df1d9fc046, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -88,43 +85,58 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_4ea31b2f14f6480fb29cc0a09778ddfa: 1
-    - Vector1_7ec5a067a36e461796657d4863dc8eda: 3.49
     - _AlphaClip: 0
     - _Blend: 0
+    - _BlendOp: 0
     - _BumpScale: 1
+    - _CameraFadingEnabled: 0
+    - _CameraFarFadeDistance: 2
+    - _CameraNearFadeDistance: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
+    - _ColorMode: 0
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DistortionBlend: 0.5
+    - _DistortionEnabled: 0
+    - _DistortionStrength: 1
+    - _DistortionStrengthScaled: 0.1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
+    - _FlipbookBlending: 0
+    - _FlipbookMode: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
+    - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.5
+    - _SampleGI: 0
+    - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
+    - _SoftParticlesEnabled: 0
+    - _SoftParticlesFarFadeDistance: 1
+    - _SoftParticlesNearFadeDistance: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Vector2_2cf806aaf42d435ab5e918506a8eabe6: {r: 0.9, g: -1.5, b: 0, a: 0}
-    - Vector2_d44a148463cd4f20aa9b77d90f44ed22: {r: 0.5, g: 10, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
+    - _CameraFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 2, g: 2, b: 2, a: 1}
+    - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &1481043153320216131
+--- !u!114 &4172049996484878531
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
