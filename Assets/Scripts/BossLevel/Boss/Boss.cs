@@ -101,8 +101,8 @@ namespace Boss {
             // }
         }
 
-        private void OnDrawGizmos() {
-            Eye?.OnDrawGizmos();
+        private void OnDrawGizmosSelected() {
+            Eye?.OnDrawGizmosSelected();
         }
 
         private void Reset() {

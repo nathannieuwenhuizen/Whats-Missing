@@ -43,7 +43,11 @@ public static BossPositionEvent OnBossTakeOff;
     private bool inAir = true;
     public bool InAir {
         get { return inAir;}
-        set { inAir = value; }
+        set { 
+            inAir = value; 
+            if (boss.Body.BossAnimator != null) boss.Body.BossAnimator.SetBool(BossAnimatorParam.BOOL_INAIR, value);
+
+        }
     }
 
     [SerializeField]
@@ -90,8 +94,12 @@ public static BossPositionEvent OnBossTakeOff;
             freefloatMovementBehaviour.MovementEnabled = value;
             CurrentMovementBehaviour.MovementEnabled = value;
             navMeshAgent.enabled = movementType == BodyMovementType.navMesh && value;
-
         }
+    }
+    private bool rotationEnabled = true;
+    public bool RotationEnabled {
+        get { return rotationEnabled;}
+        set { rotationEnabled = value; }
     }
 
     BodyMovementType movementType = BodyMovementType.airSteeringAtMountain;
@@ -169,10 +177,8 @@ public static BossPositionEvent OnBossTakeOff;
     }
 
     private void Update() {
-        if (MovementEnabled) {
-            CurrentMovementBehaviour.Update();
-            UpdateRotation();
-        }
+        if (MovementEnabled) CurrentMovementBehaviour.Update();
+        if (RotationEnabled) UpdateRotation();
     }
 
     public void UpdateRotation() {
@@ -187,6 +193,7 @@ public static BossPositionEvent OnBossTakeOff;
             Vector3 delta = boss.Player.transform.position - transform.position;
             delta.y = 0;
             desiredRotation = Quaternion.LookRotation(delta, Vector3.up);
+            Debug.Log("look at player");
             break;
             case BodyOrientation.toPath:
             desiredRotation = CurrentMovementBehaviour.PathRotation();
@@ -199,18 +206,49 @@ public static BossPositionEvent OnBossTakeOff;
         if(CurrentMovementBehaviour != null) CurrentMovementBehaviour.DrawGizmo();
     }
 
-    public IEnumerator Landing(Action callback, Transform _endPos = null) {
-        OnBossLanding?.Invoke();
-        BodyMovementType = BodyMovementType.navMesh;
-        MovementEnabled = false;
-        Vector3 _landingPosition = CurrentMovementBehaviour.GetClosestPointOnPath();
-        if (_endPos != null) {
-            _landingPosition = CurrentMovementBehaviour.GetClosestPointOnPath(_endPos.position);
-        }
-        yield return StartCoroutine(transform.AnimatingPos(_landingPosition, landingCurve, 2f));
+
+    //lands the boss on a specific position.
+    public IEnumerator Landing(Transform _endPos = null, Action callback = null) {
+        Debug.Log("landing");
+
+        //set the correct movement options.
+        BodyOrientation = BodyOrientation.toPlayer;
+        BodyMovementType = BodyMovementType.freeFloat;
+
+        //sets the destination.
         MovementEnabled = true;
-        callback();
+        SetDestinationPath(_endPos.position, transform.position);
+        SpeedScale = 1f;
+
+        //do landing animation.
+        InAir = false;
+
+        while(!AtPosition(3f)) yield return new WaitForFixedUpdate();
+        
+        //spawn debree at end position when the coordinate of the boss is within 3 units of its destination.
+        SpawnDebree(_endPos);
+        AudioHandler.Instance?.Play3DSound(SFXFiles.boss_landing, transform);
+
+        //wait until the boss is within 1 unit.
+        while(!AtPosition(1f)) yield return new WaitForFixedUpdate();
+        
+        //callback will be called if it isnt null.
+        if (callback != null) callback();
     }
+
+
+    ///<summary>
+    /// Spawns a debree prefab at the position
+    ///</summary>
+    private void SpawnDebree(Transform origin) {
+        GameObject debree = Instantiate(Resources.Load<GameObject>("Roomprefabs/debrees"));
+        debree.transform.position = origin.position;
+        debree.transform.rotation = origin.rotation;
+        debree.GetComponent<ParticleSystem>().Emit(10);
+        debree.GetComponentInChildren<ParticleSystem>().Emit(3);
+        Destroy(debree, 5f);
+    }
+
     public IEnumerator TakeOff(Action callback) {
         inAir = true;
         OnBossTakeOff?.Invoke();
@@ -219,6 +257,36 @@ public static BossPositionEvent OnBossTakeOff;
         yield return StartCoroutine(transform.AnimatingPos(CurrentMovementBehaviour.GetClosestPointOnPath(), landingCurve, 2f));
         MovementEnabled = true;
         callback();
+    }
+
+    ///<summary>
+    /// Makes the boss go into airing mode.
+    ///</summary>
+    public IEnumerator TakingOff(Action callback) {
+        Debug.Log("taking off");
+        //set the correct movement options.
+        BodyOrientation = BodyOrientation.toPlayer;
+        BodyMovementType = BodyMovementType.airSteeringAtMountain;
+
+        //sets the destination.
+        MovementEnabled = false;
+        SetDestinationPath(transform.position + Vector3.up * 10f, transform.position + Vector3.up * 10f, false, 15f);
+        SpeedScale = 1f;
+
+        //do taking off animation.
+        InAir = true;
+        yield return new WaitForSeconds(.3f);
+
+        MovementEnabled = true;
+        //spawn debree at end position when the coordinate of the boss is within 3 units of its destination.
+        // SpawnDebree(transform);
+        // AudioHandler.Instance?.Play3DSound(SFXFiles.boss_landing, transform);
+
+        //wait until the boss is within 1 unit.
+        while(!AtPosition(1f)) yield return new WaitForFixedUpdate();
+        
+        //callback will be called if it isnt null.
+        if (callback != null) callback();   
     }
 }
 

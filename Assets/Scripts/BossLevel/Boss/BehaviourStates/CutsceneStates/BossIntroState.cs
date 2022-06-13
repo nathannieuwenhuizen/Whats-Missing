@@ -12,6 +12,7 @@ namespace Boss {
             base.Start();
             bossAI.StartCoroutine(TestAnimation());
 
+            Positioner.InAir = false;
             bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_INTRO, true, 10f, () => {
                 OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
             }));

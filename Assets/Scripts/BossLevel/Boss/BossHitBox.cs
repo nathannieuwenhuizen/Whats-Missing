@@ -8,8 +8,10 @@ namespace Boss {
     {
         public override void OnAreaEnter(Player player)
         {
-            // if (BossAI.PlayerIsInForceField == false)
+            if (BossAI.PlayerIsInForceField == false) {
+                AudioHandler.Instance?.PlaySound(SFXFiles.boss_attack_hit_player);
                 // base.OnAreaEnter(player);
+            }
         }
         public override void OnRoomEnter()
         {

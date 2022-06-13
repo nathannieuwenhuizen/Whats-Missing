@@ -57,6 +57,8 @@ public class BaseChaseState : BaseBossState
             // bossAI.Boss.Body.ToggleDeathColliders(true);
             BodyOrientation oldOrientation = Positioner.BodyOrientation;
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
+            AudioHandler.Instance?.Play3DSound(SFXFiles.boss_attack, bossAI.BossHead.transform);
+
             yield return bossAI.StartCoroutine(Boss.Body.BossAnimator.DoAttackAnimation());
             Positioner.BodyOrientation = oldOrientation;
 

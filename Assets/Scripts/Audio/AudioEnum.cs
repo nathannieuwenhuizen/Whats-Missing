@@ -86,7 +86,7 @@ public static class SFXFiles {
     public static string potion_break = "event:/SFX/Environment/Third_area/Potion_break";
 
 
-    //boss
+    //boss environment
     public static string mirror_shake = "event:/SFX/Boss/Environment/Mirror/Mirror_shake";
     public static string miror_break = "event:/SFX/Boss/Environment/Mirror/Mirror_break";
     public static string mirorshard_grab = "event:/SFX/Boss/Environment/Mirror/Mirrorsshard_grab";
@@ -94,6 +94,12 @@ public static class SFXFiles {
     public static string rock_explosion = "event:/SFX/Boss/Environment/Rock_smash";
     public static string magic_shield_block = "event:/SFX/Boss/Environment/Magic_shield_block";
 
+    //boss
+    public static string boss_attack = "event:/SFX/Boss/Boss/Arms/Attack";
+    public static string boss_attack_hit_player = "event:/SFX/Boss/Boss/Arms/Attack_hit_player";
+    public static string boss_landing = "event:/SFX/Boss/Boss/Movement/Landing";
+    public static string boss_transformation = "event:/SFX/Boss/Boss/Transformation";
+    public static string boss_talking = "event:/SFX/Boss/Boss/Talking";
 
 
 

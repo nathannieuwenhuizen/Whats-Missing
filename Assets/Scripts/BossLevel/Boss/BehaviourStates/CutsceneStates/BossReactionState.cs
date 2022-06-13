@@ -23,26 +23,19 @@ namespace Boss {
             //go to air position of landing pos
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
             Positioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
+            Positioner.RotationEnabled = true;
             Positioner.MovementEnabled = true;
             Positioner.SetDestinationPath(bossAI.ReactionPosition.position, bossAI.transform.position, true, 10f);
             Positioner.SpeedScale = 2f;
+            Positioner.SteeringBehaviour.MaxForce *= 5f;
 
             while(!Positioner.AtPosition(3f)) {
                 yield return new WaitForFixedUpdate();
             }
+            Positioner.SteeringBehaviour.MaxForce /= 5f;
 
             //now land on the reaction pose
-            Positioner.BodyOrientation = BodyOrientation.toPlayer;
-            Positioner.BodyMovementType = BodyMovementType.freeFloat;
-            Positioner.MovementEnabled = true;
-            Positioner.SetDestinationPath(bossAI.ReactionPosition.position, bossAI.transform.position);
-            Positioner.SpeedScale = 1f;
-            Boss.Body.BossAnimator.SetBool(BossAnimatorParam.BOOL_INAIR, false);
-
-            while(!Positioner.AtPosition(1f)) {
-                yield return new WaitForFixedUpdate();
-            }
-
+            yield return bossAI.StartCoroutine(Positioner.Landing(bossAI.ReactionPosition));
             Positioner.SpeedScale = 1f;
 
             DoReaction();

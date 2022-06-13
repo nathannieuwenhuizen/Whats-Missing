@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Boss;
 using UnityEngine;
 ///<summary>
-/// Handles all the camera mvoement and rotations. 
+/// Handles all the camera movement and rotations. 
 ///</summary>
 public class FPCamera
 {

@@ -190,7 +190,7 @@ public class BossEye: MonoBehaviour {
 
 
     private Color debugColor;
-    public void OnDrawGizmos() {
+    public void OnDrawGizmosSelected() {
         // Debug.Log("color intensity: " + GetColorIntensity());
         if (!showGizmo) return;
         if (boss != null) {

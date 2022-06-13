@@ -26,29 +26,44 @@ public class WanderState : LookingState, IState
         base.DrawDebug();
     }
 
-        protected override void BeginChaseOnGround()
-        {
-            bossAI.Behaviours.landingState.landingPos = bossAI.CurrentWanderingPath.LandingPos;
-            base.BeginChaseOnGround();
-        }
+    protected override void BeginChaseOnGround()
+    {
+        bossAI.Behaviours.landingState.landingPos = bossAI.CurrentWanderingPath.LandingPos;
+        base.BeginChaseOnGround();
+    }
 
-        public override void Start()
+    public override void Start()
     {
         base.Start();
         
         bossAI.CurrentWanderingPath.showGizmo = true;
+        Boss.Head.PlayBossVoice();
         MirrorShard.OnPickedUp += ShardHasBeenPickedUp;
 
+
+        Boss.Head.LookAtPlayer = false;
+
+        //begin with air wandering
+        if (Positioner.InAir) {
+            BeginAirWandering();
+        } else {
+            //first take off from the ground before air wandering.
+            bossAI.StartCoroutine(Positioner.TakingOff(() => {
+                BeginAirWandering();
+            }));
+        }
+    }
+
+
+
+    private void BeginAirWandering() {
         wanderingCoroutine = bossAI.StartCoroutine(Wandering());
         CurrentPoseIndex = 0;
         Boss.Body.IKPass.SetLimbsActive(false);
         Boss.Head.SteeringEnabled = true;
-        Boss.Head.LookAtPlayer = false;
         Positioner.BodyOrientation = BodyOrientation.toShape;
         Positioner.BodyMovementType = bossAI.CurrentWanderingPath.BossMovementType;
-        Positioner.InAir = true;
         bossAI.BossEye.AnimateViewAlpha(1f);
-
 
     }
     
@@ -62,6 +77,9 @@ public class WanderState : LookingState, IState
     {
         base.Exit();
         bossAI.CurrentWanderingPath.showGizmo = false;
+
+        Boss.Head.StopBossVoice();
+
         if (wanderingCoroutine != null) bossAI.StopCoroutine(wanderingCoroutine);
         MirrorShard.OnPickedUp -= ShardHasBeenPickedUp;
         bossAI.BossEye.AnimateViewAlpha(0f);

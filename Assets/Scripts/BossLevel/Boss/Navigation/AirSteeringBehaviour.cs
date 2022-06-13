@@ -69,7 +69,7 @@ public class AirSteeringBehaviour : IMovementBehavior
 
     public bool ReachedDestination(float _distanceThreshhold){
         Vector3 pos = path.end.ToShapeVector(bossMountain) + path.end.Normal(bossMountain) * BasePathOffset;
-        Debug.Log("distance = " + Vector3.Distance(transform.position, pos));
+        // Debug.Log("distance = " + Vector3.Distance(transform.position, pos));
         if (Vector3.Distance(transform.position, pos) > _distanceThreshhold) return false;
         if (steeringBehaviour.Velocity.magnitude > 1f) return false;
         return true;

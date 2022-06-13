@@ -30,6 +30,7 @@ public class BossHead: MonoBehaviour
             steeringEnabled = value; 
         }
     }
+    private SFXInstance voiceAudio;
 
     private bool lookAtPlayer = false;
     ///<summary>
@@ -60,6 +61,14 @@ public class BossHead: MonoBehaviour
         steeringBehaviour.desiredTarget = desiredAim;
     }
 
+    public void PlayBossVoice() {
+        if (voiceAudio == null) voiceAudio = AudioHandler.Instance.Play3DSound(SFXFiles.boss_talking, transform);
+        voiceAudio.Play();
+    }
+    
+    public void StopBossVoice() {
+        if (voiceAudio != null) voiceAudio.Stop();
+    }
     public void Update()
     {
 
