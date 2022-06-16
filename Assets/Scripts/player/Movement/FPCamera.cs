@@ -95,6 +95,7 @@ public class FPCamera
         BossCutsceneState.OnBossCutsceneStart += OnBossCutSceneStart;
         BossCutsceneState.OnBossCutsceneEnd += OnBossCutSceneEnd;
         ForcefieldDemo.Forcefield.OnForceFieldImpact += ApplyLittleShake;
+        BasaltWall.OnDestroy += ApplyLittleShake;
     }
 
     public void OnDisable() {
@@ -104,6 +105,8 @@ public class FPCamera
         BossCutsceneState.OnBossCutsceneStart += OnBossCutSceneStart;
         BossCutsceneState.OnBossCutsceneEnd += OnBossCutSceneEnd;
         ForcefieldDemo.Forcefield.OnForceFieldImpact -= ApplyLittleShake;
+        BasaltWall.OnDestroy -= ApplyLittleShake;
+
     }
 
 

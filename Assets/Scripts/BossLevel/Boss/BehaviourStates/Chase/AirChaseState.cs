@@ -20,6 +20,7 @@ namespace Boss {
             stateName = "Air Chase Chase";
             Positioner.MovementEnabled = true;
             Positioner.InAir = true;
+            Positioner.SpeedScale = .5f;
             UpdateBossChasePath(true);
 
         }
@@ -37,8 +38,10 @@ namespace Boss {
         public override void Run()
         {
             base.Run();
-            if (Vector3.Distance(bossAI.transform.position, bossAI.Boss.Player.transform.position) < Boss.BOSS_MELEE_ATTACK_RANGE) MeleeAttack();
+            float distanceToPlayer = Vector3.Distance(bossAI.transform.position, bossAI.Boss.Player.transform.position);
+            if (distanceToPlayer < Boss.BOSS_MELEE_ATTACK_RANGE) MeleeAttack();
             
+            Positioner.MovementEnabled = distanceToPlayer > Boss.BOSS_MIN_DISTANCE_TO_PLAYER;
             UpdateBossChasePath(false);
             
             if (Player.INVINCIBLE)
@@ -49,6 +52,7 @@ namespace Boss {
 
         public override void Exit()
         {
+            Positioner.SpeedScale = 1f;
             base.Exit();
         }
     }

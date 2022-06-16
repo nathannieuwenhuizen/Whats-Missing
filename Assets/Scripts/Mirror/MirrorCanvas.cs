@@ -134,6 +134,10 @@ public class MirrorCanvas : MonoBehaviour
         } else {
             HeaderText.Text.text = "<b> is " + header +  "!</b>";
             Font = sentenceFont;
+
+            Vector3 answerPos = answerText.transform.parent.position;
+            answerPos.y = Mathf.Lerp(answerPos.y, headerText.transform.position.y, .5f);
+            answerText.transform.parent.position = answerPos;
         }
 
     }

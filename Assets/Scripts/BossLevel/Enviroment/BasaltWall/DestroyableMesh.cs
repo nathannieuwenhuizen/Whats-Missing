@@ -5,7 +5,7 @@
  
  public class DestroyableMesh : MonoBehaviour {
  
-     public IEnumerator SplitMesh (bool destroy)    {
+     public IEnumerator SplitMesh (bool destroy, Vector3 forceOrigin)    {
  
         if(GetComponent<MeshFilter>() == null || GetComponent<SkinnedMeshRenderer>() == null) {
             yield return null;
@@ -40,7 +40,7 @@
  
             //  int[] indices = M.GetTriangles(submesh);
  
-             for (int i = 0; i < 3; i += 1)    {
+             for (int i = 0; i < 2; i += 1)    {
                 //  Vector3[] newVerts = new Vector3[3];
                 //  Vector3[] newNormals = new Vector3[3];
                 //  Vector2[] newUvs = new Vector2[3];
@@ -66,7 +66,7 @@
                 // scale.x *= transform.localScale.x;
                 // scale.y *= transform.localScale.y;
                 // scale.z *= transform.localScale.z;
-                Vector3 scale = transform.localScale * .8f;
+                Vector3 scale = transform.localScale * Random.Range(.2f, .8f);
                 scale.z /= 3f;
 
                 GO.transform.localScale = scale;
@@ -75,8 +75,8 @@
                 GO.AddComponent<MeshRenderer>().material = materials[submesh];
                 GO.AddComponent<MeshFilter>().mesh = M;
                 GO.AddComponent<BoxCollider>();
-                Vector3 explosionPos = new Vector3(transform.position.x + Random.Range(-0.5f, 0.5f), transform.position.y + Random.Range(0f, 0.5f), transform.position.z + Random.Range(-0.5f, 0.5f));
-                GO.AddComponent<Rigidbody>().AddExplosionForce(Random.Range(300,500), explosionPos, 5);
+                float force = 3000;
+                GO.AddComponent<Rigidbody>().AddExplosionForce(Random.Range(force, force), forceOrigin, 40);
                 Destroy(GO, 5 + Random.Range(0.0f, 5.0f));
              }
          }

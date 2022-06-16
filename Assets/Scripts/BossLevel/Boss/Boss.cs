@@ -19,6 +19,7 @@ namespace Boss {
         public const float BOSS_MELEE_ATTACK_RANGE = 10f;
         public const float BOSS_LASER_ATTACK_RANGE = 30f;
         public const float BOSS_ATTACK_SHIELD_RANGE = 5f;
+        public const float BOSS_MIN_DISTANCE_TO_PLAYER = 4f;
         ///<summary>
         /// what units does the palyer need to be close so that the boss 
         /// goes into the charge at shiled phase.

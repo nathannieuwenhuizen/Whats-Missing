@@ -100,6 +100,7 @@ public class BossAI : MonoBehaviour {
     ///</summary>
     public void MirrorShardRecolectReaction(BossMirror _bossMirror) {
         int shardNumber = _bossMirror.AmmountOfShardsAttached();
+        if (CurrentWanderingPath != null) CurrentWanderingPath.showGizmo = false;
         Debug.Log("shard recollect: " + shardNumber);
         switch(shardNumber) {
             case 0:
@@ -110,7 +111,7 @@ public class BossAI : MonoBehaviour {
             break;
             case 2:
             CurrentWanderingPath = paths.thirdShardPath;           
-            stateMachine.SwitchState(behaviours.transformationState);
+            // stateMachine.SwitchState(behaviours.transformationState);
             break;
             case 3:
             CurrentWanderingPath = paths.fourthShardPath;  
@@ -124,6 +125,8 @@ public class BossAI : MonoBehaviour {
             //go instant into end chase mdoe
             break;
         }
+        if (CurrentWanderingPath != null) CurrentWanderingPath.showGizmo = true;
+
     }
     public void MirrShardPickupEvent(MirrorShard _shard) {
         switch (_shard.ShardIndex) {

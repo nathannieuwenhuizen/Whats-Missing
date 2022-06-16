@@ -43,8 +43,8 @@ public class WanderingPath : MonoBehaviour {
     private void Awake() {
         showGizmo = false;
     }
-    private void OnDrawGizmos() {
-        if (poses.Length < 1 || !showGizmo) return;
+    private void DrawGizmo() {
+        if (poses.Length < 1) return;
         
         if (poses[0].position == null) return;
         
@@ -93,5 +93,11 @@ public class WanderingPath : MonoBehaviour {
                 startpos = endPos;
             }
         }
+    }
+    private void OnDrawGizmos() {
+        if (showGizmo) DrawGizmo();
+    }
+    private void OnDrawGizmosSelected() {
+        DrawGizmo();
     }
 }

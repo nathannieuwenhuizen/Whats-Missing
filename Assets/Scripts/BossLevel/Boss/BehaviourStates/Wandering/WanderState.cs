@@ -17,6 +17,7 @@ public class WanderState : LookingState, IState
 
     public Coroutine wanderingCoroutine;
     public Coroutine takeOffCoroutine;
+    [SerializeField]
     private float minLookDuration = 1f;
 
 
@@ -24,6 +25,8 @@ public class WanderState : LookingState, IState
     public override void DrawDebug()
     {
         base.DrawDebug();
+        if (bossAI.CurrentWanderingPath != null) {
+        }
     }
 
     protected override void BeginChaseOnGround()
@@ -57,8 +60,8 @@ public class WanderState : LookingState, IState
 
 
     private void BeginAirWandering() {
-        wanderingCoroutine = bossAI.StartCoroutine(Wandering());
         CurrentPoseIndex = 0;
+        wanderingCoroutine = bossAI.StartCoroutine(Wandering());
         Boss.Body.IKPass.SetLimbsActive(false);
         Boss.Head.SteeringEnabled = true;
         Positioner.BodyOrientation = BodyOrientation.toShape;

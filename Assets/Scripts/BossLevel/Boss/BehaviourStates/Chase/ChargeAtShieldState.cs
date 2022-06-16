@@ -48,16 +48,18 @@ public class ChargeAtShieldState : BaseChaseState
 
         public IEnumerator GoToShield() {
             //go to air position of the charge at shield
-            Positioner.BodyOrientation = BodyOrientation.toPlayer;
-            Positioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
-            Positioner.RotationEnabled = true;
-            Positioner.MovementEnabled = true;
-            Positioner.SetDestinationPath(bossAI.ChargePosition.position, bossAI.transform.position, true, 10f);
-            Positioner.SpeedScale = 2f;
-            Positioner.SteeringBehaviour.MaxForce *= 10f;
+            if (Positioner.BodyMovementType == BodyMovementType.airSteeringAtMountain) {
+                Positioner.BodyOrientation = BodyOrientation.toPlayer;
+                Positioner.RotationEnabled = true;
+                Positioner.MovementEnabled = true;
+                Positioner.SetDestinationPath(bossAI.ChargePosition.position, bossAI.transform.position, true, 10f);
+                Positioner.SpeedScale = 2f;
+                Positioner.SteeringBehaviour.MaxForce *= 10f;
 
-            while(!Positioner.AtPosition(3f)) {
-                yield return new WaitForFixedUpdate();
+                while(!Positioner.AtPosition(3f)) {
+                    yield return new WaitForFixedUpdate();
+                }
+                Positioner.SteeringBehaviour.MaxForce /= 10f;
             }
 
             //now land on the shield position
@@ -65,7 +67,7 @@ public class ChargeAtShieldState : BaseChaseState
             Positioner.BodyMovementType = BodyMovementType.freeFloat;
 
             positioner.SetDestinationPath(chargePos, Boss.transform.position);
-            Positioner.SteeringBehaviour.MaxForce /= 10f;
+            
             Positioner.SpeedScale = 1f;
             while (!positioner.AtPosition(Boss.BOSS_ATTACK_SHIELD_RANGE)) {
                 yield return new WaitForFixedUpdate();

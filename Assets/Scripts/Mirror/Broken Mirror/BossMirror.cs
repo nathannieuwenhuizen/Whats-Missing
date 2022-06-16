@@ -15,6 +15,7 @@ public class BossMirror : Mirror, ITriggerArea
 
     private Rigidbody rb;
 
+    [SerializeField]
     private Player player;
 
     private bool followPlayer = false;
@@ -32,6 +33,12 @@ public class BossMirror : Mirror, ITriggerArea
     private ParticleSystem explosionSmoke;
     [SerializeField]
     private ParticleSystem explosionShards;
+
+    [Header("testing")]
+    [SerializeField]
+    private bool skipIntro = false;
+    [SerializeField]
+    private int ammountOfShardAlreadyCollected = 0;
 
     private MirrorData GetShardMirrorData() {
         string letters = "";
@@ -81,7 +88,7 @@ public class BossMirror : Mirror, ITriggerArea
         //     shard.PlanarReflection.SetRenderTexture(PlanarReflection.reflectionCamera.targetTexture);
         // }
 
-        StartCoroutine(SkipIntro());
+        if (skipIntro) StartCoroutine(SkipIntro());
     }
 
     public IEnumerator SkipIntro() {
@@ -90,6 +97,12 @@ public class BossMirror : Mirror, ITriggerArea
         for (int i = 0; i < shards.Length; i++) {
             shards[i].animated = false;
             shards[i].DisconnectedFromMirror();
+        }
+        followPlayer = true;
+        for(int i = 0 ; i < ammountOfShardAlreadyCollected; i++) {
+            yield return new WaitForSeconds(.1f);
+            shards[i].transform.position = transform.position;
+            shards[i].Release();
         }
     }
 

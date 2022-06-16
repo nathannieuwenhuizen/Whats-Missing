@@ -231,6 +231,7 @@ public class MirrorShard : PickableRoomObject
         base.Grab(connectedRigidBody); 
         AudioHandler.Instance?.Play3DSound(grabSound, transform);
         shineParticle.Stop();
+        transform.parent = connectedRigidBody.transform.parent;
         if (!hasAlreadyBeenPickedUp) {
             hasAlreadyBeenPickedUp = true;
             OnPickedUp?.Invoke(this);
