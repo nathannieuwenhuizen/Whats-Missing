@@ -20,7 +20,11 @@ namespace Boss {
             bossAI.StartCoroutine(Transforming());
             AudioHandler.Instance?.Play3DSound(SFXFiles.boss_transformation, bossAI.BossHead.transform);
             bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_TRANSFORM, true, 6f, () => {
-                OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
+                bossAI.StartCoroutine(Body.BossAnimator.DoMirrorAttack(() => {
+                    bossAI.Boss.BossChangesHandler.CreateChange("fire", ChangeType.tooBig);
+                }, () => {
+                    OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
+                }));
             }));
         }
         ///<summary>

@@ -20,17 +20,14 @@ namespace Boss {
         }
         private Transform transform;
         private Transform desiredTempPos;
-        private SteeringBehaviour steeringBehaviour;
+        private BossPositioner bossPositioner;
         public float BasePathOffset { get; set; } = 5f;
 
 
-        public FreeFloatBehaviour(Transform _transform, Transform _desiredTempPos, SteeringBehaviour _steeringBehaviour) {
+        public FreeFloatBehaviour(Transform _transform, Transform _desiredTempPos, BossPositioner _bossPositioner) {
+            bossPositioner = _bossPositioner;
             transform = _transform;
             desiredTempPos = _desiredTempPos;
-            steeringBehaviour = _steeringBehaviour;
-
-            steeringBehaviour.target = transform;
-            steeringBehaviour.desiredTarget = desiredTempPos;
             desiredTempPos.SetParent(transform.parent);
         }
 
@@ -46,13 +43,13 @@ namespace Boss {
 
         public float GetPathLength()
         {
-            return Vector3.Distance(steeringBehaviour.target.position, steeringBehaviour.desiredTarget.position);
+            return Vector3.Distance(bossPositioner.SteeringBehaviour.target.position, bossPositioner.SteeringBehaviour.desiredTarget.position);
         }
 
         public bool ReachedDestination(float _distanceThreshhold)
         {
             if (Vector3.Distance(transform.position, desiredPos.position) > _distanceThreshhold) return false;
-            if (steeringBehaviour.Velocity.magnitude > 1f) return false;
+            if (bossPositioner.SteeringBehaviour.Velocity.magnitude > 1f) return false;
             return true;
         }
 
@@ -65,7 +62,6 @@ namespace Boss {
         public void SetDestinationPath(Transform _target, Vector3 _begin = default)
         {
             desiredPos = _target;
-            steeringBehaviour.desiredTarget = desiredPos;
             SetDestinationPath(desiredPos.position, _begin);
         }
 
@@ -78,18 +74,18 @@ namespace Boss {
         {
             if (MovementEnabled) {
                 UpdateTempDestination();
-                steeringBehaviour.UpdatePosition(speedScale);
+                bossPositioner.SteeringBehaviour.UpdatePosition(speedScale);
                 // UpdateRotation();
             }    
         }
         public void DrawGizmo()
         {
-            Debug.DrawLine(transform.position, steeringBehaviour.desiredTarget.position, Color.yellow);
+            Debug.DrawLine(transform.position, bossPositioner.SteeringBehaviour.desiredTarget.position, Color.yellow);
         }
 
         public Quaternion PathRotation()
         {
-            Vector3 pointDirection = steeringBehaviour.Velocity;
+            Vector3 pointDirection = bossPositioner.SteeringBehaviour.Velocity;
             pointDirection.y = 0;
             if (pointDirection.magnitude < .1f) {
                 return transform.rotation;

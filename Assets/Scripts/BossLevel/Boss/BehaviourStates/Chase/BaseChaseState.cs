@@ -30,12 +30,23 @@ public class BaseChaseState : BaseBossState
         if (bossAI.BossEye.DoesntNoticesPlayer) {
             // StopChase();
         }
+
+        if (Player.INVINCIBLE)
+        {
+            float dist = Positioner.CurrentMovementBehaviour.GetPathLength();
+            Debug.Log("distance: " + dist);
+            if (dist < Boss.CHARGE_AT_SHIELD_THRESHHOLD) {
+                OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
+            } else {
+                StopChase();
+            }
+        }
     }
 
     protected void StopChase() {
         bossAI.Behaviours.takeoffState.withCutscene = false;
         bossAI.Behaviours.takeoffState.nextState = bossAI.Behaviours.wanderState;
-        OnStateSwitch?.Invoke(bossAI.Behaviours.takeoffState);
+        OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
     }
 
     public override void Exit()

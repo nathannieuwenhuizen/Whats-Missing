@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -168,5 +169,7 @@ namespace Boss {
             Grow = 1f;
             Glow = 1;
         }
+
+
     }
 }

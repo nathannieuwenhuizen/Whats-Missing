@@ -65,7 +65,11 @@ public class Vivienne : AreaTrigger, IRoomObject
 
     private void Awake() {
         skinnedMeshToMesh = GetComponent<SkinnedMeshToMesh>();
-        skinnedMeshToMesh.StopVFX();
+        // skinnedMeshToMesh.StopVFX();
+    }
+
+    private void Update() {
+        
     }
     public override void OnAreaEnter(Player player) {
         base.OnAreaEnter(player);
@@ -87,7 +91,7 @@ public class Vivienne : AreaTrigger, IRoomObject
     }
 
     public void SetGhostPose() {
-
+        // return;
         book.SetActive(false);
         marshmallow.SetActive(false);
 

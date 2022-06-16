@@ -41,6 +41,10 @@ public class MountainAttackPose : MonoBehaviour, ITriggerArea
 
     public bool InsideArea { get; set; } = false;
 
+
+    private void Awake() {
+        showGizmo = false;
+    }
     public void OnAreaEnter(Player player)
     {
         OnPlayerEnteringAttackArea?.Invoke(this);
@@ -86,8 +90,8 @@ public class MountainAttackPose : MonoBehaviour, ITriggerArea
             precentage = ((playerAngle - beginAngle) / (endAngle - beginAngle));
         }
 
-        Debug.Log("begin: " +a.angle + " |  end: " + b.angle + " |  playerange: " + playerAngle);
-        Debug.Log( "precentage" + precentage);
+        // Debug.Log("begin: " +a.angle + " |  end: " + b.angle + " |  playerange: " + playerAngle);
+        // Debug.Log( "precentage" + precentage);
         result = MountainCoordinate.Lerp(a,b, precentage).ToVector(_mountain);
         return result;
     }

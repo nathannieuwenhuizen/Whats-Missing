@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Boss;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -59,6 +60,7 @@ public class Lungs : MonoBehaviour
     private List<FireSpread> fireSpreads = new List<FireSpread>();
 
     private void StartBurining(FireSpread spread) {
+
         if (!fireSpreads.Contains(spread)) fireSpreads.Add(spread);
         if (burning) return;
 

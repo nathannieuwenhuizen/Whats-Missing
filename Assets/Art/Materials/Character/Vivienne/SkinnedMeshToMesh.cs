@@ -20,14 +20,18 @@ public class SkinnedMeshToMesh : MonoBehaviour
     {
         while (gameObject.activeSelf)
         {
+            //make mesh
             Mesh m = new Mesh();
             skinnedMesh.BakeMesh(m);
             Vector3[] vertices = m.vertices;
             Mesh m2 = new Mesh();
             m2.vertices = vertices;
 
+            //update mesh in vfx graph
             VFXGraph.SetMesh("Mesh", m2);
 
+            //update scale with that of the skinnedmesh
+            VFXGraph.transform.localScale = Vector3.one * (1f / transform.localScale.x);
             yield return new WaitForSeconds (refreshRate);
         }
     }

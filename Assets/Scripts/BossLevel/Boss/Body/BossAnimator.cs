@@ -14,8 +14,11 @@ namespace Boss {
         public static readonly string TRIGGER_ATTACK = "attack";
         public static readonly string TRIGGER_TRANSFORM = "transform";
         public static readonly string TRIGGER_DEATH = "death";
+        public static readonly string TRIGGER_MIRROR_ATTACK = "mirror_attack";
+
         public static readonly string BOOL_INAIR = "inAir";
 
+        public static readonly string FLOAT_CRAWLSPEED = "crawl_speed";
         //inverse kinematics
         public static readonly string FLOAT_IK_LF = "ik_lf";
         public static readonly string FLOAT_IK_RF = "ik_rf";
@@ -84,6 +87,16 @@ namespace Boss {
                 yield return new WaitForFixedUpdate();
             }
             Debug.Log("end of attack");
+        }
+        ///<summary>
+        /// Does an animation and when the 
+        ///</summary>
+        public IEnumerator DoMirrorAttack(Action mirrorAttack, Action endCallback) {
+            SetTrigger(BossAnimatorParam.TRIGGER_MIRROR_ATTACK);
+            yield return new WaitForSeconds(1.6f);
+            mirrorAttack();
+            yield return new WaitForSeconds(1.3f);
+            endCallback();
         }
     }
 }

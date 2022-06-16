@@ -23,6 +23,9 @@ public class Fire : RoomObject
 
     [SerializeField]
     private bool palyerFireSound = true;
+    [SerializeField]
+    private float animationSpeed = 1f;
+
     protected override void Awake() {
         ToggleFireSpread(false);
         normalScale = transform.localScale.x;
@@ -30,6 +33,7 @@ public class Fire : RoomObject
         if (fireSpreadObject != null)
         fireSpreadScale = fireSpreadObject.transform.localScale.x;
         UpdatingTimeScale(1);
+        animationDuration *= animationSpeed;
     }
 
     private void OnEnable() {

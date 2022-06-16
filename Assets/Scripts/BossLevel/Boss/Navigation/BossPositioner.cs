@@ -38,7 +38,7 @@ public class BossPositioner : MonoBehaviour
 
     public delegate void BossPositionEvent();
     public static BossPositionEvent OnBossLanding;
-public static BossPositionEvent OnBossTakeOff;
+    public static BossPositionEvent OnBossTakeOff;
 
     private bool inAir = true;
     public bool InAir {
@@ -101,7 +101,7 @@ public static BossPositionEvent OnBossTakeOff;
         get { return rotationEnabled;}
         set { rotationEnabled = value; }
     }
-
+    [SerializeField]
     BodyMovementType movementType = BodyMovementType.airSteeringAtMountain;
     public BodyMovementType BodyMovementType {
         get { return movementType;}
@@ -134,14 +134,19 @@ public static BossPositionEvent OnBossTakeOff;
         boss = GetComponent<Boss>();
         desiredTempPos = new GameObject("desired temp position").transform;
         desiredTempPos.position = transform.position;
+        desiredTempPos.SetParent(transform.parent);
+
         desiredPos = new GameObject("desired position").transform;
         desiredPos.position = transform.position;
 
         navMeshAgent = GetComponent<NavMeshAgent>();
 
-        airMovementBehaviour = new AirSteeringBehaviour(transform, desiredTempPos, steeringBehaviour, bossMountain);
+        steeringBehaviour.target = transform;
+        steeringBehaviour.desiredTarget = desiredTempPos;
+
+        airMovementBehaviour = new AirSteeringBehaviour(transform, desiredTempPos, this, bossMountain);
         navMeshMovementBehaviour = new NavMeshBehaviour(transform, desiredTempPos);
-        freefloatMovementBehaviour = new FreeFloatBehaviour(transform, desiredTempPos, steeringBehaviour);
+        freefloatMovementBehaviour = new FreeFloatBehaviour(transform, desiredTempPos, this);
         airMovementBehaviour.desiredPos = navMeshMovementBehaviour.desiredPos = freefloatMovementBehaviour.desiredPos = desiredPos;
 
         BodyMovementType = movementType;        
@@ -159,6 +164,7 @@ public static BossPositionEvent OnBossTakeOff;
         desiredPos = _target;
         CurrentMovementBehaviour.WithPathOffset = _withPathOffset;
         CurrentMovementBehaviour.BasePathOffset = _basePathOffset;
+        steeringBehaviour.desiredTarget = desiredPos;
         CurrentMovementBehaviour.SetDestinationPath(desiredPos, _begin);
     }
     
@@ -222,15 +228,22 @@ public static BossPositionEvent OnBossTakeOff;
 
         //do landing animation.
         InAir = false;
+        float timePassed = 0;
 
-        while(!AtPosition(3f)) yield return new WaitForFixedUpdate();
+        while(!AtPosition(3f)) {
+            timePassed += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        }
         
         //spawn debree at end position when the coordinate of the boss is within 3 units of its destination.
         SpawnDebree(_endPos);
         AudioHandler.Instance?.Play3DSound(SFXFiles.boss_landing, transform);
 
-        //wait until the boss is within 1 unit.
-        while(!AtPosition(1f)) yield return new WaitForFixedUpdate();
+        //wait until the boss is within 1 unit and the animation has at least been 1 second to finish the animation
+        while(!AtPosition(1f) && timePassed < 1.1f) {
+            timePassed += Time.deltaTime;
+            yield return new WaitForFixedUpdate();
+        } 
         
         //callback will be called if it isnt null.
         if (callback != null) callback();

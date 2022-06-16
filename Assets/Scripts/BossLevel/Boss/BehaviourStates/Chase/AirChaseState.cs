@@ -41,7 +41,7 @@ namespace Boss {
             
             UpdateBossChasePath(false);
             
-            if (BossAI.PlayerIsInForceField)
+            if (Player.INVINCIBLE)
                 OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
             
         }

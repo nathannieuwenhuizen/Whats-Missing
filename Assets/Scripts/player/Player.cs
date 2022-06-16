@@ -7,6 +7,10 @@ using UnityEngine.Rendering.Universal;
 
 public class Player : RoomObject
 {
+    ///<summary>
+    /// Player cant be hit by the hitboxm used for the bossai to determine if the palyer is inside a shield
+    ///</summary>
+    public static bool INVINCIBLE = false;
 
     public delegate void DieEvent(bool withAnimation, bool toPreviousLevel);
     public static event DieEvent OnDie;

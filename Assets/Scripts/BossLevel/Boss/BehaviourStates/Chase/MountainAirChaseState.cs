@@ -54,7 +54,8 @@ namespace Boss {
             if (Vector3.Distance(bossAI.transform.position, bossAI.Boss.Player.transform.position) < Boss.BOSS_MELEE_ATTACK_RANGE) MeleeAttack();
             
             //go to charge at shield phase from here
-            if (BossAI.PlayerIsInForceField)
+            Debug.Log("player is invincible = " + Player.INVINCIBLE);
+            if (Player.INVINCIBLE)
                 OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
             
             //move towards the player
@@ -71,7 +72,6 @@ namespace Boss {
 
         private void GoAsCloseToPlayer() {
             Positioner.SpeedScale = 1f;
-            Debug.Log("go to player");
             // if (!Positioner.AtPosition(.5f)) startChasePos = bossAI.transform.position;
             Positioner.SetDestinationPath(bossAI.MountainAttackPosition.PosClosestToPlayerButWithinRange(Positioner.BossMountain, bossAI.Boss.Player), startChasePos, false);
         }

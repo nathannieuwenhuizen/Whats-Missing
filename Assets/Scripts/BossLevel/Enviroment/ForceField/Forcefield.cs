@@ -287,6 +287,7 @@ namespace ForcefieldDemo
 
         public void OnAreaEnter(Player player)
         {
+            Debug.Log("force field enter");
             OnForceFieldEnter?.Invoke();
         }
 

@@ -8,7 +8,7 @@ namespace Boss {
     {
         public override void OnAreaEnter(Player player)
         {
-            if (BossAI.PlayerIsInForceField == false) {
+            if (Player.INVINCIBLE == false) {
                 AudioHandler.Instance?.PlaySound(SFXFiles.boss_attack_hit_player);
                 // base.OnAreaEnter(player);
             }

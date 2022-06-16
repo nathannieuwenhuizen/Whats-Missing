@@ -9,7 +9,6 @@ namespace Boss {
 ///</summary>
 public class BossAI : MonoBehaviour {
 
-    public static bool PlayerIsInForceField = false;
 
     [SerializeField]
     private WanderingPaths paths;
@@ -21,6 +20,12 @@ public class BossAI : MonoBehaviour {
     private Transform reactionPosition;
     public Transform ReactionPosition {
         get { return reactionPosition;}
+    }
+
+    [SerializeField]
+    private Transform chargePosition;
+    public Transform ChargePosition {
+        get { return chargePosition;}
     }
 
 
@@ -61,8 +66,11 @@ public class BossAI : MonoBehaviour {
     }
     public void UpdateAI() {
         stateMachine?.Update();
-        if (Input.GetKeyDown(KeyCode.T)) {
-            stateMachine.SwitchState(behaviours.transformationState);
+        // if (Input.GetKeyDown(KeyCode.T)) {
+        //     stateMachine.SwitchState(behaviours.transformationState);
+        // }
+        if (Input.GetKeyDown(KeyCode.Y)) {
+            stateMachine.SwitchState(behaviours.chargeAtShieldState);
         }
     }
 
@@ -80,11 +88,11 @@ public class BossAI : MonoBehaviour {
 
 
     public void PlayerIsInsdeForceField() {
-        PlayerIsInForceField = true;
+        Player.INVINCIBLE = true;
     }
 
     public void PlayerIsOutsideForceField() {
-        PlayerIsInForceField = false;
+        Player.INVINCIBLE = false;
     }
 
     ///<summary>

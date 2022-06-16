@@ -23,17 +23,17 @@ public class AirSteeringBehaviour : IMovementBehavior
     private MountainPath path;
     private Transform transform;
     private Transform desiredTempPos;
-    private SteeringBehaviour steeringBehaviour;
+    private BossPositioner bossPositioner;
 
 
-    public AirSteeringBehaviour(Transform _transform, Transform _desiredTempPos, SteeringBehaviour _steeringBehaviour, BossMountain _pathHandeler) {
+    public AirSteeringBehaviour(Transform _transform, Transform _desiredTempPos, BossPositioner _bossPositioner, BossMountain _pathHandeler) {
         transform = _transform;
         desiredTempPos = _desiredTempPos;
-        steeringBehaviour = _steeringBehaviour;
+        bossPositioner = _bossPositioner;
         bossMountain = _pathHandeler;
 
-        steeringBehaviour.target = transform;
-        steeringBehaviour.desiredTarget = desiredTempPos;
+        bossPositioner.SteeringBehaviour.target = transform;
+        bossPositioner.SteeringBehaviour.desiredTarget = desiredTempPos;
         desiredTempPos.SetParent(transform.parent);
 
         path.steps = 10;
@@ -53,11 +53,13 @@ public class AirSteeringBehaviour : IMovementBehavior
 
     public void UpdateTempDestination(){
         desiredTempPos.position = path.GetClosestMountainCoord(transform.position, bossMountain).ToVector(bossMountain, BasePathOffset);
+        bossPositioner.SteeringBehaviour.desiredTarget = desiredTempPos;
+    
     }
     public void Update() {
         if (MovementEnabled) {
             UpdateTempDestination();
-            steeringBehaviour.UpdatePosition(speedScale);
+            bossPositioner.SteeringBehaviour.UpdatePosition(speedScale);
             // UpdateRotation();
         }
     }
@@ -71,7 +73,7 @@ public class AirSteeringBehaviour : IMovementBehavior
         Vector3 pos = path.end.ToShapeVector(bossMountain) + path.end.Normal(bossMountain) * BasePathOffset;
         // Debug.Log("distance = " + Vector3.Distance(transform.position, pos));
         if (Vector3.Distance(transform.position, pos) > _distanceThreshhold) return false;
-        if (steeringBehaviour.Velocity.magnitude > 1f) return false;
+        if (bossPositioner.SteeringBehaviour.Velocity.magnitude > 1f) return false;
         return true;
     }
 

@@ -49,13 +49,13 @@ public class BossChangesHandler
         }
         acitvatedChange = _change;
         // textAnimator.ShowText(_change.Word + " is " + Change.GetChangeTypeText(_change.ChangeType));
-        yield return new WaitForSeconds(1f);
+        // yield return new WaitForSeconds(1f);
         ApplyChange();
     }
     private void ApplyChange() {
         bossRoom.ChangeHandler.AddBossChange(acitvatedChange);
         changeParticle.Emit(50);
-        OnShockwave?.Invoke(boss.transform);
+        OnShockwave?.Invoke(boss.Head.transform);
 
     }
 
