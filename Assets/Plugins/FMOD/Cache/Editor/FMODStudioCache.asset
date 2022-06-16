@@ -27,6 +27,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 501
+--- !u!114 &-8725919015597499405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Boss/Boss/Arms/Attack
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Boss/Boss/Arms/Attack
+  Guid:
+    Data1: 1712167966
+    Data2: 1245347913
+    Data3: -1104665460
+    Data4: -1070955250
+  Banks:
+  - {fileID: -6347592712580481351}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 40
+  Length: 2420
 --- !u!114 &-8506860120614018062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +209,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 519
+--- !u!114 &-7663986201433634170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Boss/Boss/Arms/Attack_hit_player
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Boss/Boss/Arms/Attack_hit_player
+  Guid:
+    Data1: 1572121419
+    Data2: 1205242715
+    Data3: 198587278
+    Data4: 289979548
+  Banks:
+  - {fileID: -6347592712580481351}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 12631
 --- !u!114 &-7494131103234565825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,10 +361,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/InGame.bank
   Name: InGame
   StudioPath: bank:/InGame
-  lastModified: 637904631840583713
+  lastModified: 637909810422390612
   FileSizes:
   - Name: Desktop
-    Value: 3549888
+    Value: 4179104
   Exists: 1
 --- !u!114 &-6334739491167125196
 MonoBehaviour:
@@ -713,12 +767,17 @@ MonoBehaviour:
   - {fileID: 5944013032915863643}
   - {fileID: -1803237799566102059}
   - {fileID: 6444779073398447784}
+  - {fileID: -8725919015597499405}
+  - {fileID: 7719492394996504563}
+  - {fileID: 3635219175939621531}
+  - {fileID: -7663986201433634170}
+  - {fileID: 5837350965519402950}
   EditorParameters: []
   MasterBanks:
   - {fileID: 3340025364052271016}
   StringsBanks:
   - {fileID: 4311350981029256284}
-  cacheTime: 637904631840607971
+  cacheTime: 637909810422405507
   cacheVersion: 10
 --- !u!114 &245897594258309279
 MonoBehaviour:
@@ -874,8 +933,8 @@ MonoBehaviour:
     Data3: 1463216575
     Data4: -186312373
   Banks:
-  - {fileID: 3340025364052271016}
   - {fileID: 2501852305134724374}
+  - {fileID: 3340025364052271016}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -1167,6 +1226,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 45
   Length: 0
+--- !u!114 &3635219175939621531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Boss/Boss/Transformation
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Boss/Boss/Transformation
+  Guid:
+    Data1: -846863818
+    Data2: 1124626739
+    Data3: 2022270894
+    Data4: 1315836517
+  Banks:
+  - {fileID: -6347592712580481351}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 70
+  Length: 15706
 --- !u!114 &3659012634125018609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1263,10 +1349,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637904631840607971
+  lastModified: 637909810422405507
   FileSizes:
   - Name: Desktop
-    Value: 3932
+    Value: 4196
   Exists: 1
 --- !u!114 &4391953332099965225
 MonoBehaviour:
@@ -1484,6 +1570,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 53986
+--- !u!114 &5837350965519402950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Boss/Boss/Talking
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Boss/Boss/Talking
+  Guid:
+    Data1: -585967218
+    Data2: 1323409130
+    Data3: -358423162
+    Data4: -255964138
+  Banks:
+  - {fileID: -6347592712580481351}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 60
+  Length: 9230
 --- !u!114 &5944013032915863643
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1727,6 +1840,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 616
+--- !u!114 &7719492394996504563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Boss/Boss/Movement/Landing
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Boss/Boss/Movement/Landing
+  Guid:
+    Data1: -727204557
+    Data2: 1173702852
+    Data3: -783031116
+    Data4: 924098717
+  Banks:
+  - {fileID: -6347592712580481351}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 70
+  Length: 540
 --- !u!114 &7867792128408310437
 MonoBehaviour:
   m_ObjectHideFlags: 0
