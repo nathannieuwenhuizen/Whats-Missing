@@ -5566,6 +5566,7 @@ GameObject:
   - component: {fileID: 141260391}
   - component: {fileID: 141260392}
   - component: {fileID: 141260393}
+  - component: {fileID: 141260387}
   m_Layer: 10
   m_Name: boss
   m_TagString: Untagged
@@ -5573,6 +5574,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &141260387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141260386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca0f439bff7623643a0a4d4df915c459, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arm: {fileID: 1054640546}
+  sythe: {fileID: 238630691}
+  slashTrailSythe: {fileID: 827172792}
+  slashTrailArm: {fileID: 564996936}
+  slashParticles: {fileID: 1612849929}
 --- !u!4 &141260388
 Transform:
   m_ObjectHideFlags: 0
@@ -5736,9 +5754,7 @@ MonoBehaviour:
   - {fileID: 1149626097}
   - {fileID: 1249080699}
   tentacleRenderers: []
-  armRenders:
-    arm: {fileID: 1054640546}
-    sythe: {fileID: 238630691}
+  armRenders: {fileID: 0}
   hitBoxes:
   - {fileID: 640636259}
   mainBossWiggleBones: []
@@ -5914,7 +5930,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &176994783
 Transform:
   m_ObjectHideFlags: 0
@@ -11350,6 +11366,7 @@ Transform:
   - {fileID: 1695872833}
   - {fileID: 1736380298}
   - {fileID: 1541069285}
+  - {fileID: 1068435950}
   m_Father: {fileID: 833516243}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -23987,7 +24004,7 @@ GameObject:
   m_Component:
   - component: {fileID: 615264398}
   m_Layer: 0
-  m_Name: Room 04
+  m_Name: room objects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25875,7 +25892,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &907879331
 Transform:
   m_ObjectHideFlags: 0
@@ -26453,7 +26470,7 @@ MonoBehaviour:
   mirror: {fileID: 1053852521}
   area: {fileID: 0}
   room: {fileID: 833516244}
-  visible: 0
+  visible: 1
 --- !u!4 &1053852523
 Transform:
   m_ObjectHideFlags: 0
@@ -26660,7 +26677,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1068435949}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.7, z: 0}
+  m_LocalPosition: {x: 0, y: 8.293364, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1096129561}
@@ -26737,8 +26754,8 @@ Transform:
   - {fileID: 1828047845}
   - {fileID: 1936093094}
   - {fileID: 630966993}
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_Father: {fileID: 255505965}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1080736435
 GameObject:
@@ -27086,7 +27103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1141434884
 Transform:
   m_ObjectHideFlags: 0
@@ -38205,7 +38222,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1521027156}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: 1.3559895, y: 0.106636524, z: 11.418725}
+  m_LocalPosition: {x: 1.12, y: 2.1, z: 8.73}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 615264398}

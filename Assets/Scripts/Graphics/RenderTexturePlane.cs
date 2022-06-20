@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 ///<summary>
 /// TheBasic script for rendering the camera viewport to a plane, the portal and lanar reflection scrit overrides it.
@@ -86,9 +87,22 @@ public class RenderTexturePlane : MonoBehaviour
 
     public void SetRenderTexture(RenderTexture texture) {
         if (reflectionCamera.targetTexture == texture) return;
-        reflectionCamera.targetTexture = texture;            
+
+        reflectionCamera.enabled = true;
+        Vector2 resolution = new Vector2(Screen.width, Screen.height);
+        int qualityLevel = QualitySettings.GetQualityLevel();
+        if (qualityLevel < 3) Screen.SetResolution((int)(resolution.x *.1f), (int)(resolution.y * .1f), true);
+        
+        reflectionCamera.targetTexture = texture;
+        reflectionCamera.Render();
+        // UniversalRenderPipeline.RenderSingleCamera(SRC, portalCamera);
+
+        if (qualityLevel < 3) Screen.SetResolution((int)resolution.x, (int)resolution.y, true);
+
+
+        // texture = reflectionCamera.targetTexture;
         reflectionPlane.GetComponent<MeshRenderer>().material.SetTexture("_ReflectionTex", texture);
-        // reflectionCamera.Render();
+        // reflectionCamera.enabled = false;
     }
     private void UpdateLODTexture() {
 
@@ -101,7 +115,6 @@ public class RenderTexturePlane : MonoBehaviour
             SetRenderTexture(output_texture_low);
         }
     }
-
 
     protected virtual void LateUpdate()
     {
@@ -117,7 +130,7 @@ public class RenderTexturePlane : MonoBehaviour
             timeInterval += Time.deltaTime;
             if (timeInterval > RenderInterval())
             {
-                reflectionCamera.enabled = true;
+                // reflectionCamera.enabled = true;
                 timeInterval = 0;
                 UpdateLODTexture();
                 UpdateCamera();

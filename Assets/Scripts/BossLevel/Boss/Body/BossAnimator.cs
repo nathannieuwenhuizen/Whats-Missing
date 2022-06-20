@@ -83,6 +83,7 @@ namespace Boss {
                 index += Time.deltaTime;
                 IKPass.RightArm.IKPosition = boss.Player.transform.position;
                 IKPass.RightArm.Weight = animator.GetFloat(BossAnimatorParam.FLOAT_ATTACKWEIGHT);
+                boss.Body.Arm.UpdateArmFX(this);
                 boss.Body.ToggleDeathColliders(IKPass.RightArm.Weight > 0);
                 yield return new WaitForFixedUpdate();
             }

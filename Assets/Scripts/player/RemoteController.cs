@@ -29,8 +29,8 @@ public class RemoteController : MonoBehaviour
             }
         }
         oldMirror = focusedMirror;
-
     }
+
     private void OnEnable() {
         PauseScreen.OnPause += DisableClick;
         PauseScreen.OnResume += EnableClick;
@@ -52,7 +52,6 @@ public class RemoteController : MonoBehaviour
             focusedMirror = null;
         }
     }
-
 
     private Mirror FocussedMirror() {
         RaycastHit hit;

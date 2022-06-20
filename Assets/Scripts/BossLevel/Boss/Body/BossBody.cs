@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Boss {
-    [System.Serializable]
-    public struct ArmRenders {
-        [SerializeField]
-        public Renderer arm;
-        [SerializeField]
-        public Renderer sythe;
+    // [System.Serializable]
+    // public struct ArmRenders {
+    //     [SerializeField]
+    //     public Renderer arm;
+    //     [SerializeField]
+    //     public Renderer sythe;
 
-        public void Toggle(bool _toSythe) {
-            arm.gameObject.SetActive(!_toSythe);
-            sythe.gameObject.SetActive(_toSythe);
-        }
-    }
+    //     public void Toggle(bool _toSythe) {
+    //         arm.gameObject.SetActive(!_toSythe);
+    //         sythe.gameObject.SetActive(_toSythe);
+    //     }
+    // }
 
     ///<summary>
     /// This handles the bossy body mesh. 
@@ -41,8 +41,8 @@ namespace Boss {
         private Renderer[] tentacleRenderers;
 
         [SerializeField]
-        private ArmRenders armRenders;
-        public ArmRenders Arm {
+        private BossArm armRenders;
+        public BossArm Arm {
             get { return armRenders;}
         }
 
