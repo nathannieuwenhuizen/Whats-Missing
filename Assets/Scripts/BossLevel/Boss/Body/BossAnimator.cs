@@ -78,6 +78,8 @@ namespace Boss {
         public bool Attacking {
             get { return attacking;}
         }
+
+
         public IEnumerator DoAttackAnimation() {
             attacking = true;
             SetTrigger(BossAnimatorParam.TRIGGER_ATTACK);
@@ -85,19 +87,17 @@ namespace Boss {
             boss.StartCoroutine(boss.Body.Arm.UpdatingArmFX(this));
             float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
 
-            Debug.Log("animation clip lenght: " + clipLength);
+            // Debug.Log("animation clip lenght: " + clipLength);
             IKPass.RightArm.EnableRayCast = false;
             float index = 0;
             while (index < 3f) {
                 index += Time.deltaTime;
                 IKPass.RightArm.IKPosition = boss.Player.transform.position;
                 IKPass.RightArm.Weight = animator.GetFloat(BossAnimatorParam.FLOAT_ATTACKWEIGHT);
-                // boss.Body.Arm.UpdateArmFX(this);
                 boss.Body.ToggleDeathColliders(IKPass.RightArm.Weight > 0);
                 yield return new WaitForFixedUpdate();
             }
             attacking = false;
-            Debug.Log("end of attack");
         }
         ///<summary>
         /// Does an animation and when the 

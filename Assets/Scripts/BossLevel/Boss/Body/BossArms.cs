@@ -28,6 +28,7 @@ namespace Boss {
         public void Setup() {
             startTrailTime = armTrail.time;
             armTrail.time = 0;
+            armTrail.emitting = false;
             armParitcles.enableEmission = false;
 
             trailCoord.startParent = armTrail.transform.parent;

@@ -32,7 +32,6 @@ namespace Boss {
             if (_resetBeginPos) startChasePos = bossAI.transform.position +  Vector3.up * (Boss.BOSS_GROUND_OFFSET);
 
             Positioner.SetDestinationPath(bossAI.Boss.Player.transform, startChasePos);
-            // positioner.SetDestinationPath(bossAI.Boss.Player.transform.position + Vector3.up * (Boss.BOSS_GROUND_OFFSET), startChasePos);
         }
 
         public override void Run()

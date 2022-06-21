@@ -115,7 +115,7 @@ public class BossAI : MonoBehaviour {
             break;
             case 3:
             CurrentWanderingPath = paths.fourthShardPath;  
-            stateMachine.SwitchState(behaviours.removeLightState);
+            // stateMachine.SwitchState(behaviours.removeLightState);
             break;
             case 4:    
             CurrentWanderingPath = paths.fifthShardPath;   

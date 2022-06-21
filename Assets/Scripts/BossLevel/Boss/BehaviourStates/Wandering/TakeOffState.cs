@@ -25,7 +25,7 @@ namespace Boss {
 
             if (bossAI.Boss.BossPositioner.InAir == false) {
                 Positioner.SetDestinationPath(bossAI.transform.position, bossAI.transform.position);
-                takeOffCoroutine = Positioner.StartCoroutine(Positioner.TakeOff(() => {
+                takeOffCoroutine = Positioner.StartCoroutine(Positioner.TakingOff(() => {
                     OnStateSwitch?.Invoke(nextState);
                 }));
             } else {

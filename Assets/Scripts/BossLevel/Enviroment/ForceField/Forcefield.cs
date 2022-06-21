@@ -281,13 +281,12 @@ namespace ForcefieldDemo
 
             Vector3 position = other.ClosestPoint(transform.position);
             Vector3 normal = (position - transform.position).normalized;
-            Debug.Log("something triggered me: " + other.name);
+            // Debug.Log("something triggered me: " + other.name);
             ApplyImpact(position, normal);
         }
 
         public void OnAreaEnter(Player player)
         {
-            Debug.Log("force field enter");
             OnForceFieldEnter?.Invoke();
         }
 
@@ -316,7 +315,7 @@ namespace ForcefieldDemo
 
             Vector3 delta = from - transform.position;
             delta.y = 0;
-            result = delta.normalized * (meshRenderer.transform.lossyScale.y * .5f);
+            result = delta.normalized * (meshRenderer.transform.lossyScale.y * .5f + 1f);
 
             return result;
         }

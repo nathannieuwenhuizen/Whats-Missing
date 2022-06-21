@@ -199,7 +199,6 @@ public class BossPositioner : MonoBehaviour
             Vector3 delta = boss.Player.transform.position - transform.position;
             delta.y = 0;
             desiredRotation = Quaternion.LookRotation(delta, Vector3.up);
-            Debug.Log("look at player");
             break;
             case BodyOrientation.toPath:
             desiredRotation = CurrentMovementBehaviour.PathRotation();
@@ -262,15 +261,7 @@ public class BossPositioner : MonoBehaviour
         Destroy(debree, 5f);
     }
 
-    public IEnumerator TakeOff(Action callback) {
-        inAir = true;
-        OnBossTakeOff?.Invoke();
-        BodyMovementType = BodyMovementType.airSteeringAtMountain;
-        MovementEnabled = false;
-        yield return StartCoroutine(transform.AnimatingPos(CurrentMovementBehaviour.GetClosestPointOnPath(), landingCurve, 2f));
-        MovementEnabled = true;
-        callback();
-    }
+
 
     ///<summary>
     /// Makes the boss go into airing mode.

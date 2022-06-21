@@ -4909,10 +4909,12 @@ MonoBehaviour:
     isOn: 0
     huzzleWords: 1
     isQuestion: 0
+    isInteractable: 1
   preAnswer: 
   indicatorMesh: {fileID: 966860056450783182}
   offColor: {r: 1, g: 0, b: 0, a: 1}
   onColor: {r: 0, g: 1, b: 0, a: 1}
+  player: {fileID: 0}
   stencilBuffer: {fileID: 7604190301541831808}
   shards:
   - {fileID: 3277123073802927208}
@@ -4922,6 +4924,8 @@ MonoBehaviour:
   - {fileID: 6892960435984704325}
   explosionSmoke: {fileID: 1771006038312313814}
   explosionShards: {fileID: 3363332290401288477}
+  skipIntro: 0
+  ammountOfShardAlreadyCollected: 0
 --- !u!1 &4213351205507403515
 GameObject:
   m_ObjectHideFlags: 0
@@ -10021,6 +10025,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4933033533321576348, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 3583
+      objectReference: {fileID: 0}
     - target: {fileID: 5553840850390887916, guid: 52518b190506bdc45b06f159f7656a3f, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -10148,8 +10156,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 402560583575372060, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 24575
+      value: 3583
       objectReference: {fileID: 0}
+    - target: {fileID: 427352512922786872, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f6a58bb4ce3f34a478b829f15e668163, type: 2}
+    - target: {fileID: 728927704677725319, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f6a58bb4ce3f34a478b829f15e668163, type: 2}
     - target: {fileID: 1187348178092252326, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
       propertyPath: positionInfo.setAsParent
       value: 1
@@ -10214,6 +10230,14 @@ PrefabInstance:
       propertyPath: fallCurve.m_Curve.Array.data[1].outWeight
       value: 0.33333334
       objectReference: {fileID: 0}
+    - target: {fileID: 1389046751525599730, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f6a58bb4ce3f34a478b829f15e668163, type: 2}
+    - target: {fileID: 1470073868437364496, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f6a58bb4ce3f34a478b829f15e668163, type: 2}
     - target: {fileID: 1640128968570699102, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
       propertyPath: fallCurve.m_Curve.Array.size
       value: 3
@@ -10338,13 +10362,33 @@ PrefabInstance:
       propertyPath: fallCurve.m_Curve.Array.data[1].outWeight
       value: 0.33333334
       objectReference: {fileID: 0}
+    - target: {fileID: 1894992603329586523, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3537595090133075822, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 24575
+      value: 3583
+      objectReference: {fileID: 0}
+    - target: {fileID: 3539031087244594643, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f6a58bb4ce3f34a478b829f15e668163, type: 2}
+    - target: {fileID: 3583169757404221095, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4467316094920107501, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 24575
+      value: 3583
+      objectReference: {fileID: 0}
+    - target: {fileID: 4568278739892371470, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5757832000115447990, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5847725025735887826, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
       propertyPath: m_Name
@@ -10412,7 +10456,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6902807252008778063, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 24575
+      value: 3583
       objectReference: {fileID: 0}
     - target: {fileID: 7042834447438756225, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
       propertyPath: m_Layer
@@ -10542,10 +10586,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8123366011792908562, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8179978111983954903, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 24575
+      value: 3583
       objectReference: {fileID: 0}
+    - target: {fileID: 8248731949178212575, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f6a58bb4ce3f34a478b829f15e668163, type: 2}
     m_RemovedComponents:
     - {fileID: 1260422350629799449, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}
     - {fileID: 7301817645433611780, guid: d222846602ff27d4ea9bbeba8effe648, type: 3}

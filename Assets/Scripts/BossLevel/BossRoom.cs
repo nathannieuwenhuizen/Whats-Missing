@@ -12,6 +12,9 @@ public class BossRoom : Room
 
     [SerializeField]
     private Transform spawnPosition;
+
+    [SerializeField]
+    private bool setPlayerAtDoor = false;
     
     protected override void Awake() {
         base.Awake();
@@ -21,6 +24,10 @@ public class BossRoom : Room
     //auto enter for the player
     private void Start() {
         OnRoomEnter(Player, false);
+#if !UNITY_EDITOR
+        Player.transform.position = StartDoor.EndPos();
+#endif
+        if (setPlayerAtDoor) Player.transform.position = StartDoor.EndPos();
     }
 
     private void OnEnable() {

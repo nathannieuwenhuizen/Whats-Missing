@@ -87,8 +87,8 @@ public class MirrorShard : PickableRoomObject
                 ActivateRigidBody();
             }
             foreach(LetterCoords coords in letterCoords) coords.letter.Interactable = value;
-            // planarReflection.IsActive = !value;
-            planarReflection.IsActive = false;
+            planarReflection.IsActive = !value;
+            // planarReflection.IsActive = false;
 
         }
     }
@@ -120,7 +120,7 @@ public class MirrorShard : PickableRoomObject
     private void Start() {
         grabSound = SFXFiles.mirorshard_grab;
         looksWhenGrabbed = true;
-        startLocalPos =transform.localPosition;
+        startLocalPos = transform.localPosition;
         startParent = transform.parent;
         holdingDistance = 5f;
         
@@ -172,7 +172,7 @@ public class MirrorShard : PickableRoomObject
         rb = GetComponent<Rigidbody>();
         if (rb) {
             rb.useGravity = positionInfo.useGravityAfterFall;
-            rb.isKinematic = !positionInfo.useGravityAfterFall; //might change later
+            rb.isKinematic = false;// !positionInfo.useGravityAfterFall; //might change later
         }
 
         if (!positionInfo.visibleAfterFalling) {
@@ -231,7 +231,7 @@ public class MirrorShard : PickableRoomObject
         base.Grab(connectedRigidBody); 
         AudioHandler.Instance?.Play3DSound(grabSound, transform);
         shineParticle.Stop();
-        transform.parent = connectedRigidBody.transform.parent;
+        transform.parent  = null; // dont set ot the connected rigibdoy or else the update position will get laggy somehow
         if (!hasAlreadyBeenPickedUp) {
             hasAlreadyBeenPickedUp = true;
             OnPickedUp?.Invoke(this);

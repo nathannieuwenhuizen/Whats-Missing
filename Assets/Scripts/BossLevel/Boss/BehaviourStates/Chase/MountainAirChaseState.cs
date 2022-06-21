@@ -35,11 +35,8 @@ namespace Boss {
                 withPathOffset = true;
                 UpdateBossChasePath(true);
                 Positioner.SpeedScale = 2f;
-
             }
             oldAttackPose = _pose;
-            
-            Debug.Log("new chase pos");
         }
 
 
@@ -54,7 +51,6 @@ namespace Boss {
             if (Vector3.Distance(bossAI.transform.position, bossAI.Boss.Player.transform.position) < Boss.BOSS_MELEE_ATTACK_RANGE) MeleeAttack();
             
             //go to charge at shield phase from here
-            Debug.Log("player is invincible = " + Player.INVINCIBLE);
             if (Player.INVINCIBLE)
                 OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
             

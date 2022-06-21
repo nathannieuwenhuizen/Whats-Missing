@@ -74,7 +74,7 @@ namespace Boss {
             bossAnimator = new BossAnimator(boss, IKPass);
             ToggleDeathColliders(false);
             Grow = 0;
-            Arm.Toggle(false);
+            Arm.Toggle(true);
         }
 
         ///<summary>
