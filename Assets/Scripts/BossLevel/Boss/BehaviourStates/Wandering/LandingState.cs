@@ -24,7 +24,7 @@ namespace Boss {
             Boss.Body.BossAnimator.SetBool(BossAnimatorParam.BOOL_INAIR, false);
             if (bossAI.Boss.BossPositioner.InAir) {
                 Positioner.SetDestinationPath(bossAI.Boss.Player.transform, landingPos != null ? landingPos.position : bossAI.transform.position +  Vector3.up * (Boss.BOSS_GROUND_OFFSET));
-                landingCoroutine = Positioner.StartCoroutine(Positioner.Landing( bossAI.CurrentWanderingPath.LandingPos,
+                landingCoroutine = Positioner.StartCoroutine(Positioner.Landing( bossAI.CurrentWanderingPath.LandingPos.position,
                 () => {
                     OnStateSwitch?.Invoke(nextState);
                 }));

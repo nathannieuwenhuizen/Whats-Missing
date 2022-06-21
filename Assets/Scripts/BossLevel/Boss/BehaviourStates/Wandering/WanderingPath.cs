@@ -35,6 +35,12 @@ public class WanderingPath : MonoBehaviour {
     public Boss.BodyMovementType BossMovementType {
         get { return bossMovementType; }
     }
+    
+    [SerializeField]
+    private Boss.BodyOrientation bossOrientationType = Boss.BodyOrientation.toShape;
+    public Boss.BodyOrientation BossOrientationType {
+        get { return bossOrientationType; }
+    }
 
     [SerializeField]
     public bool showGizmo = true;

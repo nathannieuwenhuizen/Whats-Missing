@@ -83,6 +83,7 @@ public class MirrorShard : PickableRoomObject
             Interactable = !value; 
             if (value) {
                 DeactivateRigidBody();
+                shineParticle.Stop();
             } else {
                 ActivateRigidBody();
             }
@@ -172,7 +173,7 @@ public class MirrorShard : PickableRoomObject
         rb = GetComponent<Rigidbody>();
         if (rb) {
             rb.useGravity = positionInfo.useGravityAfterFall;
-            rb.isKinematic = false;// !positionInfo.useGravityAfterFall; //might change later
+            rb.isKinematic =  !positionInfo.useGravityAfterFall; //might change later
         }
 
         if (!positionInfo.visibleAfterFalling) {

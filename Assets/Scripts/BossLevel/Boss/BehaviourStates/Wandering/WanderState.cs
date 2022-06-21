@@ -107,6 +107,27 @@ public class WanderState : LookingState, IState
     }
 
     private void GoToNextPose() {
+        //if it is from in air to navmesh
+        Debug.Log("next pose");
+        if ( Positioner.BodyMovementType != bossAI.CurrentWanderingPath.BossMovementType && 
+            bossAI.CurrentWanderingPath.BossMovementType == BodyMovementType.navMesh) {
+
+            CurrentPoseIndex = (CurrentPoseIndex + 1) % bossAI.CurrentWanderingPath.poses.Length;
+            
+            Debug.Log("next pose for real");
+            Positioner.StartCoroutine(
+                Positioner.Landing(bossAI.CurrentWanderingPath.poses[currentPoseIndex].position.position, () => {
+                    SetNextPos();
+                })
+            );
+        } else {
+            SetNextPos();
+        }
+    }
+    private void SetNextPos () {
+        //just go to next position
+        Positioner.BodyMovementType = bossAI.CurrentWanderingPath.BossMovementType;
+        Positioner.BodyOrientation = bossAI.CurrentWanderingPath.BossOrientationType;
         CurrentPoseIndex = (CurrentPoseIndex + 1) % bossAI.CurrentWanderingPath.poses.Length;
     }
 

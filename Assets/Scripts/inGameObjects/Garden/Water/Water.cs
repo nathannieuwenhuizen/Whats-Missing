@@ -19,6 +19,7 @@ public class Water : RoomObject
     private MeshRenderer meshRenderer;
 
     private void Awake() {
+        base.Awake();
         meshRenderer = GetComponent<MeshRenderer>();
         watermaterial = meshRenderer.material;
     }

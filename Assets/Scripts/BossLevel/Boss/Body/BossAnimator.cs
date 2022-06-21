@@ -59,9 +59,15 @@ namespace Boss {
         public void SetBool(string _key, bool _val) {
             animator.SetBool(_key, _val);
         }
-
         ///<summary>
         /// Sets the boolean of the animator
+        ///</summary>
+        public void SetFloat(string _key, float _val) {
+            animator.SetFloat(_key, Mathf.Max(0,_val));
+        }
+
+        ///<summary>
+        /// Sets the float of the animator (cant go lower htan 0 though)
         ///</summary>
         public void SetInt(string _key, int _val) {
             animator.SetInteger(_key, _val);

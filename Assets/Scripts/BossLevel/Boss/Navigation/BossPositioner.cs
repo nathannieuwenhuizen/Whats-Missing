@@ -86,6 +86,9 @@ public class BossPositioner : MonoBehaviour
         }
     }
 
+    ///<summary>
+    /// Enables/disables the movement
+    ///</summary>
     public bool MovementEnabled {
         get { return CurrentMovementBehaviour.MovementEnabled;}
         set { 
@@ -93,7 +96,10 @@ public class BossPositioner : MonoBehaviour
             navMeshMovementBehaviour.MovementEnabled = value;
             freefloatMovementBehaviour.MovementEnabled = value;
             CurrentMovementBehaviour.MovementEnabled = value;
-            navMeshAgent.enabled = movementType == BodyMovementType.navMesh && value;
+            navMeshAgent.enabled = movementType == BodyMovementType.navMesh && MovementEnabled;
+            
+            //reset velocity
+            if (value == false) steeringBehaviour.Velocity = Vector3.zero;
         }
     }
     private bool rotationEnabled = true;
@@ -145,7 +151,7 @@ public class BossPositioner : MonoBehaviour
         steeringBehaviour.desiredTarget = desiredTempPos;
 
         airMovementBehaviour = new AirSteeringBehaviour(transform, desiredTempPos, this, bossMountain);
-        navMeshMovementBehaviour = new NavMeshBehaviour(transform, desiredTempPos);
+        navMeshMovementBehaviour = new NavMeshBehaviour(transform, desiredTempPos, boss);
         freefloatMovementBehaviour = new FreeFloatBehaviour(transform, desiredTempPos, this);
         airMovementBehaviour.desiredPos = navMeshMovementBehaviour.desiredPos = freefloatMovementBehaviour.desiredPos = desiredPos;
 
@@ -183,23 +189,34 @@ public class BossPositioner : MonoBehaviour
     }
 
     private void Update() {
-        if (MovementEnabled) CurrentMovementBehaviour.Update();
+        if (MovementEnabled)  {
+            CurrentMovementBehaviour.Update();
+        }
         if (RotationEnabled) UpdateRotation();
     }
 
+    ///<summary>
+    /// Updates the rotation of hte positioner based on its bodyorientation parameter
+    ///</summary>
     public void UpdateRotation() {
         Quaternion desiredRotation = transform.rotation;
         switch (bodyOrientation) {
+
+            //rotates to the shape of the boss nevironment
             case BodyOrientation.toShape:
             MountainCoordinate coord = MountainCoordinate.FromPosition(bossMountain, transform.position);
             Vector3 normal = -coord.Normal(bossMountain);
             desiredRotation = Quaternion.LookRotation(normal);
             break;
+
+            //Rotates towards the player (but stays on the same horizontal plane)
             case BodyOrientation.toPlayer:
             Vector3 delta = boss.Player.transform.position - transform.position;
             delta.y = 0;
             desiredRotation = Quaternion.LookRotation(delta, Vector3.up);
             break;
+
+            //Rotates to wards the path of hte movement behaviour
             case BodyOrientation.toPath:
             desiredRotation = CurrentMovementBehaviour.PathRotation();
             break;
@@ -208,12 +225,14 @@ public class BossPositioner : MonoBehaviour
     }
 
     private void OnDrawGizmos() {
-        if(CurrentMovementBehaviour != null) CurrentMovementBehaviour.DrawGizmo();
+        if(CurrentMovementBehaviour != null) CurrentMovementBehaviour?.DrawGizmo();
     }
 
-
-    //lands the boss on a specific position.
-    public IEnumerator Landing(Transform _endPos = null, Action callback = null) {
+    ///<summary>
+    ///lands the boss on a specific position.
+    ///</summary>
+    
+    public IEnumerator Landing(Vector3 _endPos, Action callback = null) {
         Debug.Log("landing");
 
         //set the correct movement options.
@@ -222,7 +241,7 @@ public class BossPositioner : MonoBehaviour
 
         //sets the destination.
         MovementEnabled = true;
-        SetDestinationPath(_endPos.position, transform.position);
+        SetDestinationPath(_endPos, transform.position);
         SpeedScale = 1f;
 
         //do landing animation.
@@ -247,15 +266,16 @@ public class BossPositioner : MonoBehaviour
         //callback will be called if it isnt null.
         if (callback != null) callback();
     }
+    
 
 
     ///<summary>
     /// Spawns a debree prefab at the position
     ///</summary>
-    private void SpawnDebree(Transform origin) {
+    private void SpawnDebree(Vector3 origin) {
         GameObject debree = Instantiate(Resources.Load<GameObject>("Roomprefabs/debrees"));
-        debree.transform.position = origin.position;
-        debree.transform.rotation = origin.rotation;
+        debree.transform.position = origin;
+        // debree.transform.rotation = origin.rotation;
         debree.GetComponent<ParticleSystem>().Emit(10);
         debree.GetComponentInChildren<ParticleSystem>().Emit(3);
         Destroy(debree, 5f);

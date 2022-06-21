@@ -31,16 +31,20 @@ public class NavMeshBehaviour : IMovementBehavior
     private Transform transform;
     private Transform desiredTempPos;
     private NavMeshAgent navMeshAgent;
-    private Boss.Boss boss;
 
     private bool movementUpdateEnabled = true;
     public bool MovementEnabled {
         get { return movementUpdateEnabled;}
         set { 
             movementUpdateEnabled = value;
-            navMeshAgent.enabled = movementUpdateEnabled;
         }
     }
+    public Vector3 Velocity { 
+        get => navMeshAgent.velocity;
+        set => navMeshAgent.velocity = value;
+    }
+
+    public Boss.Boss boss;
 
     public bool WithPathOffset { get; set; } = true;
 
@@ -55,13 +59,14 @@ public class NavMeshBehaviour : IMovementBehavior
         } 
     }
 
-    public NavMeshBehaviour(Transform _transform, Transform _desiredTempPos) {
+    public NavMeshBehaviour(Transform _transform, Transform _desiredTempPos, Boss.Boss _boss) {
         transform = _transform;
         desiredTempPos = _desiredTempPos;
         navMeshAgent = transform.GetComponent<NavMeshAgent>();
         navMeshAgent.updateRotation = false;
         navMeshAgent.updateUpAxis = false;
         startNavMeshValues = NavMeshValues.Save(navMeshAgent);
+        boss = _boss;
     }
 
     public void SetDestinationPath(Vector3 _end, Vector3 _begin = default)
@@ -79,10 +84,19 @@ public class NavMeshBehaviour : IMovementBehavior
     {
         if (navMeshAgent.enabled) navMeshAgent.SetDestination(desiredPos.position);
     }
+    private float cVelocity = 0;
     public void Update() {
         if (MovementEnabled) {
             UpdateTempDestination();
-            // UpdateRotation();
+
+            //update the animator crawlspeed
+            Debug.Log("velocity: " + Velocity.magnitude);
+            if (cVelocity > Velocity.magnitude) {
+                cVelocity = Mathf.Lerp(cVelocity, Velocity.magnitude, Time.deltaTime * 5f);
+            } else {
+                cVelocity = Mathf.Lerp(cVelocity, Velocity.magnitude, Time.deltaTime);
+            }
+            boss.Body.BossAnimator.SetFloat(BossAnimatorParam.FLOAT_CRAWLSPEED, cVelocity / 10f);
         }
     }
 
@@ -97,8 +111,7 @@ public class NavMeshBehaviour : IMovementBehavior
     public bool ReachedDestination(float _distanceThreshhold)
     {
         if (navMeshAgent.enabled == false) return false;
-
-        if (navMeshAgent.remainingDistance > _distanceThreshhold || navMeshAgent.remainingDistance == 0) return false;
+        if (navMeshAgent.remainingDistance - (navMeshAgent.radius * 1f) > _distanceThreshhold || navMeshAgent.remainingDistance <= 0) return false;
         return true;
     }
 
@@ -134,13 +147,10 @@ public class NavMeshBehaviour : IMovementBehavior
 
     public Quaternion PathRotation()
     {
-        NavMeshHit myNavHit;
         Vector3 turnTowardNavSteeringTarget = navMeshAgent.velocity;
         Vector3 direction = navMeshAgent.velocity; // (turnTowardNavSteeringTarget - transform.position).normalized;
         // if(NavMesh.SamplePosition(navMeshAgent.nextPosition, out myNavHit, .1f, -1 ))
         //     direction = myNavHit.normal;
-
-        Debug.Log("direction navmesh = " + direction);
         if (direction.magnitude != 0) {
             return Quaternion.LookRotation(new Vector3(direction.x, direction.y, direction.z));
         }

@@ -35,7 +35,7 @@ namespace Boss {
             Positioner.SteeringBehaviour.MaxForce /= 5f;
 
             //now land on the reaction pose
-            yield return bossAI.StartCoroutine(Positioner.Landing(bossAI.ReactionPosition));
+            yield return bossAI.StartCoroutine(Positioner.Landing(bossAI.ReactionPosition.position));
             Positioner.SpeedScale = 1f;
 
             DoReaction();

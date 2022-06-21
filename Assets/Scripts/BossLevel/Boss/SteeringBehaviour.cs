@@ -74,6 +74,8 @@ public class SteeringBehaviour
     /// Updates the position based on the sterring behaviour of the target transform
     ///</summary>
     public void UpdatePosition(float _speed = 1f, Vector3 _desiredPosition = default(Vector3)) {
+        float deltaTime = Time.deltaTime * 50;
+
         float _maxVelocity = maxVelocity * _speed;
         float _maxForce = maxForce * _speed;
         float _mass = mass / _speed;
@@ -99,9 +101,9 @@ public class SteeringBehaviour
         if (steering.magnitude > _maxForce) steering = steering.normalized * _maxForce;
         steering /= _mass;
 
-        velocity += steering;
+        velocity += steering * deltaTime;
 
-        target.position += truncate(velocity) * Time.deltaTime * 50;
+        target.position += truncate(velocity) * deltaTime;
     }
 
     private Vector3 truncate(Vector3 vector) {

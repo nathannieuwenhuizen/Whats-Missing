@@ -69,9 +69,9 @@ public class BossAI : MonoBehaviour {
         // if (Input.GetKeyDown(KeyCode.T)) {
         //     stateMachine.SwitchState(behaviours.transformationState);
         // }
-        if (Input.GetKeyDown(KeyCode.Y)) {
-            stateMachine.SwitchState(behaviours.chargeAtShieldState);
-        }
+        // if (Input.GetKeyDown(KeyCode.Y)) {
+        //     stateMachine.SwitchState(behaviours.chargeAtShieldState);
+        // }
     }
 
     private void OnDrawGizmos() {
@@ -101,7 +101,7 @@ public class BossAI : MonoBehaviour {
     public void MirrorShardRecolectReaction(BossMirror _bossMirror) {
         int shardNumber = _bossMirror.AmmountOfShardsAttached();
         if (CurrentWanderingPath != null) CurrentWanderingPath.showGizmo = false;
-        Debug.Log("shard recollect: " + shardNumber);
+        // Debug.Log("shard recollect: " + shardNumber);
         switch(shardNumber) {
             case 0:
             CurrentWanderingPath = paths.firstShardPath;           
@@ -119,7 +119,7 @@ public class BossAI : MonoBehaviour {
             break;
             case 4:    
             CurrentWanderingPath = paths.fifthShardPath;   
-            stateMachine.SwitchState(behaviours.removeLightState);
+            // stateMachine.SwitchState(behaviours.removeLightState);
             break;        
             case 5:    
             //go instant into end chase mdoe

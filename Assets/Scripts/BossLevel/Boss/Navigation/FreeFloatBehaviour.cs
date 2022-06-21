@@ -23,6 +23,12 @@ namespace Boss {
         private BossPositioner bossPositioner;
         public float BasePathOffset { get; set; } = 5f;
 
+        public Vector3 Velocity { 
+            get => bossPositioner.SteeringBehaviour.Velocity;
+            set => bossPositioner.SteeringBehaviour.Velocity = value;
+        }
+
+
 
         public FreeFloatBehaviour(Transform _transform, Transform _desiredTempPos, BossPositioner _bossPositioner) {
             bossPositioner = _bossPositioner;

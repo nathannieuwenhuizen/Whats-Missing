@@ -18,6 +18,11 @@ public class AirSteeringBehaviour : IMovementBehavior
 
     public bool WithPathOffset { get; set; } = true;
     public float BasePathOffset { get; set; } = 5f;
+    public Vector3 Velocity { 
+        get => bossPositioner.SteeringBehaviour.Velocity;
+        set => bossPositioner.SteeringBehaviour.Velocity = value;
+    }
+
 
     private BossMountain bossMountain;
     private MountainPath path;
