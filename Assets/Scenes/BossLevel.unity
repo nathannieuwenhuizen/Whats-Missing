@@ -137,6 +137,7 @@ GameObject:
   - component: {fileID: 141260391}
   - component: {fileID: 141260392}
   - component: {fileID: 141260393}
+  - component: {fileID: 141260387}
   m_Layer: 10
   m_Name: boss
   m_TagString: Untagged
@@ -144,6 +145,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &141260387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141260386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f6cd29aa6a5e734fb851fa73687c101, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  humanArm:
+    mesh: {fileID: 1054640546}
+    armTrail: {fileID: 564996936}
+    startTrailTime: 0
+    armParitcles: {fileID: 1928666481}
+  sytheArm:
+    mesh: {fileID: 5445101407157507343}
+    armTrail: {fileID: 827172792}
+    startTrailTime: 0
+    armParitcles: {fileID: 1612849929}
 --- !u!4 &141260388
 Transform:
   m_ObjectHideFlags: 0
@@ -307,7 +330,7 @@ MonoBehaviour:
   - {fileID: 1149626097}
   - {fileID: 1249080699}
   tentacleRenderers: []
-  armRenders: {fileID: 0}
+  armRenders: {fileID: 141260387}
   hitBoxes:
   - {fileID: 640636259}
   mainBossWiggleBones: []
@@ -12760,7 +12783,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &907879331
 Transform:
   m_ObjectHideFlags: 0
@@ -30998,6 +31021,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5271608465164815290, guid: e702955a58d5b994b8347bcbdc0f0af7, type: 3}
   m_PrefabInstance: {fileID: 5445101407157507340}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &5445101407157507343 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1794737092971877825, guid: e702955a58d5b994b8347bcbdc0f0af7, type: 3}
+  m_PrefabInstance: {fileID: 5445101407157507340}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6595655515411530314
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31024,6 +31052,10 @@ PrefabInstance:
     - target: {fileID: 4439774872030720622, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4713372005310984360, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: skipIntro
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6595655513598618594, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: gizmosRenderer

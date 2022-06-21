@@ -31,6 +31,9 @@ namespace Boss {
         private Animator animator;
         private IKBossPass IKPass;
         private Boss boss;
+        public Boss Boss {
+            get { return boss;}
+        }
 
         public BossAnimator(Boss _boss, IKBossPass _IKPass) {
             boss = _boss;
@@ -71,9 +74,15 @@ namespace Boss {
             _callback();
         }
 
+        private bool attacking = false;
+        public bool Attacking {
+            get { return attacking;}
+        }
         public IEnumerator DoAttackAnimation() {
+            attacking = true;
             SetTrigger(BossAnimatorParam.TRIGGER_ATTACK);
             yield return new WaitForFixedUpdate();
+            boss.StartCoroutine(boss.Body.Arm.UpdatingArmFX(this));
             float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
 
             Debug.Log("animation clip lenght: " + clipLength);
@@ -83,10 +92,11 @@ namespace Boss {
                 index += Time.deltaTime;
                 IKPass.RightArm.IKPosition = boss.Player.transform.position;
                 IKPass.RightArm.Weight = animator.GetFloat(BossAnimatorParam.FLOAT_ATTACKWEIGHT);
-                boss.Body.Arm.UpdateArmFX(this);
+                // boss.Body.Arm.UpdateArmFX(this);
                 boss.Body.ToggleDeathColliders(IKPass.RightArm.Weight > 0);
                 yield return new WaitForFixedUpdate();
             }
+            attacking = false;
             Debug.Log("end of attack");
         }
         ///<summary>

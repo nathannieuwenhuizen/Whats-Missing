@@ -28,7 +28,7 @@ namespace Boss {
         private float metamorphoseDuration = 2f;
         private float metamorphoseDelay = 0f;
         private readonly string growKey = "_grow";
-        private readonly string shineKey = "_shine_power";
+        public static readonly string shineKey = "_shine_power";
         private readonly string glowKey = "_glow_power";
 
 
@@ -41,8 +41,8 @@ namespace Boss {
         private Renderer[] tentacleRenderers;
 
         [SerializeField]
-        private BossArm armRenders;
-        public BossArm Arm {
+        private BossArms armRenders;
+        public BossArms Arm {
             get { return armRenders;}
         }
 
@@ -74,6 +74,7 @@ namespace Boss {
             bossAnimator = new BossAnimator(boss, IKPass);
             ToggleDeathColliders(false);
             Grow = 0;
+            Arm.Toggle(false);
         }
 
         ///<summary>
@@ -99,15 +100,7 @@ namespace Boss {
         public void ToggleWiggleBones(bool _active) {
             foreach (BossWiggleBone bone in mainBossWiggleBones) bone.enabled = _active;
             foreach (BossWiggleBone bone in metamorphosedBones) bone.enabled = _active && hasMetamorphosed;
-            if (_active) ToggleSyth(hasMetamorphosed);
-        }
-
-        ///<summary>
-        /// Toggles/updates the arm renders. Mainly used for the metamorphosedPhase
-        ///</summary>
-        public void ToggleSyth(bool _val) {
-            armRenders.sythe.enabled = _val;
-            armRenders.arm.enabled = !_val;
+            if (_active) armRenders.Toggle(hasMetamorphosed);
         }
 
         ///<summary>
@@ -119,15 +112,7 @@ namespace Boss {
             StartCoroutine(Matemorphosing());
         }
 
-        private float armShine;
-        public float ArmShine {
-            get { return armShine;}
-            set { 
-                armShine = value; 
-                armRenders.arm.material.SetFloat("_shine_power", value);
-                armRenders.sythe.material.SetFloat("_shine_power", value);
-            }
-        }
+        
         private float grow;
         public float Grow {
             get { return grow;}
@@ -157,7 +142,7 @@ namespace Boss {
 
             while (index < 10f) {
                 Glow = bossAnimator.Animator.GetFloat(glowKey);
-                ArmShine = bossAnimator.Animator.GetFloat(shineKey);
+                armRenders.Shine = bossAnimator.Animator.GetFloat(shineKey);
                 if (Grow < .99f) {
                     Grow = bossAnimator.Animator.GetFloat(growKey);
                 }
@@ -165,7 +150,7 @@ namespace Boss {
                 index += Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
-            ArmShine = 0;
+            armRenders.Shine = 0;
             Grow = 1f;
             Glow = 1;
         }
