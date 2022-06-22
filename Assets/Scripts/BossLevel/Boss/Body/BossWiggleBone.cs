@@ -31,13 +31,15 @@ public class BossWiggleBone : MonoBehaviour
         Transform t = transform;
         int i = 0;
         while (t.childCount > 0 && i < 10) {
-            if (t.GetComponent<SoxAtkJiggleBone>() == null){
-                t.gameObject.AddComponent(typeof(SoxAtkJiggleBone));
-                i++;
-            } 
+            if (t.tag != Tags.Picked) {
+                if (t.GetComponent<SoxAtkJiggleBone>() == null){
+                    t.gameObject.AddComponent(typeof(SoxAtkJiggleBone));
+                    i++;
+                } 
+            }
             t = t.GetChild(0);
         }
-        if (t.GetComponent<SoxAtkJiggleBone>() == null)
+        if (t.GetComponent<SoxAtkJiggleBone>() == null && t.tag != Tags.Picked)
             t.gameObject.AddComponent(typeof(SoxAtkJiggleBone));
     }
 
@@ -79,8 +81,8 @@ public class BossWiggleBone : MonoBehaviour
     }
     private void Update() {
 #if UNITY_EDITOR
+        if (Application.isPlaying == false) UpdateBoneValues();
 #endif
-        UpdateBoneValues();
     }
 
     private void OnDrawGizmosSelected() {

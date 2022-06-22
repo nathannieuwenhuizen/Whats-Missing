@@ -90,7 +90,6 @@ public class NavMeshBehaviour : IMovementBehavior
             UpdateTempDestination();
 
             //update the animator crawlspeed
-            Debug.Log("velocity: " + Velocity.magnitude);
             if (cVelocity > Velocity.magnitude) {
                 cVelocity = Mathf.Lerp(cVelocity, Velocity.magnitude, Time.deltaTime * 5f);
             } else {

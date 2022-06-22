@@ -20,6 +20,7 @@ public class ShardPositionInfo {
     public bool setAsParent = false;
     public bool useGravityAfterFall = true;
     public bool visibleAfterFalling = true;
+    // public bool 
 }
 
 public class MirrorShard : PickableRoomObject
