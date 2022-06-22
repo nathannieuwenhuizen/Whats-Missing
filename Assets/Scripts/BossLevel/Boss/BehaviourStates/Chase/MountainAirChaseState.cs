@@ -46,13 +46,14 @@ namespace Boss {
         }
         public override void Run()
         {
+            //always to charge at shield phase if the player is there.
+            if (Player.INVINCIBLE)
+                OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
+           
             base.Run();
             //check to do melee attack.
             if (Vector3.Distance(bossAI.transform.position, bossAI.Boss.Player.transform.position) < Boss.BOSS_MELEE_ATTACK_RANGE) MeleeAttack();
             
-            //go to charge at shield phase from here
-            if (Player.INVINCIBLE)
-                OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
             
             //move towards the player
             if (withPathOffset) {

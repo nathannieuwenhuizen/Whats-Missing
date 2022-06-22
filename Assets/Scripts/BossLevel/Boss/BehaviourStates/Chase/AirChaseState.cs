@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Boss {
 
+    ///<summary>
+    /// Chase state for the boss when it wants ot free float to the player
+    ///</summary>
     public class AirChaseState : BaseChaseState
     {
         private Vector3 startChasePos;
@@ -20,7 +23,10 @@ namespace Boss {
             stateName = "Air Chase Chase";
             Positioner.MovementEnabled = true;
             Positioner.InAir = true;
+
+            //make the boss a bit slower.
             Positioner.SpeedScale = .5f;
+            
             UpdateBossChasePath(true);
 
         }
@@ -37,15 +43,13 @@ namespace Boss {
         public override void Run()
         {
             base.Run();
-            float distanceToPlayer = Vector3.Distance(bossAI.transform.position, bossAI.Boss.Player.transform.position);
-            if (distanceToPlayer < Boss.BOSS_MELEE_ATTACK_RANGE) MeleeAttack();
-            
+
+            //dont move when the boss is too close to the player
+            float distanceToPlayer = DistnaceToPlayer();
             Positioner.MovementEnabled = distanceToPlayer > Boss.BOSS_MIN_DISTANCE_TO_PLAYER;
-            UpdateBossChasePath(false);
-            
-            if (Player.INVINCIBLE)
-                OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
-            
+
+            //update the boss destination path.
+            UpdateBossChasePath(false);            
         }
 
 

@@ -134,6 +134,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
         rb.drag = 100f;
         rb.mass = 0.1f;
         rb.angularDrag = 10f;
+        rb.isKinematic = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         gameObject.tag = Tags.Picked;
     }

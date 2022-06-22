@@ -9,6 +9,8 @@ namespace Boss {
         public override void OnAreaEnter(Player player)
         {
             if (Player.INVINCIBLE == false) {
+                Debug.LogWarning("[PLAYER IS DEAD]");
+                Debug.Log("[PLAYER IS DEAD]");
                 AudioHandler.Instance?.PlaySound(SFXFiles.boss_attack_hit_player);
                 // base.OnAreaEnter(player);
             }

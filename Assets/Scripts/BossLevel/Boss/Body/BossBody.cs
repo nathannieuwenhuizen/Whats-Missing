@@ -31,10 +31,6 @@ namespace Boss {
         public static readonly string shineKey = "_shine_power";
         private readonly string glowKey = "_glow_power";
 
-
-        [SerializeField]
-        private AnimationCurve metamorphoseCurve = AnimationCurve.EaseInOut(0,0,1,1);
-
         [SerializeField]
         private Renderer[] bodyRenders;
         [SerializeField]

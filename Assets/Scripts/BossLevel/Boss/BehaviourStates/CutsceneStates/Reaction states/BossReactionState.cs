@@ -18,28 +18,45 @@ namespace Boss {
             bossAI.Boss.BossPositioner.SteeringBehaviour.MaxForce *= 4f;
         }
 
+        public virtual Vector3 ReactionPosition() {
+            return bossAI.ReactionPosition.position;
+        }
 
-        public IEnumerator GoToReactionPose() {
+        ///<summary>
+        /// Boss goes to the reaction pose in the air
+        ///</summary>
+        public virtual IEnumerator GoToReactionPose() {
             //go to air position of landing pos
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
             Positioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
             Positioner.RotationEnabled = true;
             Positioner.MovementEnabled = true;
-            Positioner.SetDestinationPath(bossAI.ReactionPosition.position, bossAI.transform.position, true, 10f);
+            Positioner.SetDestinationPath(ReactionPosition() + Vector3.up * 3f, bossAI.transform.position, true, 10f);
             Positioner.SpeedScale = 2f;
             Positioner.SteeringBehaviour.MaxForce *= 5f;
 
-            while(!Positioner.AtPosition(3f)) {
+            while(!Positioner.AtPosition(2f)) {
                 yield return new WaitForFixedUpdate();
             }
             Positioner.SteeringBehaviour.MaxForce /= 5f;
 
-            //now land on the reaction pose
-            yield return bossAI.StartCoroutine(Positioner.Landing(bossAI.ReactionPosition.position));
-            Positioner.SpeedScale = 1f;
-
+            yield return bossAI.StartCoroutine(LandOnReactionPosition());
             DoReaction();
         }
+
+        ///<summary>
+        /// The boss now lands on the reaction position
+        ///</summary>
+        public virtual IEnumerator LandOnReactionPosition() {
+            //now land on the reaction pose
+            yield return bossAI.StartCoroutine(Positioner.Landing(ReactionPosition()));
+            Positioner.SpeedScale = 1f;
+
+        }
+
+        ///<summary>
+        /// The boss does the reaction
+        ///</summary>
         public virtual void DoReaction() {
         }
 

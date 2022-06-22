@@ -35,13 +35,19 @@ public abstract class LookingState : BaseBossState, IState
     protected virtual void BeginChaseOnGround() {
         // bossAI.Behaviours.landingState.nextState = bossAI.Behaviours.crawlingChaseState;
         // OnStateSwitch?.Invoke(bossAI.Behaviours.landingState);
-        OnStateSwitch?.Invoke(bossAI.Behaviours.mountainAirChaseState);
     }
 
     protected virtual void BeginChase() {
+
+        //go into crawling chase phase
+        if (Positioner.BodyMovementType == BodyMovementType.navMesh) {
+            OnStateSwitch?.Invoke(bossAI.Behaviours.crawlingChaseState);
+            return;
+        }
+
         //checks if player is inside the mountain, if not, then it will go into the air chase state
         if (Positioner.BossMountain.InsideShape(bossAI.Boss.Player.transform.position)) 
-            BeginChaseOnGround();
+            OnStateSwitch?.Invoke(bossAI.Behaviours.mountainAirChaseState);
         else OnStateSwitch?.Invoke(bossAI.Behaviours.airChaseState);
     }
 

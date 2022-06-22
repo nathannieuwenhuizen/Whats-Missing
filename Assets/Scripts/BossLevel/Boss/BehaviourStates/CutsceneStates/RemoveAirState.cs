@@ -9,17 +9,16 @@ namespace Boss{
         {
             stateName = "Remove air cutscene";
             base.Start();
-            bossAI.StartCoroutine(RemovingAir());
-        }
-        ///<summary>
-        /// Boss does the transformation, applying the fire change and transforming their body to get extra tentacles.
-        ///</summary>
-        private IEnumerator RemovingAir() {
-            Body.Metamorphose();
-            yield return new WaitForSeconds(3f);
-            bossAI.Boss.BossChangesHandler.CreateChange("air", ChangeType.missing);
-            yield return new WaitForSeconds(3f);
-            OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
+            //set the rotation to player and also on
+            Positioner.BodyOrientation = BodyOrientation.toPlayer;
+            bossAI.Boss.BossPositioner.RotationEnabled = true;
+
+            bossAI.StartCoroutine(Body.BossAnimator.DoMirrorAttack(() => {
+                bossAI.Boss.BossChangesHandler.CreateChange("air", ChangeType.missing);
+            }, () => {
+                OnStateSwitch?.Invoke(bossAI.Behaviours.crawlingChaseState);
+            }));
+
         }
     }
 }

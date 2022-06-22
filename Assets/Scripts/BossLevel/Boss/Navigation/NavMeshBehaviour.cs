@@ -36,6 +36,13 @@ public class NavMeshBehaviour : IMovementBehavior
     public bool MovementEnabled {
         get { return movementUpdateEnabled;}
         set { 
+            //wanted (not always do the crawling animation)
+            //bug: boss suddenlay stands when not moving
+            // if (movementUpdateEnabled != value) {
+            //     Velocity = Vector3.zero;
+            //     cVelocity = 0; 
+            //     UpdateAnimationParam();
+            // }
             movementUpdateEnabled = value;
         }
     }
@@ -88,15 +95,19 @@ public class NavMeshBehaviour : IMovementBehavior
     public void Update() {
         if (MovementEnabled) {
             UpdateTempDestination();
-
-            //update the animator crawlspeed
-            if (cVelocity > Velocity.magnitude) {
-                cVelocity = Mathf.Lerp(cVelocity, Velocity.magnitude, Time.deltaTime * 5f);
-            } else {
-                cVelocity = Mathf.Lerp(cVelocity, Velocity.magnitude, Time.deltaTime);
-            }
-            boss.Body.BossAnimator.SetFloat(BossAnimatorParam.FLOAT_CRAWLSPEED, cVelocity / 10f);
+            UpdateAnimationParam();
         }
+    }
+
+    private void UpdateAnimationParam() {
+        //update the animator crawlspeed
+        if (cVelocity > Velocity.magnitude) {
+            cVelocity = Mathf.Lerp(cVelocity, Velocity.magnitude, Time.deltaTime * 5f);
+        } else {
+            cVelocity = Mathf.Lerp(cVelocity, Velocity.magnitude, Time.deltaTime);
+        }
+        Debug.Log("c velocity = " + cVelocity);
+        boss.Body.BossAnimator.SetFloat(BossAnimatorParam.FLOAT_CRAWLSPEED, cVelocity / 10f);
     }
 
     public Vector3 GetClosestPointOnPath()

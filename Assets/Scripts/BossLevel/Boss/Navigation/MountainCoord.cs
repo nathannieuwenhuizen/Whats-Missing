@@ -18,16 +18,19 @@ public struct MountainCoordinate {
             angle = value % 360;
         }
     }
+    ///<summary>
+    /// The world Y position
+    ///</summary>
+    public float yPos;
+
 
     private float pathOffset;
     public float PathOffset {
         get { return pathOffset;}
         set { pathOffset = value; }
     } 
-    ///<summary>
-    /// The world Y position
-    ///</summary>
-    public float yPos;
+
+
     public Vector3 ToShapeVector(BossMountain _pathHandeler, float offset = 0) {
         Vector3 result = Vector3.zero;
         result = ToPrimitiveVector(_pathHandeler);
@@ -73,6 +76,9 @@ public struct MountainCoordinate {
         return result;
     }
 
+    ///<summary>
+    /// Returns the lerp of the mountain coordinate
+    ///</summary>
     public static MountainCoordinate Lerp(MountainCoordinate begin, MountainCoordinate end, float index) {
         float _angle = Mathf.Lerp(begin.Angle, end.Angle, index);
         float _pathOffset = 0;
@@ -95,6 +101,11 @@ public struct MountainCoordinate {
         };
     }
 
+
+    #region  Normals---------------------
+    ///<summary>
+    /// Retunrs hte primitive normal
+    ///</summary>
     public Vector3 Normal(BossMountain _pathHandler) {
         if (_pathHandler.OnSurface) {
             CalculateRayCastedVector(_pathHandler);
@@ -103,6 +114,9 @@ public struct MountainCoordinate {
         return PrimitiveNormal(_pathHandler);
     }
     
+    ///<summary>
+    /// Returns the normal of the path.
+    ///</summary>
     public  Vector3 PathNormal(BossMountain _pathHandler, MountainPath _path) {
         Vector3 result= Vector3.zero;
         Vector3 a = _path.GetPathDirection(this, _pathHandler);
@@ -115,7 +129,11 @@ public struct MountainCoordinate {
 
         bool dot = Vector3.Dot(delta, result) > 0;
         return result.normalized * (dot ? 1 : -1);
-}
+    }
+
+    ///<summary>
+    /// Returns the primitive normal of the basic mountain shape
+    ///</summary>
     private Vector3 PrimitiveNormal(BossMountain _pathHandler) {
         Vector3 result= Vector3.zero;
         Vector3 delta = ToPrimitiveVector(_pathHandler) - _pathHandler.transform.position;
@@ -139,6 +157,8 @@ public struct MountainCoordinate {
         float dot = Vector3.Dot(delta, PathNormal(_pathhandeler, _path));
         return dot > 0;
     }
+
+    #endregion
 
     public bool DirectionIsVisible(BossMountain _pathhandeler, Vector3 _viewPos, MountainPath _path) {
         

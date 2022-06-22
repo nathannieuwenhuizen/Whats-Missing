@@ -5,83 +5,87 @@ using UnityEngine;
 
 
 namespace Boss {
-
-public class ChargeAtShieldState : BaseChaseState
-    {
-        private BossPositioner positioner;
-        private Vector3 chargePos;
-
-        public override void DrawDebug()
+    ///<summary>
+    /// State that makes the boss attacks the shield only once and then goes bakc into the wnader state. 
+    /// Gives the boss a bit more anger.
+    ///</summary>
+    public class ChargeAtShieldState : BaseChaseState
         {
-            base.DrawDebug();
-        }
+            private Vector3 chargePos;
 
-        public override void Start()
-        {
-            stateName = "Charge at shield";
+            public override void DrawDebug()
+            {
+                base.DrawDebug();
+            }
 
-            base.Start();
-            positioner = bossAI.Boss.BossPositioner;
-            positioner.BodyOrientation = BodyOrientation.toPath;
+            public override void Start()
+            {
+                stateName = "Charge at shield";
 
-            chargePos = Boss.Forcefield.EdgePosition(Boss.Player.transform.position);
-            positioner.SetDestinationPath(chargePos, Boss.transform.position);
+                base.Start();
+                Positioner.BodyOrientation = BodyOrientation.toPath;
 
-            bossAI.StartCoroutine(GoToShield());
-            // bossAI.StartCoroutine(Extensions.AnimateCallBack(1f, 3f, AnimationCurve.EaseInOut(0,0,1,1), (float _val) => {
-            //     positioner.SpeedScale = _val;
-            // }, 2f));
-        }
+                chargePos = Boss.Forcefield.EdgePosition(Boss.Player.transform.position);
+                Positioner.SetDestinationPath(chargePos, Boss.transform.position);
 
-        public override void Run()
-        {
-            // base.Run();
-            // if (positioner.AtPosition(Boss.BOSS_ATTACK_SHIELD_RANGE)) MeleeAttack();
+                bossAI.StartCoroutine(GoToShield());
+                // bossAI.StartCoroutine(Extensions.AnimateCallBack(1f, 3f, AnimationCurve.EaseInOut(0,0,1,1), (float _val) => {
+                //     positioner.SpeedScale = _val;
+                // }, 2f));
+            }
 
-        }
+            public override void Run()
+            {
+                //no base call
+            }
 
-        public override void Exit()
-        {
-            positioner.SpeedScale = 1f;
-            base.Exit();
-        }
+            public override void Exit()
+            {
+                Positioner.SpeedScale = 1f;
+                base.Exit();
+            }
 
-        public IEnumerator GoToShield() {
-            //go to air position of the charge at shield
-            if (Positioner.BodyMovementType == BodyMovementType.airSteeringAtMountain) {
-                Positioner.BodyOrientation = BodyOrientation.toPlayer;
-                Positioner.RotationEnabled = true;
-                Positioner.MovementEnabled = true;
-                Positioner.SetDestinationPath(bossAI.ChargePosition.position, bossAI.transform.position, true, 10f);
-                Positioner.SpeedScale = 2f;
-                Positioner.SteeringBehaviour.MaxForce *= 10f;
+            ///<summary>
+            /// Goes to the edgeo f the siheld and hten performs an attack.
+            ///</summary>
+            public IEnumerator GoToShield() {
 
-                while(!Positioner.AtPosition(3f)) {
+                //go to air position of the charge at shield if the boss is in the air steering mode.
+                if (Positioner.BodyMovementType == BodyMovementType.airSteeringAtMountain) {
+                    Positioner.BodyOrientation = BodyOrientation.toPlayer;
+                    Positioner.RotationEnabled = true;
+                    Positioner.MovementEnabled = true;
+                    Positioner.SetDestinationPath(bossAI.ChargePosition.position, bossAI.transform.position, true, 10f);
+                    Positioner.SpeedScale = 2f;
+                    Positioner.SteeringBehaviour.MaxForce *= 10f;
+
+                    while(!Positioner.AtPosition(3f)) {
+                        yield return new WaitForFixedUpdate();
+                    }
+                    Positioner.SteeringBehaviour.MaxForce /= 10f;
+                }
+
+                //now land on the shield position
+                chargePos = Boss.Forcefield.EdgePosition(bossAI.ChargePosition.position);
+                Positioner.BodyMovementType = BodyMovementType.freeFloat;
+
+                Positioner.SetDestinationPath(chargePos, Boss.transform.position);
+                
+                Positioner.SpeedScale = 1f;
+                while (!Positioner.AtPosition(Boss.BOSS_ATTACK_SHIELD_RANGE)) {
                     yield return new WaitForFixedUpdate();
                 }
-                Positioner.SteeringBehaviour.MaxForce /= 10f;
+                MeleeAttack();
+
             }
 
-            //now land on the shield position
-            chargePos = Boss.Forcefield.EdgePosition(bossAI.ChargePosition.position);
-            Positioner.BodyMovementType = BodyMovementType.freeFloat;
-
-            positioner.SetDestinationPath(chargePos, Boss.transform.position);
-            
-            Positioner.SpeedScale = 1f;
-            while (!positioner.AtPosition(Boss.BOSS_ATTACK_SHIELD_RANGE)) {
-                yield return new WaitForFixedUpdate();
+            protected override IEnumerator Attacking()
+            {
+                //wait for attacking
+                yield return base.Attacking();
+                //go back to wandering state.
+                Positioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
+                StopChase();
             }
-            MeleeAttack();
-
-        }
-
-
-        protected override IEnumerator Attacking()
-        {
-            yield return base.Attacking();
-            Positioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
-            StopChase();
-        }
-}
+    }
 }

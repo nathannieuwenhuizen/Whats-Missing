@@ -106,15 +106,16 @@ public class WanderState : LookingState, IState
         }
     }
 
-    private void GoToNextPose() {
+
+    ///<summary>
+    /// Called when the pose has been reahced nad the boss wants to go to the next position.
+    ///</summary>
+    private void GoToNextPose() {    
         //if it is from in air to navmesh
-        Debug.Log("next pose");
         if ( Positioner.BodyMovementType != bossAI.CurrentWanderingPath.BossMovementType && 
             bossAI.CurrentWanderingPath.BossMovementType == BodyMovementType.navMesh) {
 
             CurrentPoseIndex = (CurrentPoseIndex + 1) % bossAI.CurrentWanderingPath.poses.Length;
-            
-            Debug.Log("next pose for real");
             Positioner.StartCoroutine(
                 Positioner.Landing(bossAI.CurrentWanderingPath.poses[currentPoseIndex].position.position, () => {
                     SetNextPos();
@@ -124,6 +125,10 @@ public class WanderState : LookingState, IState
             SetNextPos();
         }
     }
+
+    ///<summary>
+    /// Sets the next positon, updating the movement behaviour and orientation
+    ///</summary>
     private void SetNextPos () {
         //just go to next position
         Positioner.BodyMovementType = bossAI.CurrentWanderingPath.BossMovementType;
@@ -131,9 +136,15 @@ public class WanderState : LookingState, IState
         CurrentPoseIndex = (CurrentPoseIndex + 1) % bossAI.CurrentWanderingPath.poses.Length;
     }
 
+    ///<summary>
+    /// Updates the destination path, also updates the aim of the boss head
+    ///</summary>
     private void UpdateDestination() {
+        //updates the destination path
         Positioner.SetDestinationPath(bossAI.CurrentWanderingPath.poses[currentPoseIndex].position);
+        
         if (bossAI.CurrentWanderingPath.poses[currentPoseIndex].aimPosition != null) Boss.Head.SetAim(bossAI.CurrentWanderingPath.poses[currentPoseIndex].aimPosition.position, Vector2.zero);
+        
         //if no aim psoition is set, then let the boss look forward
         else Boss.Head.SetAim(Boss.Head.transform.position + Boss.transform.forward * 10f, Vector2.zero, true);
     }

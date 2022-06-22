@@ -23,6 +23,12 @@ public class BossAI : MonoBehaviour {
     }
 
     [SerializeField]
+    private Transform shieldDestroyPosition;
+    public Transform ShieldDestroyPosition {
+        get { return shieldDestroyPosition;}
+    }
+
+    [SerializeField]
     private Transform chargePosition;
     public Transform ChargePosition {
         get { return chargePosition;}
@@ -66,9 +72,9 @@ public class BossAI : MonoBehaviour {
     }
     public void UpdateAI() {
         stateMachine?.Update();
-        if (Input.GetKeyDown(KeyCode.T)) {
-            stateMachine.SwitchState(behaviours.transformationState);
-        }
+        // if (Input.GetKeyDown(KeyCode.T)) {
+        //     stateMachine.SwitchState(behaviours.transformationState);
+        // }
         // if (Input.GetKeyDown(KeyCode.Y)) {
         //     stateMachine.SwitchState(behaviours.chargeAtShieldState);
         // }
@@ -131,7 +137,7 @@ public class BossAI : MonoBehaviour {
     public void MirrShardPickupEvent(MirrorShard _shard) {
         switch (_shard.ShardIndex) {
             case 4:
-            stateMachine.SwitchState(behaviours.removeAirState);
+            // stateMachine.SwitchState(behaviours.removeAirState);
             break;
         }
     }

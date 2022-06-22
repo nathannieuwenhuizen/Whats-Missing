@@ -57,9 +57,6 @@ public class BossPositioner : MonoBehaviour
     }
 
     [SerializeField]
-    private AnimationCurve landingCurve;
-
-    [SerializeField]
     private BossMountain bossMountain;
     public BossMountain BossMountain {
         get { return bossMountain;}
@@ -184,14 +181,15 @@ public class BossPositioner : MonoBehaviour
         return path.GetClosestMountainCoord(transform.position, bossMountain);
     }
 
+    ///<summary>
+    /// Returns true if the boss is at position
+    ///</summary>
     public bool AtPosition(float _offset = .1f) {
         return CurrentMovementBehaviour.ReachedDestination(_offset);
     }
 
     private void Update() {
-        if (MovementEnabled)  {
-            CurrentMovementBehaviour.Update();
-        }
+        if (MovementEnabled) CurrentMovementBehaviour.Update();
         if (RotationEnabled) UpdateRotation();
     }
 

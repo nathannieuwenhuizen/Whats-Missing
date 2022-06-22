@@ -21,7 +21,6 @@ namespace Boss {
             Positioner.BodyMovementType = BodyMovementType.navMesh;
             stateName = "Crawling Chase";
             Positioner.MovementEnabled = true;
-            Positioner.InAir = false;
             UpdateBossChasePath(true);
 
         }
@@ -33,21 +32,18 @@ namespace Boss {
             if (_resetBeginPos) startChasePos = bossAI.transform.position +  Vector3.up * (Boss.BOSS_GROUND_OFFSET);
 
             Positioner.SetDestinationPath(bossAI.Boss.Player.transform, startChasePos);
-            // positioner.SetDestinationPath(bossAI.Boss.Player.transform.position + Vector3.up * (Boss.BOSS_GROUND_OFFSET), startChasePos);
         }
 
         public override void Run()
         {
             base.Run();
-            if (Vector3.Distance(bossAI.transform.position, bossAI.Boss.Player.transform.position) < Boss.BOSS_MELEE_ATTACK_RANGE) MeleeAttack();
+
+            //dont move when the boss is too close to the player
+            float distanceToPlayer = DistnaceToPlayer();
+            Positioner.MovementEnabled = distanceToPlayer > Boss.BOSS_MIN_CRAWLING_DISTANCE_TO_PLAYER;
             
+            //update the boss destination path.
             UpdateBossChasePath(false);
-        }
-
-
-        public override void Exit()
-        {
-            base.Exit();
         }
     }
 }

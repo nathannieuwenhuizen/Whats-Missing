@@ -87,6 +87,8 @@ namespace Boss {
 
 
         public IEnumerator DoAttackAnimation() {
+
+            float animationDuration = 3f;
             attacking = true;
             SetTrigger(BossAnimatorParam.TRIGGER_ATTACK);
             yield return new WaitForFixedUpdate();
@@ -96,7 +98,7 @@ namespace Boss {
             // Debug.Log("animation clip lenght: " + clipLength);
             IKPass.RightArm.EnableRayCast = false;
             float index = 0;
-            while (index < 3f) {
+            while (index < animationDuration) {
                 index += Time.deltaTime;
                 IKPass.RightArm.IKPosition = boss.Player.transform.position;
                 IKPass.RightArm.Weight = animator.GetFloat(BossAnimatorParam.FLOAT_ATTACKWEIGHT);
