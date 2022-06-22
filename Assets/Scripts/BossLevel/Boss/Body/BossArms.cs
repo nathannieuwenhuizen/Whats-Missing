@@ -5,13 +5,13 @@ using UnityEngine;
 namespace Boss {
 
 
-    public struct StartCoord {
+    public struct ParentCoord {
         public Transform startParent;
         public Vector3 startPos;
         public Quaternion startRot;
     }
     ///<summary>
-    /// An induvidual arm
+    /// An individual arm
     ///</summary>
     [System.Serializable]
     public class ArmRender{
@@ -20,7 +20,7 @@ namespace Boss {
         [HideInInspector]
         public float startTrailTime;
 
-        public StartCoord trailCoord;
+        public ParentCoord trailCoord;
 
         public ParticleSystem armParitcles;
 

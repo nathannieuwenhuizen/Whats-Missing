@@ -79,6 +79,8 @@ namespace Boss {
         public BossAI AI {
             get { return ai;}
         }
+    	[SerializeField]
+        private ParticleSystem magicBlast;
 
 
         private BossVoice bossVoice;
@@ -88,7 +90,7 @@ namespace Boss {
 
         protected override void Awake() {
             bossVoice = new BossVoice(transform);
-            bossChangeHandler = new BossChangesHandler(textAnimatorPlayer, bossRoom, this);
+            bossChangeHandler = new BossChangesHandler(textAnimatorPlayer, bossRoom, this, magicBlast);
             bossPositioner = GetComponent<BossPositioner>();
             Body.boss = this;
 

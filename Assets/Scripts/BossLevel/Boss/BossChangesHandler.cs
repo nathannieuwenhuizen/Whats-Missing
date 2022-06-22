@@ -20,12 +20,21 @@ public class BossChangesHandler
     private Boss boss;
     private ParticleSystem changeParticle;
 
-    public BossChangesHandler(TextAnimatorPlayer _textAnimator, BossRoom _bossRoom, Boss _boss) {
+    public ParentCoord canvasCoord;
+    private Canvas changeCanvas;
+
+    public BossChangesHandler(TextAnimatorPlayer _textAnimator, BossRoom _bossRoom, Boss _boss, ParticleSystem _particleSystem) {
         textAnimator = _textAnimator;
         bossRoom = _bossRoom;
         boss = _boss;
-        changeParticle = textAnimator.GetComponentInChildren<ParticleSystem>();
+        changeParticle = _particleSystem;
         textAnimator.onTextShowed.AddListener(ApplyChange);
+        changeCanvas = textAnimator.transform.parent.GetComponent<Canvas>();
+
+        canvasCoord.startParent = changeCanvas.transform.parent;
+        canvasCoord.startPos = changeCanvas.transform.localPosition;
+        canvasCoord.startRot = changeCanvas.transform.localRotation;
+
     }
 
     ///<summary>
@@ -48,21 +57,45 @@ public class BossChangesHandler
             yield return new WaitForSeconds(1f);
         }
         acitvatedChange = _change;
-        // textAnimator.ShowText(_change.Word + " is " + Change.GetChangeTypeText(_change.ChangeType));
+        textAnimator.ShowText("<Wiggle>" + _change.Word + " is " + Change.GetChangeTypeText(_change.ChangeType));
         // yield return new WaitForSeconds(1f);
         ApplyChange();
     }
+
+    ///<summary>
+    /// Applies the change
+    ///</summary>
     private void ApplyChange() {
+        ReattachCanvas();
+        DetachCanvas();
+
         bossRoom.ChangeHandler.AddBossChange(acitvatedChange);
-        changeParticle.Emit(50);
+        changeParticle.Play();
         OnShockwave?.Invoke(boss.Head.transform);
 
     }
 
+    ///<summary>
+    /// Removes the change
+    ///</summary>
     public void RemoveChange() {
-        // textAnimator.StartDisappearingText();
+        textAnimator.StartDisappearingText();
         bossRoom.ChangeHandler.RemoveBossChange(acitvatedChange);
         acitvatedChange = null;
+    }
+
+    private void DetachCanvas() {
+        changeCanvas.transform.parent = null;
+        changeCanvas.transform.localPosition = canvasCoord.startParent.transform.position + canvasCoord.startPos;
+        changeCanvas.transform.localRotation = canvasCoord.startParent.rotation * canvasCoord.startRot;
+
+    }
+
+    private void ReattachCanvas() {
+        changeCanvas.transform.parent = canvasCoord.startParent;
+        changeCanvas.transform.localPosition = canvasCoord.startPos;
+        changeCanvas.transform.localRotation = canvasCoord.startRot;
+
     }
 }
 }

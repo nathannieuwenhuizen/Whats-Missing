@@ -181,11 +181,16 @@ public class ChangeHandler
 
     public void AddBossChange(IChange _change) {
         Changes.Add(_change);
+        room.ChangeLineAnimated = false;
         room.AddChangeInRoomObjects(_change);
+        room.ChangeLineAnimated = true;
     }
     public void RemoveBossChange(IChange _change) {
         Changes.Remove(_change);
+        room.ChangeLineAnimated = false;
         room.RemoveChangeInRoomObjects(_change);
+        room.ChangeLineAnimated = true;
+
     }
     
 }

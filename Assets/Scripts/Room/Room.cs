@@ -106,7 +106,8 @@ public class Room : MonoBehaviour
     }
     private bool changeLineAnimated = true;
     public bool ChangeLineAnimated {
-        get { return changeLineAnimated;}
+        get => changeLineAnimated;
+        set => changeLineAnimated = value;
     }
 
     protected virtual void Awake() {
