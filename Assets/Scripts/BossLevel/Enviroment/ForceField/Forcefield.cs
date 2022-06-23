@@ -7,7 +7,7 @@ using UnityEngine.AI;
 namespace ForcefieldDemo
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class Forcefield : MonoBehaviour, ITriggerArea
+    public class Forcefield : RoomObject, ITriggerArea
     {    
         public delegate void ForcefieldEvent();
         public static ForcefieldEvent OnForceFieldEnter;
@@ -64,7 +64,8 @@ namespace ForcefieldDemo
         private ParticleSystem ringsParticle;
 
 
-        private void Awake() {
+        protected override void Awake() {
+            base.Awake();
             rb = GetComponent<Rigidbody>();
             mirrorMeshRenderer.material.SetInt("_enableIntersection", 0);
             StartCoroutine(Cooldown());
@@ -93,10 +94,15 @@ namespace ForcefieldDemo
             rb.velocity = Vector3.zero;
         }
 
+        ///<summary>
+        /// If the IsOn Is true, the forcefield will be active, rendering them eshes and activating its colliders.
+        ///</summary>
         public bool IsOn {
             get { return isOn;}
             set { 
                 isOn = value; 
+                Debug.Log("on deactivating shield" + isOn);
+
                 if (navMeshObstacle) navMeshObstacle.enabled = value;
                 if (disolveCoroutine != null) StopCoroutine(disolveCoroutine);
                 disolveCoroutine = StartCoroutine(Dissolving(value));
@@ -249,7 +255,8 @@ namespace ForcefieldDemo
             Fill = fillIdle;
             EnableRipple(false);
         }
-        private void OnDestroy() {
+        public override void OnDestroy() {
+            base.OnDestroy();
             Dissolve = 0;
         }
 
@@ -297,15 +304,19 @@ namespace ForcefieldDemo
 
         private void OnEnable() {
             StartCoroutine(Cooldown()); // prevent apply impact bug
-            BossMirror.OnMirrorComplete += DeactivateShield;
         }
 
-        private void OnDisable() {
-            BossMirror.OnMirrorComplete -= DeactivateShield;
-        }
-
-        public void DeactivateShield(BossMirror _mirror) {
+        public override void OnMissing()
+        {
+            base.OnMissing();
+            Player.INVINCIBLE = false;
             IsOn = false;
+        }
+        public override void OnMissingFinish()
+        {
+            base.OnMissingFinish();
+            Player.INVINCIBLE = false;
+            gameObject.SetActive(false);
         }
 
 

@@ -75,9 +75,9 @@ public class BossAI : MonoBehaviour {
         // if (Input.GetKeyDown(KeyCode.T)) {
         //     stateMachine.SwitchState(behaviours.transformationState);
         // }
-        if (Input.GetKeyDown(KeyCode.T)) {
-            stateMachine.SwitchState(behaviours.destroyShieldState);
-        }
+        // if (Input.GetKeyDown(KeyCode.T)) {
+        //     stateMachine.SwitchState(behaviours.destroyShieldState);
+        // }
         // if (Input.GetKeyDown(KeyCode.Y)) {
         //     stateMachine.SwitchState(behaviours.chargeAtShieldState);
         // }
@@ -132,6 +132,7 @@ public class BossAI : MonoBehaviour {
             break;        
             case 5:    
             //go instant into end chase mdoe
+            stateMachine.SwitchState(behaviours.destroyShieldState);
             break;
         }
         if (CurrentWanderingPath != null) CurrentWanderingPath.showGizmo = true;

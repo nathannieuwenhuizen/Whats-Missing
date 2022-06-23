@@ -9,7 +9,7 @@ namespace Boss {
     {
         public override void Start()
         {
-            zoomValue = 35f;
+            zoomValue = 15f;
             customMountainShape = true;
             stateName = "Destroy shield cutscene";
             base.Start();

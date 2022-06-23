@@ -5,6 +5,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+///<summary>
+/// The room loads/handles the mirror states and is responsible when the room is completed or not.
+///</summary>
 public class Room : MonoBehaviour
 {
 
@@ -458,12 +461,19 @@ public class Room : MonoBehaviour
 
     }
 
+    ///<summary>
+    /// Fired when an room object event sender fired an onaltered. This automaticly checks the mirror if it is now correct.
+    ///</summary>
     public void UpdateRoomObjectChanges(RoomObject _roomObject, ChangeType _changeType, bool _enabled) {
         if (!InArea) return;
         changeHandler.UpdateRoomObjectChanges(_roomObject, _changeType, _enabled);
         UpdateMirrorStates();
         CheckRoomCompletion();
     }
+
+    ///<summary>
+    /// Fired when a potion hitted a room object and fires an event to update the mirror and the room completion state.
+    ///</summary>
     public void AddPotionChange(Potion potion, IChangable changable) {
         if (!InArea) return;
         changeHandler.AddPotionChange(potion, changable);
@@ -472,6 +482,7 @@ public class Room : MonoBehaviour
     }
 
     ///<summary>
+    ///[DEPRECATED]
     /// Resets the room by deactivation all the changes and returns the room state and activates the changes 
     ///</summary>
     public void ResetRoom() {

@@ -60,6 +60,7 @@ public class RoomObject : RoomEntity
     public override IEnumerator AnimateMissing() {
         switch(MissingChangeEffect) {
             case MissingChangeEffect.none:
+                yield return new WaitForSeconds(animationDuration);
             break;
             case MissingChangeEffect.scale:
                 AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
@@ -224,7 +225,7 @@ public class RoomObject : RoomEntity
     {
         CurrentScale = normalScale;
     }
-    public void OnDestroy() {
+    public virtual void OnDestroy() {
         EventSender.SendMissingEvent();
     }
 
