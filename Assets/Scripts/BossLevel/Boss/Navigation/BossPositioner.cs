@@ -214,7 +214,7 @@ public class BossPositioner : MonoBehaviour
             desiredRotation = CurrentMovementBehaviour.PathRotation();
             break;
         }
-        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, Time.deltaTime * 2f * speedScale);
     }
 
     private void OnDrawGizmos() {

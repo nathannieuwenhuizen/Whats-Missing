@@ -19,6 +19,10 @@ namespace Boss {
 
             Positioner.MovementEnabled = true;
             Positioner.RotationEnabled = true;
+
+            //transport the boss to the end position
+            bossAI.transform.position = bossAI.DiePosition.position + (bossAI.ShieldDestroyPosition.position - bossAI.DiePosition.position).normalized * 5f;
+
             Positioner.BodyMovementType = BodyMovementType.navMesh;
             Positioner.BodyOrientation = BodyOrientation.toPath;
 
@@ -30,5 +34,6 @@ namespace Boss {
                 OnStateSwitch.Invoke(bossAI.Behaviours.idleState);
             }));
         }
+        
     }
 }

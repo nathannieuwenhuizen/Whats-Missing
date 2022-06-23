@@ -10,14 +10,21 @@ public class SkinnedMeshToMesh : MonoBehaviour
     public float refreshRate;
     [HideInInspector]
     public Coroutine UpdateVFXCoroutine;
+
+    private bool vfxActive = false;
+
+    [SerializeField]
+    private bool updateScale = true;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        UpdateVFXCoroutine = StartCoroutine(UpdateVFXGraph());
+        StartVFX();
     }
 
    IEnumerator UpdateVFXGraph()
     {
+        yield return new WaitForEndOfFrame();
         while (gameObject.activeSelf)
         {
             //make mesh
@@ -31,11 +38,28 @@ public class SkinnedMeshToMesh : MonoBehaviour
             VFXGraph.SetMesh("Mesh", m2);
 
             //update scale with that of the skinnedmesh
-            VFXGraph.transform.localScale = Vector3.one * (1f / transform.localScale.x);
+            if (updateScale) VFXGraph.transform.localScale = Vector3.one * (1f / transform.localScale.x);
             yield return new WaitForSeconds (refreshRate);
         }
     }
+
+    ///<summary>
+    /// Starts the vfx update loop
+    ///</summary>
+    public void StartVFX() {
+        if (vfxActive) return;
+        vfxActive = true;
+        UpdateVFXCoroutine = StartCoroutine(UpdateVFXGraph());
+        VFXGraph.Play();
+    }
+
+    ///<summary>
+    /// Stops the VFX update loop
+    ///</summary>
     public void StopVFX() {
+        if (!vfxActive) return;
+        vfxActive = false;
+
         if (UpdateVFXCoroutine != null) StopCoroutine(UpdateVFXCoroutine);
         VFXGraph.Stop();
     }

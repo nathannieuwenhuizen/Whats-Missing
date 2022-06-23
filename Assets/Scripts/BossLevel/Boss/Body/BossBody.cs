@@ -41,6 +41,9 @@ namespace Boss {
         public BossAnimator BossAnimator {
             get { return bossAnimator;}
         }
+
+        [SerializeField]
+        private SkinnedMeshToMesh[] spores;
         
 
         [SerializeField]
@@ -61,7 +64,7 @@ namespace Boss {
         private void Start() {
             bossAnimator = new BossAnimator(boss, IKPass);
             ToggleDeathColliders(false);
-            Grow = 0;
+            TentacleGrowth = 0;
             Arm.Toggle(true);
         }
 
@@ -103,16 +106,21 @@ namespace Boss {
 
         #region Shader values
         
-        private float grow;
+        private float tentacleGrowth;
         ///<summary>
         /// How much the tentacle is growing from 0 (invisible) to 1 (fully grown)
         ///</summary>
-        public float Grow {
-            get { return grow;}
+        public float TentacleGrowth {
+            get { return tentacleGrowth;}
             set { 
-                grow = value; 
+                tentacleGrowth = value; 
                 foreach(Renderer tentacle in tentacleRenderers) {
                     tentacle.material.SetFloat(growKey, value);
+                }
+                //update spore vfx
+                foreach(SkinnedMeshToMesh spore in spores) {
+                    if (value < .5f) spore.StopVFX();
+                    else  spore.StartVFX();
                 }
             }
         }
@@ -155,20 +163,20 @@ namespace Boss {
         //does the coroutine showing all the extra tentacles
         private IEnumerator Matemorphosing() {
             float index = 0;
-            Grow = 0f;
+            TentacleGrowth = 0f;
 
             while (index < 10f) {
                 Glow = bossAnimator.Animator.GetFloat(glowKey);
                 armRenders.Shine = bossAnimator.Animator.GetFloat(shineKey);
-                if (Grow < .99f) {
-                    Grow = bossAnimator.Animator.GetFloat(growKey);
+                if (TentacleGrowth < .99f) {
+                    TentacleGrowth = bossAnimator.Animator.GetFloat(growKey);
                 }
 
                 index += Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
             armRenders.Shine = 0;
-            Grow = 1f;
+            TentacleGrowth = 1f;
             Glow = 1;
         }
 
@@ -180,7 +188,7 @@ namespace Boss {
             while (index < _duration) {
                 index += Time.deltaTime;
                 Dissolve = bossAnimator.Animator.GetFloat(dissolveKey);
-                Grow = bossAnimator.Animator.GetFloat(growKey);
+                TentacleGrowth = bossAnimator.Animator.GetFloat(growKey);
                 Debug.Log("grow = " + bossAnimator.Animator.GetFloat(growKey));
 
                 yield return new WaitForEndOfFrame();
