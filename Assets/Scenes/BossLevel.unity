@@ -231,6 +231,7 @@ MonoBehaviour:
     fifthShardPath: {fileID: 6595655515411530315}
   CurrentWanderingPath: {fileID: 0}
   reactionPosition: {fileID: 794232142}
+  shieldDestroyPosition: {fileID: 2102146100}
   chargePosition: {fileID: 376843161}
 --- !u!114 &141260391
 MonoBehaviour:
@@ -668,19 +669,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 26.666666
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.y
@@ -792,19 +793,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 26.666666
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.y
@@ -4672,6 +4673,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5028151282914838736, guid: cb6e3adf7deb24e46a909ff65b9370af, type: 3}
   m_PrefabInstance: {fileID: 2073594908}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &2102146100 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9139869395347790800, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+  m_PrefabInstance: {fileID: 6595655515411530314}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2110291199
 GameObject:
   m_ObjectHideFlags: 0
@@ -5158,14 +5164,6 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 588112308}
-    - target: {fileID: 4713372005310984360, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
-      propertyPath: skipIntro
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4713372005310984360, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
-      propertyPath: ammountOfShardAlreadyCollected
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 6595655513598618594, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: gizmosRenderer
       value: 
@@ -5186,6 +5184,18 @@ PrefabInstance:
       propertyPath: boss
       value: 
       objectReference: {fileID: 141260389}
+    - target: {fileID: 6595655514579141000, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: test1
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6595655514579141000, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: test2
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6595655514579141000, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: debugLines
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6595655514613166232, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_Name
       value: boss room
@@ -5248,7 +5258,7 @@ PrefabInstance:
       objectReference: {fileID: 1896716504}
     - target: {fileID: 6595655515351997390, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -87.04633
+      value: -87.09298
       objectReference: {fileID: 0}
     - target: {fileID: 6595655515410030913, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: gizmosRenderer

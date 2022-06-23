@@ -3,9 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Boss {
+    [System.Serializable]
+    public struct MountainShapeData {
+        public float BottomRadius;
+        public float TopRadius;
+        public float Height;
+    }
 
 public class BossMountain : MonoBehaviour
 {
+
     [SerializeField]
     private Color debugColor = new Color(1,1,1,.5f);
     public Color DebugColor {
@@ -20,24 +27,16 @@ public class BossMountain : MonoBehaviour
     [SerializeField]
     private bool enablePathDebug = true;
 
-    public Transform test;
+    [SerializeField]
+    private MountainShapeData shapeData;
 
-    [SerializeField]
-    private float topRadius = 20f;
-    public float TopRadius {
-        get { return topRadius;}
-    }
-    [SerializeField]
-    private float bottomRadius = 50f;
-    public float BottomRadius {
-        get { return bottomRadius;}
+    private MountainShapeData testShape;
+    public MountainShapeData ShapeData {
+        get { return shapeData;}
     }
 
-    [SerializeField]
-    private float height = 100f;
-    public float Height {
-        get { return height;}
-    }
+    private MountainShapeData oldShapeData;
+
 
     // [Space]
     // [Header("path")]
@@ -55,8 +54,8 @@ public class BossMountain : MonoBehaviour
     }
 
     public bool InsideShape(Vector3 _position){
-        float precentage = (_position.y - transform.position.y) / height;
-        float radius = Mathf.Lerp(bottomRadius, topRadius, precentage);
+        float precentage = (_position.y - transform.position.y) / shapeData.Height;
+        float radius = Mathf.Lerp(shapeData.BottomRadius, shapeData.TopRadius, precentage);
         Vector3 delta = _position - transform.position;
         delta.y = 0;
         return delta.magnitude < radius * 1.3f;
@@ -72,26 +71,78 @@ public class BossMountain : MonoBehaviour
         get { return boss;}
     }
 
-    private void OnDrawGizmosSelected() {
+    ///<summary>
+    /// Returns a new shapedata that fits with the points on the mountain
+    ///</summary>
+    private MountainShapeData GenerateCustomShapeData(Vector3 a, Vector3 b){
+        //check which one is the highest point vertically
+        Vector3 low = a.y < b.y ? a : b;
+        Vector3 high = a.y > b.y ? a : b;
+
+        //calculate the radius of hte low point
+        Vector3 lowDelta = low - transform.position;
+        lowDelta.y = 0;
+        float radiusLow = lowDelta.magnitude;
+
+        //calculate the radius of hte highpoint
+        Vector3 highDelta = high - transform.position;
+        highDelta.y = 0;
+        float radiusHigh = highDelta.magnitude;
+
+        //calculate the delta
+        float radiusDelta = (radiusHigh - radiusLow) / (high.y - low.y);
+
+        //calculate the result
+        float newBottomRadius = radiusLow - (low.y - transform.position.y) * radiusDelta;
+        float newTopRadius = newBottomRadius + (shapeData.Height * radiusDelta);
+
+        //return result
+        return new MountainShapeData() {Height = shapeData.Height, BottomRadius = newBottomRadius, TopRadius = newTopRadius};
+    }
+
+        
+    public void MakeMountainFit(Vector3 a, Vector3 b) {
+        if (!oldShapeData.Equals(default(MountainShapeData))) return;
+        SaveShape();
+        shapeData = GenerateCustomShapeData(a, b);
+    }
+
+    ///<summary>
+    /// Saves the shape data of the mountain
+    ///</summary>
+    private void SaveShape() {
+        oldShapeData = shapeData;
+    }
+
+    ///<summary>
+    /// Restores the shapedata to that of hte old shape data
+    ///</summary>
+    public void RestoreShape() {
+        shapeData = oldShapeData;
+        oldShapeData = default(MountainShapeData);
+    }
+
+    private void OnDrawGizmos() {
         if (!enableDebug) return;
 
         Gizmos.color = debugColor;
-        DebugExtensions.DrawCircle(transform.position, bottomRadius, debugColor, 360, 20);
-        DebugExtensions.DrawCircle(transform.position + new Vector3(0,height, 0), topRadius, debugColor, 360, 20);
-        for (int j = 0; j < 360; j+= (360 / debugLines)) {
-            MountainCoordinate coords = new MountainCoordinate() {Angle = j, yPos = transform.position.y};
-            MountainCoordinate coordsEnd = new MountainCoordinate() {Angle = j, yPos = transform.position.y + height};
-            Debug.DrawLine(coords.ToPrimitiveVector(this), coordsEnd.ToPrimitiveVector(this), debugColor);
-        }
+        DrawMountainShape(ShapeData);
+
         // if (enablePathDebug){
         //     path.begin = MountainCoordinate.FromPosition(this, boss.transform.position);
         //     path.DrawGizmo(this);
         // }
+    }
 
-        if (test != null) {
-            Gizmos.color = InsideShape(test.position) ? Color.green : Color.red;
-            Gizmos.DrawSphere(test.position, 2f);
+    private void DrawMountainShape(MountainShapeData _shapeData) {
+        DebugExtensions.DrawCircle(transform.position, _shapeData.BottomRadius, debugColor, 360, 20);
+        DebugExtensions.DrawCircle(transform.position + new Vector3(0,_shapeData.Height, 0), _shapeData.TopRadius, debugColor, 360, 20);
+        for (int j = 0; j < 360; j+= (360 / debugLines)) {
+            MountainCoordinate coords = new MountainCoordinate() {Angle = j, yPos = transform.position.y};
+            MountainCoordinate coordsEnd = new MountainCoordinate() {Angle = j, yPos = transform.position.y + _shapeData.Height};
+            Debug.DrawLine(coords.ToPrimitiveVector(this), coordsEnd.ToPrimitiveVector(this), debugColor);
         }
+
     }
 
 }

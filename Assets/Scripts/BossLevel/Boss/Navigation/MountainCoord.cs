@@ -31,38 +31,45 @@ public struct MountainCoordinate {
     } 
 
 
-    public Vector3 ToShapeVector(BossMountain _pathHandeler, float offset = 0) {
+    public Vector3 ToShapeVector(BossMountain _mountain, float offset = 0) {
         Vector3 result = Vector3.zero;
-        result = ToPrimitiveVector(_pathHandeler);
-        if (offset != 0 || pathOffset != 0) result += Normal(_pathHandeler) * (offset+ pathOffset);
+        result = ToPrimitiveVector(_mountain);
+        if (offset != 0 || pathOffset != 0) result += Normal(_mountain) * (offset+ pathOffset);
         return result;
     }
-    public Vector3 ToPrimitiveVector(BossMountain _pathHandeler) {
+    public Vector3 ToPrimitiveVector(BossMountain _mountain) {
         Vector3 result = Vector3.zero;
 
-        float precentage = Mathf.Clamp(yPos - _pathHandeler.transform.position.y, 0, _pathHandeler.Height) / _pathHandeler.Height;
-        float resultRadius = _pathHandeler.BottomRadius + (_pathHandeler.TopRadius - _pathHandeler.BottomRadius) * precentage;
+        float precentage = Mathf.Clamp(yPos - _mountain.transform.position.y, 0, _mountain.ShapeData.Height) / _mountain.ShapeData.Height;
+        float resultRadius = _mountain.ShapeData.BottomRadius + (_mountain.ShapeData.TopRadius - _mountain.ShapeData.BottomRadius) * precentage;
 
         result.y = yPos;
-        result.x = _pathHandeler.transform.position.x + Mathf.Cos(Angle * Mathf.Deg2Rad) * resultRadius;
-        result.z = _pathHandeler.transform.position.z + Mathf.Sin(Angle * Mathf.Deg2Rad) * resultRadius;
+        result.x = _mountain.transform.position.x + Mathf.Cos(Angle * Mathf.Deg2Rad) * resultRadius;
+        result.z = _mountain.transform.position.z + Mathf.Sin(Angle * Mathf.Deg2Rad) * resultRadius;
         return result;
     }
     
-    public Vector3 ToVector(BossMountain _pathHandeler, float offset = 0) {
-        if (_pathHandeler.OnSurface) return CalculateRayCastedVector(_pathHandeler);
-        return ToShapeVector(_pathHandeler, offset);
+    public Vector3 ToVector(BossMountain _mountain, float offset = 0) {
+        if (_mountain.OnSurface) return CalculateRayCastedVector(_mountain);
+        return ToShapeVector(_mountain, offset);
+    }
+    public Vector3 ToPathVector(BossMountain _mountain, MountainPath _path, float offset) {
+        Vector3 result = Vector3.zero;
+        result = ToPrimitiveVector(_mountain);
+        if (offset != 0 || pathOffset != 0) result += PathNormal(_mountain, _path) * (offset + pathOffset);
+        return result;
+
     }
 
     private Vector3 raycastedNormal;
     ///<summary>
     /// Returns the vector of the path that sticks at the mesh that is inside the shape
     ///</summary>
-    public Vector3 CalculateRayCastedVector(BossMountain _pathHandeler) {
-        Vector3 result = ToPrimitiveVector(_pathHandeler);
+    public Vector3 CalculateRayCastedVector(BossMountain _mountain) {
+        Vector3 result = ToPrimitiveVector(_mountain);
         RaycastHit hit;
-        if (Physics.SphereCast(result, Boss.BOSS_SIZE * .9f, -PrimitiveNormal(_pathHandeler), out hit, _pathHandeler.BottomRadius)) {
-            result = hit.point + PrimitiveNormal(_pathHandeler) * Boss.BOSS_SIZE;
+        if (Physics.SphereCast(result, Boss.BOSS_SIZE * .9f, -PrimitiveNormal(_mountain), out hit, _mountain.ShapeData.BottomRadius)) {
+            result = hit.point + PrimitiveNormal(_mountain) * Boss.BOSS_SIZE;
             raycastedNormal = hit.normal;
             float size = 3.5f;
             if (Physics.SphereCast(result, Boss.BOSS_SIZE * .9f, Vector3.down, out hit, Boss.BOSS_SIZE * size)) {
@@ -106,26 +113,26 @@ public struct MountainCoordinate {
     ///<summary>
     /// Retunrs hte primitive normal
     ///</summary>
-    public Vector3 Normal(BossMountain _pathHandler) {
-        if (_pathHandler.OnSurface) {
-            CalculateRayCastedVector(_pathHandler);
+    public Vector3 Normal(BossMountain _mountain) {
+        if (_mountain.OnSurface) {
+            CalculateRayCastedVector(_mountain);
             return raycastedNormal;
         }
-        return PrimitiveNormal(_pathHandler);
+        return PrimitiveNormal(_mountain);
     }
     
     ///<summary>
     /// Returns the normal of the path.
     ///</summary>
-    public  Vector3 PathNormal(BossMountain _pathHandler, MountainPath _path) {
+    public  Vector3 PathNormal(BossMountain _mountain, MountainPath _path) {
         Vector3 result= Vector3.zero;
-        Vector3 a = _path.GetPathDirection(this, _pathHandler);
+        Vector3 a = _path.GetPathDirection(this, _mountain);
         // Vector3 b = _path.begin.ToVector(_pathHandler);
         Vector3 b = Vector3.up;
         result = Vector3.Cross(a, b).normalized;
-        result.y = PrimitiveNormal(_pathHandler).y;
+        result.y = PrimitiveNormal(_mountain).y;
 
-        Vector3 delta = ToVector(_pathHandler);
+        Vector3 delta = ToVector(_mountain);
 
         bool dot = Vector3.Dot(delta, result) > 0;
         return result.normalized * (dot ? 1 : -1);
@@ -134,36 +141,35 @@ public struct MountainCoordinate {
     ///<summary>
     /// Returns the primitive normal of the basic mountain shape
     ///</summary>
-    private Vector3 PrimitiveNormal(BossMountain _pathHandler) {
+    private Vector3 PrimitiveNormal(BossMountain _mountain) {
         Vector3 result= Vector3.zero;
-        Vector3 delta = ToPrimitiveVector(_pathHandler) - _pathHandler.transform.position;
+        Vector3 delta = ToPrimitiveVector(_mountain) - _mountain.transform.position;
         result.x = delta.x;
         result.z = delta.z;
         result = result.normalized;
-        float _angle = 90 - Mathf.Atan2( _pathHandler.Height, (_pathHandler.BottomRadius - _pathHandler.TopRadius )) * Mathf.Rad2Deg;
+        float _angle = 90 - Mathf.Atan2( _mountain.ShapeData.Height, (_mountain.ShapeData.BottomRadius - _mountain.ShapeData.TopRadius )) * Mathf.Rad2Deg;
         result.y = Mathf.Sin( _angle * Mathf.Deg2Rad);
 
         return result.normalized;
     }
     
-    public bool NormalIsVisible(BossMountain _pathhandeler, Vector3 _viewPos) {
-        Vector3 delta = _viewPos - ToVector(_pathhandeler);
-        float dot = Vector3.Dot(delta, Normal(_pathhandeler));
+    public bool NormalIsVisible(BossMountain _mountain, Vector3 _viewPos) {
+        Vector3 delta = _viewPos - ToVector(_mountain);
+        float dot = Vector3.Dot(delta, Normal(_mountain));
         return dot > 0;
     }
 
-    public bool PathNormalIsVisible(BossMountain _pathhandeler, MountainPath _path, Vector3 _viewPos) {
-        Vector3 delta = _viewPos - ToVector(_pathhandeler);
-        float dot = Vector3.Dot(delta, PathNormal(_pathhandeler, _path));
+    public bool PathNormalIsVisible(BossMountain _mountain, MountainPath _path, Vector3 _viewPos) {
+        Vector3 delta = _viewPos - ToVector(_mountain);
+        float dot = Vector3.Dot(delta, PathNormal(_mountain, _path));
         return dot > 0;
     }
 
     #endregion
 
-    public bool DirectionIsVisible(BossMountain _pathhandeler, Vector3 _viewPos, MountainPath _path) {
-        
-        Vector3 delta = _viewPos - ToVector(_pathhandeler);
-        float dot = Vector3.Dot(delta, _path.GetPathDirection(this, _pathhandeler));
+    public bool DirectionIsVisible(BossMountain _mountain, Vector3 _viewPos, MountainPath _path) {
+        Vector3 delta = _viewPos - ToVector(_mountain);
+        float dot = Vector3.Dot(delta, _path.GetPathDirection(this, _mountain));
         return dot > 0;
     }
 
@@ -175,12 +181,12 @@ public struct MountainCoordinate {
         return -1;
     }
 
-    public static MountainCoordinate FromPosition(BossMountain _pathHandeler, Vector3 _pos) {
+    public static MountainCoordinate FromPosition(BossMountain _mountain, Vector3 _pos) {
         
-        Vector3 delta = _pos - _pathHandeler.transform.position;
+        Vector3 delta = _pos - _mountain.transform.position;
         delta.y = 0;
         float angle = Vector3.Angle(delta, Vector3.right);
-        if (_pos.z < _pathHandeler.transform.position.z) {
+        if (_pos.z < _mountain.transform.position.z) {
             angle = 360 - angle;
         }
         return new MountainCoordinate() {

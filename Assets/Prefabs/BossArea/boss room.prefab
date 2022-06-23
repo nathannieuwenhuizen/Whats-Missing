@@ -712,7 +712,7 @@ GameObject:
   - component: {fileID: 6959670889936623361}
   - component: {fileID: 2948148308637238866}
   m_Layer: 0
-  m_Name: boss end position
+  m_Name: boss destroy shield position
   m_TagString: Untagged
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -12330,10 +12330,10 @@ MonoBehaviour:
   debugLines: 4
   enableDebug: 1
   enablePathDebug: 0
-  test: {fileID: 0}
-  topRadius: 8
-  bottomRadius: 90
-  height: 370
+  shapeData:
+    BottomRadius: 90
+    TopRadius: 8
+    Height: 370
   onSurface: 0
   boss: {fileID: 0}
 --- !u!1 &6595655514600967617
@@ -18192,7 +18192,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6595655515351997385}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -2.58, y: -13.82, z: -86.84391}
+  m_LocalPosition: {x: -2.58, y: -13.82, z: -87.06461}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7715169457062460591}
@@ -27819,7 +27819,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1936894612712522408, guid: edc3eebe60ecc5c4d9cd6843bbfe70b1, type: 3}
       propertyPath: ammountOfShardAlreadyCollected
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2580248996340861087, guid: edc3eebe60ecc5c4d9cd6843bbfe70b1, type: 3}
       propertyPath: positionInfo.fallPosition

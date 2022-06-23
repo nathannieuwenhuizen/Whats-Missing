@@ -106,7 +106,7 @@ public class NavMeshBehaviour : IMovementBehavior
         } else {
             cVelocity = Mathf.Lerp(cVelocity, Velocity.magnitude, Time.deltaTime);
         }
-        Debug.Log("c velocity = " + cVelocity);
+        // Debug.Log("c velocity = " + cVelocity);
         boss.Body.BossAnimator.SetFloat(BossAnimatorParam.FLOAT_CRAWLSPEED, cVelocity / 10f);
     }
 

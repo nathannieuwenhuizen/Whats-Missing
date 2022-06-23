@@ -4,11 +4,18 @@ using UnityEngine;
 
 namespace Boss {
     ///<summary>
-    /// Bases class for a boss reaction state. The boss goes first in the boss reaction position and then does its reaction to the player.
+    /// Base class for a boss reaction state. The boss goes first in the boss reaction position and then does its reaction to the player.
     ///</summary>
     public abstract class BossReactionState : BossCutsceneState
     {
+        //the old maxforce of the steringbehaviour. Needed to restore the movement steering force.
         private float oldMaxForce;
+
+        ///<summary>
+        /// If set to true, the boss mountain will recalculated ot get out of the bounds of the mountain shape.
+        ///</summary>
+        protected bool customMountainShape = false; 
+
         public override void Start()
         {
             stateName = "Boss Reaction cutscene";
@@ -18,6 +25,9 @@ namespace Boss {
             bossAI.Boss.BossPositioner.SteeringBehaviour.MaxForce *= 4f;
         }
 
+        ///<summary>
+        /// Returns the reaction pose the boss would go to.
+        ///</summary>
         public virtual Vector3 ReactionPosition() {
             return bossAI.ReactionPosition.position;
         }
@@ -26,12 +36,15 @@ namespace Boss {
         /// Boss goes to the reaction pose in the air
         ///</summary>
         public virtual IEnumerator GoToReactionPose() {
+            //reshape the boss mountain to make the arc more fitting
+            if (customMountainShape) Positioner.BossMountain.MakeMountainFit(bossAI.transform.position, ReactionPosition() + Vector3.up * 3f);
+            
             //go to air position of landing pos
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
             Positioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
             Positioner.RotationEnabled = true;
             Positioner.MovementEnabled = true;
-            Positioner.SetDestinationPath(ReactionPosition() + Vector3.up * 3f, bossAI.transform.position, true, 10f);
+            Positioner.SetDestinationPath(ReactionPosition() + Vector3.up * 3f, bossAI.transform.position, true, 5f);
             Positioner.SpeedScale = 2f;
             Positioner.SteeringBehaviour.MaxForce *= 5f;
 
@@ -40,7 +53,12 @@ namespace Boss {
             }
             Positioner.SteeringBehaviour.MaxForce /= 5f;
 
+
             yield return bossAI.StartCoroutine(LandOnReactionPosition());
+
+            //resotre the boss mountain
+            if (customMountainShape) Positioner.BossMountain.RestoreShape();
+            
             DoReaction();
         }
 

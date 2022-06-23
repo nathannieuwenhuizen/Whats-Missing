@@ -57,7 +57,7 @@ public class AirSteeringBehaviour : IMovementBehavior
     }
 
     public void UpdateTempDestination(){
-        desiredTempPos.position = path.GetClosestMountainCoord(transform.position, bossMountain).ToVector(bossMountain, BasePathOffset);
+        desiredTempPos.position = path.GetClosestMountainCoord(transform.position, bossMountain).ToPathVector(bossMountain, path, BasePathOffset);
         bossPositioner.SteeringBehaviour.desiredTarget = desiredTempPos;
     
     }
@@ -71,11 +71,11 @@ public class AirSteeringBehaviour : IMovementBehavior
 
     public Vector3 GetClosestPointOnPath(){
         // return MountainCoordinate.FromPosition(pathHandeler, transform.position).ToVector(pathHandeler);
-        return path.GetClosestMountainCoord(transform.position, bossMountain).ToVector(bossMountain);    
+        return path.GetClosestMountainCoord(transform.position, bossMountain).ToPathVector(bossMountain, path, BasePathOffset);    
     }
 
     public bool ReachedDestination(float _distanceThreshhold){
-        Vector3 pos = path.end.ToShapeVector(bossMountain) + path.end.Normal(bossMountain) * BasePathOffset;
+        Vector3 pos = path.end.ToPathVector(bossMountain, path, BasePathOffset);
         // Debug.Log("distance = " + Vector3.Distance(transform.position, pos));
         if (Vector3.Distance(transform.position, pos) > _distanceThreshhold) return false;
         if (bossPositioner.SteeringBehaviour.Velocity.magnitude > 1f) return false;
@@ -100,7 +100,7 @@ public class AirSteeringBehaviour : IMovementBehavior
     {
         float result = 0;
         for ( int i = 1; i < path.Coords.Length; ++i )
-            result += Vector3.Distance( path.Coords[i-1].ToVector(bossMountain), path.Coords[i].ToVector(bossMountain));
+            result += Vector3.Distance( path.Coords[i-1].ToVector(bossMountain), path.Coords[i].ToPathVector(bossMountain, path, 0));
         return result;
     }
 

@@ -46,7 +46,6 @@ public class BossPositioner : MonoBehaviour
         set { 
             inAir = value; 
             if (boss.Body.BossAnimator != null) boss.Body.BossAnimator.SetBool(BossAnimatorParam.BOOL_INAIR, value);
-
         }
     }
 
@@ -177,10 +176,6 @@ public class BossPositioner : MonoBehaviour
         CurrentMovementBehaviour.SetDestinationPath(_end, _begin);
     }
 
-    public MountainCoordinate GetClosestMountainCoordOfBoss() {
-        return path.GetClosestMountainCoord(transform.position, bossMountain);
-    }
-
     ///<summary>
     /// Returns true if the boss is at position
     ///</summary>
@@ -227,11 +222,11 @@ public class BossPositioner : MonoBehaviour
     }
 
     ///<summary>
-    ///lands the boss on a specific position.
+    ///lands the boss on a specific position. 
+    ///The movement is in free float, so the ned position will the the actual position the boss goes to.
     ///</summary>
-    
     public IEnumerator Landing(Vector3 _endPos, Action callback = null) {
-        Debug.Log("landing");
+        // Debug.Log("landing");
 
         //set the correct movement options.
         BodyOrientation = BodyOrientation.toPlayer;

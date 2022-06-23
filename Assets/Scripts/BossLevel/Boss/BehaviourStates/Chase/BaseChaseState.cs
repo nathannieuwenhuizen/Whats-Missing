@@ -66,7 +66,7 @@ namespace Boss {
             if (Player.INVINCIBLE)
             {
                 //get distance of player to boss
-                float dist = Positioner.CurrentMovementBehaviour.GetPathLength();
+                float dist = DistnaceToPlayer();
 
                 //go to charge at shield phase is the player is lcose enough
                 if (dist < Boss.CHARGE_AT_SHIELD_THRESHHOLD) {
