@@ -4,19 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Boss {
-    // [System.Serializable]
-    // public struct ArmRenders {
-    //     [SerializeField]
-    //     public Renderer arm;
-    //     [SerializeField]
-    //     public Renderer sythe;
-
-    //     public void Toggle(bool _toSythe) {
-    //         arm.gameObject.SetActive(!_toSythe);
-    //         sythe.gameObject.SetActive(_toSythe);
-    //     }
-    // }
-
     ///<summary>
     /// This handles the bossy body mesh. 
     /// It (de)activates and handles he secondary physics, purely the astethics
@@ -27,10 +14,15 @@ namespace Boss {
         private bool hasMetamorphosed = false;
         private float metamorphoseDuration = 2f;
         private float metamorphoseDelay = 0f;
+
+        //shader keys
         private readonly string growKey = "_grow";
         public static readonly string shineKey = "_shine_power";
         private readonly string glowKey = "_glow_power";
+        private readonly string dissolveKey = "Dissolve";
+        private readonly string disolveEdgeWidthKey = "EdgeWidth";
 
+        //renders
         [SerializeField]
         private Renderer[] bodyRenders;
         [SerializeField]
@@ -108,8 +100,13 @@ namespace Boss {
             StartCoroutine(Matemorphosing());
         }
 
+
+        #region Shader values
         
         private float grow;
+        ///<summary>
+        /// How much the tentacle is growing from 0 (invisible) to 1 (fully grown)
+        ///</summary>
         public float Grow {
             get { return grow;}
             set { 
@@ -119,7 +116,11 @@ namespace Boss {
                 }
             }
         }
+
         private float glow;
+        ///<summary>
+        /// The glow value of the boss, the colored emission map
+        ///</summary>
         public float Glow {
             get { return glow;}
             set { 
@@ -130,6 +131,26 @@ namespace Boss {
             }
         }
 
+        private float dissolve = 0;
+        ///<summary>
+        /// The glow value of the boss, the colored emission map
+        ///</summary>
+        public float Dissolve {
+            get { return dissolve;}
+            set { 
+                glow = value; 
+                foreach(Renderer renderers in bodyRenders) {
+                    renderers.material.SetFloat(dissolveKey, value);
+                    renderers.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
+                }
+                armRenders.SytheArm.mesh.material.SetFloat(dissolveKey, value);
+                armRenders.SytheArm.mesh.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
+                armRenders.HumanArm.mesh.material.SetFloat(dissolveKey, value);
+                armRenders.HumanArm.mesh.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
+            }
+        }
+
+        #endregion
 
         //does the coroutine showing all the extra tentacles
         private IEnumerator Matemorphosing() {
@@ -151,6 +172,21 @@ namespace Boss {
             Glow = 1;
         }
 
+        ///<summary>
+        /// Fired when the boss dies. It disovles the body
+        ///</summary>
+        public IEnumerator UpdatingDisolve(float _duration) {
+            float index = 0;
+            while (index < _duration) {
+                index += Time.deltaTime;
+                Dissolve = bossAnimator.Animator.GetFloat(dissolveKey);
+                Grow = bossAnimator.Animator.GetFloat(growKey);
+                Debug.Log("grow = " + bossAnimator.Animator.GetFloat(growKey));
 
+                yield return new WaitForEndOfFrame();
+                
+            }
+        }
     }
+
 }

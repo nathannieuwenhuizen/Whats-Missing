@@ -53,8 +53,15 @@ namespace Boss {
     {
         [SerializeField]
         private ArmRender humanArm;
+        public ArmRender HumanArm {
+            get { return humanArm;}
+        }
         [SerializeField]
         private ArmRender sytheArm;
+        public ArmRender SytheArm {
+            get { return sytheArm;}
+        }
+
 
         private bool isSythe = false;
         public ArmRender currentArm {

@@ -122,7 +122,7 @@ public class BossMountain : MonoBehaviour
         oldShapeData = default(MountainShapeData);
     }
 
-    private void OnDrawGizmos() {
+    private void OnDrawGizmosSelected() {
         if (!enableDebug) return;
 
         Gizmos.color = debugColor;

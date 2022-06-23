@@ -83,12 +83,14 @@ public class BossMirror : Mirror, ITriggerArea
     }
     private void Start() {
         Word = "spirit";
-        TogleVisibilityUnselectedObj(0);
         // foreach(MirrorShard shard in shards) {
         //     shard.PlanarReflection.SetRenderTexture(PlanarReflection.reflectionCamera.targetTexture);
         // }
 
         if (skipIntro) StartCoroutine(SkipIntro());
+        else {
+            TogleVisibilityUnselectedObj(0);
+        }
     }
 
     public IEnumerator SkipIntro() {

@@ -13,6 +13,8 @@ namespace Boss {
     // [RequireComponent(typeof(Rigidbody))]
     public class Boss : RoomObject
     {   
+
+        
         //sizes
         public const float BOSS_SIZE = 8f;
         public const float BOSS_HEIGHT = 17f * .7f;

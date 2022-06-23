@@ -19,6 +19,7 @@ namespace Boss {
         public static readonly string BOOL_INAIR = "inAir";
 
         public static readonly string FLOAT_CRAWLSPEED = "crawl_speed";
+        
         //inverse kinematics
         public static readonly string FLOAT_IK_LF = "ik_lf";
         public static readonly string FLOAT_IK_RF = "ik_rf";
