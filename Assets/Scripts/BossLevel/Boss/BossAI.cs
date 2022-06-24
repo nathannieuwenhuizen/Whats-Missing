@@ -85,7 +85,7 @@ public class BossAI : MonoBehaviour {
         //     stateMachine.SwitchState(behaviours.destroyShieldState);
         // }
         if (Input.GetKeyDown(KeyCode.T)) {
-            stateMachine.SwitchState(behaviours.dieState);
+            stateMachine.SwitchState(behaviours.chargeAtShieldState);
         }
         // if (Input.GetKeyDown(KeyCode.Y)) {
         //     stateMachine.SwitchState(behaviours.chargeAtShieldState);

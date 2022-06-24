@@ -29,9 +29,7 @@ namespace Boss {
                 Positioner.SetDestinationPath(chargePos, Boss.transform.position);
 
                 bossAI.StartCoroutine(GoToShield());
-                // bossAI.StartCoroutine(Extensions.AnimateCallBack(1f, 3f, AnimationCurve.EaseInOut(0,0,1,1), (float _val) => {
-                //     positioner.SpeedScale = _val;
-                // }, 2f));
+                ForcefieldDemo.Forcefield.OnForceFieldImpact += Knockback;
             }
 
             public override void Run()
@@ -41,6 +39,7 @@ namespace Boss {
 
             public override void Exit()
             {
+                ForcefieldDemo.Forcefield.OnForceFieldImpact -= Knockback;
                 Positioner.SpeedScale = 1f;
                 base.Exit();
             }
@@ -65,8 +64,8 @@ namespace Boss {
                     Positioner.SteeringBehaviour.MaxForce /= 10f;
                 }
 
-                //now land on the shield position
-                chargePos = Boss.Forcefield.EdgePosition(bossAI.ChargePosition.position);
+                //now go to the shield edge position
+                chargePos = Boss.Forcefield.EdgePosition(bossAI.ChargePosition.position, 1f);
                 Positioner.BodyMovementType = BodyMovementType.freeFloat;
 
                 Positioner.SetDestinationPath(chargePos, Boss.transform.position);
@@ -75,14 +74,26 @@ namespace Boss {
                 while (!Positioner.AtPosition(Boss.BOSS_ATTACK_SHIELD_RANGE)) {
                     yield return new WaitForFixedUpdate();
                 }
-                MeleeAttack();
-
+                Debug.Log("attack shield");
+                MeleeAttackAtShield();
             }
 
-            protected override IEnumerator Attacking()
+            public void Knockback() {
+                bossAI.StartCoroutine(KnockingBack());
+            }
+            public IEnumerator KnockingBack() {
+                chargePos = Boss.Forcefield.EdgePosition(bossAI.ChargePosition.position, 8f);
+                Positioner.SetDestinationPath(chargePos, Boss.transform.position);
+                yield return new WaitForSeconds(2f);
+                chargePos.y += 6f;
+                Positioner.SpeedScale = .5f;
+                Positioner.SetDestinationPath(chargePos, Boss.transform.position);
+            }
+
+            protected override IEnumerator AttackingShield()
             {
                 //wait for attacking
-                yield return base.Attacking();
+                yield return base.AttackingShield();
                 //go back to wandering state.
                 Positioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
                 StopChase();

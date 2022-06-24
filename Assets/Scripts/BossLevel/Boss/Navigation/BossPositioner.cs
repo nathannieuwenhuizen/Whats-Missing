@@ -92,8 +92,8 @@ public class BossPositioner : MonoBehaviour
             navMeshMovementBehaviour.MovementEnabled = value;
             freefloatMovementBehaviour.MovementEnabled = value;
             CurrentMovementBehaviour.MovementEnabled = value;
-            navMeshAgent.enabled = movementType == BodyMovementType.navMesh && MovementEnabled;
-            
+            UpdateNavmeshState();
+
             //reset velocity
             if (value == false) steeringBehaviour.Velocity = Vector3.zero;
         }
@@ -109,8 +109,14 @@ public class BossPositioner : MonoBehaviour
         get { return movementType;}
         set { 
             movementType = value; 
-            navMeshAgent.enabled = movementType == BodyMovementType.navMesh && MovementEnabled;
+            UpdateNavmeshState();
         }
+    }
+
+
+    private void UpdateNavmeshState() {
+        navMeshAgent.enabled = movementType == BodyMovementType.navMesh && MovementEnabled;
+        if (boss.Body.BossAnimator != null) boss.Body.BossAnimator.SetBool(BossAnimatorParam.BOOL_CRAWLING, movementType == BodyMovementType.navMesh);
     }
 
     private float speedScale = 1f;
@@ -273,8 +279,6 @@ public class BossPositioner : MonoBehaviour
         debree.GetComponentInChildren<ParticleSystem>().Emit(3);
         Destroy(debree, 5f);
     }
-
-
 
     ///<summary>
     /// Makes the boss go into airing mode.

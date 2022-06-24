@@ -50,6 +50,7 @@ namespace Boss {
         void Awake () 
         {
             animator = GetComponent<Animator>();
+            Debug.Log("animator awake" + animator);
 
             ikBossHead = new IKBossHead(transform, this, test);
 
