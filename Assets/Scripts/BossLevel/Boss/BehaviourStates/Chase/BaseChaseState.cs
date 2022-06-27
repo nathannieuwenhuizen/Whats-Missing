@@ -105,13 +105,10 @@ namespace Boss {
             bossAI.StartCoroutine(Attacking());
         }
 
-
         ///<summary>
         /// Coroutine of hte whol attack animation, after the animation has been done, the boss goes back to its old orientation.
         ///</summary>
         protected virtual IEnumerator Attacking() {
-            // Boss.BossPositioner.MovementEnabled = false;
-            // bossAI.Boss.Body.ToggleDeathColliders(true);
             BodyOrientation oldOrientation = Positioner.BodyOrientation;
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
             AudioHandler.Instance?.Play3DSound(SFXFiles.boss_attack, bossAI.BossHead.transform);
@@ -120,7 +117,31 @@ namespace Boss {
             Positioner.BodyOrientation = oldOrientation;
 
             isAttacking = false;
-            // Boss.BossPositioner.MovementEnabled = true;
+        }
+
+        ///<summary>
+        /// Do melee attack if the boss hasn't already attacked the shield.
+        ///</summary>
+        protected void MeleeAttackAtShield() {
+            if (isAttacking) return;
+            isAttacking = true;
+            Debug.Log("attack shield");
+            bossAI.StartCoroutine(AttackingShield());
+        }
+
+        ///<summary>
+        /// Coroutine of hte whol attack animation, after the animation has been done, the boss goes back to its old orientation.
+        ///</summary>
+        protected virtual IEnumerator AttackingShield() {
+            Debug.Log("attack shield");
+            BodyOrientation oldOrientation = Positioner.BodyOrientation;
+            Positioner.BodyOrientation = BodyOrientation.toPlayer;
+            AudioHandler.Instance?.Play3DSound(SFXFiles.boss_attack, bossAI.BossHead.transform);
+
+            yield return bossAI.StartCoroutine(Boss.Body.BossAnimator.DoFailedAttackAnimation());
+            Positioner.BodyOrientation = oldOrientation;
+
+            isAttacking = false;
         }
     }
 

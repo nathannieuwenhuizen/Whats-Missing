@@ -12,13 +12,16 @@ namespace Boss {
         //states and triggers
         public static readonly string TRIGGER_INTRO = "intro";
         public static readonly string TRIGGER_ATTACK = "attack";
+        public static readonly string TRIGGER_ATTACK_FAIL = "attack_fail";
+        public static readonly string TRIGGER_MIRROR_ATTACK = "mirror_attack";
         public static readonly string TRIGGER_TRANSFORM = "transform";
         public static readonly string TRIGGER_DEATH = "death";
-        public static readonly string TRIGGER_MIRROR_ATTACK = "mirror_attack";
 
         public static readonly string BOOL_INAIR = "inAir";
+        public static readonly string BOOL_CRAWLING = "crawling";
 
         public static readonly string FLOAT_CRAWLSPEED = "crawl_speed";
+        
         //inverse kinematics
         public static readonly string FLOAT_IK_LF = "ik_lf";
         public static readonly string FLOAT_IK_RF = "ik_rf";
@@ -26,6 +29,8 @@ namespace Boss {
         public static readonly string FLOAT_IK_RH = "ik_rh";
         public static readonly string FLOAT_ATTACKWEIGHT = "attackWeight";
     }
+
+    
     public class BossAnimator
     {
         private Animator animator;
@@ -42,7 +47,9 @@ namespace Boss {
         }
 
         public Animator Animator {
-            get { return animator;}
+            get { 
+                return animator;
+            }
         }
 
         ///<summary>
@@ -57,20 +64,20 @@ namespace Boss {
         /// Sets the boolean of the animator
         ///</summary>
         public void SetBool(string _key, bool _val) {
-            animator.SetBool(_key, _val);
+            Animator.SetBool(_key, _val);
         }
         ///<summary>
         /// Sets the boolean of the animator
         ///</summary>
         public void SetFloat(string _key, float _val) {
-            animator.SetFloat(_key, Mathf.Max(0,_val));
+            Animator.SetFloat(_key, Mathf.Max(0,_val));
         }
 
         ///<summary>
         /// Sets the float of the animator (cant go lower htan 0 though)
         ///</summary>
         public void SetInt(string _key, int _val) {
-            animator.SetInteger(_key, _val);
+            Animator.SetInteger(_key, _val);
         }
 
         public IEnumerator DoTriggerAnimation(string _triggerKey, bool _applyRootMotion, float _delayBeforeCallback, Action _callback) {
@@ -86,6 +93,9 @@ namespace Boss {
         }
 
 
+        ///<summary>
+        /// Does the attack animation, it also updates the ik of the right arm
+        ///</summary>
         public IEnumerator DoAttackAnimation() {
 
             float animationDuration = 3f;
@@ -93,9 +103,6 @@ namespace Boss {
             SetTrigger(BossAnimatorParam.TRIGGER_ATTACK);
             yield return new WaitForFixedUpdate();
             boss.StartCoroutine(boss.Body.Arm.UpdatingArmFX(this));
-            float clipLength = animator.GetCurrentAnimatorStateInfo(0).length;
-
-            // Debug.Log("animation clip lenght: " + clipLength);
             IKPass.RightArm.EnableRayCast = false;
             float index = 0;
             while (index < animationDuration) {
@@ -107,6 +114,28 @@ namespace Boss {
             }
             attacking = false;
         }
+
+        ///<summary>
+        /// Does the attack animation that fails/gets blocked, it also updates the ik of the right arm
+        ///</summary>
+        public IEnumerator DoFailedAttackAnimation() {
+            float animationDuration = 5f;
+            attacking = true;
+            SetTrigger(BossAnimatorParam.TRIGGER_ATTACK_FAIL);
+            yield return new WaitForFixedUpdate();
+            boss.StartCoroutine(boss.Body.Arm.UpdatingArmFX(this));
+            IKPass.RightArm.EnableRayCast = false;
+            float index = 0;
+            while (index < animationDuration) {
+                index += Time.deltaTime;
+                IKPass.RightArm.IKPosition = boss.Player.transform.position;
+                IKPass.RightArm.Weight = animator.GetFloat(BossAnimatorParam.FLOAT_ATTACKWEIGHT);
+                boss.Body.ToggleDeathColliders(IKPass.RightArm.Weight > 0);
+                yield return new WaitForFixedUpdate();
+            }
+            attacking = false;
+        }
+
         ///<summary>
         /// Does an animation and when the 
         ///</summary>

@@ -291,6 +291,7 @@ public class MirrorShard : PickableRoomObject
     private IEnumerator ReattachingToMirror() {
         StartCoroutine(transform.AnimatingLocalRotation(Quaternion.Euler(0,0,0), AnimationCurve.EaseInOut(0,0,1,1), attachingDuration));
         yield return StartCoroutine(transform.AnimatingLocalPos(startLocalPos, AnimationCurve.EaseInOut(0,0,1,1), attachingDuration));
+        ToggleVisibilty(true);
         Attached = true;
         bossMirror.AttachMirrorShard(this);
         AudioHandler.Instance?.PlaySound(SFXFiles.mirorshard_place);

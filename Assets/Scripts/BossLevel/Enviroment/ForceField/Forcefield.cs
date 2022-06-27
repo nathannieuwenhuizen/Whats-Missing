@@ -320,15 +320,17 @@ namespace ForcefieldDemo
         }
 
 
-
-        public Vector3 EdgePosition(Vector3 from) {
+        ///<summary>
+        /// Returns the position that lies on the edge of the forcefield directing to the _from parameter.
+        ///</summary>
+        public Vector3 EdgePosition(Vector3 _from, float _offset = 1f) {
             Vector3 result = transform.position;
 
-            Vector3 delta = from - transform.position;
+            Vector3 delta = _from - transform.position;
             delta.y = 0;
-            result = delta.normalized * (meshRenderer.transform.lossyScale.y * .5f + 1f);
+            result = delta.normalized * (meshRenderer.transform.lossyScale.y * .5f + _offset);
 
-            return result;
+            return transform.position + result;
         }
     }
 }

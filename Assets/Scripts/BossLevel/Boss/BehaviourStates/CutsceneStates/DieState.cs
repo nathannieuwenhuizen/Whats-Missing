@@ -8,24 +8,32 @@ namespace Boss {
 
     public class DieState : BossCutsceneState
     {
-    public override void Start()
-        {
+        public delegate void BossEvent();
+        public static BossEvent OnBossDie;
+
+        public override void Start()
+            {
             stateName = "Die cutscene";
             base.Start();
-            bossAI.StartCoroutine(TestAnimation());
-            Boss.Head.LookAtPlayer = false;
+            Positioner.SpeedScale = 10f;
+
+            Positioner.MovementEnabled = true;
+            Positioner.RotationEnabled = true;
+
+            //transport the boss to the end position
+            bossAI.transform.position = bossAI.DiePosition.position + (bossAI.ShieldDestroyPosition.position - bossAI.DiePosition.position).normalized * 5f;
+
+            Positioner.BodyMovementType = BodyMovementType.navMesh;
+            Positioner.BodyOrientation = BodyOrientation.toPath;
+
+            Positioner.SetDestinationPath(bossAI.DiePosition, bossAI.transform.position, false, 0);
+            bossAI.StartCoroutine(bossAI.Boss.Body.UpdatingDisolve(10f));
 
             bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_DEATH, true, 10f, () => {
-                // OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
+                OnBossDie?.Invoke();
+                OnStateSwitch.Invoke(bossAI.Behaviours.idleState);
             }));
-
         }
-        public IEnumerator TestAnimation() {
-            yield return new WaitForEndOfFrame();
-            Vector3 start = bossAI.Boss.transform.position;
-            yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(0,50,0), AnimationCurve.EaseInOut(0,0,1,1), 1.5f);
-
-            OnStateSwitch?.Invoke(bossAI.Behaviours.idleState);
-        }
+        
     }
 }
