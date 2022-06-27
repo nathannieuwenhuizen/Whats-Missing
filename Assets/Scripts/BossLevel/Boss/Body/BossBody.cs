@@ -73,6 +73,7 @@ namespace Boss {
         ///</summary>
         public void ToggleBody(bool _visible) {
             foreach (Renderer renderer in bodyRenders) renderer.enabled = _visible;
+            armRenders.currentArm.mesh.enabled = _visible;
             foreach (Renderer renderer in tentacleRenderers) renderer.enabled = _visible && hasMetamorphosed;
             // if (_visible) ToggleSyth(hasMetamorphosed);
             // if (!_visible) ToggleSyth(false);

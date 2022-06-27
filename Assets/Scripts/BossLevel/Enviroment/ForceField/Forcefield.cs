@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Boss;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -75,9 +76,8 @@ namespace ForcefieldDemo
             meshRenderer.enabled = false;
             ToggleColliders(false);
             Dissolve = 1;
-            isOn = false;
 
-            IsOn = true;
+            // IsOn = true;
 
             Radius = meshRenderer.transform.lossyScale.y * .5f;
             fillIdle = Fill;
@@ -103,6 +103,7 @@ namespace ForcefieldDemo
                 isOn = value; 
                 Debug.Log("on deactivating shield" + isOn);
 
+                ToggleColliders(true); // umst be true during animation
                 if (navMeshObstacle) navMeshObstacle.enabled = value;
                 if (disolveCoroutine != null) StopCoroutine(disolveCoroutine);
                 disolveCoroutine = StartCoroutine(Dissolving(value));
@@ -110,7 +111,6 @@ namespace ForcefieldDemo
         }  
 
         private IEnumerator Dissolving(bool turningOn) {
-            ToggleColliders(true);
             meshRenderer.enabled = true;
             yield return StartCoroutine(meshRenderer.material.AnimatingDissolveMaterial(Dissolve, turningOn ? 0 : 1, AnimationCurve.EaseInOut(0,0,1,1), 2f));
             ToggleColliders(IsOn);
@@ -304,6 +304,17 @@ namespace ForcefieldDemo
 
         private void OnEnable() {
             StartCoroutine(Cooldown()); // prevent apply impact bug
+            BaseChaseState.AttemptingToHitShield += ActiavateForceField;
+        }
+
+        private void OnDisable() {
+            BaseChaseState.AttemptingToHitShield -= ActiavateForceField;
+            
+        }
+
+        public void ActiavateForceField() {
+            if (IsOn) return;
+            IsOn = true;
         }
 
         public override void OnMissing()

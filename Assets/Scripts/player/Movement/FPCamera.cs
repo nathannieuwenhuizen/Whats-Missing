@@ -241,11 +241,22 @@ public class FPCamera
 
 
     public void UpdateSteeringBehaviour() {
+        // desiredAim.position = steeringTarget.position - steeringTarget.up * steeringOffset;
+        // SteeringBehaviour.UpdatePosition(steeringSpeed);
+        // transform.LookAt(currentAim, Vector3.up);
+        // transform.localRotation = Quaternion.Euler( new Vector3(0, transform.localRotation.eulerAngles.y, 0));
+
+        // cameraPivot.LookAt(currentAim, Vector3.up);
+
         desiredAim.position = steeringTarget.position - steeringTarget.up * steeringOffset;
-        SteeringBehaviour.UpdatePosition(steeringSpeed);
-        transform.LookAt(currentAim, Vector3.up);
+
+        Quaternion rotation = Quaternion.LookRotation(desiredAim.position - cameraPivot.position, transform.up);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * steeringSpeed);
+
         transform.localRotation = Quaternion.Euler( new Vector3(0, transform.localRotation.eulerAngles.y, 0));
 
-        cameraPivot.LookAt(currentAim, Vector3.up);
+        rotation = Quaternion.LookRotation(desiredAim.position - cameraPivot.position, cameraPivot.up);
+        cameraPivot.rotation = Quaternion.Slerp(cameraPivot.rotation, rotation, Time.deltaTime * steeringSpeed);
+
     }
 }

@@ -145,11 +145,11 @@ public class CharacterAnimationPlayer
         inBossCutscene = true;
         yield return new WaitForSeconds( bossMirror.ShakeDuration - .5f);
         Debug.Log("in boss cutscene for realz");
-        // PlayCutSceneAnimation("boss_intro_1", false);
-        // yield return new WaitForSeconds(2f);
-        // PlayCutSceneAnimation("boss_intro_2", false);
-        // yield return new WaitForSeconds(.5f);
-        // PlayCutSceneAnimation("boss_intro_3", false);
+        PlayCutSceneAnimation("boss_intro_1", false);
+        yield return new WaitForSeconds(2f);
+        PlayCutSceneAnimation("boss_intro_2", false);
+        yield return new WaitForSeconds(.5f);
+        PlayCutSceneAnimation("boss_intro_3", false);
         inBossCutscene = false;
     }
     private void OnBossMirrorExplode(BossMirror bossMirror) {

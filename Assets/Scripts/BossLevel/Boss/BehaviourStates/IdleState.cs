@@ -13,6 +13,8 @@ public class IdleState : BaseBossState, IState
     {
         stateName = "Idle";
 
+        bossAI.transform.position = new Vector3(0, -20f, 0);
+
         bossAI.BossEye.LightIsOn = false;
         bossAI.Boss.Body.ToggleBody(false);
         bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.none;

@@ -205,7 +205,6 @@ public class BossMirror : Mirror, ITriggerArea
     }
 
 
-
     public void OnAreaExit(Player player)
     {
 
@@ -241,10 +240,17 @@ public class BossMirror : Mirror, ITriggerArea
         //wait a little bit to deactivate the stencil buffer mask
         yield return new WaitForSeconds(1f);
         stencilBuffer.SetActive(false);
-        yield return new WaitForSeconds(9f);
 
+    }
+
+    public void RepositionMirror() {
+        if (followPlayer == false) StartCoroutine(RepositioningMirror());
+    }
+
+    private IEnumerator RepositioningMirror() {
+        Debug.Log("reposition mirror");
         //position bossmirror to original state
-        yield return StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z - 90), AnimationCurve.EaseInOut(0,0,1,1), shakeDuration));
+        yield return StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z - 90), AnimationCurve.EaseInOut(0,0,1,1), 1f));
         followPlayer = true;
         OnMirrorShardAmmountUpdate?.Invoke(this);
     }

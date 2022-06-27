@@ -40,10 +40,12 @@ public class Change : IChange {
                 result = "flipped";
                 break;
             case ChangeType.tooBig:
-                result = "altered";
+                // result = "altered";
+                result = "too big";
                 break;
             case ChangeType.tooSmall:
-                result = "altered";
+                // result = "altered";
+                result = "too small";
                 break;
         }
         return result;

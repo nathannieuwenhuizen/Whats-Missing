@@ -9,6 +9,8 @@ namespace Boss {
     ///</summary>
     public class BaseChaseState : BaseBossState
     {
+        public delegate void AttemptToHitShiled();
+        public static AttemptToHitShiled AttemptingToHitShield;
 
         public override void DrawDebug()
         {
@@ -125,7 +127,7 @@ namespace Boss {
         protected void MeleeAttackAtShield() {
             if (isAttacking) return;
             isAttacking = true;
-            Debug.Log("attack shield");
+            AttemptingToHitShield?.Invoke();
             bossAI.StartCoroutine(AttackingShield());
         }
 
@@ -133,7 +135,6 @@ namespace Boss {
         /// Coroutine of hte whol attack animation, after the animation has been done, the boss goes back to its old orientation.
         ///</summary>
         protected virtual IEnumerator AttackingShield() {
-            Debug.Log("attack shield");
             BodyOrientation oldOrientation = Positioner.BodyOrientation;
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
             AudioHandler.Instance?.Play3DSound(SFXFiles.boss_attack, bossAI.BossHead.transform);
