@@ -9,6 +9,10 @@ public class FPCamera
 {
     //fp movements
     private FPMovement FPMovement;
+
+    private Transform cameraParent;
+    private Transform animationParent;
+
     private Transform cameraPivot { get => FPMovement.CameraPivot; }
     private Transform transform { get => FPMovement.transform; }
     private ControlSettings controlSettings { get => FPMovement.ControlSettings; }
@@ -17,8 +21,6 @@ public class FPCamera
     private float cameraSensetivityFactor = 2f;
     private float steeringSpeed = 4f;
     
-    private Transform startParent;
-
     //camera movement offset values
     private float cameraYOffset = 0.03f;
     private float cameraStartYPos;
@@ -53,7 +55,6 @@ public class FPCamera
         set { 
             if (currentAim == null) {
                 currentAim = Object.Instantiate(new GameObject("camera aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, FPMovement.transform.parent).transform;
-                desiredAim = Object.Instantiate(new GameObject("camera desired aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, FPMovement.transform.parent).transform;
             }
             currentAim.position = cameraPivot.position + cameraPivot.forward;
             useSteeringBehaviour = value; 
@@ -62,7 +63,7 @@ public class FPCamera
     public SteeringBehaviour SteeringBehaviour {
         get { 
             if (steeringBehavior == null) {
-                steeringBehavior = new SteeringBehaviour(currentAim,desiredAim);
+                steeringBehavior = new SteeringBehaviour(currentAim,currentAim);
             }
             return steeringBehavior;
             }
@@ -73,15 +74,20 @@ public class FPCamera
 
     public FPCamera(FPMovement _FPMovement) {
         FPMovement = _FPMovement;
+        cameraStartYPos = cameraPivot.localPosition.y;
+        cameraParent = cameraPivot.parent;
+        if (desiredAim == null) {
+            Debug.Log("new desire aim");
+            desiredAim = new GameObject("player camera desired aim").transform;
+            desiredAim.transform.position = cameraPivot.position + cameraPivot.forward;
+            desiredAim.SetParent(FPMovement.transform.parent);
+        }
+
     }
 
     public void setMouseDelta(Vector2 delta)
     {
         mouseDelta = delta;
-    }
-
-    public void Awake() {
-        cameraStartYPos = cameraPivot.localPosition.y;
     }
 
     public void Start() {
@@ -240,8 +246,24 @@ public class FPCamera
     }
 
 
+    ///<summary>
+    /// Used ofr when a cutscene animation is getting called, it sets the camera to the animaiton view.
+    ///</summary>
+    public void SetParentToAnimation(Transform _newParent) {
+        animationParent = _newParent;
+        cameraPivot.transform.SetParent(_newParent);
+        cameraPivot.transform.localPosition = _newParent.localPosition;
+        cameraPivot.transform.localRotation = _newParent.localRotation;
 
-    private Vector3 old = new Vector3(0,0,0);
+    }
+
+    ///<summary>
+    /// Sets the camera back to its original parent
+    ///</summary>
+    public void ResetParent() {
+        cameraPivot.transform.SetParent(cameraParent);
+    }
+
     public void UpdateSteeringBehaviour() {
         // desiredAim.position = steeringTarget.position - steeringTarget.up * steeringOffset;
         // SteeringBehaviour.UpdatePosition(steeringSpeed);
@@ -254,16 +276,15 @@ public class FPCamera
 
         Quaternion rotation = Quaternion.LookRotation(desiredAim.position - cameraPivot.position, transform.up);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * steeringSpeed);
-
         transform.localRotation = Quaternion.Euler( new Vector3(0, transform.localRotation.eulerAngles.y, 0));
 
-        rotation = Quaternion.LookRotation(desiredAim.position - cameraPivot.position, cameraPivot.up);
-        // Debug.Log("rotation = " + rotation.eulerAngles.y);
-        cameraPivot.eulerAngles = rotation.eulerAngles;
-        // cameraPivot.rotation = Quaternion.Slerp(cameraPivot.rotation, rotation, Time.deltaTime * steeringSpeed);
+        Quaternion newrotation = Quaternion.LookRotation( desiredAim.position - cameraPivot.position, Vector3.up);
+        cameraPivot.rotation = Quaternion.Slerp(newrotation, newrotation, Time.deltaTime * steeringSpeed);
+        // cameraPivot.localRotation = Quaternion.Euler( new Vector3(cameraPivot.localRotation.eulerAngles.x, cameraPivot.localRotation.eulerAngles.y, 0));
+    }
 
-        // Debug.Log("dist = " + Vector3.Distance(old, rotation.eulerAngles));
-        Debug.Log(cameraPivot.localEulerAngles);
-        old = rotation.eulerAngles;
+    public void DrawGizmo() {
+        Debug.DrawLine(cameraPivot.transform.position, desiredAim.position);
+        Gizmos.DrawSphere(desiredAim.position, 1f);
     }
 }

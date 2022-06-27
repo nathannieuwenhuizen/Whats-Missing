@@ -22,6 +22,17 @@ public class Player : RoomObject
 
     [SerializeField]
     private Transform animationView;
+
+    private FPCamera fpCamera;
+    public FPCamera FPCamera {
+        get { 
+            if (fpCamera == null) {
+                fpCamera = fpCamera = new FPCamera(GetComponent<FPMovement>());
+            }
+            return fpCamera;
+        }
+    }
+
     [SerializeField]
     private Transform animationViewLevel2End;
     [SerializeField]
@@ -295,5 +306,8 @@ public class Player : RoomObject
     public void SetLevel2EndAnimation() {
         characterAnimationPlayer.SetAnimator(animatorLevel2End, animationViewLevel2End);
         characterAnimationPlayer.PlayCutSceneAnimation("level2end", true);
+    }
+    private void OnDrawGizmosSelected() {
+        if (Application.isPlaying) fpCamera.DrawGizmo();
     }
 }

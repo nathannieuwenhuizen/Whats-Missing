@@ -99,7 +99,12 @@ public void InitializeStateMachine() {
     }
 
     private void DoIntro(BossMirror mirror) {
-        boss.transform.position = mirror.transform.position + new Vector3(0,-15,0);
+        //delta from player to mirror
+        Vector3 delta = boss.Player.transform.position - mirror.transform.position;
+        delta.y = 0;
+        delta = delta.normalized;
+
+        boss.transform.position = mirror.transform.position + new Vector3(0,-15,0) + (delta * -5f);
         boss.transform.LookAt(boss.Player.transform.position, Vector3.up);
         boss.transform.rotation = Quaternion.Euler(0, boss.transform.rotation.eulerAngles.y,0);
         

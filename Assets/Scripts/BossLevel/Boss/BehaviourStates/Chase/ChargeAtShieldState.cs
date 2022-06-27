@@ -65,7 +65,7 @@ namespace Boss {
             }
 
             //now go to the shield edge position
-            chargePos = Boss.Forcefield.EdgePosition(bossAI.ChargePosition.position, 1f);
+            chargePos = Boss.Forcefield.EdgePosition(bossAI.transform.position, 1f);
             Positioner.BodyMovementType = BodyMovementType.freeFloat;
 
             Positioner.SetDestinationPath(chargePos, Boss.transform.position);
@@ -82,7 +82,7 @@ namespace Boss {
             bossAI.StartCoroutine(KnockingBack());
         }
         public IEnumerator KnockingBack() {
-            chargePos = Boss.Forcefield.EdgePosition(bossAI.ChargePosition.position, 8f);
+            chargePos = Boss.Forcefield.EdgePosition(bossAI.transform.position, 8f) + Vector3.up * 5f;
             Positioner.SetDestinationPath(chargePos, Boss.transform.position);
             yield return new WaitForSeconds(2f);
             chargePos.y += 6f;

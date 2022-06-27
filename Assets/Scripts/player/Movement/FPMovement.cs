@@ -10,13 +10,9 @@ using UnityEngine;
 public class FPMovement : MonoBehaviour
 {
 
-    private FPCamera FPcamera;
     public FPCamera FPCamera {
         get { 
-            if (FPcamera == null) {
-                FPcamera = new FPCamera(this);
-            }
-            return FPcamera;
+            return player.FPCamera;
         }
     }
 
@@ -241,7 +237,6 @@ public class FPMovement : MonoBehaviour
         player = GetComponent<Player>();
         rb = GetComponent<Rigidbody>();
         ApplyMovementSettings(Settings.GetSettings());
-        FPCamera.Awake();
     }
 
     private void ApplyMovementSettings(Settings settings) {

@@ -27,7 +27,6 @@ public class CharacterAnimationPlayer
     private IKPass IKPass;
     private Transform animationView;
     private Player player;
-    private Transform cameraParent;
 
     private bool inAnimationCutscene = false;
     public bool InCutScene {
@@ -104,12 +103,10 @@ public class CharacterAnimationPlayer
         player.Movement.EnableWalk = false;
         player.Movement.RB.velocity = Vector3.zero;
 
-        if (player.Camera.transform.parent != animationView) cameraParent = player.Camera.transform.parent;
-        player.Camera.transform.SetParent(animationView);
-        player.Camera.transform.localPosition = animationView.localPosition;
-        player.Camera.transform.localRotation = animationView.localRotation;
+        player.FPCamera.SetParentToAnimation(animationView);
         CameraZoom = 80f;
-        // player.StartCoroutine(player.Camera.AnimatingFieldOfView(cameraZoom, AnimationCurve.EaseInOut(0,0,1,1), 2f));
+
+        //activates the trigger
         animator.SetTrigger(trigger);
         animator.applyRootMotion = applyRootAnimation;
     }
@@ -146,10 +143,11 @@ public class CharacterAnimationPlayer
         yield return new WaitForSeconds( bossMirror.ShakeDuration - .5f);
         Debug.Log("in boss cutscene for realz");
         PlayCutSceneAnimation("boss_intro_1", false);
-        yield return new WaitForSeconds(2f);
-        PlayCutSceneAnimation("boss_intro_2", false);
+        yield return new WaitForSeconds(3f);
+        //no call playcutsceneanimation, as it flickers the camera
+        animator.SetTrigger("boss_intro_2");
         yield return new WaitForSeconds(.5f);
-        PlayCutSceneAnimation("boss_intro_3", false);
+        animator.SetTrigger("boss_intro_3");
         inBossCutscene = false;
     }
     private void OnBossMirrorExplode(BossMirror bossMirror) {
@@ -172,7 +170,8 @@ public class CharacterAnimationPlayer
 
         OnCutsceneEnd?.Invoke();
         inAnimationCutscene = false;
-        player.Camera.transform.SetParent(cameraParent);
+        player.FPCamera.ResetParent();
+
         CameraZoom = 60f;
         player.StartCoroutine(AnimateEndOfCutscene(() => {
             player.Movement.EnableRotation = true;
