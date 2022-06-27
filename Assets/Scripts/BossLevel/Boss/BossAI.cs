@@ -16,6 +16,8 @@ public class BossAI : MonoBehaviour {
     [HideInInspector]
     public WanderingPath CurrentWanderingPath;
 
+    [Header("positions")]
+
     [SerializeField]
     private Transform reactionPosition;
     public Transform ReactionPosition {

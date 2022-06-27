@@ -239,6 +239,8 @@ public class FPCamera
         UseSteeringBehaviour = false;
     }
 
+    
+
 
     public void UpdateSteeringBehaviour() {
         // desiredAim.position = steeringTarget.position - steeringTarget.up * steeringOffset;
