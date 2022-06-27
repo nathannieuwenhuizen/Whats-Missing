@@ -239,9 +239,9 @@ public class FPCamera
         UseSteeringBehaviour = false;
     }
 
-    
 
 
+    private Vector3 old = new Vector3(0,0,0);
     public void UpdateSteeringBehaviour() {
         // desiredAim.position = steeringTarget.position - steeringTarget.up * steeringOffset;
         // SteeringBehaviour.UpdatePosition(steeringSpeed);
@@ -258,7 +258,12 @@ public class FPCamera
         transform.localRotation = Quaternion.Euler( new Vector3(0, transform.localRotation.eulerAngles.y, 0));
 
         rotation = Quaternion.LookRotation(desiredAim.position - cameraPivot.position, cameraPivot.up);
-        cameraPivot.rotation = Quaternion.Slerp(cameraPivot.rotation, rotation, Time.deltaTime * steeringSpeed);
+        // Debug.Log("rotation = " + rotation.eulerAngles.y);
+        cameraPivot.eulerAngles = rotation.eulerAngles;
+        // cameraPivot.rotation = Quaternion.Slerp(cameraPivot.rotation, rotation, Time.deltaTime * steeringSpeed);
 
+        // Debug.Log("dist = " + Vector3.Distance(old, rotation.eulerAngles));
+        Debug.Log(cameraPivot.localEulerAngles);
+        old = rotation.eulerAngles;
     }
 }

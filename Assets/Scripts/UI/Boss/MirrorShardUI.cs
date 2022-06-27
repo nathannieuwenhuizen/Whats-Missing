@@ -26,6 +26,7 @@ public class MirrorShardUI : MonoBehaviour
     }
     
     public void UpdateUI(BossMirror _bossMirror) {
+        ShowPanel();
         int _ammountOfShards = _bossMirror.AmmountOfShardsAttached() ;
         int _totalAmmountOfShards = _bossMirror.Shards.Length;
         if (wordCoroutine != null)

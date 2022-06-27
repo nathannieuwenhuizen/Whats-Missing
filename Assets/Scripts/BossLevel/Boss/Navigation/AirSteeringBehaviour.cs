@@ -75,7 +75,7 @@ public class AirSteeringBehaviour : IMovementBehavior
     }
 
     public bool ReachedDestination(float _distanceThreshhold){
-        Vector3 pos = path.end.ToPathVector(bossMountain, path, BasePathOffset);
+        Vector3 pos = path.Coords[path.Coords.Length - 1].ToPathVector(bossMountain, path, BasePathOffset);
         // Debug.Log("distance = " + Vector3.Distance(transform.position, pos));
         if (Vector3.Distance(transform.position, pos) > _distanceThreshhold) return false;
         if (bossPositioner.SteeringBehaviour.Velocity.magnitude > 1f) return false;
@@ -84,8 +84,11 @@ public class AirSteeringBehaviour : IMovementBehavior
 
     public void DrawGizmo()
     {
+        
         if (bossMountain != null) path.DrawGizmo(bossMountain);
         Gizmos.DrawSphere(desiredTempPos.position, 1f);
+        Gizmos.DrawWireSphere(desiredPos.position, 1f);
+        if (bossMountain != null) Gizmos.DrawWireSphere(path.Coords[path.Coords.Length - 1].ToPathVector(bossMountain, path, BasePathOffset), 1f);
     }
 
     public Vector3 GetClosestPointOnPath(Vector3 _position)

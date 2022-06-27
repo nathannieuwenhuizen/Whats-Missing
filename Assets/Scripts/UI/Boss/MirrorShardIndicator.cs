@@ -36,7 +36,7 @@ public class MirrorShardIndicator : MonoBehaviour
         
         if (index >= 0 && index < _mirror.Shards.Length) {
             Active = true;
-            shard.Focusedshard = false;
+            if (shard != null) shard.Focusedshard = false;
             shard = _mirror.Shards[index];
             shard.Focusedshard = true;
         } else Active = false;

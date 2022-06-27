@@ -399,19 +399,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 26.666666
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.y
@@ -523,19 +523,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 26.666666
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1926,7 +1926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6b2e92f5c61f684e8726321e287ab8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shard: {fileID: 0}
+  shard: {fileID: 1011018234}
   active: 0
 --- !u!225 &375533529
 CanvasGroup:
@@ -2317,6 +2317,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animating: 1
+--- !u!114 &1011018234 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8571150174633561704, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+  m_PrefabInstance: {fileID: 1620035860}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3af04322ae76e1843be7f9bad5bb037d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1053852520
 GameObject:
   m_ObjectHideFlags: 0
@@ -2698,10 +2709,26 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4713372005310984360, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: skipIntro
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4713372005310984360, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: ammountOfShardAlreadyCollected
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6595655514579141000, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: boss
       value: 
       objectReference: {fileID: 141260389}
+    - target: {fileID: 6595655514579141000, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: debugLines
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6595655514579141000, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: shapeData.BottomRadius
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 6595655514613166232, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_Name
       value: boss room
@@ -2764,7 +2791,7 @@ PrefabInstance:
       objectReference: {fileID: 588112308}
     - target: {fileID: 6595655515351997390, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -87.69717
+      value: -87.72814
       objectReference: {fileID: 0}
     - target: {fileID: 8284263520379635830, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_SizeDelta.y

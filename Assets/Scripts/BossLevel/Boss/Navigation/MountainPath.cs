@@ -36,6 +36,10 @@ namespace Boss {
                 tempList.Add( coord);
             }
             coords = tempList.ToArray();
+
+            // begin.PathOffset = coords[0].PathOffset;
+            // end.PathOffset = coords[coords.Length - 1].PathOffset;
+
             return coords;
 
         }

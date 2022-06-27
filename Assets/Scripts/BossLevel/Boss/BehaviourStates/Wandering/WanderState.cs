@@ -153,8 +153,8 @@ public class WanderState : LookingState, IState
     /// Returns true if the boss body is at the desired pose
     ///</summary>
     private bool IsAtPose(WanderPose pose) {
-        if (Positioner.AtPosition(.1f) == false) return false;
-        if (Boss.Head.IsAtPosition(.1f, .5f) == false) return false;
+        if (Positioner.AtPosition(.5f) == false) return false;
+        // if (Boss.Head.IsAtPosition(.1f, .5f) == false) return false;
         return true;
     }
 }

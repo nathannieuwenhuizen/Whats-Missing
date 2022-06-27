@@ -19,6 +19,8 @@ public class BossMirror : Mirror, ITriggerArea
     private Player player;
 
     private bool followPlayer = false;
+
+    private Vector3 startPos;
     
     [SerializeField]
     private GameObject stencilBuffer;
@@ -106,6 +108,8 @@ public class BossMirror : Mirror, ITriggerArea
             shards[i].transform.position = transform.position;
             shards[i].Release();
         }
+        OnMirrorShardAmmountUpdate?.Invoke(this);
+
     }
 
     public void TogleVisibilityUnselectedObj(float alpha) {
@@ -220,6 +224,7 @@ public class BossMirror : Mirror, ITriggerArea
     private bool introCutscene;
 
     private IEnumerator ShakeBeforeExplosion() {
+        startPos = transform.position;
         AudioHandler.Instance?.PlaySound(SFXFiles.mirror_shake);
         //activate stencil buffer
         stencilBuffer.SetActive(true);
@@ -237,9 +242,13 @@ public class BossMirror : Mirror, ITriggerArea
         transform.localRotation = startRotation;
         Explode();
 
+        StartCoroutine(transform.parent.AnimatingPos(startPos + new Vector3(0,-2.5f,0), AnimationCurve.EaseInOut(0,0,1,1), 1.5f));
+
         //wait a little bit to deactivate the stencil buffer mask
         yield return new WaitForSeconds(1f);
         stencilBuffer.SetActive(false);
+        yield return new WaitForSeconds(6f);
+        OnMirrorShardAmmountUpdate?.Invoke(this);
 
     }
 
@@ -250,9 +259,9 @@ public class BossMirror : Mirror, ITriggerArea
     private IEnumerator RepositioningMirror() {
         Debug.Log("reposition mirror");
         //position bossmirror to original state
+        StartCoroutine(transform.parent.AnimatingPos(startPos, AnimationCurve.EaseInOut(0,0,1,1), .5f));
         yield return StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z - 90), AnimationCurve.EaseInOut(0,0,1,1), 1f));
         followPlayer = true;
-        OnMirrorShardAmmountUpdate?.Invoke(this);
     }
 
 
