@@ -282,8 +282,11 @@ namespace ForcefieldDemo
         }
         private void OnTriggerEnter(Collider other) {
             // boss collides with forcefield
-            if (!other.isTrigger) return;
-            if (other.GetComponent<Boss.BossHitBox>() == null) return;
+
+            if (other.GetComponent<Boss.BossHitBox>() == null)  return;
+            if (!other.isTrigger) 
+                return;
+            
 
             if (!coolDowned) return;
             StartCoroutine(Cooldown());

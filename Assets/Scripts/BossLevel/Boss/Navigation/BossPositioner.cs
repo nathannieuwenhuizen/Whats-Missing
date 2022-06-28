@@ -169,7 +169,7 @@ public class BossPositioner : MonoBehaviour
     /// Sets the destination of the positioner so that it can go from one place to another.
     ///</summary>
     public void SetDestinationPath(Transform _target, Vector3 _begin = default(Vector3), bool _withPathOffset = true, float _basePathOffset = 5f) {
-        desiredPos = _target;
+        desiredPos.position = _target.position;
         CurrentMovementBehaviour.WithPathOffset = _withPathOffset;
         CurrentMovementBehaviour.BasePathOffset = _basePathOffset;
         steeringBehaviour.desiredTarget = desiredPos;

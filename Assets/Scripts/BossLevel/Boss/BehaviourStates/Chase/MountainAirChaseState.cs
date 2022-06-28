@@ -52,8 +52,9 @@ namespace Boss {
                 OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
            
             base.Run();
+
             //check to do melee attack.
-            if (Vector3.Distance(bossAI.transform.position, bossAI.Boss.Player.transform.position) < Boss.BOSS_MELEE_ATTACK_RANGE) MeleeAttack();
+            if (DistnaceToPlayer() < Boss.BOSS_MELEE_ATTACK_RANGE) MeleeAttack();
             
             
             //move towards the player

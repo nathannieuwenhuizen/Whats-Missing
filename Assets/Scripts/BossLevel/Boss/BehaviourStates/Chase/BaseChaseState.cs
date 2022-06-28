@@ -63,7 +63,7 @@ namespace Boss {
 
             if (DistnaceToPlayer() < Boss.BOSS_MELEE_ATTACK_RANGE) MeleeAttack();
 
-
+            
             // if the player is inside the shield
             if (Player.INVINCIBLE)
             {
@@ -71,7 +71,7 @@ namespace Boss {
                 float dist = DistnaceToPlayer();
 
                 //go to charge at shield phase is the player is lcose enough
-                if (dist < Boss.CHARGE_AT_SHIELD_THRESHHOLD) {
+                if (dist < Boss.CHARGE_AT_SHIELD_THRESHHOLD && (isAttacking == false)) {
                     OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
                 } else {
                     //if the playwr is too far, then stop the chase.

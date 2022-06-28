@@ -68,6 +68,7 @@ namespace Boss {
             Arm.Toggle(false);
         }
 
+
         ///<summary>
         /// Toggles all the renderers of the boss body making it invisible
         ///</summary>

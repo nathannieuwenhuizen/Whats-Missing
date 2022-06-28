@@ -74,7 +74,6 @@ namespace Boss {
             while (!Positioner.AtPosition(Boss.BOSS_ATTACK_SHIELD_RANGE)) {
                 yield return new WaitForFixedUpdate();
             }
-            Debug.Log("attack shield");
             MeleeAttackAtShield();
         }
 
