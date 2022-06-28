@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Boss;
 using UnityEngine;
 
 public class BossRoom : Room
@@ -37,18 +38,29 @@ public class BossRoom : Room
             Player.transform.position = StartDoor.EndPos();
             Player.Respawn();
         }
+        EndDoor.gameObject.SetActive(false);
     }
 
     private void OnEnable() {
         Player.OnDie += ResetPlayer;
+        DieState.OnBossDie += SpawnEndDoor;
     }
 
     private void OnDisable() {
         Player.OnDie -= ResetPlayer;
+        DieState.OnBossDie -= SpawnEndDoor;
+    }
+
+    private void SpawnEndDoor() {
+        EndDoor.gameObject.SetActive(true);
+        Vector3 endScale = EndDoor.transform.localScale;
+        EndDoor.transform.localScale = Vector3.zero;
+        StartCoroutine(EndDoor.transform.AnimatingLocalScale(endScale, AnimationCurve.EaseInOut(0,0,1,1), 3f));
+        EndDoor.Locked = false;
     }
 
     ///<summary>
-    /// Fires when the palyer dies and has to respawn
+    /// Fires when the player dies and has to respawn
     ///</summary>
     public void ResetPlayer(bool withAnimation, bool toPreviousLevel) {
         StartCoroutine(ResettingThePlayer(withAnimation, toPreviousLevel));
@@ -67,6 +79,7 @@ public class BossRoom : Room
         OnRespawn?.Invoke(true);
     }
 
+    //no base call
     public override void CheckRoomCompletion()
     {
         // base.CheckRoomCompletion();

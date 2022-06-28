@@ -91,7 +91,7 @@ public class BossMirror : Mirror, ITriggerArea
 
         if (skipIntro) StartCoroutine(SkipIntro());
         else {
-            TogleVisibilityUnselectedObj(0);
+            TogleVisibilityOfLetters(0);
         }
     }
 
@@ -112,12 +112,22 @@ public class BossMirror : Mirror, ITriggerArea
 
     }
 
-    public void TogleVisibilityUnselectedObj(float alpha) {
+    public void TogleVisibilityOfLetters(float alpha) {
         foreach (Letter letter in MirrorCanvas.letterObjects)
         {
             Color temp = letter.Color;
             temp.a = alpha;
             letter.Color = temp;
+        }
+    }
+    public void OnlyShowLettersOfWord(string _word) {
+        foreach (Letter letter in MirrorCanvas.letterObjects)
+        {
+            bool partOfWord = _word.Contains(letter.LetterValue);
+            Color temp = letter.Color;
+            temp.a = partOfWord ? 1 : 0;
+            letter.Color = temp;
+            letter.Interactable = partOfWord;
         }
     }
 
@@ -138,7 +148,7 @@ public class BossMirror : Mirror, ITriggerArea
         AudioHandler.Instance?.Play3DSound(SFXFiles.miror_break, transform);
 
         MirrorCanvas.DeselectLetters();
-        TogleVisibilityUnselectedObj(1);
+        TogleVisibilityOfLetters(1);
         for (int i = 0; i < shards.Length; i++) {
             shards[i].DisconnectedFromMirror();
         }
@@ -184,6 +194,7 @@ public class BossMirror : Mirror, ITriggerArea
             break;
             case 5:
             MirrorData.changeType = ChangeType.missing;
+            OnlyShowLettersOfWord("spirit");
             break;
         }
         MirrorCanvas.SetupText(MirrorData.changeType);
