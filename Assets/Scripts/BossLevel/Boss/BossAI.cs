@@ -75,7 +75,7 @@ public class BossAI : MonoBehaviour {
         behaviours = new BossBehaviours(this);
         CurrentWanderingPath = paths.firstShardPath;
     }
-public void InitializeStateMachine() {
+    public void InitializeStateMachine() {
         stateMachine = new FSM(behaviours.wanderState);
     }
     public void UpdateAI() {
@@ -86,10 +86,7 @@ public void InitializeStateMachine() {
         // if (Input.GetKeyDown(KeyCode.T)) {
         //     stateMachine.SwitchState(behaviours.destroyShieldState);
         // }
-        if (Input.GetKeyDown(KeyCode.T)) {
-            stateMachine.SwitchState(behaviours.chargeAtShieldState);
-        }
-        // if (Input.GetKeyDown(KeyCode.Y)) {
+        // if (Input.GetKeyDown(KeyCode.T)) {
         //     stateMachine.SwitchState(behaviours.chargeAtShieldState);
         // }
     }
@@ -136,7 +133,7 @@ public void InitializeStateMachine() {
             break;
             case 2:
             CurrentWanderingPath = paths.thirdShardPath;           
-            // stateMachine.SwitchState(behaviours.transformationState);
+            stateMachine.SwitchState(behaviours.transformationState);
             break;
             case 3:
             CurrentWanderingPath = paths.fourthShardPath;  

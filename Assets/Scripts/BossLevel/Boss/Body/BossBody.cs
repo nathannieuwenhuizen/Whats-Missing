@@ -65,7 +65,7 @@ namespace Boss {
             bossAnimator = new BossAnimator(boss, IKPass);
             ToggleDeathColliders(false);
             TentacleGrowth = 0;
-            Arm.Toggle(true);
+            Arm.Toggle(false);
         }
 
         ///<summary>
@@ -73,11 +73,16 @@ namespace Boss {
         ///</summary>
         public void ToggleBody(bool _visible) {
             foreach (Renderer renderer in bodyRenders) renderer.enabled = _visible;
+            ToggleTentacles(_visible);
             armRenders.currentArm.mesh.enabled = _visible;
-            foreach (Renderer renderer in tentacleRenderers) renderer.enabled = _visible && hasMetamorphosed;
             // if (_visible) ToggleSyth(hasMetamorphosed);
             // if (!_visible) ToggleSyth(false);
         }
+        public void ToggleTentacles(bool _visible) {
+            foreach (Renderer renderer in tentacleRenderers) renderer.enabled = _visible;
+
+        }
+
 
         ///<summary>
         /// Toggles all hitboxes of the 
@@ -165,12 +170,18 @@ namespace Boss {
         private IEnumerator Matemorphosing() {
             float index = 0;
             TentacleGrowth = 0f;
+            ToggleTentacles(true);
 
             while (index < 10f) {
                 Glow = bossAnimator.Animator.GetFloat(glowKey);
                 armRenders.Shine = bossAnimator.Animator.GetFloat(shineKey);
                 if (TentacleGrowth < .99f) {
                     TentacleGrowth = bossAnimator.Animator.GetFloat(growKey);
+                }
+
+                //make sythe
+                if (index > 4.8f) {
+                    Arm.Toggle(true);
                 }
 
                 index += Time.deltaTime;

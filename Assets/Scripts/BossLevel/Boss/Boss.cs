@@ -119,6 +119,15 @@ namespace Boss {
             //     bossChangeHandler.CreateChange("gravity" ,ChangeType.missing);
             // }
         }
+        private void OnEnable() {
+            Water.OnWaterBig += RemoveMirrorAttack;
+        }
+        private void OnDisable() {
+            Water.OnWaterBig -= RemoveMirrorAttack;
+        }
+        private void  RemoveMirrorAttack() {
+            bossChangeHandler.RemoveText();
+        }
 
         private void OnDrawGizmosSelected() {
             Eye?.OnDrawGizmosSelected();
@@ -132,6 +141,7 @@ namespace Boss {
         public override void OnMissing()
         {
             ai.StateMachine.SwitchState(ai.Behaviours.dieState);
+            bossChangeHandler.RemoveText();
             // base.OnMissing();
         }
     }

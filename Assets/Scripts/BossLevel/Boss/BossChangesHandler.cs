@@ -28,7 +28,7 @@ public class BossChangesHandler
         bossRoom = _bossRoom;
         boss = _boss;
         changeParticle = _particleSystem;
-        textAnimator.onTextShowed.AddListener(ApplyChange);
+        // textAnimator.onTextShowed.AddListener(ApplyChange);
         changeCanvas = textAnimator.transform.parent.GetComponent<Canvas>();
 
         canvasCoord.startParent = changeCanvas.transform.parent;
@@ -58,7 +58,7 @@ public class BossChangesHandler
         }
         acitvatedChange = _change;
         textAnimator.ShowText("<Wiggle>" + _change.Word + " is " + Change.GetChangeTypeText(_change.ChangeType));
-        // yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f);
         ApplyChange();
     }
 
@@ -79,9 +79,11 @@ public class BossChangesHandler
     /// Removes the change
     ///</summary>
     public void RemoveChange() {
-        textAnimator.StartDisappearingText();
         bossRoom.ChangeHandler.RemoveBossChange(acitvatedChange);
         acitvatedChange = null;
+    }
+    public void RemoveText() {
+        textAnimator.StartDisappearingText();
     }
 
     private void DetachCanvas() {

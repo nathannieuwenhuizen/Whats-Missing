@@ -26,6 +26,7 @@ namespace Boss {
         public MountainCoordinate[] generatePathPoints(BossMountain _mountain, bool _hasPathOffset = true, float _basePathOffset = 5f) {
             basePathOffset = _basePathOffset;
             hasPathOffset = _hasPathOffset;
+            Debug.Log("has path offset" + hasPathOffset);
             
             List<MountainCoordinate> tempList = new List<MountainCoordinate>();
             // steps = Mathf.RoundToInt(Mathf.Clamp(Mathf.Abs(begin.angle - end.angle) / 10f, 2f, 36f));
@@ -92,7 +93,7 @@ namespace Boss {
 
         public void DrawGizmo(BossMountain _mountain) {
             Vector3 oldPos = begin.ToVector(_mountain);
-            generatePathPoints(_mountain);
+            generatePathPoints(_mountain, hasPathOffset, basePathOffset);
             foreach(MountainCoordinate coord in coords) {
                 // Debug.DrawLine(oldPos, coord.ToVector(pathHandeler), pathHandeler.DebugColor);
                 // oldPos = coord.ToVector(pathHandeler);

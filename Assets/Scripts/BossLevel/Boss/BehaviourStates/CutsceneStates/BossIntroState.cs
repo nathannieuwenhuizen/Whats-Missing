@@ -27,7 +27,7 @@ namespace Boss {
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
             Positioner.RotationEnabled = true;
             Vector3 start = bossAI.Boss.transform.position;
-            yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(-15,15f,10), AnimationCurve.EaseInOut(0,0,1,1), 6f);
+            yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(15,15f,10), AnimationCurve.EaseInOut(0,0,1,1), 6f);
             // yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(0,10f,-20), AnimationCurve.EaseInOut(0,0,1,1), 6f);
         }
 

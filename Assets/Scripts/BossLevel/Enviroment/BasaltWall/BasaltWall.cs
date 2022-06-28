@@ -26,9 +26,9 @@ public class BasaltWall : MonoBehaviour, ITriggerArea
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.D))  {
-            DestroyWall();
-        }
+        // if (Input.GetKeyDown(KeyCode.D))  {
+        //     DestroyWall();
+        // }
     }
 
     private void OnEnable() {

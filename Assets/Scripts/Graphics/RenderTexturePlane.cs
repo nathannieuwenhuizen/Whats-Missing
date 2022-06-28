@@ -86,9 +86,9 @@ public class RenderTexturePlane : MonoBehaviour
     }
 
     public void SetRenderTexture(RenderTexture texture) {
+        reflectionCamera.enabled = true;
         if (reflectionCamera.targetTexture == texture) return;
 
-        reflectionCamera.enabled = true;
         Vector2 resolution = new Vector2(Screen.width, Screen.height);
         int qualityLevel = QualitySettings.GetQualityLevel();
         if (qualityLevel < 3) Screen.SetResolution((int)(resolution.x *.1f), (int)(resolution.y * .1f), true);
@@ -105,15 +105,15 @@ public class RenderTexturePlane : MonoBehaviour
         // reflectionCamera.enabled = false;
     }
     private void UpdateLODTexture() {
-
-        float distance = Vector3.Distance(mainCamera.gameObject.transform.position, reflectionPlane.transform.position);
-        if (distance < 15f) {
-            SetRenderTexture(output_texture_high);
-        } else if (distance < 50f){
-            SetRenderTexture(output_texture_mid);
-        } else {
-            SetRenderTexture(output_texture_low);
-        }
+        SetRenderTexture(output_texture_high);
+        // float distance = Vector3.Distance(mainCamera.gameObject.transform.position, reflectionPlane.transform.position);
+        // if (distance < 15f) {
+        //     SetRenderTexture(output_texture_high);
+        // } else if (distance < 50f){
+        //     SetRenderTexture(output_texture_mid);
+        // } else {
+        //     SetRenderTexture(output_texture_low);
+        // }
     }
 
     protected virtual void LateUpdate()
@@ -130,7 +130,7 @@ public class RenderTexturePlane : MonoBehaviour
             timeInterval += Time.deltaTime;
             if (timeInterval > RenderInterval())
             {
-                // reflectionCamera.enabled = true;
+                reflectionCamera.enabled = true;
                 timeInterval = 0;
                 UpdateLODTexture();
                 UpdateCamera();

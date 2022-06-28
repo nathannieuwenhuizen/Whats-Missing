@@ -102,6 +102,7 @@ public class MirrorShardIndicator : MonoBehaviour
             delta.y /= divider;
             result.x = mid.x + delta.x;
             result.y = mid.y + delta.y;
+            result -= delta.normalized * 50f;
             float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
             rt.rotation = Quaternion.Euler(0,0, angle + 90f);
         } else {

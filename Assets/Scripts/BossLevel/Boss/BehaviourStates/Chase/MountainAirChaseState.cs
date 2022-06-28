@@ -24,6 +24,7 @@ namespace Boss {
             Positioner.MovementEnabled = true;
             Positioner.InAir = true;
             Positioner.SpeedScale = 2f;
+            Positioner.SteeringBehaviour.MaxForce *= 2f;
 
 
             MountainAttackPose.OnPlayerEnteringAttackArea += UpdateDestination;
@@ -70,6 +71,8 @@ namespace Boss {
         private void GoAsCloseToPlayer() {
             Positioner.SpeedScale = 1f;
             // if (!Positioner.AtPosition(.5f)) startChasePos = bossAI.transform.position;
+            withPathOffset = false;
+            Positioner.CurrentMovementBehaviour.WithPathOffset = false;
             Positioner.SetDestinationPath(bossAI.MountainAttackPosition.PosClosestToPlayerButWithinRange(Positioner.BossMountain, bossAI.Boss.Player), startChasePos, false);
         }
 
@@ -78,6 +81,8 @@ namespace Boss {
         public override void Exit()
         {
             Positioner.SpeedScale = 1f;
+            Positioner.SteeringBehaviour.MaxForce /= 2f;
+
             MountainAttackPose.OnPlayerEnteringAttackArea -= UpdateDestination;
             base.Exit();
         }

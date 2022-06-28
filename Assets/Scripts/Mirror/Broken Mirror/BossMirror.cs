@@ -23,7 +23,7 @@ public class BossMirror : Mirror, ITriggerArea
     private Vector3 startPos;
     
     [SerializeField]
-    private GameObject stencilBuffer;
+    private GameObject bossStencilBuffer;
 
     [SerializeField]
     private MirrorShard[] shards;
@@ -57,7 +57,7 @@ public class BossMirror : Mirror, ITriggerArea
     protected override void Awake() {
         base.Awake();
 
-        stencilBuffer.SetActive(false);
+        bossStencilBuffer.SetActive(false);
 
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
@@ -201,7 +201,7 @@ public class BossMirror : Mirror, ITriggerArea
     
     public void OnAreaEnter(Player _player)
     {
-        if (introCutscene) return;
+        if (introCutscene || skipIntro) return;
         introCutscene = true;
         OnMirrorShake?.Invoke(this);
         StartCoroutine(ShakeBeforeExplosion());
@@ -227,7 +227,7 @@ public class BossMirror : Mirror, ITriggerArea
         startPos = transform.position;
         AudioHandler.Instance?.PlaySound(SFXFiles.mirror_shake);
         //activate stencil buffer
-        stencilBuffer.SetActive(true);
+        bossStencilBuffer.SetActive(true);
         Quaternion startRotation = transform.localRotation;
         shakeCoroutine = StartCoroutine(transform.ShakeZRotation(3f, 5f, shakeDuration * 2));
         foreach(MirrorShard shard in shards) {
@@ -246,7 +246,7 @@ public class BossMirror : Mirror, ITriggerArea
 
         //wait a little bit to deactivate the stencil buffer mask
         yield return new WaitForSeconds(1f);
-        stencilBuffer.SetActive(false);
+        bossStencilBuffer.SetActive(false);
         yield return new WaitForSeconds(6f);
         OnMirrorShardAmmountUpdate?.Invoke(this);
 

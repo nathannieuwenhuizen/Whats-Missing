@@ -33,7 +33,10 @@ public class BossRoom : Room
 #if !UNITY_EDITOR
         Player.transform.position = StartDoor.EndPos();
 #endif
-        if (setPlayerAtDoor) Player.transform.position = StartDoor.EndPos();
+        if (setPlayerAtDoor) {
+            Player.transform.position = StartDoor.EndPos();
+            Player.Respawn();
+        }
     }
 
     private void OnEnable() {
