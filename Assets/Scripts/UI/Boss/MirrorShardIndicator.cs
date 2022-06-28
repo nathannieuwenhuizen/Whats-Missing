@@ -10,6 +10,8 @@ public class MirrorShardIndicator : MonoBehaviour
     [SerializeField]
     private MirrorShard shard;
 
+    private float uiOffset = 20f;
+
     private RectTransform rt;
     private CanvasGroup cg;
     [SerializeField]
@@ -32,7 +34,6 @@ public class MirrorShardIndicator : MonoBehaviour
     }
     public void AssignShard(BossMirror _mirror) {
         int index = _mirror.AmmountOfShardsAttached();
-        Debug.Log("index =" + index);
         
         if (index >= 0 && index < _mirror.Shards.Length) {
             Active = true;
@@ -102,7 +103,7 @@ public class MirrorShardIndicator : MonoBehaviour
             delta.y /= divider;
             result.x = mid.x + delta.x;
             result.y = mid.y + delta.y;
-            result -= delta.normalized * 50f;
+            result -= delta.normalized * uiOffset;
             float angle = Mathf.Atan2(delta.y, delta.x) * Mathf.Rad2Deg;
             rt.rotation = Quaternion.Euler(0,0, angle + 90f);
         } else {

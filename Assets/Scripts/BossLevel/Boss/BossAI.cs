@@ -80,15 +80,19 @@ public class BossAI : MonoBehaviour {
     }
     public void UpdateAI() {
         stateMachine?.Update();
-        // if (Input.GetKeyDown(KeyCode.T)) {
-        //     stateMachine.SwitchState(behaviours.transformationState);
-        // }
-        // if (Input.GetKeyDown(KeyCode.T)) {
-        //     stateMachine.SwitchState(behaviours.destroyShieldState);
-        // }
-        // if (Input.GetKeyDown(KeyCode.T)) {
-        //     stateMachine.SwitchState(behaviours.chargeAtShieldState);
-        // }
+#if UNITY_EDITOR
+        if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) {
+            if (Input.GetKeyDown(KeyCode.T)) {
+                stateMachine.SwitchState(behaviours.transformationState);
+            }
+            // if (Input.GetKeyDown(KeyCode.T)) {
+            //     stateMachine.SwitchState(behaviours.destroyShieldState);
+            // }
+            // if (Input.GetKeyDown(KeyCode.T)) {
+            //     stateMachine.SwitchState(behaviours.chargeAtShieldState);
+            // }
+        }
+#endif
     }
 
     private void OnDrawGizmos() {

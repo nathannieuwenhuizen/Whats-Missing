@@ -76,7 +76,7 @@ namespace Boss {
         /// The boss does the reaction
         ///</summary>
         public virtual void DoReaction() {
-            Debug.Log("do reaction");
+            // Debug.Log("do reaction");
         }
 
         public override void Exit()

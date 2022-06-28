@@ -47,6 +47,19 @@ public class Lungs : MonoBehaviour
             color = vignette.color.value };
     }
 
+    private void LateUpdate() {
+        if (fireSpreads.Count != 0) {
+            if (Player.INVINCIBLE && burning) {
+                Debug.Log("stop burning");
+                burning = false;
+            }
+            if (!Player.INVINCIBLE && !burning) {
+                Debug.Log("start burning");
+                StartBurining(fireSpreads[0]);
+            }
+        }
+    }
+
 
     private void StartChoking() {
         player.CharacterAnimationPlayer.SetTorsoAnimation(true, "choke");
@@ -118,6 +131,7 @@ public class Lungs : MonoBehaviour
         EndChoking();
     }
 
+#region burning
     private IEnumerator Burning() {
         while (burnIndex <= burnDuration && burnIndex >= 0) {
             burnIndex += burning ? Time.deltaTime : -Time.deltaTime * 5f;
@@ -154,6 +168,7 @@ public class Lungs : MonoBehaviour
         UpdateVignette();
     }
 
+#endregion
     private void EndChoking() {
         player.Movement.FPCamera.CameraZRotationTilt = false;
         player.CharacterAnimationPlayer.SetTorsoAnimation(false);
@@ -178,19 +193,23 @@ public class Lungs : MonoBehaviour
     private void OnEnable() {
         WarmthProperty.OnWarmthMissing += StartColdBreathing;
         WarmthProperty.OnWarmthAppearing += StopColdBreathing;
+
         FireSpread.OnFireSpreadEnter += StartBurining;
         FireSpread.OnFireSpreadExit += OutOfFire;
+
         AirProperty.OnAirMissing += StartChoking;
         AirProperty.OnAirAppearing += GaspingForAir;
     }
     private void OnDisable() {
         WarmthProperty.OnWarmthMissing -= StartColdBreathing;
         WarmthProperty.OnWarmthAppearing -= StopColdBreathing;
+
         FireSpread.OnFireSpreadEnter -= StartBurining;
         FireSpread.OnFireSpreadExit -= OutOfFire;
 
         AirProperty.OnAirMissing -= StartChoking;
         AirProperty.OnAirAppearing -= GaspingForAir;
+
         if (chokeSFX != null) chokeSFX.Stop(true);
         if (burnSFX != null) burnSFX.Stop(true);
         if (playerVoiceBurnSFX != null) playerVoiceBurnSFX.Stop(true);

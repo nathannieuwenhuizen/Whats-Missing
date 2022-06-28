@@ -170,7 +170,6 @@ public class BossPositioner : MonoBehaviour
     ///</summary>
     public void SetDestinationPath(Transform _target, Vector3 _begin = default(Vector3), bool _withPathOffset = true, float _basePathOffset = 5f) {
         desiredPos = _target;
-        Debug.Log("with transform paht offset =" + _withPathOffset);
         CurrentMovementBehaviour.WithPathOffset = _withPathOffset;
         CurrentMovementBehaviour.BasePathOffset = _basePathOffset;
         steeringBehaviour.desiredTarget = desiredPos;
@@ -178,7 +177,6 @@ public class BossPositioner : MonoBehaviour
     }
     
     public void SetDestinationPath(Vector3 _end, Vector3 _begin = default(Vector3), bool _withPathOffset = true, float _basePathOffset = 5f) {
-        Debug.Log("with paht offset =" + _withPathOffset);
         CurrentMovementBehaviour.WithPathOffset = _withPathOffset;
         CurrentMovementBehaviour.BasePathOffset = _basePathOffset;
         CurrentMovementBehaviour.SetDestinationPath(_end, _begin);

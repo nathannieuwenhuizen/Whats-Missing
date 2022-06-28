@@ -22,7 +22,7 @@ public class FireSpread : MonoBehaviour, ITriggerArea
 
     public void OnAreaEnter(Player player)
     {
-        if (Player.INVINCIBLE) return;
+        // if (Player.INVINCIBLE) return;
         OnFireSpreadEnter?.Invoke(this);
     }
 

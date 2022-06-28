@@ -88,6 +88,8 @@ namespace ForcefieldDemo
             }
             coolDownWindow = 0;
 
+            IsOn = true;
+
         }
         private void FixedUpdate() {
             rb.angularVelocity = Vector3.zero;

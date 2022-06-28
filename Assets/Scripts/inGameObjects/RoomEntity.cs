@@ -217,7 +217,6 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     {
         IsShrinked = false;
         IsEnlarged = true;
-        Debug.Log("on enlarged!");
         if (Animated)StartCoroutine(AnimateEnlarging());
         else OnEnlargingFinish();
     }
