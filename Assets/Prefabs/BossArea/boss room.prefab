@@ -802,7 +802,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3694082933580810218}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -814,7 +814,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 808e795989844c44e8671fe9a2560810, type: 2}
+  - {fileID: 2100000, guid: ea9904766b39cd64bb3656d9c0ad41d1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12761,7 +12761,7 @@ MonoBehaviour:
   endDoor: {fileID: 1456306151390426234}
   bossMirror: {fileID: 4713372005310984360}
   spawnPosition: {fileID: 6595655513958664735}
-  setPlayerAtDoor: 1
+  setPlayerAtDoor: 0
   boss: {fileID: 0}
 --- !u!1 &6595655514624846166
 GameObject:
@@ -18384,7 +18384,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6595655515351997385}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -2.58, y: -13.82, z: -87.974724}
+  m_LocalPosition: {x: -2.58, y: -13.82, z: -88.259285}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7715169457062460591}
@@ -27935,6 +27935,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6595655514093713049}
     m_Modifications:
+    - target: {fileID: 1936894612712522408, guid: edc3eebe60ecc5c4d9cd6843bbfe70b1, type: 3}
+      propertyPath: skipIntro
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1936894612712522408, guid: edc3eebe60ecc5c4d9cd6843bbfe70b1, type: 3}
+      propertyPath: ammountOfShardAlreadyCollected
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2580248996340861087, guid: edc3eebe60ecc5c4d9cd6843bbfe70b1, type: 3}
       propertyPath: positionInfo.fallPosition
       value: 
@@ -27947,6 +27955,10 @@ PrefabInstance:
       propertyPath: positionInfo.fallPosition
       value: 
       objectReference: {fileID: 8453710390366795479}
+    - target: {fileID: 3153091938288983440, guid: edc3eebe60ecc5c4d9cd6843bbfe70b1, type: 3}
+      propertyPath: positionInfo.useGravityAfterFall
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3277123073802927208, guid: edc3eebe60ecc5c4d9cd6843bbfe70b1, type: 3}
       propertyPath: positionInfo.fallPosition
       value: 
@@ -28152,13 +28164,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6595655515392046183}
     m_Modifications:
+    - target: {fileID: 799872263104817812, guid: 88de860d9506f1242a6ec3af168b6b2b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 799872263104817812, guid: 88de860d9506f1242a6ec3af168b6b2b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ea9904766b39cd64bb3656d9c0ad41d1, type: 2}
     - target: {fileID: 5687196375778877910, guid: 88de860d9506f1242a6ec3af168b6b2b, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6191330773017018371, guid: 88de860d9506f1242a6ec3af168b6b2b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6697278751504198308, guid: 88de860d9506f1242a6ec3af168b6b2b, type: 3}
       propertyPath: m_Convex
@@ -29042,15 +29062,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2221313955682530857, guid: 144311758c7daaf43b66a3fb0d51e134, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.09499885
+      value: 0.06600068
       objectReference: {fileID: 0}
     - target: {fileID: 2221313955682530857, guid: 144311758c7daaf43b66a3fb0d51e134, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.7200012
+      value: -0.18100023
       objectReference: {fileID: 0}
     - target: {fileID: 2221313955682530857, guid: 144311758c7daaf43b66a3fb0d51e134, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.24200106
+      value: -2.0099974
       objectReference: {fileID: 0}
     - target: {fileID: 2221313956474252295, guid: 144311758c7daaf43b66a3fb0d51e134, type: 3}
       propertyPath: m_Name
