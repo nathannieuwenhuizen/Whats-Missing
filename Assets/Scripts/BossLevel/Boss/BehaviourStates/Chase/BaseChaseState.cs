@@ -11,6 +11,8 @@ namespace Boss {
     {
         public delegate void AttemptToHitShiled();
         public static AttemptToHitShiled AttemptingToHitShield;
+        public static bool LAST_CHASE = false;
+
 
         public override void DrawDebug()
         {
@@ -65,7 +67,7 @@ namespace Boss {
 
             
             // if the player is inside the shield
-            if (Player.INVINCIBLE)
+            if (Player.INVINCIBLE && !LAST_CHASE)
             {
                 //get distance of player to boss
                 float dist = DistnaceToPlayer();

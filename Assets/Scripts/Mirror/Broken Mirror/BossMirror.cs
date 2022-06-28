@@ -172,7 +172,7 @@ public class BossMirror : Mirror, ITriggerArea
         UpdateMirrorHeader();
         for (int i = 0 ; i < shards.Length; i++) {
             if (!shards[i].Attached) {
-                shards[i].ToggleVisibilty(ammountOfShardAlreadyCollected <= i);
+                shards[i].ToggleVisibilty(ammountOfShardAlreadyCollected <= i + 1);
             }
         }
 
@@ -194,7 +194,7 @@ public class BossMirror : Mirror, ITriggerArea
             break;
             case 5:
             MirrorData.changeType = ChangeType.missing;
-            OnlyShowLettersOfWord("spirit");
+            // OnlyShowLettersOfWord("spirit");
             break;
         }
         MirrorCanvas.SetupText(MirrorData.changeType);

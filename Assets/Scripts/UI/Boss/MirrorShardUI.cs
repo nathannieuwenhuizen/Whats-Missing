@@ -38,22 +38,22 @@ public class MirrorShardUI : MonoBehaviour
         if (group.alpha > .5f) {
             yield return text.AnimateTextAlpha(0, .2f, 0);
         }
-        text.text = _value + " / " + _total;
+        text.text = _value + " / " + _total + " shards";
         yield return text.AnimateTextAlpha(1, .5f, 0);
     }
 
     private void OnEnable() {
-        PauseScreen.OnPause += HidePanel;
-        PauseScreen.OnResume += ShowPanel;
-        CharacterAnimationPlayer.OnCutsceneStart += HidePanel;
-        CharacterAnimationPlayer.OnCutsceneEnd += ShowPanel;
+        // PauseScreen.OnPause += HidePanel;
+        // PauseScreen.OnResume += ShowPanel;
+        // CharacterAnimationPlayer.OnCutsceneStart += HidePanel;
+        // CharacterAnimationPlayer.OnCutsceneEnd += ShowPanel;
         BossMirror.OnMirrorShardAmmountUpdate += UpdateUI;
     }
     private void OnDisable() {
-        PauseScreen.OnPause -= HidePanel;
-        PauseScreen.OnResume -= ShowPanel;
-        CharacterAnimationPlayer.OnCutsceneStart -= HidePanel;
-        CharacterAnimationPlayer.OnCutsceneEnd -= ShowPanel;
+        // PauseScreen.OnPause -= HidePanel;
+        // PauseScreen.OnResume -= ShowPanel;
+        // CharacterAnimationPlayer.OnCutsceneStart -= HidePanel;
+        // CharacterAnimationPlayer.OnCutsceneEnd -= ShowPanel;
         BossMirror.OnMirrorShardAmmountUpdate -= UpdateUI;
     }
 }

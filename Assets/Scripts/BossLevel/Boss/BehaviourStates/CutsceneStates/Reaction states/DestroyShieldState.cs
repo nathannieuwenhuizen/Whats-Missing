@@ -27,6 +27,7 @@ namespace Boss {
             bossAI.StartCoroutine(Body.BossAnimator.DoMirrorAttack(() => {
                 bossAI.Boss.BossChangesHandler.CreateChange("shield", ChangeType.missing);
             }, () => {
+                BaseChaseState.LAST_CHASE = true;
                 OnStateSwitch?.Invoke(bossAI.Behaviours.crawlingChaseState);
             }));
         }

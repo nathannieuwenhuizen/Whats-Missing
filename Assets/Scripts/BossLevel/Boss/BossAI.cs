@@ -76,7 +76,7 @@ public class BossAI : MonoBehaviour {
         CurrentWanderingPath = paths.firstShardPath;
     }
     public void InitializeStateMachine() {
-        stateMachine = new FSM(behaviours.wanderState);
+        stateMachine = new FSM(behaviours.idleState);
     }
     public void UpdateAI() {
         stateMachine?.Update();
@@ -137,15 +137,13 @@ public class BossAI : MonoBehaviour {
             break;
             case 2:
             CurrentWanderingPath = paths.thirdShardPath;           
-            // stateMachine.SwitchState(behaviours.transformationState);
+            stateMachine.SwitchState(behaviours.transformationState);
             break;
             case 3:
             CurrentWanderingPath = paths.fourthShardPath;  
-            // stateMachine.SwitchState(behaviours.removeLightState);
             break;
             case 4:    
             CurrentWanderingPath = paths.fifthShardPath;   
-            // stateMachine.SwitchState(behaviours.removeLightState);
             break;        
             case 5:    
             //go instant into end chase mdoe

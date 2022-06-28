@@ -77,8 +77,6 @@ namespace ForcefieldDemo
             ToggleColliders(false);
             Dissolve = 1;
 
-            // IsOn = true;
-
             Radius = meshRenderer.transform.lossyScale.y * .5f;
             fillIdle = Fill;
 
@@ -87,8 +85,6 @@ namespace ForcefieldDemo
                 cam = Camera.main;
             }
             coolDownWindow = 0;
-
-            IsOn = true;
 
         }
         private void FixedUpdate() {
