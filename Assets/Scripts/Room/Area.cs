@@ -137,14 +137,40 @@ public class Area : MonoBehaviour
         }
     }
 
+    #region  music
+
     ///<summary>
     /// Plays the area music according in which area you're in
     ///</summary>
     private void PlayAreaMusic() {
+        //fade audio listener
         AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
         AudioHandler.Instance.FadeListener(1f);
-        AudioHandler.Instance.PlayMusic(areaIndex == 0? MusicFiles.planetarium : MusicFiles.garden, .5f, loadRoomIndex == 0 ? 5.5f : 0f);
+
+        //play music
+        AudioHandler.Instance.PlayMusic(GetAreaMusic(), .5f, loadRoomIndex == 0 ? 5.5f : 0f);
     }
+
+    ///<summary>
+    /// Returns the appropiate music according ot the area index
+    ///</summary>
+    private MusicFiles GetAreaMusic() {
+        MusicFiles result = MusicFiles.planetarium;
+        switch(areaIndex) {
+            case 0:
+            result = MusicFiles.planetarium;
+            break;
+            case 1:
+            result = MusicFiles.garden;
+            break;
+            case 2:
+            result = MusicFiles.tower;
+            break;
+        }
+        return result;
+    }
+
+    #endregion
 
     ///<summary>
     /// Sets the player positionn and rotation to the room start door. Called at the start.
@@ -154,9 +180,6 @@ public class Area : MonoBehaviour
         player.transform.rotation = rooms[loadRoomIndex].StartDoor.transform.rotation;
         player.transform.Rotate(0,180,0);
     }
-
-
-    
 
     ///<summary>
     /// Loads and initializes all rooms from the inspector values.
