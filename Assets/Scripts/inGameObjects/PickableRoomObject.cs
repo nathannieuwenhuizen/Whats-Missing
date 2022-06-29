@@ -69,6 +69,13 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     protected string grabSound = SFXFiles.player_grab;
 
+    [Header("pickable info")]
+    ///<summary>
+    /// If the objects will burn in flames if it comes in contact with fire.
+    ///</summary>
+    [SerializeField]
+    private bool flamable = false;
+
     [SerializeField]
     private RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
     public RigidBodyInfo RigidBodyInfo { get => rigidBodyInfo; set => rigidBodyInfo = value; }
@@ -211,6 +218,33 @@ public class PickableRoomObject : InteractabelObject, IPickable
     public bool TooHeavy(Hands hands)  {
         if (rb == null) return false;
         return hands.MassThreshhold < rb.mass;
+    } 
+
+    private void OnTriggerEnter(Collider other) {
+        //if the object enters a fire spread and is flamable
+        if (other.GetComponent<FireSpread>() != null && flamable)  StartCoroutine(Burn());
+    }
+
+    ///<summary>
+    /// Object burns to crisps and eventually gets destroyed
+    ///</summary>
+    public IEnumerator Burn() {
+        // OnBlur();
+        Outline.enabled = false;
+        Interactable = false;
+        flamable = false;
+
+        // yield return new WaitForEndOfFrame();
+        foreach (Material mat in getMaterials()) {
+            if (mat.HasProperty("EdgeColor")) {
+                mat.SetColor("EdgeColor", new Color(.7f,.04f,0) * 8f); //set color to hdr orange
+                StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), 3f));
+            }
+        }
+        ShowDisovleParticles(true);
+        yield return new WaitForSeconds(3f);
+        Destroy(gameObject);
+
     } 
 
     public virtual bool CanBeReleased() => true;

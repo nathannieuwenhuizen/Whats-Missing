@@ -11,6 +11,9 @@ public class Gravity : Property
 
     public static OnPropertyToggle onGravityMissing;
 
+    [SerializeField]
+    private bool movePlayerUpwardOnMissing = false;
+
     public override IEnumerator AnimateMissing()
     {
         yield return AnimatGravityToggle((rb) => {
@@ -33,6 +36,7 @@ public class Gravity : Property
             rb.angularVelocity = Extensions.RandomVector(2f);
             rb.useGravity = false;
         }
+        if (room.Animated && movePlayerUpwardOnMissing) room.Player.Movement.RB.velocity = Vector3.up * 8f;
     }
 
 

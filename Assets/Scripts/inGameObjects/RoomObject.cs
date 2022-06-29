@@ -10,6 +10,8 @@ public class RoomObject : RoomEntity
     public static bool PARTICLES_SHOWN = false;
     private bool active = true;
 
+    [Header("room object info")]
+
     [SerializeField]
     protected FlippingAxis flippingAxis = FlippingAxis.up;
     protected RoomObjectEventSender eventSender;
@@ -75,10 +77,10 @@ public class RoomObject : RoomEntity
         }
         OnMissingFinish();
     }
-    private void ShowDisovleParticles() {
+    protected void ShowDisovleParticles(bool _flamableParticles = false) {
         if (PARTICLES_SHOWN) return;
         PARTICLES_SHOWN = true;
-        foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(disolvingParticles(item));
+        foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(disolvingParticles(item, _flamableParticles));
     }
 
     protected virtual Material[] getMaterials() {
@@ -112,8 +114,10 @@ public class RoomObject : RoomEntity
         OnAppearingFinish();
     }
 
-    private IEnumerator disolvingParticles(MeshRenderer renderer) {
-        ParticleSystem particleSystem = Instantiate(Resources.Load<GameObject>("RoomPrefabs/dissolve_particle")).GetComponent<ParticleSystem>();
+    private IEnumerator disolvingParticles(MeshRenderer renderer, bool _flamableParticles) {
+        ParticleSystem particleSystem = Instantiate(Resources.Load<GameObject>(
+            _flamableParticles ? "RoomPrefabs/burn_particle" : "RoomPrefabs/dissolve_particle"
+            )).GetComponent<ParticleSystem>();
         // particleSystem.shape.shapeType = ParticleSystemShapeType.MeshRenderer;
         ParticleSystem.ShapeModule shape = particleSystem.shape;
         shape.meshRenderer = renderer;

@@ -275,5 +275,25 @@ public class BossMirror : Mirror, ITriggerArea
         followPlayer = true;
     }
 
+    private void OnEnable() {
+        MirrorShard.OnPickedUp += MirrorShardRecolectReaction;
+    }
+
+    private void OnDisable() {
+        MirrorShard.OnPickedUp -= MirrorShardRecolectReaction;
+    }
+
+    public void MirrorShardRecolectReaction(MirrorShard _shard) {
+
+        //remove the gravity when the shard at ceiling has been picked up.
+        switch (_shard.ShardIndex) {
+            case 3:    
+                MirrorCanvas.DeselectLetters();
+                Confirm();
+            break;        
+
+        }
+    }
+
 
 }
