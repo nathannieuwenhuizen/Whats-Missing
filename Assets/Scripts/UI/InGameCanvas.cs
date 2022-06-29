@@ -11,11 +11,11 @@ public class InGameCanvas : MonoBehaviour
     }
 
     private void Update() {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
 
         if (Input.GetKeyDown(KeyCode.C))  
             cg.alpha = cg.alpha == 1 ? 0 : 1;
-            #endif
+#endif
         
     }
 }

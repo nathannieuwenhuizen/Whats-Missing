@@ -132,6 +132,8 @@ public class MirrorCanvas : MonoBehaviour
             HeaderText.Text.text = "What's <b>" + header + "</b>" + "?";
             Font = questionFont;
         } else {
+            Debug.Log(HeaderText);
+            Debug.Log(HeaderText.Text);
             HeaderText.Text.text = "<b> is " + header +  "!</b>";
             Font = sentenceFont;
 

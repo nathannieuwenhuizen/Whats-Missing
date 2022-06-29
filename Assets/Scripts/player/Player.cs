@@ -14,6 +14,8 @@ public class Player : RoomObject
 
     public delegate void DieEvent(bool withAnimation, bool toPreviousLevel);
     public static event DieEvent OnDie;
+    public delegate void RespawnEvent();
+    public static RespawnEvent OnRespawn;
 
     private bool dead = false;
 
@@ -249,58 +251,32 @@ public class Player : RoomObject
 
     public override void OnShrinking()
     {
-        // StopAllCoroutines();
         OnPlayerShrink?.Invoke();
         StartCoroutine(AnimateShrinking());
     }
 
     public override void OnShrinkRevert()
     {
-        // StopAllCoroutines();
         OnPlayerUnShrink?.Invoke();
         StartCoroutine(AnimateShrinkRevert());
     }
 
-    public override void OnShrinkingFinish()
-    {
-        Debug.Log("shrink finish!");
-        base.OnShrinkingFinish();
-    }
-
-    public override void OnShrinkingRevertFinish()
-    {
-        Debug.Log("shrink revert finish!" + normalScale);
-        base.OnShrinkingRevertFinish();
-    }
 
     public override void OnRoomEnter()
     {
         //no base call!
     }
 
-
-
     ///<summary>
     /// Enables the movement and sets the camera animation to false.
     ///</summary>
     public void Respawn() {
+        OnRespawn?.Invoke();
         dead = false;
         Movement.RB.velocity = Vector3.zero;
         characterAnimationPlayer.SetBool("dead", false);
         characterAnimationPlayer.PlayCutSceneAnimation("standingUp", true);
-        StartCoroutine(StandingUp());
-    }
-
-    ///<summary>
-    /// Plays the standing up animation with the sounds
-    ///</summary>
-    private IEnumerator StandingUp() {
-        yield return new WaitForSeconds(2.2f);
-        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
-        yield return new WaitForSeconds(.5f);
-        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
-        yield return new WaitForSeconds(2.3f);
-        characterAnimationPlayer.EndOfCutSceneAnimation();
+        StartCoroutine(characterAnimationPlayer.StandingUp());
     }
 
     public void SetLevel2EndAnimation() {

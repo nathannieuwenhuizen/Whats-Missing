@@ -56,6 +56,9 @@ public class BossMirror : Mirror, ITriggerArea
 
     protected override void Awake() {
         base.Awake();
+        #if !UNITY_EDITOR
+            skipIntro = false;
+        #endif
 
         bossStencilBuffer.SetActive(false);
 
@@ -88,6 +91,7 @@ public class BossMirror : Mirror, ITriggerArea
         // foreach(MirrorShard shard in shards) {
         //     shard.PlanarReflection.SetRenderTexture(PlanarReflection.reflectionCamera.targetTexture);
         // }
+
 
         if (skipIntro) StartCoroutine(SkipIntro());
         else {

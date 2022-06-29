@@ -15,7 +15,10 @@ public class HeaderText : MonoBehaviour
     private Vector3 startMovePos;
     private TMP_Text text; 
     public TMP_Text Text {
-        get { return text;}
+        get { 
+            if (text == null) text = GetComponent<TMP_Text>();
+            return text;
+        }
     }
     protected AnimationCurve scaleAnimation = AnimationCurve.EaseInOut(0,0,1,1);
 

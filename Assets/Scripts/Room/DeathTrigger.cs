@@ -18,7 +18,6 @@ public class DeathTrigger : AreaTrigger, IRoomObject
     public override void OnAreaEnter(Player player)
     {
         base.OnAreaEnter(player);
-
         player.Die(false);
     }
 

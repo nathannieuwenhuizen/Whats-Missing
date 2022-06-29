@@ -190,6 +190,17 @@ public class CharacterAnimationPlayer
         _callback.Invoke();
 
     }
+    ///<summary>
+    /// Plays the standing up animation with the sounds
+    ///</summary>
+    public IEnumerator StandingUp() {
+        yield return new WaitForSeconds(2.2f);
+        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
+        yield return new WaitForSeconds(.5f);
+        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
+        yield return new WaitForSeconds(2.3f);
+        EndOfCutSceneAnimation();
+    }
 
     public bool CameraIsInModel() {
         return player.Camera.transform.parent == animationView;

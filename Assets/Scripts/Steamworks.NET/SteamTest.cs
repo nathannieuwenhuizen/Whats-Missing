@@ -35,11 +35,11 @@ public class SteamTest : MonoBehaviour
         Debug.Log("achievement name 0 = " + SteamUserStats.GetAchievementName(0));
         Debug.Log("achievement name 1 = " + SteamUserStats.GetAchievementName(1));
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            Debug.Log("achievement should be granted!");
-            SteamUserStats.SetAchievement("ACH_TEST");
-            SteamUserStats.StoreStats();
-        }
+        // if (Input.GetKeyDown(KeyCode.Space)) {
+        //     Debug.Log("achievement should be granted!");
+        //     SteamUserStats.SetAchievement("ACH_TEST");
+        //     SteamUserStats.StoreStats();
+        // }
 
         if (SteamManager.Initialized) {
             string name = SteamFriends.GetPersonaName ();
