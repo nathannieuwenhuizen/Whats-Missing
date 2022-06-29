@@ -53,10 +53,6 @@ public class FPCamera
     public bool UseSteeringBehaviour {
         get { return useSteeringBehaviour;}
         set { 
-            if (currentAim == null) {
-                currentAim = Object.Instantiate(new GameObject("camera aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, FPMovement.transform.parent).transform;
-            }
-            currentAim.position = cameraPivot.position + cameraPivot.forward;
             useSteeringBehaviour = value; 
         }
     }
@@ -92,6 +88,17 @@ public class FPCamera
 
     public void Start() {
         EnableCursor(false);
+        SetupCurrentAim();
+
+    }
+    private void SetupCurrentAim() {
+        if (currentAim == null) {
+            GameObject go = new GameObject("camera aim");
+            go.transform.position = cameraPivot.position + cameraPivot.forward;
+            go.transform.SetParent(FPMovement.transform.parent);
+            currentAim = go.transform;
+        }
+        if (currentAim != null) currentAim.position = cameraPivot.position + cameraPivot.forward;
     }
 
     public void OnEnable() {
@@ -108,8 +115,8 @@ public class FPCamera
         PerspectiveProperty.onPerspectiveMissing -= HalfCameraSensitiviy;
         PerspectiveProperty.onPerspectiveAppearing -= UnhalfCameraSensitiviy;
         InputManager.OnRotate -= setMouseDelta;
-        BossCutsceneState.OnBossCutsceneStart += OnBossCutSceneStart;
-        BossCutsceneState.OnBossCutsceneEnd += OnBossCutSceneEnd;
+        BossCutsceneState.OnBossCutsceneStart -= OnBossCutSceneStart;
+        BossCutsceneState.OnBossCutsceneEnd -= OnBossCutSceneEnd;
         ForcefieldDemo.Forcefield.OnForceFieldImpact -= ApplyLittleShake;
         BasaltWall.OnDestroy -= ApplyLittleShake;
 

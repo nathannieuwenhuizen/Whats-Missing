@@ -130,7 +130,7 @@ public class SceneLoader : MonoBehaviour
     ///<summary>
     /// Loads the next scene based on the area index
     ///</summary>
-    private void GoToNextLevel(int _currentAreaIndex) {
+    public void GoToNextLevel(int _currentAreaIndex) {
         SaveData.current.areaIndex = _currentAreaIndex + 1;
         SaveData.current.roomIndex = 0;
         SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);

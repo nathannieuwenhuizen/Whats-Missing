@@ -76,7 +76,7 @@ public class BossAI : MonoBehaviour {
         CurrentWanderingPath = paths.firstShardPath;
     }
     public void InitializeStateMachine() {
-        stateMachine = new FSM(behaviours.wanderState);
+        stateMachine = new FSM(behaviours.idleState);
     }
     public void UpdateAI() {
         stateMachine?.Update();

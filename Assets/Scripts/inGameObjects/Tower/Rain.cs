@@ -2,17 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rain : MonoBehaviour
+public class Rain : RoomObject
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private SFXInstance waterSound;
+    [SerializeField]
+    private Transform audioContainer;
 
-    // Update is called once per frame
-    void Update()
+    public override void OnRoomEnter()
     {
-        
+        base.OnRoomEnter();
+        if (waterSound == null) {
+            Debug.Log("water sound should be playing");
+            waterSound =  AudioHandler.Instance.Play3DSound(SFXFiles.rain, audioContainer);
+        }
+        waterSound.Play();
+    }
+    public override void OnRoomLeave()
+    {
+        base.OnRoomLeave();
+        if (waterSound != null)
+            waterSound.Pause();
+    }
+    private void Reset() {
+        Word = "rain";
+        AlternativeWords = new string[] { "raining" };
     }
 }

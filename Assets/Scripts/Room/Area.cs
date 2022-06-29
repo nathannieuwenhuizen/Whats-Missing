@@ -80,7 +80,9 @@ public class Area : MonoBehaviour
             loadRoomState = false;
         }
     }
-    
+
+    public bool IsDemo => throw new System.NotImplementedException();
+
     private void UpdateRoomActiveStates(bool includingNextRoom = false) {
         int currentIndex = rooms.IndexOf(currentRoom);
         for (int i = 0; i < rooms.Count; i++) {
