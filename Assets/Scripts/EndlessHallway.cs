@@ -67,9 +67,10 @@ public class EndlessHallway : MonoBehaviour
     private void SetPlayerBack(float ammountOfSegments) {
         Vector3 moveDelta = new Vector3(-chunkSize,0,0) * ammountOfSegments;
         player.transform.position -= moveDelta;
+        player.Movement.SetOldPosToTransform();
 
+        //make new list
         List<GameObject> temp = new List<GameObject>();
-
         foreach(GameObject chunk in chunks) {
             int i = chunks.IndexOf(chunk);
             if (i < ammountOfSegments) {
@@ -78,10 +79,12 @@ public class EndlessHallway : MonoBehaviour
                 chunk.transform.position -= moveDelta;
             }
         }
-
+        //clear new chunk list
         foreach(GameObject chunk in temp) {
             chunks.Remove(chunk);
         }
+
+        //set new chunk
         foreach(GameObject chunk in temp) {
             chunk.transform.position = chunks[chunks.Count - 1].transform.position + new Vector3(-chunkSize,0, 0);
             chunks.Add(chunk);

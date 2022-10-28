@@ -14,7 +14,7 @@ namespace Boss {
 
         public float SpeedScale { 
             get => SpeedScale;
-            set {
+        set {
                 speedScale = value;
             } 
         }

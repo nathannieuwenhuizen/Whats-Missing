@@ -69,11 +69,13 @@ public class Portal : RenderTexturePlane, IPortal
         relativePos.y -= positionOffset;
         relativePos = halfTurn * relativePos;
         player.transform.position = outTransform.TransformPoint(relativePos);
+        player.Movement.SetOldPosToTransform(); 
 
         // Update rotation of object.
         Quaternion relativeRot = Quaternion.Inverse(inTransform.rotation) * player.transform.rotation;
         relativeRot = halfTurn * relativeRot;
-        player.transform.rotation = outTransform.rotation * relativeRot;    
+        player.transform.rotation = outTransform.rotation * relativeRot;   
+
     }
 
     

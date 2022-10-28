@@ -149,8 +149,8 @@ public class FPCamera
     ///<summary>
     /// Changes the camera offset and rotation to mimic the walking bounce.
     ///</summary>
-    public void UpdateCameraTilt(Vector3 delta, float walkStepDistance) {
-        cameraYIndex = (delta.magnitude / walkStepDistance) * (Mathf.PI * 2);
+    public void UpdateCameraTilt(float index, float walkStepDistance) {
+        cameraYIndex = (index / walkStepDistance) * (Mathf.PI * 2);
         float currentCameraYpos = Mathf.Sin(cameraYIndex) * cameraYOffset;
         float z = 0 + Mathf.Clamp(FPMovement.LerpedVelocity.magnitude - .5f, 0f, 1f) * .3f;
         cameraPivot.localPosition = new Vector3(
