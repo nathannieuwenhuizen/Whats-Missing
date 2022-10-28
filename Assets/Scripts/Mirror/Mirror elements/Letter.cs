@@ -15,6 +15,10 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     private Button button;
 
+    public static readonly Color CorrectColor = new Color(.2f,1,.2f, .4f);
+    public static readonly Color IncorrectColor = new Color(1,.2f,.2f, .5f);
+    public Color DefaultGlowColor;
+
     private bool selected = false;
     public bool Selected { get => selected; }
     private bool preClickSelected = false;
@@ -65,6 +69,9 @@ public class Letter : MirrorButton, IPointerDownHandler
         base.Awake();
         button = GetComponent<Button>();
         button.onClick.AddListener(() => LetterIsClicked());
+        DefaultGlowColor = text.fontMaterial.GetColor("_GlowColor");
+        DefaultGlowColor.a = .5f;
+
         // text = GetComponent<TMP_Text>();
     }
 
@@ -95,6 +102,7 @@ public class Letter : MirrorButton, IPointerDownHandler
         if (withStartPositionAsign)startMovePos = rt.localPosition;
         selected = false;
         Color = DefaultColor;
+        GlowColor = DefaultGlowColor;
         MoveTo(spawnPosition);
     }
 
@@ -109,6 +117,12 @@ public class Letter : MirrorButton, IPointerDownHandler
         get => text.color;
         set => text.color = value;
     }
+
+    public Color GlowColor {
+        get => text.fontMaterial.GetColor("_GlowColor");
+        set => text.fontMaterial.SetColor("_GlowColor", value);
+    }
+
     private Color defaultColor = Color.white;
     public Color DefaultColor {
         get { return defaultColor;}
@@ -116,6 +130,27 @@ public class Letter : MirrorButton, IPointerDownHandler
             defaultColor = value; 
             Color = value;
         }
+    }
+
+
+    private Coroutine colorCoroutine;
+    ///<summary>
+    /// Animates the color
+    ///</summary>
+    public void AnimateGlowColor (float _duration, Color _endColor) {
+        if (colorCoroutine != null) StopCoroutine(colorCoroutine);
+        colorCoroutine = StartCoroutine(AnimatingGlowColor(_duration, _endColor));
+    }
+
+    private IEnumerator AnimatingGlowColor(float _duration, Color _end) {
+        float index = 0;
+        Color begin = GlowColor;
+         while (index < _duration) {
+             yield return new WaitForEndOfFrame();
+             index += Time.unscaledDeltaTime;
+             GlowColor = Color.LerpUnclamped(begin, _end, index / _duration);
+         }
+        GlowColor = _end;
     }
 
 
@@ -158,11 +193,7 @@ public class Letter : MirrorButton, IPointerDownHandler
         while(pressed) {
 
             transform.position = canvas.MouseToWorldPosition();
-            transform.localPosition = new Vector3(
-                transform.localPosition.x,
-                transform.localPosition.y,
-                transform.localPosition.z - 10f
-                );
+            Zdistance = -10;
             mirrorCanvas.UpdateLetterDrag(this);
 
             MirrorButton.SELECTED_BUTTON = this;
@@ -180,6 +211,18 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     public Vector3 Position {
         get { return transform.localPosition; }
+        set { transform.localPosition = value; }
+    }
+    
+    public float  Zdistance {
+        get { return Position.z;}
+        set { 
+            Position = new Vector3(
+                transform.localPosition.x,
+                transform.localPosition.y,
+                value
+            );
+         }
     }
 
     public void MoveTo( Vector3 pos) {
@@ -201,6 +244,18 @@ public class Letter : MirrorButton, IPointerDownHandler
         }
         movingIndex = 1;
         rt.localPosition = pos;
+    }
+
+    public IEnumerator ZDistanceBounce( float _duration, float _zDistance  = -10, float _delay = 0) {
+        yield return new WaitForSeconds(_delay);
+
+        float index = 0; 
+        while (index < _duration) {
+            index += Time.deltaTime;
+            Zdistance = Mathf.Sin(Mathf.PI * (index / _duration)) * _zDistance;
+            yield return new WaitForEndOfFrame();
+        }
+        Zdistance = 0;
     }
 }
 

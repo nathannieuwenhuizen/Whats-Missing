@@ -457,7 +457,16 @@ public class MirrorCanvas : MonoBehaviour
     }
 
 
-    public void AnimateCorrectLetter() {
-        List<Letter> AnimatedLetters = SelectedLetters;
+    public void AnimateCorrectLetters() {
+        for (int i = 0 ; i < SelectedLetters.Count; i++ ) {
+            SelectedLetters[i].AnimateGlowColor(.5f, Letter.CorrectColor);
+            StartCoroutine(SelectedLetters[i].ZDistanceBounce(.5f, -10, (((float)i / (float)SelectedLetters.Count)) * .5f));
+        }
+    }
+    public void AnimateInCorrectLetters() {
+        for (int i = 0 ; i < SelectedLetters.Count; i++ ) {
+            SelectedLetters[i].GlowColor = Letter.IncorrectColor;
+            SelectedLetters[i].AnimateGlowColor(1f, SelectedLetters[i].DefaultGlowColor);
+        }
     }
 }

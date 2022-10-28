@@ -136,15 +136,13 @@ public class Mirror: MonoBehaviour, IRoomObject
     public void ConfirmationSucceeded() {
         if (room.Animated && room.ChangeLineAnimated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_true, .5f);
-
-        foreach(Letter letter in mirrorCanvas.SelectedLetters) {
-            letter.Color = new Color(.8f, 1f, .8f);
-        }
+        mirrorCanvas.AnimateCorrectLetters();
     }
 
     public void ConfirmationFailed() {
         if (room.Animated && room.ChangeLineAnimated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);
+        mirrorCanvas.AnimateInCorrectLetters();
 
         // mirrorCanvas.DeselectLetters();
     }
