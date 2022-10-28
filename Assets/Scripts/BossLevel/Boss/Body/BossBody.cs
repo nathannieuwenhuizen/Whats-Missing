@@ -68,6 +68,13 @@ namespace Boss {
             Arm.Toggle(false);
         }
 
+        private void Update() {
+            if (Input.GetKeyDown(KeyCode.L)) {
+                Arm.Toggle(true);
+                TentacleGrowth = 1;
+            }
+        }
+
 
         ///<summary>
         /// Toggles all the renderers of the boss body making it invisible
@@ -202,8 +209,6 @@ namespace Boss {
                 index += Time.deltaTime;
                 Dissolve = bossAnimator.Animator.GetFloat(dissolveKey);
                 TentacleGrowth = bossAnimator.Animator.GetFloat(growKey);
-                Debug.Log("grow = " + bossAnimator.Animator.GetFloat(growKey));
-
                 yield return new WaitForEndOfFrame();
                 
             }
