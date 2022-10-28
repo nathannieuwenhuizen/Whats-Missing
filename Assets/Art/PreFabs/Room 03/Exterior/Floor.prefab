@@ -65,6 +65,7 @@ GameObject:
   - component: {fileID: 4531450443387380518}
   - component: {fileID: 8347401049104398689}
   - component: {fileID: 3480688582312238062}
+  - component: {fileID: 5297499128303976734}
   m_Layer: 0
   m_Name: Bridge_Step  (Big tower)
   m_TagString: Untagged
@@ -135,6 +136,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5297499128303976734
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5380183232617484524}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3301449057512349529, guid: 7920d7f58edf85b4bba4191c382cc06b, type: 3}
 --- !u!1 &5971227677141386835
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,8 +161,8 @@ GameObject:
   - component: {fileID: 5994391988635471688}
   - component: {fileID: 64488561151735341}
   - component: {fileID: 274119140973675540}
-  - component: {fileID: 1580833466658189189}
   - component: {fileID: 51474861914601855}
+  - component: {fileID: 8566892751132631906}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -220,20 +235,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1580833466658189189
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5971227677141386835}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -629719859055844128, guid: 7920d7f58edf85b4bba4191c382cc06b, type: 3}
 --- !u!114 &51474861914601855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,3 +251,17 @@ MonoBehaviour:
   alternateWords: []
   missingChangeEffect: 2
   flippingAxis: 2
+--- !u!64 &8566892751132631906
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5971227677141386835}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -629719859055844128, guid: 7920d7f58edf85b4bba4191c382cc06b, type: 3}
