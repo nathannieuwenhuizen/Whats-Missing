@@ -74,7 +74,7 @@ public class BossMirror : Mirror, ITriggerArea
         MirrorCanvas.IsInteractable = false;
 
         //assign the correct letter classes to the shards
-        List<Letter> temp = new List<Letter>(MirrorCanvas.letterObjects);
+        List<Letter> temp = new List<Letter>(MirrorCanvas.Letters);
         foreach(MirrorShard shard in shards) {
             foreach(LetterCoords coords in shard.LetterCoords) {
                 Letter letter = temp.Find(x => x.LetterValue == coords.letterValue);
@@ -117,7 +117,7 @@ public class BossMirror : Mirror, ITriggerArea
     }
 
     public void TogleVisibilityOfLetters(float alpha) {
-        foreach (Letter letter in MirrorCanvas.letterObjects)
+        foreach (Letter letter in MirrorCanvas.Letters)
         {
             Color temp = letter.Color;
             temp.a = alpha;
@@ -125,7 +125,7 @@ public class BossMirror : Mirror, ITriggerArea
         }
     }
     public void OnlyShowLettersOfWord(string _word) {
-        foreach (Letter letter in MirrorCanvas.letterObjects)
+        foreach (Letter letter in MirrorCanvas.Letters)
         {
             bool partOfWord = _word.Contains(letter.LetterValue);
             Color temp = letter.Color;

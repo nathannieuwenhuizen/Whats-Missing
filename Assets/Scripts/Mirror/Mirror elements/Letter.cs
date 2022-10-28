@@ -129,7 +129,7 @@ public class Letter : MirrorButton, IPointerDownHandler
         if (spawnPosition == Vector3.zero) spawnPosition = rt.localPosition;
         if (Selected) {
             PreClickSelected = true;
-            mirrorCanvas.RemoveSelectedLetter(mirrorCanvas.selectedLetterObjects.IndexOf(this));
+            mirrorCanvas.RemoveSelectedLetter(mirrorCanvas.SelectedLetters.IndexOf(this));
             StopAllCoroutines();
         } else {
             PreClickSelected = false;

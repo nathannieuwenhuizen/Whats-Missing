@@ -137,7 +137,7 @@ public class Mirror: MonoBehaviour, IRoomObject
         if (room.Animated && room.ChangeLineAnimated)
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_true, .5f);
 
-        foreach(Letter letter in mirrorCanvas.selectedLetterObjects) {
+        foreach(Letter letter in mirrorCanvas.SelectedLetters) {
             letter.Color = new Color(.8f, 1f, .8f);
         }
     }
