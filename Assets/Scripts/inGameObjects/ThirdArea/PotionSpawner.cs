@@ -24,6 +24,8 @@ public class PotionSpawner : RoomObject
         get; set;
     }
 
+    private bool spawned = false;
+
     ///<summary>
     /// SpawnsAll the potions
     ///</summary>
@@ -35,7 +37,9 @@ public class PotionSpawner : RoomObject
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
-        Debug.Log("potion info: " + potionData.tooBigPotionAvailable);
+        if (spawned) return;
+        spawned = true;
+
         foreach(SpawnPoint point in spawnPoints) {
             SpawnPotion(point);
         }

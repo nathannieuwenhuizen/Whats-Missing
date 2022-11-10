@@ -97,6 +97,7 @@ public class Hands : MonoBehaviour
 
     //Releases the holding object
     public void Release() {
+        // return;
         if (holdingObject == null) return;
         if (holdingObject.CanBeReleased() == false) return;
 
@@ -118,9 +119,10 @@ public class Hands : MonoBehaviour
             yield return new WaitForSecondsRealtime(.1f);
         }
     }
-    private Vector3 test;
+    public Vector3 test;
     private IEnumerator UpdatePhysics() {
         while (holdingObject != null) {
+            yield return new WaitForEndOfFrame();
             Transform t = Camera.main.transform;
 
             var speed = holdingObject.Touching ? 3f : 10f;
@@ -128,13 +130,17 @@ public class Hands : MonoBehaviour
             Vector3 offset = t.TransformDirection(new Vector3(0,0,1)).normalized * (holdingObject.HoldingDistance) + t.TransformDirection(holdingObject.HoldingOffset);
             Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, t.position + offset, Time.deltaTime * speed);
             holdingObject.RigidBody.MovePosition(midwayDestination);
-            // Debug.Log(t.forward);
-            test = midwayDestination;
-            if (holdingObject.LooksWhenGrabbed) {
+            // holdingObject.RigidBody.MovePosition(t.position + offset);
+
+            if (holdingObject.HoldOrientation != HoldOrientation.none) {
                 Quaternion currentRotation = holdingObject.RigidBody.rotation;
 
                 holdingObject.RigidBody.transform.LookAt(transform.position, transform.up);
-                holdingObject.RigidBody.transform.Rotate(-90, 90, -90);
+                if (holdingObject.HoldOrientation == HoldOrientation.shard) {
+                    holdingObject.RigidBody.transform.Rotate(-90, 90, -90);
+                } else {
+                    holdingObject.RigidBody.transform.Rotate(0,0,0);
+                }
                 Quaternion desiredRotation = holdingObject.RigidBody.rotation;
 
                 holdingObject.RigidBody.rotation = currentRotation;
@@ -143,13 +149,12 @@ public class Hands : MonoBehaviour
                 // holdingObject.RigidBody.rotation.LookAt(transform.position, transform.up);
             }
             
-            yield return new WaitForEndOfFrame();
         }   
     }
     private void OnDrawGizmosSelected() {
-        if (holdingObject != null && test != null) {
-            Gizmos.DrawSphere(test, 1f);
-        }
+        // if (holdingObject != null && test != null) {
+        //     Gizmos.DrawSphere(test, 1f);
+        // }
     }
 
     private void Update() {

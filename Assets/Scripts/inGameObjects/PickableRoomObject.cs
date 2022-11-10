@@ -109,8 +109,8 @@ public class PickableRoomObject : InteractabelObject, IPickable
     protected float holdingDistance = 3f;
     public float HoldingDistance => holdingDistance;
 
-    protected bool looksWhenGrabbed = false;
-    public bool LooksWhenGrabbed => looksWhenGrabbed;
+    protected HoldOrientation holdOrientation = HoldOrientation.none;
+    public HoldOrientation HoldOrientation => holdOrientation;
 
     private Vector3 holdingOffset = new Vector3(0,0,0);
     public Vector3 HoldingOffset { get => holdingOffset; set => holdingOffset = value; }

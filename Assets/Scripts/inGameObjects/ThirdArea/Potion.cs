@@ -48,7 +48,14 @@ public class Potion : PickableRoomObject
         ClearAimLine();
         StartCoroutine(DeactivateRigidVelocity());
         InteractableDistance = 15f;
+        HoldingOffset = new Vector3(-1f, 0f, -1f);
+
     }
+
+    private void Start() {
+        holdOrientation = HoldOrientation.potion;
+    }
+
     public IEnumerator DeactivateRigidVelocity() {
         rb.isKinematic = true;
         yield return new WaitForSeconds(.5f);
@@ -162,6 +169,7 @@ public class Potion : PickableRoomObject
             oldPos = -movementVector + startingPoint;
             linePoints.Add(-movementVector + startingPoint);
         }
+        linePoints.RemoveAt(0);
         lineRenderer.positionCount = linePoints.Count;
         lineRenderer.SetPositions(linePoints.ToArray());
         aimHitObject.gameObject.SetActive(hitted);
