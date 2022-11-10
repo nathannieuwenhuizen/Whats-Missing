@@ -17,6 +17,7 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     public static readonly Color CorrectColor = new Color(.2f,1,.2f, .4f);
     public static readonly Color IncorrectColor = new Color(1,.2f,.2f, .5f);
+    [HideInInspector]
     public Color DefaultGlowColor;
 
     private bool selected = false;
@@ -34,6 +35,8 @@ public class Letter : MirrorButton, IPointerDownHandler
         get { return mirrorCanvas;}
         set { mirrorCanvas = value; }
     }
+
+    private Vector3 oldDragPos;
 
     private Coroutine movingCoroutine;
     private float movingIndex;
@@ -184,17 +187,21 @@ public class Letter : MirrorButton, IPointerDownHandler
         pressedTime = 0;
     }
 
+    #region  dragging
     public bool Dragged() {
         return (pressedTime != 0 &&  Time.time - pressedTime > pressedTimeBeforeDrag);
     }
+
     private IEnumerator Dragging() {
         MirrorButton.BUTTON_DRAGGED = true;
         Canvas canvas = MirrorCanvas.Canvas;
         while(pressed) {
 
-            transform.position = canvas.MouseToWorldPosition();
+            transform.position = Vector3.Lerp(transform.position, canvas.MouseToWorldPosition(), Time.deltaTime * 10f);
             Zdistance = -10;
             mirrorCanvas.UpdateLetterDrag(this);
+            UpdateDragRotation();
+            oldDragPos = Position;
 
             MirrorButton.SELECTED_BUTTON = this;
 
@@ -204,10 +211,19 @@ public class Letter : MirrorButton, IPointerDownHandler
             }
             yield return new WaitForEndOfFrame();
         }
+        transform.localRotation = Quaternion.Euler(0,0,0);
+        StartCoroutine(PlaceAnimationRotation());
         MirrorButton.BUTTON_DRAGGED = false;
 
     }
-
+    private void UpdateDragRotation() {
+        Vector3 delta = Position - oldDragPos;
+        float angle = 45f;
+        delta *= 2f;
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler( -Mathf.Clamp( delta.y, -angle, angle), Mathf.Clamp( delta.x, -angle, angle), 0), Time.deltaTime * 10f);
+        Debug.Log("drag delta " + delta);
+    }
+    #endregion
 
     public Vector3 Position {
         get { return transform.localPosition; }
@@ -257,6 +273,17 @@ public class Letter : MirrorButton, IPointerDownHandler
         }
         Zdistance = 0;
     }
+    public IEnumerator PlaceAnimationRotation( ) {
+        float index = 0; 
+        float duration = .3f;
+        while (index < duration && Zdistance > 0) {
+            index += Time.deltaTime;
+            transform.localRotation = Quaternion.Euler( Mathf.Sin(Mathf.PI * (.5f + .5f *(index / duration))) * -20f, 0, 0);
+            yield return new WaitForEndOfFrame();
+        }
+        transform.localRotation = Quaternion.Euler(0,0,0);
+    }
+ 
 }
 
 [System.Serializable]
