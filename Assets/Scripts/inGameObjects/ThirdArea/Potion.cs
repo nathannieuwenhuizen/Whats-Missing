@@ -47,6 +47,7 @@ public class Potion : PickableRoomObject
         grabSound = SFXFiles.potion_grab;
         ClearAimLine();
         StartCoroutine(DeactivateRigidVelocity());
+        InteractableDistance = 15f;
     }
     public IEnumerator DeactivateRigidVelocity() {
         rb.isKinematic = true;

@@ -54,7 +54,7 @@ public class InteractabelObject : RoomObject, IInteractable
     } }
 
     ///<summary>
-    /// Distance on when the play can interact with the item. Default is set to 6 units
+    /// Distance on when the player can interact with the item. Default is set to 6 units
     ///</summary>
     public float InteractableDistance { get; set; } = 6f;
 

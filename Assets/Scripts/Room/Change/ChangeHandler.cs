@@ -121,6 +121,13 @@ public class ChangeHandler
             changes[i].Active = false;
         }
 
+        for (int i = roomChanges.Count - 1; i >= 0; i--)
+        {
+            Debug.Log("room change removed" + roomChanges[i].word);
+            room.RemoveChangeInRoomObjects(roomChanges[i]);
+            roomChanges[i].Active = false;
+        }
+
     }
     ///<summary>
     /// Returns true if the changes contains the word of the selected mirror
@@ -175,6 +182,7 @@ public class ChangeHandler
         
         //add change
         RoomChange newChange = new RoomChange() {changeType = potion.ChangeType, roomObject = changable, changeCausation = ChangeCausation.potion};
+        newChange.word = changable.Word;
         roomChanges.Add(newChange);
         changable.AddChange(newChange);
     }

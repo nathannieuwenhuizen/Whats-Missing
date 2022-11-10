@@ -12,7 +12,7 @@ public class Rain : RoomObject
     {
         base.OnRoomEnter();
         if (waterSound == null) {
-            Debug.Log("water sound should be playing");
+            // Debug.Log("water sound should be playing");
             waterSound =  AudioHandler.Instance.Play3DSound(SFXFiles.rain, audioContainer);
         }
         waterSound.Play();

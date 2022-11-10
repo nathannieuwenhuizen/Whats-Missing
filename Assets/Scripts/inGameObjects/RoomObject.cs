@@ -230,7 +230,7 @@ public class RoomObject : RoomEntity
         CurrentScale = normalScale;
     }
     public virtual void OnDestroy() {
-        EventSender.SendMissingEvent();
+        if (InSpace) EventSender.SendMissingEvent();
     }
 
     #endregion

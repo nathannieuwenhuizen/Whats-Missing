@@ -16,7 +16,11 @@ public class Room : MonoBehaviour
     public static event RoomAction OnRoomLeaving;
     public static event RoomAction OnRoomEntering;
 
-    public RoomLevel roomLevel;
+    public RoomLevel _roomLevel;
+    public RoomLevel roomLevel {
+        get { return _roomLevel;}
+        set { _roomLevel = value; }
+    }
 
     private HintStopwatch hintStopwatch;
 
@@ -263,24 +267,6 @@ public class Room : MonoBehaviour
         ForEachObjectWithMirrorWord(change, (IChangable obj) => { obj.AddChange(change); });  
     }
 
-
-    // private void Update() {
-    //     if (Input.GetKeyDown(KeyCode.P)) {
-    //         StartCoroutine(Test());
-    //     }
-    // }
-
-    // public IEnumerator Test() {
-    //     IChange newChange = new Change() { word = "books" };
-    //     AddChangeInRoomObjects(newChange);
-    //     yield return new WaitForSeconds(2f);
-    //     IChange newChange2 = new Change() { word = "lamp", changeType = ChangeType.tooBig };
-    //     AddChangeInRoomObjects(newChange2);
-    //     yield return new WaitForSeconds(6f);
-    //     IChange newChange3 = new Change() { word = "color" };
-    //     AddChangeInRoomObjects(newChange3);
-    //     yield return new WaitForSeconds(1f);
-    // }
     
     ///<summary>
     /// Checks if a mirror question is correct with the changes that exist inside the room.
@@ -338,7 +324,7 @@ public class Room : MonoBehaviour
     ///<summary>
     /// Fire when the player goes into the room.
     ///</summary>
-    public void OnRoomEnter(Player _player, bool loadSaveData = false) {
+    public virtual void OnRoomEnter(Player _player, bool loadSaveData = false) {
         player = _player;
         player.transform.parent = transform;
         FPMovement.FOOTSTEP_SFXFILE = SFXFiles.player_footstep_normal;
@@ -361,7 +347,7 @@ public class Room : MonoBehaviour
             item.InSpace = true;
             item.OnRoomEnter();
             RoomObject roomObject = item as RoomObject;
-            if (roomObject != null) roomObject.EventSender.Active = !revealChangeAfterCompletion;
+            if (roomObject != null) roomObject.EventSender.Active = roomLevel.roomInfo.EventSenderActive;
         }
         foreach(Rigidbody rb in GetAllObjectsInRoom<Rigidbody>()) {
             rb.sleepThreshold = 0.14f;
@@ -384,11 +370,14 @@ public class Room : MonoBehaviour
 
         beginState = SaveData.GetStateOfRoom(this);
         
+        StartCoroutine(DelayActivatingAnimationOmEntering());
         changeLineAnimated = true;
         Animated = true;
-
-
         roomEnterEvent?.Invoke();
+    }
+    public IEnumerator DelayActivatingAnimationOmEntering() {
+        yield return new WaitForSeconds(1f);
+
     }
 
     public void ShowMirrorToggleHint() {
@@ -420,6 +409,7 @@ public class Room : MonoBehaviour
             item.InSpace = false;
         }
         foreach(Rigidbody rb in GetAllObjectsInRoom<Rigidbody>()) {
+            //disable al movement in rigidbodies except player.
             if (rb != player.Movement.RB) rb.sleepThreshold = Mathf.Infinity;
         }
 
@@ -430,7 +420,7 @@ public class Room : MonoBehaviour
         changeHandler.DeactivateChanges();
         hintStopwatch.Pause();
         OnRoomLeaving?.Invoke();
-        AllObjects.Remove(Player);
+        // AllObjects.Remove(Player);
         // Player = null;
     }
 

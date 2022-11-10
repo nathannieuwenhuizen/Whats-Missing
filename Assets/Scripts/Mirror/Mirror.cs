@@ -64,10 +64,15 @@ public class Mirror: MonoBehaviour, IRoomObject
         set { previousWord = value; }
     }
 
+    [HideInInspector]
+    public bool canPlayAudio = false;
+    
+
     public bool IsOn {
         get { return mirrorData.isOn; }
         set { 
             if (value) {
+                canPlayAudio = true;
                 ConfirmationSucceeded();
             } else {
                 // if (mirrorData.isOn != value)
@@ -124,6 +129,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     ///</summary>
     public void Confirm()
     {
+        canPlayAudio = true;
         if (isQuestion) room.CheckMirrorQuestion(this);
         else {
             if (!IsOn) room.AddMirrorChange(this); else {
@@ -134,14 +140,19 @@ public class Mirror: MonoBehaviour, IRoomObject
     }
 
     public void ConfirmationSucceeded() {
-        if (room.Animated && room.ChangeLineAnimated)
+        if (room.Animated && room.ChangeLineAnimated && canPlayAudio){
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_true, .5f);
+            canPlayAudio = false;
+        }
         mirrorCanvas.AnimateCorrectLetters();
     }
 
     public void ConfirmationFailed() {
-        if (room.Animated && room.ChangeLineAnimated)
+        if (room.Animated && room.ChangeLineAnimated && canPlayAudio)
+        {
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);
+            canPlayAudio = false;
+        }
         mirrorCanvas.AnimateInCorrectLetters();
 
         // mirrorCanvas.DeselectLetters();

@@ -155,7 +155,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 916823507577906679}
-  - component: {fileID: 916823507577906678}
+  - component: {fileID: 1319908915972927996}
   m_Layer: 0
   m_Name: Third Area Default
   m_TagString: Untagged
@@ -184,7 +184,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &916823507577906678
+--- !u!114 &1319908915972927996
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -193,10 +193,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 916823507577906676}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0396396e914ab354d9cda6dda1b8913e, type: 3}
+  m_Script: {fileID: 11500000, guid: cb344b10c0ff2b84789ee6d0e36a38ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomLevel: {fileID: 0}
+  _roomLevel: {fileID: 0}
   roomFinishedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -207,6 +207,7 @@ MonoBehaviour:
   player: {fileID: 0}
   startDoor: {fileID: 5043148565546048480}
   endDoor: {fileID: 7466079431445170798}
+  potionSpawner: {fileID: 3560670033511681903}
 --- !u!1 &1022009833525954378
 GameObject:
   m_ObjectHideFlags: 0
@@ -3220,6 +3221,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 643f4965e433c6f43ae4ec1c07641925, type: 3}
+--- !u!114 &3560670033511681903 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3273715736879466434, guid: 643f4965e433c6f43ae4ec1c07641925, type: 3}
+  m_PrefabInstance: {fileID: 2018907417887705261}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 302db0c69d3e182498625627b0c0d70c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6915012954590289686 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4896422406505961403, guid: 643f4965e433c6f43ae4ec1c07641925, type: 3}
@@ -3502,10 +3514,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: next area button
       objectReference: {fileID: 0}
+    - target: {fileID: 1645177268768491654, guid: e8d11c9899a6acb4898f0a049562155e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2486390598692546023, guid: e8d11c9899a6acb4898f0a049562155e, type: 3}
       propertyPath: room
       value: 
-      objectReference: {fileID: 916823507577906678}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8d11c9899a6acb4898f0a049562155e, type: 3}
 --- !u!4 &3990612617525364249 stripped
@@ -4555,6 +4571,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6324732607161086202}
     m_Modifications:
+    - target: {fileID: 1402302108884111982, guid: 9da9bfe71f883534a9568e84f805d1d4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 123
+      objectReference: {fileID: 0}
+    - target: {fileID: 2691818817249996909, guid: 9da9bfe71f883534a9568e84f805d1d4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 123
+      objectReference: {fileID: 0}
     - target: {fileID: 7258863672294050854, guid: 9da9bfe71f883534a9568e84f805d1d4, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -4586,6 +4610,14 @@ PrefabInstance:
     - target: {fileID: 9084750877752638681, guid: 9da9bfe71f883534a9568e84f805d1d4, type: 3}
       propertyPath: m_Name
       value: Bridge
+      objectReference: {fileID: 0}
+    - target: {fileID: 9084750877752638681, guid: 9da9bfe71f883534a9568e84f805d1d4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9084750877752638681, guid: 9da9bfe71f883534a9568e84f805d1d4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 123
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9da9bfe71f883534a9568e84f805d1d4, type: 3}
@@ -4790,6 +4822,14 @@ PrefabInstance:
     - target: {fileID: 8485504303458009118, guid: 2104140f76b074d4999ca9b8211ab194, type: 3}
       propertyPath: m_Name
       value: Side_Table
+      objectReference: {fileID: 0}
+    - target: {fileID: 8485504303458009118, guid: 2104140f76b074d4999ca9b8211ab194, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8485504303458009118, guid: 2104140f76b074d4999ca9b8211ab194, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 123
       objectReference: {fileID: 0}
     - target: {fileID: 8512587123633905147, guid: 2104140f76b074d4999ca9b8211ab194, type: 3}
       propertyPath: m_RootOrder
@@ -7156,6 +7196,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cauldron
       objectReference: {fileID: 0}
+    - target: {fileID: 4779581923123510383, guid: cb20b50966634a5429e7c55a6ebd3827, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 123
+      objectReference: {fileID: 0}
     - target: {fileID: 6798718838196727079, guid: cb20b50966634a5429e7c55a6ebd3827, type: 3}
       propertyPath: m_RootOrder
       value: 9
@@ -7199,6 +7243,10 @@ PrefabInstance:
     - target: {fileID: 6798718838196727079, guid: cb20b50966634a5429e7c55a6ebd3827, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7201291410271095455, guid: cb20b50966634a5429e7c55a6ebd3827, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 123
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb20b50966634a5429e7c55a6ebd3827, type: 3}
