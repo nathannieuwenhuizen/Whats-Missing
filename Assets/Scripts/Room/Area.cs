@@ -212,8 +212,8 @@ public class Area : MonoBehaviour
                 foreach (Mirror mirror in newRoom.GetAllObjectsInRoom<Mirror>())
                 {
                     if (mirrorIndex < roomLevel.roomInfo.questionMirror.Length) {
-                        MirrorData questionMirrorData = roomLevel.roomInfo.questionMirror[mirrorIndex].Clone;
-                        mirror.MirrorData = questionMirrorData;
+                        MirrorData _mirrorData = roomLevel.roomInfo.questionMirror[mirrorIndex].Clone;
+                        mirror.MirrorData = _mirrorData;
                         mirror.isQuestion = mirror.MirrorData.isQuestion;
 
                         if (completed && roomLevel.roomInfo.loadedChanges.Length > 0) {

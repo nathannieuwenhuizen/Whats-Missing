@@ -156,35 +156,44 @@ public class ChangeHandler
     /// Updates the room object changes when the event sender did an invoke.
     ///</summary>
     public void UpdateRoomObjectChanges(RoomObject _roomObject, ChangeType _changeType, bool _enabled) {
-        int index = roomChanges.FindIndex(x => x.roomObject == (IChangable)_roomObject);
+        //find if there is a change that has the same object and changetype
+        int index = roomChanges.FindIndex(x => x.roomObject == (IChangable)_roomObject && x.changeType == _changeType);
         if (_enabled) {
+            //check if not the same change exist
             if (index == -1) roomChanges.Add(new RoomChange() { roomObject = _roomObject, changeType = _changeType});
             
         } else {
+            //if there is a change, remove that one since the change has been disabled
             if (index != -1) roomChanges.RemoveAt(index);
         }
     }
 
     public void AddPotionChange(Potion potion, IChangable changable) {
-        //check if existing change has been made by same potion
-        int index = roomChanges.FindIndex(x => x.changeCausation == ChangeCausation.potion && x.changeType == potion.ChangeType);
-        bool sameObject = false;
-        if (index != -1) {
-            //same object? then just ignore the rest and return
-            sameObject = roomChanges[index].roomObject == changable;
-            if (sameObject) return;
+        RemovePotionChange(potion.ChangeType);
 
-            //remove other change
+        //check if existing change has been made to the same object by a potion
+        int index = roomChanges.FindIndex(x => x.changeCausation == ChangeCausation.potion && x.roomObject == changable);
+        if (index != -1) {
+            //same object? But different potion? remove, if not, do nothing
+            if (roomChanges[index].changeType == potion.ChangeType) return;
+
+            //remove change from other potion
             roomChanges[index].roomObject.RemoveChange(roomChanges[index]);
             roomChanges.RemoveAt(index);
-
         }
         
         //add change
-        RoomChange newChange = new RoomChange() {changeType = potion.ChangeType, roomObject = changable, changeCausation = ChangeCausation.potion};
+        RoomChange newChange = new RoomChange() {changeType = potion.ChangeType, roomObject = changable, changeCausation = ChangeCausation.potion, Active = true};
         newChange.word = changable.Word;
         roomChanges.Add(newChange);
         changable.AddChange(newChange);
+    }
+    public void RemovePotionChange(ChangeType _changeType) {
+        int index = roomChanges.FindIndex(x => x.changeCausation == ChangeCausation.potion && x.changeType == _changeType);
+        if (index != -1) {
+            roomChanges[index].roomObject.RemoveChange(roomChanges[index]);
+            roomChanges.RemoveAt(index);
+        }
     }
 
     public void AddBossChange(IChange _change) {

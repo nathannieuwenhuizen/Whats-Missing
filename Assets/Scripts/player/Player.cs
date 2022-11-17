@@ -218,9 +218,10 @@ public class Player : RoomObject
 
     public override void OnAppearing()
     { 
+        //no base call!
+        
         IsMissing = false;
         OnPlayerAppear?.Invoke();
-        //no base call!
         foreach(SkinnedMeshRenderer mr in meshObjects) {
             mr.enabled = true;
         }        

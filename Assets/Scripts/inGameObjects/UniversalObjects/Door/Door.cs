@@ -30,6 +30,19 @@ public class Door : InteractabelObject
         }
     }
 
+    public bool PlayerFitsThroughDoor() {
+        //door is large
+        if (IsEnlarged) return true;
+        Debug.Log("large check");
+        //door is normal
+        if (!IsShrinked && !room.Player.IsEnlarged) return true;
+        Debug.Log("normal check");
+        //door is small
+        if (IsShrinked && room.Player.IsShrinked) return true;
+        Debug.Log("small check");
+        return false;
+    }
+
     [HideInInspector]
     public Room room;
 
@@ -98,8 +111,9 @@ public class Door : InteractabelObject
         StopAllCoroutines();
         if (gameObject.activeSelf) StartCoroutine(AnimateDoorAngle(startAngle + openAngle, 2f, openCurve));
     }
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         startAngle = doorPivot.localRotation.eulerAngles.y;
         normalScale = 100f;
         shrinkScale = 50f;
@@ -124,7 +138,7 @@ public class Door : InteractabelObject
     {
         if (inAnimation || IN_WALKING_ANIMATION) return;
 
-        if (locked) {
+        if (locked || !PlayerFitsThroughDoor()) {
             DoorAnimator.SetTrigger("shake");
             AudioHandler.Instance?.Play3DSound(SFXFiles.door_locked, transform, .5f);
             return;

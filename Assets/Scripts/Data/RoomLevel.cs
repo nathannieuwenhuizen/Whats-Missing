@@ -49,6 +49,6 @@ public class MirrorData {
 
     //was nessecary because the scrptable objects kept changing in playmode
     public MirrorData Clone {
-        get => new MirrorData() {letters = letters, changeType = changeType, isOn = isOn, huzzleWords = huzzleWords, isInteractable = isInteractable };
+        get => new MirrorData() {letters = letters, changeType = changeType, isOn = isOn, huzzleWords = huzzleWords, isQuestion = isQuestion , isInteractable = isInteractable };
     }
 }

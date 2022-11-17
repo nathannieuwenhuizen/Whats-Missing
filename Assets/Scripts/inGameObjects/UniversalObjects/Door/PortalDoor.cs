@@ -51,7 +51,8 @@ public class PortalDoor : Door
             SetPortalState(!value);
         }
     }
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         SetPortalState(false);
     }
 

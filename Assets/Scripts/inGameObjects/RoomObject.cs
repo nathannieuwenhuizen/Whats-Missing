@@ -166,7 +166,7 @@ public class RoomObject : RoomEntity
     }
 
     ///<summary>
-    /// The desired scale the object wants to have based on its state. USed in the appearing animation calls because there the scale might be temporary zero.
+    /// The desired scale the object wants to have based on its state. Used in the appearing animation calls because there the scale might be temporary zero.
     ///</summary>
     private float DesiredScale() {
         return (IsShrinked ? ShrinkScale : (IsEnlarged ? LargeScale : NormalScale));

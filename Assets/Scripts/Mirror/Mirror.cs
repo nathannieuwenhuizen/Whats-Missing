@@ -93,7 +93,7 @@ public class Mirror: MonoBehaviour, IRoomObject
         }
     }
     public string Word {
-        get => mirrorCanvas.Word;
+        get => mirrorCanvas.Word.ToLower();
         set => mirrorCanvas.Word = value;
     }
 

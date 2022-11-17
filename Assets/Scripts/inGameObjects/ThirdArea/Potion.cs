@@ -211,7 +211,7 @@ public class Potion : PickableRoomObject
         Destroy(burstParticle, 5f);
         Destroy(smokeParticle, 5f);
         Destroy(gameObject, 5f);
-        StartCoroutine(Extensions.AnimateCallBack(1f, 0f, AnimationCurve.Linear(0,0,1,1), (val) => {
+        StartCoroutine(Extensions.AnimateCallBack(1f, 0f, AnimationCurve.EaseInOut(0,0,1,1), (val) => {
             AimLineAlpha = val;
         }, 5f));
         Destroy(potionMeshObject);

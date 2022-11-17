@@ -457,6 +457,7 @@ public class Room : MonoBehaviour
     public void UpdateRoomObjectChanges(RoomObject _roomObject, ChangeType _changeType, bool _enabled) {
         if (!InArea) return;
         changeHandler.UpdateRoomObjectChanges(_roomObject, _changeType, _enabled);
+        Debug.Log(" room object " + _roomObject.Word +  " is now " + _changeType + "  | " + _enabled);
         UpdateMirrorStates();
         CheckRoomCompletion();
     }
