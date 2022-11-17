@@ -122,7 +122,6 @@ public class Hands : MonoBehaviour
     public Vector3 test;
     private IEnumerator UpdatePhysics() {
         while (holdingObject != null) {
-            yield return new WaitForEndOfFrame();
             Transform t = Camera.main.transform;
 
             var speed = holdingObject.Touching ? 3f : 10f;
@@ -139,7 +138,7 @@ public class Hands : MonoBehaviour
                 if (holdingObject.HoldOrientation == HoldOrientation.shard) {
                     holdingObject.RigidBody.transform.Rotate(-90, 90, -90);
                 } else {
-                    holdingObject.RigidBody.transform.Rotate(0,0,0);
+                    holdingObject.RigidBody.transform.Rotate(0,180,0);
                 }
                 Quaternion desiredRotation = holdingObject.RigidBody.rotation;
 
@@ -148,6 +147,7 @@ public class Hands : MonoBehaviour
 
                 // holdingObject.RigidBody.rotation.LookAt(transform.position, transform.up);
             }
+            yield return new WaitForEndOfFrame();
             
         }   
     }

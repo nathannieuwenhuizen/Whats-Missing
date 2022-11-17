@@ -22,6 +22,8 @@ public class Potion : PickableRoomObject
     private LineRenderer lineRenderer;
     [SerializeField]
     private Transform aimHitObject;
+    [SerializeField]
+    private GameObject potionMeshObject;
 
     private int linePointCount = 300;
     
@@ -99,6 +101,7 @@ public class Potion : PickableRoomObject
         rb.AddForce(delta * forcePower * rb.mass);
         rb.drag = 0;
         rb.angularDrag = 0;
+        rb.angularVelocity = transform.InverseTransformDirection(new Vector3(0,50,0));
         thrown = true;
     }
 
@@ -108,6 +111,11 @@ public class Potion : PickableRoomObject
         broken = true;
         IChangable changable = getPotentialIChangable(other);
         if (changable != null) {
+            if (changable.Transform.GetComponent<RoomObject>() != null) 
+                if (changable.Transform.GetComponent<RoomObject>().AffectedByPotions == false) {
+                    Break();
+                    return;
+                }
             OnChanging?.Invoke(this, changable);
         }
         Break();
@@ -115,10 +123,13 @@ public class Potion : PickableRoomObject
 
     private IChangable getPotentialIChangable(Collision other)
     {        
+        //check first in children
         IChangable changable = other.transform.GetComponentInChildren<IChangable>();
         if (changable == null) 
+            //then itself
             changable = other.transform.GetComponent<IChangable>();
         if (changable == null) 
+            //then its parent
             changable = other.transform.parent.GetComponent<IChangable>();
         return changable;
     }
@@ -128,6 +139,7 @@ public class Potion : PickableRoomObject
         aimHitObject.transform.parent = transform.parent;
 
         while (thrown == false) {
+            AimLineAlpha = 1;
             Vector3 delta =  -Camera.main.transform.forward * forcePower * rb.mass;
             UpdateAimLine(delta, rb, transform.position);
             yield return new WaitForEndOfFrame();
@@ -198,7 +210,15 @@ public class Potion : PickableRoomObject
         Destroy(aimHitObject.gameObject);
         Destroy(burstParticle, 5f);
         Destroy(smokeParticle, 5f);
-        Destroy(gameObject);
-
+        Destroy(gameObject, 5f);
+        StartCoroutine(Extensions.AnimateCallBack(1f, 0f, AnimationCurve.Linear(0,0,1,1), (val) => {
+            AimLineAlpha = val;
+        }, 5f));
+        Destroy(potionMeshObject);
     }
+    public float AimLineAlpha {
+        get { return lineRenderer.material.GetFloat("_alpha");}
+        set { lineRenderer.material.SetFloat("_alpha", value); }
+    }
+
 }

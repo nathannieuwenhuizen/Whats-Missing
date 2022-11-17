@@ -34,6 +34,12 @@ public class RoomObject : RoomEntity
         } 
     }
 
+    [SerializeField]
+    private bool affectedByPotions = true;
+    public bool AffectedByPotions {
+        get { return affectedByPotions;}
+    }
+
     protected virtual void Awake() {
         eventSender = new RoomObjectEventSender(this);
     }

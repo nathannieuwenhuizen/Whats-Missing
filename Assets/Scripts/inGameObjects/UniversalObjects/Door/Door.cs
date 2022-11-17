@@ -101,6 +101,9 @@ public class Door : InteractabelObject
     void Awake()
     {
         startAngle = doorPivot.localRotation.eulerAngles.y;
+        normalScale = 100f;
+        shrinkScale = 50f;
+        largeScale = 200f;
     }
 
     private bool CheckAngle() {

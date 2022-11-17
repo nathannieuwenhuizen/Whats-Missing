@@ -1112,8 +1112,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   word: web
   alternateWords: []
-  missingChangeEffect: 1
+  missingChangeEffect: 2
   flippingAxis: 2
+  affectedByPotions: 1
 --- !u!64 &8244490556280152721
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1649,6 +1650,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6324732607161086202}
     m_Modifications:
+    - target: {fileID: 51474861914601855, guid: c2c8383668a7dd040bcb8156deacfaa3, type: 3}
+      propertyPath: affectedByPotions
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5971227677141386835, guid: c2c8383668a7dd040bcb8156deacfaa3, type: 3}
       propertyPath: m_Name
       value: Floor
@@ -2288,6 +2293,10 @@ PrefabInstance:
     - target: {fileID: 7611756486690796860, guid: ac1ef25bfeffe30469b433383fff6b64, type: 3}
       propertyPath: m_Name
       value: Sub_Tower
+      objectReference: {fileID: 0}
+    - target: {fileID: 7611756486690796860, guid: ac1ef25bfeffe30469b433383fff6b64, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac1ef25bfeffe30469b433383fff6b64, type: 3}
@@ -7215,6 +7224,14 @@ PrefabInstance:
     - target: {fileID: 4353079500745363573, guid: cc6fb080a74b8f6438deed9e0ee55fd8, type: 3}
       propertyPath: m_Name
       value: InnerWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4353079500745363573, guid: cc6fb080a74b8f6438deed9e0ee55fd8, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7614117099669087557, guid: cc6fb080a74b8f6438deed9e0ee55fd8, type: 3}
+      propertyPath: affectedByPotions
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc6fb080a74b8f6438deed9e0ee55fd8, type: 3}
