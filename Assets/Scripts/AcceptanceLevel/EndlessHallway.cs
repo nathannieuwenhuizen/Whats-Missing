@@ -17,7 +17,7 @@ public class EndlessHallway : MonoBehaviour
     [SerializeField]
     private GameObject startChunk;
 
-    private List<GameObject> chunks = new List<GameObject>();
+    private List<HallwayChunk> chunks = new List<HallwayChunk>();
 
     [SerializeField]
     private Player player;
@@ -32,7 +32,9 @@ public class EndlessHallway : MonoBehaviour
             newChunk.name = "chunk #" + i;
             newChunk.transform.SetParent(transform);
             newChunk.active = true;
-            chunks.Add(newChunk);
+            chunks.Add(newChunk.GetComponent<HallwayChunk>());
+            newChunk.GetComponent<HallwayChunk>().SetCeiling(i%2 != 0);
+            newChunk.GetComponent<HallwayChunk>().ResetFurniture();
         }
     }
     private void Awake() {
@@ -70,8 +72,8 @@ public class EndlessHallway : MonoBehaviour
         player.Movement.SetOldPosToTransform();
 
         //make new list
-        List<GameObject> temp = new List<GameObject>();
-        foreach(GameObject chunk in chunks) {
+        List<HallwayChunk> temp = new List<HallwayChunk>();
+        foreach(HallwayChunk chunk in chunks) {
             int i = chunks.IndexOf(chunk);
             if (i < ammountOfSegments) {
                 temp.Add(chunk);
@@ -80,12 +82,14 @@ public class EndlessHallway : MonoBehaviour
             }
         }
         //clear new chunk list
-        foreach(GameObject chunk in temp) {
+        foreach(HallwayChunk chunk in temp) {
             chunks.Remove(chunk);
         }
 
-        //set new chunk
-        foreach(GameObject chunk in temp) {
+        //set new chunk back to start of environment
+        foreach(HallwayChunk chunk in temp) {
+            Debug.Log("chunk: " + chunk.name);
+            chunk.ResetFurniture();
             chunk.transform.position = chunks[chunks.Count - 1].transform.position + new Vector3(-chunkSize,0, 0);
             chunks.Add(chunk);
         }
