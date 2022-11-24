@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cfcc98203bf3fe443b122d929c8cd8f5, type: 3}
-  m_Name: CleanWebs
+  m_Name: CarryPotion
   m_EditorClassIdentifier: 
   prefab: {fileID: 1319908915972927996, guid: 5e55fa18557e713408b91953576b6635, type: 3}
   roomInfo:
@@ -18,19 +18,27 @@ MonoBehaviour:
     doCutsceneOnRevealingChanges: 1
     alwaysAnimate: 0
     questionMirror:
-    - letters: web
-      changeType: 0
-      isOn: 1
-      huzzleWords: 0
-      isQuestion: 1
-      isInteractable: 0
-    loadedChanges: []
+    - letters: me
+      changeType: 2
+      isOn: 0
+      huzzleWords: 1
+      isQuestion: 0
+      isInteractable: 1
+    loadedChanges:
+    - word: potion
+      alternativeWords: []
+      active: 1
+      changeType: 1
+    - word: door
+      alternativeWords: []
+      active: 1
+      changeType: 1
     durationBeforeHint: 60
-    hintText: I see a interesting potion across the room, take a look at it
+    hintText: 
     highLightAnswerLetter: 1
     durationBeforeHighlighting: 120
-    EventSenderActive: 0
+    EventSenderActive: 1
   potionInfo:
-    missingPotionAvailable: 1
+    missingPotionAvailable: 0
     tooBigPotionAvailable: 1
-    tooSmallPotionAvailable: 1
+    tooSmallPotionAvailable: 0
