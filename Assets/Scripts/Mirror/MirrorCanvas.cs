@@ -139,14 +139,14 @@ public class MirrorCanvas : MonoBehaviour
             HeaderText.Text.text = "What's <b>" + header + "</b>" + "?";
             Font = questionFont;
         } else {
-            Debug.Log(HeaderText);
-            Debug.Log(HeaderText.Text);
-            HeaderText.Text.text = "<b> is " + header +  "!</b>";
             Font = sentenceFont;
+            
+            HeaderText.Text.text = "What SHOULD be <b>" + header + "</b>" + "?";
 
-            Vector3 answerPos = answerText.transform.parent.position;
-            answerPos.y = Mathf.Lerp(answerPos.y, headerText.transform.position.y, .5f);
-            answerText.transform.parent.position = answerPos;
+            // HeaderText.Text.text = "<b> is " + header +  "!</b>";
+            // Vector3 answerPos = answerText.transform.parent.position;
+            // answerPos.y = Mathf.Lerp(answerPos.y, headerText.transform.position.y, .5f);
+            // answerText.transform.parent.position = answerPos;
         }
 
     }
@@ -373,10 +373,10 @@ public class MirrorCanvas : MonoBehaviour
         if (draggedLetter) {
             totalWidth += draggedLetter.size.width + letterPadding;
         }
-        if (!mirror.isQuestion) {
-            headerText.Text.ForceMeshUpdate();
-            totalWidth += headerText.Text.GetRenderedValues(true).x;
-        }
+        // if (!mirror.isQuestion) {
+        //     headerText.Text.ForceMeshUpdate();
+        //     totalWidth += headerText.Text.GetRenderedValues(true).x;
+        // }
         float cPos = -(totalWidth + letterPadding + SelectedLetters[0].size.width) * .5f;
         for(int i = 0; i < SelectedLetters.Count; i++) {
             if (i != 0) {
@@ -392,11 +392,11 @@ public class MirrorCanvas : MonoBehaviour
             SelectedLetters[i].MoveTo(answerText.localPosition + new Vector3(cPos, 0, 0));
             cPos += SelectedLetters[i].size.width *.5f + letterPadding;
         }
-        if (!mirror.isQuestion){
-            headerText.Text.rectTransform.SetParent(answerText.transform);
-            headerText.MoveTo(new Vector3(cPos + headerText.Text.GetRenderedValues(true).x * .5f + 20f, 0, 0));
-            // headerText.Text.rectTransform.localPosition = new Vector3(cPos + headerText.Text.GetRenderedValues(true).x * .5f + 20f, 0, 0);
-        }
+        // if (!mirror.isQuestion){
+        //     headerText.Text.rectTransform.SetParent(answerText.transform);
+        //     headerText.MoveTo(new Vector3(cPos + headerText.Text.GetRenderedValues(true).x * .5f + 20f, 0, 0));
+        //     // headerText.Text.rectTransform.localPosition = new Vector3(cPos + headerText.Text.GetRenderedValues(true).x * .5f + 20f, 0, 0);
+        // }
 
         return passed;
     }

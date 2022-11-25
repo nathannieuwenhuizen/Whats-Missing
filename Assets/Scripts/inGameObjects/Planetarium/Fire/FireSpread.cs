@@ -10,7 +10,11 @@ public class FireSpread : MonoBehaviour, ITriggerArea
     public static EnterEvent OnFireSpreadExit;
     private SFXInstance fireSound;
 
-
+    [SerializeField]
+    private bool slowFire = true;
+    public bool SlowFire {
+        get { return slowFire;}
+    }
     public bool InsideArea { get; set; }
 
     private void Start() {

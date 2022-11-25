@@ -114,11 +114,12 @@ public class Lungs : MonoBehaviour
 #endregion
 
 #region burning
-
+    private bool slowFire = true;
     private void StartBurining(FireSpread spread) {
 
         if (!fireSpreads.Contains(spread)) fireSpreads.Add(spread);
         if (burning) return;
+        slowFire = spread.SlowFire;
 
         burning = true;
 
@@ -132,19 +133,23 @@ public class Lungs : MonoBehaviour
         UpdateVignette();
     }
 
+    private float BurnDuration() {
+        return slowFire ? burnDuration : 1f;
+    }
+
     private IEnumerator Burning() {
-        while (burnIndex <= burnDuration && burnIndex >= 0) {
+        while (burnIndex <= (slowFire ? BurnDuration() : 1f) && burnIndex >= 0) {
             burnIndex += burning ? Time.deltaTime : -Time.deltaTime * 5f;
-            playerVoiceBurnSFX.Volume = (.9f * (burnIndex / burnDuration));
-            burnSFX.Volume = .1f + (.9f * (burnIndex / burnDuration));
-            currentVignette.intensity = startVignette.intensity + (burnIndex / burnDuration) * .4f;
-            currentVignette.color = Color.Lerp(startVignette.color, Color.red, (burnIndex / burnDuration));
-            currentVignette.smoothnes = startVignette.smoothnes + (burnIndex / burnDuration) * 2f;
+            playerVoiceBurnSFX.Volume = (.9f * (burnIndex / BurnDuration() ));
+            burnSFX.Volume = .1f + (.9f * (burnIndex / BurnDuration() ));
+            currentVignette.intensity = startVignette.intensity + (burnIndex / BurnDuration() ) * .4f;
+            currentVignette.color = Color.Lerp(startVignette.color, Color.red, (burnIndex / BurnDuration() ));
+            currentVignette.smoothnes = startVignette.smoothnes + (burnIndex / BurnDuration() ) * 2f;
 
             UpdateVignette();
             yield return new WaitForEndOfFrame();
         }
-        if (burnIndex > burnDuration) {
+        if (burnIndex > BurnDuration() ) {
             player.Die(true);
             AudioHandler.Instance.PlaySound(SFXFiles.choke_die, .5f, .8f);
         }

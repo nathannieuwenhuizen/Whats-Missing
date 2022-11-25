@@ -78,7 +78,7 @@ public class Door : InteractabelObject
     private bool flipped = false;
 
     [SerializeField]
-    private float walkDistance = 4f;
+    protected float walkDistance = 4f;
 
     public virtual bool Locked {
         get { return locked; }
@@ -246,10 +246,10 @@ public class Door : InteractabelObject
         inAnimation = false;
     }
 
-    public Vector3 StartPos() {
+    public virtual Vector3 StartPos() {
         return transform.position + transform.forward * walkDistance - transform.right * 1f + new Vector3(0,-1.1f,0);
     }
-    public Vector3 EndPos() {
+    public virtual Vector3 EndPos() {
         return transform.position - transform.forward * walkDistance - transform.right * 1f + new Vector3(0,-1.1f,0);
     }
 

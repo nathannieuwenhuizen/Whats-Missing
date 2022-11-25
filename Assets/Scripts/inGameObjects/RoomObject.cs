@@ -162,6 +162,15 @@ public class RoomObject : RoomEntity
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
+        switch(MissingChangeEffect) {
+            case MissingChangeEffect.none:
+            break;
+            case MissingChangeEffect.scale:
+            break;
+            case MissingChangeEffect.dissolve:
+                foreach (Material mat in getMaterials()) mat.SetFloat("Dissolve", 0);
+            break;
+        }
         CurrentScale = DesiredScale();
     }
 

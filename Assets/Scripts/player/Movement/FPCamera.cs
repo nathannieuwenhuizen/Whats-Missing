@@ -149,7 +149,7 @@ public class FPCamera
     ///<summary>
     /// Changes the camera offset and rotation to mimic the walking bounce.
     ///</summary>
-    public void UpdateCameraTilt(float index, float walkStepDistance) {
+    public void UpdateCameraWalkingAnimation(float index, float walkStepDistance) {
         cameraYIndex = (index / walkStepDistance) * (Mathf.PI * 2);
         float currentCameraYpos = Mathf.Sin(cameraYIndex) * cameraYOffset;
         float z = 0 + Mathf.Clamp(FPMovement.LerpedVelocity.magnitude - .5f, 0f, 1f) * .3f;
@@ -159,6 +159,9 @@ public class FPCamera
             z
         );
 
+    }
+
+    public void UpdateCameraTiltAndBounds() {
         cameraZIndex += Time.deltaTime;
         float zRotation = 0;
         if (cameraZRotationTilt) {
@@ -171,6 +174,7 @@ public class FPCamera
                 zRotation
             ));
     }
+
     private void ResetCameraTilt() {
         cameraPivot.localRotation = Quaternion.Euler( new Vector3(
             cameraPivot.localRotation.eulerAngles.x,
@@ -210,7 +214,10 @@ public class FPCamera
         if (lerped) cameraPivot.Rotate(currentMouseRotDeltaY);
         else cameraPivot.Rotate(new Vector3(-mouseDelta.y * controlSettings.Camera_sensetivity * inversionY * cameraSensetivityFactor, 0, 0));
 
+        ClampVerticalAngle();
+    }
 
+    public void ClampVerticalAngle() {
         //setting max angle cap
         if (cameraPivot.localRotation.eulerAngles.x > 180)
             cameraPivot.localRotation = Quaternion.Euler( new Vector3(Mathf.Max(cameraPivot.localRotation.eulerAngles.x, 360 - verticalAngle) , 0, cameraPivot.localRotation.eulerAngles.z));

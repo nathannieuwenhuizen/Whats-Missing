@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 6791463370132803153}
   - component: {fileID: 105245252331682805}
   - component: {fileID: 6985226445954693886}
-  - component: {fileID: 936537595480532543}
   - component: {fileID: 3950202138035529795}
+  - component: {fileID: 616804177571535790}
   m_Layer: 0
   m_Name: Statue
   m_TagString: Untagged
@@ -98,7 +98,23 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2035068574203303680, guid: 7920d7f58edf85b4bba4191c382cc06b, type: 3}
---- !u!114 &936537595480532543
+--- !u!54 &3950202138035529795
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3497425603795732406}
+  serializedVersion: 2
+  m_Mass: 2
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &616804177571535790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,7 +123,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3497425603795732406}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27df562d2f5c3da4b8c9db3942e53ddd, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f300c77c5bae8b4db6ae3c73d312cc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   word: statue
@@ -125,19 +141,3 @@ MonoBehaviour:
     UseGravity: 1
     IsKinematic: 1
     tag: 
---- !u!54 &3950202138035529795
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3497425603795732406}
-  serializedVersion: 2
-  m_Mass: 2
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0

@@ -125,4 +125,11 @@ public class PortalDoor : Door
         yield return new WaitForSeconds(3f);
         SetPortalState(false);
     }
+
+    public override Vector3 StartPos() {
+        return transform.position + transform.forward * walkDistance;
+    }
+    public override Vector3 EndPos() {
+        return transform.position - transform.forward * walkDistance;
+    }
 }
