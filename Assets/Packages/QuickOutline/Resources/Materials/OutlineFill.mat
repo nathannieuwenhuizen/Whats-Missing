@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: OutlineFill
-  m_Shader: {fileID: -6465566751694194690, guid: ed43ba19d3f3ac543a787a13ffb6a74b, type: 3}
+  m_Shader: {fileID: 4800000, guid: 72baf820e039d494e9c336f5eae2d884, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,6 +19,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 5f96d68379a57bb48aebf2e911206656, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -32,10 +36,21 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _Brightness: 2.5
+    - _Edge: 0.08
+    - _Opacity: 10
+    - _Outline: 0.12
     - _OutlineThickness: 0.05
     - _OutlineWidth: 2
+    - _OutlineZ: 0
+    - _RimPower: 2.6
+    - _Scale: 0.005
+    - _SpeedX: -0.35
+    - _SpeedY: 3.5
     - _ZTest: 8
     m_Colors:
     - Color_4a522a757c454c72aa14721298d2053f: {r: 0.56677866, g: 2.670157, b: 1.6146585, a: 0}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _ColorR: {r: 1, g: 0.015686275, b: 0.427451, a: 1}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
