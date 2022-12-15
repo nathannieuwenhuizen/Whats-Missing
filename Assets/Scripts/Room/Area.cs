@@ -390,7 +390,6 @@ public class Area : MonoBehaviour
                 CurrentRoom = rooms[index];
             }
         }
-        StartCoroutine(door.Walking(1.5f, player));
     }
 
     ///<summary>
