@@ -120,6 +120,8 @@ public class InputManager : MonoBehaviour
 
 
     public void Jump(InputAction.CallbackContext context) {
+        Debug.Log("jump");
+
         OnJump?.Invoke();
     }
     public void RunStart(InputAction.CallbackContext context) {

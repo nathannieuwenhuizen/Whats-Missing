@@ -35,16 +35,25 @@ public class Door : InteractabelObject
         if (IsEnlarged) return true;
         Debug.Log("large check");
         //door is normal
-        if (!IsShrinked && !room.Player.IsEnlarged) return true;
+        if (!IsShrinked && !Player.IsEnlarged) return true;
         Debug.Log("normal check");
         //door is small
-        if (IsShrinked && room.Player.IsShrinked) return true;
+        if (IsShrinked && Player.IsShrinked) return true;
         Debug.Log("small check");
         return false;
     }
 
     [HideInInspector]
     public Room room;
+
+    private Player player;
+    public Player Player {
+        get {
+            if (player == null) return room.Player;
+            return player;
+        }
+        set {player = value;}
+    }
 
     private bool inAnimation = false;
 
@@ -78,7 +87,7 @@ public class Door : InteractabelObject
     private bool flipped = false;
 
     [SerializeField]
-    private float walkDistance = 4f;
+    protected float walkDistance = 4f;
 
     public virtual bool Locked {
         get { return locked; }
@@ -121,17 +130,19 @@ public class Door : InteractabelObject
     }
 
     private bool CheckAngle() {
-        if (room.Player != null) {
-            float angle =  Vector3.Dot(transform.forward, room.Player.transform.position - transform.position);
+        if (Player != null) {
+            float angle =  Vector3.Dot(transform.forward, Player.transform.position - transform.position);
             return angle > 0;
         }
         return false;
     }
 
-    public void GoingThrough() {
+    public virtual void GoingThrough() {
         flipped = CheckAngle();
         StopAllCoroutines();
         StartCoroutine(GoingThroughFlippingAnimation());
+        StartCoroutine(Walking(1.5f, Player));
+
     }
 
     public override void Interact()
@@ -246,10 +257,10 @@ public class Door : InteractabelObject
         inAnimation = false;
     }
 
-    public Vector3 StartPos() {
+    public virtual Vector3 StartPos() {
         return transform.position + transform.forward * walkDistance - transform.right * 1f + new Vector3(0,-1.1f,0);
     }
-    public Vector3 EndPos() {
+    public virtual Vector3 EndPos() {
         return transform.position - transform.forward * walkDistance - transform.right * 1f + new Vector3(0,-1.1f,0);
     }
 

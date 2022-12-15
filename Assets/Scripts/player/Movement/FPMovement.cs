@@ -262,9 +262,6 @@ public class FPMovement : MonoBehaviour
         FPCamera.UpdateRotation();
         oldPos = transform.position;
     }
-    private void LateUpdate() {
-        
-    }
 
     ///<summary>
     ///Updates the velocity of the rigidbody.
@@ -316,7 +313,8 @@ public class FPMovement : MonoBehaviour
         Vector3 moveDelta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
         walkCycleIndex += moveDelta.magnitude;
 
-        if (!player.IsMissing && EnableHeadTilt)  FPCamera.UpdateCameraTilt(walkCycleIndex, walkStepDistance);
+        if (!player.IsMissing)  FPCamera.UpdateCameraWalkingAnimation(walkCycleIndex, walkStepDistance);
+        if (EnableHeadTilt) FPCamera.UpdateCameraTiltAndBounds();
         
         if (inAir) return;
 

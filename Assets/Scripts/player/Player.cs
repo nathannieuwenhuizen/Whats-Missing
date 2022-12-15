@@ -8,7 +8,7 @@ using UnityEngine.Rendering.Universal;
 public class Player : RoomObject
 {
     ///<summary>
-    /// Player cant be hit by the hitboxm used for the bossai to determine if the palyer is inside a shield
+    /// Player cant be hit by the hitbox used for the bossai to determine if the palyer is inside a shield
     ///</summary>
     public static bool INVINCIBLE = false;
 
@@ -219,7 +219,7 @@ public class Player : RoomObject
     public override void OnAppearing()
     { 
         //no base call!
-        
+        Debug.Log("should be appearing" + Animated);
         IsMissing = false;
         OnPlayerAppear?.Invoke();
         foreach(SkinnedMeshRenderer mr in meshObjects) {

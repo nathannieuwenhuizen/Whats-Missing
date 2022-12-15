@@ -21,6 +21,11 @@ public class EndlessHallway : MonoBehaviour
 
     [SerializeField]
     private Player player;
+
+    [SerializeField]
+    private PortalDoor endlessHallwayDoor;
+    [SerializeField]
+    private PortalDoor finalRoomDoor;
     
     private void SpawnChunks() {
         
@@ -39,7 +44,16 @@ public class EndlessHallway : MonoBehaviour
     }
     private void Awake() {
         SpawnChunks();
+        endlessHallwayDoor.Player = player;
+        finalRoomDoor.Player = player;
+        endlessHallwayDoor.ConnectedDoor = finalRoomDoor;
+        finalRoomDoor.ConnectedDoor = endlessHallwayDoor;
+        endlessHallwayDoor.InSpace = true;
+        finalRoomDoor.InSpace = true;
+        endlessHallwayDoor.Locked = false;
+        finalRoomDoor.Locked = false;
     }
+
 
     private void Update() {
         if (player.transform.position.x > startChunk.transform.position.x) return;

@@ -27,11 +27,16 @@ public class Portal : RenderTexturePlane, IPortal
 
         if (!isActive) return;
         if (!InView) return;
+        // Debug.Log("portal update" + player != null);
         
         if (InsidePortal && player != null) {
-            Vector3 objPos = transform.InverseTransformPoint(player.transform.position);
+
+            Vector3 objPos = transform.InverseTransformDirection(player.transform.position - transform.position);
+            Debug.Log("inside portal" + objPos.y);
+            // Debug.Log(objPos.y < positionOffset);
             if (objPos.y < positionOffset)
             {
+                Debug.Log("teleport: " + transform.parent.name);
                 Teleport(player);
             } 
         }
