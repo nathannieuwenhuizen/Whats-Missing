@@ -28,6 +28,12 @@ public class EndlessHallway : MonoBehaviour
     private PortalDoor endlessHallwayDoor;
     [SerializeField]
     private PortalDoor finalRoomDoor;
+
+    [SerializeField]
+    private SceneLightSetting hallwayLightning;
+    [SerializeField]
+    private SceneLightSetting bedroomLightning;
+    
     
     private void SpawnChunks() {
         
@@ -50,12 +56,62 @@ public class EndlessHallway : MonoBehaviour
         finalRoomDoor.Player = player;
         endlessHallwayDoor.ConnectedDoor = finalRoomDoor;
         finalRoomDoor.ConnectedDoor = endlessHallwayDoor;
+
         endlessHallwayDoor.InSpace = true;
         finalRoomDoor.InSpace = true;
         endlessHallwayDoor.Locked = false;
         finalRoomDoor.Locked = false;
+
+        hallwayLightning.startIntensity = hallwayLightning.directionalLight.intensity;
+        bedroomLightning.startIntensity = bedroomLightning.directionalLight.intensity;
+        bedroomLightning.directionalLight.enabled = false;
     }
 
+    private void OnEnable() {
+        Door.OnPassingThrough += OnDoorPass;
+    }
+
+    private void OnDisable() {
+        Door.OnPassingThrough -= OnDoorPass;
+    }
+
+    private void OnDoorPass(Door door) {
+        StartCoroutine(AnimateSceneLights(door));
+    }
+    public IEnumerator AnimateSceneLights(Door door) {
+        float i = 0;
+        float duration = 1f;
+        SceneLightSetting start, end;
+
+        if (door == endlessHallwayDoor) {
+            start = hallwayLightning;
+            end = bedroomLightning;
+        } else {
+            start = bedroomLightning;
+            end = hallwayLightning;
+        }
+        start.directionalLight.enabled = true;
+        end.directionalLight.enabled = true;
+
+        while (i  < duration) {
+            i += Time.deltaTime;
+            float percentage = AnimationCurve.EaseInOut(0,0,1,1).Evaluate(i / duration);
+            UpdateRenderSettings(SceneLightSetting.LerpUnclamped(start ,end, percentage));
+            start.directionalLight.intensity = Mathf.Lerp(start.startIntensity, 0, percentage);
+            end.directionalLight.intensity = Mathf.Lerp(0, end.startIntensity, percentage);
+            yield return new WaitForEndOfFrame();
+        } 
+        // start.directionalLight.enabled = false;
+
+    }
+
+    private void UpdateRenderSettings(SceneLightSetting setting) {
+        RenderSettings.ambientGroundColor = setting.ambientColors.groundColor;
+        RenderSettings.ambientEquatorColor = setting.ambientColors.equatorColor;
+        RenderSettings.ambientSkyColor = setting.ambientColors.skyColor;
+        RenderSettings.sun.color = setting.ambientColors.sunColor;
+        RenderSettings.fogDensity = setting.fogStrength;
+    }   
 
     private void Update() {
         if (player.transform.position.x > startChunk.transform.position.x) return;
@@ -112,4 +168,19 @@ public class EndlessHallway : MonoBehaviour
         }
     }
 
+}
+[System.Serializable]
+public class SceneLightSetting {
+    public Light directionalLight;
+    [HideInInspector]
+    public float startIntensity;
+    public AmbientColors ambientColors;
+    public float fogStrength;
+
+    public static SceneLightSetting LerpUnclamped (SceneLightSetting a, SceneLightSetting b, float t) {
+        return new SceneLightSetting() {
+            ambientColors = AmbientColors.LerpUnclamped(a.ambientColors,b.ambientColors,t),
+            fogStrength = Mathf.Lerp(a.fogStrength, b.fogStrength, t)
+        };
+    }
 }
