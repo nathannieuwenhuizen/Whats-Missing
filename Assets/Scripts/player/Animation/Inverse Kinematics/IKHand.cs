@@ -14,6 +14,12 @@ public class IKHand: IKLimb
     private float scale = 1f;
     private bool grabbing = false;
 
+    private bool reachHandFoward = false;
+    public bool ReachHandForward {
+        get { return reachHandFoward;}
+        set { reachHandFoward = value; }
+    }
+
     private float maxDistanceBetweenhits = .5f;
     private float minDistanceBetweenhits = .5f;
     private float distanceBetweenhits = .3f;
@@ -37,7 +43,9 @@ public class IKHand: IKLimb
     public override void UpdateIK() {
         if (animator == null) return;
 
-        if (!grabbing) RaycastWall();
+    
+        if (reachHandFoward) RayCastHandForward();
+        if (!grabbing && !reachHandFoward) RaycastWall();
 
         Weight = Weight;
 
@@ -57,7 +65,16 @@ public class IKHand: IKLimb
             animator.SetIKRotation(IKGoal,Quaternion.LookRotation(-currentHit.normal + new Vector3(0,90,0), animatorTransform.up));
         }
     }
-
+    private void RayCastHandForward() {
+        //left hand doesnt touch walls
+        if (IKGoal == AvatarIKGoal.LeftHand) {
+            HasContact = false;
+            return;
+        }
+        HasContact = true;
+        currentHit.point = GetRayCastPosition() +  animatorTransform.forward * HAND_RANGE + Vector3.up * .3f;
+        currentHit.normal = -animatorTransform.forward;
+    }
 
     private void RaycastWall() {
 

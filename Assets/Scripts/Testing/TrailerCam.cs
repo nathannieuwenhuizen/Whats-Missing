@@ -37,6 +37,7 @@ public class TrailerCam : MonoBehaviour, IRoomObject
     }
 
     private void Update() {
+        return;
         if (!InSpace) return;
         if (Input.GetKeyDown(KeyCode.C)) {
             if (isMoving) {

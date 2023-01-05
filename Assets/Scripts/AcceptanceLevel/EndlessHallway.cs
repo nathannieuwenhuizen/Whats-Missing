@@ -21,6 +21,8 @@ public class EndlessHallway : MonoBehaviour
 
     [SerializeField]
     private Player player;
+    [SerializeField]
+    private AcceptanceVivienne vivienne;
 
     [SerializeField]
     private PortalDoor endlessHallwayDoor;
@@ -83,6 +85,7 @@ public class EndlessHallway : MonoBehaviour
     private void SetPlayerBack(float ammountOfSegments) {
         Vector3 moveDelta = new Vector3(-chunkSize,0,0) * ammountOfSegments;
         player.transform.position -= moveDelta;
+        vivienne.transform.position -= moveDelta;
         player.Movement.SetOldPosToTransform();
 
         //make new list

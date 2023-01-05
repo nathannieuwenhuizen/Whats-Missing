@@ -12,8 +12,7 @@ public class InGameCanvas : MonoBehaviour
 
     private void Update() {
 #if UNITY_EDITOR
-
-        if (Input.GetKeyDown(KeyCode.C))  
+        if (Input.GetKeyDown(KeyCode.C) && Input.GetKey(KeyCode.LeftControl))  
             cg.alpha = cg.alpha == 1 ? 0 : 1;
 #endif
         

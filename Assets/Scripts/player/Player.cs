@@ -50,6 +50,9 @@ public class Player : RoomObject
     private Animator animatorLevel2End;
     [SerializeField]
     private IKPass IKPass;
+    public IKPass IKPASS {
+        get { return IKPass;}
+    }
 
     [SerializeField]
     private Transform handsPosition;
