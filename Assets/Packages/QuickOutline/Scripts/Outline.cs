@@ -89,19 +89,21 @@ public class Outline : MonoBehaviour {
 
   private bool needsUpdate;
 
+  private bool disabled = false;
+  public bool Disabled {
+    get { return disabled;}
+    set { 
+      disabled = value; 
+    }
+  }
+
+
+
   void Awake() {
 
     // Cache renderers
     renderers = GetComponentsInChildren<Renderer>();
 
-    // Instantiate outline materials
-    outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
-    outlineFillMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineFill"));
-
-    outlineColor = outlineFillMaterial.GetColor("_Color");
-    outlineOuterColor = outlineFillMaterial.GetColor("_ColorR");
-    outlineMaskMaterial.name = "OutlineMask (Instance)";
-    outlineFillMaterial.name = "OutlineFill (Instance)";
 
     // Retrieve or generate smooth normals
     LoadSmoothNormals();
@@ -111,6 +113,17 @@ public class Outline : MonoBehaviour {
   }
 
   void OnEnable() {
+    // Instantiate outline materials
+    Debug.Log("Disabled: " + disabled);
+    outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
+    outlineFillMaterial = Instantiate(Resources.Load<Material>(disabled ? @"Materials/OutlineFill_Heavy" : @"Materials/OutlineFill"));
+
+    outlineColor = outlineFillMaterial.GetColor("_Color");
+    outlineOuterColor = outlineFillMaterial.GetColor("_ColorR");
+    outlineMaskMaterial.name = "OutlineMask (Instance)";
+    outlineFillMaterial.name = "OutlineFill (Instance)";
+
+    
     foreach (var renderer in renderers) {
       if (renderer.gameObject.GetComponent<ParticleSystem>() != null) continue;
       // Append outline shaders

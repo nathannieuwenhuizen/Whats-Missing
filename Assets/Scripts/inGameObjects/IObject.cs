@@ -240,7 +240,7 @@ public interface IInteractable {
     /// Wheter the object is focues or not
     ///</summary>
     bool Focused {get; set;}
-    Color FocusedColor {get; set;}
+    bool Disabled {get; set;}
     bool Interactable {get; set; }
     GameObject Gameobject { get; }
 

@@ -57,6 +57,12 @@ public class InteractabelObject : RoomObject, IInteractable
     /// Distance on when the player can interact with the item. Default is set to 6 units
     ///</summary>
     public float InteractableDistance { get; set; } = 6f;
+    public bool Disabled { get => Outline.Disabled; 
+    set{
+        Outline.Disabled = value;
+        Outline.enabled = false;
+        Outline.enabled = true;
+    } }
 
     ///<summary>
     /// When the cursor hovers over the mesh of the object. It makes the outline appear.
