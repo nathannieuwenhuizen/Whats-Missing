@@ -1,7 +1,8 @@
 ﻿Shader "FX/Aura Outline" {
 	Properties{
+    	[Enum(UnityEngine.Rendering.CompareFunction)] _ZTest("ZTest", Float) = 0
 
-		_OutlineColor("Aura Inner Color", Color) = (0,0,1,1)
+		_Color("Aura Inner Color", Color) = (0,0,1,1)
 		_ColorR("Rim Color", Color) = (0,1,1,1)
 		_OutlineWidth("Outline width", Range(.002, 0.8)) = .3
 		_OutlineZ("Outline Z", Range(-.06, 0)) = -.05
@@ -34,7 +35,7 @@
 		};
 
 
-		float _Outline;
+		float _OutlineWidth;
 		float _OutlineZ;
 		float _RimPower;
 
@@ -59,7 +60,7 @@
 			float3 norm = normalize(mul((float3x3)UNITY_MATRIX_IT_MV, v.normal)) * scale;
 			float2 offset = (mul((float2x2)UNITY_MATRIX_P, norm.xy));
 			// add the offset
-			o.pos.xy += offset * _Outline;
+			o.pos.xy += offset * _OutlineWidth;
 			// flatten
 			o.pos.z *= 0.01;
 			// push away from camera
@@ -75,7 +76,15 @@
 					Tags { "LightMode" = "UniversalForward" }
 					Blend SrcAlpha OneMinusSrcAlpha // Transparency Blending
 					ZWrite Off
-					Cull Back
+					Cull Off
+					ZTest [_ZTest]
+					Blend SrcAlpha OneMinusSrcAlpha
+      				ColorMask RGB
+
+					Stencil {
+						Ref 1
+						Comp NotEqual
+					}
 
 					HLSLPROGRAM
 					#pragma vertex vert

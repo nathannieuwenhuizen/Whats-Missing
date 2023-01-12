@@ -17,7 +17,7 @@ public class InteractabelObject : RoomObject, IInteractable
         }
         set { outline = value; }
     }
-    private float outlineWidth = 10;
+    private float outlineWidth = .1f;
     private float duration = .4f;
     private Coroutine focusedCoroutine;
 
@@ -65,6 +65,8 @@ public class InteractabelObject : RoomObject, IInteractable
         if (!OutlineEnabled) return;
 
         Outline.enabled = true;
+        Outline.OutlineMode = Outline.Mode.OutlineVisible;
+        
         if (focusedCoroutine != null) StopCoroutine(focusedCoroutine);
         focusedCoroutine = StartCoroutine(AnimateOutline(outlineWidth, false)); 
     }

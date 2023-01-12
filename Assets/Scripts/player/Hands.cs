@@ -169,14 +169,14 @@ public class Hands : MonoBehaviour
                     currentInteractable.Focused = false;
                 if (interactableObj.Gameobject.GetComponent<IPickable>() != default(IPickable)) {
                     if (interactableObj.Gameobject.GetComponent<IPickable>().TooHeavy(this)){
-                        interactableObj.FocusedColor = Color.red;
+                        // interactableObj.FocusedColor = Color.red;
                         interactableObj.Focused = true;
                         currentInteractable = interactableObj;
                         OnFocus?.Invoke(false);
                         return;
                     }
                 } 
-                interactableObj.FocusedColor = Color.white;
+                // interactableObj.FocusedColor = Color.white;
                 interactableObj.Focused = true;
                 currentInteractable = interactableObj;
                 OnFocus?.Invoke(true);
