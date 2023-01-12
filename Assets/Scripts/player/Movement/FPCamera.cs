@@ -243,16 +243,20 @@ public class FPCamera
         
     }
 
-    private void ShowAimCutscene(Transform _target, float duration) {
+    public void ShowAimCutscene(Transform _target, float _duration, float _zoom = 60f, float _steeringSpeed = 2f) {
         UseSteeringBehaviour = true;
         currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward * 5f;
         SteeringBehaviour.Velocity = Vector3.zero;
         steeringTarget = _target.transform;
-        // StartCoroutine(TempAimCutscene(duration));
+        steeringSpeed = _steeringSpeed;
+        FPMovement.StartCoroutine(TempAimCutscene(_duration));
+        FPMovement.Player.CharacterAnimationPlayer.PlayCutSceneAnimation("", false, null, _zoom, false);
+
     }
     private IEnumerator TempAimCutscene(float duration) {
         yield return new WaitForSeconds(duration);
         UseSteeringBehaviour = false;
+        FPMovement.Player.CharacterAnimationPlayer.EndOfCutSceneAnimation();
     }
 
     private void OnBossCutSceneEnd(Boss.Boss boss, float zoom) {
@@ -293,7 +297,7 @@ public class FPCamera
         transform.localRotation = Quaternion.Euler( new Vector3(0, transform.localRotation.eulerAngles.y, 0));
 
         Quaternion newrotation = Quaternion.LookRotation( desiredAim.position - cameraPivot.position, Vector3.up);
-        cameraPivot.rotation = Quaternion.Slerp(newrotation, newrotation, Time.deltaTime * steeringSpeed);
+        cameraPivot.rotation = Quaternion.Slerp(cameraPivot.rotation, newrotation, Time.deltaTime * steeringSpeed);
         // cameraPivot.localRotation = Quaternion.Euler( new Vector3(cameraPivot.localRotation.eulerAngles.x, cameraPivot.localRotation.eulerAngles.y, 0));
     }
 

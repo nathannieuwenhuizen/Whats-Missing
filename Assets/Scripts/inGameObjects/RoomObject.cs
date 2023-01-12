@@ -38,6 +38,7 @@ public class RoomObject : RoomEntity
     private bool affectedByPotions = true;
     public bool AffectedByPotions {
         get { return affectedByPotions;}
+        set { affectedByPotions = value; }
     }
 
     protected virtual void Awake() {

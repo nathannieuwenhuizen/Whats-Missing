@@ -336,7 +336,7 @@ public class Room : MonoBehaviour
 
         hintStopwatch.Resume();
         changeLineAnimated = false;
-        Animated = roomLevel.roomInfo.alwaysAnimate ? true : false;
+        if (roomLevel != null) Animated = roomLevel.roomInfo.alwaysAnimate ? true : false;
 
         if (loadSaveData) {
             roomstateHandler.LoadState(SaveData.current);

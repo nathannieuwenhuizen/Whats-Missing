@@ -102,7 +102,15 @@ public class Potion : PickableRoomObject
         rb.drag = 0;
         rb.angularDrag = 0;
         rb.angularVelocity = transform.InverseTransformDirection(new Vector3(0,50,0));
+        Interactable = false;
         thrown = true;
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (!thrown) return;
+        if (other.GetComponentInParent<ThirdAreaEndTrigger>() != null) {
+            other.GetComponentInParent<ThirdAreaEndTrigger>().TriggerCutscene(this);
+        }
     }
 
 
@@ -207,14 +215,20 @@ public class Potion : PickableRoomObject
         burstParticle.Emit(50);
         smokeParticle.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         OnBreak?.Invoke(this);
+        RigidBody.velocity = Vector3.zero;
         Destroy(aimHitObject.gameObject);
         Destroy(burstParticle, 5f);
         Destroy(smokeParticle, 5f);
         Destroy(gameObject, 5f);
+        FadeOutAimLine();
+        Destroy(potionMeshObject);
+    }
+
+    public void FadeOutAimLine() {
+        // if (AimLineAlpha == 0) return;
         StartCoroutine(Extensions.AnimateCallBack(1f, 0f, AnimationCurve.EaseInOut(0,0,1,1), (val) => {
             AimLineAlpha = val;
-        }, 2f));
-        Destroy(potionMeshObject);
+        }, .25f));
     }
     public float AimLineAlpha {
         get { return lineRenderer.material.GetFloat("_alpha");}

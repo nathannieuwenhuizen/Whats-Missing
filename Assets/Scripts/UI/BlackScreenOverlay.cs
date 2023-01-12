@@ -19,8 +19,8 @@ public class BlackScreenOverlay : MonoBehaviour
         Player.OnDie += DeathFade;
         Area.OnRespawn += RemoveOverlay;
         BossRoom.OnRespawn += RemoveOverlay;
-
         AlchemyItem.OnPickingAlchemyItem += FadeToWhite;
+        ThirdAreaEndTrigger.OnEndOfCutscene += FadeToBlack;
 
     }
     private void OnDisable() {
@@ -28,6 +28,7 @@ public class BlackScreenOverlay : MonoBehaviour
         Area.OnRespawn -= RemoveOverlay;
         BossRoom.OnRespawn -= RemoveOverlay;
         AlchemyItem.OnPickingAlchemyItem -= FadeToWhite;
+        ThirdAreaEndTrigger.OnEndOfCutscene -= FadeToBlack;
     }
 
     public void DeathFade(bool withAnimation, bool toPreviousLevel) {
