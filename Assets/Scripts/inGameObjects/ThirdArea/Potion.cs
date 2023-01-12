@@ -213,7 +213,7 @@ public class Potion : PickableRoomObject
         Destroy(gameObject, 5f);
         StartCoroutine(Extensions.AnimateCallBack(1f, 0f, AnimationCurve.EaseInOut(0,0,1,1), (val) => {
             AimLineAlpha = val;
-        }, 2f));
+        }, .25f));
         Destroy(potionMeshObject);
     }
     public float AimLineAlpha {
