@@ -57,7 +57,7 @@
 			o.viewDir = normalize(GetWorldSpaceViewDir(worldPos)); // view direction
 
 			// rotate normals to eye space
-			float3 norm = normalize(mul((float3x3)UNITY_MATRIX_IT_MV, v.normal)) * scale;
+			float3 norm = normalize(mul((float3x3)UNITY_MATRIX_IT_MV, v.normal));
 			float2 offset = (mul((float2x2)UNITY_MATRIX_P, norm.xy));
 			// add the offset
 			o.pos.xy += offset * _OutlineWidth;
