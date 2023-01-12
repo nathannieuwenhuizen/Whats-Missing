@@ -17,7 +17,7 @@ public class InteractabelObject : RoomObject, IInteractable
         }
         set { outline = value; }
     }
-    private float outlineWidth = .1f;
+    private float outlineWidth = .025f;
     private float duration = .4f;
     private Coroutine focusedCoroutine;
 
