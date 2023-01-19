@@ -57,7 +57,7 @@ public class BossChangesHandler
             yield return new WaitForSeconds(1f);
         }
         acitvatedChange = _change;
-        textAnimator.ShowText("<Wiggle>" + _change.Word + " is " + Change.GetChangeTypeText(_change.ChangeType));
+        //textAnimator.ShowText("<Wiggle>" + _change.Word + " is " + Change.GetChangeTypeText(_change.ChangeType));
         yield return new WaitForSeconds(1f);
         ApplyChange();
     }
