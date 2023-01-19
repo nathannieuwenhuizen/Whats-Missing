@@ -101,6 +101,7 @@ public static class SFXFiles {
     public static string boss_transformation = "event:/SFX/Boss/Boss/Transformation";
     public static string boss_talking = "event:/SFX/Boss/Boss/Talking";
 
+    public static string rain = "event:/SFX/Environment/Third_area/Rain";
 
 
     //music
@@ -108,11 +109,13 @@ public static class SFXFiles {
     public static string HIDDEN_ROOM = "event:/Music/Hidden_room";
     public static string Environment1 = "event:/Music/Environment1";
     public static string Environment2 = "event:/Music/Environment2";
+    public static string Environment3 = "event:/Music/Environment3";
 
 }
 public enum MusicFiles {
     planetarium,
     menu,
     planetarium_hidden_room,
-    garden
+    garden,
+    tower
 }

@@ -74,6 +74,7 @@ public class BossPositioner : MonoBehaviour
     private AirSteeringBehaviour airMovementBehaviour;
     private NavMeshBehaviour navMeshMovementBehaviour;
     private FreeFloatBehaviour freefloatMovementBehaviour;
+    
     public IMovementBehavior CurrentMovementBehaviour {
         get {
             if (BodyMovementType == BodyMovementType.airSteeringAtMountain) return airMovementBehaviour;

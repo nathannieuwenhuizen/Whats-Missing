@@ -107,9 +107,9 @@ namespace Boss {
             float index = 0;
             while (index < animationDuration) {
                 index += Time.deltaTime;
-                IKPass.RightArm.IKPosition = boss.Player.transform.position;
+                IKPass.RightArm.IKPosition = boss.Player.Camera.transform.position;
                 IKPass.RightArm.Weight = animator.GetFloat(BossAnimatorParam.FLOAT_ATTACKWEIGHT);
-                boss.Body.ToggleDeathColliders(IKPass.RightArm.Weight > 0);
+                boss.Body.ToggleDeathColliders(animator.GetFloat(BossAnimatorParam.FLOAT_ATTACKWEIGHT) > 0);
                 yield return new WaitForFixedUpdate();
             }
             attacking = false;
@@ -128,7 +128,7 @@ namespace Boss {
             float index = 0;
             while (index < animationDuration) {
                 index += Time.deltaTime;
-                IKPass.RightArm.IKPosition = boss.Player.transform.position;
+                IKPass.RightArm.IKPosition = boss.Player.Camera.transform.position;
                 IKPass.RightArm.Weight = animator.GetFloat(BossAnimatorParam.FLOAT_ATTACKWEIGHT);
                 boss.Body.ToggleDeathColliders(IKPass.RightArm.Weight > 0);
                 yield return new WaitForFixedUpdate();

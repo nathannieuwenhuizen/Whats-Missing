@@ -98,6 +98,7 @@ public static class TransformExtensions
             timePassed += Time.deltaTime;
             transform.rotation = Quaternion.SlerpUnclamped(beginrotation, endrotation , curve.Evaluate(timePassed / duration));
         }
+        yield return new WaitForEndOfFrame();
         transform.rotation = endrotation;
     }
 

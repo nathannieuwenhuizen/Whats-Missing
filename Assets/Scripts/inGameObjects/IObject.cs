@@ -207,6 +207,12 @@ public interface IChangable : IMissable, IShrinkable, IEnlargable, IFlippable
 }
 
 
+public enum HoldOrientation {
+    none,
+    shard,
+    potion
+}
+
 ///<summary>
 /// Interface for objects can be picked up and thrown away
 ///</summary>
@@ -221,7 +227,7 @@ public interface IPickable {
     RigidBodyInfo RigidBodyInfo { get;set;}    
     public float HoldingDistance {get; }
     public Vector3 HoldingOffset {get;set;}
-    public bool LooksWhenGrabbed  {get; }
+    public HoldOrientation HoldOrientation  {get; }
 
 }
 
@@ -234,7 +240,7 @@ public interface IInteractable {
     /// Wheter the object is focues or not
     ///</summary>
     bool Focused {get; set;}
-    Color FocusedColor {get; set;}
+    bool Disabled {get; set;}
     bool Interactable {get; set; }
     GameObject Gameobject { get; }
 

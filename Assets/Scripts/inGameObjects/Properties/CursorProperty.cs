@@ -76,9 +76,11 @@ public class CursorProperty : Property
     public override void OnEnlarge() {
         base.OnEnlarge();
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
-            uiGroup.GetComponent<CursorUI>().CanHighLight = false;
-            RectTransform rt = uiGroup.GetComponent<RectTransform>();
-            rt.localScale = Vector3.one * LargeScale;
+            // uiGroup.GetComponent<CursorUI>().CanHighLight = false;
+            uiGroup.GetComponent<CursorUI>().Scale = LargeScale;
+            
+            // RectTransform rt = uiGroup.GetComponent<RectTransform>();
+            // rt.localScale = Vector3.one * LargeScale;
         }
     }
 
@@ -95,9 +97,10 @@ public class CursorProperty : Property
     public override void OnEnlargingFinish()
     {
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
-            uiGroup.GetComponent<CursorUI>().CanHighLight = false;
-            RectTransform rt = uiGroup.GetComponent<RectTransform>();
-            rt.localScale = Vector3.one * LargeScale;
+            // uiGroup.GetComponent<CursorUI>().CanHighLight = false;
+            uiGroup.GetComponent<CursorUI>().Scale = LargeScale;
+            // RectTransform rt = uiGroup.GetComponent<RectTransform>();
+            // rt.localScale = Vector3.one * LargeScale;
         }
         Cursor.SetCursor(bigMouseTexture, Vector2.zero, CursorMode.ForceSoftware);
         Cursor.visible = false;
@@ -119,8 +122,10 @@ public class CursorProperty : Property
         base.OnEnlargeRevertFinish();
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
             uiGroup.GetComponent<CursorUI>().CanHighLight = true;
-            RectTransform rt = uiGroup.GetComponent<RectTransform>();
-            rt.localScale = Vector3.one * normalScale;
+            uiGroup.GetComponent<CursorUI>().Scale = normalScale;
+
+            // RectTransform rt = uiGroup.GetComponent<RectTransform>();
+            // rt.localScale = Vector3.one * normalScale;
         }
         Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
         Cursor.visible = false;

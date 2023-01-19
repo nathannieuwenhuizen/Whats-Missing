@@ -26,7 +26,7 @@ public class PortalDoor : Door
     }
 
 
-    private void SetPortalState(bool val) {
+    public void SetPortalState(bool val) {
         if (delayDeactivationCoroutine != null) StopCoroutine(delayDeactivationCoroutine);
         portal.IsActive = val;
     }
@@ -51,8 +51,9 @@ public class PortalDoor : Door
             SetPortalState(!value);
         }
     }
-    private void Awake() {
-        SetPortalState(false);
+    protected override void Awake() {
+        base.Awake();
+        SetPortalState(!locked);
     }
 
     public override void SetBezierPoints(Player player)
@@ -105,23 +106,26 @@ public class PortalDoor : Door
         }
     }
 
-    public override void OnRoomEnter()
+    public override void GoingThrough()
     {
-        SetPortalState(!locked);
-        base.OnRoomEnter();
-    }
-
-    public override void OnRoomLeave()
-    {
-        base.OnRoomLeave();
+        base.GoingThrough();
         if (delayDeactivationCoroutine != null) StopCoroutine(delayDeactivationCoroutine);
         delayDeactivationCoroutine = StartCoroutine(Delaydeactivation());
+        connectedDoor.SetPortalState(!locked);
     }
+
     private IEnumerator Delaydeactivation() {
         while (IN_WALKING_ANIMATION) {
             yield return new WaitForEndOfFrame();
         }
         yield return new WaitForSeconds(3f);
         SetPortalState(false);
+    }
+
+    public override Vector3 StartPos() {
+        return transform.position + transform.forward * walkDistance;
+    }
+    public override Vector3 EndPos() {
+        return transform.position - transform.forward * walkDistance;
     }
 }

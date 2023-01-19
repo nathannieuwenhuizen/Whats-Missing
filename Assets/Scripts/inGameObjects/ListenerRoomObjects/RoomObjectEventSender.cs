@@ -30,7 +30,9 @@ public class RoomObjectEventSender
     
     public void Update() {
         if (!Active) return;
-        CheckFlipState();
+
+        //note: otherwise table throw from bridge while upside-down won't result in level complete.
+        // CheckFlipState();
     }
     public void CheckFlipState() {
         if (IsFlipped()) {

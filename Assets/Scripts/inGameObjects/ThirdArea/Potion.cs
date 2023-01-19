@@ -22,6 +22,8 @@ public class Potion : PickableRoomObject
     private LineRenderer lineRenderer;
     [SerializeField]
     private Transform aimHitObject;
+    [SerializeField]
+    private GameObject potionMeshObject;
 
     private int linePointCount = 300;
     
@@ -47,7 +49,15 @@ public class Potion : PickableRoomObject
         grabSound = SFXFiles.potion_grab;
         ClearAimLine();
         StartCoroutine(DeactivateRigidVelocity());
+        InteractableDistance = 15f;
+        HoldingOffset = new Vector3(-1f, 0f, -1f);
+
     }
+
+    private void Start() {
+        holdOrientation = HoldOrientation.potion;
+    }
+
     public IEnumerator DeactivateRigidVelocity() {
         rb.isKinematic = true;
         yield return new WaitForSeconds(.5f);
@@ -91,7 +101,16 @@ public class Potion : PickableRoomObject
         rb.AddForce(delta * forcePower * rb.mass);
         rb.drag = 0;
         rb.angularDrag = 0;
+        rb.angularVelocity = transform.InverseTransformDirection(new Vector3(0,50,0));
+        Interactable = false;
         thrown = true;
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if (!thrown) return;
+        if (other.GetComponentInParent<ThirdAreaEndTrigger>() != null) {
+            other.GetComponentInParent<ThirdAreaEndTrigger>().TriggerCutscene(this);
+        }
     }
 
 
@@ -100,6 +119,11 @@ public class Potion : PickableRoomObject
         broken = true;
         IChangable changable = getPotentialIChangable(other);
         if (changable != null) {
+            if (changable.Transform.GetComponent<RoomObject>() != null) 
+                if (changable.Transform.GetComponent<RoomObject>().AffectedByPotions == false) {
+                    Break();
+                    return;
+                }
             OnChanging?.Invoke(this, changable);
         }
         Break();
@@ -107,10 +131,13 @@ public class Potion : PickableRoomObject
 
     private IChangable getPotentialIChangable(Collision other)
     {        
+        //check first in children
         IChangable changable = other.transform.GetComponentInChildren<IChangable>();
         if (changable == null) 
+            //then itself
             changable = other.transform.GetComponent<IChangable>();
         if (changable == null) 
+            //then its parent
             changable = other.transform.parent.GetComponent<IChangable>();
         return changable;
     }
@@ -120,6 +147,7 @@ public class Potion : PickableRoomObject
         aimHitObject.transform.parent = transform.parent;
 
         while (thrown == false) {
+            AimLineAlpha = 1;
             Vector3 delta =  -Camera.main.transform.forward * forcePower * rb.mass;
             UpdateAimLine(delta, rb, transform.position);
             yield return new WaitForEndOfFrame();
@@ -161,6 +189,7 @@ public class Potion : PickableRoomObject
             oldPos = -movementVector + startingPoint;
             linePoints.Add(-movementVector + startingPoint);
         }
+        linePoints.RemoveAt(0);
         lineRenderer.positionCount = linePoints.Count;
         lineRenderer.SetPositions(linePoints.ToArray());
         aimHitObject.gameObject.SetActive(hitted);
@@ -186,10 +215,24 @@ public class Potion : PickableRoomObject
         burstParticle.Emit(50);
         smokeParticle.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         OnBreak?.Invoke(this);
+        RigidBody.velocity = Vector3.zero;
         Destroy(aimHitObject.gameObject);
         Destroy(burstParticle, 5f);
         Destroy(smokeParticle, 5f);
-        Destroy(gameObject);
-
+        Destroy(gameObject, 5f);
+        FadeOutAimLine();
+        Destroy(potionMeshObject);
     }
+
+    public void FadeOutAimLine() {
+        // if (AimLineAlpha == 0) return;
+        StartCoroutine(Extensions.AnimateCallBack(1f, 0f, AnimationCurve.EaseInOut(0,0,1,1), (val) => {
+            AimLineAlpha = val;
+        }, .25f));
+    }
+    public float AimLineAlpha {
+        get { return lineRenderer.material.GetFloat("_alpha");}
+        set { lineRenderer.material.SetFloat("_alpha", value); }
+    }
+
 }

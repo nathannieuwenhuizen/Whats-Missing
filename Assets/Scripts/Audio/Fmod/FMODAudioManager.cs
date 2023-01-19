@@ -113,6 +113,9 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
             case MusicFiles.garden:
             key = SFXFiles.Environment2;
             break;
+            case MusicFiles.tower:
+            key = SFXFiles.Environment3;
+            break;
             case MusicFiles.planetarium_hidden_room:
             key = SFXFiles.HIDDEN_ROOM;
             break;

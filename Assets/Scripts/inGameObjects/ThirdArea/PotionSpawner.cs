@@ -8,7 +8,7 @@ public class SpawnPoint {
     public Transform spawnLocation;
     [SerializeField]
     public GameObject potionPrefab;
-    [HideInInspector]
+    [SerializeField]
     public ChangeType changeType;
 }
 
@@ -19,21 +19,39 @@ public class PotionSpawner : RoomObject
 {
     [SerializeField]
     private SpawnPoint[] spawnPoints;
+    
+    public RoomPotionData potionData {
+        get; set;
+    }
 
+    private bool spawned = false;
 
     ///<summary>
     /// SpawnsAll the potions
     ///</summary>
     private void Start() {
+        // foreach(SpawnPoint point in spawnPoints) {
+        //     SpawnPotion(point);
+        // }
+    }
+    public override void OnRoomEnter()
+    {
+        base.OnRoomEnter();
+        if (spawned) return;
+        spawned = true;
+
         foreach(SpawnPoint point in spawnPoints) {
             SpawnPotion(point);
         }
     }
 
+
     ///<summary>
     /// Spawns a potion on the designated spawnPoint
     ///</summary>
     public void SpawnPotion(SpawnPoint spawnPoint) {
+        //returns if it isn't able to spawn a potion
+        if (!CanSpawnPotion(spawnPoint)) return;
         Potion potion = Instantiate(spawnPoint.potionPrefab, spawnPoint.spawnLocation.position, Quaternion.identity).GetComponent<Potion>();
         potion.gameObject.transform.parent = spawnPoint.spawnLocation;
         spawnPoint.changeType = potion.ChangeType;
@@ -48,7 +66,18 @@ public class PotionSpawner : RoomObject
 
     private void OnDisable() {
         Potion.OnBreak -= RefillPotion;
-        
+    }
+
+
+    ///<summary>
+    /// Returns true if it can spawn a potion with the potion data.
+    ///</summary>
+    private bool CanSpawnPotion(SpawnPoint _spawnPoint) {
+        // if (potionData == null) return true;
+        if (!potionData.missingPotionAvailable && _spawnPoint.changeType == ChangeType.missing) return false;
+        if (!potionData.tooBigPotionAvailable && _spawnPoint.changeType == ChangeType.tooBig) return false;
+        if (!potionData.tooSmallPotionAvailable && _spawnPoint.changeType == ChangeType.tooSmall) return false;
+        return true;
     }
 
     ///<summary>

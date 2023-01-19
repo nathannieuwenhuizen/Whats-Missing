@@ -121,7 +121,7 @@ public class MirrorShard : PickableRoomObject
 
     private void Start() {
         grabSound = SFXFiles.mirorshard_grab;
-        looksWhenGrabbed = true;
+        holdOrientation = HoldOrientation.shard;
         startLocalPos = transform.localPosition;
         startParent = transform.parent;
         holdingDistance = 5f;

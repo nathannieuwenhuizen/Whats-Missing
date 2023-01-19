@@ -85,6 +85,9 @@ public class BossAI : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.T)) {
                 stateMachine.SwitchState(behaviours.transformationState);
             }
+            if (Input.GetKeyDown(KeyCode.Y)) {
+                stateMachine.SwitchState(behaviours.dieState);
+            }
             // if (Input.GetKeyDown(KeyCode.T)) {
             //     stateMachine.SwitchState(behaviours.destroyShieldState);
             // }
@@ -137,7 +140,7 @@ public class BossAI : MonoBehaviour {
             break;
             case 2:
             CurrentWanderingPath = paths.thirdShardPath;           
-            // stateMachine.SwitchState(behaviours.transformationState);
+            stateMachine.SwitchState(behaviours.transformationState);
             break;
             case 3:
             CurrentWanderingPath = paths.fourthShardPath;  

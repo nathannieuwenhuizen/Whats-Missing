@@ -41,7 +41,7 @@ ParticleSystem:
   m_GameObject: {fileID: 756411606}
   serializedVersion: 7
   lengthInSec: 5
-  simulationSpeed: 1
+  simulationSpeed: 0.25
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -9709,7 +9709,7 @@ ParticleSystem:
   m_GameObject: {fileID: 3609253997203567055}
   serializedVersion: 7
   lengthInSec: 5
-  simulationSpeed: 1
+  simulationSpeed: 0.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -9890,7 +9890,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.92966837, g: 1, b: 0.56981134, a: 0.53333336}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.34901962}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -10971,8 +10971,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 1, b: 1, a: 1}
-        key1: {r: 1, g: 1, b: 1, a: 0}
+        key0: {r: 1, g: 1, b: 1, a: 0}
+        key1: {r: 1, g: 1, b: 1, a: 1}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -10988,8 +10988,8 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 65535
-        atime2: 0
+        atime1: 4626
+        atime2: 65535
         atime3: 0
         atime4: 0
         atime5: 0
@@ -10997,7 +10997,7 @@ ParticleSystem:
         atime7: 0
         m_Mode: 0
         m_NumColorKeys: 2
-        m_NumAlphaKeys: 2
+        m_NumAlphaKeys: 3
       minGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -11209,7 +11209,7 @@ ParticleSystem:
     y:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.4
+      scalar: 0.01
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -14542,6 +14542,8 @@ MonoBehaviour:
   - brew
   missingChangeEffect: 1
   flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 0
   rigidBodyInfo:
     Drag: 0
     AngularDrag: 0.05
@@ -14555,6 +14557,7 @@ MonoBehaviour:
   smokeParticle: {fileID: 756411608}
   lineRenderer: {fileID: 6150722931712322188}
   aimHitObject: {fileID: 7921913837055162275}
+  potionMeshObject: {fileID: 8675477283945645832}
   changeType: 0
 --- !u!54 &9018500409886541009
 Rigidbody:
@@ -14613,11 +14616,11 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 11.34, y: 0, z: 0}
+  - {x: -2.6245475, y: 0, z: 0}
+  - {x: 39.16804, y: 0, z: 0}
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 1
+    widthMultiplier: 2
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -14644,10 +14647,10 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0, b: 0, a: 1}
+      key0: {r: 1, g: 1, b: 1, a: 0}
       key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
+      key2: {r: 0, g: 0, b: 0, a: 1}
+      key3: {r: 0, g: 0, b: 0, a: 1}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
@@ -14661,21 +14664,21 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
+      atime1: 1638
+      atime2: 65535
+      atime3: 65535
+      atime4: 65535
       atime5: 0
       atime6: 0
       atime7: 0
       m_Mode: 0
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 2
+      m_NumAlphaKeys: 3
     numCornerVertices: 3
     numCapVertices: 4
     alignment: 0
     textureMode: 0
-    shadowBias: 0.5
+    shadowBias: 0
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
@@ -14742,6 +14745,11 @@ PrefabInstance:
     - {fileID: 4223146490325888369, guid: 5423dd52271925b49859069fca0f0252, type: 3}
     - {fileID: 1083909388629200358, guid: 5423dd52271925b49859069fca0f0252, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5423dd52271925b49859069fca0f0252, type: 3}
+--- !u!1 &8675477283945645832 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8825082215640143828, guid: 5423dd52271925b49859069fca0f0252, type: 3}
+  m_PrefabInstance: {fileID: 152419956541362396}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &280206626197143271 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 143832981686251067, guid: 5423dd52271925b49859069fca0f0252, type: 3}

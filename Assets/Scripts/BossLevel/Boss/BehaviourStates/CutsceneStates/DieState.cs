@@ -15,16 +15,18 @@ namespace Boss {
             {
             stateName = "Die cutscene";
             base.Start();
-            Positioner.SpeedScale = 10f;
 
-            Positioner.MovementEnabled = true;
-            Positioner.RotationEnabled = true;
+            Positioner.MovementEnabled = false;
+            Positioner.RotationEnabled = false;
 
             //transport the boss to the end position
-            bossAI.transform.position = bossAI.DiePosition.position + (bossAI.ShieldDestroyPosition.position - bossAI.DiePosition.position).normalized * 5f;
+            Vector3 aimDelta = (bossAI.ShieldDestroyPosition.position - bossAI.DiePosition.position).normalized;
+            bossAI.transform.position = bossAI.DiePosition.position + aimDelta * 5f;
+            Quaternion aim =  Quaternion.LookRotation(-aimDelta, Vector3.up);
+            bossAI.transform.rotation = aim;
 
-            Positioner.BodyMovementType = BodyMovementType.navMesh;
-            Positioner.BodyOrientation = BodyOrientation.toPath;
+            // Positioner.BodyMovementType = BodyMovementType.navMesh;
+            // Positioner.BodyOrientation = BodyOrientation.toPath;
 
             Positioner.SetDestinationPath(bossAI.DiePosition, bossAI.transform.position, false, 0);
             bossAI.StartCoroutine(bossAI.Boss.Body.UpdatingDisolve(10f));

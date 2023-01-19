@@ -29,8 +29,11 @@ public class DestroyTrigger : MonoBehaviour, IRoomObject
     }
 
     private void OnCollisionEnter(Collision other) {
+        
         RoomObject changable = other.gameObject.GetComponent<RoomObject>();
         if (changable != null) {
+            coll.isTrigger = true;
+            StartCoroutine(DisableTrigger());
             Player player = changable.Transform.GetComponent<Player>();
             if (player != null) {
                 player.Die(false);
@@ -38,5 +41,10 @@ public class DestroyTrigger : MonoBehaviour, IRoomObject
                 Destroy(changable.Transform.gameObject);
             }
         }
+    }
+
+    public IEnumerator DisableTrigger() {
+        yield return new WaitForSeconds(.5f);
+            coll.isTrigger = false;
     }
 }

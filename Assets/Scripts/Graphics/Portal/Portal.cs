@@ -27,11 +27,16 @@ public class Portal : RenderTexturePlane, IPortal
 
         if (!isActive) return;
         if (!InView) return;
+        // Debug.Log("portal update" + player != null);
         
         if (InsidePortal && player != null) {
-            Vector3 objPos = transform.InverseTransformPoint(player.transform.position);
+
+            Vector3 objPos = transform.InverseTransformDirection(player.transform.position - transform.position);
+            Debug.Log("inside portal" + objPos.y);
+            // Debug.Log(objPos.y < positionOffset);
             if (objPos.y < positionOffset)
             {
+                Debug.Log("teleport: " + transform.parent.name);
                 Teleport(player);
             } 
         }
@@ -69,11 +74,13 @@ public class Portal : RenderTexturePlane, IPortal
         relativePos.y -= positionOffset;
         relativePos = halfTurn * relativePos;
         player.transform.position = outTransform.TransformPoint(relativePos);
+        player.Movement.SetOldPosToTransform(); 
 
         // Update rotation of object.
         Quaternion relativeRot = Quaternion.Inverse(inTransform.rotation) * player.transform.rotation;
         relativeRot = halfTurn * relativeRot;
-        player.transform.rotation = outTransform.rotation * relativeRot;    
+        player.transform.rotation = outTransform.rotation * relativeRot;   
+
     }
 
     
@@ -110,13 +117,17 @@ public class Portal : RenderTexturePlane, IPortal
         reflectionCamTransform.LookAt(cameraPositionWorldSpace + cameraDirectionWorldSpace, cameraUpWorldSpace);
         SetNearClipPlane();
     }
+    private float clipPlaneOffset =.2f;
 
     protected override void SetNearClipPlane() {
         
         Transform clipPlane = connectedPortal.transform;
-        int dot = System.Math.Sign(Vector3.Dot(clipPlane.forward, clipPlane.position - reflectionCamTransform.position));
+        Vector3 clipPlanePos = clipPlane.position;
+        clipPlanePos  += (reflectionCamera.transform.position - clipPlanePos).normalized * clipPlaneOffset;
 
-        Vector3 cameraSpacePos = reflectionCamera.worldToCameraMatrix.MultiplyPoint(clipPlane.position);
+        int dot = System.Math.Sign(Vector3.Dot(clipPlane.forward, clipPlanePos - reflectionCamTransform.position));
+
+        Vector3 cameraSpacePos = reflectionCamera.worldToCameraMatrix.MultiplyPoint(clipPlanePos);
         int revert = transform.position.y < mainCamera.transform.position.y ? 1 : -1;
         Vector3 cameraSpaceNormal = reflectionCamera.worldToCameraMatrix.MultiplyVector(clipPlane.up * revert) * dot;
         float camSpaceDst = -Vector3.Dot(cameraSpacePos, cameraSpaceNormal);

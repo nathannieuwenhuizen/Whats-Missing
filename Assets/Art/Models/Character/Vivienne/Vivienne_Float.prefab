@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 857338713042981095}
   - component: {fileID: 49031247760869978}
   - component: {fileID: 49031247760869979}
+  - component: {fileID: 1446504880}
   m_Layer: 0
   m_Name: Vivienne_Float
   m_TagString: Untagged
@@ -83,6 +84,7 @@ MonoBehaviour:
   skinnedMesh: {fileID: 5022003411163529750}
   VFXGraph: {fileID: 896032129544372333}
   refreshRate: 0.02
+  updateScale: 1
 --- !u!95 &49031247760869979
 Animator:
   serializedVersion: 3
@@ -102,6 +104,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1446504880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49031247760869981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f08d0ceeb62e8224ba684d5bb7ccdc11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minDistnaceToPlayer: 15
+  maxDistnaceToPlayer: 35
+  player: {fileID: 0}
+  distancePercentage: 0
 --- !u!1 &146640278505564682
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +292,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 385933770049343332}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2518,7 +2536,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8187403587416743904}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

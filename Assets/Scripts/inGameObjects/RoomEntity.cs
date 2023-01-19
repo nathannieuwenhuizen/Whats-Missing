@@ -11,7 +11,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     protected string[] alternateWords;
 
     public string Word {
-        get { return word;}
+        get { return word.ToLower();}
         set {word = value;}
     }
 

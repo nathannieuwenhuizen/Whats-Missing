@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CursorUI : MonoBehaviour
 {
@@ -21,10 +22,17 @@ public class CursorUI : MonoBehaviour
     private float idleAlpha = .6f;
     private float highLightedAlpha = .6f;
     private float highLightDuration = .3f;
+    [SerializeField]
+    private Image cursorImage;
 
     private void Awake() {
         group = GetComponent<CanvasGroup>();
         group.alpha = idleAlpha;
+    }
+
+    public float Scale {
+        get { return cursorImage.GetComponent<RectTransform>().localScale.x;}
+        set { cursorImage.GetComponent<RectTransform>().localScale = Vector3.one * value; }
     }
 
     private void HideCursorUI() {
@@ -66,14 +74,14 @@ public class CursorUI : MonoBehaviour
         StopAllCoroutines();
         StartCoroutine(group.FadeCanvasGroup(highLightedAlpha, highLightDuration));
         StartCoroutine(group.GetComponent<RectTransform>().AnimatingLocalScale(Vector3.one * 1.5f, AnimationCurve.EaseInOut(0,0,1,1), highLightDuration));
-        StartCoroutine(group.GetComponent<RectTransform>().AnimatingRotation(Quaternion.Euler(0,0,90f), rotationCurve, highLightDuration));
+        StartCoroutine(group.GetComponent<RectTransform>().AnimatingRotation(Quaternion.Euler(0,0,90f), AnimationCurve.EaseInOut(0,0,1,1), highLightDuration));
     }
     private void UnhighlightCursorUI(bool whiteColor) {
         if (hidden || !canHighLight) return;
         StopAllCoroutines();
         StartCoroutine(group.FadeCanvasGroup(idleAlpha, highLightDuration));
         StartCoroutine(group.GetComponent<RectTransform>().AnimatingLocalScale(Vector3.one, AnimationCurve.EaseInOut(0,0,1,1), highLightDuration));
-        StartCoroutine(group.GetComponent<RectTransform>().AnimatingRotation(Quaternion.Euler(0,0,0), rotationCurve, highLightDuration));
+        StartCoroutine(group.GetComponent<RectTransform>().AnimatingRotation(Quaternion.Euler(0,0,0), AnimationCurve.EaseInOut(0,0,1,1), highLightDuration));
     }
 
 }

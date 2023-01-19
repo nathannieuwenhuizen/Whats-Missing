@@ -56,9 +56,9 @@ public class RenderTexturePlane : MonoBehaviour
         if (QualitySettings.GetQualityLevel() >= 2) return 0;
         
         float distance = Vector3.Distance(mainCamera.transform.position, transform.position);
-        if (distance < 20f) {
+        if (distance < 40f) {
             return 0; //render every frame
-        } else if (distance < 40f) 
+        } else if (distance < 60f) 
             return 2f / 60f; //30 fps
         return 4f / 60f; //15 fps
     }

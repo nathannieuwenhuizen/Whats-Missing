@@ -7,6 +7,9 @@ public class BossRoom : Room
 {
     public delegate void RoomEvent(bool withColor);
     public static RoomEvent OnRespawn;
+    [SerializeField]
+    private SceneLoader sceneLoader;
+    
     
     [SerializeField]
     private BossMirror bossMirror;
@@ -24,6 +27,7 @@ public class BossRoom : Room
     protected override void Awake() {
         base.Awake();
         bossMirror.Room = this;
+        Area.AUTO_SAVE_WHEN_DESTROY = true;
     }
     
     //auto enter for the player
@@ -33,6 +37,7 @@ public class BossRoom : Room
         
 #if !UNITY_EDITOR
         Player.transform.position = StartDoor.EndPos();
+        Player.Respawn();
 #endif
         if (setPlayerAtDoor) {
             Player.transform.position = StartDoor.EndPos();
@@ -49,6 +54,10 @@ public class BossRoom : Room
     private void OnDisable() {
         Player.OnDie -= ResetPlayer;
         DieState.OnBossDie -= SpawnEndDoor;
+        if (Area.AUTO_SAVE_WHEN_DESTROY) SaveProgress();
+    }
+    private void OnDestroy() {
+        if (Area.AUTO_SAVE_WHEN_DESTROY) SaveProgress();
     }
 
     private void SpawnEndDoor() {
@@ -78,6 +87,16 @@ public class BossRoom : Room
         BlackScreenOverlay.START_COLOR = Color.white;
         OnRespawn?.Invoke(true);
     }
+    public void EndOfArea() {
+        sceneLoader.GoToNextLevel(3);
+    }
+
+    public void SaveProgress() {
+        SaveData.current.roomIndex = 0;
+        SaveData.current.areaIndex = 3;
+        SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
+    }
+
 
     //no base call
     public override void CheckRoomCompletion()

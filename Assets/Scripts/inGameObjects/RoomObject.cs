@@ -34,6 +34,13 @@ public class RoomObject : RoomEntity
         } 
     }
 
+    [SerializeField]
+    private bool affectedByPotions = true;
+    public bool AffectedByPotions {
+        get { return affectedByPotions;}
+        set { affectedByPotions = value; }
+    }
+
     protected virtual void Awake() {
         eventSender = new RoomObjectEventSender(this);
     }
@@ -156,11 +163,20 @@ public class RoomObject : RoomEntity
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
+        switch(MissingChangeEffect) {
+            case MissingChangeEffect.none:
+            break;
+            case MissingChangeEffect.scale:
+            break;
+            case MissingChangeEffect.dissolve:
+                foreach (Material mat in getMaterials()) mat.SetFloat("Dissolve", 0);
+            break;
+        }
         CurrentScale = DesiredScale();
     }
 
     ///<summary>
-    /// The desired scale the object wants to have based on its state. USed in the appearing animation calls because there the scale might be temporary zero.
+    /// The desired scale the object wants to have based on its state. Used in the appearing animation calls because there the scale might be temporary zero.
     ///</summary>
     private float DesiredScale() {
         return (IsShrinked ? ShrinkScale : (IsEnlarged ? LargeScale : NormalScale));
@@ -230,7 +246,7 @@ public class RoomObject : RoomEntity
         CurrentScale = normalScale;
     }
     public virtual void OnDestroy() {
-        EventSender.SendMissingEvent();
+        if (InSpace) EventSender.SendMissingEvent();
     }
 
     #endregion

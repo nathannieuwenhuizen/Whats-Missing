@@ -10,6 +10,9 @@ public class RoomLevel : ScriptableObject
     public Room prefab;
     [Header("Room info")]
     public RoomData roomInfo;
+    [Header("Potion info")]
+    public RoomPotionData potionInfo;
+
 }
 
 [System.Serializable]
@@ -24,6 +27,15 @@ public class RoomData {
     public string hintText;
     public bool highLightAnswerLetter = true;
     public float durationBeforeHighlighting = 120f;
+    public bool EventSenderActive = false;
+}
+
+
+[System.Serializable]
+public class RoomPotionData {
+    public bool missingPotionAvailable = false;
+    public bool tooBigPotionAvailable = false;
+    public bool tooSmallPotionAvailable = false;
 }
 
 [System.Serializable]
@@ -37,6 +49,6 @@ public class MirrorData {
 
     //was nessecary because the scrptable objects kept changing in playmode
     public MirrorData Clone {
-        get => new MirrorData() {letters = letters, changeType = changeType, isOn = isOn, huzzleWords = huzzleWords, isInteractable = isInteractable };
+        get => new MirrorData() {letters = letters, changeType = changeType, isOn = isOn, huzzleWords = huzzleWords, isQuestion = isQuestion , isInteractable = isInteractable };
     }
 }

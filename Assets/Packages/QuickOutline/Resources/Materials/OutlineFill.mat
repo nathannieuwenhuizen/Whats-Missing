@@ -4,22 +4,53 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: OutlineFill
-  m_Shader: {fileID: 4800000, guid: 4e76d4023d7e0411297c670f878973e2, type: 3}
+  m_Shader: {fileID: 4800000, guid: 72baf820e039d494e9c336f5eae2d884, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 5f96d68379a57bb48aebf2e911206656, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _OutlineWidth: 2
-    - _ZTest: 8
+    - _Brightness: 1.5
+    - _Edge: 0.04
+    - _Opacity: 10
+    - _Outline: 0.042
+    - _OutlineThickness: 0.05
+    - _OutlineWidth: 0.025
+    - _OutlineZ: -0.008
+    - _RimPower: 1.75
+    - _Scale: 0.001
+    - _SpeedX: -0.35
+    - _SpeedY: 3.5
+    - _ZTest: 2
     m_Colors:
+    - Color_4a522a757c454c72aa14721298d2053f: {r: 0.56677866, g: 2.670157, b: 1.6146585, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 0.61960787}
+    - _ColorR: {r: 0.015686274, g: 1, b: 0.8825067, a: 1}
     - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

@@ -27,10 +27,10 @@ public class BossVoice
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L)) {
-            string randomID = dialogue.lines[Mathf.FloorToInt(Random.Range(0, dialogue.lines.Length))].id;
-            Talk(randomID);
-        }
+        // if (Input.GetKeyDown(KeyCode.L)) {
+        //     string randomID = dialogue.lines[Mathf.FloorToInt(Random.Range(0, dialogue.lines.Length))].id;
+        //     Talk(randomID);
+        // }
     }
 
 }

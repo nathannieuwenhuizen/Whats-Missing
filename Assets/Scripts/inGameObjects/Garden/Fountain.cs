@@ -15,8 +15,9 @@ public class Fountain : RoomObject
     private ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime;
 
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         velocityOverLifetime = waterParticles.velocityOverLifetime;
     }
     public Fountain () {

@@ -95,17 +95,17 @@ public class InputManager : MonoBehaviour
         //controller
     
         //Undo
-        if (Input.GetKeyDown(KeyCode.Z)) {
-            OnUndo?.Invoke();
-        }
+        // if (Input.GetKeyDown(KeyCode.Z)) {
+        //     OnUndo?.Invoke();
+        // }
 
         // //reset
         // if (Input.GetKeyDown(KeyCode.R) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) {
         //     OnReset?.Invoke();
         // }
-        if (Input.GetKeyDown(KeyCode.R)) {
-            OnReset?.Invoke();
-        }
+        // if (Input.GetKeyDown(KeyCode.R)) {
+        //     OnReset?.Invoke();
+        // }
 
         if (controls != null) {
             MovementVector = Vector2.Lerp(movementVector, controls.Player.Movement.ReadValue<Vector2>(), Time.deltaTime * movementGravity);
@@ -120,6 +120,8 @@ public class InputManager : MonoBehaviour
 
 
     public void Jump(InputAction.CallbackContext context) {
+        Debug.Log("jump");
+
         OnJump?.Invoke();
     }
     public void RunStart(InputAction.CallbackContext context) {

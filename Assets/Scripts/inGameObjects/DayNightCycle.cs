@@ -28,7 +28,6 @@ public class DayNightCycle : MonoBehaviour
         RenderSettings.ambientEquatorColor = SceneColors.equatorColor;
         RenderSettings.ambientSkyColor = SceneColors.skyColor;
         RenderSettings.sun.color = SceneColors.sunColor;
-
     }
 
     public delegate void SunIntensityEvent(float precentage);

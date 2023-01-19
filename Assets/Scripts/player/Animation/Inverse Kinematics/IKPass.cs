@@ -28,6 +28,9 @@ public class IKPass : MonoBehaviour
 
     private IKHand rightHand;
     private IKHand leftHand;
+    public IKHand RightHand {
+        get { return rightHand;}
+    }
 
     private IKLeg rightLeg;
     private IKLeg leftLeg;

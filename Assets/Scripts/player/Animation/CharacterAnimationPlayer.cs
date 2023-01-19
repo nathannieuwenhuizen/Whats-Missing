@@ -92,23 +92,23 @@ public class CharacterAnimationPlayer
     /// Plays an animation by triggering it while also calling the cutscene ui.
     /// TODO: make sure the callbacks works after the animation has finished playing.
     ///</summary>
-    public void PlayCutSceneAnimation(string trigger, bool applyRootAnimation = false, Action callback = null) {
+    public void PlayCutSceneAnimation(string _trigger, bool _applyRootAnimation = false, Action _callback = null, float _zoom = 80f, bool _cameraToAnimationView = true) {
         OnCutsceneStart?.Invoke();
 
         SetTorsoAnimation(false);
-        if (trigger != "") inAnimationCutscene = true;
+        if (_trigger != "") inAnimationCutscene = true;
 
         IKPass.IKActive = false;
         player.Movement.EnableRotation = false;
         player.Movement.EnableWalk = false;
         player.Movement.RB.velocity = Vector3.zero;
 
-        player.FPCamera.SetParentToAnimation(animationView);
-        CameraZoom = 80f;
+        if (_cameraToAnimationView) player.FPCamera.SetParentToAnimation(animationView);
+        CameraZoom = _zoom;
 
         //activates the trigger
-        animator.SetTrigger(trigger);
-        animator.applyRootMotion = applyRootAnimation;
+        animator.SetTrigger(_trigger);
+        animator.applyRootMotion = _applyRootAnimation;
     }
 
     public void SetAnimator(Animator _animator, Transform _animationView) {
@@ -138,7 +138,6 @@ public class CharacterAnimationPlayer
     }
     private bool inBossCutscene = false;
     private IEnumerator InBossCutScene(BossMirror bossMirror) {
-        Debug.Log("in boss cutscene!");
         inBossCutscene = true;
         yield return new WaitForSeconds( bossMirror.ShakeDuration - .5f);
         Debug.Log("in boss cutscene for realz");
@@ -189,6 +188,17 @@ public class CharacterAnimationPlayer
         yield return new WaitForSeconds(.5f);
         _callback.Invoke();
 
+    }
+    ///<summary>
+    /// Plays the standing up animation with the sounds
+    ///</summary>
+    public IEnumerator StandingUp() {
+        yield return new WaitForSeconds(2.2f);
+        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
+        yield return new WaitForSeconds(.5f);
+        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
+        yield return new WaitForSeconds(2.3f);
+        EndOfCutSceneAnimation();
     }
 
     public bool CameraIsInModel() {

@@ -73,6 +73,9 @@ public class FPMovement : MonoBehaviour
     private float walkStepDistance = 4f;
 
     private Vector3 oldPos;
+    private Vector3 oldFixedPos;
+    
+    private float walkCycleIndex = 0;
 
     public bool EnableHeadTilt {get; set; } = true;
     public bool EnableWalk {get; set; } = true;
@@ -121,6 +124,23 @@ public class FPMovement : MonoBehaviour
     }
 
     private float distanceToFloor = 0;
+
+     private void Awake() {
+        waterSplash = new WaterSplash(waveEmitter);
+        player = GetComponent<Player>();
+        rb = GetComponent<Rigidbody>();
+        ApplyMovementSettings(Settings.GetSettings());
+    }
+
+    private void ApplyMovementSettings(Settings settings) {
+        controlSettings = settings.controlSettings;
+    }
+
+    private void Start()
+    {
+        FPCamera.Start();
+        SetOldPosToTransform();
+    }
 
     /** Enables the cursor */
     private void EnableCursor(bool enabled = false)
@@ -196,6 +216,7 @@ public class FPMovement : MonoBehaviour
             rb.AddForce(gravity, ForceMode.Acceleration);
         }
         UpdateAnimator();
+        oldFixedPos = transform.position;
     }
 
 
@@ -232,31 +253,14 @@ public class FPMovement : MonoBehaviour
     }
 
 
-    private void Awake() {
-        waterSplash = new WaterSplash(waveEmitter);
-        player = GetComponent<Player>();
-        rb = GetComponent<Rigidbody>();
-        ApplyMovementSettings(Settings.GetSettings());
-    }
-
-    private void ApplyMovementSettings(Settings settings) {
-        controlSettings = settings.controlSettings;
-    }
-
-    private void Start()
-    {
-        FPCamera.Start();
-        oldPos = transform.position;
-    }
+   
     void Update()
     {
         if (EnableWalk) UpdateMovement();
 
         InAir = !IsOnFloor();
         FPCamera.UpdateRotation();
-    }
-    private void LateUpdate() {
-        
+        oldPos = transform.position;
     }
 
     ///<summary>
@@ -279,14 +283,12 @@ public class FPMovement : MonoBehaviour
         UpdateWalking();
     }
 
-    private Vector3 oldPosAnimation = Vector3.zero;
     ///<summary>
     /// Updates the walk animator based on what distance the rigigbody really made.
     ///</summary>
     private void UpdateAnimator() {
 
-        Vector3 delta = transform.InverseTransformDirection(transform.position - oldPosAnimation);
-        oldPosAnimation = transform.position;
+        Vector3 delta = transform.InverseTransformDirection(transform.position - oldFixedPos);
 
         delta /= isRunning ? .23f : .15f; // i know, magic numbers...
         Vector2 animationDelta = new Vector2(delta.x, delta.z);
@@ -297,17 +299,28 @@ public class FPMovement : MonoBehaviour
     }
 
     ///<summary>
+    /// Set the old pos to the current position.
+    /// Used when gregory is transported without twearking the camera movement in endlesshallway
+    ///</summary>
+    public void SetOldPosToTransform() {
+        oldPos = oldFixedPos = transform.position;
+    }
+
+    ///<summary>
     ///Checks on when to make footstep sounds and tilt the camera
     ///</summary>
     private void UpdateWalking() {
-        Vector3 delta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
-        if (!player.IsMissing && EnableHeadTilt)  FPCamera.UpdateCameraTilt(delta, walkStepDistance);
+        Vector3 moveDelta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
+        walkCycleIndex += moveDelta.magnitude;
+
+        if (!player.IsMissing)  FPCamera.UpdateCameraWalkingAnimation(walkCycleIndex, walkStepDistance);
+        if (EnableHeadTilt) FPCamera.UpdateCameraTiltAndBounds();
         
         if (inAir) return;
 
 
-        if (delta.magnitude > walkStepDistance){
-            oldPos = transform.position;
+        if (walkCycleIndex > walkStepDistance){
+            walkCycleIndex = 0;
             if (!player.IsMissing) {
                 SFXInstance footSound = AudioHandler.Instance?.Play3DSound(FOOTSTEP_SFXFILE, transform, 1, 1, false, true, 50);
                 footSound.FMODInstance.setParameterByName(FMODParams.GROUNDPARAM, GetGroundMaterial());

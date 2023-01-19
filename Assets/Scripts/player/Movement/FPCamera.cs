@@ -53,10 +53,6 @@ public class FPCamera
     public bool UseSteeringBehaviour {
         get { return useSteeringBehaviour;}
         set { 
-            if (currentAim == null) {
-                currentAim = Object.Instantiate(new GameObject("camera aim"), cameraPivot.position + cameraPivot.forward, Quaternion.identity, FPMovement.transform.parent).transform;
-            }
-            currentAim.position = cameraPivot.position + cameraPivot.forward;
             useSteeringBehaviour = value; 
         }
     }
@@ -92,6 +88,17 @@ public class FPCamera
 
     public void Start() {
         EnableCursor(false);
+        SetupCurrentAim();
+
+    }
+    private void SetupCurrentAim() {
+        if (currentAim == null) {
+            GameObject go = new GameObject("camera aim");
+            go.transform.position = cameraPivot.position + cameraPivot.forward;
+            go.transform.SetParent(FPMovement.transform.parent);
+            currentAim = go.transform;
+        }
+        if (currentAim != null) currentAim.position = cameraPivot.position + cameraPivot.forward;
     }
 
     public void OnEnable() {
@@ -108,8 +115,8 @@ public class FPCamera
         PerspectiveProperty.onPerspectiveMissing -= HalfCameraSensitiviy;
         PerspectiveProperty.onPerspectiveAppearing -= UnhalfCameraSensitiviy;
         InputManager.OnRotate -= setMouseDelta;
-        BossCutsceneState.OnBossCutsceneStart += OnBossCutSceneStart;
-        BossCutsceneState.OnBossCutsceneEnd += OnBossCutSceneEnd;
+        BossCutsceneState.OnBossCutsceneStart -= OnBossCutSceneStart;
+        BossCutsceneState.OnBossCutsceneEnd -= OnBossCutSceneEnd;
         ForcefieldDemo.Forcefield.OnForceFieldImpact -= ApplyLittleShake;
         BasaltWall.OnDestroy -= ApplyLittleShake;
 
@@ -142,8 +149,8 @@ public class FPCamera
     ///<summary>
     /// Changes the camera offset and rotation to mimic the walking bounce.
     ///</summary>
-    public void UpdateCameraTilt(Vector3 delta, float walkStepDistance) {
-        cameraYIndex = (delta.magnitude / walkStepDistance) * (Mathf.PI * 2);
+    public void UpdateCameraWalkingAnimation(float index, float walkStepDistance) {
+        cameraYIndex = (index / walkStepDistance) * (Mathf.PI * 2);
         float currentCameraYpos = Mathf.Sin(cameraYIndex) * cameraYOffset;
         float z = 0 + Mathf.Clamp(FPMovement.LerpedVelocity.magnitude - .5f, 0f, 1f) * .3f;
         cameraPivot.localPosition = new Vector3(
@@ -152,6 +159,9 @@ public class FPCamera
             z
         );
 
+    }
+
+    public void UpdateCameraTiltAndBounds() {
         cameraZIndex += Time.deltaTime;
         float zRotation = 0;
         if (cameraZRotationTilt) {
@@ -164,6 +174,7 @@ public class FPCamera
                 zRotation
             ));
     }
+
     private void ResetCameraTilt() {
         cameraPivot.localRotation = Quaternion.Euler( new Vector3(
             cameraPivot.localRotation.eulerAngles.x,
@@ -203,7 +214,10 @@ public class FPCamera
         if (lerped) cameraPivot.Rotate(currentMouseRotDeltaY);
         else cameraPivot.Rotate(new Vector3(-mouseDelta.y * controlSettings.Camera_sensetivity * inversionY * cameraSensetivityFactor, 0, 0));
 
+        ClampVerticalAngle();
+    }
 
+    public void ClampVerticalAngle() {
         //setting max angle cap
         if (cameraPivot.localRotation.eulerAngles.x > 180)
             cameraPivot.localRotation = Quaternion.Euler( new Vector3(Mathf.Max(cameraPivot.localRotation.eulerAngles.x, 360 - verticalAngle) , 0, cameraPivot.localRotation.eulerAngles.z));
@@ -229,16 +243,20 @@ public class FPCamera
         
     }
 
-    private void ShowAimCutscene(Transform _target, float duration) {
+    public void ShowAimCutscene(Transform _target, float _duration, float _zoom = 60f, float _steeringSpeed = 2f) {
         UseSteeringBehaviour = true;
         currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward * 5f;
         SteeringBehaviour.Velocity = Vector3.zero;
         steeringTarget = _target.transform;
-        // StartCoroutine(TempAimCutscene(duration));
+        steeringSpeed = _steeringSpeed;
+        FPMovement.StartCoroutine(TempAimCutscene(_duration));
+        FPMovement.Player.CharacterAnimationPlayer.PlayCutSceneAnimation("", false, null, _zoom, false);
+
     }
     private IEnumerator TempAimCutscene(float duration) {
         yield return new WaitForSeconds(duration);
         UseSteeringBehaviour = false;
+        FPMovement.Player.CharacterAnimationPlayer.EndOfCutSceneAnimation();
     }
 
     private void OnBossCutSceneEnd(Boss.Boss boss, float zoom) {
@@ -279,7 +297,7 @@ public class FPCamera
         transform.localRotation = Quaternion.Euler( new Vector3(0, transform.localRotation.eulerAngles.y, 0));
 
         Quaternion newrotation = Quaternion.LookRotation( desiredAim.position - cameraPivot.position, Vector3.up);
-        cameraPivot.rotation = Quaternion.Slerp(newrotation, newrotation, Time.deltaTime * steeringSpeed);
+        cameraPivot.rotation = Quaternion.Slerp(cameraPivot.rotation, newrotation, Time.deltaTime * steeringSpeed);
         // cameraPivot.localRotation = Quaternion.Euler( new Vector3(cameraPivot.localRotation.eulerAngles.x, cameraPivot.localRotation.eulerAngles.y, 0));
     }
 
