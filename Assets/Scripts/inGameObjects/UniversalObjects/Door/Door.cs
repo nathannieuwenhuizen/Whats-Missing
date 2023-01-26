@@ -43,7 +43,7 @@ public class Door : InteractabelObject
         return false;
     }
 
-    [HideInInspector]
+    // [HideInInspector]
     public Room room;
 
     private Player player;

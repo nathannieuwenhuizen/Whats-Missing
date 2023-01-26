@@ -127,6 +127,7 @@ public class Room : MonoBehaviour
 
         endDoor.room = this;
         startDoor.room = this;
+        Debug.Log("door room = " + endDoor.room + startDoor.room);
         allObjects = GetAllObjectsInRoom<IChangable>();
         for (int i = 0; i < allObjects.Count; i++)
         {
@@ -143,6 +144,11 @@ public class Room : MonoBehaviour
             rb.sleepThreshold = Mathf.Infinity;
         }
 
+    }
+    private void Start() {
+        endDoor.room = this;
+        startDoor.room = this;
+        Debug.Log("door room = " + endDoor.room + startDoor.room);
     }
 
     public void LoadMirrors() {

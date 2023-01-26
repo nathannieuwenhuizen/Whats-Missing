@@ -81,10 +81,35 @@ public class Area : MonoBehaviour
         }
     }
 
-    public bool IsDemo => throw new System.NotImplementedException();
+
+    private void Awake() {
+        if (defaultRoom != null) Destroy(defaultRoom);
+        AUTO_SAVE_WHEN_DESTROY = true;
+        LoadProgress();
+        InitializeRooms();
+    }
+    
+    void Start()
+    {
+        PlayAreaMusic();
+
+        SetupPlayerPos();
+
+        if(directionalLight != null) directionalLight.animating = false;
+        CurrentRoom = rooms[loadRoomIndex];
+        if(directionalLight != null) directionalLight.animating = true;
+
+        if (loadRoomIndex == 0) {
+            player.Respawn();
+            BlackScreenOverlay.START_COLOR = startColor;
+            OnRespawn?.Invoke(true);
+        }
+    }
 
     private void UpdateRoomActiveStates(bool includingNextRoom = false) {
         int currentIndex = rooms.IndexOf(currentRoom);
+        if (currentIndex >= rooms.Count - 1) StartCoroutine(LoadNextRoom());
+        
         for (int i = 0; i < rooms.Count; i++) {
             if (i <= currentIndex + (includingNextRoom ? 1 : 0) && i >= currentIndex - 1) {
                 rooms[i].gameObject.SetActive(true);
@@ -112,30 +137,6 @@ public class Area : MonoBehaviour
             }
 
 
-        }
-    }
-
-    private void Awake() {
-        if (defaultRoom != null) Destroy(defaultRoom);
-        AUTO_SAVE_WHEN_DESTROY = true;
-        LoadProgress();
-        InitializeRooms();
-    }
-    
-    void Start()
-    {
-        PlayAreaMusic();
-
-        SetupPlayerPos();
-
-        if(directionalLight != null) directionalLight.animating = false;
-        CurrentRoom = rooms[loadRoomIndex];
-        if(directionalLight != null) directionalLight.animating = true;
-
-        if (loadRoomIndex == 0) {
-            player.Respawn();
-            BlackScreenOverlay.START_COLOR = startColor;
-            OnRespawn?.Invoke(true);
         }
     }
 
@@ -182,84 +183,98 @@ public class Area : MonoBehaviour
         player.transform.rotation = rooms[loadRoomIndex].StartDoor.transform.rotation;
         player.transform.Rotate(0,180,0);
     }
-
+    Transform loadPosition;
     ///<summary>
     /// Loads and initializes all rooms from the inspector values.
     ///</summary>
     private void InitializeRooms() {
         Vector3 pos = Vector3.zero;
-        Transform origin = transform;
+        loadPosition = transform;
         int index = 0;
         foreach (RoomLevel roomLevel in roomLevels) {
-
             bool completed = index < loadRoomIndex;
             index += 1;
 
             //dont load room in that are behind the player progression
             // if (index < loadRoomIndex - 2) continue;
+            if (index < loadRoomIndex + 3) 
+                LoadRoom(roomLevel, completed, index);
 
-            //make new room
-            Room newRoom = Instantiate(roomLevel.prefab.gameObject, transform).GetComponent<Room>();
-            newRoom.name = "Room: " + (roomLevel.roomInfo != null ? roomLevel.name : roomLevel.prefab.name);
-            newRoom.Area = this;
-            newRoom.roomLevel = roomLevel;
-            int mirrorIndex = 0;
-
-
-            if (roomLevel.roomInfo != null) {
-                if (roomLevel.roomInfo.loadedChanges.Length > 0) newRoom.SecondHintAnswer = roomLevel.roomInfo.loadedChanges[0].word;
-                newRoom.RevealChangeAfterCompletion = roomLevel.roomInfo.revealChangesAfterFinish;
-                foreach (Mirror mirror in newRoom.GetAllObjectsInRoom<Mirror>())
-                {
-                    if (mirrorIndex < roomLevel.roomInfo.questionMirror.Length) {
-                        MirrorData _mirrorData = roomLevel.roomInfo.questionMirror[mirrorIndex].Clone;
-                        mirror.MirrorData = _mirrorData;
-                        mirror.isQuestion = mirror.MirrorData.isQuestion;
-
-                        if (completed && roomLevel.roomInfo.loadedChanges.Length > 0) {
-                            mirror.PreAnswer = roomLevel.roomInfo.loadedChanges[0].word;
-                            mirror.IsOn = true;
-                        }  else {
-                            if(mirror.IsOn) {
-                                mirror.PreAnswer = mirror.MirrorData.letters;
-                                mirror.Letters = "";
-                            } else {
-                                mirror.Letters = mirror.MirrorData.letters;
-                            }
-                        }
-                        mirror.MirrorCanvas.IsInteractable = mirror.MirrorData.isInteractable;
-                        mirrorIndex++;
-                    }
-                }
-            }
-            
-            newRoom.LoadMirrors();
-
-            //position room
-            if (areaIndex == 0) {
-                newRoom.transform.rotation = origin.rotation; 
-                newRoom.transform.Rotate(new Vector3(0,-90 + roomRotationOffset,0));
-            }
-            Vector3 spawnPos = origin.position + (newRoom.transform.position - newRoom.StartDoor.transform.position);
-            spawnPos += new Vector3(roomPositionOffset.x * ((index % 2) == 0 ? 1 : -1), roomPositionOffset.y, roomPositionOffset.z);
-
-            newRoom.transform.position = spawnPos;
-            origin = newRoom.EndDoor.transform;
-
-            //deactivate the startdoors if the door isn't a portal
-            if (newRoom.StartDoor.transform.GetComponent<PortalDoor>() == null) {
-                newRoom.StartDoor.gameObject.SetActive(rooms.Count == 0);
-            } else {
-                //connect the two portal doors with each other.
-                if (rooms.Count > 0) {
-                    newRoom.StartDoor.GetComponent<PortalDoor>().ConnectedDoor = rooms[rooms.Count - 1].EndDoor.GetComponent<PortalDoor>();
-                    rooms[rooms.Count - 1].EndDoor.GetComponent<PortalDoor>().ConnectedDoor = newRoom.StartDoor.GetComponent<PortalDoor>();
-                }
-            }
-
-            //add to the list
-            rooms.Add(newRoom);
         }
+    }
+
+    private IEnumerator LoadNextRoom() {
+        if (roomLevels.Length != rooms.Count)
+            LoadRoom(roomLevels[rooms.Count], false, rooms.Count);
+
+        yield return new WaitForEndOfFrame();
+    }
+
+
+    private void LoadRoom(RoomLevel roomLevel, bool completed, int index) {
+        
+        //make new room
+        Room newRoom = Instantiate(roomLevel.prefab.gameObject, transform).GetComponent<Room>();
+        newRoom.name = "Room: " + (roomLevel.roomInfo != null ? roomLevel.name : roomLevel.prefab.name);
+        newRoom.Area = this;
+        newRoom.roomLevel = roomLevel;
+        newRoom.Player = player;
+        int mirrorIndex = 0;
+
+
+        if (roomLevel.roomInfo != null) {
+            if (roomLevel.roomInfo.loadedChanges.Length > 0) newRoom.SecondHintAnswer = roomLevel.roomInfo.loadedChanges[0].word;
+            newRoom.RevealChangeAfterCompletion = roomLevel.roomInfo.revealChangesAfterFinish;
+            foreach (Mirror mirror in newRoom.GetAllObjectsInRoom<Mirror>())
+            {
+                if (mirrorIndex < roomLevel.roomInfo.questionMirror.Length) {
+                    MirrorData _mirrorData = roomLevel.roomInfo.questionMirror[mirrorIndex].Clone;
+                    mirror.MirrorData = _mirrorData;
+                    mirror.isQuestion = mirror.MirrorData.isQuestion;
+
+                    if (completed && roomLevel.roomInfo.loadedChanges.Length > 0) {
+                        mirror.PreAnswer = roomLevel.roomInfo.loadedChanges[0].word;
+                        mirror.IsOn = true;
+                    }  else {
+                        if(mirror.IsOn) {
+                            mirror.PreAnswer = mirror.MirrorData.letters;
+                            mirror.Letters = "";
+                        } else {
+                            mirror.Letters = mirror.MirrorData.letters;
+                        }
+                    }
+                    mirror.MirrorCanvas.IsInteractable = mirror.MirrorData.isInteractable;
+                    mirrorIndex++;
+                }
+            }
+        }
+        
+        newRoom.LoadMirrors();
+
+        //position room
+        if (areaIndex == 0) {
+            newRoom.transform.rotation = loadPosition.rotation; 
+            newRoom.transform.Rotate(new Vector3(0,-90 + roomRotationOffset,0));
+        }
+        Vector3 spawnPos = loadPosition.position + (newRoom.transform.position - newRoom.StartDoor.transform.position);
+        spawnPos += new Vector3(roomPositionOffset.x * ((index % 2) == 0 ? 1 : -1), roomPositionOffset.y, roomPositionOffset.z);
+
+        newRoom.transform.position = spawnPos;
+        loadPosition = newRoom.EndDoor.transform;
+
+        //deactivate the startdoors if the door isn't a portal
+        if (newRoom.StartDoor.transform.GetComponent<PortalDoor>() == null) {
+            newRoom.StartDoor.gameObject.SetActive(rooms.Count == 0);
+        } else {
+            //connect the two portal doors with each other.
+            if (rooms.Count > 0) {
+                newRoom.StartDoor.GetComponent<PortalDoor>().ConnectedDoor = rooms[rooms.Count - 1].EndDoor.GetComponent<PortalDoor>();
+                rooms[rooms.Count - 1].EndDoor.GetComponent<PortalDoor>().ConnectedDoor = newRoom.StartDoor.GetComponent<PortalDoor>();
+            }
+        }
+
+        //add to the list
+        rooms.Add(newRoom);
     }
 
     ///<summary>
@@ -274,7 +289,6 @@ public class Area : MonoBehaviour
     ///</summary>
     private IEnumerator ResettingThePlayer(bool withAnimation, bool toPreviousLevel) {
         yield return new WaitForSeconds(withAnimation ? 3.5f : 2.5f);
-        Debug.Log("respawn!");
         player.Respawn();
         int index = rooms.IndexOf(currentRoom);
         if(index == 0) {
