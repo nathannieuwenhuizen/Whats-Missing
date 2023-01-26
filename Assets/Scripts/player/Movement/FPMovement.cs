@@ -358,7 +358,7 @@ public class FPMovement : MonoBehaviour
         }
         if (_distance != Mathf.Infinity) {
             distanceToFloor = _distance;
-            player.CharacterAnimationPlayer.SetInWater(closest.collider == WaterArea.WATER_COLLIDER);
+            if (player != null) player.CharacterAnimationPlayer.SetInWater(closest.collider == WaterArea.WATER_COLLIDER);
             return true;
         } else {
             distanceToFloor = 0;

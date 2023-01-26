@@ -25,9 +25,7 @@ public class EndlessHallway : MonoBehaviour
     private AcceptanceVivienne vivienne;
 
     [SerializeField]
-    private PortalDoor endlessHallwayDoor;
-    [SerializeField]
-    private PortalDoor finalRoomDoor;
+    private Door door;
 
     [SerializeField]
     private SceneLightSetting hallwayLightning;
@@ -52,19 +50,17 @@ public class EndlessHallway : MonoBehaviour
     }
     private void Awake() {
         SpawnChunks();
-        endlessHallwayDoor.Player = player;
-        finalRoomDoor.Player = player;
-        endlessHallwayDoor.ConnectedDoor = finalRoomDoor;
-        finalRoomDoor.ConnectedDoor = endlessHallwayDoor;
-
-        endlessHallwayDoor.InSpace = true;
-        finalRoomDoor.InSpace = true;
-        endlessHallwayDoor.Locked = false;
-        finalRoomDoor.Locked = false;
+        door.Player = player;
+        door.InSpace = true;
+        door.Locked = false;
 
         hallwayLightning.startIntensity = hallwayLightning.directionalLight.intensity;
         bedroomLightning.startIntensity = bedroomLightning.directionalLight.intensity;
         bedroomLightning.directionalLight.enabled = false;
+    }
+    private void Start() {
+        door.Locked = false;
+        
     }
 
     private void OnEnable() {
@@ -78,12 +74,12 @@ public class EndlessHallway : MonoBehaviour
     private void OnDoorPass(Door door) {
         StartCoroutine(AnimateSceneLights(door));
     }
-    public IEnumerator AnimateSceneLights(Door door) {
+    public IEnumerator AnimateSceneLights(Door _door) {
         float i = 0;
         float duration = 1f;
         SceneLightSetting start, end;
 
-        if (door == endlessHallwayDoor) {
+        if (_door.PlayerIsAtStartSide()) {
             start = hallwayLightning;
             end = bedroomLightning;
         } else {
