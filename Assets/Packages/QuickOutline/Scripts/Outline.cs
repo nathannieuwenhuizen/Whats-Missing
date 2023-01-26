@@ -114,7 +114,6 @@ public class Outline : MonoBehaviour {
 
   void OnEnable() {
     // Instantiate outline materials
-    Debug.Log("Disabled: " + disabled);
     outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
     outlineFillMaterial = Instantiate(Resources.Load<Material>(disabled ? @"Materials/OutlineFill_Heavy" : @"Materials/OutlineFill"));
 

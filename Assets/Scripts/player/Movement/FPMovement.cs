@@ -330,7 +330,7 @@ public class FPMovement : MonoBehaviour
     }
 
     public float GetGroundMaterial() {
-        if (WaterArea.IN_WATER) {
+        if (WaterArea.ON_WATER_SURFACE) {
             return 2;
         } else if (on_grass) return 1;
         return 0;
@@ -358,6 +358,7 @@ public class FPMovement : MonoBehaviour
         }
         if (_distance != Mathf.Infinity) {
             distanceToFloor = _distance;
+            player.CharacterAnimationPlayer.SetInWater(closest.collider == WaterArea.WATER_COLLIDER);
             return true;
         } else {
             distanceToFloor = 0;

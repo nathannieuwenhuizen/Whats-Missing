@@ -181,6 +181,10 @@ public class Player : RoomObject
 
     //TODO: maybe move this to the fpmovement class
     private void OnCollisionStay(Collision other) {
+        if (other.transform.GetComponentInParent<ICollissionArea>() != null) {
+            other.transform.GetComponentInParent<ICollissionArea>().OnColliderStay(this);
+        }
+        
         if (other.rigidbody != null) 
             if (other.rigidbody.mass > hands.MassThreshhold) {
                 other.rigidbody.velocity = Vector3.zero;
@@ -188,6 +192,9 @@ public class Player : RoomObject
             }
     }
     private void OnCollisionEnter(Collision other) {
+        if (other.transform.GetComponentInParent<ICollissionArea>() != null) {
+            other.transform.GetComponentInParent<ICollissionArea>().OnColliderEnter(this);
+        }
         if (other.rigidbody != null) 
             if (other.rigidbody.mass > hands.MassThreshhold) {
                 other.rigidbody.velocity = Vector3.zero;
@@ -195,6 +202,9 @@ public class Player : RoomObject
             }
     }
     private void OnCollisionExit(Collision other) {
+        if (other.transform.GetComponentInParent<ICollissionArea>() != null) {
+            other.transform.GetComponentInParent<ICollissionArea>().OnColliderExit(this);
+        }
         if (other.rigidbody != null) 
             if (other.rigidbody.mass > hands.MassThreshhold) 
                 movement.RB.mass = CurrentScale;

@@ -8,6 +8,12 @@ public interface ITriggerArea {
     void OnAreaEnter(Player player);
     void OnAreaExit(Player player);
 }
+public interface ICollissionArea {
+    bool InsideArea {get; set; }
+    void OnColliderEnter(Player player);
+    void OnColliderExit(Player player);
+    void OnColliderStay(Player player);
+}
 
 [RequireComponent(typeof(Collider))]
 public class AreaTrigger : MonoBehaviour, ITriggerArea

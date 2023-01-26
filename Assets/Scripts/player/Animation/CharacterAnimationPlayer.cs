@@ -56,6 +56,13 @@ public class CharacterAnimationPlayer
     }
 
     ///<summary>
+    /// Set if the player is in a water animation or not.
+    ///</summary>
+    public void SetInWater(bool val) {
+        animator.SetBool("inWater", val);
+    }
+
+    ///<summary>
     /// Sets the weight of the torso animation, used for if the player chokes or is cold.
     ///</summary>
     public void SetTorsoAnimation(bool on, string trigger = "") {

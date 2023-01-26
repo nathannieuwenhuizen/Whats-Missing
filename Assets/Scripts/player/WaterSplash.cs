@@ -19,9 +19,8 @@ public class WaterSplash
     }
 
     public void OnFootStep() {
-        if (WaterArea.IN_WATER) {
+        if (WaterArea.ON_WATER_SURFACE) {
 
-            Debug.Log("SHOULD BE EMITTING!");
             float yPos = WaterArea.WATER_TRANSFORM.position.y;
             Vector3 temp = waveEmitter.transform.position;
             temp.y = yPos;

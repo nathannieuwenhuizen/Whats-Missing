@@ -115,9 +115,9 @@ namespace Boss {
         private void Update() {
             AI.UpdateAI();
             bossVoice.Update();
-            // if (Input.GetKeyDown(KeyCode.L)) {
-            //     bossChangeHandler.CreateChange("gravity" ,ChangeType.missing);
-            // }
+            if (Input.GetKeyDown(KeyCode.L)) {
+                bossChangeHandler.CreateChange("water" ,ChangeType.tooBig);
+            }
         }
         private void OnEnable() {
             Water.OnWaterBig += RemoveMirrorAttack;
