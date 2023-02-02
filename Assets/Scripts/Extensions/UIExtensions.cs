@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class UIExtensions
 {
@@ -27,6 +28,7 @@ public static class UIExtensions
          }
         text.alpha = end;
     }
+
     public static IEnumerator AnimateLocalRotation( this RectTransform rect, Quaternion end, float duration, float delay = 0) {
         yield return new WaitForSeconds(delay);
         float index = 0;

@@ -2,12 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum LineEffect {
+    none,
+    wiggle,
+    shake,
+    wave,
+    slide,
+    bounce,
+    rot,
+    swing,
+    incr,
+    rainb,
+    fade,
+    dangle,
+    pend
+}
 [System.Serializable]
 public class Line {
     public string id;
     public string text;
     public string fmod_audio_path;
     public float duration;
+    public LineEffect lineEffect = LineEffect.none;
 }
 
 [System.Serializable]

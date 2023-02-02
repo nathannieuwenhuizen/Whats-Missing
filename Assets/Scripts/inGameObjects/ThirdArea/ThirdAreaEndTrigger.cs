@@ -38,6 +38,11 @@ public class ThirdAreaEndTrigger : AreaTrigger
         room.Player.FPCamera.ShowAimCutscene(potion.transform, 4.5f, 40f);
         yield return new WaitForSeconds(.5f);
         PotionIsGrabbedByBoss();
+        DialoguePlayer.Instance.PlayLine( new Line() {
+            text = "ENOUGH!",
+            duration = 2f,
+            lineEffect = LineEffect.shake
+        });
         yield return new WaitForSeconds(2.7f);
         ThrowPotionBack();
         yield return new WaitForSeconds(1f);
