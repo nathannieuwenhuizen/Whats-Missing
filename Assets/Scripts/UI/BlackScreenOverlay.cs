@@ -19,7 +19,7 @@ public class BlackScreenOverlay : MonoBehaviour
         Player.OnDie += DeathFade;
         Area.OnRespawn += RemoveOverlay;
         BossRoom.OnRespawn += RemoveOverlay;
-        AlchemyItem.OnPickingAlchemyItem += FadeToWhite;
+        AlchemyItem.OnPickingAlchemyItem += OnAlchemyItemPicked;
         ThirdAreaEndTrigger.OnEndOfCutscene += FadeToBlack;
 
     }
@@ -27,7 +27,7 @@ public class BlackScreenOverlay : MonoBehaviour
         Player.OnDie -= DeathFade;
         Area.OnRespawn -= RemoveOverlay;
         BossRoom.OnRespawn -= RemoveOverlay;
-        AlchemyItem.OnPickingAlchemyItem -= FadeToWhite;
+        AlchemyItem.OnPickingAlchemyItem -= OnAlchemyItemPicked;
         ThirdAreaEndTrigger.OnEndOfCutscene -= FadeToBlack;
     }
 
@@ -42,13 +42,17 @@ public class BlackScreenOverlay : MonoBehaviour
         }
     }
 
+    private void OnAlchemyItemPicked() {
+        FadeToWhite();
+    }
+
     public void FadeToBlack() {
         image.color = Color.black;
         StartCoroutine(group.FadeCanvasGroup(1, 1.5f, 1f));
     }
-    public void FadeToWhite() {
+    public void FadeToWhite(float duration = 1f, float delay = 8f) {
         image.color = Color.white;
-        StartCoroutine(group.FadeCanvasGroup(1, 1f, 8f));
+        StartCoroutine(group.FadeCanvasGroup(1, duration, delay));
     }
     public void FadeToWhiteImmeditately() {
         image.color = Color.white;

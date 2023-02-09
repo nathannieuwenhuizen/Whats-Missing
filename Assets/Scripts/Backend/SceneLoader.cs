@@ -104,6 +104,7 @@ public class SceneLoader : MonoBehaviour
     private void OnEnable() {
         Area.OnNextArea += GoToNextLevel;
         PauseScreen.OnQuit += BackToMenu;
+        CreditsRoller.OnCreditsFinish += BackToMenu;
     }
 
 
@@ -114,6 +115,7 @@ public class SceneLoader : MonoBehaviour
     private void OnDisable() {
         Area.OnNextArea -= GoToNextLevel;
         PauseScreen.OnQuit -= BackToMenu;
+        CreditsRoller.OnCreditsFinish -= BackToMenu;
     }
 
 

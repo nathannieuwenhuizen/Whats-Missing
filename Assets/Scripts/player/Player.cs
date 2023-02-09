@@ -22,9 +22,6 @@ public class Player : RoomObject
     [SerializeField]
     private SkinnedMeshRenderer mirrorHeadModel;
 
-    [SerializeField]
-    private Transform animationView;
-
     private FPCamera fpCamera;
     public FPCamera FPCamera {
         get { 
@@ -36,18 +33,23 @@ public class Player : RoomObject
     }
 
     [SerializeField]
-    private Transform animationViewLevel2End;
-    [SerializeField]
     private Hands hands;
 
     private CharacterAnimationPlayer characterAnimationPlayer;
     public CharacterAnimationPlayer CharacterAnimationPlayer {
         get { return characterAnimationPlayer;}
     }
+
+    [Header("animators")]
     [SerializeField]
-    private Animator animator;
+    private PlayerAnimator idleAnimator;
     [SerializeField]
-    private Animator animatorLevel2End;
+    private PlayerAnimator level2End;
+    [SerializeField]
+    public PlayerAnimator finalLevelEnd;
+
+    [Header("IK pass")]
+
     [SerializeField]
     private IKPass IKPass;
     public IKPass IKPASS {
@@ -102,7 +104,7 @@ public class Player : RoomObject
     {
         movement = GetComponent<FPMovement>();
         ApplyCameraSettings(Settings.GetSettings());
-        characterAnimationPlayer = new CharacterAnimationPlayer(this, animator, animationView, IKPass);
+        characterAnimationPlayer = new CharacterAnimationPlayer(this, idleAnimator.animator, idleAnimator.cameraView, IKPass);
     }
 
     public Player() {
@@ -294,10 +296,21 @@ public class Player : RoomObject
     }
 
     public void SetLevel2EndAnimation() {
-        characterAnimationPlayer.SetAnimator(animatorLevel2End, animationViewLevel2End);
+        characterAnimationPlayer.SetAnimator(level2End);
         characterAnimationPlayer.PlayCutSceneAnimation("level2end", true);
+    }
+    public void SetFinalLevelAnimation() {
+        characterAnimationPlayer.SetAnimator(finalLevelEnd);
+        characterAnimationPlayer.PlayCutSceneAnimation("acceptance", true);
     }
     private void OnDrawGizmosSelected() {
         if (Application.isPlaying) fpCamera.DrawGizmo();
+    }
+
+    [System.Serializable]
+    public class PlayerAnimator {
+        public Animator animator;
+        public Transform cameraView;
+        public Transform[] props;
     }
 }

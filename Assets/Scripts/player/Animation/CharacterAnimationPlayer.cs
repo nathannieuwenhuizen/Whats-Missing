@@ -118,11 +118,11 @@ public class CharacterAnimationPlayer
         animator.applyRootMotion = _applyRootAnimation;
     }
 
-    public void SetAnimator(Animator _animator, Transform _animationView) {
+    public void SetAnimator(Player.PlayerAnimator playerAnimator) {
         animator.gameObject.SetActive(false); //may cause errors?
-        _animator.gameObject.SetActive(true);        
-        animator = _animator;
-        animationView = _animationView;
+        playerAnimator.animator.gameObject.SetActive(true);        
+        animator = playerAnimator.animator;
+        animationView = playerAnimator.cameraView;
     }
 
     public void OnEnable() {

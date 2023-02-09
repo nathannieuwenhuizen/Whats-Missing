@@ -25,6 +25,7 @@ public class AcceptanceVivienne : MonoBehaviour
         transform.position = new Vector3(player.transform.position.x,transform.position.y, transform.position.z) + 
         new Vector3(-1,0,0) * currentDesiredDistance;
     }
+    private bool hasSaidSomething = false;
     private void Update() {
         if (!playerMovesTowardsVivienne) {
             distancePercentage = Mathf.Min(1, distancePercentage + Time.deltaTime * .05f);
@@ -37,7 +38,14 @@ public class AcceptanceVivienne : MonoBehaviour
         if (playerMovesTowardsVivienne) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, -90, 0), Time.deltaTime);
         
         player.IKPASS.RightHand.ReachHandForward = Vector3.Distance(transform.position, player.transform.position) < 25f;
-
+        if (!hasSaidSomething && player.IKPASS.RightHand.ReachHandForward) {
+            hasSaidSomething = true;
+            DialoguePlayer.Instance.PlayLine( new Line() {
+                text = "VIVIENNE!!!",
+                duration = 1f,
+                lineEffect = LineEffect.shake
+            });
+        }
         
     }
 }

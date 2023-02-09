@@ -9,7 +9,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: level2end
+    m_ConditionEvent: acceptance
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7117878882726641393}
@@ -32,7 +32,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: level2ending
+  m_Name: final level
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -45,7 +45,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 4d3499cfb15c8734fb395aae36521f48, type: 2}
+  m_Motion: {fileID: 7400000, guid: 2e63feecf3994ee45aa239652cc44cf8, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -57,10 +57,10 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Character level2 end
+  m_Name: Character final level end
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: level2end
+  - m_Name: acceptance
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -93,7 +93,7 @@ AnimatorStateMachine:
     m_Position: {x: 150, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7117878882726641393}
-    m_Position: {x: 400, y: 110, z: 0}
+    m_Position: {x: 160, y: 250, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
