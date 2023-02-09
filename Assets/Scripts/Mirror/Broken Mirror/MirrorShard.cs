@@ -202,15 +202,16 @@ public class MirrorShard : PickableRoomObject
         
         UpdateOutline();
     }
-
+    private float test = .1f;
+    public Outline.Mode mode = Outline.Mode.OutlineVisible;
     private void UpdateOutline() {
     	if (!attached && !animating && focusedShard) {
-            Outline.OutlineWidth = -5f;
-            Outline.OutlineMode = Outline.Mode.OutlineHidden;
+            Outline.OutlineWidth = test;
+            Outline.OutlineMode = mode;
 
         } else {
             Outline.OutlineWidth = 0;
-            Outline.OutlineMode = Outline.Mode.OutlineHidden;
+            Outline.OutlineMode = mode;
         }
     }
 

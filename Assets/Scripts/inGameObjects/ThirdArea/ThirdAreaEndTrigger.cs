@@ -51,7 +51,7 @@ public class ThirdAreaEndTrigger : AreaTrigger
         DeactivatePlayerCollission();
         yield return new WaitForSeconds(1f);
         OnEndOfCutscene?.Invoke();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         room.Area.EndOfArea();
     }
 

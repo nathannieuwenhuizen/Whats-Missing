@@ -20,6 +20,8 @@ public class BossMirror : Mirror, ITriggerArea
 
     private bool followPlayer = false;
 
+    private float mirrorHeight = 2.8f;
+
     private Vector3 startPos;
     
     [SerializeField]
@@ -106,13 +108,16 @@ public class BossMirror : Mirror, ITriggerArea
             shards[i].animated = false;
             shards[i].DisconnectedFromMirror();
         }
-        followPlayer = true;
+        // followPlayer = true;
         for(int i = 0 ; i < ammountOfShardAlreadyCollected; i++) {
             yield return new WaitForSeconds(.1f);
             shards[i].transform.position = transform.position;
             shards[i].Release();
         }
         OnMirrorShardAmmountUpdate?.Invoke(this);
+        StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z + 90), AnimationCurve.EaseInOut(0,0,1,1), .1f));
+        startPos = transform.position;
+        StartCoroutine(transform.parent.AnimatingPos(startPos + new Vector3(0,-mirrorHeight,0), AnimationCurve.EaseInOut(0,0,1,1), .1f));
 
     }
 
@@ -257,7 +262,7 @@ public class BossMirror : Mirror, ITriggerArea
         transform.localRotation = startRotation;
         Explode();
 
-        StartCoroutine(transform.parent.AnimatingPos(startPos + new Vector3(0,-2.5f,0), AnimationCurve.EaseInOut(0,0,1,1), 1.5f));
+        StartCoroutine(transform.parent.AnimatingPos(startPos + new Vector3(0,-mirrorHeight,0), AnimationCurve.EaseInOut(0,0,1,1), 1.5f));
 
         //wait a little bit to deactivate the stencil buffer mask
         yield return new WaitForSeconds(1f);
@@ -274,9 +279,10 @@ public class BossMirror : Mirror, ITriggerArea
     private IEnumerator RepositioningMirror() {
         Debug.Log("reposition mirror");
         //position bossmirror to original state
-        StartCoroutine(transform.parent.AnimatingPos(startPos, AnimationCurve.EaseInOut(0,0,1,1), .5f));
-        yield return StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z - 90), AnimationCurve.EaseInOut(0,0,1,1), 1f));
-        followPlayer = true;
+        // StartCoroutine(transform.parent.AnimatingPos(startPos, AnimationCurve.EaseInOut(0,0,1,1), .5f));
+        // yield return StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z - 90), AnimationCurve.EaseInOut(0,0,1,1), 1f));
+        // followPlayer = true;
+        yield return new WaitForEndOfFrame();
     }
 
     private void OnEnable() {
