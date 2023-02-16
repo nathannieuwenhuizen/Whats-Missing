@@ -166,6 +166,9 @@ public class MirrorShard : PickableRoomObject
             if (rb) rb.velocity = Vector3.zero;
             yield return new WaitForFixedUpdate();
         }
+        SetToFallPosition();
+    }
+    public void SetToFallPosition() {
         transform.position = positionInfo.fallPosition.position;
         transform.rotation = positionInfo.fallPosition.rotation;
         if (positionInfo.setAsParent) {

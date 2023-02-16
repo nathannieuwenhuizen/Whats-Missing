@@ -13,8 +13,8 @@ namespace Boss {
 
         public override void Start()
             {
-            stateName = "Die cutscene";
             base.Start();
+            stateName = "Die cutscene";
 
             Positioner.MovementEnabled = false;
             Positioner.RotationEnabled = false;

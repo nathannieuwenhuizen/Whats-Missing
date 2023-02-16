@@ -6,8 +6,8 @@ namespace Boss {
     {
         public override void Start()
         {
-            stateName = "Shield gone cutscene";
             base.Start();
+            stateName = "Shield gone cutscene";
             bossAI.StartCoroutine(TestAnimation());
             Boss.Head.LookAtPlayer = true;
         }

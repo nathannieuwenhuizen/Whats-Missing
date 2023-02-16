@@ -353,7 +353,7 @@ public class Room : MonoBehaviour
             item.InSpace = true;
             item.OnRoomEnter();
             RoomObject roomObject = item as RoomObject;
-            if (roomObject != null) if (roomObject.EventSender != null) roomObject.EventSender.Active = roomLevel.roomInfo.EventSenderActive;
+            if (roomObject != null) if (roomObject.EventSender != null) if (roomLevel != null) roomObject.EventSender.Active = roomLevel.roomInfo.EventSenderActive;
         }
         foreach(Rigidbody rb in GetAllObjectsInRoom<Rigidbody>()) {
             rb.sleepThreshold = 0.14f;

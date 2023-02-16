@@ -301,7 +301,7 @@ public class MirrorCanvas : MonoBehaviour
     public void RemoveSelectedLetter(int index)
     {
         if (index < 0) return;
-        SelectedLetters[index].transform.parent = letterContainer;
+        SelectedLetters[index].transform.SetParent(letterContainer);
         SelectedLetters[index].Deselect();
         Letters.Add(SelectedLetters[index]);
         SelectedLetters.Remove(SelectedLetters[index]);

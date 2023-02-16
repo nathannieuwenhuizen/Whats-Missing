@@ -45,7 +45,7 @@ public class ChangeHandler
             }
         }
         mirrorChanges = result;
-        changes = new List<IChange>(room.roomLevel.roomInfo.loadedChanges);
+        changes = room.roomLevel != null ? new List<IChange>(room.roomLevel.roomInfo.loadedChanges) : new List<IChange>();
         foreach (IChange change in changes)
         {
             room.ForEachObjectWithMirrorWord(change, (IChangable obj) => {

@@ -53,6 +53,9 @@ namespace Boss {
 
         [SerializeField]
         private BossRoom bossRoom;
+        public BossMirror BossMirror {
+            get { return bossRoom.BossMirror;}
+        }
 
         [SerializeField]
         private TextAnimatorPlayer textAnimatorPlayer;

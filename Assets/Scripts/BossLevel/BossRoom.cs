@@ -13,6 +13,9 @@ public class BossRoom : Room
     
     [SerializeField]
     private BossMirror bossMirror;
+    public BossMirror BossMirror {
+        get { return bossMirror;}
+    }
 
     [SerializeField]
     private Transform spawnPosition;

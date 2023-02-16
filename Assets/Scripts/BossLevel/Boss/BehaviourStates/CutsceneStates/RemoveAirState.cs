@@ -7,8 +7,8 @@ namespace Boss{
     {
         public override void Start()
         {
-            stateName = "Remove air cutscene";
             base.Start();
+            stateName = "Remove air cutscene";
             //set the rotation to player and also on
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
             bossAI.Boss.BossPositioner.RotationEnabled = true;

@@ -38,7 +38,7 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
         writingCoroutine = StartCoroutine(PlayingLine(_line));
     }
 
-    public IEnumerator PlayingLine(Line _line) {
+    private IEnumerator PlayingLine(Line _line) {
         player.ShowText(getLineEffectTagStart(_line.lineEffect) + _line.text + getLineEffectTagEnd(_line.lineEffect));
         yield return new WaitForSeconds(2);
         // yield return new WaitForSeconds(_line.duration);

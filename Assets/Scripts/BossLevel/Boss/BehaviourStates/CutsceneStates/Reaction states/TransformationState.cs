@@ -7,8 +7,20 @@ namespace Boss {
         public override void Start()
         {
             zoomValue = 45f;
-            stateName = "Transformation cutscene";
+            Debug.Log("before start");
             base.Start();
+            Debug.Log("after start");
+            stateName = "Transformation cutscene";
+        }
+
+        public override Vector3 ReactionPosition() {
+            Debug.Log("correct reaction pos");
+
+            return bossAI.ReactionPosition.position;
+        }
+
+        public override IEnumerator GoToReactionPose() {
+            yield return base.GoToReactionPose();
         }
 
         public override void DoReaction()

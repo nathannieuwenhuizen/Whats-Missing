@@ -57,6 +57,11 @@ namespace Boss {
             get { return ikBossPass;}
         }
         
+        [SerializeField]
+        private MeshRenderer kickedShardRenderer;
+        public MeshRenderer KickedShardRenderer {
+            get { return kickedShardRenderer;}
+        }
 
         [HideInInspector]
         public Boss boss;
@@ -66,6 +71,7 @@ namespace Boss {
             ToggleDeathColliders(false);
             TentacleGrowth = 0;
             Arm.Toggle(false);
+            kickedShardRenderer.enabled = false;
         }
 
         private void Update() {

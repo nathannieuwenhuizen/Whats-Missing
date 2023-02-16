@@ -29,7 +29,7 @@ public class FPCamera
     private int verticalAngle = 80;
 
     private Transform steeringTarget;
-    private float steeringOffset = 0f;
+    private Vector2 steeringOffset = Vector2.zero;
 
     private bool cameraZRotationTilt = false;
 
@@ -107,6 +107,7 @@ public class FPCamera
         InputManager.OnRotate += setMouseDelta;
         BossCutsceneState.OnBossCutsceneStart += OnBossCutSceneStart;
         BossCutsceneState.OnBossCutsceneEnd += OnBossCutSceneEnd;
+        BossCutsceneState.OnBossCutsceneTargetUpdate += UpdateBossAimTarget;
         ForcefieldDemo.Forcefield.OnForceFieldImpact += ApplyLittleShake;
         BasaltWall.OnDestroy += ApplyLittleShake;
     }
@@ -117,6 +118,7 @@ public class FPCamera
         InputManager.OnRotate -= setMouseDelta;
         BossCutsceneState.OnBossCutsceneStart -= OnBossCutSceneStart;
         BossCutsceneState.OnBossCutsceneEnd -= OnBossCutSceneEnd;
+        BossCutsceneState.OnBossCutsceneTargetUpdate -= UpdateBossAimTarget;
         ForcefieldDemo.Forcefield.OnForceFieldImpact -= ApplyLittleShake;
         BasaltWall.OnDestroy -= ApplyLittleShake;
 
@@ -235,12 +237,17 @@ public class FPCamera
 
 
     private void OnBossCutSceneStart(Boss.Boss boss, float zoom) {
-        UseSteeringBehaviour = true;
-        currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward;
-        SteeringBehaviour.Velocity = Vector3.zero;
-        steeringTarget = boss.Eye.transform;
-        steeringOffset = 5f;
-        
+        ShowAimCutscene(boss.Eye.transform, -1, 60f, 2f);
+        steeringOffset = new Vector2(0, 5f);
+        // UseSteeringBehaviour = true;
+        // currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward;
+        // SteeringBehaviour.Velocity = Vector3.zero;
+        // steeringTarget = boss.Eye.transform;
+    }
+    private void UpdateBossAimTarget(Transform _target, Vector2 _steeringOffset, float _steeringSpeed) {
+        steeringTarget = _target.transform;
+        steeringOffset = _steeringOffset;
+        steeringSpeed = _steeringSpeed;
     }
 
     public void ShowAimCutscene(Transform _target, float _duration, float _zoom = 60f, float _steeringSpeed = 2f) {
@@ -249,7 +256,7 @@ public class FPCamera
         SteeringBehaviour.Velocity = Vector3.zero;
         steeringTarget = _target.transform;
         steeringSpeed = _steeringSpeed;
-        FPMovement.StartCoroutine(TempAimCutscene(_duration));
+        if (_duration != -1) FPMovement.StartCoroutine(TempAimCutscene(_duration));
         FPMovement.Player.CharacterAnimationPlayer.PlayCutSceneAnimation("", false, null, _zoom, false);
 
     }
@@ -290,7 +297,7 @@ public class FPCamera
 
         // cameraPivot.LookAt(currentAim, Vector3.up);
 
-        desiredAim.position = steeringTarget.position - steeringTarget.up * steeringOffset;
+        desiredAim.position = steeringTarget.position - Vector3.up * steeringOffset.y - steeringTarget.right * steeringOffset.x;
 
         Quaternion rotation = Quaternion.LookRotation(desiredAim.position - cameraPivot.position, transform.up);
         transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * steeringSpeed);

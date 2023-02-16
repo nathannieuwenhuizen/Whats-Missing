@@ -18,8 +18,8 @@ namespace Boss {
 
         public override void Start()
         {
-            stateName = "Boss Reaction cutscene";
             base.Start();
+            stateName = "Boss Reaction cutscene";
             bossAI.StartCoroutine(GoToReactionPose());
             oldMaxForce = bossAI.Boss.BossPositioner.SteeringBehaviour.MaxForce;
             bossAI.Boss.BossPositioner.SteeringBehaviour.MaxForce *= 4f;

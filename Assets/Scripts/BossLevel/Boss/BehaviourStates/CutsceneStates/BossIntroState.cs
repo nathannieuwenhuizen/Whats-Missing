@@ -10,8 +10,8 @@ namespace Boss {
         public override void Start()
         {
             zoomValue = 70f;
-            stateName = "Intro cutscene";
             base.Start();
+            stateName = "Intro cutscene";
             bossAI.StartCoroutine(MovingBoss());
 
             Positioner.InAir = true;

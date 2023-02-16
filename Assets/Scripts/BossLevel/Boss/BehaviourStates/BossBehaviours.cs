@@ -22,6 +22,7 @@ namespace Boss {
             mountainAirChaseState = new MountainAirChaseState() {bossAI = _ai };
             chargeAtShieldState = new ChargeAtShieldState() {bossAI = _ai };
             destroyShieldState = new DestroyShieldState() {bossAI = _ai };
+            kickShardState = new KickShardState() {bossAI = _ai };
 
             landingState = new LandingState() {bossAI = _ai };
             takeoffState = new TakeOffState() {bossAI = _ai };
@@ -37,6 +38,7 @@ namespace Boss {
         public RemoveAirState removeAirState;
         public DieState dieState;
         public DestroyShieldState destroyShieldState;
+        public KickShardState kickShardState;
 
         //stealth
         public WanderState wanderState; 

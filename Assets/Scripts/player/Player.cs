@@ -129,7 +129,7 @@ public class Player : RoomObject
         return materials.ToArray();
     }
 
-
+    public Transform test;
     private void Reset() {
         Word = "me";
         AlternativeWords = new string[]{ "myself", "i", "player", "gregory", "you", "yourself", "self"};
@@ -137,6 +137,8 @@ public class Player : RoomObject
     private void Update() {
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) Die(true, false);
+        
+        if (Input.GetKeyDown(KeyCode.F) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) fpCamera.ShowAimCutscene(test, 5f, 60f, 2f);
 #endif
     }
 

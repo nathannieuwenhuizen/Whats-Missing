@@ -297,7 +297,7 @@ public class BossPositioner : MonoBehaviour
 
         //do taking off animation.
         InAir = true;
-        yield return new WaitForSeconds(.3f);
+        yield return new WaitForSeconds(.6f);
 
         MovementEnabled = true;
         //spawn debree at end position when the coordinate of the boss is within 3 units of its destination.

@@ -10,7 +10,8 @@ public class Butterflies : RoomObject
     private ParticleSystem.MainModule mainModule;
     private ParticleSystem.NoiseModule noiseModule;
     protected Vector3 startNoise;
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         butterflyParticles = GetComponent<ParticleSystem>();
         sizeModule = butterflyParticles.sizeOverLifetime;
         mainModule = butterflyParticles.main;

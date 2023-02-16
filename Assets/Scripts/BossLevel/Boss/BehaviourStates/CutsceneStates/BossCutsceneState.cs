@@ -12,6 +12,8 @@ namespace Boss {
         public static BossCutSceneDelegate OnBossCutsceneStart;
         public static BossCutSceneDelegate OnBossCutsceneEnd;
 
+        public delegate void BossCutSceneUpdateDelegate(Transform _target, Vector2 _offset, float speed);
+        public static BossCutSceneUpdateDelegate OnBossCutsceneTargetUpdate;
         ///<summary>
         /// The zoom size of th camera when it goes into the cutscene animation.
         ///</summary>
@@ -22,7 +24,7 @@ namespace Boss {
 
         public override void Start()
         {
-            stateName = "Cutscene";
+            stateName = "Start cutscene";
             Boss.Head.StopBossVoice();
             if (withCutscene) OnBossCutsceneStart?.Invoke(bossAI.Boss, zoomValue);
             bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.none;
