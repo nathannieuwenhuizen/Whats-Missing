@@ -5,6 +5,9 @@ using UnityEngine;
 public static class BossLines
 {
     public static Line Laugh = new Line() {text = "Hahaha!", lineEffect = LineEffect.shake, duration = 2f};
+    public static Line BeforeGrowth = new Line() {text = "ENOUGH!!!", lineEffect = LineEffect.shake, duration = 2f};
+    public static Line AfterGrowth = new Line() {text = "Now I am strong enough to get you inside that stupid shield", 
+    lineEffect = LineEffect.none, duration = 4f};
     public static Line GetShardKickLine() {
         List<Line> Lines = new List<Line>() {
             new Line() {text = "Looking for this?", lineEffect = LineEffect.shake, duration = 2f},

@@ -50,7 +50,6 @@ namespace Boss {
         void Awake () 
         {
             animator = GetComponent<Animator>();
-            Debug.Log("animator awake" + animator);
 
             ikBossHead = new IKBossHead(transform, this, test);
 
@@ -85,12 +84,13 @@ namespace Boss {
         void OnAnimatorIK() {
             if(animator == null) return;
 
-            leftLeg.UpdateIK(animator);
-            rightLeg.UpdateIK(animator);
+            // leftLeg.UpdateIK(animator);
+            // rightLeg.UpdateIK(animator);
 
-            leftArm.UpdateIK(animator);
-            rightArm.UpdateIK(animator);
-
+            // leftArm.UpdateIK(animator);
+            // rightArm.UpdateIK(animator);
+            ikBossHead.Weight =1;
+            Debug.Log("update boss head ik");
             ikBossHead.UpdateIK(animator);
         }
 

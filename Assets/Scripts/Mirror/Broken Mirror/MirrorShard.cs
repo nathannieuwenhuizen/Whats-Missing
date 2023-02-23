@@ -94,6 +94,13 @@ public class MirrorShard : PickableRoomObject
 
         }
     }
+
+    public bool lettersVisible {
+        set { 
+            Debug.Log("letters visible " + letterCoords.Length);
+            foreach(LetterCoords coords in letterCoords) coords.letter.Visible = value;
+        }
+    }
     
     private BossMirror bossMirror;
     public BossMirror BossMirror {

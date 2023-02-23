@@ -23,6 +23,11 @@ public class BossAI : MonoBehaviour {
     public Transform ReactionPosition {
         get { return reactionPosition;}
     }
+    [SerializeField]
+    private Transform enlargePosition;
+    public Transform EnlargePosition {
+        get { return enlargePosition;}
+    }
 
     [SerializeField]
     private Transform shieldDestroyPosition;
@@ -41,6 +46,7 @@ public class BossAI : MonoBehaviour {
     public Transform DiePosition {
         get { return diePosition;}
     }
+
 
 
     //states
@@ -145,10 +151,12 @@ public class BossAI : MonoBehaviour {
             break;
             case 3:
             CurrentWanderingPath = paths.fourthShardPath;  
-            stateMachine.SwitchState(behaviours.kickShardState);
+            // stateMachine.SwitchState(behaviours.kickShardState);
             break;
             case 4:    
-            CurrentWanderingPath = paths.fifthShardPath;   
+            // CurrentWanderingPath = paths.fifthShardPath; 
+            // stateMachine.SwitchState(behaviours.transformationState);
+            stateMachine.SwitchState(behaviours.enlargeState);
             break;        
             case 5:    
             //go instant into end chase mdoe

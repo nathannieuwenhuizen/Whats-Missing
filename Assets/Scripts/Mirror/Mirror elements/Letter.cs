@@ -66,6 +66,14 @@ public class Letter : MirrorButton, IPointerDownHandler
         }
     }
 
+    public bool Visible {
+        set { 
+            Color temp = Color;
+            temp.a = value ? 1 : 0;
+            Color = temp;
+         }
+    }
+
 
     public override void Awake()
     {

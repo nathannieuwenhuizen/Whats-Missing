@@ -75,10 +75,10 @@ namespace Boss {
         }
 
         private void Update() {
-            if (Input.GetKeyDown(KeyCode.L)) {
-                Arm.Toggle(true);
-                TentacleGrowth = 1;
-            }
+            // if (Input.GetKeyDown(KeyCode.L)) {
+            //     Arm.Toggle(true);
+            //     TentacleGrowth = 1;
+            // }
         }
 
 
@@ -187,11 +187,7 @@ namespace Boss {
             ToggleTentacles(true);
 
             while (index < 10f) {
-                Glow = bossAnimator.Animator.GetFloat(glowKey);
-                armRenders.Shine = bossAnimator.Animator.GetFloat(shineKey);
-                if (TentacleGrowth < .99f) {
-                    TentacleGrowth = bossAnimator.Animator.GetFloat(growKey);
-                }
+                UpdateBodyShaders();
 
                 //make sythe
                 if (index > 4.8f) {
@@ -204,6 +200,14 @@ namespace Boss {
             armRenders.Shine = 0;
             TentacleGrowth = 1f;
             Glow = 1;
+        }
+
+        public void UpdateBodyShaders() {
+            Glow = bossAnimator.Animator.GetFloat(glowKey);
+            armRenders.Shine = bossAnimator.Animator.GetFloat(shineKey);
+            if (TentacleGrowth < .99f) {
+                TentacleGrowth = bossAnimator.Animator.GetFloat(growKey);
+            }
         }
 
         ///<summary>

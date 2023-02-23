@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Boss;
 [RequireComponent(typeof(RectTransform))]
 [RequireComponent(typeof(CanvasGroup))]
 public class MirrorShardIndicator : MonoBehaviour
@@ -16,6 +16,7 @@ public class MirrorShardIndicator : MonoBehaviour
     private CanvasGroup cg;
     [SerializeField]
     private bool active = false;
+    private bool inBossCutscene = false;
     public bool Active {
         get { return active;}
         set { 
@@ -56,6 +57,7 @@ public class MirrorShardIndicator : MonoBehaviour
         rt.position = ClampedScreenPos(screenPos, camReversed);
     }
     private void UpdateUIAlpha () {
+        if (inBossCutscene) return;
         if (!active) {
             cg.alpha = 0;
             return;
@@ -79,11 +81,23 @@ public class MirrorShardIndicator : MonoBehaviour
 
     private void OnEnable() {
         BossMirror.OnMirrorShardAmmountUpdate += AssignShard;
+        BossCutsceneState.OnBossCutsceneStart += HideUI;
+        BossCutsceneState.OnBossCutsceneEnd += ShowUI;
     }
 
     private void OnDisable() {
-        BossMirror.OnMirrorShardAmmountUpdate += AssignShard;
+        BossMirror.OnMirrorShardAmmountUpdate -= AssignShard;
+        BossCutsceneState.OnBossCutsceneStart -= HideUI;
+        BossCutsceneState.OnBossCutsceneEnd -= ShowUI;
+    }
 
+    private void HideUI(Boss.Boss boss, float zoomValue = 50f) {
+        inBossCutscene = true;
+        StartCoroutine(cg.FadeCanvasGroup(0,1f,0));
+    }
+    private void ShowUI(Boss.Boss boss, float zoomValue = 50f) {
+        inBossCutscene = false;
+        StartCoroutine(cg.FadeCanvasGroup(1f,1f,0));
     }
 
     //log converts a screen position to not go out of bounds

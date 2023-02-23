@@ -11,8 +11,11 @@ namespace Boss {
         //the old maxforce of the steringbehaviour. Needed to restore the movement steering force.
         private float oldMaxForce;
 
+        //include that the boss also lands on the rection position instead of just floating
+        protected bool includeLanding = true;
+
         ///<summary>
-        /// If set to true, the boss mountain will recalculated ot get out of the bounds of the mountain shape.
+        /// If set to true, the boss mountain will recalculated to get out of the bounds of the mountain shape.
         ///</summary>
         protected bool customMountainShape = false; 
 
@@ -53,11 +56,12 @@ namespace Boss {
             }
             Positioner.SteeringBehaviour.MaxForce /= 5f;
 
+            if (includeLanding) {
+                yield return bossAI.StartCoroutine(LandOnReactionPosition());
+                //resotre the boss mountain
+                if (customMountainShape) Positioner.BossMountain.RestoreShape();
+            }
 
-            yield return bossAI.StartCoroutine(LandOnReactionPosition());
-
-            //resotre the boss mountain
-            if (customMountainShape) Positioner.BossMountain.RestoreShape();
             
             DoReaction();
         }

@@ -14,13 +14,14 @@ public class CharacterAnimationPlayer
 
     private Coroutine torsoCoroutine;
     private float cameraZoom = 60f;
+    public float ZoomDuration = .5f;
     private Coroutine zoomCoroutine;
     public float CameraZoom {
         get { return cameraZoom;}
         set { 
             cameraZoom = value; 
             if (zoomCoroutine != null) player.StopCoroutine(zoomCoroutine);
-            zoomCoroutine = player.StartCoroutine(player.Camera.AnimatingFieldOfView(cameraZoom, AnimationCurve.EaseInOut(0,0,1,1), .5f));
+            zoomCoroutine = player.StartCoroutine(player.Camera.AnimatingFieldOfView(cameraZoom, AnimationCurve.EaseInOut(0,0,1,1), ZoomDuration));
         }
     }
     private Animator animator;
@@ -114,7 +115,7 @@ public class CharacterAnimationPlayer
         CameraZoom = _zoom;
 
         //activates the trigger
-        animator.SetTrigger(_trigger);
+        if (_trigger != "") animator.SetTrigger(_trigger);
         animator.applyRootMotion = _applyRootAnimation;
     }
 

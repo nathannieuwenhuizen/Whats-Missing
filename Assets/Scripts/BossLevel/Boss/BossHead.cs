@@ -38,22 +38,25 @@ public class BossHead: MonoBehaviour
     ///</summary>
     public bool LookAtPlayer {
         get { return lookAtPlayer;}
-        set { lookAtPlayer = value; }
+        set { 
+            lookAtPlayer = value; 
+            if (value) SteeringEnabled = true;
+        }
     }
 
     ///<summary>
     /// Returns the desired position, can be the player or the current target depending on the values of the bosshead script
     ///</summary>
     private Vector3 getDesriedPosition() {
-        return lookAtPlayer ? bossAI.Boss.Player.Camera.transform.position :desiredAim.position;
+        return lookAtPlayer ? bossAI.Boss.Player.Camera.transform.position : desiredAim.position;
     }
 
     private void Awake() {
-        currentAim = new GameObject("head current aim").transform;
+        currentAim = new GameObject("boss head current aim").transform;
         currentAim.position = transform.position + transform.forward * 10f;
         currentAim.SetParent(bossAI.transform.parent);
 
-        desiredAim = new GameObject("head desired aim").transform;
+        desiredAim = new GameObject("boss head desired aim").transform;
         desiredAim.position = transform.position + transform.forward * 10f;
         desiredAim.SetParent(bossAI.transform.parent);
         

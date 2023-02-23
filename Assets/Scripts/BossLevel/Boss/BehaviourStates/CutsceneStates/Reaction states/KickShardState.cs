@@ -13,7 +13,7 @@ namespace Boss {
             base.Start();
             zoomValue = 25f;
             stateName = "Kick shard cutscene";
-            Boss.Body.Arm.Toggle(true);
+            Boss.Body.Arm.Toggle(true); // purely for testing
         }
 
         public override Vector3 ReactionPosition() {
@@ -47,16 +47,22 @@ namespace Boss {
 
         
         private void AttachMirrorShardToBoss() {
-            Boss.BossMirror.Shards[3].transform.SetParent(Boss.Body.KickedShardRenderer.transform);
-            Boss.BossMirror.Shards[3].transform.localPosition = Vector3.zero;
-            Boss.BossMirror.Shards[3].OutlineEnabled = false;
-            Boss.BossMirror.Shards[3].transform.localRotation = Quaternion.Euler(Vector3.zero);
-            Boss.BossMirror.Shards[3].transform.localScale = Vector3.one * 0.005f;
+            MirrorShard shard = Boss.BossMirror.Shards[3];
+            shard.lettersVisible = false;
+            shard.transform.SetParent(Boss.Body.KickedShardRenderer.transform);
+            shard.transform.localPosition = Vector3.zero;
+            shard.OutlineEnabled = false;
+            shard.transform.localRotation = Quaternion.Euler(Vector3.zero);
+            shard.transform.localScale = Vector3.one * 0.005f;
         }
+
         private void DetachMirrorShard() {
-            Boss.BossMirror.Shards[3].OutlineEnabled = true;
-            Boss.BossMirror.Shards[3].transform.SetParent(null);
-            Boss.BossMirror.Shards[3].SetToFallPosition();
+            MirrorShard shard = Boss.BossMirror.Shards[3];
+            shard.lettersVisible = true;
+            shard.OutlineEnabled = true;
+            shard.transform.SetParent(null);
+            shard.SetToFallPosition();
+            
 
         }
     }

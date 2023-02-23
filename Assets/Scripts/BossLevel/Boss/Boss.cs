@@ -103,6 +103,8 @@ namespace Boss {
         }
 
         protected override void Awake() {
+            largeScale = 5f * .7f;
+            Animated = true;
             bossVoice = new BossVoice(transform);
             bossChangeHandler = new BossChangesHandler(textAnimatorPlayer, bossRoom, this, magicBlast);
             bossPositioner = GetComponent<BossPositioner>();
