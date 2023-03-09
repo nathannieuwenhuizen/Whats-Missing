@@ -39,12 +39,12 @@ public class FinalBox : InteractabelObject
             prop.gameObject.SetActive(false);
         }
         player.SetFinalLevelAnimation();
-        float duration = 3f;
+        float duration = 1f;
         StartCoroutine(player.transform.AnimatingPos(target.position, AnimationCurve.EaseInOut(0,0,1,1), duration));
         StartCoroutine(player.transform.AnimatingRotation(target.rotation, AnimationCurve.EaseInOut(0,0,1,1), duration));
         yield return new WaitForSeconds(duration);
     	ToggleMesh();
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSeconds(13f);
         player.Camera.transform.SetParent(player.transform.parent);
         moveCamera = true;
         StartCoroutine(MoveCamera());
@@ -60,6 +60,9 @@ public class FinalBox : InteractabelObject
             player.Camera.transform.position += delta * speed;
             yield return new WaitForEndOfFrame();
         }
+    }
+    private void Start() {
+        InteractableDistance = 4f;
     }
     private void Update() {
         if (Interactable) Focused = true;
