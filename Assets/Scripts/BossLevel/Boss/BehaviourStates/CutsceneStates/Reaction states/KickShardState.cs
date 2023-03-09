@@ -7,6 +7,8 @@ namespace Boss {
     ///</summary>
     public class KickShardState : BossReactionState
     {
+        public Coroutine animationCoroutine;
+
         public override void Start()
         {
             customMountainShape = true;
@@ -27,7 +29,7 @@ namespace Boss {
             base.DoReaction();
 
             bossAI.StartCoroutine(ShardUpdate());
-            bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_KICK_SHARD, false, 9.5f, () => {
+            animationCoroutine = bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_KICK_SHARD, false, 9.5f, () => {
                 OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
             }));
         }
@@ -62,8 +64,12 @@ namespace Boss {
             shard.OutlineEnabled = true;
             shard.transform.SetParent(null);
             shard.SetToFallPosition();
-            
+        }
 
+        public override void Exit()
+        {
+            if(animationCoroutine != null) bossAI.StopCoroutine(animationCoroutine);
+            base.Exit();
         }
     }
 }

@@ -19,11 +19,14 @@ namespace Boss {
         ///</summary>
         protected bool customMountainShape = false; 
 
+        public Coroutine reactionCoroutine;
+
+
         public override void Start()
         {
             base.Start();
             stateName = "Boss Reaction cutscene";
-            bossAI.StartCoroutine(GoToReactionPose());
+            reactionCoroutine = bossAI.StartCoroutine(GoToReactionPose());
             oldMaxForce = bossAI.Boss.BossPositioner.SteeringBehaviour.MaxForce;
             bossAI.Boss.BossPositioner.SteeringBehaviour.MaxForce *= 4f;
         }
@@ -85,6 +88,7 @@ namespace Boss {
 
         public override void Exit()
         {
+            if (reactionCoroutine != null) bossAI.StopCoroutine(reactionCoroutine);
             bossAI.Boss.BossPositioner.SteeringBehaviour.MaxForce = oldMaxForce;
             base.Exit();
         }

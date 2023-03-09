@@ -111,6 +111,7 @@ public class BossMirror : Mirror, ITriggerArea
         // followPlayer = true;
         for(int i = 0 ; i < ammountOfShardAlreadyCollected; i++) {
             yield return new WaitForSeconds(.1f);
+            shards[i].invokeBossReaction = i >= ammountOfShardAlreadyCollected - 1; //purely for testing
             shards[i].transform.position = transform.position;
             shards[i].Release();
         }
@@ -168,7 +169,7 @@ public class BossMirror : Mirror, ITriggerArea
     }
 
     public void AttachMirrorShard(MirrorShard shard) {
-        OnBossMirrorShardAttached?.Invoke(this);
+        if (shard.invokeBossReaction) OnBossMirrorShardAttached?.Invoke(this);
         OnMirrorShardAmmountUpdate?.Invoke(this);
         MirrorCanvas.IsInteractable = true;
 

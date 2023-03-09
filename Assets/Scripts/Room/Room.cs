@@ -40,6 +40,9 @@ public class Room : MonoBehaviour
     public delegate void MakeRoomAction(Room _room, Change _change, bool _changeIsAdded, string previousWord = "");
     public static MakeRoomAction OnMakeRoomAction;
 
+    ///<summary>
+    /// Timescale on which the room opperates. from 1 (normal speed) to 0 (time stops)
+    ///</summary>
     public static float TimeScale = 1f;
 
     private bool inArea = false;

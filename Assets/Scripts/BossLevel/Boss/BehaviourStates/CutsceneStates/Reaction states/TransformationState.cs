@@ -22,6 +22,7 @@ namespace Boss {
         public override IEnumerator GoToReactionPose() {
             yield return base.GoToReactionPose();
         }
+        public Coroutine animationCoroutine;
 
         public override void DoReaction()
         {
@@ -32,13 +33,18 @@ namespace Boss {
 
             AudioHandler.Instance?.Play3DSound(SFXFiles.boss_transformation, bossAI.BossHead.transform);
 
-            bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_TRANSFORM, true, 6f, () => {
+            animationCoroutine = bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_TRANSFORM, true, 6f, () => {
                 bossAI.StartCoroutine(Body.BossAnimator.DoMirrorAttack(() => {
                     bossAI.Boss.BossChangesHandler.CreateChange("fire", ChangeType.tooBig);
                 }, () => {
                     OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
                 }));
             }));
+        }
+        public override void Exit()
+        {
+            if(animationCoroutine != null) bossAI.StopCoroutine(animationCoroutine);
+            base.Exit();
         }
     }
 }

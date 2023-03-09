@@ -26,6 +26,7 @@ public class ShardPositionInfo {
 public class MirrorShard : PickableRoomObject
 {
     public bool animated = true;
+    public bool invokeBossReaction = true;
     public delegate void OnMirroShardPickEvent(MirrorShard _shard);
     public static OnMirroShardPickEvent OnPickedUp;
     private bool hasAlreadyBeenPickedUp = false;

@@ -254,6 +254,7 @@ public class FPCamera
         UseSteeringBehaviour = true;
         currentAim.position = desiredAim.position = cameraPivot.position + cameraPivot.transform.forward * 5f;
         SteeringBehaviour.Velocity = Vector3.zero;
+        // steeringTarget = null; 
         steeringTarget = _target.transform;
         steeringSpeed = _steeringSpeed;
         if (_duration != -1) FPMovement.StartCoroutine(TempAimCutscene(_duration));
