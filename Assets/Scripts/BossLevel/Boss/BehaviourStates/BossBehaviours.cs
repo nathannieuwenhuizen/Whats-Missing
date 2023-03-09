@@ -25,6 +25,8 @@ namespace Boss {
             kickShardState = new KickShardState() {bossAI = _ai };
             enlargeState = new EnlargeState() {bossAI = _ai };
 
+            hugeAnticiaptionState = new HugeAnticipationState() {bossAI = _ai };
+
             landingState = new LandingState() {bossAI = _ai };
             takeoffState = new TakeOffState() {bossAI = _ai };
         }
@@ -41,6 +43,8 @@ namespace Boss {
         public DestroyShieldState destroyShieldState;
         public KickShardState kickShardState;
         public EnlargeState enlargeState;
+
+        public HugeAnticipationState hugeAnticiaptionState;
 
         //stealth
         public WanderState wanderState; 

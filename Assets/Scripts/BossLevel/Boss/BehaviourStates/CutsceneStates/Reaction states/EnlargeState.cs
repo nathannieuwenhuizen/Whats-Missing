@@ -34,6 +34,7 @@ namespace Boss {
                 // OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
                 bossAI.BossHead.LookAtPlayer = true;
                 bossAI.BossHead.SteeringEnabled = true;
+                bossAI.StartCoroutine(AfterGrwonig());
                 DialoguePlayer.Instance.PlayLine(BossLines.AfterGrowth);
             }));
             bossAI.StartCoroutine(UpdateBody());
@@ -76,6 +77,11 @@ namespace Boss {
         {
             Positioner.BossMountain.RestoreShape();
             base.Exit();
+        }
+
+        public IEnumerator AfterGrwonig() {
+            yield return new WaitForSeconds(2f);
+            OnStateSwitch(bossAI.Behaviours.hugeAnticiaptionState);
         }
 
     }
