@@ -47,6 +47,17 @@ public class BossAI : MonoBehaviour {
         get { return diePosition;}
     }
 
+    [SerializeField]
+    private Transform hugeAttackPos;
+    public Transform HugeAttackPos {
+        get { return hugeAttackPos;}
+    }
+    [SerializeField]
+    private GameObject bossTimeStopCollider;
+    public GameObject BossTimeStopCollider {
+        get { return bossTimeStopCollider;}
+    }
+
 
 
     //states

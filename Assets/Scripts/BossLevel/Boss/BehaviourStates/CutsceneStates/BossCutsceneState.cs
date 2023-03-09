@@ -34,7 +34,7 @@ namespace Boss {
 
         public override void Exit()
         {
-            Boss.Head.PlayBossVoice();
+            // Boss.Head.PlayBossVoice();
             bossAI.Boss.BossPositioner.MovementEnabled = true;
             bossAI.Boss.BossPositioner.RotationEnabled = true;
             if (withCutscene) OnBossCutsceneEnd?.Invoke(bossAI.Boss);

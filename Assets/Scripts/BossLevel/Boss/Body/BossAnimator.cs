@@ -18,6 +18,7 @@ namespace Boss {
         public static readonly string TRIGGER_DEATH = "death";
         public static readonly string TRIGGER_KICK_SHARD = "kick_shard";
         public static readonly string TRIGGER_ENLARGE_START = "enlarge_start";
+        public static readonly string TRIGGER_HUGE_ANTICIPATION = "huge_anticipation";
 
         public static readonly string BOOL_INAIR = "inAir";
         public static readonly string BOOL_CRAWLING = "crawling";
