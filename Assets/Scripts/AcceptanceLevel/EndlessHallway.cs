@@ -60,7 +60,20 @@ public class EndlessHallway : MonoBehaviour
     }
     private void Start() {
         door.Locked = false;
+        PlayAreaMusic();
         
+    }
+
+    ///<summary>
+    /// Plays the area music according in which area you're in
+    ///</summary>
+    private void PlayAreaMusic() {
+        //fade audio listener
+        AudioHandler.Instance.AudioManager.AudioListenerVolume = 1;
+        AudioHandler.Instance.FadeListener(1f);
+
+        //play music
+        AudioHandler.Instance.PlayMusic(MusicFiles.EndlessHallway, 1f,  0f );
     }
 
     private void OnEnable() {

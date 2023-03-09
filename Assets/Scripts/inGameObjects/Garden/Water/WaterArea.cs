@@ -30,13 +30,18 @@ public class WaterArea : MonoBehaviour, ITriggerArea, ICollissionArea
         WATER_COLLIDER = waterSwimCollider;
         AdjustSwimColliderHeight(player);
     }
+    private void OnDisable() {
+        WATER_COLLIDER = null;
+        WATER_TRANSFORM = null;
+        ON_WATER_SURFACE = false;
+        IN_WATER = false;
+    }
 
     public void OnAreaExit(Player player)
     {
         ON_WATER_SURFACE = false;
         WATER_TRANSFORM = null;
         WATER_COLLIDER = null;
-
     }
 
     public void OnColliderEnter(Player player)

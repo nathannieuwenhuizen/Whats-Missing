@@ -119,6 +119,12 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
             case MusicFiles.planetarium_hidden_room:
             key = SFXFiles.HIDDEN_ROOM;
             break;
+            case MusicFiles.boss:
+            key = SFXFiles.Environment4;
+            break;
+            case MusicFiles.EndlessHallway:
+            key = SFXFiles.Environment5;
+            break;
         }
         return key;
     }  

@@ -110,6 +110,8 @@ public static class SFXFiles {
     public static string Environment1 = "event:/Music/Environment1";
     public static string Environment2 = "event:/Music/Environment2";
     public static string Environment3 = "event:/Music/Environment3";
+    public static string Environment4 = "event:/Music/Environment4";
+    public static string Environment5 = "event:/Music/Environment5";
 
 }
 public enum MusicFiles {
@@ -117,5 +119,7 @@ public enum MusicFiles {
     menu,
     planetarium_hidden_room,
     garden,
-    tower
+    tower,
+    boss,
+    EndlessHallway
 }
