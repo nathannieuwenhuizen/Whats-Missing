@@ -64,4 +64,12 @@ public class FSM
         cState.OnStateSwitch += SwitchState;
 
     }
+
+    public void Exit() {
+        if (cState != null)
+        {
+            cState.OnStateSwitch -= SwitchState;
+            cState.Exit();
+        }
+    }
 }

@@ -174,7 +174,7 @@ public class BossMirror : Mirror, ITriggerArea
         MirrorCanvas.IsInteractable = true;
 
         if (AmmountOfShardsAttached() == shards.Length) {
-            OnMirrorComplete?.Invoke(this);
+            // OnMirrorComplete?.Invoke(this);
         }
 
         MirrorCanvas.DeselectLetters();

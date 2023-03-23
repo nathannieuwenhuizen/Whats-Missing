@@ -81,6 +81,14 @@ namespace Boss {
             // }
         }
 
+        private void OnEnable() {
+            BossRoom.OnRespawn += ResetBody;
+        }
+
+        private void OnDisable() {
+            BossRoom.OnRespawn -= ResetBody;
+        }
+
 
         ///<summary>
         /// Toggles all the renderers of the boss body making it invisible
@@ -88,7 +96,7 @@ namespace Boss {
         public void ToggleBody(bool _visible) {
             foreach (Renderer renderer in bodyRenders) renderer.enabled = _visible;
             ToggleTentacles(_visible);
-            armRenders.currentArm.mesh.enabled = _visible;
+            foreach(Renderer mesh in armRenders.currentArm.mesh) mesh.enabled = _visible;
             // if (_visible) ToggleSyth(hasMetamorphosed);
             // if (!_visible) ToggleSyth(false);
         }
@@ -171,10 +179,14 @@ namespace Boss {
                     renderers.material.SetFloat(dissolveKey, value);
                     renderers.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
                 }
-                armRenders.SytheArm.mesh.material.SetFloat(dissolveKey, value);
-                armRenders.SytheArm.mesh.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
-                armRenders.HumanArm.mesh.material.SetFloat(dissolveKey, value);
-                armRenders.HumanArm.mesh.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
+                foreach(Renderer mesh in armRenders.SytheArm.mesh) {
+                    mesh.material.SetFloat(dissolveKey, value);
+                    mesh.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
+                }
+                foreach(Renderer mesh in armRenders.HumanArm.mesh) {
+                    mesh.material.SetFloat(dissolveKey, value);
+                    mesh.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
+                }
             }
         }
 
@@ -222,6 +234,10 @@ namespace Boss {
                 yield return new WaitForEndOfFrame();
                 
             }
+        }
+
+        public void ResetBody(bool withColor) {
+            bossAnimator.Attacking = false;
         }
     }
 

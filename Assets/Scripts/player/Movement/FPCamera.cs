@@ -109,6 +109,7 @@ public class FPCamera
         BossCutsceneState.OnBossCutsceneEnd += OnBossCutSceneEnd;
         BossCutsceneState.OnBossCutsceneTargetUpdate += UpdateBossAimTarget;
         ForcefieldDemo.Forcefield.OnForceFieldImpact += ApplyLittleShake;
+        TimeStopDebrees.OnDestroy += ApplyLittleShake;
         BasaltWall.OnDestroy += ApplyLittleShake;
     }
 
@@ -120,6 +121,8 @@ public class FPCamera
         BossCutsceneState.OnBossCutsceneEnd -= OnBossCutSceneEnd;
         BossCutsceneState.OnBossCutsceneTargetUpdate -= UpdateBossAimTarget;
         ForcefieldDemo.Forcefield.OnForceFieldImpact -= ApplyLittleShake;
+        TimeStopDebrees.OnDestroy -= ApplyLittleShake;
+
         BasaltWall.OnDestroy -= ApplyLittleShake;
 
     }

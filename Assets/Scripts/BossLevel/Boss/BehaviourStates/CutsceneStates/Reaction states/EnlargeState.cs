@@ -8,8 +8,11 @@ namespace Boss {
     public class EnlargeState : BossReactionState
     {
         private float enlargeDuration = 2f;
+        private Transform oldParent;
         public override void Start()
         {
+            Boss.BossMirror.Shards[4].gameObject.SetActive(false);
+
             customMountainShape = true;
             includeLanding = false;
             zoomValue = 40f;
@@ -17,12 +20,12 @@ namespace Boss {
             stateName = "Enlarge cutscene";
             Boss.Body.Arm.Toggle(true); // purely for testing
             DialoguePlayer.Instance.PlayLine(BossLines.BeforeGrowth);
-
         }
 
         public override Vector3 ReactionPosition() {
             return bossAI.EnlargePosition.position;
         }
+
 
         public override void DoReaction()
         {
@@ -75,6 +78,11 @@ namespace Boss {
         }
         public override void Exit()
         {
+
+            //make shard appropiate scale
+            Boss.BossMirror.Shards[4].gameObject.SetActive(true);
+            Boss.BossMirror.Shards[4].gameObject.transform.localScale /= (Boss.LargeScale / Boss.NormalScale);
+
             Positioner.BossMountain.RestoreShape();
             withCutscene = false;
             base.Exit();

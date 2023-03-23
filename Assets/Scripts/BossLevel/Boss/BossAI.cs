@@ -57,8 +57,11 @@ public class BossAI : MonoBehaviour {
     public GameObject BossTimeStopCollider {
         get { return bossTimeStopCollider;}
     }
-
-
+    [SerializeField]
+    private TimeStopDebrees timeStopDebrees;
+    public TimeStopDebrees TimeStopDebrees {
+        get { return timeStopDebrees;}
+    }
 
     //states
     private FSM stateMachine;
@@ -169,7 +172,7 @@ public class BossAI : MonoBehaviour {
             break;        
             case 5:    
             //go instant into end chase mdoe
-            stateMachine.SwitchState(behaviours.destroyShieldState);
+            // stateMachine.SwitchState(behaviours.destroyShieldState);
             break;
         }
         if (CurrentWanderingPath != null) CurrentWanderingPath.showGizmo = true;
@@ -207,8 +210,7 @@ public class BossAI : MonoBehaviour {
         ForcefieldDemo.Forcefield.OnForceFieldEnter -= PlayerIsInsdeForceField;
         ForcefieldDemo.Forcefield.OnForceFieldExit -= PlayerIsOutsideForceField;
         BossMirror.OnBossMirrorShardAttached -= MirrorShardRecolectReaction;
-
-        
+        stateMachine?.Exit();
     }
 }
 }

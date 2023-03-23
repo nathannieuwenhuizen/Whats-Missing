@@ -15,7 +15,7 @@ namespace Boss {
     ///</summary>
     [System.Serializable]
     public class ArmRender{
-        public Renderer mesh;
+        public Renderer[] mesh;
         public TrailRenderer armTrail;
         [HideInInspector]
         public float startTrailTime;
@@ -23,6 +23,7 @@ namespace Boss {
         public ParentCoord trailCoord;
 
         public ParticleSystem armParitcles;
+
 
 
         public void Setup() {
@@ -73,8 +74,8 @@ namespace Boss {
             get { return armShine;}
             set { 
                 armShine = value; 
-                humanArm.mesh.material.SetFloat(BossBody.shineKey, value);
-                sytheArm.mesh.material.SetFloat(BossBody.shineKey, value);
+                foreach(Renderer mesh in humanArm.mesh) mesh.material.SetFloat(BossBody.shineKey, value);
+                foreach(Renderer mesh in sytheArm.mesh)  mesh.material.SetFloat(BossBody.shineKey, value);
             }
         }
 
@@ -88,8 +89,8 @@ namespace Boss {
         /// Toggles/updates the arm renders. Mainly used for the metamorphosedPhase
         ///</summary>
         public void Toggle(bool _toSythe) {
-            humanArm.mesh.gameObject.SetActive(!_toSythe);
-            sytheArm.mesh.gameObject.SetActive(_toSythe);
+            foreach(Renderer mesh in humanArm.mesh) mesh.gameObject.SetActive(!_toSythe);
+            foreach(Renderer mesh in sytheArm.mesh) mesh.gameObject.SetActive(_toSythe);
             isSythe = _toSythe;
         }
 
@@ -111,8 +112,6 @@ namespace Boss {
                     currentArm.armTrail.time = currentArm.startTrailTime;
                     currentArm.armTrail.emitting = false;
                     currentArm.DeattachTrail(_animator.Boss.transform.parent);
-                    Debug.Log("deattach");
-
                 }
 
                 if (!deattachTrail) {
@@ -127,6 +126,29 @@ namespace Boss {
             }
 
         }
+ 
+        public IEnumerator UpdatingArmFXWithTimeStop(BossAnimator _animator) {
+            deattachTrail = false;
+            attackWeightIsAtMax = false;
+
+            currentArm.ReattachTrail();
+            currentArm.armTrail.enabled = true;
+            StartCoroutine(Extensions.AnimateCallBack(.5f, 0f, AnimationCurve.Linear(0,0,1,1), (float v) => {
+                Debug.Log("change arm speed " + v);
+                currentArm.armTrail.material.SetVector("_MainTexSpeed", new Vector4(v,0,0,0));
+                currentArm.armTrail.materials[0].SetVector("_MainTexSpeed", new Vector4(v,0,0,0));
+            }, 2f));
+
+            while (_animator.Attacking) {
+                float attackWeight = _animator.Animator.GetFloat(BossAnimatorParam.FLOAT_ATTACKWEIGHT);
+                currentArm.armTrail.time = Mathf.Infinity;
+                currentArm.armTrail.emitting = true;
+                currentArm.armParitcles.enableEmission = true;// attackWeight > 0.1f;
+                yield return new WaitForEndOfFrame();
+            }
+            currentArm.armTrail.enabled = false;
+        }
+ 
 
         public void UpdateArmFX(BossAnimator bossAnimator) {
             float attackWeight = bossAnimator.Animator.GetFloat(BossAnimatorParam.FLOAT_ATTACKWEIGHT);

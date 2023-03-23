@@ -93,6 +93,7 @@ namespace Boss {
         private bool attacking = false;
         public bool Attacking {
             get { return attacking;}
+            set { attacking = value; }
         }
 
 
@@ -116,6 +117,12 @@ namespace Boss {
                 yield return new WaitForFixedUpdate();
             }
             attacking = false;
+        }
+
+        public void DoHugeSlashArmFX() {
+            attacking = true;
+            boss.StartCoroutine(boss.Body.Arm.UpdatingArmFXWithTimeStop(this));
+
         }
 
         ///<summary>

@@ -12,8 +12,8 @@ public class RoomParticleSystem : MonoBehaviour
         ps.Pause();
     }
     // Update is called once per frame
-     void Update()
-     {
-        ps.Simulate(Time.deltaTime * Room.TimeScale, true, false);
-     }
+    void Update()
+    {
+    ps.Simulate(Time.deltaTime * Room.TimeScale, true, false);
+    }
 }
