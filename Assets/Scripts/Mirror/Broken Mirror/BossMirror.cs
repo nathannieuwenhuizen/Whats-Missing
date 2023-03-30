@@ -182,7 +182,7 @@ public class BossMirror : Mirror, ITriggerArea
         UpdateMirrorHeader();
         for (int i = 0 ; i < shards.Length; i++) {
             if (!shards[i].Attached) {
-                shards[i].ToggleVisibilty(ammountOfShardAlreadyCollected <= i + 1);
+                shards[i].ToggleVisibilty(ammountOfShardAlreadyCollected == i + 1);
             }
         }
 

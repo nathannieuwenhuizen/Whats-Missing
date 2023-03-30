@@ -169,8 +169,8 @@ public class FPMovement : MonoBehaviour
         InAir = true;
         AudioHandler.Instance?.PlaySound(SFXFiles.player_jump, .1f);
         if (GLOBAL_GRAVITY < 0) {
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
-        } else rb.velocity = new Vector3(rb.velocity.x, -jumpForce, rb.velocity.z);
+            rb.velocity = new Vector3(rb.velocity.x, jumpForce * (WaterArea.IN_WATER ? 1.25f : 1f) , rb.velocity.z);
+        } else rb.velocity = new Vector3(rb.velocity.x, -jumpForce * (WaterArea.IN_WATER ? 1.25f : 1f), rb.velocity.z);
 
 
     }

@@ -171,7 +171,7 @@ public class BossAI : MonoBehaviour {
             stateMachine.SwitchState(behaviours.enlargeState);
             break;        
             case 5:    
-            //go instant into end chase mdoe
+            //go instant into end chase mode
             // stateMachine.SwitchState(behaviours.destroyShieldState);
             break;
         }
