@@ -19,6 +19,7 @@ namespace Boss {
         private readonly string growKey = "_grow";
         public static readonly string shineKey = "_shine_power";
         private readonly string glowKey = "_glow_power";
+        private readonly string armDissolveKey = "ArmDissolve";
         private readonly string dissolveKey = "Dissolve";
         private readonly string disolveEdgeWidthKey = "EdgeWidth";
 
@@ -174,11 +175,28 @@ namespace Boss {
         public float Dissolve {
             get { return dissolve;}
             set { 
-                glow = value; 
+                // glow = value; 
                 foreach(Renderer renderers in bodyRenders) {
                     renderers.material.SetFloat(dissolveKey, value);
                     renderers.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
                 }
+                // foreach(Renderer mesh in armRenders.SytheArm.mesh) {
+                //     mesh.material.SetFloat(dissolveKey, value);
+                //     mesh.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
+                // }
+                // foreach(Renderer mesh in armRenders.HumanArm.mesh) {
+                //     mesh.material.SetFloat(dissolveKey, value);
+                //     mesh.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
+                // }
+            }
+        }
+        private float armDissolve = 0;
+        ///<summary>
+        /// The glow value of the boss, the colored emission map
+        ///</summary>
+        public float ArmDissolve {
+            get { return armDissolve;}
+            set { 
                 foreach(Renderer mesh in armRenders.SytheArm.mesh) {
                     mesh.material.SetFloat(dissolveKey, value);
                     mesh.material.SetFloat(disolveEdgeWidthKey, (value > 0 && value < 1) ? .02f : 0);
@@ -229,7 +247,9 @@ namespace Boss {
             float index = 0;
             while (index < _duration) {
                 index += Time.deltaTime;
+                ArmDissolve = bossAnimator.Animator.GetFloat(armDissolveKey);
                 Dissolve = bossAnimator.Animator.GetFloat(dissolveKey);
+                Debug.Log("arm dissolve = " + ArmDissolve + " |  dissolve = " + Dissolve);
                 TentacleGrowth = bossAnimator.Animator.GetFloat(growKey);
                 yield return new WaitForEndOfFrame();
                 

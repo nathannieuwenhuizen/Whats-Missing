@@ -21,7 +21,6 @@ public class TimeStopDebrees : MonoBehaviour
             } 
         }
     }
-    private bool simulate = true;
 
     private void Awake() {
         pss = GetComponentsInChildren<ParticleSystem>();
@@ -38,7 +37,6 @@ public class TimeStopDebrees : MonoBehaviour
     private void StopTime() {
         StartCoroutine( Extensions.AnimateCallBack(1,0, AnimationCurve.Linear(0,0,1,1), (float v) => {
             TimeScale = v;
-            if (TimeScale == 0) simulate = false;
         }, 2f));
 
     }

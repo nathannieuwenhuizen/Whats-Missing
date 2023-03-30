@@ -74,6 +74,7 @@ namespace Boss {
 
             //camera new target
             yield return new WaitForSeconds(.5f);
+            BossChangesHandler.OnShockwave?.Invoke(bossAI.BossEye.transform);
             OnBossCutsceneTargetUpdate?.Invoke(Boss.Eye.transform, new Vector2(0, 20f), 1f);
         }
         public override void Exit()

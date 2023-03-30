@@ -55,11 +55,13 @@ public class ShockwaveController : MonoBehaviour {
 
     public void StartShockwave(Transform origin) {
         StopAllCoroutines();
+        startRadius = 0f;
         StartCoroutine(AnimatingShockwave(origin));
     }
 
     public void StartSmallShockwave(Transform origin) {
         StopAllCoroutines();
+        startRadius = .3f / Speed;
         StartCoroutine(AnimatingShockwave(origin, true));
     }
 
@@ -72,7 +74,7 @@ public class ShockwaveController : MonoBehaviour {
         get => material.GetFloat("_Radius");
         set => material.SetFloat("_Radius", value);
     }
-    private float Speed {
+    public float Speed {
         get => material.GetFloat("_Speed");
         set => material.SetFloat("_Speed", value);
     }
@@ -95,16 +97,16 @@ public class ShockwaveController : MonoBehaviour {
         BossChangesHandler.OnShockwave -= StartShockwave;
     }
 
+    public float startRadius = 0f;
+    public float startMagnitute = .1f;
+
+
     private IEnumerator AnimatingShockwave(Transform origin, bool decreasingMagnitude = false) {
         if(TryGetFeature(out var feature)) 
             feature.SetActive(true);
 
-        Radius = 0;
-        Magnitude = .1f;
-        if (decreasingMagnitude) {
-            Magnitude = .1f;
-            Radius = .3f / Speed;
-        }
+        Radius = startRadius;
+        Magnitude = startMagnitute;
 
         while(Radius * Speed < 1) {
             yield return new WaitForEndOfFrame();

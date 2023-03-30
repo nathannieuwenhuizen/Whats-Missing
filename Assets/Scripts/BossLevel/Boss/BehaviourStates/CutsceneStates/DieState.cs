@@ -16,22 +16,23 @@ namespace Boss {
             base.Start();
             stateName = "Die cutscene";
 
-            Positioner.MovementEnabled = false;
-            Positioner.RotationEnabled = false;
+            // Positioner.MovementEnabled = false;
+            // Positioner.RotationEnabled = false;
 
             //transport the boss to the end position
-            Vector3 aimDelta = (bossAI.ShieldDestroyPosition.position - bossAI.DiePosition.position).normalized;
-            bossAI.transform.position = bossAI.DiePosition.position + aimDelta * 5f;
-            Quaternion aim =  Quaternion.LookRotation(-aimDelta, Vector3.up);
-            bossAI.transform.rotation = aim;
+            // Vector3 aimDelta = (bossAI.ShieldDestroyPosition.position - bossAI.DiePosition.position).normalized;
+            // bossAI.transform.position = bossAI.DiePosition.position + aimDelta * 5f;
+            // Quaternion aim =  Quaternion.LookRotation(-aimDelta, Vector3.up);
+            // bossAI.transform.rotation = aim;
 
             // Positioner.BodyMovementType = BodyMovementType.navMesh;
             // Positioner.BodyOrientation = BodyOrientation.toPath;
 
-            Positioner.SetDestinationPath(bossAI.DiePosition, bossAI.transform.position, false, 0);
-            bossAI.StartCoroutine(bossAI.Boss.Body.UpdatingDisolve(10f));
+            // Positioner.SetDestinationPath(bossAI.DiePosition, bossAI.transform.position, false, 0);
+            bossAI.StartCoroutine(bossAI.Boss.Body.UpdatingDisolve(11f));
+            // bossAI.StartCoroutine(Extensions.AnimateCallBack(0, 1f, AnimationCurve.EaseInOut))
 
-            bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_DEATH, true, 10f, () => {
+            bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_DEATH, true, 11f, () => {
                 OnBossDie?.Invoke();
                 OnStateSwitch.Invoke(bossAI.Behaviours.idleState);
             }));

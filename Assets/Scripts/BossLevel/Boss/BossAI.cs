@@ -57,11 +57,20 @@ public class BossAI : MonoBehaviour {
     public GameObject BossTimeStopCollider {
         get { return bossTimeStopCollider;}
     }
+    [Header("particles")]
     [SerializeField]
     private TimeStopDebrees timeStopDebrees;
     public TimeStopDebrees TimeStopDebrees {
         get { return timeStopDebrees;}
     }
+    [SerializeField]
+    private BossChargeParticle bossChargeParticle;
+    public BossChargeParticle BossChargeParticle {
+        get { return bossChargeParticle;}
+    }
+
+
+    [Header("------")]
 
     //states
     private FSM stateMachine;
@@ -94,6 +103,7 @@ public class BossAI : MonoBehaviour {
         boss = _boss;
         behaviours = new BossBehaviours(this);
         CurrentWanderingPath = paths.firstShardPath;
+        bossChargeParticle.gameObject.SetActive(false);
     }
     public void InitializeStateMachine() {
         stateMachine = new FSM(behaviours.wanderState);

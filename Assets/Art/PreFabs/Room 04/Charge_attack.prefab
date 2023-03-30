@@ -25,8 +25,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2145735652581126470}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.03999996, y: -0.050001144, z: 0.050261497}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2145735653551208998}
@@ -34,7 +34,7 @@ Transform:
   - {fileID: 2145735653573043873}
   m_Father: {fileID: 2145735653105459469}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &2145735652581126468
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -108,7 +108,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -4816,6 +4816,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2145735653105459469}
+  - component: {fileID: 3291204650838788803}
   m_Layer: 0
   m_Name: Charge_attack
   m_TagString: Untagged
@@ -4838,6 +4839,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3291204650838788803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145735653105459468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fff341296581614d8606dc038f4cf0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chargeParticles:
+  - ps: {fileID: 2145735653551209177}
+    endEmmission: 0
+    startEmission: 0
+  - ps: {fileID: 2145735653680183508}
+    endEmmission: 0
+    startEmission: 0
+  - ps: {fileID: 2145735653573043872}
+    endEmmission: 0
+    startEmission: 0
+  - ps: {fileID: 2145735652581126468}
+    endEmmission: 0
+    startEmission: 0
 --- !u!1 &2145735653551209179
 GameObject:
   m_ObjectHideFlags: 0
@@ -4865,7 +4891,7 @@ Transform:
   m_GameObject: {fileID: 2145735653551209179}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.1441, y: 1.1441, z: 1.1441}
+  m_LocalScale: {x: 0.01886371, y: 0.01886371, z: 0.01886371}
   m_Children: []
   m_Father: {fileID: 2145735652581126469}
   m_RootOrder: 0
@@ -4943,9 +4969,9 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -9669,8 +9695,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2145735653573043874}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.03999996, y: 0.050261497, z: 0.05000116}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.016487816, y: 0.016487816, z: 0.016487816}
   m_Children: []
   m_Father: {fileID: 2145735652581126469}
   m_RootOrder: 2
@@ -9748,9 +9774,9 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
@@ -14474,7 +14500,7 @@ Transform:
   m_GameObject: {fileID: 2145735653680183510}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.64341, y: 0.64340985, z: 0.64340985}
+  m_LocalScale: {x: 0.010608426, y: 0.0106084235, z: 0.0106084235}
   m_Children: []
   m_Father: {fileID: 2145735652581126469}
   m_RootOrder: 1
@@ -14552,9 +14578,9 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
-  scalingMode: 1
+  scalingMode: 0
   randomSeed: 0
   InitialModule:
     serializedVersion: 3
