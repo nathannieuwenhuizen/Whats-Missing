@@ -96,7 +96,7 @@ public class Area : MonoBehaviour
         SetupPlayerPos();
 
         if(directionalLight != null) directionalLight.animating = false;
-        CurrentRoom = rooms[loadRoomIndex];
+        CurrentRoom = FindRoomBasedOnLoadIndex(loadRoomIndex);
         if(directionalLight != null) directionalLight.animating = true;
 
         if (loadRoomIndex == 0) {
@@ -128,10 +128,10 @@ public class Area : MonoBehaviour
     private void LockPreviousRoomDoors() {
         int currentIndex = rooms.IndexOf(currentRoom);
         for (int i = 0; i < rooms.Count; i++) {
-            if (i < furthestCurrentRoomIndex - 1) {
+            if (rooms[i].LoadIndex < furthestCurrentRoomIndex - 1) {
                 rooms[i].EndDoor.Animated = false;
                 rooms[i].EndDoor.Locked = true;
-            } else if (i >= (furthestCurrentRoomIndex - 1) && i < furthestCurrentRoomIndex) {
+            } else if (rooms[i].LoadIndex >= (furthestCurrentRoomIndex - 1) && rooms[i].LoadIndex < furthestCurrentRoomIndex) {
                 if (rooms[i].gameObject.activeSelf)
                     rooms[i].EndDoor.Locked = false;
             }
@@ -173,14 +173,21 @@ public class Area : MonoBehaviour
         return result;
     }
 
+    public Room FindRoomBasedOnLoadIndex(int index) {
+        foreach(Room r in rooms) {
+            if (r.LoadIndex == index) return r;
+        }
+        return null;
+    }
+
     #endregion
 
     ///<summary>
     /// Sets the player positionn and rotation to the room start door. Called at the start.
     ///</summary>
     private void SetupPlayerPos() {
-        player.transform.position = rooms[loadRoomIndex].StartDoor.EndPos();
-        player.transform.rotation = rooms[loadRoomIndex].StartDoor.transform.rotation;
+        player.transform.position = FindRoomBasedOnLoadIndex(loadRoomIndex).StartDoor.EndPos();
+        player.transform.rotation = FindRoomBasedOnLoadIndex(loadRoomIndex).StartDoor.transform.rotation;
         player.transform.Rotate(0,180,0);
     }
     Transform loadPosition;
@@ -193,19 +200,24 @@ public class Area : MonoBehaviour
         int index = 0;
         foreach (RoomLevel roomLevel in roomLevels) {
             bool completed = index < loadRoomIndex;
-            index += 1;
 
             //dont load room in that are behind the player progression
             // if (index < loadRoomIndex - 2) continue;
-            if (index < loadRoomIndex + 3) 
-                LoadRoom(roomLevel, completed, index);
-
+            if (index < loadRoomIndex + 3 && index > loadRoomIndex - 3) 
+            {
+                // if (index > loadRoomIndex - 3)
+                // {
+                    Debug.Log("roomlevel: " + roomLevel.name + " | " + index + " | loadindex = " + loadRoomIndex);
+                    LoadRoom(roomLevel, completed, index);
+                // }
+            }
+            index++;
         }
     }
 
     private IEnumerator LoadNextRoom() {
-        if (roomLevels.Length != rooms.Count)
-            LoadRoom(roomLevels[rooms.Count], false, rooms.Count);
+        if (roomLevels.Length != rooms[rooms.Count - 1].LoadIndex + 1)
+            LoadRoom(roomLevels[rooms[rooms.Count - 1].LoadIndex + 1], false, rooms[rooms.Count - 1].LoadIndex + 1);
 
         yield return new WaitForEndOfFrame();
     }
@@ -219,6 +231,7 @@ public class Area : MonoBehaviour
         newRoom.Area = this;
         newRoom.roomLevel = roomLevel;
         newRoom.Player = player;
+        newRoom.LoadIndex = index;
         int mirrorIndex = 0;
 
 
@@ -351,7 +364,7 @@ public class Area : MonoBehaviour
 
     public void SaveProgress() {
         // SaveData.current = SaveData.GetStateOfRoom(currentRoom);
-        SaveData.current.roomIndex = rooms.IndexOf(currentRoom);
+        SaveData.current.roomIndex = currentRoom.LoadIndex;
         SaveData.current.areaIndex = areaIndex;
         SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
     }
@@ -393,7 +406,7 @@ public class Area : MonoBehaviour
 
         if (door.room == currentRoom && door == currentRoom.EndDoor) {
             //next room
-            furthestCurrentRoomIndex = index + 1;
+            furthestCurrentRoomIndex = door.room.LoadIndex + 1;
             CurrentRoom = rooms[index + 1]; 
         } else {
             //start door to previous room

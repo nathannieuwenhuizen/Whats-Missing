@@ -22,6 +22,9 @@ public class Room : MonoBehaviour
         set { _roomLevel = value; }
     }
 
+    [HideInInspector]
+    public int LoadIndex = 0;
+
     private HintStopwatch hintStopwatch;
 
     private Area area;
