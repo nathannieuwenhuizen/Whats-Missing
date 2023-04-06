@@ -71,12 +71,13 @@ public class Mirror: MonoBehaviour, IRoomObject
     public bool IsOn {
         get { return mirrorData.isOn; }
         set { 
-            if (value) {
-                canPlayAudio = true;
-                ConfirmationSucceeded();
-            } else {
-                // if (mirrorData.isOn != value)
-                    ConfirmationFailed();
+            if (mirrorData.isOn != value) {
+                if (value) {
+                    canPlayAudio = true;
+                    ConfirmationSucceeded();
+                } else {
+                        ConfirmationFailed();
+                }
             }
 
             mirrorData.isOn = value; 

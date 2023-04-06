@@ -483,6 +483,11 @@ public class Room : MonoBehaviour
         UpdateMirrorStates();
         CheckRoomCompletion();
     }
+    public void OnPlayerDie() {
+        changeHandler.OnPlayerDie(player);
+        UpdateMirrorStates();
+        CheckRoomCompletion();
+    }
 
     ///<summary>
     ///[DEPRECATED]

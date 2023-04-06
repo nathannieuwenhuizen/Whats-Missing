@@ -66,9 +66,9 @@ public class Potion : PickableRoomObject
 
     public override void OnRoomEnter()
     {
-        inSpace = true;
-        smokeParticle.Play();
-        base.OnRoomEnter();
+        // inSpace = true;
+        // smokeParticle.Play();
+        // base.OnRoomEnter();
     }
 
     private void Update() {

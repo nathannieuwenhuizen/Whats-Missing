@@ -66,7 +66,8 @@ public class ChangeHandler
         MirrorChange newChange = new MirrorChange(){
             word = selectedMirror.Word, 
             mirror = selectedMirror,
-            changeType = selectedMirror.MirrorData.changeType
+            changeType = selectedMirror.MirrorData.changeType,
+            active = true
             };
 
         if (room.ForEachObjectWithMirrorWord(newChange, (IChangable obj) => {
@@ -110,6 +111,7 @@ public class ChangeHandler
     public void DeactivateChanges(bool force = true){
         for (int i = mirrorChanges.Count - 1; i >= 0; i--)
         {
+            Debug.Log("change: " + mirrorChanges[i].word + " | " + mirrorChanges[i].active);
             if (mirrorChanges[i].active) {
                 room.RemoveChangeInRoomObjects(mirrorChanges[i]);
                 mirrorChanges[i].active = false;
@@ -127,7 +129,6 @@ public class ChangeHandler
             room.RemoveChangeInRoomObjects(roomChanges[i]);
             roomChanges[i].Active = false;
         }
-
     }
     ///<summary>
     /// Returns true if the changes contains the word of the selected mirror
@@ -193,6 +194,16 @@ public class ChangeHandler
         if (index != -1) {
             roomChanges[index].roomObject.RemoveChange(roomChanges[index]);
             roomChanges.RemoveAt(index);
+        }
+    }
+
+    public void OnPlayerDie(Player _player) {
+
+        for (int i = roomChanges.Count - 1; i >= 0; i--) {
+            if ((roomChanges[i].roomObject.Word == _player.Word  || roomChanges[i].roomObject.AlternativeWords.Contains(_player.Word)) 
+                && roomChanges[i].changeCausation == ChangeCausation.potion) {
+                RemovePotionChange(roomChanges[i].changeType);
+            }
         }
     }
 

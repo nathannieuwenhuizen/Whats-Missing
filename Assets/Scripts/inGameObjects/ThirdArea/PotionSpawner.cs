@@ -29,6 +29,11 @@ public class PotionSpawner : RoomObject
     ///<summary>
     /// SpawnsAll the potions
     ///</summary>
+    protected override void Awake() {
+        base.Awake();
+        largeScale = normalScale;
+        word = "potionspawner";
+    }
     private void Start() {
         // foreach(SpawnPoint point in spawnPoints) {
         //     SpawnPotion(point);
@@ -55,7 +60,7 @@ public class PotionSpawner : RoomObject
         Potion potion = Instantiate(spawnPoint.potionPrefab, spawnPoint.spawnLocation.position, Quaternion.identity).GetComponent<Potion>();
         potion.gameObject.transform.parent = spawnPoint.spawnLocation;
         spawnPoint.changeType = potion.ChangeType;
-        Vector3 endScale = potion.transform.localScale;
+        Vector3 endScale = Vector3.one * potion.NormalScale;
         potion.transform.localScale = Vector3.zero;
         StartCoroutine(potion.transform.AnimatingLocalScale(endScale, AnimationCurve.EaseInOut(0,0,1,1), 2f));
     }

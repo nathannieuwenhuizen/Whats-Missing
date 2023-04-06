@@ -15,6 +15,9 @@ public class Rain : RoomObject
             // Debug.Log("water sound should be playing");
             waterSound =  AudioHandler.Instance.Play3DSound(SFXFiles.rain, audioContainer, 1f, 1, true, true, 40f, false);
         }
+        StartCoroutine(Extensions.AnimateCallBack(0f, 1f, AnimationCurve.EaseInOut(0,0,1,1), (float v) => {
+            waterSound.Volume = v;
+        }, .5f));
         waterSound.Play();
     }
     public override void OnRoomLeave()
