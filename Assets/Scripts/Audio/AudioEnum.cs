@@ -67,6 +67,11 @@ public static class SFXFiles {
     public static string fountain = "event:/SFX/Environment/Garden/Fountain";
     public static string wind = "event:/SFX/Environment/Garden/Wind";
 
+
+    //Tower
+    public static string rain = "event:/SFX/Environment/Third_area/Rain";
+
+
     //water
     public static string water_rise = "event:/SFX/Environment/Garden/Water/Water_rise";
     public static string water_lower = "event:/SFX/Environment/Garden/Water/Water_low";
@@ -101,7 +106,6 @@ public static class SFXFiles {
     public static string boss_transformation = "event:/SFX/Boss/Boss/Transformation";
     public static string boss_talking = "event:/SFX/Boss/Boss/Talking";
 
-    public static string rain = "event:/SFX/Environment/Third_area/Rain";
 
 
     //music
