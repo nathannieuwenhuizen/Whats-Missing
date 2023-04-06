@@ -110,6 +110,7 @@ public class InputManager : MonoBehaviour
         if (controls != null) {
             MovementVector = Vector2.Lerp(movementVector, controls.Player.Movement.ReadValue<Vector2>(), Time.deltaTime * movementGravity);
             OnMove?.Invoke(MovementVector);
+            Debug.Log("on move: " + MovementVector);
             cameraVector = controls.Player.Camera.ReadValue<Vector2>();
             OnRotate?.Invoke(cameraVector);
         }

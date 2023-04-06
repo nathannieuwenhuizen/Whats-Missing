@@ -110,7 +110,7 @@ namespace Boss {
         {
             TimeProperty.onTimeMissing -= OnTimeMissing;
             BossRoom.OnRespawn -= ResetState;
-            bossAI.TimeStopDebrees.TimeScale = 2f;
+            if (bossAI.TimeStopDebrees.isActiveAndEnabled) bossAI.TimeStopDebrees.TimeScale = 2f;
             bossAI.BossChargeParticle.TimeScale = 4f;
             bossAI.BossChargeParticle.StopEmmission();
 

@@ -201,11 +201,11 @@ public class FPMovement : MonoBehaviour
         if (windSound != null) windSound.Stop(true);
     }
 
-    protected void DisableMovment() {
+    protected void DisableMovement() {
         EnableWalk = false;
         EnableRotation = false;
     }
-    protected void EnableMovment() {
+    protected void EnableMovement() {
         EnableWalk = true;
         EnableRotation = true;
     }
@@ -226,10 +226,10 @@ public class FPMovement : MonoBehaviour
         InputManager.OnEndRunning += EndRun;
         InputManager.OnMove += SetMovement;
         InputManager.OnJump += Jump;
-        PauseScreen.OnPause += DisableMovment;
-        PauseScreen.OnResume += EnableMovment;
-        WindowsErrorMessage.OnErrorShow += DisableMovment;
-        WindowsErrorMessage.OnErrorHide += EnableMovment;
+        PauseScreen.OnPause += DisableMovement;
+        PauseScreen.OnResume += EnableMovement;
+        WindowsErrorMessage.OnErrorShow += DisableMovement;
+        WindowsErrorMessage.OnErrorHide += EnableMovement;
         // RoomDebugger.OnShow += DisableMovment;
         // RoomDebugger.OnHide += EnableMovment;
         SettingPanel.OnSave += ApplyMovementSettings;
@@ -241,10 +241,10 @@ public class FPMovement : MonoBehaviour
         InputManager.OnEndRunning -= EndRun;
         InputManager.OnMove -= SetMovement;
         InputManager.OnJump -= Jump;
-        PauseScreen.OnPause -= DisableMovment;
-        PauseScreen.OnResume -= EnableMovment;
-        WindowsErrorMessage.OnErrorShow -= DisableMovment;
-        WindowsErrorMessage.OnErrorHide -= EnableMovment;
+        PauseScreen.OnPause -= DisableMovement;
+        PauseScreen.OnResume -= EnableMovement;
+        WindowsErrorMessage.OnErrorShow -= DisableMovement;
+        WindowsErrorMessage.OnErrorHide -= EnableMovement;
         // RoomDebugger.OnShow -= DisableMovment;
         // RoomDebugger.OnHide -= EnableMovment;
         SettingPanel.OnSave -= ApplyMovementSettings;

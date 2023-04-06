@@ -17,6 +17,8 @@ public class BossMirror : Mirror, ITriggerArea
 
     [SerializeField]
     private Player player;
+    [SerializeField]
+    private ForcefieldDemo.Forcefield Forcefield;
 
     private bool followPlayer = false;
 
@@ -115,6 +117,7 @@ public class BossMirror : Mirror, ITriggerArea
             shards[i].transform.position = transform.position;
             shards[i].Release();
         }
+        Forcefield.IsOn = true;
         OnMirrorShardAmmountUpdate?.Invoke(this);
         StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z + 90), AnimationCurve.EaseInOut(0,0,1,1), .1f));
         startPos = transform.position;

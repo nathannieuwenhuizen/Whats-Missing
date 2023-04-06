@@ -23,6 +23,8 @@ public class ControllerRebinds : MonoBehaviour
 
     [SerializeField]
     private GameObject prefabTemplate;
+    [SerializeField]
+    private CanvasGroup canvasGroup;
 
     [SerializeField]
     private GameObject rebindPopup;
@@ -34,7 +36,7 @@ public class ControllerRebinds : MonoBehaviour
         ControllerRebinds.controls.Player.Enable();
 
         InstantiateUI();
-        rebindPopup.SetActive(false);
+        // rebindPopup.SetActive(false);
     }
 
     private void OnEnable() {
@@ -48,6 +50,18 @@ public class ControllerRebinds : MonoBehaviour
     public void OnRebind(RebindKey rebindKey) {
         Debug.Log("rebinding key event");
         StartCoroutine(OnRebinding(rebindKey));
+    }
+
+    public void Show() {
+        canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
+    }
+
+    public void Hide() {
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 
     IEnumerator OnRebinding(RebindKey rebindKey) {
