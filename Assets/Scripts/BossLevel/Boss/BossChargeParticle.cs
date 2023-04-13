@@ -29,6 +29,12 @@ namespace Boss {
                 particle.ps.Stop();
             }
         }
+        public void ResetEmission() {
+            TimeScale = 1f;
+            foreach(ChargeParticleInfo particle in chargeParticles) {
+                particle.Reset();
+            }
+        }
         public void PlayEmmission() {
             foreach(ChargeParticleInfo particle in chargeParticles) {
                 particle.ps.Play();
@@ -68,6 +74,9 @@ namespace Boss {
         public void Setup() {
             endEmmission = ps.emissionRate * 1.3f;
             startEmission = endEmmission * .8f;
+        }
+        public void Reset() {
+            ps.emissionRate = startEmission;
         }
 
         public void Interpolate(float i) {

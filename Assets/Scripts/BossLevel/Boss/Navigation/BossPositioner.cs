@@ -86,6 +86,7 @@ public class BossPositioner : MonoBehaviour
     ///<summary>
     /// Enables/disables the movement
     ///</summary>
+    [SerializeField]
     public bool MovementEnabled {
         get { return CurrentMovementBehaviour.MovementEnabled;}
         set { 
@@ -99,6 +100,7 @@ public class BossPositioner : MonoBehaviour
             if (value == false) steeringBehaviour.Velocity = Vector3.zero;
         }
     }
+    [SerializeField]
     private bool rotationEnabled = true;
     public bool RotationEnabled {
         get { return rotationEnabled;}
@@ -131,6 +133,7 @@ public class BossPositioner : MonoBehaviour
         }
     }
 
+    [SerializeField]
     private BodyOrientation bodyOrientation = BodyOrientation.none;
     public BodyOrientation BodyOrientation {
         get { return bodyOrientation;}
@@ -250,6 +253,7 @@ public class BossPositioner : MonoBehaviour
 
         while(!AtPosition(3f)) {
             timePassed += Time.deltaTime;
+            BodyMovementType = BodyMovementType.freeFloat;
             yield return new WaitForFixedUpdate();
         }
         

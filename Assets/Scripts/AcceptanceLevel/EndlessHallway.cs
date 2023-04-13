@@ -61,6 +61,7 @@ public class EndlessHallway : MonoBehaviour
     private void Start() {
         door.Locked = false;
         PlayAreaMusic();
+        player.Respawn();
         
     }
 

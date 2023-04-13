@@ -48,7 +48,7 @@ namespace Boss {
             bossAI.BossChargeParticle.PlayEmmission();
 
             float index = 0;
-            while(index < totalDuration && !timeStops) {
+            while(index < totalDuration && !timeStops && Player.INVINCIBLE) {
                 index += Time.deltaTime;
                 bossAI.BossChargeParticle.Interpolate(index / totalDuration);
                 bossAI.Boss.Body.Glow = 1 + 2f - 2f * Mathf.Abs(Mathf.Cos(Mathf.PI *  index * (.5f + index * .1f)));
@@ -100,7 +100,10 @@ namespace Boss {
         }
 
         public void ResetState(bool wthColor) {
+
             bossAI.BossChargeParticle.StopEmmission();
+            bossAI.BossChargeParticle.ResetEmission();
+            // bossAI.BossChargeParticle.gameObject.SetActive(false);
             bossAI.TimeStopDebrees.gameObject.SetActive(false);
             bossAI.BossTimeStopCollider.SetActive(true);
             StartHugeAnticipationAnimation();

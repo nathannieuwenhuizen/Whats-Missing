@@ -55,7 +55,7 @@ namespace Boss {
             shard.transform.localPosition = Vector3.zero;
             shard.OutlineEnabled = false;
             shard.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            shard.transform.localScale = Vector3.one * 0.005f;
+            shard.transform.localScale = Vector3.one;// * 0.005f;
         }
 
         private void DetachMirrorShard() {

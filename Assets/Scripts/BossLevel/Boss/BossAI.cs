@@ -106,7 +106,9 @@ public class BossAI : MonoBehaviour {
         bossChargeParticle.gameObject.SetActive(false);
     }
     public void InitializeStateMachine() {
-        stateMachine = new FSM(behaviours.wanderState);
+        IState startState = behaviours.idleState;
+        if (boss.BossMirror.SkippingIntro) startState = behaviours.wanderState;
+        stateMachine = new FSM(startState);
     }
     public void UpdateAI() {
         stateMachine?.Update();
@@ -212,7 +214,7 @@ public class BossAI : MonoBehaviour {
     }
 
     private void OnDisable() {
-        BossMirror.OnMirrorExplode += DoIntro;
+        BossMirror.OnMirrorExplode -= DoIntro;
         BossMirror.OnMirrorExplode -= MirrorShardRecolectReaction;
         MirrorShard.OnPickedUp -= MirrShardPickupEvent;
         MountainAttackPose.OnPlayerEnteringAttackArea -= UpdateMountainAttackPosition;

@@ -43,6 +43,9 @@ public class BossMirror : Mirror, ITriggerArea
     [Header("testing")]
     [SerializeField]
     private bool skipIntro = false;
+    public bool SkippingIntro {
+        get { return skipIntro;}
+    }
     [SerializeField]
     private int ammountOfShardAlreadyCollected = 0;
 
@@ -183,9 +186,11 @@ public class BossMirror : Mirror, ITriggerArea
         MirrorCanvas.DeselectLetters();
         Confirm();
         UpdateMirrorHeader();
+        bool showNext = true;
         for (int i = 0 ; i < shards.Length; i++) {
             if (!shards[i].Attached) {
-                shards[i].ToggleVisibilty(ammountOfShardAlreadyCollected == i + 1);
+                shards[i].ToggleVisibilty(showNext);
+                showNext = false;
             }
         }
 

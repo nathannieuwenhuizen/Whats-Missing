@@ -76,6 +76,7 @@ public class Mirror: MonoBehaviour, IRoomObject
                     canPlayAudio = true;
                     ConfirmationSucceeded();
                 } else {
+                    if (isQuestion)
                         ConfirmationFailed();
                 }
             }
@@ -133,7 +134,8 @@ public class Mirror: MonoBehaviour, IRoomObject
         canPlayAudio = true;
         if (isQuestion) room.CheckMirrorQuestion(this);
         else {
-            if (!IsOn) room.AddMirrorChange(this); else {
+            if (!IsOn) room.AddMirrorChange(this); 
+            else {
                 room.RemoveMirrorChange(this);
                 room.AddMirrorChange(this);
             }

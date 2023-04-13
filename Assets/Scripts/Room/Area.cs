@@ -26,7 +26,7 @@ public class Area : MonoBehaviour
     public static UndoActionEvent OnUndo;
     public delegate void RoomEvent();
     public delegate void RoomRespawnEvent(bool withColor);
-    public delegate void NextAreaEvent(int _index);
+    public delegate void NextAreaEvent(int _index, bool animating);
     public static NextAreaEvent OnNextArea;
     public static NextAreaEvent OnEndOfDemo;
     public static RoomEvent OnNewRoomEnter;
@@ -424,8 +424,8 @@ public class Area : MonoBehaviour
     /// Go to next level. Or ned of demo
     ///</summary>
     public void EndOfArea() {
-        if (isDemo) OnEndOfDemo?.Invoke(areaIndex);
-        else OnNextArea?.Invoke(areaIndex);
+        if (isDemo) OnEndOfDemo?.Invoke(areaIndex, false);
+        else OnNextArea?.Invoke(areaIndex, false);
     }
 
 }

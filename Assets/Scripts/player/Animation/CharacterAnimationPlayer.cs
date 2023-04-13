@@ -128,14 +128,12 @@ public class CharacterAnimationPlayer
 
     public void OnEnable() {
         BossMirror.OnMirrorShake += OnBossMirrorShake;
-        BossMirror.OnMirrorExplode += OnBossMirrorExplode;
         Boss.BossCutsceneState.OnBossCutsceneStart += OnBossCutsceneStart;
         Boss.BossCutsceneState.OnBossCutsceneEnd += OnBossCutsceneEnd;
 
     }
     public void OnDisable() {
         BossMirror.OnMirrorShake -= OnBossMirrorShake;
-        BossMirror.OnMirrorExplode -= OnBossMirrorExplode;
         Boss.BossCutsceneState.OnBossCutsceneStart -= OnBossCutsceneStart;
         Boss.BossCutsceneState.OnBossCutsceneEnd -= OnBossCutsceneEnd;
     }
@@ -157,9 +155,7 @@ public class CharacterAnimationPlayer
         animator.SetTrigger("boss_intro_3");
         inBossCutscene = false;
     }
-    private void OnBossMirrorExplode(BossMirror bossMirror) {
 
-    }
 
     public void OnBossCutsceneStart(Boss.Boss boss, float zoom) {
         if (inBossCutscene) return;

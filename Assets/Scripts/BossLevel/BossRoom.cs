@@ -64,11 +64,12 @@ public class BossRoom : Room
     }
 
     private void SpawnEndDoor() {
-        EndDoor.gameObject.SetActive(true);
-        Vector3 endScale = EndDoor.transform.localScale;
-        EndDoor.transform.localScale = Vector3.zero;
-        StartCoroutine(EndDoor.transform.AnimatingLocalScale(endScale, AnimationCurve.EaseInOut(0,0,1,1), 3f));
-        EndDoor.Locked = false;
+        EndOfArea();
+        // EndDoor.gameObject.SetActive(true);
+        // Vector3 endScale = EndDoor.transform.localScale;
+        // EndDoor.transform.localScale = Vector3.zero;
+        // StartCoroutine(EndDoor.transform.AnimatingLocalScale(endScale, AnimationCurve.EaseInOut(0,0,1,1), 3f));
+        // EndDoor.Locked = false;
     }
 
     ///<summary>
@@ -91,7 +92,7 @@ public class BossRoom : Room
         OnRespawn?.Invoke(true);
     }
     public void EndOfArea() {
-        sceneLoader.GoToNextLevel(3);
+        sceneLoader.GoToNextLevel(3, true);
     }
 
     public void SaveProgress() {

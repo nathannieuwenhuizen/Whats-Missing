@@ -12,6 +12,8 @@ namespace Boss {
     public class ChargeAtShieldState : BaseChaseState
     {
         private Vector3 chargePos;
+        private Coroutine goToShieldCoroutine;
+        private Coroutine knockbackCoroutine;
 
         public override void DrawDebug()
         {
@@ -23,12 +25,13 @@ namespace Boss {
             stateName = "Charge at shield";
 
             base.Start();
-            Positioner.BodyOrientation = BodyOrientation.toPath;
+            Debug.Log("Charge at shield state now!");
+            // Positioner.BodyOrientation = BodyOrientation.toPath;
 
             chargePos = Boss.Forcefield.EdgePosition(Boss.Player.transform.position);
             Positioner.SetDestinationPath(chargePos, Boss.transform.position);
 
-            bossAI.StartCoroutine(GoToShield());
+            goToShieldCoroutine = bossAI.StartCoroutine(GoToShield());
             ForcefieldDemo.Forcefield.OnForceFieldImpact += Knockback;
         }
 
@@ -41,6 +44,9 @@ namespace Boss {
         {
             ForcefieldDemo.Forcefield.OnForceFieldImpact -= Knockback;
             Positioner.SpeedScale = 1f;
+            if (goToShieldCoroutine != null) bossAI.StopCoroutine(goToShieldCoroutine);
+            if (knockbackCoroutine != null) bossAI.StopCoroutine(knockbackCoroutine);
+
             base.Exit();
         }
 
@@ -78,7 +84,7 @@ namespace Boss {
         }
 
         public void Knockback() {
-            bossAI.StartCoroutine(KnockingBack());
+            knockbackCoroutine = bossAI.StartCoroutine(KnockingBack());
         }
         public IEnumerator KnockingBack() {
             chargePos = Boss.Forcefield.EdgePosition(bossAI.transform.position, 8f) + Vector3.up * 5f;
