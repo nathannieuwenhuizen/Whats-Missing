@@ -7,6 +7,10 @@ using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {    
+    public delegate void MenuAction();
+    public static event MenuAction OnSettingsOpen;
+    public static event MenuAction OnSettingsClose;
+
     private AnimatedPopup popup;
 
     [SerializeField]
@@ -41,11 +45,18 @@ public class Menu : MonoBehaviour
 
     private void Start() {
         SetupPlayButtons();
+        settingsButton.onClick.AddListener(GoToSettings);
         AudioHandler.Instance.PlayMusic(MusicFiles.menu, .3f);
 
         popup = GetComponent<AnimatedPopup>();
         StartCoroutine(DelayMenuShow());
     }
+
+    public void GoToSettings() {
+        popup.ShowAnimation(false);
+        OnSettingsOpen?.Invoke();
+    }
+
     private IEnumerator DelayMenuShow() {
         yield return new WaitForSeconds(.3f);
         popup.ShowAnimation(true);
@@ -100,6 +111,8 @@ public class Menu : MonoBehaviour
     }
     public void BackToMenu() {
         SetupPlayButtons();
+        popup.ShowAnimation(true);
+        OnSettingsClose?.Invoke();
     }
 
 
@@ -107,5 +120,12 @@ public class Menu : MonoBehaviour
         SaveData newSave = new SaveData();
         SerializationManager.Save(SaveData.FILE_NAME, newSave);
         Debug.Log("new save");
+    }
+
+    private void OnEnable() {
+        SettingPanel.OnSettingsClose += BackToMenu;
+    }
+    private void OnDisable() {
+        SettingPanel.OnSettingsClose += BackToMenu;
     }
 }

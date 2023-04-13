@@ -12,6 +12,8 @@ public class SettingPanel : AnimatedPopup
     private Settings settings;
     public delegate void SettingsAction(Settings settings);
     public static event SettingsAction OnSave;
+    public delegate void SettingsButtonAction();
+    public static SettingsButtonAction OnSettingsClose;
 
     [SerializeField]
     private TMPro.TMP_Text settingsText;
@@ -25,6 +27,8 @@ public class SettingPanel : AnimatedPopup
     private Button gameplayButton;
     [SerializeField]
     private GameObject gameplayList;
+    [SerializeField]
+    private Button backButton;
 
 
 
@@ -52,6 +56,7 @@ public class SettingPanel : AnimatedPopup
     private void Awake() {
         settings = Settings.GetSettings();
         UpdateUI();
+        backButton.onClick.AddListener(CloseSettings);
     }
 
     public void ToggleGeneral() {
@@ -128,6 +133,25 @@ public class SettingPanel : AnimatedPopup
     public void Close() {
         Save();
         ShowAnimation(false);
+    }
+
+    public void CloseSettings() {
+        OnSettingsClose?.Invoke();
+    }
+
+    private void OnEnable() {
+        PauseScreen.OnSettingsOpen += Open;
+        PauseScreen.OnSettingsClose += Close;
+        Menu.OnSettingsOpen += Open;
+        Menu.OnSettingsClose += Close;
+    }
+
+    private void OnDisable() {
+        PauseScreen.OnSettingsOpen -= Open;
+        PauseScreen.OnSettingsClose -= Close;
+        Menu.OnSettingsOpen += Open;
+        Menu.OnSettingsClose += Close;
+
     }
 
 }

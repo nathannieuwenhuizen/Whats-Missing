@@ -15,14 +15,17 @@ public class PauseScreen : MonoBehaviour
     public static event PauseAction OnPause;
     public static event PauseAction OnResume;
     public static event PauseAction OnQuit;
+    public static event PauseAction OnSettingsOpen;
+    public static event PauseAction OnSettingsClose;
     [SerializeField]
     private CanvasGroup group;
+    [Header("buttons")]
     [SerializeField]
     private GameObject resumeButton;
     [SerializeField]
+    private Button quitButton;
+    [SerializeField]
     private AnimatedPopup subPausePanel;
-    [SerializeField] 
-    private SettingPanel settingPanel;
     [SerializeField] 
     private Button settingsButton;
 
@@ -47,14 +50,11 @@ public class PauseScreen : MonoBehaviour
         AudioHandler.Instance.PlayUISound(SFXFiles.pause_show);
         StartCoroutine(AnimateTimeScale(0));
         OnPause?.Invoke();
-        settingsButton.onClick.AddListener(() => {
-            GoToSettings();
-        });
         OpenPausePanel();
     }
 
     public void OpenPausePanel() {
-        settingPanel.Close();
+        OnSettingsClose?.Invoke();
         ControllerCheck.SelectUIGameObject(resumeButton);
         SetGroupVisibility(true);
         subPausePanel.ShowAnimation(true);
@@ -69,6 +69,9 @@ public class PauseScreen : MonoBehaviour
 
     private void Awake() {
         animator = GetComponent<Animator>();
+        resumeButton.GetComponent<Button>().onClick.AddListener(Resume);
+        quitButton.onClick.AddListener(Quit);
+        settingsButton.onClick.AddListener(GoToSettings);
     }
 
     private void Start()
@@ -110,7 +113,7 @@ public class PauseScreen : MonoBehaviour
         AudioHandler.Instance.FadeListener(1f);
         animator.SetBool("show", false);
         subPausePanel.ShowAnimation(false);
-        settingPanel.Close();
+        OnSettingsClose?.Invoke();
 
         AudioHandler.Instance.PlayUISound(SFXFiles.pause_hide);
         EventSystem.current.SetSelectedGameObject(null);
@@ -136,12 +139,14 @@ public class PauseScreen : MonoBehaviour
         InputManager.OnCancel += TogglePause;
         CharacterAnimationPlayer.OnCutsceneStart += DisablePause;
         CharacterAnimationPlayer.OnCutsceneEnd += EnablePause;
+        SettingPanel.OnSettingsClose += OpenPausePanel;
     }
     private void OnDisable()
     {
         InputManager.OnCancel -= TogglePause;
         CharacterAnimationPlayer.OnCutsceneStart -= DisablePause;
         CharacterAnimationPlayer.OnCutsceneEnd -= EnablePause;
+        SettingPanel.OnSettingsClose -= OpenPausePanel;
     }
 
     public void SelectResumeButton() {
@@ -149,8 +154,7 @@ public class PauseScreen : MonoBehaviour
     }
 
     public void GoToSettings() {
-        settingPanel.Open();
-        Debug.Log("show animation false: " + subPausePanel);
+        OnSettingsOpen?.Invoke();
         subPausePanel.ShowAnimation(false);
     }
 

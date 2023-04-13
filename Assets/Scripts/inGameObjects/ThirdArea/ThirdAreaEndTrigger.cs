@@ -32,6 +32,8 @@ public class ThirdAreaEndTrigger : AreaTrigger
 
 
     public IEnumerator EndCutscene() {
+        AudioHandler.Instance.FadeMusic(MusicFiles.planetarium_hidden_room, 1f);
+
         floor.AffectedByPotions = true;
         StopPotion();
         SetupBossArm();
