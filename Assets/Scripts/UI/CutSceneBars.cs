@@ -33,7 +33,7 @@ public class CutSceneBars : MonoBehaviour
 
     private void ShowBars() {
         StopAllCoroutines();
-        StartCoroutine(AnimateBars(40f, 1f, 0));
+        StartCoroutine(AnimateBars(52f, 1f, 0));
     }
     private void HideBars() {
         StopAllCoroutines();
