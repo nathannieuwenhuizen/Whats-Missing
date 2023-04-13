@@ -186,6 +186,7 @@ public class ChangeHandler
         //add change
         RoomChange newChange = new RoomChange() {changeType = potion.ChangeType, roomObject = changable, changeCausation = ChangeCausation.potion, Active = true};
         newChange.word = changable.Word;
+        Debug.Log("new hcange by potion: " + newChange.word);
         roomChanges.Add(newChange);
         changable.AddChange(newChange);
     }

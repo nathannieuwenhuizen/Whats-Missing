@@ -100,7 +100,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     }
 
 
-    private bool inSpace = true;
+    private bool inSpace = false;
     public bool InSpace { get => inSpace; set => inSpace = value; }
 
     ///<summary>

@@ -13,6 +13,9 @@ public class MirrorCanvas : MonoBehaviour
 {
     [SerializeField]
     private Mirror mirror;
+    public Mirror Mirror {
+        get { return mirror;}
+    }
 
     [SerializeField]
     private CanvasGroup hintToggle;
@@ -314,7 +317,7 @@ public class MirrorCanvas : MonoBehaviour
     {
         if (letter.Dragged() && canBeDragged) {
             if (passedLetterIndex == -1) {
-                AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
+                if (mirror.canPlayAudio) AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
 
                 letter.Deselect(true);
                 letter.PreClickSelected = false;
@@ -335,6 +338,7 @@ public class MirrorCanvas : MonoBehaviour
         
         UpdateAnswerTextPosition(null);
     }
+
 
     ///<summary>
     /// sets all the letters to their original place.

@@ -68,6 +68,7 @@ public class BossMirror : Mirror, ITriggerArea
         #endif
 
         bossStencilBuffer.SetActive(false);
+        InSpace = true;
 
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
