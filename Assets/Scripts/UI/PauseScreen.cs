@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 ///<summary>
 /// Pause screen inside the game.
@@ -22,6 +23,8 @@ public class PauseScreen : MonoBehaviour
     private AnimatedPopup subPausePanel;
     [SerializeField] 
     private SettingPanel settingPanel;
+    [SerializeField] 
+    private Button settingsButton;
 
     private bool paused = false;
     private bool canPause = true;
@@ -44,6 +47,9 @@ public class PauseScreen : MonoBehaviour
         AudioHandler.Instance.PlayUISound(SFXFiles.pause_show);
         StartCoroutine(AnimateTimeScale(0));
         OnPause?.Invoke();
+        settingsButton.onClick.AddListener(() => {
+            GoToSettings();
+        });
         OpenPausePanel();
     }
 

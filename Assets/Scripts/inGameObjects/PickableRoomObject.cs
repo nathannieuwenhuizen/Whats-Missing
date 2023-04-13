@@ -239,7 +239,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     public bool TooHeavy(Hands hands)  {
         if (rb == null) return false;
-        return hands.MassThreshhold < rb.mass;
+        bool result = hands.MassThreshhold < rb.mass;
+        rb.constraints = result ? RigidbodyConstraints.FreezeRotation : rb.constraints; 
+        return result;
     } 
 
     private void OnTriggerEnter(Collider other) {

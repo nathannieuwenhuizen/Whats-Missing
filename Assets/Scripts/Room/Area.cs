@@ -294,6 +294,7 @@ public class Area : MonoBehaviour
     /// Fires when the palyer dies and has to respawn
     ///</summary>
     public void ResetPlayer(bool withAnimation, bool toPreviousLevel) {
+        currentRoom?.OnPlayerDie();
         StartCoroutine(ResettingThePlayer(withAnimation, toPreviousLevel));
     }
 
