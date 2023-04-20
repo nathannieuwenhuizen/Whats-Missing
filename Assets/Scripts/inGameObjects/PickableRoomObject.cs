@@ -43,7 +43,7 @@ public class RigidBodyInfo {
 ///</summary>
 public class PickableRoomObject : InteractabelObject, IPickable
 {
-    private bool grabbed = false;
+    protected bool grabbed = false;
 
     protected Rigidbody rb;     
     private Transform oldParent;

@@ -77,6 +77,12 @@ namespace Boss {
             BossChangesHandler.OnShockwave?.Invoke(bossAI.BossEye.transform);
             OnBossCutsceneTargetUpdate?.Invoke(Boss.Eye.transform, new Vector2(0, 20f), 1f);
         }
+
+        public override void Run()
+        {
+            base.Run();
+            Positioner.BodyOrientation = BodyOrientation.toPlayer;
+        }
         public override void Exit()
         {
 

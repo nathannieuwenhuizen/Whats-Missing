@@ -17,8 +17,8 @@ namespace Boss {
         {
             base.Start();
             stateName = "Landing";
-            bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.toPath;
-            bossAI.Boss.BossPositioner.MovementEnabled = true;
+            // bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.toPath;
+            // bossAI.Boss.BossPositioner.MovementEnabled = true;
             Boss.Head.LookAtPlayer = true;
 
             Boss.Body.BossAnimator.SetBool(BossAnimatorParam.BOOL_INAIR, false);

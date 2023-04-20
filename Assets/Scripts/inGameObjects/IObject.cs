@@ -244,6 +244,7 @@ public interface IInteractable {
     ///</summary>
     bool Focused {get; set;}
     bool Disabled {get; set;}
+    public bool AlwaysShowOutline {get; set; }
     bool Interactable {get; set; }
     GameObject Gameobject { get; }
 

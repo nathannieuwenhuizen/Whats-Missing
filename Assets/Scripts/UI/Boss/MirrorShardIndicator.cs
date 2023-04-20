@@ -33,7 +33,7 @@ public class MirrorShardIndicator : MonoBehaviour
         UpdateUIPosition();
         UpdateUIAlpha();
     }
-    public void AssignShard(BossMirror _mirror) {
+    public void AssignFocusedShard(BossMirror _mirror) {
         int index = _mirror.AmmountOfShardsAttached();
         
         if (index >= 0 && index < _mirror.Shards.Length) {
@@ -80,13 +80,13 @@ public class MirrorShardIndicator : MonoBehaviour
 
 
     private void OnEnable() {
-        BossMirror.OnMirrorShardAmmountUpdate += AssignShard;
+        BossMirror.OnMirrorShardAmmountUpdate += AssignFocusedShard;
         BossCutsceneState.OnBossCutsceneStart += HideUI;
         BossCutsceneState.OnBossCutsceneEnd += ShowUI;
     }
 
     private void OnDisable() {
-        BossMirror.OnMirrorShardAmmountUpdate -= AssignShard;
+        BossMirror.OnMirrorShardAmmountUpdate -= AssignFocusedShard;
         BossCutsceneState.OnBossCutsceneStart -= HideUI;
         BossCutsceneState.OnBossCutsceneEnd -= ShowUI;
     }

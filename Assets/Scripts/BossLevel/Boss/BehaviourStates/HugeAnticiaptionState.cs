@@ -6,7 +6,7 @@ namespace Boss {
     public class HugeAnticipationState : BaseBossState, IState
     {
         public Coroutine animationCoroutine;
-        public float totalDuration = 33f;
+        public float totalDuration = 30f;
         private bool timeStops = false;
 
         public override void DrawDebug()
@@ -90,14 +90,17 @@ namespace Boss {
 
             //setting boss pos
             bossAI.Boss.BossPositioner.MovementEnabled = true;
-            bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.toPlayer;
             bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.freeFloat;
+            bossAI.Boss.BossPositioner.RotationEnabled = false;
+            bossAI.StartCoroutine(bossAI.Boss.transform.AnimatingRotation(bossAI.HugeAttackPos.rotation, AnimationCurve.EaseInOut(0,0,1,1), 2f));
+            // bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.toPlayer;
 
             Positioner.SpeedScale = 1f;
             Positioner.SetDestinationPath(bossAI.HugeAttackPos , bossAI.transform.position, true, 5f);
             Boss.Body.BossAnimator.DoHugeSlashArmFX();
 
         }
+
 
         public void ResetState(bool wthColor) {
 

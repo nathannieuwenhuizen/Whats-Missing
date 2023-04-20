@@ -66,7 +66,7 @@ public class MirrorShard : PickableRoomObject
         get { return letterCoords;}
     }
     private bool attached = true;
-    private bool animating = false;
+    private bool movingToMirror = false;
 
 
     private bool focusedShard = false;
@@ -141,13 +141,14 @@ public class MirrorShard : PickableRoomObject
 
     private void OnEnable() {
         RenderTexturePlane.OnTextureUpdating += UpdateTexture;
-        ToggleVisibilty(true);
+        if (focusedShard) StartCoroutine(FocusedAnimation());
+        ToggleLetterVisibilty(true);
     }
 
     private void OnDisable() {
         RenderTexturePlane.OnTextureUpdating -= UpdateTexture;
         Outline.enabled = false;
-        ToggleVisibilty(false);
+        ToggleLetterVisibilty(false);
     }
 
     private void UpdateTexture(RenderTexturePlane _plane) {
@@ -189,7 +190,7 @@ public class MirrorShard : PickableRoomObject
         }
 
         if (!positionInfo.visibleAfterFalling) {
-            ToggleVisibilty(false);
+            ToggleLetterVisibilty(false);
         }
     }
 
@@ -203,10 +204,10 @@ public class MirrorShard : PickableRoomObject
     private void Update() {
         if (!isVisible) return;
 
-        if (!attached || animating) {
+        if (!attached || movingToMirror) {
             UpdateLetterPosition();
         } 
-        if (!animating && attached) {
+        if (!movingToMirror && attached) {
             transform.localPosition = startLocalPos;
             transform.localRotation = Quaternion.Euler(Vector3.zero);
         }
@@ -216,7 +217,7 @@ public class MirrorShard : PickableRoomObject
     private float test = .1f;
     public Outline.Mode mode = Outline.Mode.OutlineVisible;
     private void UpdateOutline() {
-    	if (!attached && !animating && focusedShard) {
+    	if (!attached && !movingToMirror && focusedShard) {
             Outline.OutlineWidth = test;
             Outline.OutlineMode = mode;
 
@@ -255,7 +256,7 @@ public class MirrorShard : PickableRoomObject
 
     private bool isVisible = true;
 
-    public void ToggleVisibilty(bool _visible) {
+    public void ToggleLetterVisibilty(bool _visible) {
         isVisible = _visible;
         for (int i = 0; i < letterCoords.Length; i++) {
             Letter letter = letterCoords[i].letter;
@@ -292,8 +293,8 @@ public class MirrorShard : PickableRoomObject
     /// Reattaches a mirror shard towards the mirror
     ///</summary>
     public void ReattachedToMirror() {
-        if (animating) return;
-        animating = true;
+        if (movingToMirror) return;
+        movingToMirror = true;
         Interactable = false;
         transform.parent = startParent;
         DeactivateRigidBody();
@@ -303,11 +304,11 @@ public class MirrorShard : PickableRoomObject
     private IEnumerator ReattachingToMirror() {
         StartCoroutine(transform.AnimatingLocalRotation(Quaternion.Euler(0,0,0), AnimationCurve.EaseInOut(0,0,1,1), attachingDuration));
         yield return StartCoroutine(transform.AnimatingLocalPos(startLocalPos, AnimationCurve.EaseInOut(0,0,1,1), attachingDuration));
-        ToggleVisibilty(true);
+        ToggleLetterVisibilty(true);
         Attached = true;
         bossMirror.AttachMirrorShard(this);
         AudioHandler.Instance?.PlaySound(SFXFiles.mirorshard_place);
-        animating = false;
+        movingToMirror = false;
     }
 
     private void OnDrawGizmosSelected() {
@@ -347,5 +348,21 @@ public class MirrorShard : PickableRoomObject
     public override bool CanBeReleased()
     {
         return !Attached && Vector3.Distance(transform.position, bossMirror.transform.position) < distanceToAttachShardToMirror;
+    }
+    public IEnumerator FocusedAnimation() {
+        yield return new WaitForSeconds(1f);
+
+        if (rb == null) {
+            rb = GetComponent<Rigidbody>();
+        }
+        AlwaysShowOutline = true;
+        while(!grabbed)
+        {
+            Debug.Log("idle animation!");
+            transform.Rotate(new Vector3(0, 20f * Time.deltaTime, 20f * Time.deltaTime));
+            yield return new WaitForEndOfFrame();
+        }
+        AlwaysShowOutline = false;
+
     }
 }
