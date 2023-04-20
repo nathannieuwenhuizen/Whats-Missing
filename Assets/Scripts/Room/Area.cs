@@ -270,7 +270,7 @@ public class Area : MonoBehaviour
             newRoom.transform.Rotate(new Vector3(0,-90 + roomRotationOffset,0));
         }
         Vector3 spawnPos = loadPosition.position + (newRoom.transform.position - newRoom.StartDoor.transform.position);
-        spawnPos += new Vector3(roomPositionOffset.x * ((index % 2) == 0 ? 1 : -1), roomPositionOffset.y, roomPositionOffset.z);
+        spawnPos += new Vector3(roomPositionOffset.x , roomPositionOffset.y, roomPositionOffset.z) * ((index % 2) == 0 ? 1 : -1);
 
         newRoom.transform.position = spawnPos;
         loadPosition = newRoom.EndDoor.transform;
