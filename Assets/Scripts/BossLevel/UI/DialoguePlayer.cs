@@ -19,6 +19,11 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
     private Coroutine writingCoroutine;
     private float disappearingDuration = .5f;
 
+    private bool isPlaying = false;
+    public bool IsPlaying {
+        get { return isPlaying;}
+    }
+
     private void OnEnable() {
         BossVoice.OnLineStart += PlayLine;
     }
@@ -32,7 +37,10 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
         base.Awake();
     }
 
-    public void PlayLine(Line _line) {
+    public void PlayLine(Line _line, bool forced = true) {
+        if (!forced && isPlaying) return;
+
+        isPlaying = true;
         if (writingCoroutine != null) StopCoroutine(writingCoroutine);
         StartCoroutine(backdrop.FadeCanvasGroup(1, .5f,0));
         writingCoroutine = StartCoroutine(PlayingLine(_line));
@@ -56,6 +64,7 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
     
     public IEnumerator DisappearingLine() {
         player.StartDisappearingText();
+        isPlaying = false;
         StartCoroutine(backdrop.FadeCanvasGroup(0, .5f));
         yield return new WaitForSeconds(disappearingDuration);
     }

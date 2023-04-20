@@ -65,9 +65,9 @@ public class SettingPanel : AnimatedPopup
         gameplayList.SetActive(false);
         controlList.gameObject.SetActive(true);
         controlList.Hide();
-        generalButton.interactable = false;
-        gameplayButton.interactable = true;
-        controlButton.interactable = true;
+        // generalButton.interactable = false;
+        // gameplayButton.interactable = true;
+        // controlButton.interactable = true;
         settingsText.text = "General";
         Debug.Log("should be general by now");
         ControllerCheck.SelectUIGameObject(generalButton.gameObject);
@@ -77,10 +77,10 @@ public class SettingPanel : AnimatedPopup
 
         generalList.SetActive(false);
         gameplayList.SetActive(true);
-        generalButton.interactable = true;
-        gameplayButton.interactable = false;
+        // generalButton.interactable = true;
+        // gameplayButton.interactable = false;
         controlList.Hide();
-        controlButton.interactable = true;
+        // controlButton.interactable = true;
         settingsText.text = "Gameplay";
         ControllerCheck.SelectUIGameObject(gameplayButton.gameObject);
     }
@@ -88,10 +88,10 @@ public class SettingPanel : AnimatedPopup
 
         generalList.SetActive(false);
         gameplayList.SetActive(false);
-        generalButton.interactable = true;
-        gameplayButton.interactable = true;
+        // generalButton.interactable = true;
+        // gameplayButton.interactable = true;
         controlList.Show();
-        controlButton.interactable = false;
+        // controlButton.interactable = false;
         settingsText.text = "Controls";
         ControllerCheck.SelectUIGameObject(controlButton.gameObject);
     }
@@ -149,8 +149,8 @@ public class SettingPanel : AnimatedPopup
     private void OnDisable() {
         PauseScreen.OnSettingsOpen -= Open;
         PauseScreen.OnSettingsClose -= Close;
-        Menu.OnSettingsOpen += Open;
-        Menu.OnSettingsClose += Close;
+        Menu.OnSettingsOpen -= Open;
+        Menu.OnSettingsClose -= Close;
 
     }
 

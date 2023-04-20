@@ -15,6 +15,8 @@ namespace Boss {
             {
             base.Start();
             stateName = "Die cutscene";
+            DialoguePlayer.Instance.PlayLine(BossLines.Boss_Die);
+
 
             // Positioner.MovementEnabled = false;
             // Positioner.RotationEnabled = false;

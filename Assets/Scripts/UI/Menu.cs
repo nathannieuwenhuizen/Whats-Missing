@@ -126,6 +126,6 @@ public class Menu : MonoBehaviour
         SettingPanel.OnSettingsClose += BackToMenu;
     }
     private void OnDisable() {
-        SettingPanel.OnSettingsClose += BackToMenu;
+        SettingPanel.OnSettingsClose -= BackToMenu;
     }
 }

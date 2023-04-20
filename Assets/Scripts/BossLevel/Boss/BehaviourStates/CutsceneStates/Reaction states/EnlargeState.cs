@@ -65,7 +65,8 @@ namespace Boss {
             //setting boss pos
             Positioner.SpeedScale = 1f;
             Positioner.SteeringBehaviour.MaxForce *= 1f;
-            Positioner.SetDestinationPath(ReactionPosition() + Vector3.up * -20f, bossAI.transform.position, true, 5f);
+            Positioner.BodyMovementType = BodyMovementType.freeFloat;
+            Positioner.SetDestinationPath(bossAI.EnlargeEndPosition, bossAI.transform.position, true, 5f);
 
             //camera zoom
             bossAI.Boss.Player.CharacterAnimationPlayer.ZoomDuration = enlargeDuration;

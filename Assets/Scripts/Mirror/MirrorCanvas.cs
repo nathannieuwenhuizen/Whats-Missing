@@ -170,7 +170,7 @@ public class MirrorCanvas : MonoBehaviour
         if (InputManager.KEYBOARD_ENABLED_MIRROR){
             foreach( Letter letter in Letters) {
                 if (Input.GetKeyDown(GetKeyCode(letter.LetterValue[0]))) {
-                    if (letter.isActiveAndEnabled && letter.Interactable) {
+                    if (letter.Interactable) {
                         letter.pressedTime = 0;
                         LetterClicked(letter);
                     }
@@ -409,7 +409,6 @@ public class MirrorCanvas : MonoBehaviour
 
     private float durationBeforeSecondHint = 0;
     public void ShowHintButton(string _hintText, float _durationBeforeSecondHint) {
-        if (_hintText == "") return;
         durationBeforeSecondHint = _durationBeforeSecondHint;
         hintText = _hintText;
         hintToggle.interactable = true;

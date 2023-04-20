@@ -12,6 +12,7 @@ public class BossMirror : Mirror, ITriggerArea
     public static BossMirrorEvent OnMirrorShake;
     public static BossMirrorEvent OnMirrorComplete;
     public static BossMirrorEvent OnMirrorExplode;
+    public static BossMirrorEvent OnAskingHint;
 
     private Rigidbody rb;
 
@@ -314,6 +315,8 @@ public class BossMirror : Mirror, ITriggerArea
 
         }
     }
-
+    public void HintToggleClick() {
+        OnAskingHint?.Invoke(this);
+    }
 
 }

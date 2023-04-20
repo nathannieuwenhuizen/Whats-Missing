@@ -18,6 +18,7 @@ namespace Boss {
             Positioner.BodyMovementType = BodyMovementType.freeFloat;
             Body.Arm.Toggle(false);
             bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_INTRO, true, 10f, () => {
+                DialoguePlayer.Instance.PlayLine(BossLines.Intro_3);
                 OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
             }));
         }
