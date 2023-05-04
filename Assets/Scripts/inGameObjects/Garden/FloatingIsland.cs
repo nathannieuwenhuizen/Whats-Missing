@@ -57,7 +57,7 @@ public class FloatingIsland : RoomObject, ITriggerArea, IRoomObject
         // oldParent = player.transform.parent;
         animator.speed = 0;
         // player.transform.SetParent(transform);
-        AudioHandler.Instance?.FadeMusic(MusicFiles.planetarium_hidden_room, 1f);
+        AudioHandler.Instance?.FadeMusic(MusicFiles.hidden_room, 1f);
 
     }
 

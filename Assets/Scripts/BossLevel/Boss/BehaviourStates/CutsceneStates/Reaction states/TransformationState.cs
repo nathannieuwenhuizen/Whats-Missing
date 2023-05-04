@@ -35,6 +35,7 @@ namespace Boss {
             bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.freeFloat;
             animationCoroutine = bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_TRANSFORM, true, 6f, () => {
                 bossAI.StartCoroutine(Body.BossAnimator.DoMirrorAttack(() => {
+                    AudioHandler.Instance?.Play3DSound(SFXFiles.boss_shockwave, bossAI.BossHead.transform);
                     bossAI.Boss.BossChangesHandler.CreateChange("fire", ChangeType.tooBig);
                 }, () => {
                     OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);

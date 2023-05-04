@@ -39,6 +39,7 @@ public class FinalBox : InteractabelObject
             prop.gameObject.SetActive(false);
         }
         player.SetFinalLevelAnimation();
+        AudioHandler.Instance?.PlaySound(SFXFiles.acceptance_cutscene, 1f);
         float duration = 1f;
         StartCoroutine(player.transform.AnimatingPos(target.position, AnimationCurve.EaseInOut(0,0,1,1), duration));
         StartCoroutine(player.transform.AnimatingRotation(target.rotation, AnimationCurve.EaseInOut(0,0,1,1), duration));

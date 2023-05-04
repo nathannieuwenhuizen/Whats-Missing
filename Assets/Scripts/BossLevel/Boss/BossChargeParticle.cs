@@ -8,6 +8,10 @@ namespace Boss {
         private ChargeParticleInfo[] chargeParticles;
 
         private Vector3 startScale, endScale;
+        
+        private SFXInstance chargeSound;
+
+
 
         private void Awake() {
             endScale = transform.localScale;
@@ -16,9 +20,29 @@ namespace Boss {
                 particle.Setup();
             }
         }
+        private void Start() {
+            if (chargeSound == null) {
+                chargeSound =  AudioHandler.Instance?.Play3DSound(SFXFiles.boss_charge_up_attack, transform, 1f, 1, true, true, 200f, false);
+                chargeSound.Play();
+                chargeSound.Volume = 0;
+
+            }
+        }
+
+        float targetVolume = .5f;
+
+        private void Update() {
+            chargeSound.Volume = Mathf.Lerp(chargeSound.Volume, targetVolume, Time.deltaTime);
+        }
 
         public void Interpolate(float percentage) {
             timeScale = Mathf.Lerp(1, 2, percentage);
+            if (chargeSound == null) {
+                chargeSound =  AudioHandler.Instance?.Play3DSound(SFXFiles.boss_charge_up_attack, transform, 1f, 1, true, true, 200f, false);
+                chargeSound.Play();
+                chargeSound.Volume = 0;
+            }
+            targetVolume = .5f + percentage * .5f;
             transform.localScale =  Vector3.Lerp(startScale, endScale, percentage);
             foreach(ChargeParticleInfo particle in chargeParticles) {
                 particle.Interpolate(percentage);
@@ -59,6 +83,7 @@ namespace Boss {
         public void StopTime() {
             StartCoroutine( Extensions.AnimateCallBack(1,0, AnimationCurve.Linear(0,0,1,1), (float v) => {
                 TimeScale = v;
+                targetVolume = v;
             }, 2f));
         }
     }

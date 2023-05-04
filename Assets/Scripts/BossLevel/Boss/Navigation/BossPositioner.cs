@@ -297,19 +297,21 @@ public class BossPositioner : MonoBehaviour
         //sets the destination.
         MovementEnabled = false;
         SetDestinationPath(transform.position + Vector3.up * 10f, transform.position + Vector3.up * 10f, false, 15f);
-        SpeedScale = 1f;
+        SpeedScale = .7f;
 
         //do taking off animation.
         InAir = true;
-        yield return new WaitForSeconds(.6f);
+        yield return new WaitForSeconds(.3f);
+        AudioHandler.Instance?.Play3DSound(SFXFiles.boss_take_off, transform);
+        yield return new WaitForSeconds(.3f);
 
         MovementEnabled = true;
         //spawn debree at end position when the coordinate of the boss is within 3 units of its destination.
         // SpawnDebree(transform);
-        // AudioHandler.Instance?.Play3DSound(SFXFiles.boss_landing, transform);
 
         //wait until the boss is within 1 unit.
         while(!AtPosition(1f)) yield return new WaitForFixedUpdate();
+        SpeedScale = 1f;
         
         //callback will be called if it isnt null.
         if (callback != null) callback();   

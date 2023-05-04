@@ -32,11 +32,12 @@ public class ThirdAreaEndTrigger : AreaTrigger
 
 
     public IEnumerator EndCutscene() {
-        AudioHandler.Instance.FadeMusic(MusicFiles.planetarium_hidden_room, 1f);
+        AudioHandler.Instance.FadeMusic(MusicFiles.hidden_room, 1f);
 
         floor.AffectedByPotions = true;
         StopPotion();
         SetupBossArm();
+        AudioHandler.Instance.PlaySound(SFXFiles.boss_portal_noise, 1f, 1);
         room.Player.FPCamera.ShowAimCutscene(potion.transform, 4.5f, 40f);
         yield return new WaitForSeconds(.5f);
         PotionIsGrabbedByBoss();

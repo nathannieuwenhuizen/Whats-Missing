@@ -149,7 +149,6 @@ public class Area : MonoBehaviour
         //fade audio listener
         AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
         AudioHandler.Instance.FadeListener(1f);
-
         //play music
         AudioHandler.Instance.PlayMusic(GetAreaMusic(), .5f, loadRoomIndex == 0 ? 5.5f : 0f);
     }
@@ -353,11 +352,10 @@ public class Area : MonoBehaviour
     public void ResetRoom() {
         //CurrentRoom.ResetRoom();
     }
-    float testParam;
+    
     public void UpdateRoomMusic(float _roomIndex) {
         if (areaIndex == 1){
             _roomIndex = (float)_roomIndex / (float)rooms.Count * 26f;
-            Debug.Log("room music: " + _roomIndex);
             if (AudioHandler.Instance?.AudioManager.Music != null) 
                 AudioHandler.Instance?.AudioManager.Music.FMODInstance.setParameterByName(FMODParams.LEVEL2_MUSIC, _roomIndex, true);
         }

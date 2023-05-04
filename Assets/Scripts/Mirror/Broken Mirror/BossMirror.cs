@@ -104,11 +104,18 @@ public class BossMirror : Mirror, ITriggerArea
 
         if (skipIntro) StartCoroutine(SkipIntro());
         else {
+            AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
+            AudioHandler.Instance.FadeListener(1f);
+            AudioHandler.Instance.PlayMusic(MusicFiles.hidden_room, .5f, 5.5f);
+
             TogleVisibilityOfLetters(0);
         }
     }
 
     public IEnumerator SkipIntro() {
+        AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
+        AudioHandler.Instance?.FadeListener(1f);
+        AudioHandler.Instance.PlayMusic(MusicFiles.boss, .5f, 0f);
         yield return new WaitForSeconds(.1f);
         introCutscene = true;
         for (int i = 0; i < shards.Length; i++) {
@@ -257,6 +264,8 @@ public class BossMirror : Mirror, ITriggerArea
     private IEnumerator ShakeBeforeExplosion() {
         startPos = transform.position;
         AudioHandler.Instance?.PlaySound(SFXFiles.mirror_shake);
+        AudioHandler.Instance?.FadeMusic(MusicFiles.boss, 5f, true);
+
         //activate stencil buffer
         bossStencilBuffer.SetActive(true);
         Quaternion startRotation = transform.localRotation;

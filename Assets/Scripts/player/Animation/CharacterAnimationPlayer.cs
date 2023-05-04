@@ -198,9 +198,9 @@ public class CharacterAnimationPlayer
     ///</summary>
     public IEnumerator StandingUp() {
         yield return new WaitForSeconds(2.2f);
-        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
+        AudioHandler.Instance?.Play3DSound( SFXFiles.player_footstep_normal, player.transform, .5f);
         yield return new WaitForSeconds(.5f);
-        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
+        AudioHandler.Instance?.Play3DSound( SFXFiles.player_footstep_normal, player.transform, .8f);
         yield return new WaitForSeconds(2.3f);
         EndOfCutSceneAnimation();
     }

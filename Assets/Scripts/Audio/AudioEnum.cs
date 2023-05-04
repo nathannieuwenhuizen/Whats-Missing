@@ -89,6 +89,9 @@ public static class SFXFiles {
     public static string potion_grab = "event:/SFX/Environment/Third_area/Potion_grab";
     public static string potion_throw = "event:/SFX/Environment/Third_area/Potion_throw";
     public static string potion_break = "event:/SFX/Environment/Third_area/Potion_break";
+    public static string cauldron = "event:/SFX/Environment/Third_area/Cauldron";
+    public static string boss_portal_noise = "event:/SFX/Environment/Third_area/Boss_portal_noise";
+    public static string normal_potion = "event:/SFX/Environment/Third_area/Normal_potion";
 
 
     //boss environment
@@ -97,14 +100,24 @@ public static class SFXFiles {
     public static string mirorshard_grab = "event:/SFX/Boss/Environment/Mirror/Mirrorsshard_grab";
     public static string mirorshard_place = "event:/SFX/Boss/Environment/Mirror/Mirrorshard_place";
     public static string rock_explosion = "event:/SFX/Boss/Environment/Rock_smash";
+    public static string rock_smash_time_stop = "event:/SFX/Boss/Environment/Rock_smash_time_stop";
     public static string magic_shield_block = "event:/SFX/Boss/Environment/Magic_shield_block";
 
     //boss
     public static string boss_attack = "event:/SFX/Boss/Boss/Arms/Attack";
     public static string boss_attack_hit_player = "event:/SFX/Boss/Boss/Arms/Attack_hit_player";
     public static string boss_landing = "event:/SFX/Boss/Boss/Movement/Landing";
+    public static string boss_take_off = "event:/SFX/Boss/Boss/Movement/Lift_off";
     public static string boss_transformation = "event:/SFX/Boss/Boss/Transformation";
     public static string boss_talking = "event:/SFX/Boss/Boss/Talking";
+    public static string boss_shockwave = "event:/SFX/Boss/Boss/Arms/Boss_Shockwave";
+    public static string boss_shard_kick_noise = "event:/SFX/Boss/Boss/Boss_shard_kick_noise";
+    public static string boss_charge_up_attack = "event:/SFX/Boss/Boss/Boss_charge_up_attack";
+    public static string boss_grow_sound = "event:/SFX/Boss/Boss/Boss_grow_sound";
+
+
+    //acceptance
+    public static string acceptance_cutscene = "event:/SFX/Environment/Acceptance/Cutscene";
 
 
 
@@ -121,7 +134,7 @@ public static class SFXFiles {
 public enum MusicFiles {
     planetarium,
     menu,
-    planetarium_hidden_room,
+    hidden_room,
     garden,
     tower,
     boss,

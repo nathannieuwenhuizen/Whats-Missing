@@ -61,6 +61,8 @@ namespace Boss {
                 changeType = ChangeType.tooBig,
                 active = true
             });
+            AudioHandler.Instance?.Play3DSound(SFXFiles.boss_grow_sound, Boss.transform, 1f);
+                
 
             //setting boss pos
             Positioner.SpeedScale = 1f;
