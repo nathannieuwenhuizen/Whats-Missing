@@ -79,7 +79,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
     /// If the objects will burn in flames if it comes in contact with fire.
     ///</summary>
     [SerializeField]
-    private bool flamable = false;
+    protected bool flamable = false;
 
     [SerializeField]
     private RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
@@ -108,7 +108,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
     public override float CurrentScale { get { return base.CurrentScale; } 
         set {
             base.CurrentScale = value;
-            rb.mass = value;
+            if (rb != null) rb.mass = value;
         }  
     }
     protected float holdingDistance = 3f;

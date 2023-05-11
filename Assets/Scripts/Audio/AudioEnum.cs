@@ -39,9 +39,18 @@ public static class SFXFiles {
     public static string clock_ticking = "event:/SFX/Environment/Planetarium/Clock_tick";
     public static string evil_spirit = "Evil_spirit";
     public static string lamp_toggle = "event:/SFX/Environment/Planetarium/Lamp_toggle";
+    public static string book = "event:/SFX/Environment/Planetarium/Book";
 
 
     public static string hidden_room_cutscene = "event:/SFX/Environment/Planetarium/Hidden_room_cutscene";
+
+
+    //room objects
+    public static string object_shrink = "event:/SFX/Environment/Object_Shrink";
+    public static string object_disappear = "event:/SFX/Environment/Object_Disappear";
+    public static string object_reappear = "event:/SFX/Environment/Object_Reappear";
+
+
     //hiddenroom
     public static string rumble_ground = "Rumble_ground";
     public static string woosh = "Woosh";
@@ -102,6 +111,7 @@ public static class SFXFiles {
     public static string rock_explosion = "event:/SFX/Boss/Environment/Rock_smash";
     public static string rock_smash_time_stop = "event:/SFX/Boss/Environment/Rock_smash_time_stop";
     public static string magic_shield_block = "event:/SFX/Boss/Environment/Magic_shield_block";
+    public static string time_stop = "event:/SFX/Boss/Environment/Time_Stop";
 
     //boss
     public static string boss_attack = "event:/SFX/Boss/Boss/Arms/Attack";

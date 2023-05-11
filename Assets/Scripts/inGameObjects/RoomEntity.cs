@@ -27,7 +27,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     public string[] AlternativeWords { get => alternateWords; set => alternateWords = value; }
 
     [SerializeField]
-    private MissingChangeEffect missingChangeEffect = MissingChangeEffect.scale;
+    protected MissingChangeEffect missingChangeEffect = MissingChangeEffect.scale;
     public MissingChangeEffect MissingChangeEffect => missingChangeEffect;
 
     public int id {get; set; }
@@ -50,18 +50,21 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     public bool IsEnlarged { get; set; } = false;
     public bool IsMissing { get; set; } = false;
 
-
+    protected IChange currentChange;
     public virtual void AddChange(MirrorChange change)
     {
+        currentChange = change;
         ApplyChange(change.changeType);
     }
 
     public virtual void AddChange(Change change) {
+        currentChange = change;
         ApplyChange(change.changeType);
     }
 
     public virtual void AddChange(IChange change)
     {
+        currentChange = change;
         ApplyChange(change.ChangeType);
         // throw new System.NotImplementedException();
     }

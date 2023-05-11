@@ -33,6 +33,20 @@ public class SFXInstance
             else AudioSource.volume = value * AudioSetting.SFX;
         }
     }
+    public float Pitch {
+        get { 
+            if (isFMOD) {
+                float result = 0f;
+                FMODInstance.getPitch(out result);
+                return result;
+            }
+            return AudioSource.pitch;
+        }
+        set { 
+            if (isFMOD) FMODInstance.setPitch(value);
+            else AudioSource.pitch = value * AudioSetting.SFX;
+        }
+    }
 
     public void Play() {
         if (isFMOD) {

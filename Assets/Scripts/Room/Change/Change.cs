@@ -1,8 +1,10 @@
 public interface IChange {
     public string Word {get; set; }
     public ChangeType ChangeType {get; set; }
+    public ChangeCausation changeCausation {get;set;}
     public bool Active {get; set; }
     public string[] AltarnativeWords {get; set; }
+
 }
 
 ///<summary>
@@ -27,6 +29,7 @@ public class Change : IChange {
 
     public bool Active { get => active; set => active = value; }
     public string[] AltarnativeWords { get => alternativeWords; set => alternativeWords = value; }
+    public ChangeCausation changeCausation { get; set; } = ChangeCausation.environment;
     string IChange.Word { get => word; set => word = value; }
     ChangeType IChange.ChangeType { get => changeType; set => changeType = value; }
 
@@ -69,5 +72,4 @@ public enum ChangeCausation {
 [System.Serializable]
 public class RoomChange : Change {
     public IChangable roomObject;
-    public ChangeCausation changeCausation = ChangeCausation.environment;
 }

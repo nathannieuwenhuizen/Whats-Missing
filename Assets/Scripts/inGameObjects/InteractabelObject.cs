@@ -108,7 +108,7 @@ public class InteractabelObject : RoomObject, IInteractable
             yield return new WaitForEndOfFrame();
         }
         outline.OutlineWidth = val;
-        if (disableAfterAnimating)
+        if (disableAfterAnimating && outline != null)
             outline.enabled = false;
     }
 

@@ -29,6 +29,30 @@ public class Cauldron : RoomObject
             boilingSound.Pause();
         }
     }
+    public override void OnShrinking()
+    {
+        if (boilingSound != null) boilingSound.Pitch = 1.2f;
+        base.OnShrinking();
+    }
+
+    public override void OnShrinkRevert()
+    {
+        if (boilingSound != null) boilingSound.Pitch = 1f;
+        base.OnShrinkRevert();
+    }
+
+    public override void OnEnlarge()
+    {
+        if (boilingSound != null) boilingSound.Pitch = .8f;
+        base.OnEnlarge();
+    }
+
+    public override void OnEnlargeRevert()
+    {
+        if (boilingSound != null) boilingSound.Pitch = 1f;
+        base.OnEnlargeRevert();
+    }
+
 
     public override void OnMissingFinish()
     {

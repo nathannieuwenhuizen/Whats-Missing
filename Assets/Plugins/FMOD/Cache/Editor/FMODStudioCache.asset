@@ -542,6 +542,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 123428
+--- !u!114 &-4889714490614244617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Boss/Environment/Time_Stop
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Boss/Environment/Time_Stop
+  Guid:
+    Data1: -1191283436
+    Data2: 1318416174
+    Data3: -1251321196
+    Data4: 586885897
+  Banks:
+  - {fileID: 8045197622851195383}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2847
+--- !u!114 &-4758163482366334982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Environment/Object_Shrink
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Environment/Object_Shrink
+  Guid:
+    Data1: 1120938047
+    Data2: 1214742278
+    Data3: 497748157
+    Data4: 1540558960
+  Banks:
+  - {fileID: 8045197622851195383}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 60
+  Length: 966
 --- !u!114 &-4649466567525058725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,6 +623,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 1222
+--- !u!114 &-4487126160607570740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Environment/Object_Disappear
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Environment/Object_Disappear
+  Guid:
+    Data1: 774593991
+    Data2: 1273689001
+    Data3: 813967490
+    Data4: 1223918834
+  Banks:
+  - {fileID: 8045197622851195383}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 60
+  Length: 2728
 --- !u!114 &-4153815515497295413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694,7 +775,7 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/UI.bank
   Name: UI
   StudioPath: bank:/UI
-  lastModified: 638188131162040040
+  lastModified: 638194055577289076
   FileSizes:
   - Name: Desktop
     Value: 153440
@@ -726,6 +807,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 27898
+--- !u!114 &-2818965374038995332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Environment/Planetarium/Book
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Environment/Planetarium/Book
+  Guid:
+    Data1: 1404990053
+    Data2: 1334954695
+    Data3: 2066667169
+    Data4: 2076789430
+  Banks:
+  - {fileID: 8045197622851195383}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 60
+  Length: 1248
 --- !u!114 &-2817228025590369638
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1092,12 +1200,17 @@ MonoBehaviour:
   - {fileID: -357126667566415301}
   - {fileID: 1643299900134878622}
   - {fileID: 4196921749816832242}
+  - {fileID: -4889714490614244617}
+  - {fileID: -2818965374038995332}
+  - {fileID: -4758163482366334982}
+  - {fileID: 4726932535623095383}
+  - {fileID: -4487126160607570740}
   EditorParameters: []
   MasterBanks:
   - {fileID: 9029852559141176227}
   StringsBanks:
   - {fileID: 4073322217217405102}
-  cacheTime: 638188131162040040
+  cacheTime: 638194055577289076
   cacheVersion: 10
 --- !u!114 &452026935731834607
 MonoBehaviour:
@@ -1259,7 +1372,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 40
+  MaxDistance: 60
   Length: 1840
 --- !u!114 &1827462425867178201
 MonoBehaviour:
@@ -1735,10 +1848,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638188131158630947
+  lastModified: 638194055574912145
   FileSizes:
   - Name: Desktop
-    Value: 4856
+    Value: 5066
   Exists: 1
 --- !u!114 &4118106475035053436
 MonoBehaviour:
@@ -1927,6 +2040,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 70
   Length: 15706
+--- !u!114 &4726932535623095383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Environment/Object_Reappear
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Environment/Object_Reappear
+  Guid:
+    Data1: 193202579
+    Data2: 1122988493
+    Data3: -3018601
+    Data4: 264057013
+  Banks:
+  - {fileID: 8045197622851195383}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 60
+  Length: 2900
 --- !u!114 &4943380365845965127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2251,7 +2391,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 70776
+  Length: 114648
 --- !u!114 &8045197622851195383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2267,10 +2407,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/InGame.bank
   Name: InGame
   StudioPath: bank:/InGame
-  lastModified: 638188131158251961
+  lastModified: 638194055574553095
   FileSizes:
   - Name: Desktop
-    Value: 7135232
+    Value: 7292576
   Exists: 1
 --- !u!114 &8195324542159502347
 MonoBehaviour:
@@ -2314,10 +2454,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638188131158591056
+  lastModified: 638194055574882214
   FileSizes:
   - Name: Desktop
-    Value: 694208
+    Value: 1371456
   Exists: 1
 --- !u!114 &9103494688438024846
 MonoBehaviour:
@@ -2361,8 +2501,8 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638188131161643450
+  lastModified: 638194055576868975
   FileSizes:
   - Name: Desktop
-    Value: 23104992
+    Value: 23782176
   Exists: 1

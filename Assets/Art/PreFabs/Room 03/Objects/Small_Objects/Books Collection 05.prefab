@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6279596048068143198}
-  - component: {fileID: 2305271913613029715}
   m_Layer: 0
   m_Name: Books Collection 05
   m_TagString: Untagged
@@ -36,22 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2305271913613029715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2008691072860605226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: Book
-  alternateWords: []
-  missingChangeEffect: 2
-  flippingAxis: 2
 --- !u!1 &2061268944088894121
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,6 +47,8 @@ GameObject:
   - component: {fileID: 3476781663882066612}
   - component: {fileID: 3415049887259947898}
   - component: {fileID: 2796857691919421128}
+  - component: {fileID: 9093678484839309144}
+  - component: {fileID: 5879062102731600614}
   m_Layer: 0
   m_Name: Book_Low.440
   m_TagString: Untagged
@@ -147,6 +132,51 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0126262, y: 0.20259485, z: 1.3481125}
   m_Center: {x: 0, y: 0.00000010803342, z: 0.674056}
+--- !u!114 &9093678484839309144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061268944088894121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f269673d29b93345a7f4f7265fd6750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: Book
+  alternateWords:
+  - books
+  - paper
+  missingChangeEffect: 2
+  flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 1
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+--- !u!54 &5879062102731600614
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061268944088894121}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &3209661402078515744
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,6 +189,8 @@ GameObject:
   - component: {fileID: 3120659191970453289}
   - component: {fileID: 2874730544113392205}
   - component: {fileID: 5537503397243552526}
+  - component: {fileID: 2089531004302871202}
+  - component: {fileID: 1248013483353004611}
   m_Layer: 0
   m_Name: Book_Low.461
   m_TagString: Untagged
@@ -242,6 +274,51 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.85623986, y: 0.22202113, z: 1.1797177}
   m_Center: {x: 0, y: 0, z: 0.5898586}
+--- !u!114 &2089531004302871202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3209661402078515744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f269673d29b93345a7f4f7265fd6750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: Book
+  alternateWords:
+  - books
+  - paper
+  missingChangeEffect: 2
+  flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 1
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+--- !u!54 &1248013483353004611
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3209661402078515744}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7518328188912045100
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,6 +331,8 @@ GameObject:
   - component: {fileID: 6848510426948217867}
   - component: {fileID: 1945036721844808818}
   - component: {fileID: 1955052791876710078}
+  - component: {fileID: 1364837205064622701}
+  - component: {fileID: 1517822531011879882}
   m_Layer: 0
   m_Name: Book_Low.434
   m_TagString: Untagged
@@ -337,6 +416,51 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.7437202, y: 0.18409699, z: 0.958077}
   m_Center: {x: 0.000000014901161, y: 0.00000010058284, z: 0.47903833}
+--- !u!114 &1364837205064622701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7518328188912045100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f269673d29b93345a7f4f7265fd6750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: Book
+  alternateWords:
+  - books
+  - paper
+  missingChangeEffect: 2
+  flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 1
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+--- !u!54 &1517822531011879882
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7518328188912045100}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8500428631203977226
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,6 +473,8 @@ GameObject:
   - component: {fileID: 853068694088818241}
   - component: {fileID: 5613273911619904988}
   - component: {fileID: 4027559172786008178}
+  - component: {fileID: 4133738817045256831}
+  - component: {fileID: 3824078436664130603}
   m_Layer: 0
   m_Name: Book_Low.462
   m_TagString: Untagged
@@ -432,6 +558,51 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.83717793, y: 0.14126392, z: 1.0558867}
   m_Center: {x: 0, y: 0.00000013411045, z: 0.52794385}
+--- !u!114 &4133738817045256831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8500428631203977226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f269673d29b93345a7f4f7265fd6750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: Book
+  alternateWords:
+  - books
+  - paper
+  missingChangeEffect: 2
+  flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 1
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+--- !u!54 &3824078436664130603
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8500428631203977226}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8675164281730140128
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,6 +615,8 @@ GameObject:
   - component: {fileID: 6672894749886315443}
   - component: {fileID: 4851135587940566588}
   - component: {fileID: 6103131343478014639}
+  - component: {fileID: 6579149325355181532}
+  - component: {fileID: 196446993966329629}
   m_Layer: 0
   m_Name: Book_Low.463
   m_TagString: Untagged
@@ -527,3 +700,48 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.8730146, y: 0.17830524, z: 1.1406257}
   m_Center: {x: 0, y: -0.00000057742, z: 0.57031286}
+--- !u!114 &6579149325355181532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8675164281730140128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f269673d29b93345a7f4f7265fd6750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: Book
+  alternateWords:
+  - books
+  - paper
+  missingChangeEffect: 2
+  flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 1
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+--- !u!54 &196446993966329629
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8675164281730140128}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
