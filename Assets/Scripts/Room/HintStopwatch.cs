@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HintStopwatch : MonoBehaviour
+public class HintStopwatch
 {
     [HideInInspector]
     public Room room;
@@ -12,8 +12,8 @@ public class HintStopwatch : MonoBehaviour
 
     public bool timerForSecondHint = false;
 
-    private void Awake() {
-        room = GetComponent<Room>();
+    public HintStopwatch(Room _room) {
+        room = _room;
     }
 
     private Coroutine waitingCoroutine;
@@ -33,26 +33,28 @@ public class HintStopwatch : MonoBehaviour
 
     public void Pause() {
         if (waitingCoroutine != null) {
-            StopCoroutine(waitingCoroutine);
+            room.StopCoroutine(waitingCoroutine);
         }
     }
     public void Resume() {
-        waitingCoroutine = StartCoroutine(Waiting());
+        waitingCoroutine = room.StartCoroutine(Waiting());
     }
 
-    private void OnEnable() {
+    public void OnEnable() {
         MirrorCanvas.OnShowHint += StartTimerSecondHint;
     }
 
-    private void OnDisable() {
+    public void OnDisable() {
         MirrorCanvas.OnShowHint -= StartTimerSecondHint;
     }
 
     public void StartTimerSecondHint(string hint, float _duration) {
+        Debug.Log("timer 2nd hint");
         if (!room.InArea) return;
         if (timerForSecondHint) return;
         timerForSecondHint = true;
         Duration = _duration;
+        Debug.Log("timer 2nd start");
         Reset();
 
     }

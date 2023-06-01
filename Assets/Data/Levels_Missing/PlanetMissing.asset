@@ -15,17 +15,23 @@ MonoBehaviour:
   prefab: {fileID: 6527485958438557257, guid: e770a3634265b984d8bf0a7486900627, type: 3}
   roomInfo:
     revealChangesAfterFinish: 1
+    doCutsceneOnRevealingChanges: 0
+    alwaysAnimate: 1
     questionMirror:
     - letters: planets
-      roomIndexoffset: 0
       changeType: 0
       isOn: 0
-    changeMirror:
-    - letters: planet
-      roomIndexoffset: 0
+      huzzleWords: 1
+      isQuestion: 1
+      isInteractable: 1
+    loadedChanges:
+    - word: planet
+      alternativeWords:
+      - planets
+      - planet
+      active: 0
       changeType: 0
-      isOn: 1
     durationBeforeHint: 30
-    hintText: What were you supposed to look at in the previous room?
-    highLightAnswerLetter: 1
+    hintText: 
+    highLightAnswerLetter: 0
     durationBeforeHighlighting: 60

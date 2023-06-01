@@ -8,8 +8,21 @@ public class Chair : RoomObject
     private Rigidbody rb;
 
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         rb = GetComponent<Rigidbody>();
+    }
+
+    public override void OnMissingFinish()
+    {
+        rb.isKinematic = true;
+        base.OnMissingFinish();
+    }
+
+    public override void OnAppearing()
+    {
+        rb.isKinematic = false;
+        base.OnAppearing();
     }
     private void OnCollisionEnter(Collision other) {
         if (rb == null) return;

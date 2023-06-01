@@ -159,7 +159,7 @@ public interface IRoomObject {
     ///<summary>
     /// Is true when the player is inside the same room as the object
     ///</summary>
-    bool InSpace {get; }
+    bool InSpace {get; set; }
     void OnRoomEnter();
     void OnRoomLeave();
 }
@@ -198,14 +198,20 @@ public interface IChangable : IMissable, IShrinkable, IEnlargable, IFlippable
     ///<summary>
     /// Adds the change of the entity.
     ///</summary>
-    void AddChange(Change change);
+    void AddChange(IChange change);
     void AddChange(MirrorChange change);
     ///<summary>
     /// Removes the change of the entity.
     ///</summary>
-    void RemoveChange(Change change);
+    void RemoveChange(IChange change);
 }
 
+
+public enum HoldOrientation {
+    none,
+    shard,
+    potion
+}
 
 ///<summary>
 /// Interface for objects can be picked up and thrown away
@@ -213,11 +219,16 @@ public interface IChangable : IMissable, IShrinkable, IEnlargable, IFlippable
 public interface IPickable {
     void Grab(Rigidbody connectedRB);
     void Release();
+    bool CanBeReleased();
     bool Touching {get;}
     bool TooHeavy(Hands hands);
     GameObject gameObject {get; }
     Rigidbody RigidBody { get; set; }
     RigidBodyInfo RigidBodyInfo { get;set;}    
+    public float HoldingDistance {get; }
+    public Vector3 HoldingOffset {get;set;}
+    public HoldOrientation HoldOrientation  {get; }
+
 }
 
 ///<summary>
@@ -229,9 +240,11 @@ public interface IInteractable {
     /// Wheter the object is focues or not
     ///</summary>
     bool Focused {get; set;}
-    Color FocusedColor {get; set;}
+    bool Disabled {get; set;}
     bool Interactable {get; set; }
     GameObject Gameobject { get; }
+
+    float InteractableDistance {get; set;}
 
     ///<summary>
     /// This function gets called when the player clicks on the interactable object while playing.

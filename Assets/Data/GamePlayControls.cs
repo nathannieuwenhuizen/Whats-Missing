@@ -240,7 +240,7 @@ public partial class @GamePlayControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""56243947-0fb8-4baf-985f-bc7254b63dc4"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",

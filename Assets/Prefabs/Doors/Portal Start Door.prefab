@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 562602584861250015}
   m_LocalRotation: {x: -0.7071068, y: -0, z: 0.00000002361372, w: 0.7071068}
-  m_LocalPosition: {x: -0.009500012, y: -0.0128999995, z: 0.0010000217}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5249864762863736807}
@@ -329,7 +329,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4178385099489243128}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: -0.0104, y: 0.021848, z: 0.0011}
+  m_LocalPosition: {x: 0, y: 0.0347, z: 0}
   m_LocalScale: {x: 0.0023399193, y: 0.0037427992, z: 0.0066678943}
   m_Children:
   - {fileID: 3159553981751182785}
@@ -349,12 +349,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d80c73be3fe0d35469084ced2f981279, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectedColliders: []
-  connectedPortal: {fileID: 0}
+  mainCamera: {fileID: 0}
   reflectionCamera: {fileID: 5462975394957887616}
   reflectionPlane: {fileID: 3328226905131078165}
   copyCameraParamerers: 0
   verticalOffset: 0
+  connectedColliders: []
+  connectedPortal: {fileID: 0}
 --- !u!65 &6982355139305291521
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -522,8 +523,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.024394814, y: 0.0651051, z: 0.007674309}
-  m_Center: {x: -0.009474285, y: 0.021632742, z: 0.00027275324}
+  m_Size: {x: 0.02580959, y: 0.06840627, z: 0.0076743225}
+  m_Center: {x: -0.000042403935, y: 0.03436577, z: 0.00027274637}
 --- !u!114 &430387282332682195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,6 +541,7 @@ MonoBehaviour:
   alternateWords: []
   missingChangeEffect: 1
   flippingAxis: 2
+  affectedByPotions: 1
   point0: {x: 0, y: 0, z: 0}
   point1: {x: 0, y: 0, z: 0}
   point2: {x: 0, y: 0, z: 0}
@@ -642,7 +644,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6587663036960161862}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.009500012, y: 0.0129, z: -0.001000022}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4022532473028670730}

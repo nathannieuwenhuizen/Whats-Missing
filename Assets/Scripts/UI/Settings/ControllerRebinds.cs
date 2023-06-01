@@ -29,7 +29,7 @@ public class ControllerRebinds : MonoBehaviour
 
     List<RebindKey> rebindKeys = new List<RebindKey>();
 
-    private void Awake() {
+    private void Start() {
         ControllerRebinds.controls = LoadRebinds();
         ControllerRebinds.controls.Player.Enable();
 

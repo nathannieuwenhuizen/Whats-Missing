@@ -15,17 +15,25 @@ MonoBehaviour:
   prefab: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
   roomInfo:
     revealChangesAfterFinish: 1
+    doCutsceneOnRevealingChanges: 0
+    alwaysAnimate: 0
     questionMirror:
-    - letters: deskburau
-      roomIndexoffset: 0
+    - letters: desktabl
       changeType: 0
       isOn: 0
-    changeMirror:
-    - letters: desk
-      roomIndexoffset: 0
+      huzzleWords: 1
+      isQuestion: 1
+      isInteractable: 1
+    loadedChanges:
+    - word: desk
+      alternativeWords:
+      - desks
+      - bureau
+      - table
+      - desk
+      active: 0
       changeType: 0
-      isOn: 1
     durationBeforeHint: 30
-    hintText: I can't work  on writing my book anymore
+    hintText: I can't work on writing my book anymore
     highLightAnswerLetter: 1
     durationBeforeHighlighting: 60

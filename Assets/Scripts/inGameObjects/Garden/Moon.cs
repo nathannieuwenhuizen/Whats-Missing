@@ -30,20 +30,16 @@ public class Moon : Property
     public override void OnEnlarge()
     {
         base.OnEnlarge();
-        // StartCoroutine(AnimateEnlarging());
     }
 
     public override IEnumerator AnimateEnlarging()
     {
-        Debug.Log("animate moon" + MoonSize);
         yield return StartCoroutine(AnimateSize(largeScale, AnimationCurve.EaseInOut(0,0,1,1)));
         base.AnimateEnlarging();
     }
     public override void OnEnlargingFinish()
     {
-        Debug.Log("enlarging moon" + MoonSize);
         MoonSize = largeScale;
-        Debug.Log("enlarging moon" + MoonSize);
         base.OnEnlargingFinish();
     }
 
@@ -60,7 +56,6 @@ public class Moon : Property
     }
     public override void OnEnlargeRevertFinish()
     {
-        Debug.Log("moon revert finish");
         MoonSize = normalScale;
         base.OnEnlargeRevertFinish();
     }
@@ -71,19 +66,10 @@ public class Moon : Property
         MoonRotation = 45;
     }
 
-    // public override void OnRoomEnter()
-    // {
-    //     materialSkybox  = RenderSettings.skybox;
-    //     base.OnRoomEnter();
-    // }
-
-
     private IEnumerator AnimateSize(float endSize,  AnimationCurve curve) {
         float timePassed = 0f;
         float beginSize = MoonSize;
         while (timePassed < animationDuration) {
-            Debug.Log("animating moon" + MoonSize);
-
             yield return new WaitForEndOfFrame();
             timePassed += Time.deltaTime;
             MoonSize = Mathf.LerpUnclamped(beginSize, endSize , curve.Evaluate(timePassed / animationDuration));

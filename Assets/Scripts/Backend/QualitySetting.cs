@@ -17,10 +17,18 @@ public class QualitySetting: MonoBehaviour {
         qualityDropDown.AddOptions(list);
         qualityDropDown.onValueChanged.AddListener(QualitySelected);
 
+        if(QUALITY_INDEX != -1) QualitySettings.SetQualityLevel(QUALITY_INDEX, true);
         qualityDropDown.value = QualitySettings.GetQualityLevel();
     }
+    public static int QUALITY_INDEX 
+    {
+        get => PlayerPrefs.GetInt("Quality", -1);
+        set => PlayerPrefs.SetInt("Quality", value);
+    }
+
 
     public void QualitySelected(Int32 val) {
+        QUALITY_INDEX = val;
         QualitySettings.SetQualityLevel(val, true);
     }
 }

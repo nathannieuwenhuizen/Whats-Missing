@@ -15,16 +15,22 @@ MonoBehaviour:
   prefab: {fileID: 8289509384805391910, guid: 5735f28ed7cec32439c9cfa90a5ff2a8, type: 3}
   roomInfo:
     revealChangesAfterFinish: 1
+    doCutsceneOnRevealingChanges: 0
+    alwaysAnimate: 0
     questionMirror:
     - letters: 'windowschairpl '
-      roomIndexoffset: 0
       changeType: 0
       isOn: 0
-    changeMirror:
-    - letters: windows
-      roomIndexoffset: 0
+      huzzleWords: 1
+      isQuestion: 1
+      isInteractable: 1
+    loadedChanges:
+    - word: window
+      alternativeWords:
+      - windows
+      - window
+      active: 1
       changeType: 0
-      isOn: 1
     durationBeforeHint: 30
     hintText: Why can't I go have a look outside?
     highLightAnswerLetter: 1

@@ -15,17 +15,33 @@ MonoBehaviour:
   prefab: {fileID: 3000441207758156416, guid: 03c1d1f2b1832284b973694dc7e427dd, type: 3}
   roomInfo:
     revealChangesAfterFinish: 1
+    doCutsceneOnRevealingChanges: 1
+    alwaysAnimate: 0
     questionMirror:
     - letters: mesfyoulri
-      roomIndexoffset: 0
       changeType: 2
       isOn: 0
-    changeMirror:
-    - letters: me
-      roomIndexoffset: 0
+      huzzleWords: 1
+      isQuestion: 1
+      isInteractable: 1
+    loadedChanges:
+    - word: me
+      alternativeWords:
+      - myself
+      - i
+      - player
+      - gregory
+      - you
+      - yourself
+      - self
+      - me
+      active: 1
       changeType: 2
-      isOn: 1
-    durationBeforeHint: 1
+    durationBeforeHint: 30
     hintText: '"We''re all mad here."'
     highLightAnswerLetter: 1
-    durationBeforeHighlighting: 1
+    durationBeforeHighlighting: 60
+  potionInfo:
+    missingPotionAvailable: 1
+    tooBigPotionAvailable: 1
+    tooSmallPotionAvailable: 1

@@ -26,16 +26,19 @@ public class TextureProperty : Property
         foreach(Renderer mr in room.GetAllObjectsInRoom<Renderer>()) {
             //filter the mirror textures and the lightray
             if (mr.GetComponent<PlanarReflection>() != null || 
-            mr.GetComponent<RectTransform>() != null ||
+            mr.GetComponent<RectTransform>() != null || mr.GetComponent<ParticleSystem>() != null ||
             mr.gameObject.name == "lightray"
             ) continue;
             Material[] materials = mr.sharedMaterials;
-            List<Material> temp = new List<Material>(materials);
+            Material[] noTextureMaterials = mr.sharedMaterials;
+
+
+            List<Material> temp = new List<Material>(noTextureMaterials);
             temp.Add(noTextureMaterial);
-            materials = temp.ToArray();
-            mr.sharedMaterials = materials;
+            noTextureMaterials = temp.ToArray();
+            mr.sharedMaterials = noTextureMaterials;
             mr.UpdateGIMaterials();
-            materialHolders.Add (new MaterialHolders() {renderer = mr, materials = mr.sharedMaterials});
+            materialHolders.Add (new MaterialHolders() {renderer = mr, noTextureMaterials = mr.sharedMaterials, startMaterials = materials });
         }
 
         base.OnMissing();
@@ -63,7 +66,7 @@ public class TextureProperty : Property
     public override void OnAppearing()
     {
         foreach(MaterialHolders holder in materialHolders) {
-            holder.renderer.sharedMaterials = holder.materials;
+            holder.renderer.sharedMaterials = holder.noTextureMaterials;
             holder.renderer.UpdateGIMaterials();
         }
         base.OnAppearing();
@@ -82,10 +85,10 @@ public class TextureProperty : Property
         base.OnAppearingFinish();
         foreach(MaterialHolders mr in materialHolders) {
             Material[] materials = mr.renderer.sharedMaterials;
-            List<Material> temp = new List<Material>(materials);
-            temp.RemoveAt(temp.Count - 1);
-            materials = temp.ToArray();
-            mr.renderer.sharedMaterials = materials;
+            // List<Material> temp = new List<Material>(materials);
+            // temp.RemoveAt(temp.Count - 1);
+            // materials = temp.ToArray();
+            mr.renderer.sharedMaterials = mr.startMaterials;
             mr.renderer.UpdateGIMaterials();
 
         }
@@ -98,5 +101,6 @@ public class TextureProperty : Property
 }
 public struct MaterialHolders {
     public Renderer renderer;
-    public Material[] materials;
+    public Material[] startMaterials;
+    public Material[] noTextureMaterials;
 }

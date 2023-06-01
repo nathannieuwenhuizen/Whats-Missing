@@ -5,6 +5,9 @@ public class Floor : RoomObject
     [SerializeField]
     private GameObject invisibleFloorCollider;
 
+    public delegate void OnFloorMissingEvent();
+    public static OnFloorMissingEvent OnFloorMissing;
+
     private void Awake() {
         invisibleFloorCollider.SetActive(false);
     }
@@ -12,6 +15,7 @@ public class Floor : RoomObject
     public override void OnMissing()
     {
         base.OnMissing();
+        OnFloorMissing?.Invoke();
         invisibleFloorCollider.SetActive(true);
     }
 

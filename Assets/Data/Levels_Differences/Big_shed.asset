@@ -12,21 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfcc98203bf3fe443b122d929c8cd8f5, type: 3}
   m_Name: Big_shed
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3000441207758156416, guid: 03c1d1f2b1832284b973694dc7e427dd, type: 3}
+  prefab: {fileID: 1257976946562338116, guid: 580fa3479acf3774aa430ebffac1bd28, type: 3}
   roomInfo:
     revealChangesAfterFinish: 1
+    doCutsceneOnRevealingChanges: 1
+    alwaysAnimate: 0
     questionMirror:
     - letters: shedoubilingm
-      roomIndexoffset: 0
       changeType: 1
       isOn: 0
-    changeMirror:
-    - letters: shed
-      roomIndexoffset: 0
+      huzzleWords: 1
+      isQuestion: 1
+      isInteractable: 1
+    loadedChanges:
+    - word: shed
+      alternativeWords:
+      - sheds
+      - house
+      - home
+      - building
+      - homes
+      - houses
+      - buildings
+      - shed
+      active: 0
       changeType: 1
-      isOn: 1
     durationBeforeHint: 30
     hintText: Somebody once told me the world is gonna roll me I ain't the sharpest
       tool in the shed
     highLightAnswerLetter: 1
     durationBeforeHighlighting: 60
+  potionInfo:
+    missingPotionAvailable: 1
+    tooBigPotionAvailable: 1
+    tooSmallPotionAvailable: 1

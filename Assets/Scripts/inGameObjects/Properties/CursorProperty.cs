@@ -73,12 +73,22 @@ public class CursorProperty : Property
     #endregion
 
     #region  Enlarging
+    public override void OnEnlarge() {
+        base.OnEnlarge();
+        foreach(CanvasGroup uiGroup in ingameCanvasElements) {
+            // uiGroup.GetComponent<CursorUI>().CanHighLight = false;
+            uiGroup.GetComponent<CursorUI>().Scale = LargeScale;
+            
+            // RectTransform rt = uiGroup.GetComponent<RectTransform>();
+            // rt.localScale = Vector3.one * LargeScale;
+        }
+    }
 
     public override IEnumerator AnimateEnlarging()
     {
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
             RectTransform rt = uiGroup.GetComponent<RectTransform>();
-            StartCoroutine(rt.AnimatingScale(Vector3.one * LargeScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+            StartCoroutine(rt.AnimatingLocalScale(Vector3.one * LargeScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
         }
         yield return new WaitForSeconds(animationDuration);
         yield return base.AnimateEnlarging();
@@ -87,12 +97,13 @@ public class CursorProperty : Property
     public override void OnEnlargingFinish()
     {
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
-            uiGroup.GetComponent<CursorUI>().CanHighLight = false;
-            RectTransform rt = uiGroup.GetComponent<RectTransform>();
-            rt.localScale = Vector3.one * LargeScale;
+            // uiGroup.GetComponent<CursorUI>().CanHighLight = false;
+            uiGroup.GetComponent<CursorUI>().Scale = LargeScale;
+            // RectTransform rt = uiGroup.GetComponent<RectTransform>();
+            // rt.localScale = Vector3.one * LargeScale;
         }
-        Debug.Log( "set big cursor");
         Cursor.SetCursor(bigMouseTexture, Vector2.zero, CursorMode.ForceSoftware);
+        Cursor.visible = false;
         base.OnEnlargingFinish();
     }
 
@@ -100,7 +111,7 @@ public class CursorProperty : Property
     {
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
             RectTransform rt = uiGroup.GetComponent<RectTransform>();
-            StartCoroutine(rt.AnimatingScale(Vector3.one * normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+            StartCoroutine(rt.AnimatingLocalScale(Vector3.one * normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
         }
         yield return new WaitForSeconds(animationDuration);
         yield return base.AnimateEnlargeRevert();
@@ -111,10 +122,13 @@ public class CursorProperty : Property
         base.OnEnlargeRevertFinish();
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
             uiGroup.GetComponent<CursorUI>().CanHighLight = true;
-            RectTransform rt = uiGroup.GetComponent<RectTransform>();
-            rt.localScale = Vector3.one * normalScale;
+            uiGroup.GetComponent<CursorUI>().Scale = normalScale;
+
+            // RectTransform rt = uiGroup.GetComponent<RectTransform>();
+            // rt.localScale = Vector3.one * normalScale;
         }
         Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+        Cursor.visible = false;
     }
     #endregion
 

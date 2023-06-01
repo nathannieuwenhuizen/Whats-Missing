@@ -16,7 +16,7 @@ public class Duck : RoomObject
 
     [SerializeField]
     private TrailRenderer trail;
-    private float lifeTimeTrail;
+    private float lifeTimeTrail = .5f;
 
     [SerializeField]
     private DuckSwimArea swimArea;
@@ -44,7 +44,7 @@ public class Duck : RoomObject
     public Duck() {
         largeScale = 4f;
     }
-    protected virtual void Awake() {
+    protected override void Awake() {
         lifeTimeTrail = trail.time;
         currentSwimArea = swimArea;
         SetUpBehaviour();
@@ -112,13 +112,15 @@ public class Duck : RoomObject
         currentSwimArea = swimArea;
         Vector3 temp = transform.position;
         temp.y = currentSwimArea.transform.position.y;
+        temp.x = currentSwimArea.transform.position.x;
+        temp.z = currentSwimArea.transform.position.z;
         transform.position = temp;
 
     }
 
     private void UpdateTrailLifeTime() {
         if (Room.TimeScale <= 0) return;
-        trail.time = lifeTimeTrail * (1/ Room.TimeScale);
+        if (trail != null) trail.time = lifeTimeTrail * (1/ Room.TimeScale);
     }
 
     private void Update() {

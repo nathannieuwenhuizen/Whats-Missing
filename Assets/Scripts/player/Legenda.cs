@@ -22,7 +22,7 @@ public class Legenda : MonoBehaviour
         set {
             if (word != value) {
                 word = value;
-                OnFocus?.Invoke(word);
+                OnFocus?.Invoke(word.ToLower());
             }
         }
     }

@@ -76,10 +76,19 @@ public class AudioHandler : Singleton<AudioHandler>
     ///<summary>
     ////Plays music that loops.
     ///</summary>
-    public void PlayMusic(MusicFiles music, float volume = 1f)
+    public void PlayMusic(MusicFiles music, float volume = 1f, float delay = 0f)
     {
+        if (delay == 0) {
+            am.PlayMusic(music, volume);
+            return;
+        }
+        StartCoroutine(DelayMusic(music, volume, delay));
+    }
+    public IEnumerator DelayMusic(MusicFiles music, float volume = 1f, float delay = 0f) {
+        yield return new WaitForSeconds(delay);
         am.PlayMusic(music, volume);
     }
+    
     ///<summary>
     ////Stops the music
     ///</summary>
@@ -108,7 +117,7 @@ public class AudioHandler : Singleton<AudioHandler>
     ///<summary>
     ///Internal enumerator that fades a AudooSource clip.
     ///</summary>
-    public IEnumerator FadeVolume(AudioSource audioS, float begin, float end, float duration)
+    public IEnumerator FadeVolume(SFXInstance audioS, float begin, float end, float duration)
     {
         yield return am.FadeVolume(audioS, begin, end, duration);
     }

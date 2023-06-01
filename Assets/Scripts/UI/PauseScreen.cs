@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class PauseScreen : MonoBehaviour
     public delegate void PauseAction();
     public static event PauseAction OnPause;
     public static event PauseAction OnResume;
+    public static event PauseAction OnQuit;
     [SerializeField]
     private CanvasGroup group;
     [SerializeField]
@@ -46,7 +48,7 @@ public class PauseScreen : MonoBehaviour
     }
 
     public void OpenPausePanel() {
-        Debug.Log("open pause panel");
+        settingPanel.Close();
         ControllerCheck.SelectUIGameObject(resumeButton);
         SetGroupVisibility(true);
         subPausePanel.ShowAnimation(true);
@@ -55,7 +57,6 @@ public class PauseScreen : MonoBehaviour
 
     IEnumerator SelectingGameObject() {
         yield return new WaitForEndOfFrame();
-        Debug.Log("open pause panel for realz");
         ControllerCheck.SelectUIGameObject(resumeButton);
 
     }
@@ -112,6 +113,9 @@ public class PauseScreen : MonoBehaviour
         StartCoroutine(AnimateTimeScale(1));
         OnResume?.Invoke();
     }
+    public void Quit() {
+        OnQuit?.Invoke();
+    }
     ///<summary>
     /// Toggles the pause screen.
     ///</summary>
@@ -136,6 +140,12 @@ public class PauseScreen : MonoBehaviour
 
     public void SelectResumeButton() {
         ControllerCheck.SelectUIGameObject(resumeButton);
+    }
+
+    public void GoToSettings() {
+        settingPanel.Open();
+        Debug.Log("show animation false: " + subPausePanel);
+        subPausePanel.ShowAnimation(false);
     }
 
     private void EnablePause() {

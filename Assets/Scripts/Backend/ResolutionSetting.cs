@@ -8,7 +8,6 @@ using System;
 public class ResolutionSetting : MonoBehaviour
 {
     public static Vector2 CHOSEN_RESOLUTION = Vector2.zero;
-    public static int CHOSEN_RESOLUTION_INDEX = -1;
 
     [SerializeField]
     private ResolutionsObject resolutionObject;
@@ -25,22 +24,33 @@ public class ResolutionSetting : MonoBehaviour
         resolutionDropDown.AddOptions(list);
         resolutionDropDown.onValueChanged.AddListener(ResolutionSelected);
 
-        if (CHOSEN_RESOLUTION != Vector2.zero) {
-            SetResolution(CHOSEN_RESOLUTION);
+    }
+    public static int CHOSEN_RESOLUTION_INDEX 
+    {
+        get {
+            int val = PlayerPrefs.GetInt("RESOLUTION", -1);
+            return val;
         }
+        set {
+            PlayerPrefs.SetInt("RESOLUTION", value);
+        }
+    }
+
+    private void Start() {
         if (CHOSEN_RESOLUTION_INDEX != -1) {
             resolutionDropDown.value = CHOSEN_RESOLUTION_INDEX;
+            SetResolution(resolutionObject.SupportedResolutions[CHOSEN_RESOLUTION_INDEX]);
         }
     }
 
     public void ResolutionSelected(Int32 val) {
+
         CHOSEN_RESOLUTION_INDEX = val;
         CHOSEN_RESOLUTION = resolutionObject.SupportedResolutions[val];
         SetResolution(resolutionObject.SupportedResolutions[val]);
     }
 
     public void SetResolution( Vector2 resolution) {
-        Debug.Log("resolution is selected" + resolution);
         Screen.SetResolution( (int)resolution.x, (int)resolution.y, true);
     }
 

@@ -15,6 +15,7 @@
 
 using System.Collections;
 using System.Linq;
+using Boss;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -82,12 +83,16 @@ public class ShockwaveController : MonoBehaviour {
 
     private void OnEnable() {
         AlchemyItem.OnPulsing += StartSmallShockwave;
+        
         Property.onShockwave += StartShockwave;
+        BossChangesHandler.OnShockwave += StartShockwave;
     }
 
     private void OnDisable() {
         AlchemyItem.OnPulsing -= StartSmallShockwave;
+
         Property.onShockwave -= StartShockwave;
+        BossChangesHandler.OnShockwave -= StartShockwave;
     }
 
     private IEnumerator AnimatingShockwave(Transform origin, bool decreasingMagnitude = false) {

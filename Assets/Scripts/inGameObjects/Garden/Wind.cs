@@ -36,15 +36,16 @@ public class Wind : Property
         mainModule.startSpeed = 50f;
         windParticles.emissionRate = 200f;
 
-        windAudio = AudioHandler.Instance.PlaySound(SFXFiles.wind, windVolume, 1f, true);
-        windAudio.AudioSource.Play();
+        if (windAudio == null) windAudio = AudioHandler.Instance.PlaySound(SFXFiles.wind, windVolume, 1f, true);
+        // windAudio.Play();
+
         IsEnlarged = true;
         StartCoroutine(ApplyWindForce());
         base.OnEnlarge();
     }
     public override IEnumerator AnimateEnlarging()
     {
-        yield return AudioHandler.Instance.FadeVolume(windAudio.AudioSource, 0, windVolume, animationDuration);
+        yield return AudioHandler.Instance.FadeVolume(windAudio, 0, windVolume, animationDuration);
         yield return base.AnimateEnlarging();
     }
 
@@ -52,27 +53,29 @@ public class Wind : Property
     {
         room.Player.Movement.KinematicMovement = true;
         OnWindNormal?.Invoke();
-        IsEnlarged = false;
         mainModule.startSpeed = startSpeed;
         windParticles.emissionRate = emissionRate;
         base.OnEnlargeRevert();
     }
     
     public override IEnumerator AnimateEnlargeRevert() {
-        yield return AudioHandler.Instance.FadeVolume(windAudio.AudioSource, windVolume, 0, animationDuration);
+        yield return AudioHandler.Instance.FadeVolume(windAudio, windVolume, 0, animationDuration);
         yield return base.AnimateEnlargeRevert();
-
     }
     public override void OnEnlargeRevertFinish()
     {
-        AudioHandler.Instance?.StopSound(SFXFiles.wind);
+        Debug.Log("wind revert finish");
+        // windAudio.Volume = 0;
+        windAudio.Stop(true);
+        
+        // AudioHandler.Instance?.Stop3DSound(windAudio);
+        // AudioHandler.Instance?.StopSound(SFXFiles.wind);
         base.OnEnlargeRevertFinish();
     }
 
     public IEnumerator ApplyWindForce() {
         allRigidBodies = room.GetAllObjectsInRoom<Rigidbody>();
         while (IsEnlarged) {
-            Debug.Log("apply wind force");
             Vector3 forceDirection = Vector3.zero;
             for(int i = 0 ; i < allRigidBodies.Count; i++) {
                 forceDirection = allRigidBodies[i].position - transform.position;
@@ -89,7 +92,6 @@ public class Wind : Property
             yield return new WaitForEndOfFrame();
         }
     }
-
 
     private void Reset() {
         Word = "wind";

@@ -7,19 +7,31 @@ using UnityEngine.Rendering.Universal;
 
 public class Player : RoomObject
 {
+    ///<summary>
+    /// Player cant be hit by the hitbox used for the bossai to determine if the palyer is inside a shield
+    ///</summary>
+    public static bool INVINCIBLE = false;
 
     public delegate void DieEvent(bool withAnimation, bool toPreviousLevel);
     public static event DieEvent OnDie;
+    public delegate void RespawnEvent();
+    public static RespawnEvent OnRespawn;
 
     private bool dead = false;
 
     [SerializeField]
     private SkinnedMeshRenderer mirrorHeadModel;
 
-    [SerializeField]
-    private Transform animationView;
-    [SerializeField]
-    private Transform animationViewLevel2End;
+    private FPCamera fpCamera;
+    public FPCamera FPCamera {
+        get { 
+            if (fpCamera == null) {
+                fpCamera = fpCamera = new FPCamera(GetComponent<FPMovement>());
+            }
+            return fpCamera;
+        }
+    }
+
     [SerializeField]
     private Hands hands;
 
@@ -27,12 +39,22 @@ public class Player : RoomObject
     public CharacterAnimationPlayer CharacterAnimationPlayer {
         get { return characterAnimationPlayer;}
     }
+
+    [Header("animators")]
     [SerializeField]
-    private Animator animator;
+    private PlayerAnimator idleAnimator;
     [SerializeField]
-    private Animator animatorLevel2End;
+    private PlayerAnimator level2End;
+    [SerializeField]
+    public PlayerAnimator finalLevelEnd;
+
+    [Header("IK pass")]
+
     [SerializeField]
     private IKPass IKPass;
+    public IKPass IKPASS {
+        get { return IKPass;}
+    }
 
     [SerializeField]
     private Transform handsPosition;
@@ -82,7 +104,7 @@ public class Player : RoomObject
     {
         movement = GetComponent<FPMovement>();
         ApplyCameraSettings(Settings.GetSettings());
-        characterAnimationPlayer = new CharacterAnimationPlayer(this, animator, animationView, IKPass);
+        characterAnimationPlayer = new CharacterAnimationPlayer(this, idleAnimator.animator, idleAnimator.cameraView, IKPass);
     }
 
     public Player() {
@@ -107,7 +129,7 @@ public class Player : RoomObject
         return materials.ToArray();
     }
 
-
+    public Transform test;
     private void Reset() {
         Word = "me";
         AlternativeWords = new string[]{ "myself", "i", "player", "gregory", "you", "yourself", "self"};
@@ -115,6 +137,8 @@ public class Player : RoomObject
     private void Update() {
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.D) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) Die(true, false);
+        
+        if (Input.GetKeyDown(KeyCode.F) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) fpCamera.ShowAimCutscene(test, 5f, 60f, 2f);
 #endif
     }
 
@@ -122,11 +146,14 @@ public class Player : RoomObject
         PerspectiveProperty.onPerspectiveAppearing += HideHead;
         PerspectiveProperty.onPerspectiveMissing += ShowHead;
         SettingPanel.OnSave += ApplyCameraSettings;
+        CharacterAnimationPlayer?.OnEnable();
     }
     private void OnDisable() {
         PerspectiveProperty.onPerspectiveAppearing -= HideHead;
         PerspectiveProperty.onPerspectiveMissing -= ShowHead;
         SettingPanel.OnSave -= ApplyCameraSettings;
+        CharacterAnimationPlayer?.OnDisable();
+
     }
 
     ///<summary>
@@ -142,6 +169,7 @@ public class Player : RoomObject
         } else {
             movement.EnableRotation = false;
             movement.EnableWalk = false;
+            AudioHandler.Instance.PlaySound(SFXFiles.player_fall_death);
         }
         OnDie?.Invoke(withAnimation, toPreviousLevel);
     }
@@ -157,6 +185,10 @@ public class Player : RoomObject
 
     //TODO: maybe move this to the fpmovement class
     private void OnCollisionStay(Collision other) {
+        if (other.transform.GetComponentInParent<ICollissionArea>() != null) {
+            other.transform.GetComponentInParent<ICollissionArea>().OnColliderStay(this);
+        }
+        
         if (other.rigidbody != null) 
             if (other.rigidbody.mass > hands.MassThreshhold) {
                 other.rigidbody.velocity = Vector3.zero;
@@ -164,6 +196,9 @@ public class Player : RoomObject
             }
     }
     private void OnCollisionEnter(Collision other) {
+        if (other.transform.GetComponentInParent<ICollissionArea>() != null) {
+            other.transform.GetComponentInParent<ICollissionArea>().OnColliderEnter(this);
+        }
         if (other.rigidbody != null) 
             if (other.rigidbody.mass > hands.MassThreshhold) {
                 other.rigidbody.velocity = Vector3.zero;
@@ -171,6 +206,9 @@ public class Player : RoomObject
             }
     }
     private void OnCollisionExit(Collision other) {
+        if (other.transform.GetComponentInParent<ICollissionArea>() != null) {
+            other.transform.GetComponentInParent<ICollissionArea>().OnColliderExit(this);
+        }
         if (other.rigidbody != null) 
             if (other.rigidbody.mass > hands.MassThreshhold) 
                 movement.RB.mass = CurrentScale;
@@ -197,91 +235,84 @@ public class Player : RoomObject
 
     public override void OnAppearing()
     { 
+        //no base call!
+        Debug.Log("should be appearing" + Animated);
         IsMissing = false;
         OnPlayerAppear?.Invoke();
-        //no base call!
         foreach(SkinnedMeshRenderer mr in meshObjects) {
             mr.enabled = true;
         }        
-        base.OnAppearing();
+        if (Animated) {
+            StartCoroutine(AnimateAppearing());
+        } else {
+            OnAppearingFinish();
+        }
     }
-
     private void OnTriggerEnter(Collider other) {
-        if (other.GetComponent<Portal>() != null) {
-            other.GetComponent<Portal>().OnPortalEnter(this);
+        if (other.GetComponent<IPortal>() != null) {
+            other.GetComponent<IPortal>().OnPortalEnter(this);
         }
-        if (other.GetComponent<ITriggerArea>() != null) {
-            other.GetComponent<ITriggerArea>().OnAreaEnter(this);
+        if (other.GetComponentInParent<ITriggerArea>() != null) {
+            other.GetComponentInParent<ITriggerArea>().OnAreaEnter(this);
         }
+        
     }
 
     private void OnTriggerExit(Collider other) {
-        if (other.GetComponent<Portal>() != null) {
-            other.GetComponent<Portal>().OnPortalLeave();
+        if (other.GetComponent<IPortal>() != null) {
+            other.GetComponent<IPortal>().OnPortalLeave();
         }
-        if (other.GetComponent<ITriggerArea>() != null) {
-            other.GetComponent<ITriggerArea>().OnAreaExit(this);
+        if (other.GetComponentInParent<ITriggerArea>() != null) {
+            other.GetComponentInParent<ITriggerArea>().OnAreaExit(this);
         }
     }
 
     public override void OnShrinking()
     {
-        // StopAllCoroutines();
         OnPlayerShrink?.Invoke();
         StartCoroutine(AnimateShrinking());
     }
 
     public override void OnShrinkRevert()
     {
-        // StopAllCoroutines();
         OnPlayerUnShrink?.Invoke();
         StartCoroutine(AnimateShrinkRevert());
     }
 
-    public override void OnShrinkingFinish()
-    {
-        Debug.Log("shrink finish!");
-        base.OnShrinkingFinish();
-    }
-
-    public override void OnShrinkingRevertFinish()
-    {
-        Debug.Log("shrink revert finish!" + normalScale);
-        base.OnShrinkingRevertFinish();
-    }
 
     public override void OnRoomEnter()
     {
         //no base call!
     }
 
-
-
     ///<summary>
     /// Enables the movement and sets the camera animation to false.
     ///</summary>
     public void Respawn() {
+        OnRespawn?.Invoke();
         dead = false;
         Movement.RB.velocity = Vector3.zero;
         characterAnimationPlayer.SetBool("dead", false);
         characterAnimationPlayer.PlayCutSceneAnimation("standingUp", true);
-        StartCoroutine(StandingUp());
-    }
-
-    ///<summary>
-    /// Plays the standing up animation with the sounds
-    ///</summary>
-    private IEnumerator StandingUp() {
-        yield return new WaitForSeconds(2.2f);
-        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
-        yield return new WaitForSeconds(.5f);
-        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
-        yield return new WaitForSeconds(2.3f);
-        characterAnimationPlayer.EndOfCutSceneAnimation();
+        StartCoroutine(characterAnimationPlayer.StandingUp());
     }
 
     public void SetLevel2EndAnimation() {
-        characterAnimationPlayer.SetAnimator(animatorLevel2End, animationViewLevel2End);
+        characterAnimationPlayer.SetAnimator(level2End);
         characterAnimationPlayer.PlayCutSceneAnimation("level2end", true);
+    }
+    public void SetFinalLevelAnimation() {
+        characterAnimationPlayer.SetAnimator(finalLevelEnd);
+        characterAnimationPlayer.PlayCutSceneAnimation("acceptance", true);
+    }
+    private void OnDrawGizmosSelected() {
+        if (Application.isPlaying) fpCamera.DrawGizmo();
+    }
+
+    [System.Serializable]
+    public class PlayerAnimator {
+        public Animator animator;
+        public Transform cameraView;
+        public Transform[] props;
     }
 }

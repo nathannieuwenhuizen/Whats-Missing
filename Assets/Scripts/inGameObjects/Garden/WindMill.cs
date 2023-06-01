@@ -23,10 +23,10 @@ public class WindMill : RoomObject
     }
 
     private void FasterWind() {
-        speed = 600f;
+        if (InSpace) speed = 600f;
     }
     private void NormalWind() {
-        speed = 15f;
+        if (InSpace) speed = 15f;
     }
     
 

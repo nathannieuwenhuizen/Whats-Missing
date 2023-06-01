@@ -53,10 +53,16 @@ public class RoomDebuggerBox
             GUI.Label(new Rect(pos.x + 5, pos.y,300,25), changeTypes[selectedChangeType]);
         }            
     }
+    public void DrawLabel(string _label, Color _color,float yPos, FontStyle _fontSyle) {
+        GUI.color =  _color;
+        GUI.skin.label.fontStyle = _fontSyle;
+        GUI.Label(new Rect(pos.x + horizontalOffset, yPos, size.x, 30), _label, style);
+        GUI.skin.label.fontStyle = FontStyle.Normal;
+    }
 
 
     //draw function of the box
-    public void Draw(Room currentRoom, Mirror tv)
+    public void Draw(Room currentRoom, Mirror mirror)
     {
 
         style = new GUIStyle();
@@ -74,13 +80,33 @@ public class RoomDebuggerBox
         currentPos += 30;
 
         if (currentRoom != null) {
+            if (currentRoom.ChangeHandler.Changes != null) 
+            {
+                foreach(MirrorChange change in currentRoom.ChangeHandler.MirrorChanges) {
+                    DrawLabel("mirror change: " + change.word + " | " + change.mirror.ChangeType, change.active ? Color.green : Color.red, currentPos, FontStyle.Bold);
+                    // GUI.color = change.active ? Color.green : Color.red;
+                    // GUI.skin.label.fontStyle = FontStyle.Bold;
+                    // GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.word + " | " + change.mirror.ChangeType, style);
+                    // GUI.skin.label.fontStyle = FontStyle.Normal;
+                    currentPos += 30;
+                }
+                foreach(IChange change in currentRoom.ChangeHandler.Changes) {
+                    DrawLabel("change: " + change.Word + " | " + change.ChangeType, change.Active ? Color.green : Color.red, currentPos, FontStyle.Bold);
 
-            foreach(MirrorChange change in currentRoom.ChangeHandler.MirrorChanges) {
-                GUI.color = change.active ? Color.green : Color.red;
-                GUI.skin.label.fontStyle = FontStyle.Bold;
-                GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.word + " | " + change.mirror.changeType, style);
-                GUI.skin.label.fontStyle = FontStyle.Normal;
-                currentPos += 30;
+                    // GUI.color = change.Active ? Color.green : Color.red;
+                    // GUI.skin.label.fontStyle = FontStyle.Bold;
+                    // GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.Word + " | " + change.ChangeType, style);
+                    // GUI.skin.label.fontStyle = FontStyle.Normal;
+                    currentPos += 30;
+                }
+                foreach(IChange change in currentRoom.ChangeHandler.RoomChanges) {
+                    DrawLabel("room change: " + change.Word + " | " + change.ChangeType, change.Active ? Color.green : Color.red, currentPos, FontStyle.Bold);
+                    // GUI.color = change.Active ? Color.green : Color.red;
+                    // GUI.skin.label.fontStyle = FontStyle.Bold;
+                    // GUI.Label(new Rect(pos.x + horizontalOffset, currentPos, size.x, 30), change.Word + " | " + change.ChangeType, style);
+                    // GUI.skin.label.fontStyle = FontStyle.Normal;
+                    currentPos += 30;
+                }
             }
         }
         
@@ -90,9 +116,9 @@ public class RoomDebuggerBox
         if (GUI.Button(new Rect(pos.x + size.x + horizontalOffset, 60, size.x * .4f, 30), "ADD"))
         {
             currentRoom.Animated = true;
-            tv.changeType = (ChangeType)selectedChangeType;
-            // tv.changeType = Enum.Parse(typeof(ChangeType), changeTypes[selectedChangeType]);// ChangeType.missing;
-            MirrorChange newChange = new MirrorChange() { word = word, mirror = tv, active = true};
+            mirror.ChangeType = (ChangeType)selectedChangeType;
+            // mirror.ChangeType = Enum.Parse(typeof(ChangeType), changeTypes[selectedChangeType]);// ChangeType.missing;
+            MirrorChange newChange = new MirrorChange() { word = word, mirror = mirror, active = true, changeType = mirror.ChangeType};
             currentRoom.AddChangeInRoomObjects(newChange);
             currentRoom.ChangeHandler.MirrorChanges.Add(newChange);
         }        

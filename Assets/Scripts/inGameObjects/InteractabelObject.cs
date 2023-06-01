@@ -17,7 +17,7 @@ public class InteractabelObject : RoomObject, IInteractable
         }
         set { outline = value; }
     }
-    private float outlineWidth = 10;
+    private float outlineWidth = .025f;
     private float duration = .4f;
     private Coroutine focusedCoroutine;
 
@@ -26,7 +26,10 @@ public class InteractabelObject : RoomObject, IInteractable
         get { return outlineEnabled;}
         set { outlineEnabled = value; }
     }
-
+    
+    ///<summary>
+    /// If the pickable object can be interacted with
+    ///</summary>
     public bool Interactable {get; set; } = true;
 
     public bool Focused { 
@@ -51,12 +54,25 @@ public class InteractabelObject : RoomObject, IInteractable
     } }
 
     ///<summary>
+    /// Distance on when the player can interact with the item. Default is set to 6 units
+    ///</summary>
+    public float InteractableDistance { get; set; } = 6f;
+    public bool Disabled { get => Outline.Disabled; 
+    set{
+        Outline.Disabled = value;
+        Outline.enabled = false;
+        Outline.enabled = true;
+    } }
+
+    ///<summary>
     /// When the cursor hovers over the mesh of the object. It makes the outline appear.
     ///</summary>
     protected virtual void OnFocus() {
         if (!OutlineEnabled) return;
 
         Outline.enabled = true;
+        Outline.OutlineMode = Outline.Mode.OutlineVisible;
+        
         if (focusedCoroutine != null) StopCoroutine(focusedCoroutine);
         focusedCoroutine = StartCoroutine(AnimateOutline(outlineWidth, false)); 
     }

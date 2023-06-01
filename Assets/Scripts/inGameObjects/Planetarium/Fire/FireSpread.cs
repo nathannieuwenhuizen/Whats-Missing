@@ -10,19 +10,23 @@ public class FireSpread : MonoBehaviour, ITriggerArea
     public static EnterEvent OnFireSpreadExit;
     private SFXInstance fireSound;
 
-
+    [SerializeField]
+    private bool slowFire = true;
+    public bool SlowFire {
+        get { return slowFire;}
+    }
     public bool InsideArea { get; set; }
 
     private void Start() {
         if (fireSound == null) {
-            fireSound =  AudioHandler.Instance.Play3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 40);
+            fireSound =  AudioHandler.Instance?.Play3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 40);
         }
 
     }
 
     public void OnAreaEnter(Player player)
     {
-        Debug.Log("fire spread enter");
+        // if (Player.INVINCIBLE) return;
         OnFireSpreadEnter?.Invoke(this);
     }
 

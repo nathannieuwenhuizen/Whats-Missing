@@ -25,6 +25,7 @@ public static class SFXFiles {
     public static string player_footstep_water = "Player_footstep_water";
     public static string player_footstep_grass = "Player_footstep_grass";
     public static string stairs_footstep = "Stairs_footstep";
+    public static string player_fall_death = "event:/SFX/Player/Play_fall_death";
 
     
     //planetarium
@@ -66,6 +67,9 @@ public static class SFXFiles {
     public static string fountain = "event:/SFX/Environment/Garden/Fountain";
     public static string wind = "event:/SFX/Environment/Garden/Wind";
 
+    //water
+    public static string water_rise = "event:/SFX/Environment/Garden/Water/Water_rise";
+    public static string water_lower = "event:/SFX/Environment/Garden/Water/Water_low";
 
     //grave
     public static string knee_on_dirt = "Knee_on_dirt";
@@ -76,16 +80,46 @@ public static class SFXFiles {
     public static string grave_cutscene = "event:/SFX/Environment/Garden/Grave_cutscene";
 
 
+    //potion
+    public static string potion_grab = "event:/SFX/Environment/Third_area/Potion_grab";
+    public static string potion_throw = "event:/SFX/Environment/Third_area/Potion_throw";
+    public static string potion_break = "event:/SFX/Environment/Third_area/Potion_break";
+
+
+    //boss environment
+    public static string mirror_shake = "event:/SFX/Boss/Environment/Mirror/Mirror_shake";
+    public static string miror_break = "event:/SFX/Boss/Environment/Mirror/Mirror_break";
+    public static string mirorshard_grab = "event:/SFX/Boss/Environment/Mirror/Mirrorsshard_grab";
+    public static string mirorshard_place = "event:/SFX/Boss/Environment/Mirror/Mirrorshard_place";
+    public static string rock_explosion = "event:/SFX/Boss/Environment/Rock_smash";
+    public static string magic_shield_block = "event:/SFX/Boss/Environment/Magic_shield_block";
+
+    //boss
+    public static string boss_attack = "event:/SFX/Boss/Boss/Arms/Attack";
+    public static string boss_attack_hit_player = "event:/SFX/Boss/Boss/Arms/Attack_hit_player";
+    public static string boss_landing = "event:/SFX/Boss/Boss/Movement/Landing";
+    public static string boss_transformation = "event:/SFX/Boss/Boss/Transformation";
+    public static string boss_talking = "event:/SFX/Boss/Boss/Talking";
+
+    public static string rain = "event:/SFX/Environment/Third_area/Rain";
+
+
     //music
     public static string MENU = "event:/Music/Menu";
     public static string HIDDEN_ROOM = "event:/Music/Hidden_room";
     public static string Environment1 = "event:/Music/Environment1";
     public static string Environment2 = "event:/Music/Environment2";
+    public static string Environment3 = "event:/Music/Environment3";
+    public static string Environment4 = "event:/Music/Environment4";
+    public static string Environment5 = "event:/Music/Environment5";
 
 }
 public enum MusicFiles {
     planetarium,
     menu,
     planetarium_hidden_room,
-    garden
+    garden,
+    tower,
+    boss,
+    EndlessHallway
 }

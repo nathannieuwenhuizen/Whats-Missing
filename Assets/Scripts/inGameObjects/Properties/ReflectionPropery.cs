@@ -28,6 +28,7 @@ public class ReflectionPropery : Property
             mr.sharedMaterials = materials;
             mr.UpdateGIMaterials();
         }
+        Debug.Log("update reflection mat missing");
         base.OnMissing();
     }
 
@@ -70,10 +71,12 @@ public class ReflectionPropery : Property
 
             Material[] materials = mr.sharedMaterials;
             List<Material> temp = new List<Material>(materials);
-            temp.RemoveAt(temp.Count - 1);
-            materials = temp.ToArray();
-            mr.sharedMaterials = materials;
-            mr.UpdateGIMaterials();
+            if (temp.Count > 1) {
+                temp.RemoveAt(temp.Count - 1);
+                materials = temp.ToArray();
+                mr.sharedMaterials = materials;
+                mr.UpdateGIMaterials();
+            }
 
         }
     }

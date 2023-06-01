@@ -67,7 +67,6 @@ public class InputManager : MonoBehaviour
         controls.Player.Click.started += ClickStart;
         controls.Player.Click.canceled += ClickEnd;
         controls.Player.Cancel.started += Cancel;
-
     } 
 
     private void OnDisable() {
@@ -88,65 +87,25 @@ public class InputManager : MonoBehaviour
     }
 
     private void UpdateSettings(Settings settings) {
-        // #if UNITY_EDITOR
-        // InputManager.KEYBOARD_ENABLED_MIRROR = true;
-// #else
         InputManager.KEYBOARD_ENABLED_MIRROR = settings.controlSettings.Enable_Keyboard_Input;
-// #endif
-
     }
 
     void Update()
     {
         //controller
-        
-        //mouse
-        // if (Input.GetButtonDown("Fire1")) {
-        //     OnClickDown?.Invoke();
-        // }
-        // if (Input.GetButtonUp("Fire1"))  {
-        //     OnClickUp?.Invoke();
-        // }
-
-        
-        //movement
-        // if (Input.GetButtonDown("Jump")) {
-        //     OnJump?.Invoke();
-        // }
-        // if (Time.timeScale == 1) {
-        //     OnMove?.Invoke(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
-        // }
-        // else {
-        //     OnMove?.Invoke(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
-        // }
-        // //running
-        // if (Input.GetButtonDown("Run")) {
-        //     OnStartRunning?.Invoke();
-        // }
-        // if (Input.GetButtonUp("Run")) {
-        //     OnEndRunning?.Invoke();
-        // }
-
-        //rotate
-        // OnRotate?.Invoke(new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")));
-
-        //Cancel
-        // if (Input.GetButtonDown("Cancel")) {
-        //     OnCancel?.Invoke();
-        // }
     
         //Undo
-        if (Input.GetKeyDown(KeyCode.Z)) {
-            OnUndo?.Invoke();
-        }
+        // if (Input.GetKeyDown(KeyCode.Z)) {
+        //     OnUndo?.Invoke();
+        // }
 
         // //reset
         // if (Input.GetKeyDown(KeyCode.R) && (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl))) {
         //     OnReset?.Invoke();
         // }
-        if (Input.GetKeyDown(KeyCode.R)) {
-            OnReset?.Invoke();
-        }
+        // if (Input.GetKeyDown(KeyCode.R)) {
+        //     OnReset?.Invoke();
+        // }
 
         if (controls != null) {
             MovementVector = Vector2.Lerp(movementVector, controls.Player.Movement.ReadValue<Vector2>(), Time.deltaTime * movementGravity);
@@ -161,6 +120,8 @@ public class InputManager : MonoBehaviour
 
 
     public void Jump(InputAction.CallbackContext context) {
+        Debug.Log("jump");
+
         OnJump?.Invoke();
     }
     public void RunStart(InputAction.CallbackContext context) {

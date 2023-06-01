@@ -5,4 +5,5 @@ using UnityEngine;
 public static class FMODParams
 {
     public static string GROUNDPARAM = "GroundMaterial";
+    public static string LEVEL2_MUSIC = "level2_Roomnumber";
 }

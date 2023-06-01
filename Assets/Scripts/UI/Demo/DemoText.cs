@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class DemoText : MonoBehaviour
 {
+    [SerializeField]
+    private SceneLoader sceneLoader;
     private CanvasGroup group;
 
     private void Awake() {
@@ -13,14 +15,19 @@ public class DemoText : MonoBehaviour
         group.blocksRaycasts = false;
     }
     private void OnEnable() {
+        Area.OnEndOfDemo += ShowDemoText;
         AlchemyItem.OnAlchemyEndScene += FadeToWhite;
-        TeddyBear.OnCutsceneEnd += FadeToBlack;
     }
     private void OnDisable() {
+        Area.OnEndOfDemo -= ShowDemoText;
         AlchemyItem.OnAlchemyEndScene -= FadeToWhite;
-        TeddyBear.OnCutsceneEnd -= FadeToBlack;
-
     }
+
+    private void ShowDemoText(int _areaIndex) {
+        StartCoroutine(group.FadeCanvasGroup(1, 3f, 1));
+        StartCoroutine(WaitForExit());
+    }
+
     public void FadeToWhite() {
         StartCoroutine(group.FadeCanvasGroup(1, 3f, 1));
         StartCoroutine(WaitForExit());
@@ -32,11 +39,17 @@ public class DemoText : MonoBehaviour
     }
 
     private IEnumerator WaitForExit() {
-        while(true) {
-            if (Input.GetKeyDown(KeyCode.Escape)) {
-                SceneLoader.QuitGame();
+        StartCoroutine(group.FadeCanvasGroup(1, 3f, 7f));
+        float index = 0;
+        bool clicked = false;
+        while(index < 10f) {
+            index += Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.Escape) && !clicked) {
+                clicked = true;
+                sceneLoader.LoadNewSceneAnimated(Scenes.MENU_SCENE_NAME);
             }
             yield return new WaitForEndOfFrame();
         }
+        if (!clicked) sceneLoader.LoadNewSceneAnimated(Scenes.MENU_SCENE_NAME);
     }
 }

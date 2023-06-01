@@ -42,7 +42,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
         Area.OnFirstAreaEnter += StartWaitingForMove;
         Area.OnSecondAreaEnter += StartWaitingForShift;
         AreaTextMeshFader.onMirrorTutorialShow += StartWaitingMirrorComplete;
-        Gravity.onGravityMissing += StartWaitingForJump;
+        Floor.OnFloorMissing += StartWaitingForJump;
         Letter.OnLetterClickAction += EnableClick;
         
         Room.OnRoomComplete += HideTutorial;
@@ -59,7 +59,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
         InputManager.OnMove -= EnableMove;
         InputManager.OnJump -= EnableJump;
         InputManager.OnStartRunning -= EnableShift;
-        Gravity.onGravityMissing -= StartWaitingForJump;
+        Floor.OnFloorMissing -= StartWaitingForJump;
         Room.OnRoomComplete -= HideTutorial;
         Room.OnRoomLeaving -= HideTutorial;
     }
@@ -99,6 +99,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
     }
 
     public IEnumerator WaitingForMirrorComplete() {
+        mirrorComplete = false;
         yield return new WaitForSeconds(3);
         if (!mirrorComplete) {
             ShowTutorial(mouseUI);

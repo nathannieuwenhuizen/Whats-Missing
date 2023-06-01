@@ -8,10 +8,15 @@ public class Gravity : Property
 
     [SerializeField]
     private Room room;
-    [SerializeField]
-    private Material shockWaveMaterial;
 
     public static OnPropertyToggle onGravityMissing;
+
+    [SerializeField]
+    private bool movePlayerUpwardOnMissing = false;
+
+    private List<Rigidbody> allRigidbodies;
+    private float  gravityScale = 1f;
+
 
     public override IEnumerator AnimateMissing()
     {
@@ -35,11 +40,12 @@ public class Gravity : Property
             rb.angularVelocity = Extensions.RandomVector(2f);
             rb.useGravity = false;
         }
+        if (room.Animated && movePlayerUpwardOnMissing) room.Player.Movement.RB.velocity = Vector3.up * 8f;
     }
 
 
     private IEnumerator AnimatGravityToggle(Action<Rigidbody> callback) {
-        List<Rigidbody> allRigidbodies = SortedByDistanceRigidBodies();
+        allRigidbodies = SortedByDistanceRigidBodies();
         int steps = allRigidbodies.Count > 20 ? Mathf.CeilToInt(allRigidbodies.Count / 20) : 1;
         for (int i = 0; i < allRigidbodies.Count; i += steps)
         {
@@ -69,10 +75,46 @@ public class Gravity : Property
             rb.useGravity = true;
         }
     }
-    
+
+    private void FixedUpdate() {
+        if (IsShrinked || IsEnlarged) {
+            Vector3 gravity = -9.81f * gravityScale * Vector3.up;
+            foreach(Rigidbody rb in allRigidbodies) {
+                rb.AddForce(gravity, ForceMode.Acceleration);
+            }
+        }
+    }
+    public override void OnShrinkingFinish()
+    {
+        base.OnShrinkingFinish();
+        allRigidbodies = room.GetAllObjectsInRoom<Rigidbody>();
+        foreach(Rigidbody rb in allRigidbodies) rb.useGravity = false;
+        gravityScale = .5f;
+    }
+    public override void OnShrinkingRevertFinish()
+    {
+        base.OnShrinkingRevertFinish();
+        foreach(Rigidbody rb in allRigidbodies) rb.useGravity = true;
+    }
+
+    public override void OnEnlargingFinish()
+    {
+        base.OnEnlargingFinish();
+        allRigidbodies = room.GetAllObjectsInRoom<Rigidbody>();
+        foreach(Rigidbody rb in allRigidbodies) rb.useGravity = false;
+        gravityScale = 3f;
+
+    }
+    public override void OnEnlargeRevertFinish()
+    {
+        base.OnEnlargeRevertFinish();
+        foreach(Rigidbody rb in allRigidbodies) rb.useGravity = true;
+    }
+
     public List<Rigidbody> SortedByDistanceRigidBodies() {
         List<Rigidbody> allRigidbodies = room.GetAllObjectsInRoom<Rigidbody>();
-        if (currentChange.mirror != null)
+        Debug.Log("current change: " + currentChange);
+        if (currentChange != null &&  currentChange.mirror != null)
             allRigidbodies.Sort(delegate(Rigidbody a, Rigidbody b) {
                 return Vector3.Distance(a.transform.position, currentChange.mirror.transform.position) >
                     Vector3.Distance(b.transform.position, currentChange.mirror.transform.position) ? 1 : -1;

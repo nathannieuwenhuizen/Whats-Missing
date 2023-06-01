@@ -5,9 +5,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum LoadingStyle {
+    none,
+    mainScreen,
+    cornerIcon
+}
+
 public class SceneLoader : MonoBehaviour
 {
-    public static bool ANIMATING = false;
+    public static LoadingStyle LOADING_STYLE = LoadingStyle.none;
     [SerializeField]
     private CanvasGroup group;
 
@@ -23,10 +29,13 @@ public class SceneLoader : MonoBehaviour
     private float animationDelay = 0f;
 
     private void Start() {
-        if (SceneLoader.ANIMATING) {
-            SceneLoader.ANIMATING = false;
+        // group.GetComponent<Image>().material.SetFloat("_Alpha", 0);
+
+        if (SceneLoader.LOADING_STYLE != LoadingStyle.none) {
             StartCoroutine(LoadOut(() => {
+                SceneLoader.LOADING_STYLE = LoadingStyle.none;
             }));
+            
         } else {
             AudioHandler.Instance.AudioManager.AudioListenerVolume = 1;
         }
@@ -48,9 +57,11 @@ public class SceneLoader : MonoBehaviour
 
     public IEnumerator LoadingSceneAsyncMainLoadingScreen(string sceneName)
     {
-        SceneLoader.ANIMATING = true;
+        SceneLoader.LOADING_STYLE = LoadingStyle.mainScreen;
         loadingIcon.gameObject.SetActive(false);
         isLoading = true;
+        group.gameObject.SetActive(true);
+        // StartCoroutine(Extensions.AnimatingNumberPropertyMaterial(group.GetComponent<Image>().material, "_Alpha", 0, 1, AnimationCurve.EaseInOut(0,0,1,1)));
         yield return StartCoroutine(FadeCanvasGroup(group, 1f, animationDuration, animationDelay));
         loadingIcon.gameObject.SetActive(true);
         yield return new WaitForEndOfFrame();
@@ -63,7 +74,7 @@ public class SceneLoader : MonoBehaviour
     }
     public IEnumerator LoadingSceneAsyncWithCornerLoadingIcon(string sceneName)
     {
-        SceneLoader.ANIMATING = true;
+        SceneLoader.LOADING_STYLE = LoadingStyle.cornerIcon;
         cornerLoadingIcon.gameObject.SetActive(false);
         isLoading = true;
         yield return new WaitForEndOfFrame();
@@ -91,11 +102,20 @@ public class SceneLoader : MonoBehaviour
     }
 
     private void OnEnable() {
-        AlchemyItem.OnAlchemyEndScene += GoToSecondLevel;
+        Area.OnNextArea += GoToNextLevel;
+        PauseScreen.OnQuit += BackToMenu;
+        CreditsRoller.OnCreditsFinish += BackToMenu;
+    }
+
+
+    private void BackToMenu() {
+        LoadNewSceneAnimated(Scenes.MENU_SCENE_NAME);
     }
 
     private void OnDisable() {
-        AlchemyItem.OnAlchemyEndScene -= GoToSecondLevel;
+        Area.OnNextArea -= GoToNextLevel;
+        PauseScreen.OnQuit -= BackToMenu;
+        CreditsRoller.OnCreditsFinish -= BackToMenu;
     }
 
 
@@ -107,20 +127,47 @@ public class SceneLoader : MonoBehaviour
         Area.AUTO_SAVE_WHEN_DESTROY = false;
         LoadNewScene(Scenes.SECOND_LEVEL_SCENE_NAME, false);
         // LoadingSceneAsync(Scenes.SECOND_LEVEL_SCENE_NAME);
-
     }
 
+    ///<summary>
+    /// Loads the next scene based on the area index
+    ///</summary>
+    public void GoToNextLevel(int _currentAreaIndex) {
+        SaveData.current.areaIndex = _currentAreaIndex + 1;
+        SaveData.current.roomIndex = 0;
+        SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
 
+        Area.AUTO_SAVE_WHEN_DESTROY = false;
+        LoadNewScene(Scenes.GetSceneNameBasedOnAreaIndex(_currentAreaIndex + 1), false);
+    }
+
+    ///<summary>
+    /// When the new scene gets loaded i, the loading screen should fisrt be visible and then fade out
+    ///</summary>
     private IEnumerator LoadOut(Action callback)
     {
-        group.alpha = 1;
+        if (LOADING_STYLE == LoadingStyle.mainScreen)
+        {
+            group.alpha = 1;
+            loadingIcon.gameObject.SetActive(true);
+        } else if (LOADING_STYLE == LoadingStyle.cornerIcon) {
+            cornerLoadingIcon.gameObject.SetActive(true);
+
+        }
         AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
         yield return new WaitForEndOfFrame();
         yield return new WaitForSeconds(.3f);
         AudioHandler.Instance.FadeListener(1);
-        yield return StartCoroutine(FadeCanvasGroup(group, 0, .5f));
+        if (LOADING_STYLE == LoadingStyle.mainScreen) {
+            StartCoroutine(Extensions.AnimatingNumberPropertyMaterial(group.GetComponent<Image>().material, "_Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1)));
+            yield return StartCoroutine(FadeCanvasGroup(group, 0, .5f));
+        }
+        
+        
+        cornerLoadingIcon.gameObject.SetActive(false);
         callback();
     }
+    
     public IEnumerator FadeCanvasGroup(CanvasGroup group, float end, float duration, float delay = 0) {
         yield return new WaitForSecondsRealtime(delay);
         float index = 0;

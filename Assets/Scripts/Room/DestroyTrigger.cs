@@ -6,9 +6,11 @@ using UnityEngine;
 public class DestroyTrigger : MonoBehaviour, IRoomObject
 {
 
-    public bool InSpace => throw new System.NotImplementedException();
     private Collider coll;
     private Rigidbody rb;
+
+    public bool InSpace { get; set; }
+
     private void Awake() {
         coll = GetComponent<Collider>();
         rb = GetComponent<Rigidbody>();
@@ -27,8 +29,11 @@ public class DestroyTrigger : MonoBehaviour, IRoomObject
     }
 
     private void OnCollisionEnter(Collision other) {
+        
         RoomObject changable = other.gameObject.GetComponent<RoomObject>();
         if (changable != null) {
+            coll.isTrigger = true;
+            StartCoroutine(DisableTrigger());
             Player player = changable.Transform.GetComponent<Player>();
             if (player != null) {
                 player.Die(false);
@@ -36,5 +41,10 @@ public class DestroyTrigger : MonoBehaviour, IRoomObject
                 Destroy(changable.Transform.gameObject);
             }
         }
+    }
+
+    public IEnumerator DisableTrigger() {
+        yield return new WaitForSeconds(.5f);
+            coll.isTrigger = false;
     }
 }

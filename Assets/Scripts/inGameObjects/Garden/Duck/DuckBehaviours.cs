@@ -58,6 +58,11 @@ public class StaringState : IState
     {
         _duck.Quack();
     }
+    public void DrawDebug()
+    {
+
+    }
+
 }
 
 public class SwimState : IState
@@ -130,6 +135,9 @@ public class SwimState : IState
         if (_duck.Velocity.magnitude < MinVelocity) {
             _duck.Velocity = _duck.Velocity.normalized * MinVelocity;
         }
+        Vector3 temp = _duck.Velocity;
+        temp.y = 0;
+        _duck.Velocity = temp;
         _duck.transform.position += _duck.Velocity * Time.deltaTime * Room.TimeScale;
 
 
@@ -147,6 +155,11 @@ public class SwimState : IState
 
         Debug.DrawRay(_duck.transform.position, _duck.Velocity.normalized * 2, Color.green);
         Debug.DrawRay(_duck.transform.position, desiredVelocity.normalized * 2, Color.magenta);
+    }
+
+    public void DrawDebug()
+    {
+
     }
 }
 
@@ -221,6 +234,10 @@ public class FollowState : IState
             yield return new WaitForSeconds(Random.Range(2, 10));
             _duck.Quack();
         }
+    }
+        public void DrawDebug()
+    {
+
     }
 
 

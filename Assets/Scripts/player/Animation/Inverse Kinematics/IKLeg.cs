@@ -72,10 +72,10 @@ public class IKLeg : IKLimb
     }
 
     private void OnDrawGizmos() {
-        Gizmos.color = HasContact ? Color.green : Color.red;
-        Gizmos.DrawSphere(GetRayCastPosition(), .1f);
+        // Gizmos.color = HasContact ? Color.green : Color.red;
+        // Gizmos.DrawSphere(GetRayCastPosition(), .1f);
 
-        Gizmos.color = Color.yellow;
+        Gizmos.color = HasContact ? Color.green : Color.red;
         Gizmos.DrawLine(GetFeetPos(), GetFeetPos() - transform.up * FPMovement.FOOT_RANGE * 1f);
     }
 

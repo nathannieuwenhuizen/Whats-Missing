@@ -29,17 +29,25 @@ public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
+        StartCoroutine(DelayBeforeAbleToPlaySound());
+    }
+    private bool canPlaySound = true;
+
+    public IEnumerator DelayBeforeAbleToPlaySound() {
+        canPlaySound = false;
+        yield return new WaitForSeconds(.5f);
+        canPlaySound = true;
     }
 
     private void OnClick() {
         // image.sprite = clickedSprite;
-        AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_click);
+        if (canPlaySound) AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_click);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         image.sprite = selectedSprite;
-        AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover, .05f);
+        if (canPlaySound) AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover, .01f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -51,7 +59,7 @@ public class BaseButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnSelect(BaseEventData eventData)
     {
         image.sprite = selectedSprite;
-        AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover, .05f);
+         if (canPlaySound) AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_hover, .01f);
     }
 
     public void OnDeselect(BaseEventData eventData)

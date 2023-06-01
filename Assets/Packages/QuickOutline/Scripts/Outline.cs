@@ -39,6 +39,13 @@ public class Outline : MonoBehaviour {
       needsUpdate = true;
     }
   }
+  public Color OutlineOuterColor {
+    get { return outlineOuterColor; }
+    set {
+      outlineOuterColor = value;
+      needsUpdate = true;
+    }
+  }
 
   public float OutlineWidth {
     get { return outlineWidth; }
@@ -54,13 +61,15 @@ public class Outline : MonoBehaviour {
   }
 
   [SerializeField]
-  private Mode outlineMode;
+  private Mode outlineMode = Mode.OutlineVisible;
 
   [SerializeField]
-  private Color outlineColor = Color.white;
+  private Color outlineColor;
+  [SerializeField]
+  private Color outlineOuterColor;
 
   [SerializeField, Range(0f, 10f)]
-  private float outlineWidth = 2f;
+  private float outlineWidth = 0f;
 
   [Header("Optional")]
 
@@ -80,17 +89,21 @@ public class Outline : MonoBehaviour {
 
   private bool needsUpdate;
 
+  private bool disabled = false;
+  public bool Disabled {
+    get { return disabled;}
+    set { 
+      disabled = value; 
+    }
+  }
+
+
+
   void Awake() {
 
     // Cache renderers
     renderers = GetComponentsInChildren<Renderer>();
 
-    // Instantiate outline materials
-    outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
-    outlineFillMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineFill"));
-
-    outlineMaskMaterial.name = "OutlineMask (Instance)";
-    outlineFillMaterial.name = "OutlineFill (Instance)";
 
     // Retrieve or generate smooth normals
     LoadSmoothNormals();
@@ -100,8 +113,18 @@ public class Outline : MonoBehaviour {
   }
 
   void OnEnable() {
-    foreach (var renderer in renderers) {
+    // Instantiate outline materials
+    outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
+    outlineFillMaterial = Instantiate(Resources.Load<Material>(disabled ? @"Materials/OutlineFill_Heavy" : @"Materials/OutlineFill"));
 
+    outlineColor = outlineFillMaterial.GetColor("_Color");
+    outlineOuterColor = outlineFillMaterial.GetColor("_ColorR");
+    outlineMaskMaterial.name = "OutlineMask (Instance)";
+    outlineFillMaterial.name = "OutlineFill (Instance)";
+
+    
+    foreach (var renderer in renderers) {
+      if (renderer.gameObject.GetComponent<ParticleSystem>() != null) continue;
       // Append outline shaders
       var materials = renderer.sharedMaterials.ToList();
 
@@ -139,6 +162,7 @@ public class Outline : MonoBehaviour {
 
   void OnDisable() {
     foreach (var renderer in renderers) {
+      if (renderer.gameObject.GetComponent<ParticleSystem>() != null) continue;
 
       // Remove outline shaders
       var materials = renderer.sharedMaterials.ToList();
@@ -241,6 +265,8 @@ public class Outline : MonoBehaviour {
 
     // Apply properties according to mode
     outlineFillMaterial.SetColor("_OutlineColor", outlineColor);
+    outlineFillMaterial.SetColor("_Color", outlineColor);
+    outlineFillMaterial.SetColor("_ColorR", outlineOuterColor);
 
     switch (outlineMode) {
       case Mode.OutlineAll:

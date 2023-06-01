@@ -15,6 +15,11 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     private Button button;
 
+    public static readonly Color CorrectColor = new Color(.2f,1,.2f, .4f);
+    public static readonly Color IncorrectColor = new Color(1,.2f,.2f, .5f);
+    [HideInInspector]
+    public Color DefaultGlowColor;
+
     private bool selected = false;
     public bool Selected { get => selected; }
     private bool preClickSelected = false;
@@ -30,6 +35,8 @@ public class Letter : MirrorButton, IPointerDownHandler
         get { return mirrorCanvas;}
         set { mirrorCanvas = value; }
     }
+
+    private Vector3 oldDragPos;
 
     private Coroutine movingCoroutine;
     private float movingIndex;
@@ -59,25 +66,36 @@ public class Letter : MirrorButton, IPointerDownHandler
         }
     }
 
+    public bool Visible {
+        set { 
+            Color temp = Color;
+            temp.a = value ? 1 : 0;
+            Color = temp;
+         }
+    }
+
 
     public override void Awake()
     {
         base.Awake();
         button = GetComponent<Button>();
         button.onClick.AddListener(() => LetterIsClicked());
+        DefaultGlowColor = text.fontMaterial.GetColor("_GlowColor");
+        DefaultGlowColor.a = .5f;
+
         // text = GetComponent<TMP_Text>();
     }
 
 
     public override void OnHover() {
         base.OnHover();
-        if (!canBeClicked || BUTTON_DRAGGED) return;
+        if (!interactable || BUTTON_DRAGGED) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(hoverScale));
     }
     public override void OnUnhover() {
         base.OnUnhover();
-        if (!canBeClicked || BUTTON_DRAGGED) return;
+        if (!interactable || BUTTON_DRAGGED) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(normalScale));
     }
@@ -95,6 +113,7 @@ public class Letter : MirrorButton, IPointerDownHandler
         if (withStartPositionAsign)startMovePos = rt.localPosition;
         selected = false;
         Color = DefaultColor;
+        GlowColor = DefaultGlowColor;
         MoveTo(spawnPosition);
     }
 
@@ -109,6 +128,12 @@ public class Letter : MirrorButton, IPointerDownHandler
         get => text.color;
         set => text.color = value;
     }
+
+    public Color GlowColor {
+        get => text.fontMaterial.GetColor("_GlowColor");
+        set => text.fontMaterial.SetColor("_GlowColor", value);
+    }
+
     private Color defaultColor = Color.white;
     public Color DefaultColor {
         get { return defaultColor;}
@@ -116,6 +141,27 @@ public class Letter : MirrorButton, IPointerDownHandler
             defaultColor = value; 
             Color = value;
         }
+    }
+
+
+    private Coroutine colorCoroutine;
+    ///<summary>
+    /// Animates the color
+    ///</summary>
+    public void AnimateGlowColor (float _duration, Color _endColor) {
+        if (colorCoroutine != null) StopCoroutine(colorCoroutine);
+        colorCoroutine = StartCoroutine(AnimatingGlowColor(_duration, _endColor));
+    }
+
+    private IEnumerator AnimatingGlowColor(float _duration, Color _end) {
+        float index = 0;
+        Color begin = GlowColor;
+         while (index < _duration) {
+             yield return new WaitForEndOfFrame();
+             index += Time.unscaledDeltaTime;
+             GlowColor = Color.LerpUnclamped(begin, _end, index / _duration);
+         }
+        GlowColor = _end;
     }
 
 
@@ -128,11 +174,11 @@ public class Letter : MirrorButton, IPointerDownHandler
         pressedTime = Time.time;
         if (spawnPosition == Vector3.zero) spawnPosition = rt.localPosition;
         if (Selected) {
-            preClickSelected = true;
-            mirrorCanvas.RemoveSelectedLetter(mirrorCanvas.selectedLetterObjects.IndexOf(this));
+            PreClickSelected = true;
+            mirrorCanvas.RemoveSelectedLetter(mirrorCanvas.SelectedLetters.IndexOf(this));
             StopAllCoroutines();
         } else {
-            preClickSelected = false;
+            PreClickSelected = false;
         }
 
         StartCoroutine(Dragging());
@@ -140,7 +186,7 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     void LetterIsClicked()
     {
-        if (!canBeClicked || !pressed) return;
+        if (!interactable || !pressed) return;
         pressed = false;
         bool dragged = Dragged();
         OnLetterClickAction?.Invoke(this);
@@ -149,37 +195,58 @@ public class Letter : MirrorButton, IPointerDownHandler
         pressedTime = 0;
     }
 
+    #region  dragging
     public bool Dragged() {
         return (pressedTime != 0 &&  Time.time - pressedTime > pressedTimeBeforeDrag);
     }
+
     private IEnumerator Dragging() {
         MirrorButton.BUTTON_DRAGGED = true;
         Canvas canvas = MirrorCanvas.Canvas;
         while(pressed) {
 
-            transform.position = canvas.MouseToWorldPosition();
-            transform.localPosition = new Vector3(
-                transform.localPosition.x,
-                transform.localPosition.y,
-                transform.localPosition.z - 10f
-                );
+            transform.position = Vector3.Lerp(transform.position, canvas.MouseToWorldPosition(), Time.deltaTime * 10f);
+            Zdistance = -10;
             mirrorCanvas.UpdateLetterDrag(this);
+            UpdateDragRotation();
+            oldDragPos = Position;
 
             MirrorButton.SELECTED_BUTTON = this;
 
             //out of mirror view or click out
-            if (mirrorCanvas.IsInteractable == false || !Extensions.IsPressed(ControllerRebinds.controls.Player.Click)) {
+            if (mirrorCanvas.IsFocused == false || !Extensions.IsPressed(ControllerRebinds.controls.Player.Click)) {
                 LetterIsClicked();
             }
             yield return new WaitForEndOfFrame();
         }
+        transform.localRotation = Quaternion.Euler(0,0,0);
+        StartCoroutine(PlaceAnimationRotation());
         MirrorButton.BUTTON_DRAGGED = false;
 
     }
-
+    private void UpdateDragRotation() {
+        Vector3 delta = Position - oldDragPos;
+        float angle = 45f;
+        delta *= 2f;
+        transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler( -Mathf.Clamp( delta.y, -angle, angle), Mathf.Clamp( delta.x, -angle, angle), 0), Time.deltaTime * 10f);
+        Debug.Log("drag delta " + delta);
+    }
+    #endregion
 
     public Vector3 Position {
         get { return transform.localPosition; }
+        set { transform.localPosition = value; }
+    }
+    
+    public float  Zdistance {
+        get { return Position.z;}
+        set { 
+            Position = new Vector3(
+                transform.localPosition.x,
+                transform.localPosition.y,
+                value
+            );
+         }
     }
 
     public void MoveTo( Vector3 pos) {
@@ -196,12 +263,35 @@ public class Letter : MirrorButton, IPointerDownHandler
     private IEnumerator Moving(Vector3 pos) {
         while( movingIndex < movingDuration) {
             movingIndex += Time.unscaledDeltaTime;
-            rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, scaleAnimation.Evaluate(movingIndex/ movingDuration));
+            rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, scaleAnimationCurve.Evaluate(movingIndex/ movingDuration));
             yield return new WaitForEndOfFrame();
         }
         movingIndex = 1;
         rt.localPosition = pos;
     }
+
+    public IEnumerator ZDistanceBounce( float _duration, float _zDistance  = -10, float _delay = 0) {
+        yield return new WaitForSeconds(_delay);
+
+        float index = 0; 
+        while (index < _duration) {
+            index += Time.deltaTime;
+            Zdistance = Mathf.Sin(Mathf.PI * (index / _duration)) * _zDistance;
+            yield return new WaitForEndOfFrame();
+        }
+        Zdistance = 0;
+    }
+    public IEnumerator PlaceAnimationRotation( ) {
+        float index = 0; 
+        float duration = .3f;
+        while (index < duration && Zdistance > 0) {
+            index += Time.deltaTime;
+            transform.localRotation = Quaternion.Euler( Mathf.Sin(Mathf.PI * (.5f + .5f *(index / duration))) * -20f, 0, 0);
+            yield return new WaitForEndOfFrame();
+        }
+        transform.localRotation = Quaternion.Euler(0,0,0);
+    }
+ 
 }
 
 [System.Serializable]

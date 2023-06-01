@@ -15,17 +15,25 @@ MonoBehaviour:
   prefab: {fileID: 989130583267096725, guid: d8e357be5e426284bab74d12e18cceb7, type: 3}
   roomInfo:
     revealChangesAfterFinish: 1
+    doCutsceneOnRevealingChanges: 1
+    alwaysAnimate: 0
     questionMirror:
     - letters: windbreathseez
-      roomIndexoffset: 0
       changeType: 1
       isOn: 0
-    changeMirror:
-    - letters: wind
-      roomIndexoffset: 0
+      huzzleWords: 1
+      isQuestion: 1
+      isInteractable: 1
+    loadedChanges:
+    - word: wind
+      alternativeWords: []
+      active: 1
       changeType: 1
-      isOn: 1
     durationBeforeHint: 30
     hintText: I don't think an umbrella would help at all
     highLightAnswerLetter: 1
     durationBeforeHighlighting: 60
+  potionInfo:
+    missingPotionAvailable: 1
+    tooBigPotionAvailable: 1
+    tooSmallPotionAvailable: 1

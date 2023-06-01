@@ -30,7 +30,9 @@ public class RoomObjectEventSender
     
     public void Update() {
         if (!Active) return;
-        CheckFlipState();
+
+        //note: otherwise table throw from bridge while upside-down won't result in level complete.
+        // CheckFlipState();
     }
     public void CheckFlipState() {
         if (IsFlipped()) {
@@ -54,17 +56,15 @@ public class RoomObjectEventSender
     }
 
     public void SendFlipEvent() {
-        Debug.Log("send flip event: " + roomObject.Word);
         if (Active) OnAltered?.Invoke(roomObject, ChangeType.flipped, true);
     }
     public void SendUnflipEvent() {
-        Debug.Log("send unflip event: " + roomObject.Word);
         if (Active) OnAltered?.Invoke(roomObject, ChangeType.flipped, false);
     }
     public void SendMissingEvent() {
         if (Active) OnAltered?.Invoke(roomObject, ChangeType.missing, true);
     }
     public void SendAppearingEvent() {
-        if (Active) OnAltered?.Invoke(roomObject, ChangeType.flipped, false);
+        if (Active) OnAltered?.Invoke(roomObject, ChangeType.missing, false);
     }
 }

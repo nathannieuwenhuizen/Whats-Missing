@@ -18,6 +18,8 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
             UpdateBanks();
         } }
 
+    SFXInstance IAudioManager.Music => Music;
+
     public SFXInstance Music;
 
     public void FadeMusic(MusicFiles newMusic, float duration, bool waitForOtherMusictoFadeOut = false)
@@ -45,9 +47,17 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
         Music = newMusic;
     }
 
-    public IEnumerator FadeVolume(AudioSource audioS, float begin, float end, float duration)
+    public IEnumerator FadeVolume(SFXInstance audioS, float begin, float end, float duration)
     {
-        return null;
+        float index = 0;
+
+        while (index < duration)
+        {
+            index += Time.deltaTime;
+            audioS.FMODInstance.setVolume(Mathf.Lerp(begin, end, index / duration));
+            yield return new WaitForFixedUpdate();
+        }
+        audioS.FMODInstance.setVolume(end);
     }
 
     public SFXInstance GetSFXInstance(string key)
@@ -103,8 +113,17 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
             case MusicFiles.garden:
             key = SFXFiles.Environment2;
             break;
+            case MusicFiles.tower:
+            key = SFXFiles.Environment3;
+            break;
             case MusicFiles.planetarium_hidden_room:
             key = SFXFiles.HIDDEN_ROOM;
+            break;
+            case MusicFiles.boss:
+            key = SFXFiles.Environment4;
+            break;
+            case MusicFiles.EndlessHallway:
+            key = SFXFiles.Environment5;
             break;
         }
         return key;
@@ -162,10 +181,10 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
 
     public void StopSound(string key)
     {
-        
+        // RuntimeManager.GetBus("bus:SFX").gete
     }
 
-        private Coroutine audioListenerCoroutine;
+    private Coroutine audioListenerCoroutine;
 
     public void FadeListener(float val, float duration = 0.5F)
     {

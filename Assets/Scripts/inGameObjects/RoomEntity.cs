@@ -10,10 +10,8 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     [SerializeField]
     protected string[] alternateWords;
 
-    protected Vector3 startMissingScale;
-
     public string Word {
-        get { return word;}
+        get { return word.ToLower();}
         set {word = value;}
     }
 
@@ -22,7 +20,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     }
 
     protected bool inSpace = false;
-    public bool InSpace { get => inSpace; }
+    public bool InSpace { get => inSpace; set => inSpace = value; }
 
     public Transform Transform => transform;
 
@@ -62,6 +60,12 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
         ApplyChange(change.changeType);
     }
 
+    public virtual void AddChange(IChange change)
+    {
+        ApplyChange(change.ChangeType);
+        // throw new System.NotImplementedException();
+    }
+
     private void ApplyChange(ChangeType _type) {
         switch (_type) {
             case ChangeType.missing:
@@ -77,10 +81,9 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
                 OnFlipped();
                 break;
         }    
-
     }
-    public void RemoveChange(Change change) {
-        switch (change.changeType) {
+    public void RemoveChange(IChange change) {
+        switch (change.ChangeType) {
             case ChangeType.missing:
                 OnAppearing();
                 break;
@@ -117,7 +120,6 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     public virtual void OnMissing()
     {
         IsMissing = true;
-        startMissingScale = transform.localScale;
         if (Animated) {
             StartCoroutine(AnimateMissing());
         } else {
@@ -154,7 +156,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     ///</summary>
     public virtual void OnAppearingFinish()
     {
-        transform.localScale = startMissingScale;
+
     }
 
     #endregion
@@ -173,6 +175,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     #region  shrinking/enlarging
     public virtual void OnShrinking()
     {
+        IsEnlarged = false;
         IsShrinked = true;
         if (ShrinkCoroutine != null) StopCoroutine(ShrinkCoroutine);
         if (Animated) {
@@ -192,8 +195,9 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnShrinkRevert()
     {
-        IsShrinked = false;
+        if (!IsShrinked) return;
 
+        IsShrinked = false;
         if (ShrinkCoroutine != null) StopCoroutine(ShrinkCoroutine);
         if (Animated) {
             ShrinkCoroutine = StartCoroutine(AnimateShrinkRevert());
@@ -211,6 +215,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnEnlarge()
     {
+        IsShrinked = false;
         IsEnlarged = true;
         if (Animated)StartCoroutine(AnimateEnlarging());
         else OnEnlargingFinish();
@@ -226,6 +231,8 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnEnlargeRevert()
     {
+        if (!IsEnlarged) return;
+
         IsEnlarged = false;
 
         if (Animated)StartCoroutine(AnimateEnlargeRevert());

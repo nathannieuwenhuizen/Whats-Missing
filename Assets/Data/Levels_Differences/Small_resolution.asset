@@ -15,17 +15,25 @@ MonoBehaviour:
   prefab: {fileID: 3000441207758156416, guid: 03c1d1f2b1832284b973694dc7e427dd, type: 3}
   roomInfo:
     revealChangesAfterFinish: 1
+    doCutsceneOnRevealingChanges: 1
+    alwaysAnimate: 0
     questionMirror:
-    - letters: resolutionpxls
-      roomIndexoffset: 0
+    - letters: resolutionpxlsqay
       changeType: 2
       isOn: 0
-    changeMirror:
-    - letters: resolution
-      roomIndexoffset: 0
+      huzzleWords: 1
+      isQuestion: 1
+      isInteractable: 1
+    loadedChanges:
+    - word: resolution
+      alternativeWords: []
+      active: 1
       changeType: 2
-      isOn: 1
     durationBeforeHint: 30
     hintText: Are you sure your quality settings are set up to high?
     highLightAnswerLetter: 1
     durationBeforeHighlighting: 60
+  potionInfo:
+    missingPotionAvailable: 1
+    tooBigPotionAvailable: 1
+    tooSmallPotionAvailable: 1

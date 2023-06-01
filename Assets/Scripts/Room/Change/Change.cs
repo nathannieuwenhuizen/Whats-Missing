@@ -1,8 +1,15 @@
+public interface IChange {
+    public string Word {get; set; }
+    public ChangeType ChangeType {get; set; }
+    public bool Active {get; set; }
+    public string[] AltarnativeWords {get; set; }
+}
+
 ///<summary>
 /// A change that is set inside the room. Holds on what word it is about and what mirror has caused the change.
 ///</summary>
 [System.Serializable]
-public class Change {
+public class Change : IChange {
     ///<summary>
     /// The word that this change represents
     ///</summary>
@@ -16,14 +23,33 @@ public class Change {
     ///</summary>
     public bool active = false;
 
-    ///<summary>
-    /// Whether the change is connected to this room or to the room next/previous of the current room.
-    ///</summary>
-    public int roomIndexOffset = 0;
-
-
     public ChangeType changeType;
 
+    public bool Active { get => active; set => active = value; }
+    public string[] AltarnativeWords { get => alternativeWords; set => alternativeWords = value; }
+    string IChange.Word { get => word; set => word = value; }
+    ChangeType IChange.ChangeType { get => changeType; set => changeType = value; }
+
+    public static string GetChangeTypeText(ChangeType changeType) {
+        string result = "";
+        switch (changeType) {
+            case ChangeType.missing:
+                result = "missing";
+                break;
+            case ChangeType.flipped:
+                result = "flipped";
+                break;
+            case ChangeType.tooBig:
+                // result = "altered";
+                result = "too big";
+                break;
+            case ChangeType.tooSmall:
+                // result = "altered";
+                result = "too small";
+                break;
+        }
+        return result;
+    }
 }
 
 [System.Serializable]
@@ -36,7 +62,8 @@ public class MirrorChange : Change {
 
 public enum ChangeCausation {
     environment,
-    potion
+    potion,
+    boss
 }
 
 [System.Serializable]

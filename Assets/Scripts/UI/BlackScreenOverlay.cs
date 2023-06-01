@@ -18,16 +18,21 @@ public class BlackScreenOverlay : MonoBehaviour
     private void OnEnable() {
         Player.OnDie += DeathFade;
         Area.OnRespawn += RemoveOverlay;
-        AlchemyItem.OnPickingAlchemyItem += FadeToWhite;
+        BossRoom.OnRespawn += RemoveOverlay;
+        AlchemyItem.OnPickingAlchemyItem += OnAlchemyItemPicked;
+        ThirdAreaEndTrigger.OnEndOfCutscene += FadeToBlack;
 
     }
     private void OnDisable() {
         Player.OnDie -= DeathFade;
         Area.OnRespawn -= RemoveOverlay;
-        AlchemyItem.OnPickingAlchemyItem -= FadeToWhite;
+        BossRoom.OnRespawn -= RemoveOverlay;
+        AlchemyItem.OnPickingAlchemyItem -= OnAlchemyItemPicked;
+        ThirdAreaEndTrigger.OnEndOfCutscene -= FadeToBlack;
     }
 
     public void DeathFade(bool withAnimation, bool toPreviousLevel) {
+        Debug.Log("fade to white");
         if (withAnimation) {
             image.color = Color.black;
             StartCoroutine(group.FadeCanvasGroup(1, 1.5f, 1f));
@@ -37,21 +42,25 @@ public class BlackScreenOverlay : MonoBehaviour
         }
     }
 
+    private void OnAlchemyItemPicked() {
+        FadeToWhite();
+    }
+
     public void FadeToBlack() {
         image.color = Color.black;
         StartCoroutine(group.FadeCanvasGroup(1, 1.5f, 1f));
     }
-    public void FadeToWhite() {
+    public void FadeToWhite(float duration = 1f, float delay = 8f) {
         image.color = Color.white;
-        StartCoroutine(group.FadeCanvasGroup(1, 1f, 8f));
+        StartCoroutine(group.FadeCanvasGroup(1, duration, delay));
     }
     public void FadeToWhiteImmeditately() {
         image.color = Color.white;
         StartCoroutine(group.FadeCanvasGroup(1, 1f, 0f));
     }
-    public void RemoveOverlay() {
+    public void RemoveOverlay(bool withStartColor = true) {
         StopAllCoroutines();
-        image.color = START_COLOR;
+        if (withStartColor) image.color = START_COLOR;
         group.alpha = 1;
         StartCoroutine(group.FadeCanvasGroup(0, 1.5f, 1f));
     }

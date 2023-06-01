@@ -11,6 +11,9 @@ public class ChangeLine : MonoBehaviour
     private Vector3 point0, point1, point2 = new Vector3();
     private float duration = 2f;
 
+    public delegate void ChangeLineEvent(Transform line);
+    public static ChangeLineEvent OnChangeLineAppear;
+
     [SerializeField]
     private ParticleSystem ps;
 

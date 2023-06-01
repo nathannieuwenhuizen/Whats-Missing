@@ -17,7 +17,7 @@ public class DuckSwimArea : MonoBehaviour, IRoomObject
         get { return target;}
     }
 
-    public bool InSpace => false;
+    public bool InSpace { get; set; } = false;
 
     private void Awake() {
         SetNewTarget();

@@ -18,7 +18,6 @@ public class AnimatedPopup : MonoBehaviour
         if (animator == null) animator = GetComponent<Animator>();
         if (canvasGroup == null) canvasGroup = GetComponent<CanvasGroup>();
 
-        
         canvasGroup.interactable = visible;
         canvasGroup.blocksRaycasts = visible;
         animator.SetBool("show", visible);

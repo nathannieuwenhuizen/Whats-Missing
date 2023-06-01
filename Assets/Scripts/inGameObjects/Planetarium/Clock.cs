@@ -89,7 +89,7 @@ public class Clock : RoomObject
             arrow.transform.localRotation = Quaternion.Euler(rotation, 0,0);
         } else {
             if (arrow == secondArrow) {
-                AudioHandler.Instance.Play3DSound(SFXFiles.clock_ticking, transform, .5f, 1f, false, false, 40);
+                AudioHandler.Instance.Play3DSound(SFXFiles.clock_ticking, transform, .5f, 1f, false, false, 50);
             }
             StartCoroutine(TickAnimation(arrow, rotation));
         }

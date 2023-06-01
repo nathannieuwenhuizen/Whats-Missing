@@ -85,13 +85,7 @@ public class LightningProperty : Property
         {
             index += Time.deltaTime;
             float val = curve.Evaluate(index / animationDuration);
-            SceneColors = new AmbientColors() {
-                sunColor = Color.LerpUnclamped(start.sunColor, end.sunColor, val),
-                skyColor = Color.LerpUnclamped(start.skyColor, end.skyColor, val),
-                equatorColor = Color.LerpUnclamped(start.equatorColor, end.equatorColor, val),
-                groundColor = Color.LerpUnclamped(start.groundColor, end.groundColor, val)
-            };
-            
+            SceneColors = AmbientColors.LerpUnclamped(start, end, val);            
             yield return new WaitForEndOfFrame();
         }
     }
@@ -116,4 +110,13 @@ public struct AmbientColors {
     public Color skyColor;
     public Color equatorColor;
     public Color groundColor;
+
+    public static AmbientColors LerpUnclamped(AmbientColors start, AmbientColors end, float val) {
+        return new AmbientColors() {
+            sunColor = Color.LerpUnclamped(start.sunColor, end.sunColor, val),
+            skyColor = Color.LerpUnclamped(start.skyColor, end.skyColor, val),
+            equatorColor = Color.LerpUnclamped(start.equatorColor, end.equatorColor, val),
+            groundColor = Color.LerpUnclamped(start.groundColor, end.groundColor, val)
+        };
+    }
 }

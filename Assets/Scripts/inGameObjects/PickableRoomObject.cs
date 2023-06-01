@@ -15,6 +15,7 @@ public class RigidBodyInfo {
     public bool UseGravity = true;
     public bool IsKinematic = true;
     public string tag = "";
+
     public void Save(Rigidbody rb) {
         Drag = rb.drag;
         AngularDrag = rb.angularDrag;
@@ -42,7 +43,10 @@ public class RigidBodyInfo {
 ///</summary>
 public class PickableRoomObject : InteractabelObject, IPickable
 {
+    private bool grabbed = false;
+
     protected Rigidbody rb;     
+    private Transform oldParent;
     protected override void Awake()
     {
         base.Awake();
@@ -62,6 +66,16 @@ public class PickableRoomObject : InteractabelObject, IPickable
             rb = value;
         }
     }
+
+    protected string grabSound = SFXFiles.player_grab;
+
+    [Header("pickable info")]
+    ///<summary>
+    /// If the objects will burn in flames if it comes in contact with fire.
+    ///</summary>
+    [SerializeField]
+    private bool flamable = false;
+
     [SerializeField]
     private RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
     public RigidBodyInfo RigidBodyInfo { get => rigidBodyInfo; set => rigidBodyInfo = value; }
@@ -81,6 +95,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     public override void OnMissing()
     {
+        if (grabbed) Release();
         DeactivateRigidBody();
         base.OnMissing();
     }
@@ -91,7 +106,14 @@ public class PickableRoomObject : InteractabelObject, IPickable
             rb.mass = value;
         }  
     }
+    protected float holdingDistance = 3f;
+    public float HoldingDistance => holdingDistance;
 
+    protected HoldOrientation holdOrientation = HoldOrientation.none;
+    public HoldOrientation HoldOrientation => holdOrientation;
+
+    private Vector3 holdingOffset = new Vector3(0,0,0);
+    public Vector3 HoldingOffset { get => holdingOffset; set => holdingOffset = value; }
 
     protected override void OnFocus()
     {
@@ -107,13 +129,19 @@ public class PickableRoomObject : InteractabelObject, IPickable
         touching = true;
     }
 
-    public void Grab(Rigidbody connectedRigidBody)
-    {        
+    public virtual void Grab(Rigidbody connectedRigidBody)
+    {
+        // oldParent = transform.parent;
+        // transform.SetParent(connectedRigidBody.transform.parent);        
+        grabbed = true;
+        AudioHandler.Instance?.PlaySound(grabSound);
+
         OutlineEnabled = false;
         RigidBodyInfo.Save(rb);
         rb.drag = 100f;
         rb.mass = 0.1f;
         rb.angularDrag = 10f;
+        rb.isKinematic = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         gameObject.tag = Tags.Picked;
     }
@@ -144,6 +172,10 @@ public class PickableRoomObject : InteractabelObject, IPickable
     ///</summary>
     public virtual void Release()
     {
+        if (!grabbed) return;
+
+        // transform.SetParent(oldParent);
+        grabbed = false;
         OutlineEnabled = true;
         ActivateRigidBody();
     }
@@ -183,7 +215,40 @@ public class PickableRoomObject : InteractabelObject, IPickable
         base.OnFlippingRevertFinish();
     }
 
-    public bool TooHeavy(Hands hands) => hands.MassThreshhold < rb.mass;
+    public bool TooHeavy(Hands hands)  {
+        if (rb == null) return false;
+        return hands.MassThreshhold < rb.mass;
+    } 
+
+    private void OnTriggerEnter(Collider other) {
+        //if the object enters a fire spread and is flamable
+        if (other.GetComponent<FireSpread>() != null && flamable)  StartCoroutine(Burn());
+    }
+
+    ///<summary>
+    /// Object burns to crisps and eventually gets destroyed
+    ///</summary>
+    public IEnumerator Burn() {
+        // OnBlur();
+        Outline.enabled = false;
+        Interactable = false;
+        flamable = false;
+
+        // yield return new WaitForEndOfFrame();
+        foreach (Material mat in getMaterials()) {
+            if (mat.HasProperty("EdgeColor")) {
+                mat.SetColor("EdgeColor", new Color(.7f,.04f,0) * 8f); //set color to hdr orange
+                StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), 3f));
+            }
+        }
+        ShowDisovleParticles(true);
+        yield return new WaitForSeconds(3f);
+        Destroy(gameObject);
+
+    } 
+
+    public virtual bool CanBeReleased() => true;
     
+
     #endregion
 }
