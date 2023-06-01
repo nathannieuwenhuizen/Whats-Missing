@@ -973,7 +973,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{27a24194-f4fc-4fc4-a016-815dc4a0165a}">
 		<property name="volume">
-			<value>-38</value>
+			<value>-19</value>
 		</property>
 		<property name="name">
 			<value>Perc</value>
@@ -1084,6 +1084,7 @@
 	<object class="MixerBusEffectChain" id="{f7ae44b1-b634-4314-9e43-0bc642229977}">
 		<relationship name="effects">
 			<destination>{b7cfcdc3-ca31-4e26-aa62-5d23e66961c0}</destination>
+			<destination>{e7c28bfa-5247-430a-90a2-5329b9567ffd}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{f24db5d5-63c9-45cd-b3b3-c0cc236ee243}" />
@@ -1342,6 +1343,20 @@
 	</object>
 	<object class="MixerBusPanner" id="{1350e063-c3d7-4d00-afa5-66cc71c715e6}" />
 	<object class="MixerBusFader" id="{b7cfcdc3-ca31-4e26-aa62-5d23e66961c0}" />
+	<object class="CompressorEffect" id="{e7c28bfa-5247-430a-90a2-5329b9567ffd}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
+		<property name="threshold">
+			<value>-14</value>
+		</property>
+		<property name="ratio">
+			<value>2.20000005</value>
+		</property>
+		<property name="releaseTime">
+			<value>38</value>
+		</property>
+	</object>
 	<object class="AutomationCurve" id="{a6a837b7-5620-43ff-9044-4f41f5293280}">
 		<relationship name="parameter">
 			<destination>{26f42533-707c-4c07-b322-4c72225ab388}</destination>
