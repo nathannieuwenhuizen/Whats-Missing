@@ -80,12 +80,16 @@ public class BossRoom : Room
 
 
     private void SpawnEndDoor() {
-        EndOfArea();
+        StartCoroutine(EndingOfArea());
         // EndDoor.gameObject.SetActive(true);
         // Vector3 endScale = EndDoor.transform.localScale;
         // EndDoor.transform.localScale = Vector3.zero;
         // StartCoroutine(EndDoor.transform.AnimatingLocalScale(endScale, AnimationCurve.EaseInOut(0,0,1,1), 3f));
         // EndDoor.Locked = false;
+    }
+    public IEnumerator EndingOfArea() {
+        yield return new WaitForSeconds(5f);
+        EndOfArea();
     }
 
     ///<summary>

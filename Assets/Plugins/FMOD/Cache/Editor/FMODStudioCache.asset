@@ -298,6 +298,34 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 171552
+--- !u!114 &-6976627543634505943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Vertical Variation
+  m_EditorClassIdentifier: 
+  Name: Vertical Variation
+  StudioPath: parameter:/Vertical Variation
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 585147102
+    data2: 3400892954
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - Tutti without Synth
+  - Strings Solo
+  - Synth Solo
+  - Tutti
+  Exists: 1
 --- !u!114 &-6929110457668028371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,10 +457,14 @@ MonoBehaviour:
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
-  Parameters: []
+  Parameters:
+  - {fileID: -1326526455665953404}
+  - {fileID: 9206961774393447864}
+  - {fileID: -2362812023345360297}
+  - {fileID: -5757940028325953465}
   MinDistance: 1
   MaxDistance: 20
-  Length: 285204
+  Length: 147153
 --- !u!114 &-6380446232128207476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -460,6 +492,32 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 100
   Length: 4356
+--- !u!114 &-5757940028325953465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Environment4/BossDead
+  m_EditorClassIdentifier: 
+  Name: BossDead
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 3420778969
+    data2: 2941522562
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Alive
+  - Dead
+  Exists: 1
 --- !u!114 &-5544711014387522914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -775,7 +833,7 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/UI.bank
   Name: UI
   StudioPath: bank:/UI
-  lastModified: 638194055577289076
+  lastModified: 638215133794881828
   FileSizes:
   - Name: Desktop
     Value: 153440
@@ -861,6 +919,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 910
+--- !u!114 &-2362812023345360297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Environment4/Stingers
+  m_EditorClassIdentifier: 
+  Name: Stingers
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 1872554439
+    data2: 3338823218
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - None
+  - Soft
+  - Loud
+  Exists: 1
 --- !u!114 &-1898404907750976114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,6 +1054,54 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 14090
+--- !u!114 &-1326526455665953404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Environment4/MusicIntensity
+  m_EditorClassIdentifier: 
+  Name: MusicIntensity
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 555420716
+    data2: 70275551
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
+--- !u!114 &-1233241056504795909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/MusicIntensity
+  m_EditorClassIdentifier: 
+  Name: MusicIntensity
+  StudioPath: parameter:/MusicIntensity
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 555420716
+    data2: 70275551
+  Type: 0
+  IsGlobal: 1
+  Labels: []
+  Exists: 1
 --- !u!114 &-1173228079970943298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,6 +1183,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2889
+--- !u!114 &-802587678000715524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Stingers
+  m_EditorClassIdentifier: 
+  Name: Stingers
+  StudioPath: parameter:/Stingers
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 1872554439
+    data2: 3338823218
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - None
+  - Soft
+  - Loud
+  Exists: 1
 --- !u!114 &-357126667566415301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1205,12 +1365,15 @@ MonoBehaviour:
   - {fileID: -4758163482366334982}
   - {fileID: 4726932535623095383}
   - {fileID: -4487126160607570740}
-  EditorParameters: []
+  EditorParameters:
+  - {fileID: -6976627543634505943}
+  - {fileID: -802587678000715524}
+  - {fileID: -1233241056504795909}
   MasterBanks:
   - {fileID: 9029852559141176227}
   StringsBanks:
   - {fileID: 4073322217217405102}
-  cacheTime: 638194055577289076
+  cacheTime: 638215133794881828
   cacheVersion: 10
 --- !u!114 &452026935731834607
 MonoBehaviour:
@@ -1848,10 +2011,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638194055574912145
+  lastModified: 638215133747099383
   FileSizes:
   - Name: Desktop
-    Value: 5066
+    Value: 5238
   Exists: 1
 --- !u!114 &4118106475035053436
 MonoBehaviour:
@@ -2407,7 +2570,7 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/InGame.bank
   Name: InGame
   StudioPath: bank:/InGame
-  lastModified: 638194055574553095
+  lastModified: 638215133746680494
   FileSizes:
   - Name: Desktop
     Value: 7292576
@@ -2454,10 +2617,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638194055574882214
+  lastModified: 638215133747069794
   FileSizes:
   - Name: Desktop
-    Value: 1371456
+    Value: 1372032
   Exists: 1
 --- !u!114 &9103494688438024846
 MonoBehaviour:
@@ -2501,8 +2664,36 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638194055576868975
+  lastModified: 638215133793764812
   FileSizes:
   - Name: Desktop
-    Value: 23782176
+    Value: 29106400
+  Exists: 1
+--- !u!114 &9206961774393447864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Environment4/Vertical Variation
+  m_EditorClassIdentifier: 
+  Name: Vertical Variation
+  StudioPath: 
+  Min: 0
+  Max: 3
+  Default: 0
+  ID:
+    data1: 585147102
+    data2: 3400892954
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - Tutti without Synth
+  - Strings Solo
+  - Synth Solo
+  - Tutti
   Exists: 1

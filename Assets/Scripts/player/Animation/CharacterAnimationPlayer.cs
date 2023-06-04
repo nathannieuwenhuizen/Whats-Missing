@@ -138,7 +138,7 @@ public class CharacterAnimationPlayer
         Boss.BossCutsceneState.OnBossCutsceneEnd -= OnBossCutsceneEnd;
     }
 
-    private void OnBossMirrorShake(BossMirror bossMirror) {
+    private void OnBossMirrorShake(BossMirror bossMirror, Player p) {
         PlayCutSceneAnimation("", false);
         bossMirror.StartCoroutine(InBossCutScene(bossMirror));
     }

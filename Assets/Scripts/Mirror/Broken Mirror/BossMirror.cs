@@ -7,9 +7,10 @@ public class BossMirror : Mirror, ITriggerArea
 {
     
     public delegate void BossMirrorEvent(BossMirror bossMirror);
+    public delegate void BossMirrorPlayerEvent(BossMirror bossMirror, Player player);
     public static BossMirrorEvent OnBossMirrorShardAttached;
     public static BossMirrorEvent OnMirrorShardAmmountUpdate;
-    public static BossMirrorEvent OnMirrorShake;
+    public static BossMirrorPlayerEvent OnMirrorShake;
     public static BossMirrorEvent OnMirrorComplete;
     public static BossMirrorEvent OnMirrorExplode;
     public static BossMirrorEvent OnAskingHint;
@@ -241,7 +242,7 @@ public class BossMirror : Mirror, ITriggerArea
     {
         if (introCutscene || skipIntro) return;
         introCutscene = true;
-        OnMirrorShake?.Invoke(this);
+        OnMirrorShake?.Invoke(this, player);
         StartCoroutine(ShakeBeforeExplosion());
         player = _player;
     }
@@ -264,7 +265,7 @@ public class BossMirror : Mirror, ITriggerArea
     private IEnumerator ShakeBeforeExplosion() {
         startPos = transform.position;
         AudioHandler.Instance?.PlaySound(SFXFiles.mirror_shake);
-        AudioHandler.Instance?.FadeMusic(MusicFiles.boss, 5f, true);
+        // AudioHandler.Instance?.FadeMusic(MusicFiles.boss, 5f, true);
 
         //activate stencil buffer
         bossStencilBuffer.SetActive(true);
