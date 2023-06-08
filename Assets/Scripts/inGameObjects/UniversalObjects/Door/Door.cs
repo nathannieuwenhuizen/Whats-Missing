@@ -35,7 +35,7 @@ public class Door : InteractabelObject
         if (IsEnlarged && Player.IsEnlarged) return true;
         Debug.Log("large check");
         //door is normal
-        if (!IsShrinked && !Player.IsEnlarged) return true;
+        if (!IsEnlarged && !Player.IsEnlarged && !IsShrinked && !Player.IsShrinked) return true;
         Debug.Log("normal check");
         //door is small
         if (IsShrinked && Player.IsShrinked) return true;

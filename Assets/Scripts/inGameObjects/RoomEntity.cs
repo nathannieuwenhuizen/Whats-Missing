@@ -178,7 +178,12 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     #region  shrinking/enlarging
     public virtual void OnShrinking()
     {
-        IsEnlarged = false;
+        if (IsEnlarged) {
+            OnEnlargeRevert();
+            IsEnlarged = false;
+            return;
+        }
+
         IsShrinked = true;
         if (ShrinkCoroutine != null) StopCoroutine(ShrinkCoroutine);
         if (Animated) {
@@ -218,7 +223,12 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnEnlarge()
     {
-        IsShrinked = false;
+        if (IsShrinked) {
+            OnShrinkRevert();
+            IsShrinked = false;
+            return;
+        }
+
         IsEnlarged = true;
         if (Animated)StartCoroutine(AnimateEnlarging());
         else OnEnlargingFinish();

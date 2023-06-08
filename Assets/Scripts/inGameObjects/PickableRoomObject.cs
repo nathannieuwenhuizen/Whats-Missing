@@ -48,12 +48,14 @@ public class PickableRoomObject : InteractabelObject, IPickable
     protected Rigidbody rb;     
     private Transform oldParent;
     private string grabbedLayer = "Test";
+    private float  startMass = 1f;
     private string idleLayer;
     protected override void Awake()
     {
         base.Awake();
         idleLayer = LayerMask.LayerToName(gameObject.layer);
         rb = GetComponent<Rigidbody>();
+        startMass = rb.mass;
         RigidBodyInfo.Save(rb);
         grabSound = SFXFiles.player_grab;
 
@@ -108,7 +110,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
     public override float CurrentScale { get { return base.CurrentScale; } 
         set {
             base.CurrentScale = value;
-            if (rb != null) rb.mass = value;
+            if (rb != null) rb.mass = value * startMass;
         }  
     }
     protected float holdingDistance = 3f;
