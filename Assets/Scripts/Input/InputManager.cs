@@ -113,15 +113,9 @@ public class InputManager : MonoBehaviour
             cameraVector = controls.Player.Camera.ReadValue<Vector2>();
             OnRotate?.Invoke(cameraVector);
         }
-
-
     }
 
-
-
     public void Jump(InputAction.CallbackContext context) {
-        Debug.Log("jump");
-
         OnJump?.Invoke();
     }
     public void RunStart(InputAction.CallbackContext context) {

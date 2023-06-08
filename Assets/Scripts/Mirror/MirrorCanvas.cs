@@ -13,6 +13,9 @@ public class MirrorCanvas : MonoBehaviour
 {
     [SerializeField]
     private Mirror mirror;
+    public Mirror Mirror {
+        get { return mirror;}
+    }
 
     [SerializeField]
     private CanvasGroup hintToggle;
@@ -167,8 +170,10 @@ public class MirrorCanvas : MonoBehaviour
         if (InputManager.KEYBOARD_ENABLED_MIRROR){
             foreach( Letter letter in Letters) {
                 if (Input.GetKeyDown(GetKeyCode(letter.LetterValue[0]))) {
-                    letter.pressedTime = 0;
-                    LetterClicked(letter);
+                    if (letter.Interactable) {
+                        letter.pressedTime = 0;
+                        LetterClicked(letter);
+                    }
                     return;
                 }
             }
@@ -314,7 +319,7 @@ public class MirrorCanvas : MonoBehaviour
     {
         if (letter.Dragged() && canBeDragged) {
             if (passedLetterIndex == -1) {
-                AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
+                if (mirror.canPlayAudio) AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
 
                 letter.Deselect(true);
                 letter.PreClickSelected = false;
@@ -335,6 +340,7 @@ public class MirrorCanvas : MonoBehaviour
         
         UpdateAnswerTextPosition(null);
     }
+
 
     ///<summary>
     /// sets all the letters to their original place.
@@ -403,7 +409,6 @@ public class MirrorCanvas : MonoBehaviour
 
     private float durationBeforeSecondHint = 0;
     public void ShowHintButton(string _hintText, float _durationBeforeSecondHint) {
-        if (_hintText == "") return;
         durationBeforeSecondHint = _durationBeforeSecondHint;
         hintText = _hintText;
         hintToggle.interactable = true;

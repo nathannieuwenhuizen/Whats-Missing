@@ -22,7 +22,7 @@ public class TimeStopDebrees : MonoBehaviour
         }
     }
 
-    private void Awake() {
+    private void OnEnable() {
         pss = GetComponentsInChildren<ParticleSystem>();
         // // ps.playOnAwake = false;
         // foreach(ParticleSystem ps in pss) ps.Pause();
@@ -35,10 +35,11 @@ public class TimeStopDebrees : MonoBehaviour
     //     if (simulate) foreach(ParticleSystem ps in pss) ps.Simulate(Time.deltaTime * timeScale, true, false);
     // }
     private void StopTime() {
+        Debug.Log("stop time!");
+        AudioHandler.Instance?.Play3DSound(SFXFiles.rock_smash_time_stop, transform, 1f, 1f, false, true, 100f, false).Play();
         StartCoroutine( Extensions.AnimateCallBack(1,0, AnimationCurve.Linear(0,0,1,1), (float v) => {
             TimeScale = v;
         }, 2f));
-
     }
 
 }

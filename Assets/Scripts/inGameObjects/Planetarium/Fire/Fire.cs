@@ -22,7 +22,7 @@ public class Fire : RoomObject
     private Coroutine smokeCoroutine;
 
     [SerializeField]
-    private bool palyerFireSound = true;
+    private bool playFireSound = true;
     [SerializeField]
     private float animationSpeed = 1f;
 
@@ -63,18 +63,18 @@ public class Fire : RoomObject
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
-        if (fireSound == null) {
+        if (fireSound == null && playFireSound) {
             fireSound =  AudioHandler.Instance.Play3DSound(SFXFiles.fire_crackling, transform, .5f, 1f, true, true, 15);
         }
-        if (palyerFireSound) fireSound.Play();
-        else fireSound.Stop();
+        if ( playFireSound) fireSound.Play();
+        else if (fireSound != null) fireSound.Stop();
     }
 
     private void SetFireOn() {
         foreach(Transform go in transform.GetComponentInChildren<Transform>()) {
             go.gameObject.SetActive(true);
         }
-        if (fireSound != null)
+        if (fireSound != null && playFireSound)
             fireSound.Pause();
 
     }
@@ -83,8 +83,8 @@ public class Fire : RoomObject
         foreach(Transform go in transform.GetComponentInChildren<Transform>()) {
             go.gameObject.SetActive(false);
         }
-        if (fireSound != null)
-            fireSound.Play();
+        if (fireSound != null && playFireSound)
+            fireSound.Pause();
 
         if (IsEnlarged) {
             OnEnlargeRevert();

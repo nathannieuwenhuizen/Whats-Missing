@@ -32,10 +32,10 @@ public class DestroyTrigger : MonoBehaviour, IRoomObject
         
         RoomObject changable = other.gameObject.GetComponent<RoomObject>();
         if (changable != null) {
-            coll.isTrigger = true;
-            StartCoroutine(DisableTrigger());
             Player player = changable.Transform.GetComponent<Player>();
             if (player != null) {
+                coll.isTrigger = true;
+                StartCoroutine(DisableTrigger());
                 player.Die(false);
             } else {
                 Destroy(changable.Transform.gameObject);
@@ -44,7 +44,7 @@ public class DestroyTrigger : MonoBehaviour, IRoomObject
     }
 
     public IEnumerator DisableTrigger() {
-        yield return new WaitForSeconds(.5f);
-            coll.isTrigger = false;
+        yield return new WaitForSeconds(5f);
+        coll.isTrigger = false;
     }
 }

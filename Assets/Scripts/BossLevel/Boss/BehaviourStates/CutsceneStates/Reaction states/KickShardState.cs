@@ -34,7 +34,9 @@ namespace Boss {
             }));
         }
         public IEnumerator ShardUpdate() {
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(.5f);
+            AudioHandler.Instance?.Play3DSound(SFXFiles.boss_shard_kick_noise, Boss.transform);
+            yield return new WaitForSeconds(1f);
             OnBossCutsceneTargetUpdate?.Invoke(Boss.Body.KickedShardRenderer.transform, new Vector2(-2, 5f), 2f);
             DialoguePlayer.Instance.PlayLine(BossLines.GetShardKickLine());
             AttachMirrorShardToBoss();
@@ -55,7 +57,7 @@ namespace Boss {
             shard.transform.localPosition = Vector3.zero;
             shard.OutlineEnabled = false;
             shard.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            shard.transform.localScale = Vector3.one * 0.005f;
+            shard.transform.localScale = Vector3.one;// * 0.005f;
         }
 
         private void DetachMirrorShard() {

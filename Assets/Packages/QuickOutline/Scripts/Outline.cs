@@ -162,6 +162,8 @@ public class Outline : MonoBehaviour {
 
   void OnDisable() {
     foreach (var renderer in renderers) {
+      if (renderer != null) continue;
+      if (renderer.gameObject != null) continue;
       if (renderer.gameObject.GetComponent<ParticleSystem>() != null) continue;
 
       // Remove outline shaders

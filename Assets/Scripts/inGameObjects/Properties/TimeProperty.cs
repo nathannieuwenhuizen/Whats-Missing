@@ -24,6 +24,9 @@ public class TimeProperty : Property
         foreach(PickableRoomObject obj in room.GetAllObjectsInRoom<PickableRoomObject>()) {
             if (obj.RigidBody != null) obj.RigidBody.isKinematic = true;
         }
+        if (Animated) {
+            AudioHandler.Instance?.PlaySound(SFXFiles.time_stop, .5f);
+        }
 
         onTimeMissing?.Invoke();
     }

@@ -23,7 +23,7 @@ public class DemoText : MonoBehaviour
         AlchemyItem.OnAlchemyEndScene -= FadeToWhite;
     }
 
-    private void ShowDemoText(int _areaIndex) {
+    private void ShowDemoText(int _areaIndex, bool animating) {
         StartCoroutine(group.FadeCanvasGroup(1, 3f, 1));
         StartCoroutine(WaitForExit());
     }

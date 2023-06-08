@@ -13,6 +13,8 @@ namespace Boss {
         public static AttemptToHitShiled AttemptingToHitShield;
         public static bool LAST_CHASE = false;
 
+        private Coroutine attackShieldCoroutine;
+
 
         public override void DrawDebug()
         {
@@ -94,6 +96,7 @@ namespace Boss {
         public override void Exit()
         {
             bossAI.BossHead.SteeringEnabled = true;
+            if (attackShieldCoroutine != null) bossAI.StopCoroutine(attackShieldCoroutine);
 
             bossAI.BossEye.AnimateViewAngle(oldViewAngle);
             bossAI.BossEye.noticingValue = 0;
@@ -130,7 +133,7 @@ namespace Boss {
             if (isAttacking) return;
             isAttacking = true;
             AttemptingToHitShield?.Invoke();
-            bossAI.StartCoroutine(AttackingShield());
+            attackShieldCoroutine = bossAI.StartCoroutine(AttackingShield());
         }
 
         ///<summary>

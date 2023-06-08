@@ -222,11 +222,14 @@ public interface IPickable {
     bool CanBeReleased();
     bool Touching {get;}
     bool TooHeavy(Hands hands);
+    void UpdateGrabPhysics();
     GameObject gameObject {get; }
     Rigidbody RigidBody { get; set; }
     RigidBodyInfo RigidBodyInfo { get;set;}    
     public float HoldingDistance {get; }
     public Vector3 HoldingOffset {get;set;}
+    public Vector3 HoldingLocalOffset {get;}
+    public Vector3 HoldingPosition {get;}
     public HoldOrientation HoldOrientation  {get; }
 
 }
@@ -241,6 +244,7 @@ public interface IInteractable {
     ///</summary>
     bool Focused {get; set;}
     bool Disabled {get; set;}
+    public bool AlwaysShowOutline {get; set; }
     bool Interactable {get; set; }
     GameObject Gameobject { get; }
 

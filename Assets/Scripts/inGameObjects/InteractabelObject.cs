@@ -64,6 +64,15 @@ public class InteractabelObject : RoomObject, IInteractable
         Outline.enabled = true;
     } }
 
+    private bool alwaysShowOutline = false;
+    public bool AlwaysShowOutline { get => alwaysShowOutline; 
+        set {
+            alwaysShowOutline = value;
+            if (value) OnFocus();
+            else OnBlur();
+        }
+    }
+
     ///<summary>
     /// When the cursor hovers over the mesh of the object. It makes the outline appear.
     ///</summary>
@@ -80,7 +89,7 @@ public class InteractabelObject : RoomObject, IInteractable
     /// When the cursor unhovers the emesh of the pbject. Making the outline disappear.
     ///</summary>
     protected virtual void OnBlur() {
-        if (!OutlineEnabled) return;
+        if (!OutlineEnabled || AlwaysShowOutline) return;
         
         if (outline != null) {
             if (focusedCoroutine != null) 
@@ -99,7 +108,7 @@ public class InteractabelObject : RoomObject, IInteractable
             yield return new WaitForEndOfFrame();
         }
         outline.OutlineWidth = val;
-        if (disableAfterAnimating)
+        if (disableAfterAnimating && outline != null)
             outline.enabled = false;
     }
 

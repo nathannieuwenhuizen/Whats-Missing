@@ -6,7 +6,7 @@ namespace Boss {
     public class HugeAnticipationState : BaseBossState, IState
     {
         public Coroutine animationCoroutine;
-        public float totalDuration = 33f;
+        public float totalDuration = 30f;
         private bool timeStops = false;
 
         public override void DrawDebug()
@@ -48,7 +48,7 @@ namespace Boss {
             bossAI.BossChargeParticle.PlayEmmission();
 
             float index = 0;
-            while(index < totalDuration && !timeStops) {
+            while(index < totalDuration && !timeStops && Player.INVINCIBLE) {
                 index += Time.deltaTime;
                 bossAI.BossChargeParticle.Interpolate(index / totalDuration);
                 bossAI.Boss.Body.Glow = 1 + 2f - 2f * Mathf.Abs(Mathf.Cos(Mathf.PI *  index * (.5f + index * .1f)));
@@ -90,8 +90,10 @@ namespace Boss {
 
             //setting boss pos
             bossAI.Boss.BossPositioner.MovementEnabled = true;
-            bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.toPlayer;
             bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.freeFloat;
+            bossAI.Boss.BossPositioner.RotationEnabled = false;
+            bossAI.StartCoroutine(bossAI.Boss.transform.AnimatingRotation(bossAI.HugeAttackPos.rotation, AnimationCurve.EaseInOut(0,0,1,1), 2f));
+            // bossAI.Boss.BossPositioner.BodyOrientation = BodyOrientation.toPlayer;
 
             Positioner.SpeedScale = 1f;
             Positioner.SetDestinationPath(bossAI.HugeAttackPos , bossAI.transform.position, true, 5f);
@@ -99,8 +101,12 @@ namespace Boss {
 
         }
 
+
         public void ResetState(bool wthColor) {
+
             bossAI.BossChargeParticle.StopEmmission();
+            bossAI.BossChargeParticle.ResetEmission();
+            // bossAI.BossChargeParticle.gameObject.SetActive(false);
             bossAI.TimeStopDebrees.gameObject.SetActive(false);
             bossAI.BossTimeStopCollider.SetActive(true);
             StartHugeAnticipationAnimation();
@@ -110,7 +116,7 @@ namespace Boss {
         {
             TimeProperty.onTimeMissing -= OnTimeMissing;
             BossRoom.OnRespawn -= ResetState;
-            bossAI.TimeStopDebrees.TimeScale = 2f;
+            if (bossAI.TimeStopDebrees.isActiveAndEnabled) bossAI.TimeStopDebrees.TimeScale = 2f;
             bossAI.BossChargeParticle.TimeScale = 4f;
             bossAI.BossChargeParticle.StopEmmission();
 

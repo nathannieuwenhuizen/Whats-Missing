@@ -8,15 +8,21 @@ using TMPro;
 public class BaseDropDownMenu : MonoBehaviour
 {
     private TMP_Dropdown dropDown;
+    private bool canPlayAudio = false;
     // Start is called before the first frame update
     void Start()
     {
         dropDown = GetComponent<TMP_Dropdown>();
         dropDown.onValueChanged.AddListener(OnValueChange);
     }
+    public IEnumerator DelayAudioEnabling() {
+        yield return new WaitForSeconds(.5f);
+        canPlayAudio = true;
+    }
+
 
     private void OnValueChange(int val) {
-        AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_click);
+        if (canPlayAudio) AudioHandler.Instance.PlayUISound(SFXFiles.ui_button_click);
     }
 
 }

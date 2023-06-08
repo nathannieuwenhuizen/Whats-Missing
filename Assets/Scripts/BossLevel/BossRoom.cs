@@ -35,6 +35,9 @@ public class BossRoom : Room
     
     //auto enter for the player
     private void Start() {
+        hintStopwatch.room = this;
+        hintStopwatch.Duration = 90f;
+
         OnRoomEnter(Player, false);
         allObjects.Add(boss);
         
@@ -52,23 +55,41 @@ public class BossRoom : Room
     private void OnEnable() {
         Player.OnDie += ResetPlayer;
         DieState.OnBossDie += SpawnEndDoor;
+        Boss.Boss.OnBossIntroStart += StartHintTimer;
     }
 
     private void OnDisable() {
         Player.OnDie -= ResetPlayer;
         DieState.OnBossDie -= SpawnEndDoor;
+        Boss.Boss.OnBossIntroStart -= StartHintTimer;
         if (Area.AUTO_SAVE_WHEN_DESTROY) SaveProgress();
     }
     private void OnDestroy() {
         if (Area.AUTO_SAVE_WHEN_DESTROY) SaveProgress();
     }
+    public override void ShowMirrorToggleHint() {
+        foreach(Mirror mirror in mirrors) {
+            mirror.MirrorCanvas.ShowHintButton("", 0);
+        }
+    }
+
+    public void StartHintTimer() {
+        hintStopwatch.Reset();
+        hintStopwatch.Resume();
+    }
+
 
     private void SpawnEndDoor() {
-        EndDoor.gameObject.SetActive(true);
-        Vector3 endScale = EndDoor.transform.localScale;
-        EndDoor.transform.localScale = Vector3.zero;
-        StartCoroutine(EndDoor.transform.AnimatingLocalScale(endScale, AnimationCurve.EaseInOut(0,0,1,1), 3f));
-        EndDoor.Locked = false;
+        StartCoroutine(EndingOfArea());
+        // EndDoor.gameObject.SetActive(true);
+        // Vector3 endScale = EndDoor.transform.localScale;
+        // EndDoor.transform.localScale = Vector3.zero;
+        // StartCoroutine(EndDoor.transform.AnimatingLocalScale(endScale, AnimationCurve.EaseInOut(0,0,1,1), 3f));
+        // EndDoor.Locked = false;
+    }
+    public IEnumerator EndingOfArea() {
+        yield return new WaitForSeconds(5f);
+        EndOfArea();
     }
 
     ///<summary>
@@ -91,7 +112,7 @@ public class BossRoom : Room
         OnRespawn?.Invoke(true);
     }
     public void EndOfArea() {
-        sceneLoader.GoToNextLevel(3);
+        sceneLoader.GoToNextLevel(3, true);
     }
 
     public void SaveProgress() {

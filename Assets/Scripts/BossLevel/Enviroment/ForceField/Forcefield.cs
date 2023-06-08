@@ -70,9 +70,7 @@ namespace ForcefieldDemo
             rb = GetComponent<Rigidbody>();
             mirrorMeshRenderer.material.SetInt("_enableIntersection", 0);
             StartCoroutine(Cooldown());
-        }
-        void Start()
-        {
+            
             meshRenderer.enabled = false;
             ToggleColliders(false);
             Dissolve = 1;
@@ -85,6 +83,9 @@ namespace ForcefieldDemo
                 cam = Camera.main;
             }
             coolDownWindow = 0;
+        }
+        void Start()
+        {
 
         }
         private void FixedUpdate() {

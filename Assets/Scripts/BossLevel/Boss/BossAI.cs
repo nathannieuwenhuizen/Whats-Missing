@@ -9,7 +9,6 @@ namespace Boss {
 ///</summary>
 public class BossAI : MonoBehaviour {
 
-
     [SerializeField]
     private WanderingPaths paths;
 
@@ -27,6 +26,11 @@ public class BossAI : MonoBehaviour {
     private Transform enlargePosition;
     public Transform EnlargePosition {
         get { return enlargePosition;}
+    }
+    [SerializeField]
+    private Transform enlargeEndPosition;
+    public Transform EnlargeEndPosition {
+        get { return enlargeEndPosition;}
     }
 
     [SerializeField]
@@ -106,7 +110,9 @@ public class BossAI : MonoBehaviour {
         bossChargeParticle.gameObject.SetActive(false);
     }
     public void InitializeStateMachine() {
-        stateMachine = new FSM(behaviours.wanderState);
+        IState startState = behaviours.idleState;
+        if (boss.BossMirror.SkippingIntro) startState = behaviours.wanderState;
+        stateMachine = new FSM(startState);
     }
     public void UpdateAI() {
         stateMachine?.Update();
@@ -118,12 +124,6 @@ public class BossAI : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.Y)) {
                 stateMachine.SwitchState(behaviours.dieState);
             }
-            // if (Input.GetKeyDown(KeyCode.T)) {
-            //     stateMachine.SwitchState(behaviours.destroyShieldState);
-            // }
-            // if (Input.GetKeyDown(KeyCode.T)) {
-            //     stateMachine.SwitchState(behaviours.chargeAtShieldState);
-            // }
         }
 #endif
     }
@@ -137,12 +137,14 @@ public class BossAI : MonoBehaviour {
         Vector3 delta = boss.Player.transform.position - mirror.transform.position;
         delta.y = 0;
         delta = delta.normalized;
+        Boss.OnBossIntroStart?.Invoke();
 
         boss.transform.position = mirror.transform.position + new Vector3(0,-15,0) + (delta * -5f);
         boss.transform.LookAt(boss.Player.transform.position, Vector3.up);
         boss.transform.rotation = Quaternion.Euler(0, boss.transform.rotation.eulerAngles.y,0);
         
         stateMachine.SwitchState(behaviours.bossIntro);
+
     }
 
 
@@ -200,22 +202,28 @@ public class BossAI : MonoBehaviour {
         mountainAttackPosition = _pos;
     }
 
+    public void OnMirrorHint(BossMirror _mirror) {
+        DialoguePlayer.Instance.PlayLine(BossLines.AskingForHintReaction(), false);
+    }
     private void OnEnable() {
         BossMirror.OnMirrorExplode += DoIntro;
         BossMirror.OnMirrorExplode += MirrorShardRecolectReaction;
         MirrorShard.OnPickedUp += MirrShardPickupEvent;
         MountainAttackPose.OnPlayerEnteringAttackArea += UpdateMountainAttackPosition;
+        BossMirror.OnAskingHint += OnMirrorHint;
 
         BossMirror.OnBossMirrorShardAttached += MirrorShardRecolectReaction;
         ForcefieldDemo.Forcefield.OnForceFieldEnter += PlayerIsInsdeForceField;
         ForcefieldDemo.Forcefield.OnForceFieldExit += PlayerIsOutsideForceField;
     }
 
+
     private void OnDisable() {
-        BossMirror.OnMirrorExplode += DoIntro;
+        BossMirror.OnMirrorExplode -= DoIntro;
         BossMirror.OnMirrorExplode -= MirrorShardRecolectReaction;
         MirrorShard.OnPickedUp -= MirrShardPickupEvent;
         MountainAttackPose.OnPlayerEnteringAttackArea -= UpdateMountainAttackPosition;
+        BossMirror.OnAskingHint -= OnMirrorHint;
 
         ForcefieldDemo.Forcefield.OnForceFieldEnter -= PlayerIsInsdeForceField;
         ForcefieldDemo.Forcefield.OnForceFieldExit -= PlayerIsOutsideForceField;

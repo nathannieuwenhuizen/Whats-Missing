@@ -86,6 +86,7 @@ public class BossPositioner : MonoBehaviour
     ///<summary>
     /// Enables/disables the movement
     ///</summary>
+    [SerializeField]
     public bool MovementEnabled {
         get { return CurrentMovementBehaviour.MovementEnabled;}
         set { 
@@ -99,6 +100,7 @@ public class BossPositioner : MonoBehaviour
             if (value == false) steeringBehaviour.Velocity = Vector3.zero;
         }
     }
+    [SerializeField]
     private bool rotationEnabled = true;
     public bool RotationEnabled {
         get { return rotationEnabled;}
@@ -131,6 +133,7 @@ public class BossPositioner : MonoBehaviour
         }
     }
 
+    [SerializeField]
     private BodyOrientation bodyOrientation = BodyOrientation.none;
     public BodyOrientation BodyOrientation {
         get { return bodyOrientation;}
@@ -250,6 +253,7 @@ public class BossPositioner : MonoBehaviour
 
         while(!AtPosition(3f)) {
             timePassed += Time.deltaTime;
+            BodyMovementType = BodyMovementType.freeFloat;
             yield return new WaitForFixedUpdate();
         }
         
@@ -293,19 +297,21 @@ public class BossPositioner : MonoBehaviour
         //sets the destination.
         MovementEnabled = false;
         SetDestinationPath(transform.position + Vector3.up * 10f, transform.position + Vector3.up * 10f, false, 15f);
-        SpeedScale = 1f;
+        SpeedScale = .7f;
 
         //do taking off animation.
         InAir = true;
-        yield return new WaitForSeconds(.6f);
+        yield return new WaitForSeconds(.3f);
+        AudioHandler.Instance?.Play3DSound(SFXFiles.boss_take_off, transform);
+        yield return new WaitForSeconds(.3f);
 
         MovementEnabled = true;
         //spawn debree at end position when the coordinate of the boss is within 3 units of its destination.
         // SpawnDebree(transform);
-        // AudioHandler.Instance?.Play3DSound(SFXFiles.boss_landing, transform);
 
         //wait until the boss is within 1 unit.
         while(!AtPosition(1f)) yield return new WaitForFixedUpdate();
+        SpeedScale = 1f;
         
         //callback will be called if it isnt null.
         if (callback != null) callback();   

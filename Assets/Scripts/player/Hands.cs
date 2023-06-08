@@ -122,12 +122,13 @@ public class Hands : MonoBehaviour
     public Vector3 test;
     private IEnumerator UpdatePhysics() {
         while (holdingObject != null) {
+            holdingObject.UpdateGrabPhysics();
             Transform t = Camera.main.transform;
 
             var speed = holdingObject.Touching ? 3f : 10f;
             holdingObject.RigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
             Vector3 offset = t.TransformDirection(new Vector3(0,0,1)).normalized * (holdingObject.HoldingDistance) + t.TransformDirection(holdingObject.HoldingOffset);
-            Vector3 midwayDestination = Vector3.Lerp(holdingObject.RigidBody.transform.position, t.position + offset, Time.deltaTime * speed);
+            Vector3 midwayDestination = Vector3.Lerp(holdingObject.HoldingPosition, t.position + offset + holdingObject.HoldingLocalOffset, Time.deltaTime * speed);
             holdingObject.RigidBody.MovePosition(midwayDestination);
             // holdingObject.RigidBody.MovePosition(t.position + offset);
 
@@ -147,7 +148,7 @@ public class Hands : MonoBehaviour
 
                 // holdingObject.RigidBody.rotation.LookAt(transform.position, transform.up);
             }
-            yield return new WaitForEndOfFrame();
+            yield return new WaitForFixedUpdate();
             
         }   
     }

@@ -45,9 +45,14 @@ namespace Boss {
             //reshape the boss mountain to make the arc more fitting
             if (customMountainShape) Positioner.BossMountain.MakeMountainFit(bossAI.transform.position, ReactionPosition() + Vector3.up * 3f);
             
+            float distance = Vector3.Distance(ReactionPosition(), bossAI.transform.position);
+            if (distance > 15f) {
+                Positioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
+            } else {
+                Positioner.BodyMovementType = BodyMovementType.freeFloat;
+            }
             //go to air position of landing pos
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
-            Positioner.BodyMovementType = BodyMovementType.airSteeringAtMountain;
             Positioner.RotationEnabled = true;
             Positioner.MovementEnabled = true;
             Positioner.SetDestinationPath(ReactionPosition() + Vector3.up * 3f, bossAI.transform.position, true, 5f);

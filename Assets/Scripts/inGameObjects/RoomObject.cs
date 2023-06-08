@@ -79,6 +79,9 @@ public class RoomObject : RoomEntity
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials()) StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
                 ShowDisovleParticles();
+                Debug.Log("disappear");
+                if (currentChange.changeCausation == ChangeCausation.potion)
+                    AudioHandler.Instance?.Play3DSound(SFXFiles.object_disappear, transform, 1f);
                 yield return new WaitForSeconds(animationDuration);
             break;
         }
@@ -115,6 +118,8 @@ public class RoomObject : RoomEntity
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials()) StartCoroutine(mat.AnimatingDissolveMaterial(1, 0, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
                 ShowDisovleParticles();
+                if (currentChange.changeCausation == ChangeCausation.potion)
+                    AudioHandler.Instance?.Play3DSound(SFXFiles.object_reappear, transform, 1f);
                 yield return new WaitForSeconds(animationDuration);
             break;
         }
@@ -202,6 +207,7 @@ public class RoomObject : RoomEntity
     public override IEnumerator AnimateShrinking()
     {
         Debug.Log("shrinking animate");
+        AudioHandler.Instance?.Play3DSound(SFXFiles.object_shrink, transform, 1f);
         yield return this.AnimatingRoomObjectScale( shrinkScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnShrinkingFinish();
     }

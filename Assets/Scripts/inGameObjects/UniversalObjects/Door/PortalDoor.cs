@@ -54,6 +54,7 @@ public class PortalDoor : Door
     protected override void Awake() {
         base.Awake();
         SetPortalState(!locked);
+        Word = "door";
     }
 
     public override void SetBezierPoints(Player player)
@@ -127,5 +128,9 @@ public class PortalDoor : Door
     }
     public override Vector3 EndPos() {
         return transform.position - transform.forward * walkDistance;
+    }
+    private void Reset() {
+        Word = "door";
+        AlternativeWords = new string[] {"doors"};
     }
 }

@@ -25,7 +25,7 @@ public class Room : MonoBehaviour
     [HideInInspector]
     public int LoadIndex = 0;
 
-    private HintStopwatch hintStopwatch;
+    protected HintStopwatch hintStopwatch;
 
     private Area area;
     public Area Area {
@@ -284,7 +284,8 @@ public class Room : MonoBehaviour
     /// Checks if a mirror question is correct with the changes that exist inside the room.
     ///</summary>
     public void CheckMirrorQuestion(Mirror selectedMirror) {
-        selectedMirror.IsOn = changeHandler.ContainsWord(selectedMirror);
+        Debug.Log("check is on: " + selectedMirror.Letters.Length);
+        selectedMirror.IsOn = (changeHandler.ContainsWord(selectedMirror) || selectedMirror.Letters.Length == 0);
         CheckRoomCompletion();
     }
 
@@ -392,7 +393,8 @@ public class Room : MonoBehaviour
 
     }
 
-    public void ShowMirrorToggleHint() {
+    public virtual void ShowMirrorToggleHint() {
+        if (roomLevel.roomInfo.hintText == "") return;
         foreach(Mirror mirror in mirrors) {
             if (mirror.isQuestion) {
                 mirror.MirrorCanvas.ShowHintButton(roomLevel.roomInfo.hintText, roomLevel.roomInfo.durationBeforeHighlighting);
@@ -480,6 +482,11 @@ public class Room : MonoBehaviour
     public void AddPotionChange(Potion potion, IChangable changable) {
         if (!InArea) return;
         changeHandler.AddPotionChange(potion, changable);
+        UpdateMirrorStates();
+        CheckRoomCompletion();
+    }
+    public void OnPlayerDie() {
+        changeHandler.OnPlayerDie(player);
         UpdateMirrorStates();
         CheckRoomCompletion();
     }

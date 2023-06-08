@@ -86,6 +86,9 @@
 		</relationship>
 	</object>
 	<object class="ReturnTrack" id="{d2760a51-792e-4829-aab3-7403f60d143c}">
+		<relationship name="automationTracks">
+			<destination>{8b6715b4-cf7a-4b68-82af-cca03442202d}</destination>
+		</relationship>
 		<relationship name="mixerReturn">
 			<destination>{adfb5a43-7479-41e9-a08c-e1456b18bcf0}</destination>
 		</relationship>
@@ -345,13 +348,24 @@
 			<destination>{9e885b75-c098-4c90-8e29-012947713329}</destination>
 		</relationship>
 	</object>
+	<object class="AutomationTrack" id="{8b6715b4-cf7a-4b68-82af-cca03442202d}">
+		<relationship name="automator">
+			<destination>{a2753a33-67a2-4107-9a4e-91e6db80d805}</destination>
+		</relationship>
+	</object>
 	<object class="EventMixerReturn" id="{adfb5a43-7479-41e9-a08c-e1456b18bcf0}">
 		<property name="volume">
-			<value>-15</value>
+			<value>-13.5</value>
 		</property>
 		<property name="name">
 			<value>A</value>
 		</property>
+		<relationship name="automators">
+			<destination>{a2753a33-67a2-4107-9a4e-91e6db80d805}</destination>
+		</relationship>
+		<relationship name="modulators">
+			<destination>{91751de0-568f-4422-acda-c131a1d9d7a2}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{759b9180-32b8-4dd1-8714-2edc3c406f2e}</destination>
 		</relationship>
@@ -604,6 +618,31 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{4337604e-c7bb-4fd6-8e6b-8b7605b42652}" />
+	<object class="Automator" id="{a2753a33-67a2-4107-9a4e-91e6db80d805}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>volume</value>
+		</property>
+		<relationship name="automationCurves">
+			<destination>{8830b52c-2dda-4665-a2f2-f3e26259818d}</destination>
+		</relationship>
+	</object>
+	<object class="LFOModulator" id="{91751de0-568f-4422-acda-c131a1d9d7a2}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="shape">
+			<value>6</value>
+		</property>
+		<property name="rate">
+			<value>0.25999999</value>
+		</property>
+		<property name="depth">
+			<value>61.5</value>
+		</property>
+		<property name="direction">
+			<value>-100</value>
+		</property>
+	</object>
 	<object class="MixerBusEffectChain" id="{759b9180-32b8-4dd1-8714-2edc3c406f2e}">
 		<relationship name="effects">
 			<destination>{6753202d-6188-4165-8060-548c15ce5d35}</destination>
@@ -611,6 +650,8 @@
 			<destination>{aa1f91fe-e731-4046-85d4-e1f7581b2869}</destination>
 			<destination>{6b1451b7-90d8-4f3a-9187-c2f7b7701107}</destination>
 			<destination>{b9bbcc20-caf3-4dbd-b2bc-0b1acc15366a}</destination>
+			<destination>{3bffad91-612c-43d6-ac7f-69b6b6e6a5f5}</destination>
+			<destination>{83e53d61-fe4f-4135-9a09-68fe74506e4b}</destination>
 			<destination>{8114578c-8595-49b2-b6b9-4541d524dd2f}</destination>
 		</relationship>
 	</object>
@@ -626,6 +667,18 @@
 		</property>
 		<relationship name="mixerReturn">
 			<destination>{adfb5a43-7479-41e9-a08c-e1456b18bcf0}</destination>
+		</relationship>
+	</object>
+	<object class="AutomationCurve" id="{8830b52c-2dda-4665-a2f2-f3e26259818d}">
+		<relationship name="parameter">
+			<destination>{1a1ae06c-ac69-4767-b159-c7b3738ec2ee}</destination>
+		</relationship>
+		<relationship name="automationPoints">
+			<destination>{f2e8a61f-9a01-44e7-bfd0-dcddf4f627a0}</destination>
+			<destination>{1bbaee41-a3fe-4e7c-a46c-41aa50ef7f1b}</destination>
+			<destination>{7a27a750-ad79-4772-b839-0ba54e6257e6}</destination>
+			<destination>{2649b8dc-1d50-4fb6-b268-8a15a30b7842}</destination>
+			<destination>{c605d6e2-a911-450e-960d-812f196ecfa4}</destination>
 		</relationship>
 	</object>
 	<object class="ThreeEQEffect" id="{6753202d-6188-4165-8060-548c15ce5d35}">
@@ -683,7 +736,63 @@
 			<value>2</value>
 		</property>
 	</object>
+	<object class="PannerEffect" id="{3bffad91-612c-43d6-ac7f-69b6b6e6a5f5}">
+		<relationship name="modulators">
+			<destination>{146ceb99-65a3-48e8-bbb2-4e06c461e224}</destination>
+		</relationship>
+	</object>
+	<object class="SFXReverbEffect" id="{83e53d61-fe4f-4135-9a09-68fe74506e4b}">
+		<property name="decayTime">
+			<value>4400</value>
+		</property>
+		<property name="wetLevel">
+			<value>-0.5</value>
+		</property>
+		<property name="dryLevel">
+			<value>-3.5</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{8114578c-8595-49b2-b6b9-4541d524dd2f}" />
+	<object class="AutomationPoint" id="{f2e8a61f-9a01-44e7-bfd0-dcddf4f627a0}">
+		<property name="position">
+			<value>70</value>
+		</property>
+		<property name="value">
+			<value>-80</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{1bbaee41-a3fe-4e7c-a46c-41aa50ef7f1b}">
+		<property name="position">
+			<value>73.26007214696223</value>
+		</property>
+		<property name="value">
+			<value>-80</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{7a27a750-ad79-4772-b839-0ba54e6257e6}">
+		<property name="position">
+			<value>3.4821962233169126</value>
+		</property>
+		<property name="value">
+			<value>-14</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{2649b8dc-1d50-4fb6-b268-8a15a30b7842}">
+		<property name="position">
+			<value>0</value>
+		</property>
+		<property name="value">
+			<value>-80</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{c605d6e2-a911-450e-960d-812f196ecfa4}">
+		<property name="position">
+			<value>64.286699507389159</value>
+		</property>
+		<property name="value">
+			<value>-14</value>
+		</property>
+	</object>
 	<object class="LFOModulator" id="{bcb52f86-cb01-4ee3-bf9c-514552e6666c}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>stereoPan</value>
@@ -707,6 +816,20 @@
 		</property>
 		<property name="depth">
 			<value>26</value>
+		</property>
+	</object>
+	<object class="LFOModulator" id="{146ceb99-65a3-48e8-bbb2-4e06c461e224}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>stereoPan</value>
+		</property>
+		<property name="isTempoSync">
+			<value>true</value>
+		</property>
+		<property name="beats">
+			<value>8</value>
+		</property>
+		<property name="depth">
+			<value>73.5</value>
 		</property>
 	</object>
 </objects>

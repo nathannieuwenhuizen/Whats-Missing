@@ -7,16 +7,20 @@ public class BossMirror : Mirror, ITriggerArea
 {
     
     public delegate void BossMirrorEvent(BossMirror bossMirror);
+    public delegate void BossMirrorPlayerEvent(BossMirror bossMirror, Player player);
     public static BossMirrorEvent OnBossMirrorShardAttached;
     public static BossMirrorEvent OnMirrorShardAmmountUpdate;
-    public static BossMirrorEvent OnMirrorShake;
+    public static BossMirrorPlayerEvent OnMirrorShake;
     public static BossMirrorEvent OnMirrorComplete;
     public static BossMirrorEvent OnMirrorExplode;
+    public static BossMirrorEvent OnAskingHint;
 
     private Rigidbody rb;
 
     [SerializeField]
     private Player player;
+    [SerializeField]
+    private ForcefieldDemo.Forcefield Forcefield;
 
     private bool followPlayer = false;
 
@@ -41,6 +45,9 @@ public class BossMirror : Mirror, ITriggerArea
     [Header("testing")]
     [SerializeField]
     private bool skipIntro = false;
+    public bool SkippingIntro {
+        get { return skipIntro;}
+    }
     [SerializeField]
     private int ammountOfShardAlreadyCollected = 0;
 
@@ -63,6 +70,7 @@ public class BossMirror : Mirror, ITriggerArea
         #endif
 
         bossStencilBuffer.SetActive(false);
+        InSpace = true;
 
         rb = GetComponent<Rigidbody>();
         rb.isKinematic = true;
@@ -97,11 +105,18 @@ public class BossMirror : Mirror, ITriggerArea
 
         if (skipIntro) StartCoroutine(SkipIntro());
         else {
+            AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
+            AudioHandler.Instance.FadeListener(1f);
+            AudioHandler.Instance.PlayMusic(MusicFiles.hidden_room, .5f, 5.5f);
+
             TogleVisibilityOfLetters(0);
         }
     }
 
     public IEnumerator SkipIntro() {
+        AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
+        AudioHandler.Instance?.FadeListener(1f);
+        AudioHandler.Instance.PlayMusic(MusicFiles.boss, .5f, 0f);
         yield return new WaitForSeconds(.1f);
         introCutscene = true;
         for (int i = 0; i < shards.Length; i++) {
@@ -115,6 +130,7 @@ public class BossMirror : Mirror, ITriggerArea
             shards[i].transform.position = transform.position;
             shards[i].Release();
         }
+        Forcefield.IsOn = true;
         OnMirrorShardAmmountUpdate?.Invoke(this);
         StartCoroutine(transform.parent.AnimatingLocalRotation(Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, transform.parent.eulerAngles.z + 90), AnimationCurve.EaseInOut(0,0,1,1), .1f));
         startPos = transform.position;
@@ -180,9 +196,11 @@ public class BossMirror : Mirror, ITriggerArea
         MirrorCanvas.DeselectLetters();
         Confirm();
         UpdateMirrorHeader();
+        bool showNext = true;
         for (int i = 0 ; i < shards.Length; i++) {
             if (!shards[i].Attached) {
-                shards[i].ToggleVisibilty(ammountOfShardAlreadyCollected == i + 1);
+                shards[i].ToggleLetterVisibilty(showNext);
+                showNext = false;
             }
         }
 
@@ -224,7 +242,7 @@ public class BossMirror : Mirror, ITriggerArea
     {
         if (introCutscene || skipIntro) return;
         introCutscene = true;
-        OnMirrorShake?.Invoke(this);
+        OnMirrorShake?.Invoke(this, player);
         StartCoroutine(ShakeBeforeExplosion());
         player = _player;
     }
@@ -247,6 +265,8 @@ public class BossMirror : Mirror, ITriggerArea
     private IEnumerator ShakeBeforeExplosion() {
         startPos = transform.position;
         AudioHandler.Instance?.PlaySound(SFXFiles.mirror_shake);
+        // AudioHandler.Instance?.FadeMusic(MusicFiles.boss, 5f, true);
+
         //activate stencil buffer
         bossStencilBuffer.SetActive(true);
         Quaternion startRotation = transform.localRotation;
@@ -305,6 +325,8 @@ public class BossMirror : Mirror, ITriggerArea
 
         }
     }
-
+    public void HintToggleClick() {
+        OnAskingHint?.Invoke(this);
+    }
 
 }

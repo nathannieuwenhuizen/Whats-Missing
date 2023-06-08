@@ -14,7 +14,7 @@ public class Door : InteractabelObject
     private Transform endKnob;
 
     public virtual Transform GetKnob(bool start) {
-        if (start)return startKnob;
+        if (start) return startKnob;
         return endKnob;
     }
 
@@ -103,9 +103,9 @@ public class Door : InteractabelObject
         }
     }
 
-    private void Close() {
+    protected virtual void Close() {
         if (Animated) {
-            AudioHandler.Instance?.Play3DSound(SFXFiles.door_closing, transform);
+            AudioHandler.Instance?.Play3DSound(SFXFiles.door_closing, GetKnob(true));
             StopAllCoroutines();
             StartCoroutine(AnimateDoorAngle(startAngle, .5f, closeCurve));
         } else {
@@ -113,10 +113,10 @@ public class Door : InteractabelObject
         }
     }
 
-    private void Open() {
+    protected virtual void Open() {
         OnDoorOpen?.Invoke(this);
         
-        AudioHandler.Instance?.Play3DSound(SFXFiles.door_squeek, transform, .2f);
+        AudioHandler.Instance?.Play3DSound(SFXFiles.door_squeek, GetKnob(true), .2f);
         StopAllCoroutines();
         if (gameObject.activeSelf) StartCoroutine(AnimateDoorAngle(startAngle + openAngle, 2f, openCurve));
     }
@@ -127,6 +127,7 @@ public class Door : InteractabelObject
         normalScale = 100f;
         shrinkScale = 50f;
         largeScale = 200f;
+        Word = "door";
     }
 
     private bool CheckAngle() {
@@ -151,7 +152,7 @@ public class Door : InteractabelObject
 
         if (locked || !PlayerFitsThroughDoor()) {
             DoorAnimator.SetTrigger("shake");
-            AudioHandler.Instance?.Play3DSound(SFXFiles.door_locked, transform, .5f);
+            AudioHandler.Instance?.Play3DSound(SFXFiles.door_locked, GetKnob(true), .5f);
             return;
         }
         flipped = CheckAngle();
@@ -251,7 +252,7 @@ public class Door : InteractabelObject
 
     public IEnumerator GoingThroughFlippingAnimation() {
         inAnimation = true;
-        AudioHandler.Instance?.Play3DSound(SFXFiles.door_open, transform);
+        AudioHandler.Instance?.Play3DSound(SFXFiles.door_open, GetKnob(true));
         yield return StartCoroutine(AnimateDoorAngle(startAngle + wideAngle, 1.3f, openCurve));
         yield return StartCoroutine(AnimateDoorAngle(startAngle + openAngle, .5f, openCurve));
         inAnimation = false;
@@ -296,5 +297,9 @@ public class Door : InteractabelObject
                 }
             }
         // }
+    }
+    private void Reset() {
+        Word = "door";
+        AlternativeWords = new string[] {"doors"};
     }
 }

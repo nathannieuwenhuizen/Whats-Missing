@@ -71,12 +71,14 @@ public class Mirror: MonoBehaviour, IRoomObject
     public bool IsOn {
         get { return mirrorData.isOn; }
         set { 
-            if (value) {
-                canPlayAudio = true;
-                ConfirmationSucceeded();
-            } else {
-                // if (mirrorData.isOn != value)
-                    ConfirmationFailed();
+            if (mirrorData.isOn != value) {
+                if (value) {
+                    canPlayAudio = true;
+                    ConfirmationSucceeded();
+                } else {
+                    if (isQuestion)
+                        ConfirmationFailed();
+                }
             }
 
             mirrorData.isOn = value; 
@@ -98,7 +100,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     }
 
 
-    private bool inSpace = true;
+    private bool inSpace = false;
     public bool InSpace { get => inSpace; set => inSpace = value; }
 
     ///<summary>
@@ -132,7 +134,8 @@ public class Mirror: MonoBehaviour, IRoomObject
         canPlayAudio = true;
         if (isQuestion) room.CheckMirrorQuestion(this);
         else {
-            if (!IsOn) room.AddMirrorChange(this); else {
+            if (!IsOn) room.AddMirrorChange(this); 
+            else {
                 room.RemoveMirrorChange(this);
                 room.AddMirrorChange(this);
             }

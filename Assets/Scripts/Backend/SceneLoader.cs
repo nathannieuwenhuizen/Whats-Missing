@@ -118,27 +118,16 @@ public class SceneLoader : MonoBehaviour
         CreditsRoller.OnCreditsFinish -= BackToMenu;
     }
 
-
-    private void GoToSecondLevel() {
-        SaveData.current.areaIndex = 1;
-        SaveData.current.roomIndex = 0;
-        SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
-
-        Area.AUTO_SAVE_WHEN_DESTROY = false;
-        LoadNewScene(Scenes.SECOND_LEVEL_SCENE_NAME, false);
-        // LoadingSceneAsync(Scenes.SECOND_LEVEL_SCENE_NAME);
-    }
-
     ///<summary>
     /// Loads the next scene based on the area index
     ///</summary>
-    public void GoToNextLevel(int _currentAreaIndex) {
+    public void GoToNextLevel(int _currentAreaIndex, bool animating = false) {
         SaveData.current.areaIndex = _currentAreaIndex + 1;
         SaveData.current.roomIndex = 0;
         SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
 
         Area.AUTO_SAVE_WHEN_DESTROY = false;
-        LoadNewScene(Scenes.GetSceneNameBasedOnAreaIndex(_currentAreaIndex + 1), false);
+        LoadNewScene(Scenes.GetSceneNameBasedOnAreaIndex(_currentAreaIndex + 1), animating);
     }
 
     ///<summary>

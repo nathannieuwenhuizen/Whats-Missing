@@ -61,11 +61,14 @@ namespace Boss {
                 changeType = ChangeType.tooBig,
                 active = true
             });
+            AudioHandler.Instance?.Play3DSound(SFXFiles.boss_grow_sound, Boss.transform, 1f);
+                
 
             //setting boss pos
             Positioner.SpeedScale = 1f;
             Positioner.SteeringBehaviour.MaxForce *= 1f;
-            Positioner.SetDestinationPath(ReactionPosition() + Vector3.up * -20f, bossAI.transform.position, true, 5f);
+            Positioner.BodyMovementType = BodyMovementType.freeFloat;
+            Positioner.SetDestinationPath(bossAI.EnlargeEndPosition, bossAI.transform.position, true, 5f);
 
             //camera zoom
             bossAI.Boss.Player.CharacterAnimationPlayer.ZoomDuration = enlargeDuration;
@@ -76,6 +79,12 @@ namespace Boss {
             yield return new WaitForSeconds(.5f);
             BossChangesHandler.OnShockwave?.Invoke(bossAI.BossEye.transform);
             OnBossCutsceneTargetUpdate?.Invoke(Boss.Eye.transform, new Vector2(0, 20f), 1f);
+        }
+
+        public override void Run()
+        {
+            base.Run();
+            Positioner.BodyOrientation = BodyOrientation.toPlayer;
         }
         public override void Exit()
         {

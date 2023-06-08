@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Coffee.UIEffects;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,11 +12,18 @@ public class CutSceneBars : MonoBehaviour
     private RectTransform bottomBar;
 
     private AnimationCurve curve = AnimationCurve.EaseInOut(0,0,1,1);
+    private float barHeight = 0;
     public float BarHeight {
-        get { return topBar.sizeDelta.y;}
+        get { 
+            return barHeight;
+        }
         set { 
-            topBar.sizeDelta = new Vector2(topBar.sizeDelta.x, value); 
-            bottomBar.sizeDelta = new Vector2(bottomBar.sizeDelta.x, value); 
+            barHeight = value;
+            Debug.Log("value cutscene: " + value);
+            topBar.GetComponent<UITransitionEffect>().effectFactor = value;
+            topBar.sizeDelta = new Vector2(topBar.sizeDelta.x, 60); 
+            bottomBar.GetComponent<UITransitionEffect>().effectFactor = value;
+            bottomBar.sizeDelta = new Vector2(bottomBar.sizeDelta.x, 60); 
         }
     }
 
@@ -33,7 +41,7 @@ public class CutSceneBars : MonoBehaviour
 
     private void ShowBars() {
         StopAllCoroutines();
-        StartCoroutine(AnimateBars(52f, 1f, 0));
+        StartCoroutine(AnimateBars(1f, 1f, 0));
     }
     private void HideBars() {
         StopAllCoroutines();

@@ -8,7 +8,7 @@ public class BossVoice
 {
 
     private readonly string resourceDialoguePath = "Dialogues/boss";
-    public delegate void BossVoiceEvent(Line line);
+    public delegate void BossVoiceEvent(Line line, bool forced);
     public static BossVoiceEvent OnLineStart;
     public static BossVoiceEvent OnLineEnd;
     public Dialogue dialogue;
@@ -23,7 +23,7 @@ public class BossVoice
     public void Talk(string _id) {
         Line line = dialogue.GetLine(_id);
         // AudioHandler.Instance?.Play3DSound(line.fmod_audio_path, transform);
-        OnLineStart?.Invoke(line);
+        OnLineStart?.Invoke(line, true);
     }
     public void Update()
     {

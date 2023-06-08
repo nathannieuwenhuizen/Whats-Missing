@@ -43,15 +43,20 @@ public class RigidBodyInfo {
 ///</summary>
 public class PickableRoomObject : InteractabelObject, IPickable
 {
-    private bool grabbed = false;
+    protected bool grabbed = false;
 
     protected Rigidbody rb;     
     private Transform oldParent;
+    private string grabbedLayer = "Test";
+    private string idleLayer;
     protected override void Awake()
     {
         base.Awake();
+        idleLayer = LayerMask.LayerToName(gameObject.layer);
         rb = GetComponent<Rigidbody>();
         RigidBodyInfo.Save(rb);
+        grabSound = SFXFiles.player_grab;
+
         // DeactivateRigidBody();
     }
     public Rigidbody RigidBody { 
@@ -74,7 +79,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
     /// If the objects will burn in flames if it comes in contact with fire.
     ///</summary>
     [SerializeField]
-    private bool flamable = false;
+    protected bool flamable = false;
 
     [SerializeField]
     private RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
@@ -103,7 +108,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
     public override float CurrentScale { get { return base.CurrentScale; } 
         set {
             base.CurrentScale = value;
-            rb.mass = value;
+            if (rb != null) rb.mass = value;
         }  
     }
     protected float holdingDistance = 3f;
@@ -114,6 +119,18 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     private Vector3 holdingOffset = new Vector3(0,0,0);
     public Vector3 HoldingOffset { get => holdingOffset; set => holdingOffset = value; }
+    public Vector3 HoldingPosition { get {
+            return RigidBody.transform.position;
+    }}
+
+    public Vector3 HoldingLocalOffset { get {
+        if (GetComponent<MeshRenderer>() != null) {
+            Debug.Log("offset = " + (HoldingPosition - GetComponent<MeshRenderer>().bounds.center));
+            return HoldingPosition - GetComponent<MeshRenderer>().bounds.center;
+        } else {
+            return Vector3.zero;
+        }
+    }}
 
     protected override void OnFocus()
     {
@@ -134,7 +151,8 @@ public class PickableRoomObject : InteractabelObject, IPickable
         // oldParent = transform.parent;
         // transform.SetParent(connectedRigidBody.transform.parent);        
         grabbed = true;
-        AudioHandler.Instance?.PlaySound(grabSound);
+        gameObject.layer = LayerMask.NameToLayer(grabbedLayer);
+        AudioHandler.Instance?.PlaySound(grabSound); // is this called twice?
 
         OutlineEnabled = false;
         RigidBodyInfo.Save(rb);
@@ -144,6 +162,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
         rb.isKinematic = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         gameObject.tag = Tags.Picked;
+    }
+    public void UpdateGrabPhysics() {
+
     }
 
     ///<summary>
@@ -175,6 +196,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
         if (!grabbed) return;
 
         // transform.SetParent(oldParent);
+        gameObject.layer = LayerMask.NameToLayer(idleLayer);
         grabbed = false;
         OutlineEnabled = true;
         ActivateRigidBody();
@@ -217,7 +239,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     public bool TooHeavy(Hands hands)  {
         if (rb == null) return false;
-        return hands.MassThreshhold < rb.mass;
+        bool result = hands.MassThreshhold < rb.mass;
+        rb.constraints = result ? RigidbodyConstraints.FreezeRotation : rb.constraints; 
+        return result;
     } 
 
     private void OnTriggerEnter(Collider other) {

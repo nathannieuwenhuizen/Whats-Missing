@@ -160,9 +160,12 @@ public class FPMovement : MonoBehaviour
     ///Makes the player jump
     ///</summary>
     public void Jump() {
-        if (inAir ) {
+        if (!EnableWalk) return;
+
+        if (rb.useGravity == false ) {
             //negative jump at gravity is missing
-            if (rb.useGravity == false) rb.velocity = new Vector3(rb.velocity.x, -jumpForce, rb.velocity.z);
+            if (rb.velocity.y >= -.1f) rb.velocity = new Vector3(rb.velocity.x, -jumpForce, rb.velocity.z);
+            else rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
             return;
         }
         
@@ -201,11 +204,11 @@ public class FPMovement : MonoBehaviour
         if (windSound != null) windSound.Stop(true);
     }
 
-    protected void DisableMovment() {
+    protected void DisableMovement() {
         EnableWalk = false;
         EnableRotation = false;
     }
-    protected void EnableMovment() {
+    protected void EnableMovement() {
         EnableWalk = true;
         EnableRotation = true;
     }
@@ -226,10 +229,10 @@ public class FPMovement : MonoBehaviour
         InputManager.OnEndRunning += EndRun;
         InputManager.OnMove += SetMovement;
         InputManager.OnJump += Jump;
-        PauseScreen.OnPause += DisableMovment;
-        PauseScreen.OnResume += EnableMovment;
-        WindowsErrorMessage.OnErrorShow += DisableMovment;
-        WindowsErrorMessage.OnErrorHide += EnableMovment;
+        PauseScreen.OnPause += DisableMovement;
+        PauseScreen.OnResume += EnableMovement;
+        WindowsErrorMessage.OnErrorShow += DisableMovement;
+        WindowsErrorMessage.OnErrorHide += EnableMovement;
         // RoomDebugger.OnShow += DisableMovment;
         // RoomDebugger.OnHide += EnableMovment;
         SettingPanel.OnSave += ApplyMovementSettings;
@@ -241,10 +244,10 @@ public class FPMovement : MonoBehaviour
         InputManager.OnEndRunning -= EndRun;
         InputManager.OnMove -= SetMovement;
         InputManager.OnJump -= Jump;
-        PauseScreen.OnPause -= DisableMovment;
-        PauseScreen.OnResume -= EnableMovment;
-        WindowsErrorMessage.OnErrorShow -= DisableMovment;
-        WindowsErrorMessage.OnErrorHide -= EnableMovment;
+        PauseScreen.OnPause -= DisableMovement;
+        PauseScreen.OnResume -= EnableMovement;
+        WindowsErrorMessage.OnErrorShow -= DisableMovement;
+        WindowsErrorMessage.OnErrorHide -= EnableMovement;
         // RoomDebugger.OnShow -= DisableMovment;
         // RoomDebugger.OnHide -= EnableMovment;
         SettingPanel.OnSave -= ApplyMovementSettings;

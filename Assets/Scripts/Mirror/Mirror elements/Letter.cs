@@ -261,7 +261,7 @@ public class Letter : MirrorButton, IPointerDownHandler
         movingCoroutine =  StartCoroutine(Moving(pos));
     }
     private IEnumerator Moving(Vector3 pos) {
-        while( movingIndex < movingDuration) {
+        while( movingIndex < movingDuration && mirrorCanvas.Mirror.InSpace) {
             movingIndex += Time.unscaledDeltaTime;
             rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, scaleAnimationCurve.Evaluate(movingIndex/ movingDuration));
             yield return new WaitForEndOfFrame();

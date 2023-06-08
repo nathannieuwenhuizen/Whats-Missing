@@ -26,7 +26,7 @@ public class Area : MonoBehaviour
     public static UndoActionEvent OnUndo;
     public delegate void RoomEvent();
     public delegate void RoomRespawnEvent(bool withColor);
-    public delegate void NextAreaEvent(int _index);
+    public delegate void NextAreaEvent(int _index, bool animating);
     public static NextAreaEvent OnNextArea;
     public static NextAreaEvent OnEndOfDemo;
     public static RoomEvent OnNewRoomEnter;
@@ -149,7 +149,6 @@ public class Area : MonoBehaviour
         //fade audio listener
         AudioHandler.Instance.AudioManager.AudioListenerVolume = 0;
         AudioHandler.Instance.FadeListener(1f);
-
         //play music
         AudioHandler.Instance.PlayMusic(GetAreaMusic(), .5f, loadRoomIndex == 0 ? 5.5f : 0f);
     }
@@ -270,7 +269,7 @@ public class Area : MonoBehaviour
             newRoom.transform.Rotate(new Vector3(0,-90 + roomRotationOffset,0));
         }
         Vector3 spawnPos = loadPosition.position + (newRoom.transform.position - newRoom.StartDoor.transform.position);
-        spawnPos += new Vector3(roomPositionOffset.x * ((index % 2) == 0 ? 1 : -1), roomPositionOffset.y, roomPositionOffset.z);
+        spawnPos += new Vector3(roomPositionOffset.x , roomPositionOffset.y, roomPositionOffset.z) * ((index % 2) == 0 ? 1 : -1);
 
         newRoom.transform.position = spawnPos;
         loadPosition = newRoom.EndDoor.transform;
@@ -294,6 +293,7 @@ public class Area : MonoBehaviour
     /// Fires when the palyer dies and has to respawn
     ///</summary>
     public void ResetPlayer(bool withAnimation, bool toPreviousLevel) {
+        currentRoom?.OnPlayerDie();
         StartCoroutine(ResettingThePlayer(withAnimation, toPreviousLevel));
     }
 
@@ -352,11 +352,10 @@ public class Area : MonoBehaviour
     public void ResetRoom() {
         //CurrentRoom.ResetRoom();
     }
-    float testParam;
+    
     public void UpdateRoomMusic(float _roomIndex) {
         if (areaIndex == 1){
             _roomIndex = (float)_roomIndex / (float)rooms.Count * 26f;
-            Debug.Log("room music: " + _roomIndex);
             if (AudioHandler.Instance?.AudioManager.Music != null) 
                 AudioHandler.Instance?.AudioManager.Music.FMODInstance.setParameterByName(FMODParams.LEVEL2_MUSIC, _roomIndex, true);
         }
@@ -423,8 +422,8 @@ public class Area : MonoBehaviour
     /// Go to next level. Or ned of demo
     ///</summary>
     public void EndOfArea() {
-        if (isDemo) OnEndOfDemo?.Invoke(areaIndex);
-        else OnNextArea?.Invoke(areaIndex);
+        if (isDemo) OnEndOfDemo?.Invoke(areaIndex, false);
+        else OnNextArea?.Invoke(areaIndex, false);
     }
 
 }

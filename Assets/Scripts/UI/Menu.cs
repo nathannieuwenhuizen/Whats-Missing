@@ -7,10 +7,17 @@ using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {    
+    public delegate void MenuAction();
+    public static event MenuAction OnSettingsOpen;
+    public static event MenuAction OnSettingsClose;
+
     private AnimatedPopup popup;
 
     [SerializeField]
     private GameObject continueButton;
+
+    [SerializeField]
+    private Button testButton;
 
     [SerializeField]
     private GameObject newGameButton;
@@ -37,15 +44,23 @@ public class Menu : MonoBehaviour
     private void Awake() {
         Cursor.visible = true;
         Cursor.lockState =CursorLockMode.None;
+        testButton.onClick.AddListener(TestGame);
     }
 
     private void Start() {
         SetupPlayButtons();
+        settingsButton.onClick.AddListener(GoToSettings);
         AudioHandler.Instance.PlayMusic(MusicFiles.menu, .3f);
 
         popup = GetComponent<AnimatedPopup>();
         StartCoroutine(DelayMenuShow());
     }
+
+    public void GoToSettings() {
+        popup.ShowAnimation(false);
+        OnSettingsOpen?.Invoke();
+    }
+
     private IEnumerator DelayMenuShow() {
         yield return new WaitForSeconds(.3f);
         popup.ShowAnimation(true);
@@ -93,6 +108,14 @@ public class Menu : MonoBehaviour
         sceneLoader.LoadNewSceneAnimated(Scenes.GetSceneNameBasedOnAreaIndex(saveData.areaIndex));
     }
 
+    public void TestGame() {
+        SaveData.current.roomIndex = 0;
+        SaveData.current.areaIndex = 2;
+        SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
+
+        sceneLoader.LoadNewSceneAnimated(Scenes.GetSceneNameBasedOnAreaIndex(2));
+    }
+
     public void OpenNewGameWarning() {
         newGameWarning.gameObject.SetActive(true);
         newGameWarning.ShowAnimation(true);
@@ -100,12 +123,20 @@ public class Menu : MonoBehaviour
     }
     public void BackToMenu() {
         SetupPlayButtons();
+        popup.ShowAnimation(true);
+        OnSettingsClose?.Invoke();
     }
-
 
     public void NewGameSelected() {
         SaveData newSave = new SaveData();
         SerializationManager.Save(SaveData.FILE_NAME, newSave);
         Debug.Log("new save");
+    }
+
+    private void OnEnable() {
+        SettingPanel.OnSettingsClose += BackToMenu;
+    }
+    private void OnDisable() {
+        SettingPanel.OnSettingsClose -= BackToMenu;
     }
 }

@@ -12,6 +12,8 @@ public class SettingPanel : AnimatedPopup
     private Settings settings;
     public delegate void SettingsAction(Settings settings);
     public static event SettingsAction OnSave;
+    public delegate void SettingsButtonAction();
+    public static SettingsButtonAction OnSettingsClose;
 
     [SerializeField]
     private TMPro.TMP_Text settingsText;
@@ -25,6 +27,8 @@ public class SettingPanel : AnimatedPopup
     private Button gameplayButton;
     [SerializeField]
     private GameObject gameplayList;
+    [SerializeField]
+    private Button backButton;
 
 
 
@@ -47,21 +51,23 @@ public class SettingPanel : AnimatedPopup
     [SerializeField]
     private Button controlButton;
     [SerializeField]
-    private GameObject controlList;
+    private ControllerRebinds controlList;
 
     private void Awake() {
         settings = Settings.GetSettings();
         UpdateUI();
+        backButton.onClick.AddListener(CloseSettings);
     }
 
     public void ToggleGeneral() {
 
         generalList.SetActive(true);
         gameplayList.SetActive(false);
-        generalButton.interactable = false;
-        gameplayButton.interactable = true;
-        controlList.SetActive(false);
-        controlButton.interactable = true;
+        controlList.gameObject.SetActive(true);
+        controlList.Hide();
+        // generalButton.interactable = false;
+        // gameplayButton.interactable = true;
+        // controlButton.interactable = true;
         settingsText.text = "General";
         Debug.Log("should be general by now");
         ControllerCheck.SelectUIGameObject(generalButton.gameObject);
@@ -71,10 +77,10 @@ public class SettingPanel : AnimatedPopup
 
         generalList.SetActive(false);
         gameplayList.SetActive(true);
-        generalButton.interactable = true;
-        gameplayButton.interactable = false;
-        controlList.SetActive(false);
-        controlButton.interactable = true;
+        // generalButton.interactable = true;
+        // gameplayButton.interactable = false;
+        controlList.Hide();
+        // controlButton.interactable = true;
         settingsText.text = "Gameplay";
         ControllerCheck.SelectUIGameObject(gameplayButton.gameObject);
     }
@@ -82,10 +88,10 @@ public class SettingPanel : AnimatedPopup
 
         generalList.SetActive(false);
         gameplayList.SetActive(false);
-        generalButton.interactable = true;
-        gameplayButton.interactable = true;
-        controlList.SetActive(true);
-        controlButton.interactable = false;
+        // generalButton.interactable = true;
+        // gameplayButton.interactable = true;
+        controlList.Show();
+        // controlButton.interactable = false;
         settingsText.text = "Controls";
         ControllerCheck.SelectUIGameObject(controlButton.gameObject);
     }
@@ -127,6 +133,25 @@ public class SettingPanel : AnimatedPopup
     public void Close() {
         Save();
         ShowAnimation(false);
+    }
+
+    public void CloseSettings() {
+        OnSettingsClose?.Invoke();
+    }
+
+    private void OnEnable() {
+        PauseScreen.OnSettingsOpen += Open;
+        PauseScreen.OnSettingsClose += Close;
+        Menu.OnSettingsOpen += Open;
+        Menu.OnSettingsClose += Close;
+    }
+
+    private void OnDisable() {
+        PauseScreen.OnSettingsOpen -= Open;
+        PauseScreen.OnSettingsClose -= Close;
+        Menu.OnSettingsOpen -= Open;
+        Menu.OnSettingsClose -= Close;
+
     }
 
 }

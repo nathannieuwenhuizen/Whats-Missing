@@ -128,19 +128,17 @@ public class CharacterAnimationPlayer
 
     public void OnEnable() {
         BossMirror.OnMirrorShake += OnBossMirrorShake;
-        BossMirror.OnMirrorExplode += OnBossMirrorExplode;
         Boss.BossCutsceneState.OnBossCutsceneStart += OnBossCutsceneStart;
         Boss.BossCutsceneState.OnBossCutsceneEnd += OnBossCutsceneEnd;
 
     }
     public void OnDisable() {
         BossMirror.OnMirrorShake -= OnBossMirrorShake;
-        BossMirror.OnMirrorExplode -= OnBossMirrorExplode;
         Boss.BossCutsceneState.OnBossCutsceneStart -= OnBossCutsceneStart;
         Boss.BossCutsceneState.OnBossCutsceneEnd -= OnBossCutsceneEnd;
     }
 
-    private void OnBossMirrorShake(BossMirror bossMirror) {
+    private void OnBossMirrorShake(BossMirror bossMirror, Player p) {
         PlayCutSceneAnimation("", false);
         bossMirror.StartCoroutine(InBossCutScene(bossMirror));
     }
@@ -157,9 +155,7 @@ public class CharacterAnimationPlayer
         animator.SetTrigger("boss_intro_3");
         inBossCutscene = false;
     }
-    private void OnBossMirrorExplode(BossMirror bossMirror) {
 
-    }
 
     public void OnBossCutsceneStart(Boss.Boss boss, float zoom) {
         if (inBossCutscene) return;
@@ -202,9 +198,9 @@ public class CharacterAnimationPlayer
     ///</summary>
     public IEnumerator StandingUp() {
         yield return new WaitForSeconds(2.2f);
-        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
+        AudioHandler.Instance?.Play3DSound( SFXFiles.player_footstep_normal, player.transform, .5f);
         yield return new WaitForSeconds(.5f);
-        AudioHandler.Instance?.PlaySound( SFXFiles.player_footstep_normal, .1f);
+        AudioHandler.Instance?.Play3DSound( SFXFiles.player_footstep_normal, player.transform, .8f);
         yield return new WaitForSeconds(2.3f);
         EndOfCutSceneAnimation();
     }
