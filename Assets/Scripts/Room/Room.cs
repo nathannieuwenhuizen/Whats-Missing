@@ -203,7 +203,7 @@ public class Room : MonoBehaviour
 
         foreach (IChangable obj in allObjects)
         {
-            if (obj.Word == change.Word || obj.AlternativeWords.Contains(change.Word)) {
+            if (obj.Word == change.Word || obj.AlternativeWords.Contains(change.Word) && obj.Transform.gameObject != null) {
                 foundObjects.Add(obj);
                 result = true;
             }

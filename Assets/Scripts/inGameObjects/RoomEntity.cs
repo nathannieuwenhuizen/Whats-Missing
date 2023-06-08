@@ -234,6 +234,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnEnlargeRevert()
     {
+
         if (!IsEnlarged) return;
 
         IsEnlarged = false;

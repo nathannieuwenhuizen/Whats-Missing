@@ -69,14 +69,14 @@ public class CursorUI : MonoBehaviour
         group.GetComponent<RectTransform>().localScale = Vector3.one;
     }
 
-    private void HighLightCursorUI(bool whiteColor) {
+    private void HighLightCursorUI() {
         if (hidden || !canHighLight) return;
         StopAllCoroutines();
         StartCoroutine(group.FadeCanvasGroup(highLightedAlpha, highLightDuration));
         StartCoroutine(group.GetComponent<RectTransform>().AnimatingLocalScale(Vector3.one * 1.5f, AnimationCurve.EaseInOut(0,0,1,1), highLightDuration));
         StartCoroutine(group.GetComponent<RectTransform>().AnimatingRotation(Quaternion.Euler(0,0,90f), AnimationCurve.EaseInOut(0,0,1,1), highLightDuration));
     }
-    private void UnhighlightCursorUI(bool whiteColor) {
+    private void UnhighlightCursorUI() {
         if (hidden || !canHighLight) return;
         StopAllCoroutines();
         StartCoroutine(group.FadeCanvasGroup(idleAlpha, highLightDuration));

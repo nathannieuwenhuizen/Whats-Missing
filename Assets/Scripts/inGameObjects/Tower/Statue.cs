@@ -10,4 +10,9 @@ public class Statue : PickableRoomObject
         largeScale = 1.4f;
         shrinkScale = .3f;
     }
+    protected override void OnBlur()
+    {
+        Debug.Log("statue on blur");
+        base.OnBlur();
+    }
 }

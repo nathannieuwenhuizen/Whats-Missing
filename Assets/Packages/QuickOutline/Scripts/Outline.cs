@@ -86,6 +86,8 @@ public class Outline : MonoBehaviour {
   private Renderer[] renderers;
   private Material outlineMaskMaterial;
   private Material outlineFillMaterial;
+  private Material outlineFillMaterialHeavy;
+  private Material outlineFillMaterialLight;
 
   private bool needsUpdate;
 
@@ -93,14 +95,26 @@ public class Outline : MonoBehaviour {
   public bool Disabled {
     get { return disabled;}
     set { 
-      disabled = value; 
+
+      disabled = value;
+      Debug.Log("disabled update = " + value);
+
+          outlineColor = disabled ? outlineFillMaterialHeavy.GetColor("_Color") : outlineFillMaterialLight.GetColor("_Color");
+          outlineOuterColor = disabled ? outlineFillMaterialHeavy.GetColor("_ColorR") : outlineFillMaterialLight.GetColor("_ColorR");
+
+          RemoveOutlineMat();
+
+          outlineFillMaterial.SetColor("_Color", outlineColor);
+          outlineFillMaterial.SetColor("_ColorR", outlineOuterColor);
+          needsUpdate = true;
+          AddOutlineMat();
+      
     }
   }
 
 
 
   void Awake() {
-
     // Cache renderers
     renderers = GetComponentsInChildren<Renderer>();
 
@@ -111,27 +125,29 @@ public class Outline : MonoBehaviour {
     // Apply material properties immediately
     needsUpdate = true;
   }
+  public bool instantiated = false;
 
   void OnEnable() {
     // Instantiate outline materials
+    // RemoveOutlineMat();
+    if (!instantiated) {
+      instantiated = true;
     outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
-    outlineFillMaterial = Instantiate(Resources.Load<Material>(disabled ? @"Materials/OutlineFill_Heavy" : @"Materials/OutlineFill"));
+    outlineFillMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineFill"));
 
-    outlineColor = outlineFillMaterial.GetColor("_Color");
-    outlineOuterColor = outlineFillMaterial.GetColor("_ColorR");
-    outlineMaskMaterial.name = "OutlineMask (Instance)";
-    outlineFillMaterial.name = "OutlineFill (Instance)";
+    outlineFillMaterialHeavy = Resources.Load<Material>(@"Materials/OutlineFill_Heavy");
+    outlineFillMaterialLight = Resources.Load<Material>(@"Materials/OutlineFill");
 
-    
-    foreach (var renderer in renderers) {
-      if (renderer.gameObject.GetComponent<ParticleSystem>() != null) continue;
-      // Append outline shaders
-      var materials = renderer.sharedMaterials.ToList();
+    outlineColor = disabled ? outlineFillMaterialHeavy.GetColor("_Color") : outlineFillMaterialLight.GetColor("_Color");
+    outlineOuterColor = disabled ? outlineFillMaterialHeavy.GetColor("_ColorR") : outlineFillMaterialLight.GetColor("_ColorR");
 
-      materials.Add(outlineMaskMaterial);
-      materials.Add(outlineFillMaterial);
+    outlineFillMaterial.SetColor("_Color", outlineColor);
+    outlineFillMaterial.SetColor("_ColorR", outlineOuterColor);
 
-      renderer.materials = materials.ToArray();
+    outlineMaskMaterial.name = "OutlineMask";
+    outlineFillMaterial.name = "OutlineFill (please be good)";
+
+      AddOutlineMat();
     }
   }
 
@@ -153,6 +169,7 @@ public class Outline : MonoBehaviour {
   }
 
   void Update() {
+    Disabled = Disabled;
     if (needsUpdate) {
       needsUpdate = false;
 
@@ -161,10 +178,14 @@ public class Outline : MonoBehaviour {
   }
 
   void OnDisable() {
+    // RemoveOutlineMat();
+  }
+
+  public void RemoveOutlineMat() {
     foreach (var renderer in renderers) {
       if (renderer != null) continue;
-      if (renderer.gameObject != null) continue;
-      if (renderer.gameObject.GetComponent<ParticleSystem>() != null) continue;
+      // if (renderer.gameObject != null) continue;
+      // if (renderer.gameObject.GetComponent<ParticleSystem>() != null) continue;
 
       // Remove outline shaders
       var materials = renderer.sharedMaterials.ToList();
@@ -173,6 +194,23 @@ public class Outline : MonoBehaviour {
       materials.Remove(outlineFillMaterial);
 
       renderer.materials = materials.ToArray();
+    }
+  }
+  public void AddOutlineMat() {
+    foreach (var renderer in renderers) {
+      if (renderer.gameObject.GetComponent<ParticleSystem>() != null) continue;
+      if (renderer.gameObject.GetComponent<TrailRenderer>() != null) continue;
+      if (renderer.gameObject.GetComponent<LineRenderer>() != null) continue;
+
+      if (renderer != GetComponent<Renderer>() || true) {
+        // Append outline shaders
+        var materials = renderer.sharedMaterials.ToList();
+
+        materials.Add(outlineMaskMaterial);
+        materials.Add(outlineFillMaterial);
+
+        renderer.materials = materials.ToArray();
+      }
     }
   }
 

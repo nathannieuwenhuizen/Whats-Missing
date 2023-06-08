@@ -10,7 +10,7 @@ public class Hands : MonoBehaviour
     private Vector3 oldPos = new Vector3();
     private Vector3 velocity = new Vector3();
 
-    public delegate void FocusedAction(bool whiteColor);
+    public delegate void FocusedAction();
     public static event FocusedAction OnFocus; 
     public static event FocusedAction OnUnfocus; 
     [SerializeField]
@@ -166,24 +166,22 @@ public class Hands : MonoBehaviour
         IInteractable interactableObj = FocussedObject();
         if (interactableObj != default(IInteractable)) {
             if (interactableObj != currentInteractable && interactableObj.Interactable) {
+                //deactive old focus
                 if (currentInteractable != default(IInteractable))
                     currentInteractable.Focused = false;
+
+                //if can be picked too
                 if (interactableObj.Gameobject.GetComponent<IPickable>() != default(IPickable)) {
-                    if (interactableObj.Gameobject.GetComponent<IPickable>().TooHeavy(this)){
-                        interactableObj.Disabled = true;
-                        interactableObj.Focused = true;
-                        currentInteractable = interactableObj;
-                        OnFocus?.Invoke(false);
-                        return;
-                    }
+                    //check if too heavy
+                    interactableObj.Disabled = interactableObj.Gameobject.GetComponent<IPickable>().TooHeavy(this);
                 } 
-                interactableObj.Disabled = false;
                 interactableObj.Focused = true;
                 currentInteractable = interactableObj;
-                OnFocus?.Invoke(true);
+                OnFocus?.Invoke();
             }
         } else if (currentInteractable != null) {
-            OnUnfocus?.Invoke(true);
+            //unfocus
+            OnUnfocus?.Invoke();
             currentInteractable.Focused = false;
             currentInteractable = default(IInteractable);
         }
