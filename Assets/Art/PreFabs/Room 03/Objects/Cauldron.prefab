@@ -4831,7 +4831,6 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7310014037082276658}
   - {fileID: 3137750529060532109}
   - {fileID: 6792465326594407686}
   m_Father: {fileID: 0}
@@ -9804,7 +9803,7 @@ GameObject:
   - component: {fileID: 3234610450419122464}
   - component: {fileID: 6068717576709171574}
   - component: {fileID: 4040184576398130900}
-  - component: {fileID: 2459555046787667967}
+  - component: {fileID: 8125667981007408205}
   m_Layer: 0
   m_Name: Cauldron
   m_TagString: Untagged
@@ -9825,7 +9824,7 @@ Transform:
   m_Children:
   - {fileID: 6894778936320368375}
   m_Father: {fileID: 6798718838196727079}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &3234610450419122464
 MeshFilter:
@@ -9889,8 +9888,8 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 72713781330414003, guid: e48a070c7d991e9458cea5dbbbf04488, type: 3}
---- !u!114 &2459555046787667967
+  m_Mesh: {fileID: 72713781330414003, guid: 68ad5db46ff069d4faae00df210e93ca, type: 3}
+--- !u!114 &8125667981007408205
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9899,43 +9898,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7201291410271095455}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a50fb85cabd149b4c872d3cb7514c5b9, type: 3}
+  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  word: cauldron
-  alternateWords:
-  - cauldrons
+  word: Cauldron
+  alternateWords: []
   missingChangeEffect: 2
   flippingAxis: 2
   affectedByPotions: 1
-  audioPoint: {fileID: 7310014037082276658}
---- !u!1 &8361310356964438045
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7310014037082276658}
-  m_Layer: 0
-  m_Name: audio Point
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7310014037082276658
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8361310356964438045}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4.9}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 6798718838196727079}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
