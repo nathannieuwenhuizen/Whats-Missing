@@ -258,8 +258,10 @@ public class PickableRoomObject : InteractabelObject, IPickable
         Interactable = false;
         flamable = false;
 
+        Debug.Log("start burn" + getMaterials().Length);
         // yield return new WaitForEndOfFrame();
         foreach (Material mat in getMaterials()) {
+            Debug.Log("Burn maerial");
             if (mat.HasProperty("EdgeColor")) {
                 mat.SetColor("EdgeColor", new Color(.7f,.04f,0) * 8f); //set color to hdr orange
                 StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), 3f));
