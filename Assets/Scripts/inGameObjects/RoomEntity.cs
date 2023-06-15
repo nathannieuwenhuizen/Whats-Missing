@@ -109,6 +109,8 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     ///</summary>
     public virtual void OnAppearing()
     {
+        if (Transform.gameObject == null) return;
+        
         IsMissing = false;
         if (Animated) {
             StartCoroutine(AnimateAppearing());
@@ -203,7 +205,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnShrinkRevert()
     {
-        if (!IsShrinked) return;
+        if (!IsShrinked || Transform.gameObject == null) return;
 
         IsShrinked = false;
         if (ShrinkCoroutine != null) StopCoroutine(ShrinkCoroutine);
@@ -245,7 +247,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     public virtual void OnEnlargeRevert()
     {
 
-        if (!IsEnlarged) return;
+        if (!IsEnlarged || Transform.gameObject == null) return;
 
         IsEnlarged = false;
 
