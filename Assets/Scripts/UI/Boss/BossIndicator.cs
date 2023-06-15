@@ -59,12 +59,17 @@ public class BossIndicator : MonoBehaviour
             Vector3 direction = (boss.position - player.position).normalized;
             float angle = Vector3.Angle(Camera.main.transform.forward, direction);
 
-            if (angle > 45) {
+            if (angle < 120 && angle > 45) {
                 Alpha = Mathf.Lerp(Alpha, endAlpha, Time.deltaTime * fadeSpeed);
-                OverlayAlpha = Mathf.Lerp(OverlayAlpha, 0, Time.deltaTime * fadeSpeed);        
-            } else {
+                OverlayAlpha = Mathf.Lerp(OverlayAlpha, 0, Time.deltaTime * fadeSpeed);   
+
+            } else if ( angle >= 120){
                 Alpha = Mathf.Lerp(Alpha, 0, Time.deltaTime * fadeSpeed);
                 OverlayAlpha = Mathf.Lerp(OverlayAlpha, endAlpha * .5f, Time.deltaTime * fadeSpeed);
+            } else {
+                Alpha = Mathf.Lerp(Alpha, 0, Time.deltaTime * fadeSpeed);
+                OverlayAlpha = Mathf.Lerp(OverlayAlpha, 0, Time.deltaTime * fadeSpeed);   
+
             }
             
         } else {
