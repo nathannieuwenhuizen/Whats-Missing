@@ -97,8 +97,6 @@ public class Outline : MonoBehaviour {
     set { 
 
       disabled = value;
-      Debug.Log("disabled update = " + value);
-
           outlineColor = disabled ? outlineFillMaterialHeavy.GetColor("_Color") : outlineFillMaterialLight.GetColor("_Color");
           outlineOuterColor = disabled ? outlineFillMaterialHeavy.GetColor("_ColorR") : outlineFillMaterialLight.GetColor("_ColorR");
 
@@ -169,7 +167,7 @@ public class Outline : MonoBehaviour {
   }
 
   void Update() {
-    Disabled = Disabled;
+    // Disabled = Disabled;
     if (needsUpdate) {
       needsUpdate = false;
 

@@ -47,7 +47,12 @@ public class Legenda : MonoBehaviour
             } else if (hit.collider.transform.parent != null) {
                 if (hit.collider.transform.parent.GetComponent<T>() != null) 
                     return hit.collider.transform.parent.GetComponent<T>();
+
+                if (hit.collider.transform.parent.parent != null) {
+                    if (hit.collider.transform.parent.parent.GetComponent<T>() != null) 
+                        return hit.collider.transform.parent.parent.GetComponent<T>();
             }
+            } 
         }
         return default(T);
     }

@@ -15,13 +15,17 @@ public class MirrorButton : MonoBehaviour, IPointerUpHandler
     protected bool interactable = true;
     public bool Interactable {
         get { return interactable;}
-        set { interactable = value; }
+        set { 
+            interactable = value; 
+            button.enabled = value;
+        }
     }
     protected Vector3 normalScale = Vector3.one;
 
     protected AnimationCurve scaleAnimationCurve = AnimationCurve.EaseInOut(0,0,1,1);
 
     protected RectTransform rt;
+    protected Button button;
 
     public virtual void OnHover() {
         if (!interactable || BUTTON_DRAGGED) return;
@@ -33,6 +37,7 @@ public class MirrorButton : MonoBehaviour, IPointerUpHandler
     }
     public virtual void Awake() {
         rt = GetComponent<RectTransform>();
+        button = GetComponent<Button>();
         // rt.localScale = Vector3.zero;
     }
 

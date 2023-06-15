@@ -91,9 +91,15 @@ public class MirrorCanvas : MonoBehaviour
 
 
     private void UpdateCanvas() {
-        bool val = isInteractable && isFocused;
-        GetComponent<GraphicRaycaster>().enabled = val;
+        bool val = IsInteractable && isFocused;
+        GetComponent<GraphicRaycaster>().enabled = true;// val;
         GetComponent<CanvasGroup>().alpha = val ? 1 : .8f;
+        foreach(Letter letter in Letters) {
+            letter.Interactable = val;
+        }
+        foreach(Letter letter in SelectedLetters) {
+            letter.Interactable = val;
+        }
 
         comfirmationButton.gameObject.SetActive(IsInteractable);
         resetButton.gameObject.SetActive(IsInteractable);
@@ -289,7 +295,7 @@ public class MirrorCanvas : MonoBehaviour
     private Letter InitializeLetter(string val, Vector3 pos) {
         Letter newLetter = GameObject.Instantiate(letterPrefab).GetComponent<Letter>();
             newLetter.gameObject.name ="letter: " + val;
-            newLetter.onLetterClick += LetterClicked;
+            if (IsInteractable) newLetter.onLetterClick += LetterClicked;
             newLetter.MirrorCanvas = this;
             newLetter.GetComponent<RectTransform>().SetParent(letterContainer);
             newLetter.GetComponent<RectTransform>().localPosition = pos;

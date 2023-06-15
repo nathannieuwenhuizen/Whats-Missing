@@ -101,6 +101,11 @@ public class Hands : MonoBehaviour
         if (holdingObject == null) return;
         if (holdingObject.CanBeReleased() == false) return;
 
+        DetachObject();
+    }
+    public void DetachObject() {
+        if (holdingObject == null) return;
+
         if (velocity.magnitude > maxThrowForce) {
             velocity = velocity.normalized * maxThrowForce;
         }            

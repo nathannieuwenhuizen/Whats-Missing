@@ -79,7 +79,7 @@ public class Letter : MirrorButton, IPointerDownHandler
     {
         base.Awake();
         button = GetComponent<Button>();
-        button.onClick.AddListener(() => LetterIsClicked());
+        if (Interactable) button.onClick.AddListener(() => LetterIsClicked());
         DefaultGlowColor = text.fontMaterial.GetColor("_GlowColor");
         DefaultGlowColor.a = .5f;
 
@@ -89,13 +89,13 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     public override void OnHover() {
         base.OnHover();
-        if (!interactable || BUTTON_DRAGGED) return;
+        if (!Interactable || BUTTON_DRAGGED) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(hoverScale));
     }
     public override void OnUnhover() {
         base.OnUnhover();
-        if (!interactable || BUTTON_DRAGGED) return;
+        if (!Interactable || BUTTON_DRAGGED) return;
         if (hoverCoroutine != null) StopCoroutine(hoverCoroutine);
         hoverCoroutine = StartCoroutine(ScaleAnimation(normalScale));
     }
@@ -167,6 +167,7 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (!Interactable) return;
         LetterClickStart();
     }
     public void LetterClickStart() {
@@ -186,7 +187,7 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     void LetterIsClicked()
     {
-        if (!interactable || !pressed) return;
+        if (!Interactable || !pressed) return;
         pressed = false;
         bool dragged = Dragged();
         OnLetterClickAction?.Invoke(this);
