@@ -15,10 +15,12 @@ namespace Boss {
         private Coroutine goToShieldCoroutine;
         private Coroutine knockbackCoroutine;
 
+        
         public override void DrawDebug()
         {
             base.DrawDebug();
         }
+        
 
         public override void Start()
         {

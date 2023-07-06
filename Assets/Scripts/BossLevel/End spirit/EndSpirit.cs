@@ -20,6 +20,11 @@ public class EndSpirit : MonoBehaviour
     [SerializeField]
     private float dissappEarDurationInSeconds = .3f;
 
+    [SerializeField]
+    private GameObject deathCollider;
+    [SerializeField]
+    private BossSceneLoaderTrigger sceneCollider;
+
 
 
     private void OnDrawGizmos() {
@@ -54,19 +59,21 @@ public class EndSpirit : MonoBehaviour
     private void Awake() {
         skinnedMeshToMesh = GetComponent<SkinnedMeshToMesh>();
         dustParticles.Stop();
+        sceneCollider.gameObject.SetActive(false);
+
     }
 
     private void Start() {
         // skinnedMeshToMesh.StopVFX();
         // StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
-        SpawnGhost();
+        // SpawnGhost();
     }
 
     private void UpdateFog() {
         float percentage = (float)CurrentIndex / ((float)points.Length - 1);
         RenderSettings.fogDensity = Mathf.Lerp(0.004f, 0.1f, percentage);
         dustParticles.transform.position = transform.position;
-        dustParticles.emissionRate = Mathf.Lerp(5, 100, percentage);
+        dustParticles.emissionRate = Mathf.Lerp(5, 100, percentage); 
     }
 
 
@@ -74,6 +81,8 @@ public class EndSpirit : MonoBehaviour
     private void SpawnGhost() {
         CurrentIndex = points.Length - 2;
         dustParticles.Play();
+        deathCollider.SetActive(false);
+        sceneCollider.gameObject.SetActive(true);
         StartCoroutine(CheckPlayerPosition());
     }
 

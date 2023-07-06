@@ -54,13 +54,13 @@ public class BossRoom : Room
 
     private void OnEnable() {
         Player.OnDie += ResetPlayer;
-        DieState.OnBossDie += SpawnEndDoor;
+        // DieState.OnBossDie += SpawnEndDoor;
         Boss.Boss.OnBossIntroStart += StartHintTimer;
     }
 
     private void OnDisable() {
         Player.OnDie -= ResetPlayer;
-        DieState.OnBossDie -= SpawnEndDoor;
+        // DieState.OnBossDie -= SpawnEndDoor;
         Boss.Boss.OnBossIntroStart -= StartHintTimer;
         if (Area.AUTO_SAVE_WHEN_DESTROY) SaveProgress();
     }
@@ -80,17 +80,13 @@ public class BossRoom : Room
 
 
     private void SpawnEndDoor() {
-        StartCoroutine(EndingOfArea());
         // EndDoor.gameObject.SetActive(true);
         // Vector3 endScale = EndDoor.transform.localScale;
         // EndDoor.transform.localScale = Vector3.zero;
         // StartCoroutine(EndDoor.transform.AnimatingLocalScale(endScale, AnimationCurve.EaseInOut(0,0,1,1), 3f));
         // EndDoor.Locked = false;
     }
-    public IEnumerator EndingOfArea() {
-        yield return new WaitForSeconds(5f);
-        EndOfArea();
-    }
+
 
     ///<summary>
     /// Fires when the player dies and has to respawn

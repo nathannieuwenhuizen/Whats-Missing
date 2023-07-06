@@ -72,7 +72,7 @@ namespace Boss {
 
             //camera zoom
             bossAI.Boss.Player.CharacterAnimationPlayer.ZoomDuration = enlargeDuration;
-            bossAI.Boss.Player.CharacterAnimationPlayer.CameraZoom = 90f;
+            bossAI.Boss.Player.CharacterAnimationPlayer.CameraZoom = 80f;
             bossAI.Boss.Player.CharacterAnimationPlayer.ZoomDuration = .5f;
 
             //camera new target

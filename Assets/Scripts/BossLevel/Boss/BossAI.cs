@@ -179,7 +179,6 @@ public class BossAI : MonoBehaviour {
             stateMachine.SwitchState(behaviours.kickShardState);
             break;
             case 4:    
-            CurrentWanderingPath = paths.fifthShardPath; 
             stateMachine.SwitchState(behaviours.enlargeState);
             break;        
             case 5:    

@@ -19,6 +19,7 @@ public class BossIndicator : MonoBehaviour
     [SerializeField] float minDistance = 5f;
 
     private bool showAlpha = true;
+    private bool active = true;
     private void Update() {
         UpdateBossRotation();
     }
@@ -52,7 +53,7 @@ public class BossIndicator : MonoBehaviour
     }
     private float fadeSpeed = 5f;
     public void UpdateBossAlpha() {
-        if (showAlpha) {
+        if (showAlpha && active) {
             float distance = Vector3.Distance(player.position, boss.position);
             distance = Mathf.Clamp(distance, minDistance, maxDistance);
             float endAlpha =  Mathf.Lerp(maxAlpha, minAlpha, distance / (maxDistance - minDistance));
@@ -114,11 +115,17 @@ public class BossIndicator : MonoBehaviour
         BossHitBox.OnHit += OnHit;
         BossCutsceneState.OnBossCutsceneStart += DisableAlpha;
         BossCutsceneState.OnBossCutsceneEnd += EnableAlpha;
+        Boss.DieState.OnBossDie += OnBossDie;
     }
     private void OnDisable() {
         BossHitBox.OnHit -= OnHit;
         BossCutsceneState.OnBossCutsceneStart -= DisableAlpha;
         BossCutsceneState.OnBossCutsceneEnd -= EnableAlpha;
+        Boss.DieState.OnBossDie -= OnBossDie;
+    }
+
+    public void OnBossDie() {
+        active = false;
     }
 
     public void EnableAlpha(Boss.Boss boss, float zoomValue = 50f) {

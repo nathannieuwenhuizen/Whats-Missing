@@ -25,22 +25,11 @@ public class BossSceneLoaderTrigger : MonoBehaviour, ITriggerArea
 
     public IEnumerator FadeToEnd() {
         blackScreenOverlay.FadeToColor(RenderSettings.fogColor);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
+        bossRoom.EndOfArea();
     }
 
     public void OnAreaExit(Player player)
-    {
-        
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
     {
         
     }

@@ -10,8 +10,9 @@ using UnityEngine.UI;
 ///</summary>
 public class PauseScreen : MonoBehaviour
 {
-
-    public delegate void PauseAction();
+    
+    
+    public delegate void PauseAction(); 
     public static event PauseAction OnPause;
     public static event PauseAction OnResume;
     public static event PauseAction OnQuit;
