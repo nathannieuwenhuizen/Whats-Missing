@@ -102,15 +102,20 @@ namespace Boss {
         }
 
 
+        int ammountOfDying = 0;
         public void ResetState(bool wthColor) {
 
             bossAI.BossChargeParticle.StopEmmission();
             bossAI.BossChargeParticle.ResetEmission();
             // bossAI.BossChargeParticle.gameObject.SetActive(false);
+            DialoguePlayer.Instance.PlayLine(BossLines.TimeHintAfterDying[ammountOfDying % BossLines.TimeHintAfterDying.Count]);
+            ammountOfDying++;
+            
             bossAI.TimeStopDebrees.gameObject.SetActive(false);
             bossAI.BossTimeStopCollider.SetActive(true);
             StartHugeAnticipationAnimation();
         }
+
 
         public override void Exit()
         {
