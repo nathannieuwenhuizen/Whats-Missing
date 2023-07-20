@@ -92,6 +92,8 @@ public class Player : RoomObject
     [SerializeField]
     private SkinnedMeshRenderer[] meshObjects;
 
+    [SerializeField] private Collider small_collider;
+
 
     private FPMovement movement;
     public FPMovement Movement { 
@@ -103,6 +105,7 @@ public class Player : RoomObject
     protected void Awake()
     {
         movement = GetComponent<FPMovement>();
+        small_collider.enabled = false;
         ApplyCameraSettings(Settings.GetSettings());
         characterAnimationPlayer = new CharacterAnimationPlayer(this, idleAnimator.animator, idleAnimator.cameraView, IKPass);
     }
@@ -270,12 +273,20 @@ public class Player : RoomObject
 
     public override void OnShrinking()
     {
+        IsShrinked = true;
         OnPlayerShrink?.Invoke();
         StartCoroutine(AnimateShrinking());
+    }
+    public override void OnShrinkingFinish()
+    {
+        small_collider.enabled = true;
+        base.OnShrinkingFinish();
     }
 
     public override void OnShrinkRevert()
     {
+        IsShrinked = false;
+        small_collider.enabled = false;
         OnPlayerUnShrink?.Invoke();
         StartCoroutine(AnimateShrinkRevert());
     }

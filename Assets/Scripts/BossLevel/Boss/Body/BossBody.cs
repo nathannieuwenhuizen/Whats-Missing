@@ -37,6 +37,9 @@ namespace Boss {
 
         [SerializeField]
         private BossHitBox[] hitBoxes;
+        public BossHitBox Hitbox {
+             get { return hitBoxes[0]; }
+        }
 
         private BossAnimator bossAnimator;
         public BossAnimator BossAnimator {

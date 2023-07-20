@@ -11,12 +11,14 @@ namespace Boss {
 
         public override void OnAreaEnter(Player player)
         {
+            Hit(.7f);
+            // base.OnAreaEnter(player);
+        }
+
+        public void Hit(float damage) {
             if (Player.INVINCIBLE == false) {
-                Debug.LogWarning("[PLAYER IS DEAD]");
-                Debug.Log("[PLAYER IS DEAD]");
-                AudioHandler.Instance?.PlaySound(SFXFiles.boss_attack_hit_player);
-                OnHit?.Invoke(.7f);
-                // base.OnAreaEnter(player);
+            AudioHandler.Instance?.PlaySound(SFXFiles.boss_attack_hit_player);
+            OnHit?.Invoke(damage);
             }
         }
 

@@ -33,6 +33,8 @@ namespace Boss {
         {
             bossAI.BossHead.SteeringEnabled = false;
 
+            bossAI.Boss.BossPositioner.CurrentMovementBehaviour.BasePathOffset = 1f;
+
             //head will look at the player
             Boss.Head.LookAtPlayer = true;
 
@@ -95,6 +97,8 @@ namespace Boss {
 
         public override void Exit()
         {
+            bossAI.Boss.BossPositioner.CurrentMovementBehaviour.BasePathOffset = 5f;
+
             bossAI.BossHead.SteeringEnabled = true;
             if (attackShieldCoroutine != null) bossAI.StopCoroutine(attackShieldCoroutine);
 
@@ -120,10 +124,24 @@ namespace Boss {
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
             AudioHandler.Instance?.Play3DSound(SFXFiles.boss_attack, bossAI.BossHead.transform);
 
+            Debug.Log("start attack");
+
+            if (Boss.Player.IsShrinked) {
+                bossAI.StartCoroutine(SmallPlayerExtraAttack());
+            }
+
             yield return bossAI.StartCoroutine(Boss.Body.BossAnimator.DoAttackAnimation());
             Positioner.BodyOrientation = oldOrientation;
 
             isAttacking = false;
+        }
+        private IEnumerator SmallPlayerExtraAttack() {
+            Debug.Log("small attack");
+            yield return new WaitForSeconds(1.5f);
+            if (DistnaceToPlayer() < Boss.BOSS_MELEE_ATTACK_RANGE) {
+                Debug.Log("hit!");
+                Boss.Body.Hitbox.Hit(.7f);
+            }
         }
 
         ///<summary>
