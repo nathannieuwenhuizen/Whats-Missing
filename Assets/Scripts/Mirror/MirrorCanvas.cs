@@ -430,6 +430,11 @@ public class MirrorCanvas : MonoBehaviour
         hintToggle2.GetComponent<Button>().onClick.AddListener(HighlightAnswer);
         StartCoroutine(hintToggle2.FadeCanvasGroup(1f, 1f, 0f));
     }
+    public void UnhighLightAnswer() {
+        foreach(Letter letter in Letters) {
+            letter.DefaultColor = new Color(1,1,1,1f);
+        }
+    }
     public void HighlightAnswer() {
         DeselectLetters();
         List<Letter> answerLetters = new List<Letter>();

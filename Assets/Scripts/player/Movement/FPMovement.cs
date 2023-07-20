@@ -168,6 +168,8 @@ public class FPMovement : MonoBehaviour
             else rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
             return;
         }
+
+        if (InAir) return;
         
         InAir = true;
         AudioHandler.Instance?.PlaySound(SFXFiles.player_jump, .1f);
