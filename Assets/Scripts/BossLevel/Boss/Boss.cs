@@ -13,6 +13,7 @@ namespace Boss {
     // [RequireComponent(typeof(Rigidbody))]
     public class Boss : RoomObject
     {   
+        
         public delegate void BossEvent();
         public static BossEvent OnBossIntroStart;
 

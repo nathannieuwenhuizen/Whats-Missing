@@ -126,14 +126,13 @@ public class Room : MonoBehaviour
     protected virtual void Awake() {
         hintStopwatch = new HintStopwatch(this);
         changeHandler = new ChangeHandler(this);
-        roomstateHandler = new RoomStateHandler(this);
+        roomstateHandler = new RoomStateHandler(this); 
 
         changeLineObject = Resources.Load<GameObject>("RoomPrefabs/change_line");
         plopParticle = Resources.Load<GameObject>("RoomPrefabs/plop_effect");
 
         endDoor.room = this;
         startDoor.room = this;
-        Debug.Log("door room = " + endDoor.room + startDoor.room);
         allObjects = GetAllObjectsInRoom<IChangable>();
         for (int i = 0; i < allObjects.Count; i++)
         {
@@ -203,7 +202,7 @@ public class Room : MonoBehaviour
 
         foreach (IChangable obj in allObjects)
         {
-            if (obj.Word == change.Word || obj.AlternativeWords.Contains(change.Word)) {
+            if (obj.Word == change.Word || obj.AlternativeWords.Contains(change.Word) && obj.Transform.gameObject != null) {
                 foundObjects.Add(obj);
                 result = true;
             }

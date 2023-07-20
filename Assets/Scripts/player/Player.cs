@@ -171,6 +171,7 @@ public class Player : RoomObject
             movement.EnableWalk = false;
             AudioHandler.Instance.PlaySound(SFXFiles.player_fall_death);
         }
+        hands.DetachObject();
         OnDie?.Invoke(withAnimation, toPreviousLevel);
     }
     public void DieWithoutAnimation() {

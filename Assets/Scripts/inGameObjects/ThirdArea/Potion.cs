@@ -43,6 +43,8 @@ public class Potion : PickableRoomObject
         AlternativeWords = new string[] { "potions", "brew" };
     }
 
+    private GameObject player;
+
     protected override void Awake()
     {
         base.Awake();
@@ -88,6 +90,7 @@ public class Potion : PickableRoomObject
     public override void Grab(Rigidbody connectedRigidBody)
     {
         base.Grab(connectedRigidBody);
+        player = connectedRigidBody.gameObject;
         StartCoroutine(UpdatingAimLine());
     }
 
@@ -98,12 +101,22 @@ public class Potion : PickableRoomObject
         Vector3 delta =  Camera.main.transform.forward;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.AddForce(delta * forcePower * rb.mass);
+        rb.AddForce(-ThrowDelta());
         rb.drag = 0;
         rb.angularDrag = 0;
         rb.angularVelocity = transform.InverseTransformDirection(new Vector3(0,50,0));
         Interactable = false;
         thrown = true;
+
+        if (hittingSelf)
+        {
+            StartCoroutine(HittingSelf());
+        }
+    }
+    public IEnumerator HittingSelf() {
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+        Collide(player.transform.parent.parent.gameObject); 
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -113,12 +126,25 @@ public class Potion : PickableRoomObject
         }
     }
 
+    private bool hittingSelf = false;
+
+    private Vector3 ThrowDelta() {
+        Vector3 delta =  -Camera.main.transform.forward;
+        hittingSelf = delta.y > .9f;
+        return delta * forcePower * rb.mass;
+    }
+
 
     private void OnCollisionEnter(Collision other) {
         if (!thrown || broken) return;
+        Collide(other.gameObject);
+    }
+
+    private void Collide(GameObject other) {
         broken = true;
-        IChangable changable = getPotentialIChangable(other);
+        IChangable changable = getPotentialIChangable(other.transform);
         if (changable != null) {
+            Debug.Log("should be affected");
             if (changable.Transform.GetComponent<RoomObject>() != null) 
                 if (changable.Transform.GetComponent<RoomObject>().AffectedByPotions == false) {
                     Break();
@@ -129,7 +155,7 @@ public class Potion : PickableRoomObject
         Break();
     }
 
-    private IChangable getPotentialIChangable(Collision other)
+    private IChangable getPotentialIChangable(Transform other)
     {        
         //check first in children
         IChangable changable = other.transform.GetComponentInChildren<IChangable>();
@@ -148,8 +174,7 @@ public class Potion : PickableRoomObject
 
         while (thrown == false) {
             AimLineAlpha = 1;
-            Vector3 delta =  -Camera.main.transform.forward * forcePower * rb.mass;
-            UpdateAimLine(delta, rb, transform.position);
+            UpdateAimLine(ThrowDelta(), rb, transform.position);
             yield return new WaitForEndOfFrame();
         }
         // ClearAimLine();

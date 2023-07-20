@@ -23,6 +23,7 @@ public class Line {
     public string text;
     public string fmod_audio_path;
     public float duration;
+    public float delay = 0;
     public LineEffect lineEffect = LineEffect.none;
 }
 

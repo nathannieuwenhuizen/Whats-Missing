@@ -97,8 +97,11 @@ public class RoomObject : RoomEntity
         List<Material> materials = new List<Material>();
         foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>())
         {
+            Debug.Log("add material" + item.name);
             materials.AddRange(item.materials);
         } 
+        // if (!materials.Contains(GetComponent<MeshRenderer>().material))
+        // materials.Add(GetComponent<MeshRenderer>().material);
         return materials.ToArray();
     }
 

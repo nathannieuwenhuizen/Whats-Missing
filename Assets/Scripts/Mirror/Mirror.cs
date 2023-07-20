@@ -120,6 +120,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     ///</summary>
     public void SetupCanvas()
     {
+        mirrorCanvas.IsInteractable = mirrorData.isInteractable;
         mirrorCanvas.InitializeLetters(mirrorData.huzzleWords, Letters, preAnswer);
         mirrorCanvas.SetupText( ChangeType);
     }

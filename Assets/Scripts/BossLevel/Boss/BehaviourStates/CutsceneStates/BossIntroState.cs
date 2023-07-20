@@ -17,6 +17,7 @@ namespace Boss {
             Positioner.InAir = true;
             Positioner.BodyMovementType = BodyMovementType.freeFloat;
             Body.Arm.Toggle(false);
+            bossAI.StartCoroutine(Talking());
             bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_INTRO, true, 10f, () => {
                 // DialoguePlayer.Instance.PlayLine(BossLines.Intro_3);
                 OnStateSwitch?.Invoke(bossAI.Behaviours.chargeAtShieldState);
@@ -31,6 +32,19 @@ namespace Boss {
             yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(15,15f,10), AnimationCurve.EaseInOut(0,0,1,1), 6f);
             // yield return bossAI.Boss.transform.AnimatingPos(start +  new Vector3(0,10f,-20), AnimationCurve.EaseInOut(0,0,1,1), 6f);
         }
+
+        public IEnumerator Talking() {
+            yield return new WaitForSeconds(2f);
+            DialoguePlayer.Instance.PlayLine(BossLines.Intro_2);
+            yield return new WaitForSeconds(5f);
+            DialoguePlayer.Instance.PlayLine(BossLines.Intro_3);
+            yield return new WaitForSeconds(5f);
+            DialoguePlayer.Instance.PlayLine(BossLines.Intro_shield);
+            yield return new WaitForSeconds(5f);
+            DialoguePlayer.Instance.PlayLine(BossLines.Intro_shield_2);
+        }
+
+
 
 
         ///<summary>
