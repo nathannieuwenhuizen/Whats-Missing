@@ -58,11 +58,8 @@ public class MirrorShardIndicator : MonoBehaviour
     }
     private void UpdateUIAlpha () {
         if (inBossCutscene) return;
-        if (!active) {
-            cg.alpha = 0;
-            return;
-        }
-        if (shard.Attached) {
+
+        if (!active || shard.Attached || !shard.gameObject.activeInHierarchy) {
             cg.alpha = 0;
             return;
         }

@@ -19,7 +19,6 @@ public class CutSceneBars : MonoBehaviour
         }
         set { 
             barHeight = value;
-            Debug.Log("value cutscene: " + value);
             topBar.GetComponent<UITransitionEffect>().effectFactor = value;
             topBar.sizeDelta = new Vector2(topBar.sizeDelta.x, 60); 
             bottomBar.GetComponent<UITransitionEffect>().effectFactor = value;

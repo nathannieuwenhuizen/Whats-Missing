@@ -225,10 +225,18 @@ public class BossMirror : Mirror, ITriggerArea
             break;
             case 5:
             MirrorData.changeType = ChangeType.missing;
+            StartCoroutine(HighlightSpirit());
+
             // OnlyShowLettersOfWord("spirit");
             break;
         }
         MirrorCanvas.SetupText(MirrorData.changeType);
+    }
+    private IEnumerator HighlightSpirit() {
+        MirrorCanvas.DeselectLetters();
+        yield return new WaitForSeconds(1f);
+        MirrorCanvas.secondHintAnswer = "spirit";
+        MirrorCanvas.HighlightAnswer();
     }
 
     public bool MirrorIsComplete() {
@@ -327,8 +335,7 @@ public class BossMirror : Mirror, ITriggerArea
             case 3:    
                 MirrorCanvas.DeselectLetters();
                 Confirm();
-            break;        
-
+            break; 
         }
     }
     public void HintToggleClick(string hint = "", float duration = 0) {

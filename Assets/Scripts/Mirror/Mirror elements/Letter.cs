@@ -61,6 +61,21 @@ public class Letter : MirrorButton, IPointerDownHandler
          set { attachedToMirror = value; }
     }
 
+    private bool greyedOut = false;
+    public bool GreyedOut {
+         get { return greyedOut; }
+         set { 
+            greyedOut = value; 
+            if (value) {
+                DefaultColor = new Color(1,1,1,.2f);
+                Interactable = false;
+            }
+            else { 
+                DefaultColor = new Color(1,1,1,1f);
+            }
+        }
+    }
+
     private string letterValue;
 
     // sets the value of the letter

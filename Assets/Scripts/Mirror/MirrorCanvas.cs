@@ -95,7 +95,7 @@ public class MirrorCanvas : MonoBehaviour
         GetComponent<GraphicRaycaster>().enabled = true;// val;
         GetComponent<CanvasGroup>().alpha = val ? 1 : .8f;
         foreach(Letter letter in Letters) {
-            letter.Interactable = val;
+            letter.Interactable = val && !letter.GreyedOut;
         }
         foreach(Letter letter in SelectedLetters) {
             letter.Interactable = val;
@@ -176,7 +176,7 @@ public class MirrorCanvas : MonoBehaviour
         if (InputManager.KEYBOARD_ENABLED_MIRROR){
             foreach( Letter letter in Letters) {
                 if (Input.GetKeyDown(GetKeyCode(letter.LetterValue[0]))) {
-                    if (letter.Interactable && letter.gameObject.activeSelf && letter.AttachedToMirror) {
+                    if (letter.Interactable && letter.gameObject.activeSelf && letter.AttachedToMirror && !letter.GreyedOut) {
                         letter.pressedTime = 0;
                         LetterClicked(letter);
                         return;
@@ -422,7 +422,7 @@ public class MirrorCanvas : MonoBehaviour
         StartCoroutine(hintToggle.FadeCanvasGroup(1f, 1f, 0f));
     }
 
-    private string secondHintAnswer = "";
+    [HideInInspector] public string secondHintAnswer = "";
     public void ShowSecondHintButton(string _answer) {
         if (_answer == "") return;
         secondHintAnswer = _answer;
@@ -445,7 +445,8 @@ public class MirrorCanvas : MonoBehaviour
     }
     public void UnhighLightAnswer() {
         foreach(Letter letter in Letters) {
-            letter.DefaultColor = new Color(1,1,1,1f);
+            letter.GreyedOut = false;
+            letter.Interactable = true;
         }
     }
     public void HighlightAnswer() {
@@ -453,7 +454,7 @@ public class MirrorCanvas : MonoBehaviour
         List<Letter> _answerLetters = new List<Letter>();
         List<Letter> letterobjectsTemp = new List<Letter>(Letters);
         for(int i = 0; i < secondHintAnswer.Length; i++) {
-            Letter foundLetter = letterobjectsTemp.Find(l => l.LetterValue == (secondHintAnswer[i] + "") && l.gameObject.activeSelf && l.Interactable && l.AttachedToMirror );
+            Letter foundLetter = letterobjectsTemp.Find(l => l.LetterValue == (secondHintAnswer[i] + "") && l.gameObject.activeSelf && l.AttachedToMirror );
             
             if (foundLetter != null) {
                 Debug.Log(" found letter: for " + secondHintAnswer[i] + " = " + foundLetter);
@@ -462,12 +463,12 @@ public class MirrorCanvas : MonoBehaviour
             }
         }
         foreach(Letter letter in letterobjectsTemp) {
-                letter.DefaultColor = new Color(1,1,1,.2f);
-                letter.Interactable = false;
+            letter.GreyedOut = true;
         }
         foreach(Letter letter in _answerLetters) {
-            letter.DefaultColor = new Color(1,1,1,1f);
+            letter.GreyedOut = false;
             letter.Interactable = true;
+
         }
 
     }

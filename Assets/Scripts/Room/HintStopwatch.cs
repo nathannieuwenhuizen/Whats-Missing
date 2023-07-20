@@ -26,7 +26,6 @@ public class HintStopwatch
     private IEnumerator Waiting() {
         while (currentDuration < duration) {
             yield return new WaitForSeconds(1f);
-            Debug.Log(currentDuration + " seconds past");
             currentDuration++;
         }
         TimesUp();
