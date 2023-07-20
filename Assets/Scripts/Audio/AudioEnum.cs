@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 public static class SFXFiles {
 
+    //multiple books
+    public static string multiple_books = "event:/SFX/Environment/Planetarium/Multiple_books_falling";
+
     //door
     public static string door_closing = "event:/SFX/Door/Door_shut";
     public static string door_open = "event:/SFX/Door/Door_open";
