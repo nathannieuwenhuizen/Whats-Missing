@@ -176,11 +176,11 @@ public class MirrorCanvas : MonoBehaviour
         if (InputManager.KEYBOARD_ENABLED_MIRROR){
             foreach( Letter letter in Letters) {
                 if (Input.GetKeyDown(GetKeyCode(letter.LetterValue[0]))) {
-                    if (letter.Interactable) {
+                    if (letter.Interactable && letter.gameObject.activeSelf && letter.AttachedToMirror) {
                         letter.pressedTime = 0;
                         LetterClicked(letter);
+                        return;
                     }
-                    return;
                 }
             }
         }
@@ -424,11 +424,24 @@ public class MirrorCanvas : MonoBehaviour
 
     private string secondHintAnswer = "";
     public void ShowSecondHintButton(string _answer) {
+        if (_answer == "") return;
         secondHintAnswer = _answer;
         hintToggle2.interactable = true;
         hintToggle2.blocksRaycasts = true;
         hintToggle2.GetComponent<Button>().onClick.AddListener(HighlightAnswer);
         StartCoroutine(hintToggle2.FadeCanvasGroup(1f, 1f, 0f));
+    }
+    public void HideSecondHintButtom() {
+        hintToggle2.interactable = false;
+        hintToggle2.blocksRaycasts = false;
+        hintToggle2.GetComponent<Button>().onClick.RemoveListener(HighlightAnswer);
+        StartCoroutine(hintToggle2.FadeCanvasGroup(0f, 1f, 0f));
+    }
+
+    public void HideHintButtom() {
+        hintToggle.interactable = false;
+        hintToggle.blocksRaycasts = false;
+        StartCoroutine(hintToggle.FadeCanvasGroup(0f, 1f, 0f));
     }
     public void UnhighLightAnswer() {
         foreach(Letter letter in Letters) {
@@ -437,20 +450,26 @@ public class MirrorCanvas : MonoBehaviour
     }
     public void HighlightAnswer() {
         DeselectLetters();
-        List<Letter> answerLetters = new List<Letter>();
-        List<Letter> letterobjectsTemp = Letters;
+        List<Letter> _answerLetters = new List<Letter>();
+        List<Letter> letterobjectsTemp = new List<Letter>(Letters);
         for(int i = 0; i < secondHintAnswer.Length; i++) {
-            Letter foundLetter = letterobjectsTemp.Find(l => l.LetterValue == (secondHintAnswer[i] + "") );
-            letterobjectsTemp.Remove(foundLetter);
-            answerLetters.Add(foundLetter);
+            Letter foundLetter = letterobjectsTemp.Find(l => l.LetterValue == (secondHintAnswer[i] + "") && l.gameObject.activeSelf && l.Interactable && l.AttachedToMirror );
+            
+            if (foundLetter != null) {
+                Debug.Log(" found letter: for " + secondHintAnswer[i] + " = " + foundLetter);
+                letterobjectsTemp.Remove(foundLetter);
+                _answerLetters.Add(foundLetter);
+            }
         }
-        foreach(Letter letter in Letters) {
-            letter.DefaultColor = new Color(1,1,1,1f);
-        }
-
         foreach(Letter letter in letterobjectsTemp) {
                 letter.DefaultColor = new Color(1,1,1,.2f);
+                letter.Interactable = false;
         }
+        foreach(Letter letter in _answerLetters) {
+            letter.DefaultColor = new Color(1,1,1,1f);
+            letter.Interactable = true;
+        }
+
     }
 
     public void HintToggleClick() {

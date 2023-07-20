@@ -129,6 +129,7 @@ public class BossMirror : Mirror, ITriggerArea
             shards[i].invokeBossReaction = i >= ammountOfShardAlreadyCollected - 1; //purely for testing
             shards[i].transform.position = transform.position;
             shards[i].Release();
+            shards[i].Attached = true;
         }
         Forcefield.IsOn = true;
         OnMirrorShardAmmountUpdate?.Invoke(this);
@@ -195,6 +196,7 @@ public class BossMirror : Mirror, ITriggerArea
 
         MirrorCanvas.DeselectLetters();
         MirrorCanvas.UnhighLightAnswer();
+        MirrorCanvas.HideSecondHintButtom();
         Confirm();
         UpdateMirrorHeader();
         bool showNext = true;
@@ -309,10 +311,13 @@ public class BossMirror : Mirror, ITriggerArea
 
     private void OnEnable() {
         MirrorShard.OnPickedUp += MirrorShardRecolectReaction;
+        MirrorCanvas.OnShowHint += HintToggleClick;
     }
 
     private void OnDisable() {
         MirrorShard.OnPickedUp -= MirrorShardRecolectReaction;
+        MirrorCanvas.OnShowHint -= HintToggleClick;
+
     }
 
     public void MirrorShardRecolectReaction(MirrorShard _shard) {
@@ -326,14 +331,15 @@ public class BossMirror : Mirror, ITriggerArea
 
         }
     }
-    public void HintToggleClick() {
+    public void HintToggleClick(string hint = "", float duration = 0) {
         // OnAskingHint?.Invoke(this);
+        Debug.Log("show hint + " + GetAnswer()); 
         if (GetAnswer() != "") MirrorCanvas.ShowSecondHintButton(GetAnswer());
     }
 
     public string GetAnswer() {
         string result = "";
-        switch (ammountOfShardAlreadyCollected) {
+        switch (AmmountOfShardsAttached()) {
             case 2:
                 result = "water";
                 break;

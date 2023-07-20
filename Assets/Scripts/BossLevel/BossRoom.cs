@@ -36,7 +36,7 @@ public class BossRoom : Room
     //auto enter for the player
     private void Start() {
         hintStopwatch.room = this;
-        hintStopwatch.Duration = 90f;
+        hintStopwatch.Duration = 1;
 
         OnRoomEnter(Player, false);
         allObjects.Add(boss);
@@ -55,27 +55,34 @@ public class BossRoom : Room
     private void OnEnable() {
         Player.OnDie += ResetPlayer;
         // DieState.OnBossDie += SpawnEndDoor;
-        Boss.Boss.OnBossIntroStart += StartHintTimer;
+        BossMirror.OnMirrorShardAmmountUpdate += StartHintTimer;
     }
 
     private void OnDisable() {
         Player.OnDie -= ResetPlayer;
         // DieState.OnBossDie -= SpawnEndDoor;
-        Boss.Boss.OnBossIntroStart -= StartHintTimer;
+        BossMirror.OnMirrorShardAmmountUpdate -= StartHintTimer;
         if (Area.AUTO_SAVE_WHEN_DESTROY) SaveProgress();
     }
     private void OnDestroy() {
         if (Area.AUTO_SAVE_WHEN_DESTROY) SaveProgress();
     }
+
     public override void ShowMirrorToggleHint() {
         foreach(Mirror mirror in mirrors) {
-            mirror.MirrorCanvas.ShowHintButton("", 0);
+            mirror.MirrorCanvas.ShowSecondHintButton((mirror as BossMirror).GetAnswer());
+        }
+    }
+    public override void ShowMirrorToggleSecondHint() {
+        foreach(Mirror mirror in mirrors) {
+            mirror.MirrorCanvas.ShowSecondHintButton((mirror as BossMirror).GetAnswer());
         }
     }
 
-    public void StartHintTimer() {
-        hintStopwatch.Reset();
-        hintStopwatch.Resume();
+    public void StartHintTimer(BossMirror b) {
+        Debug.Log(" start hint timer!");
+        hintStopwatch.timerForSecondHint = false;
+        hintStopwatch.StartTimerSecondHint("", 5);
     }
 
 

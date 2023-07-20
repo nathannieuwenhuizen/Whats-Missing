@@ -55,6 +55,12 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     private Vector3 spawnPosition = Vector3.zero;
 
+    private bool attachedToMirror = true;
+    public bool AttachedToMirror {
+         get { return attachedToMirror; }
+         set { attachedToMirror = value; }
+    }
+
     private string letterValue;
 
     // sets the value of the letter
@@ -251,6 +257,12 @@ public class Letter : MirrorButton, IPointerDownHandler
     }
 
     public void MoveTo( Vector3 pos) {
+        if (!gameObject.activeSelf) 
+        {
+            rt.localPosition = pos; 
+            return;
+        }
+
         // in animation
         if (movingCoroutine != null) StopCoroutine(movingCoroutine);
         if (movingCoroutine != null && movingIndex < movingDuration && movingIndex > 0) {

@@ -401,7 +401,7 @@ public class Room : MonoBehaviour
             }
         }
     }
-    public void ShowMirrorToggleSecondHint() {
+    public virtual void ShowMirrorToggleSecondHint() {
         foreach(Mirror mirror in mirrors) {
             if (mirror.isQuestion) {
                 mirror.MirrorCanvas.ShowSecondHintButton(SecondHintAnswer);

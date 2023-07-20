@@ -26,10 +26,13 @@ public class HintStopwatch
     private IEnumerator Waiting() {
         while (currentDuration < duration) {
             yield return new WaitForSeconds(1f);
+            Debug.Log(currentDuration + " seconds past");
             currentDuration++;
         }
         TimesUp();
     }
+
+    
 
     public void Pause() {
         if (waitingCoroutine != null) {
@@ -49,12 +52,11 @@ public class HintStopwatch
     }
 
     public void StartTimerSecondHint(string hint, float _duration) {
-        Debug.Log("timer 2nd hint");
         if (!room.InArea) return;
         if (timerForSecondHint) return;
         timerForSecondHint = true;
         Duration = _duration;
-        Debug.Log("timer 2nd start");
+        Debug.Log("timer 2nd start" + duration);
         Reset();
 
     }

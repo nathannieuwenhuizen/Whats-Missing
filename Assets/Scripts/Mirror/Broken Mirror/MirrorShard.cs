@@ -89,7 +89,7 @@ public class MirrorShard : PickableRoomObject
             } else {
                 ActivateRigidBody();
             }
-            foreach(LetterCoords coords in letterCoords) coords.letter.Interactable = value;
+            foreach(LetterCoords coords in letterCoords) coords.letter.AttachedToMirror = value;
             planarReflection.IsActive = !value;
             // planarReflection.IsActive = false;
 
@@ -134,7 +134,7 @@ public class MirrorShard : PickableRoomObject
         startParent = transform.parent;
         holdingDistance = 5f;
         
-        Attached = true;
+        // Attached = true;
         shineParticle.Stop();
         UpdateLetterPosition();
     }
@@ -285,6 +285,7 @@ public class MirrorShard : PickableRoomObject
     {  
         if (!Attached && Vector3.Distance(transform.position, bossMirror.transform.position) < distanceToAttachShardToMirror) {
             base.Release();
+            Attached = true;
             ReattachedToMirror();
         } else {
             shineParticle.Play();

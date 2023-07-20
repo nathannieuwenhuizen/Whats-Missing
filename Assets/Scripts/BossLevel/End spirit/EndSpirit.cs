@@ -78,13 +78,18 @@ public class EndSpirit : MonoBehaviour
 
 
 
-    private void SpawnGhost() {
+    private IEnumerator SpawningGhost () {
+        yield return new WaitForSeconds(2f);
         CurrentIndex = points.Length - 2;
         dustParticles.Play();
         deathCollider.SetActive(false);
         sceneCollider.gameObject.SetActive(true);
         StartCoroutine(CheckPlayerPosition());
     }
+    private void SpawnGhost() {
+        StartCoroutine(SpawningGhost());
+    }
+
 
     private IEnumerator FadeToNextPoint() {
         skinnedMeshToMesh.StopVFX();

@@ -93,12 +93,10 @@ public class InteractabelObject : RoomObject, IInteractable
         if (!OutlineEnabled || AlwaysShowOutline) return;
         
         if (outline != null) {
-            Debug.Log("outline isnt null");
             if (focusedCoroutine != null) 
                 StopCoroutine(focusedCoroutine);
             if (gameObject.activeSelf)
             {
-                Debug.Log("start focus coroutine");
                 focusedCoroutine = StartCoroutine(AnimateOutline(0, true)); 
 
             }
