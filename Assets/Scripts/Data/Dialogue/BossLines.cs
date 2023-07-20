@@ -11,15 +11,23 @@ public static class BossLines
     public static Line Intro_1 = new Line() {
         text = "I'll make sure myself that you're done for", 
         lineEffect = LineEffect.none, duration = 2f};
+
     public static Line Intro_2 = new Line() {
         text = "Did you really thought you could prevent all of this? Starting over? ", 
-        lineEffect = LineEffect.none, duration = 4f};
-    public static Line Intro_3 = new Line() {
-        text = "But now it is time for you to die. Time to join her too, Gregory", 
-        lineEffect = LineEffect.none, duration = 4f};
-    public static Line Intro_shield = new Line() {
-        text = "It seems like you're protected, no worries, that shield won't hold for long!", 
         lineEffect = LineEffect.none, duration = 3f};
+    public static Line Intro_3 = new Line() {
+        text = "Now it is time for you to die. Time to join her too, Gregory", 
+        lineEffect = LineEffect.none, duration = 3f};
+    
+    public static Line Intro_shield = new Line() {
+        text = "It seems like you're protected", 
+        lineEffect = LineEffect.none, duration = 3f};
+    
+    public static Line Intro_shield_2 = new Line() {
+        text = "No worries, that shield won't hold for long!", 
+        lineEffect = LineEffect.none, duration = 4f};
+    
+    //die
     public static Line Boss_Die = new Line() {
         text = "AAAAAAAAAAAAAAAAAAAAAAAAAH! THIS CAN'T... THIS CAN'T BE HAPPINING! YOU'RE SUPPOSED TO STAY STUCK WITH ME FOREVER!", 
         lineEffect = LineEffect.shake, duration = 6f};
@@ -85,4 +93,8 @@ public static class BossLines
         return Lines[Mathf.FloorToInt(Random.Range(0, Lines.Count))];
     }
 
+    public static List<Line> TimeHintAfterDying  = new List<Line>() {
+        new Line() {text = "You’re running out of time!", lineEffect = LineEffect.none, duration = 3f, delay = 4f},
+        new Line() {text = "Poor gregory),If only you had more time.", lineEffect = LineEffect.none, duration = 4f, delay = 4f},
+    };
 }

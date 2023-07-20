@@ -42,13 +42,14 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
 
         isPlaying = true;
         if (writingCoroutine != null) StopCoroutine(writingCoroutine);
-        StartCoroutine(backdrop.FadeCanvasGroup(1, .5f,0));
+        StartCoroutine(backdrop.FadeCanvasGroup(1, .5f,_line.delay));
         writingCoroutine = StartCoroutine(PlayingLine(_line));
     }
 
     private IEnumerator PlayingLine(Line _line) {
+        yield return new WaitForSeconds(_line.delay);
         player.ShowText(getLineEffectTagStart(_line.lineEffect) + _line.text + getLineEffectTagEnd(_line.lineEffect));
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(_line.duration);
         // yield return new WaitForSeconds(_line.duration);
         yield return StartCoroutine(DisappearingLine());
     }

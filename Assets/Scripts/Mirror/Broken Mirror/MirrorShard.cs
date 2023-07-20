@@ -141,14 +141,29 @@ public class MirrorShard : PickableRoomObject
 
     private void OnEnable() {
         RenderTexturePlane.OnTextureUpdating += UpdateTexture;
+        Player.OnDie += ResetShard;
         if (focusedShard) StartCoroutine(FocusedAnimation());
         ToggleLetterVisibilty(true);
     }
 
     private void OnDisable() {
         RenderTexturePlane.OnTextureUpdating -= UpdateTexture;
+        Player.OnDie -= ResetShard;
+
         Outline.enabled = false;
         ToggleLetterVisibilty(false);
+    }
+
+    public void ResetShard(bool withAnimation, bool toPreviousLevel) {
+        if (grabbed) {
+            Debug.Log("should release now");
+            hasAlreadyBeenPickedUp = false;
+            SetToFallPosition();
+            ToggleAllColliders(true);
+            ToggleLetterVisibilty(true);
+            base.Release();
+
+        }
     }
 
     private void UpdateTexture(RenderTexturePlane _plane) {
@@ -348,7 +363,7 @@ public class MirrorShard : PickableRoomObject
     }
     public override bool CanBeReleased()
     {
-        return !Attached && Vector3.Distance(transform.position, bossMirror.transform.position) < distanceToAttachShardToMirror;
+        return (!Attached && Vector3.Distance(transform.position, bossMirror.transform.position) < distanceToAttachShardToMirror) || !hasAlreadyBeenPickedUp;
     }
     public IEnumerator FocusedAnimation() {
         yield return new WaitForSeconds(1f);

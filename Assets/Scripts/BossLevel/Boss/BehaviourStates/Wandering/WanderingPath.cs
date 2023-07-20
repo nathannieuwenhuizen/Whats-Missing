@@ -17,7 +17,6 @@ public class WanderingPaths {
     public WanderingPath secondShardPath;
     public WanderingPath thirdShardPath;
     public WanderingPath fourthShardPath;
-    public WanderingPath fifthShardPath;
 }
 
 public class WanderingPath : MonoBehaviour {

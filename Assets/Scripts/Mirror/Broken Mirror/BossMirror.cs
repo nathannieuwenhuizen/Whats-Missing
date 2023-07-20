@@ -194,6 +194,7 @@ public class BossMirror : Mirror, ITriggerArea
         }
 
         MirrorCanvas.DeselectLetters();
+        MirrorCanvas.UnhighLightAnswer();
         Confirm();
         UpdateMirrorHeader();
         bool showNext = true;
@@ -326,7 +327,29 @@ public class BossMirror : Mirror, ITriggerArea
         }
     }
     public void HintToggleClick() {
-        OnAskingHint?.Invoke(this);
+        // OnAskingHint?.Invoke(this);
+        if (GetAnswer() != "") MirrorCanvas.ShowSecondHintButton(GetAnswer());
     }
+
+    public string GetAnswer() {
+        string result = "";
+        switch (ammountOfShardAlreadyCollected) {
+            case 2:
+                result = "water";
+                break;
+            case 3:
+                result = "gravity";
+                break;
+            case 4:
+                result = "time";
+                break;
+            case 5:
+                result = "spirit";
+                break;
+        }
+
+        return result;
+    }
+
 
 }

@@ -203,6 +203,7 @@ public static class Extensions
         while (timePassed < duration) {
             yield return new WaitForEndOfFrame();
             timePassed += Time.unscaledDeltaTime;
+            // Debug.Log("Disolve" + curve.Evaluate(timePassed / duration));
             mat.SetFloat("Dissolve", Mathf.LerpUnclamped(beginVal, endVal , curve.Evaluate(timePassed / duration)));
         }
         mat.SetFloat("Dissolve", endVal);

@@ -58,6 +58,10 @@ public class BlackScreenOverlay : MonoBehaviour
         image.color = Color.white;
         StartCoroutine(group.FadeCanvasGroup(1, 1f, 0f));
     }
+    public void FadeToColor(Color _color) {
+        image.color = _color;
+        StartCoroutine(group.FadeCanvasGroup(1, 1.5f, 1f));
+    }
     public void RemoveOverlay(bool withStartColor = true) {
         StopAllCoroutines();
         if (withStartColor) image.color = START_COLOR;
