@@ -248,24 +248,40 @@ public class BossPositioner : MonoBehaviour
         SpeedScale = 1f;
 
         //do landing animation.
-        InAir = false;
         float timePassed = 0;
 
-        while(!AtPosition(3f)) {
-            timePassed += Time.deltaTime;
+        // while(!AtPosition(3f)) {
+        //     timePassed += Time.deltaTime;
+        //     BodyMovementType = BodyMovementType.freeFloat;
+        //     yield return new WaitForFixedUpdate();
+        // }
+        bool debreeeSpawned = false;
+
+        while (timePassed < 3f) {
             BodyMovementType = BodyMovementType.freeFloat;
+            if (AtPosition(2f)) {
+                InAir = false;
+            }
+
+
+            if (AtPosition(1f) && !debreeeSpawned) {
+                debreeeSpawned = true;
+                SpawnDebree(_endPos);
+                AudioHandler.Instance?.Play3DSound(SFXFiles.boss_landing, transform);
+            }
+
+            timePassed += Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }
+
         
         //spawn debree at end position when the coordinate of the boss is within 3 units of its destination.
-        SpawnDebree(_endPos);
-        AudioHandler.Instance?.Play3DSound(SFXFiles.boss_landing, transform);
 
         //wait until the boss is within 1 unit and the animation has at least been 1 second to finish the animation
-        while(!AtPosition(1f) && timePassed < 1.1f) {
-            timePassed += Time.deltaTime;
-            yield return new WaitForFixedUpdate();
-        } 
+        // while(!AtPosition(1f) && timePassed < 1.1f) {
+        //     timePassed += Time.deltaTime;
+        //     yield return new WaitForFixedUpdate();
+        // } 
         
         //callback will be called if it isnt null.
         if (callback != null) callback();
@@ -300,6 +316,7 @@ public class BossPositioner : MonoBehaviour
         SpeedScale = .7f;
 
         //do taking off animation.
+        yield return new WaitForSeconds(.5f);
         InAir = true;
         yield return new WaitForSeconds(.3f);
         AudioHandler.Instance?.Play3DSound(SFXFiles.boss_take_off, transform);

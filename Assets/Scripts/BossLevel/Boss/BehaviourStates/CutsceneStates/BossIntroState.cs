@@ -6,6 +6,8 @@ namespace Boss {
     public class BossIntroState : BossCutsceneState
     {
 
+        public delegate void BossIntroDelegate();
+        public static BossIntroDelegate OnBossIntroStart;
 
         public override void Start()
         {
@@ -13,6 +15,7 @@ namespace Boss {
             base.Start();
             stateName = "Intro cutscene";
             bossAI.StartCoroutine(MovingBoss());
+            OnBossIntroStart?.Invoke();
 
             Positioner.InAir = true;
             Positioner.BodyMovementType = BodyMovementType.freeFloat;

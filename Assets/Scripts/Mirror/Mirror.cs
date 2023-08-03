@@ -130,7 +130,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     /// fires when the player wants to apply the question or sentence
     /// Also called from the mirror button
     ///</summary>
-    public void Confirm()
+    public virtual void Confirm()
     {
         canPlayAudio = true;
         if (isQuestion) room.CheckMirrorQuestion(this);

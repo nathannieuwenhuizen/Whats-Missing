@@ -146,7 +146,6 @@ public class CharacterAnimationPlayer
     private IEnumerator InBossCutScene(BossMirror bossMirror) {
         inBossCutscene = true;
         yield return new WaitForSeconds( bossMirror.ShakeDuration - .5f);
-        Debug.Log("in boss cutscene for realz");
         PlayCutSceneAnimation("boss_intro_1", false);
         yield return new WaitForSeconds(3f);
         //no call playcutsceneanimation, as it flickers the camera

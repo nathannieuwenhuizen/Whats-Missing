@@ -19,7 +19,7 @@ public class BossIndicator : MonoBehaviour
     [SerializeField] float minDistance = 5f;
 
     private bool showAlpha = true;
-    private bool active = true;
+    private bool active = false;
     private void Update() {
         UpdateBossRotation();
     }
@@ -116,16 +116,26 @@ public class BossIndicator : MonoBehaviour
         BossCutsceneState.OnBossCutsceneStart += DisableAlpha;
         BossCutsceneState.OnBossCutsceneEnd += EnableAlpha;
         Boss.DieState.OnBossDie += OnBossDie;
+        Boss.BossIntroState.OnBossIntroStart += OnBossStart;
+        BossMirror.OnSkipIntro += OnBossStart;
+
     }
     private void OnDisable() {
         BossHitBox.OnHit -= OnHit;
         BossCutsceneState.OnBossCutsceneStart -= DisableAlpha;
         BossCutsceneState.OnBossCutsceneEnd -= EnableAlpha;
         Boss.DieState.OnBossDie -= OnBossDie;
+        Boss.BossIntroState.OnBossIntroStart -= OnBossStart;
+        BossMirror.OnSkipIntro -= OnBossStart;
+
     }
 
     public void OnBossDie() {
         active = false;
+    }
+
+    public void OnBossStart() {
+        active = true;
     }
 
     public void EnableAlpha(Boss.Boss boss, float zoomValue = 50f) {

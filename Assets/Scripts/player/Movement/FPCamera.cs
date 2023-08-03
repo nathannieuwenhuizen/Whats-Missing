@@ -73,7 +73,6 @@ public class FPCamera
         cameraStartYPos = cameraPivot.localPosition.y;
         cameraParent = cameraPivot.parent;
         if (desiredAim == null) {
-            Debug.Log("new desire aim");
             desiredAim = new GameObject("player camera desired aim").transform;
             desiredAim.transform.position = cameraPivot.position + cameraPivot.forward;
             desiredAim.SetParent(FPMovement.transform.parent);

@@ -18,7 +18,7 @@ public class InteractabelObject : RoomObject, IInteractable
         set { outline = value; }
     }
     private float outlineWidth = .025f;
-    private float duration = .4f;
+    private float outlineDuration = .4f;
     private Coroutine focusedCoroutine;
 
     private bool outlineEnabled = true;
@@ -106,9 +106,9 @@ public class InteractabelObject : RoomObject, IInteractable
     private IEnumerator AnimateOutline(float val, bool disableAfterAnimating = false) {
         float index = 0;
         float start = outline.OutlineWidth;
-        while (index < duration) {
+        while (index < outlineDuration) {
             index += Time.unscaledDeltaTime;
-            outline.OutlineWidth = Mathf.Lerp(start, val, index / duration);
+            outline.OutlineWidth = Mathf.Lerp(start, val, index / outlineDuration);
             yield return new WaitForEndOfFrame();
         }
         outline.OutlineWidth = val;

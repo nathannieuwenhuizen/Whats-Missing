@@ -38,12 +38,14 @@ namespace Boss {
             return bossAI.ReactionPosition.position;
         }
 
+
+        private float landingOffset = 3f;
         ///<summary>
         /// Boss goes to the reaction pose in the air
         ///</summary>
         public virtual IEnumerator GoToReactionPose() {
             //reshape the boss mountain to make the arc more fitting
-            if (customMountainShape) Positioner.BossMountain.MakeMountainFit(bossAI.transform.position, ReactionPosition() + Vector3.up * 3f);
+            if (customMountainShape) Positioner.BossMountain.MakeMountainFit(bossAI.transform.position, ReactionPosition() + Vector3.up * landingOffset);
             
             float distance = Vector3.Distance(ReactionPosition(), bossAI.transform.position);
             if (distance > 15f) {
@@ -55,7 +57,7 @@ namespace Boss {
             Positioner.BodyOrientation = BodyOrientation.toPlayer;
             Positioner.RotationEnabled = true;
             Positioner.MovementEnabled = true;
-            Positioner.SetDestinationPath(ReactionPosition() + Vector3.up * 3f, bossAI.transform.position, true, 5f);
+            Positioner.SetDestinationPath(ReactionPosition() + Vector3.up * landingOffset, bossAI.transform.position, true, 5f);
             Positioner.SpeedScale = 2f;
             Positioner.SteeringBehaviour.MaxForce *= 5f;
 

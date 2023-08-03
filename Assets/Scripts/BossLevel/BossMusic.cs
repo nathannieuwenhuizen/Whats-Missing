@@ -52,7 +52,7 @@ public class BossMusic : MonoBehaviour
         set { 
             musicIntensity = value; 
             if (AudioHandler.Instance?.AudioManager.Music != null) {
-                Debug.Log(" Music intensity = " + value);
+                // Debug.Log(" Music intensity = " + value);
                 AudioHandler.Instance?.AudioManager.Music.FMODInstance.setParameterByName(FMODParams.BOSS_INTENSITY, value, true);
             }
         }
@@ -72,7 +72,7 @@ public class BossMusic : MonoBehaviour
             bossAlive = value; 
             if (AudioHandler.Instance?.AudioManager.Music != null) 
             {
-                Debug.Log(" boss alive = " + value);
+                // Debug.Log(" boss alive = " + value);
                 AudioHandler.Instance?.AudioManager.Music.FMODInstance.setParameterByName(FMODParams.BOSS_ALIVE, value ? 0 : 1, true);
             }
         }

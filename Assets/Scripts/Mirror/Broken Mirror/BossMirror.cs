@@ -6,6 +6,7 @@ using System.Linq;
 public class BossMirror : Mirror, ITriggerArea
 {
     
+    public delegate void BossMirrorDefaultEvent();
     public delegate void BossMirrorEvent(BossMirror bossMirror);
     public delegate void BossMirrorPlayerEvent(BossMirror bossMirror, Player player);
     public static BossMirrorEvent OnBossMirrorShardAttached;
@@ -14,6 +15,7 @@ public class BossMirror : Mirror, ITriggerArea
     public static BossMirrorEvent OnMirrorComplete;
     public static BossMirrorEvent OnMirrorExplode;
     public static BossMirrorEvent OnAskingHint;
+    public static BossMirrorDefaultEvent OnSkipIntro;
 
     private Rigidbody rb;
 
@@ -118,6 +120,8 @@ public class BossMirror : Mirror, ITriggerArea
         AudioHandler.Instance?.FadeListener(1f);
         AudioHandler.Instance.PlayMusic(MusicFiles.boss, .5f, 0f);
         yield return new WaitForSeconds(.1f);
+
+        OnSkipIntro?.Invoke();
         introCutscene = true;
         for (int i = 0; i < shards.Length; i++) {
             shards[i].animated = false;
@@ -210,6 +214,7 @@ public class BossMirror : Mirror, ITriggerArea
     }
 
     private void UpdateMirrorHeader() {
+        CheckOutlineEnabling();
         switch (AmmountOfShardsAttached()) {
             case 1:
             MirrorData.changeType = ChangeType.tooSmall;
@@ -347,6 +352,10 @@ public class BossMirror : Mirror, ITriggerArea
     public string GetAnswer() {
         string result = "";
         switch (AmmountOfShardsAttached()) {
+
+            case 1:
+                result = "me";
+                break;
             case 2:
                 result = "water";
                 break;
@@ -362,6 +371,67 @@ public class BossMirror : Mirror, ITriggerArea
         }
 
         return result;
+    }
+
+    public override void Confirm()
+    {
+        base.Confirm();
+        CheckOutlineEnabling();
+    }
+
+
+    private void CheckOutlineEnabling() {
+        Debug.Log("check out enabling: " + Word + " | " + GetAnswer());
+        if (Word == GetAnswer()) OnBlur();
+        else OnFocus();
+    }
+
+    private float outlineWidth = .05f;
+    private Outline outline;
+    [SerializeField] private GameObject frame;
+
+    public Outline Outline {
+        get { 
+            if (outline == null) outline = frame.AddComponent<Outline>();
+            return outline;
+        }
+        set { outline = value; }
+    }
+
+    private Coroutine focusedCoroutine;
+
+    ///<summary>
+    /// When the cursor hovers over the mesh of the object. It makes the outline appear.
+    ///</summary>
+    private void OnFocus() {
+        Debug.Log("on focus");
+        Outline.enabled = true;
+        Outline.OutlineMode = Outline.Mode.OutlineVisible;
+        
+        if (focusedCoroutine != null) StopCoroutine(focusedCoroutine);
+        focusedCoroutine = StartCoroutine(AnimateOutline(outlineWidth, false)); 
+    }
+    ///<summary>
+    /// When the cursor unhovers the emesh of the pbject. Making the outline disappear.
+    ///</summary>
+    private void OnBlur() {
+        Debug.Log("on blur");
+        
+        if (focusedCoroutine != null) StopCoroutine(focusedCoroutine);
+        focusedCoroutine = StartCoroutine(AnimateOutline(0, false)); 
+    }
+
+    private IEnumerator AnimateOutline(float val, bool disableAfterAnimating = false) {
+        float index = 0;
+        float start = outline.OutlineWidth;
+        while (index < .5f) {
+            index += Time.unscaledDeltaTime;
+            outline.OutlineWidth = Mathf.Lerp(start, val, index / .5f);
+            yield return new WaitForEndOfFrame();
+        }
+        outline.OutlineWidth = val;
+        // if (disableAfterAnimating && outline != null)
+        //     outline.enabled = false;
     }
 
 
