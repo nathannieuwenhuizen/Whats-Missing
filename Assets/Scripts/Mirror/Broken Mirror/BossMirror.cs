@@ -325,11 +325,13 @@ public class BossMirror : Mirror, ITriggerArea
     private void OnEnable() {
         MirrorShard.OnPickedUp += MirrorShardRecolectReaction;
         MirrorCanvas.OnShowHint += HintToggleClick;
+        Boss.DieState.OnBossDie += OnBossDie;
     }
 
     private void OnDisable() {
         MirrorShard.OnPickedUp -= MirrorShardRecolectReaction;
         MirrorCanvas.OnShowHint -= HintToggleClick;
+        Boss.DieState.OnBossDie -= OnBossDie;
 
     }
 
@@ -432,6 +434,21 @@ public class BossMirror : Mirror, ITriggerArea
         outline.OutlineWidth = val;
         // if (disableAfterAnimating && outline != null)
         //     outline.enabled = false;
+    }
+
+    private void OnBossDie() {
+        StartCoroutine(Extensions.AnimateCallBack(1,0, AnimationCurve.EaseInOut(0,0,1,1),(float v) => {
+            CanvasAlpha = v;
+        }, 1f));
+
+    }
+
+    public float CanvasAlpha {
+         set { 
+            MirrorCanvas.CanvasGroup.alpha = value; 
+            MirrorCanvas.gameObject.SetActive(value != 0); 
+            indicatorMesh.enabled = value == 1;
+        }
     }
 
 

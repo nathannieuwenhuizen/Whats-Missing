@@ -121,13 +121,13 @@ public class SceneLoader : MonoBehaviour
     ///<summary>
     /// Loads the next scene based on the area index
     ///</summary>
-    public void GoToNextLevel(int _currentAreaIndex, bool animating = false) {
+    public void GoToNextLevel(int _currentAreaIndex, bool showMainLoadingScreen = false) {
         SaveData.current.areaIndex = _currentAreaIndex + 1;
         SaveData.current.roomIndex = 0;
         SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
 
         Area.AUTO_SAVE_WHEN_DESTROY = false;
-        LoadNewScene(Scenes.GetSceneNameBasedOnAreaIndex(_currentAreaIndex + 1), animating);
+        LoadNewScene(Scenes.GetSceneNameBasedOnAreaIndex(_currentAreaIndex + 1), showMainLoadingScreen);
     }
 
     ///<summary>

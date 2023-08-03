@@ -45,7 +45,7 @@ public class Mirror: MonoBehaviour, IRoomObject
 
     [Header("color indicator")]
     [SerializeField]
-    private MeshRenderer indicatorMesh;
+    protected MeshRenderer indicatorMesh;
     [SerializeField]
     private Color offColor = Color.red;
     [SerializeField]
@@ -136,7 +136,7 @@ public class Mirror: MonoBehaviour, IRoomObject
         if (isQuestion) room.CheckMirrorQuestion(this);
         else {
             if (!IsOn) room.AddMirrorChange(this); 
-            else {
+            else if (room.ChangeInMirror(this).word != Word){ // if same word, then no need to add change since it is already added
                 room.RemoveMirrorChange(this);
                 room.AddMirrorChange(this);
             }

@@ -256,12 +256,14 @@ public class Room : MonoBehaviour
         if (!selectedMirror.IsOn) return;
         selectedMirror.IsOn = false;
         CheckRoomCompletion();
-        MirrorChange removedChange = changeHandler.MirrorChanges.Find(x => x.mirror == selectedMirror);
+        MirrorChange removedChange = ChangeInMirror(selectedMirror);
         if (!selectedMirror.isQuestion) {
             RemoveChangeInRoomObjects(removedChange);
             changeHandler.MirrorChanges.Remove(removedChange);
         }
-
+    }
+    public MirrorChange ChangeInMirror(Mirror selectedMirror) {
+        return changeHandler.MirrorChanges.Find(x => x.mirror == selectedMirror);
     }
 
     ///<summary>

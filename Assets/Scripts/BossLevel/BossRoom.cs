@@ -115,7 +115,7 @@ public class BossRoom : Room
         OnRespawn?.Invoke(true);
     }
     public void EndOfArea() {
-        sceneLoader.GoToNextLevel(3, true);
+        sceneLoader.GoToNextLevel(3, false);
     }
 
     public void SaveProgress() {

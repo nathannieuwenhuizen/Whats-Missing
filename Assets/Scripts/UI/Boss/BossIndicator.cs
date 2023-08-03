@@ -28,8 +28,8 @@ public class BossIndicator : MonoBehaviour
     private void UpdateBossRotation() {
         if (boss == null) return;
 
-        Vector3 _pos = Camera.main.WorldToScreenPoint(boss.position);
-        bool camReversed = CamIsBehind(Camera.main.transform.position - boss.position);
+        Vector3 _pos = Camera.main.WorldToScreenPoint(BossPosition());
+        bool camReversed = CamIsBehind(Camera.main.transform.position - BossPosition());
         _pos.z = 0;
         if (camReversed) {
             _pos.x *= -1;
@@ -52,12 +52,14 @@ public class BossIndicator : MonoBehaviour
         UpdateBossAlpha();
     }
     private float fadeSpeed = 5f;
+
     public void UpdateBossAlpha() {
         if (showAlpha && active) {
-            float distance = Vector3.Distance(player.position, boss.position);
+            float distance = Vector3.Distance(player.position, BossPosition());
             distance = Mathf.Clamp(distance, minDistance, maxDistance);
+
             float endAlpha =  Mathf.Lerp(maxAlpha, minAlpha, distance / (maxDistance - minDistance));
-            Vector3 direction = (boss.position - player.position).normalized;
+            Vector3 direction = (BossPosition() - player.position).normalized;
             float angle = Vector3.Angle(Camera.main.transform.forward, direction);
 
             if (angle < 120 && angle > 45) {
@@ -128,6 +130,14 @@ public class BossIndicator : MonoBehaviour
         Boss.BossIntroState.OnBossIntroStart -= OnBossStart;
         BossMirror.OnSkipIntro -= OnBossStart;
 
+    }
+
+    public Vector3 BossPosition() {
+        return boss.position + Vector3.up * 5f;
+    }
+
+    private void OnDrawGizmosSelected() {
+        Gizmos.DrawCube(boss.position, Vector3.one * 4f);
     }
 
     public void OnBossDie() {

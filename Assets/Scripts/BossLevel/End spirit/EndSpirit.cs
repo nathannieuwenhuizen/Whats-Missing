@@ -16,6 +16,8 @@ public class EndSpirit : MonoBehaviour
     private SkinnedMeshRenderer meshRenderer;
     [SerializeField]
     private ParticleSystem dustParticles;
+    [SerializeField]
+    private ParticleSystem trailParticles;
 
     [SerializeField]
     private float dissappEarDurationInSeconds = .3f;
@@ -60,13 +62,14 @@ public class EndSpirit : MonoBehaviour
         skinnedMeshToMesh = GetComponent<SkinnedMeshToMesh>();
         dustParticles.Stop();
         sceneCollider.gameObject.SetActive(false);
+        // trailParticles.GetComponent<TrailRenderer>().enabled = false;
 
     }
 
     private void Start() {
         // skinnedMeshToMesh.StopVFX();
         // StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
-        // SpawnGhost();
+        SpawnGhost();
     }
 
     private void UpdateFog() {
@@ -84,6 +87,8 @@ public class EndSpirit : MonoBehaviour
         dustParticles.Play();
         deathCollider.SetActive(false);
         sceneCollider.gameObject.SetActive(true);
+        trailParticles.transform.position = points[currentIndex].position;
+
         StartCoroutine(CheckPlayerPosition());
     }
     private void SpawnGhost() {
@@ -94,9 +99,17 @@ public class EndSpirit : MonoBehaviour
     private IEnumerator FadeToNextPoint() {
         skinnedMeshToMesh.StopVFX();
         yield return StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
+        StartCoroutine(MoveTrail(points[currentIndex].position));
         transform.position = points[currentIndex].position;
         skinnedMeshToMesh.StartVFX();
         yield return StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 0, 1, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
+    }
+
+    private IEnumerator MoveTrail( Vector3 end) {
+        // trailParticles.GetComponent<TrailRenderer>().enabled = true;
+        yield return StartCoroutine(TransformExtensions.AnimatingPos(trailParticles.transform, end, AnimationCurve.EaseInOut(0,0,1,1), .5f));
+        // trailParticles.GetComponent<TrailRenderer>().enabled = false;
+
     }
 
 
