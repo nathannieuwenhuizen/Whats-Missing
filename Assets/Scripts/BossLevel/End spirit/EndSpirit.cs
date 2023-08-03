@@ -69,7 +69,7 @@ public class EndSpirit : MonoBehaviour
     private void Start() {
         // skinnedMeshToMesh.StopVFX();
         // StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
-        SpawnGhost();
+        // SpawnGhost();
     }
 
     private void UpdateFog() {
