@@ -55,6 +55,12 @@ public class Letter : MirrorButton, IPointerDownHandler
 
     private Vector3 spawnPosition = Vector3.zero;
 
+    private bool animated = false;
+    public bool Animated {
+         get { return animated; }
+         set { animated = value; }
+    }
+
     private bool attachedToMirror = true;
     public bool AttachedToMirror {
          get { return attachedToMirror; }
@@ -192,6 +198,7 @@ public class Letter : MirrorButton, IPointerDownHandler
         LetterClickStart();
     }
     public void LetterClickStart() {
+        if (animated) return;
         pressed = true;
         pressedTime = Time.time;
         if (spawnPosition == Vector3.zero) spawnPosition = rt.localPosition;
@@ -289,11 +296,13 @@ public class Letter : MirrorButton, IPointerDownHandler
         movingCoroutine =  StartCoroutine(Moving(pos));
     }
     private IEnumerator Moving(Vector3 pos) {
+        animated = true;
         while( movingIndex < movingDuration && mirrorCanvas.Mirror.InSpace) {
             movingIndex += Time.unscaledDeltaTime;
             rt.localPosition = Vector3.LerpUnclamped(startMovePos, pos, scaleAnimationCurve.Evaluate(movingIndex/ movingDuration));
             yield return new WaitForEndOfFrame();
         }
+        animated = false;
         movingIndex = 1;
         rt.localPosition = pos;
     }

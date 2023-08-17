@@ -19,6 +19,8 @@ public class BossRoom : Room
 
     [SerializeField]
     private Transform spawnPosition;
+    [SerializeField]
+    private BlackScreenOverlay blackScreenOverlay;
 
     [SerializeField]
     private bool setPlayerAtDoor = false;
@@ -48,6 +50,7 @@ public class BossRoom : Room
         if (setPlayerAtDoor) {
             Player.transform.position = StartDoor.EndPos();
             Player.Respawn();
+            blackScreenOverlay.FadeFromColor(Color.black);
         }
         EndDoor.gameObject.SetActive(false);
     }

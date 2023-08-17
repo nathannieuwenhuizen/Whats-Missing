@@ -7,7 +7,12 @@ using UnityEngine;
 ///</summary>
 public class RoomObject : RoomEntity
 {
-    public static bool PARTICLES_SHOWN = false;
+    public static int PARTICLES_ACTIVE = 0;
+    ///<summary>
+    /// To make sure the game performance wont suffer because too many objects are animating
+    ///</summary>
+    public static int MAX_PARTICLES = 8;
+    
     private bool active = true;
 
     [Header("room object info")]
@@ -87,10 +92,11 @@ public class RoomObject : RoomEntity
         }
         OnMissingFinish();
     }
-    protected void ShowDisovleParticles(bool _flamableParticles = false) {
-        if (PARTICLES_SHOWN) return;
-        PARTICLES_SHOWN = true;
-        foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(disolvingParticles(item, _flamableParticles));
+    public void ShowDisovleParticles(bool _flamableParticlesEnabled = false) {
+        if (PARTICLES_ACTIVE > MAX_PARTICLES) return;
+        PARTICLES_ACTIVE++;
+        Debug.Log("show particles" + PARTICLES_ACTIVE);
+        foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(DisolvingParticles(item, _flamableParticlesEnabled));
     }
 
     protected virtual Material[] getMaterials() {
@@ -129,10 +135,13 @@ public class RoomObject : RoomEntity
         OnAppearingFinish();
     }
 
-    private IEnumerator disolvingParticles(MeshRenderer renderer, bool _flamableParticles) {
+    private IEnumerator DisolvingParticles(MeshRenderer renderer, bool _flamableParticlesEnabled) {
         ParticleSystem particleSystem = Instantiate(Resources.Load<GameObject>(
-            _flamableParticles ? "RoomPrefabs/burn_particle" : "RoomPrefabs/dissolve_particle"
+            _flamableParticlesEnabled ? "RoomPrefabs/burn_particle" : "RoomPrefabs/dissolve_particle"
             )).GetComponent<ParticleSystem>();
+        particleSystem.transform.position = renderer.transform.position;
+        particleSystem.transform.rotation = renderer.transform.rotation;
+        particleSystem.transform.localScale = renderer.transform.localScale;
         // particleSystem.shape.shapeType = ParticleSystemShapeType.MeshRenderer;
         ParticleSystem.ShapeModule shape = particleSystem.shape;
         shape.meshRenderer = renderer;
@@ -140,7 +149,7 @@ public class RoomObject : RoomEntity
         shape.mesh = renderer.GetComponent<MeshFilter>().mesh;
 
         particleSystem.Play();
-        float maxEmission = 50;
+        float maxEmission = 100;
         float index = 0;
         while(index < animationDuration * .5f) {
             index += Time.deltaTime;
@@ -148,7 +157,7 @@ public class RoomObject : RoomEntity
             yield return new WaitForEndOfFrame();
         }
         particleSystem.Stop();
-        PARTICLES_SHOWN = false;
+        PARTICLES_ACTIVE--;
         Destroy(particleSystem.gameObject, particleSystem.main.startLifetime.Evaluate(0));
     }
     

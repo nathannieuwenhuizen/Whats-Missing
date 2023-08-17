@@ -33,6 +33,8 @@ namespace Boss {
 
             // Positioner.SetDestinationPath(bossAI.DiePosition, bossAI.transform.position, false, 0);
             bossAI.StartCoroutine(bossAI.Boss.Body.UpdatingDisolve(11f));
+            bossAI.Boss.AnimationDuration = 11f;
+            bossAI.Boss.ShowDisovleParticles(false);
             // bossAI.StartCoroutine(Extensions.AnimateCallBack(0, 1f, AnimationCurve.EaseInOut))
 
             OnBossDieStart?.Invoke();

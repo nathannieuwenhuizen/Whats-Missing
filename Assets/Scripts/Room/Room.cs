@@ -463,6 +463,7 @@ public class Room : MonoBehaviour
         RoomObjectEventSender.OnAltered -= UpdateRoomObjectChanges;
         Potion.OnChanging -= AddPotionChange;
         if (hintStopwatch != null) hintStopwatch.OnDisable();
+        RoomObject.PARTICLES_ACTIVE = 0;
 
     }
 

@@ -7765,6 +7765,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42d45478847a97448dd0a93bffd8268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 0
+  ignoreErrorWhenDuplicatedInstance: 0
 --- !u!225 &647037679
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -8888,6 +8890,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1201716648714011913, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1456306151390426234, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -8986,7 +8992,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4713372005310984360, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: ammountOfShardAlreadyCollected
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5888112389204107587, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9000,6 +9006,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6045545769076053757, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: basaltWall
+      value: 
+      objectReference: {fileID: 2054514919}
     - target: {fileID: 6383481332006421723, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_LocalScale.x
       value: 11.6
@@ -9152,6 +9162,10 @@ PrefabInstance:
       propertyPath: setPlayerAtDoor
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6595655514613166238, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: blackScreenOverlay
+      value: 
+      objectReference: {fileID: 647037678}
     - target: {fileID: 6595655515048616188, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_Size.y
       value: 14.981181
@@ -9230,7 +9244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6595655515351997390, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -92.78219
+      value: -92.86193
       objectReference: {fileID: 0}
     - target: {fileID: 6595655515368451551, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_IsActive
@@ -9279,6 +9293,10 @@ PrefabInstance:
     - target: {fileID: 6595655515490150266, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_LocalPosition.z
       value: 5.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7211368926747468918, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7516980615954421304, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_IsActive
@@ -10354,6 +10372,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2054514919 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4120780090593181104, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+  m_PrefabInstance: {fileID: 1620035860}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &2054514920
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054514919}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2738449890021996681, guid: 4952a3823b1dcb74c962828b6d759b72, type: 3}
 --- !u!1001 &2073594908
 PrefabInstance:
   m_ObjectHideFlags: 0

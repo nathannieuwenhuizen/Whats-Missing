@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BlackScreenOverlay : MonoBehaviour
+public class BlackScreenOverlay : Singleton<BlackScreenOverlay>
 {
     public static Color START_COLOR;
     private CanvasGroup group;
     private Image image;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         group = GetComponent<CanvasGroup>();
         image = GetComponent<Image>();
         group.interactable = false;
