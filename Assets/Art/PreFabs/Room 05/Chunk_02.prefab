@@ -28,9 +28,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.037499998, y: -0.049999997, z: 0.05749999}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4794018239987309618}
   m_Father: {fileID: 8613758962716977844}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9148481653096432348
 MeshFilter:
@@ -196,7 +197,6 @@ Transform:
   - {fileID: 4515305703740822419}
   - {fileID: 5211207362895309504}
   - {fileID: 6630266267478692729}
-  - {fileID: 4794018239987309618}
   - {fileID: 3740757089382417285}
   m_Father: {fileID: 3835910403329267217}
   m_RootOrder: 0
@@ -476,6 +476,12 @@ MonoBehaviour:
     attachedToWall: 1
   roundCeiling: {fileID: 4233600088637687334}
   emptyCeiling: {fileID: 3749363991225473330}
+  paintingMaterials:
+  - {fileID: 2100000, guid: a3f59b74fac01b141b031caa27417d2f, type: 2}
+  - {fileID: 2100000, guid: ddf6d6be907166d46a37a40ea02642a8, type: 2}
+  - {fileID: 2100000, guid: 7d60d8a24f8f5444ca356c383dce27c9, type: 2}
+  - {fileID: 2100000, guid: 0eb9dd2d8133890468a5574826391f63, type: 2}
+  paintingRenderer: {fileID: 5966401906450376541}
 --- !u!1 &4233600088637687334
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,11 +589,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5317650119751861896}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.037499998, y: -0.0499, z: 0.0575}
+  m_LocalPosition: {x: 0, y: 0.00009999052, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
-  m_Father: {fileID: 8613758962716977844}
-  m_RootOrder: 4
+  m_Father: {fileID: 3740757089382417285}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8442030099353621399
 MeshFilter:
