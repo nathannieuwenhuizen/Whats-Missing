@@ -45,7 +45,7 @@
 
             Vector3 cameraSpacePos = reflectionCamera.worldToCameraMatrix.MultiplyPoint(clipPlane.position);
 
-            delta =clipPlane.InverseTransformDirection(clipPlane.transform.position - mainCamera.transform.position);
+            delta = clipPlane.InverseTransformDirection(clipPlane.transform.position - mainCamera.transform.position);
 
             int invert = delta.z > 0 ? -1 : 1;
             // int invert = clipPlane.position.y <= mainCamera.transform.position.y ? 1 : -1;
@@ -58,6 +58,11 @@
 
             reflectionCamera.orthographic = false;
             reflectionCamera.projectionMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
+        }
+
+        public void OnDrawGizmosSelected() {
+            Gizmos.DrawLine(transform.position, transform.position + delta);
+            Gizmos.DrawSphere(transform.position, .1f);
         }
     }
 }

@@ -37,12 +37,12 @@ public class InteractabelObject : RoomObject, IInteractable
         set {
             if (value == focused) return;
 
-            focused = value;
-            if (focused) {
+            if (value) {
                 OnFocus();
             } else {
                 OnBlur();
             }
+            focused = value;
         } 
     }
     public GameObject Gameobject { get => gameObject; }
@@ -68,9 +68,9 @@ public class InteractabelObject : RoomObject, IInteractable
     private bool alwaysShowOutline = false;
     public bool AlwaysShowOutline { get => alwaysShowOutline; 
         set {
-            alwaysShowOutline = value;
             if (value) OnFocus();
             else OnBlur();
+            alwaysShowOutline = value;
         }
     }
 
@@ -78,7 +78,7 @@ public class InteractabelObject : RoomObject, IInteractable
     /// When the cursor hovers over the mesh of the object. It makes the outline appear.
     ///</summary>
     protected virtual void OnFocus() {
-        if (!OutlineEnabled) return;
+        if (!OutlineEnabled || Outline.enabled || focused) return;
 
         Outline.enabled = true;
         Outline.OutlineMode = Outline.Mode.OutlineVisible;
@@ -90,7 +90,7 @@ public class InteractabelObject : RoomObject, IInteractable
     /// When the cursor unhovers the emesh of the pbject. Making the outline disappear.
     ///</summary>
     protected virtual void OnBlur() {
-        if (!OutlineEnabled || AlwaysShowOutline) return;
+        if (!OutlineEnabled || AlwaysShowOutline || !focused) return;
         
         if (outline != null) {
             if (focusedCoroutine != null) 
@@ -98,7 +98,6 @@ public class InteractabelObject : RoomObject, IInteractable
             if (gameObject.activeSelf)
             {
                 focusedCoroutine = StartCoroutine(AnimateOutline(0, true)); 
-
             }
         }
     }

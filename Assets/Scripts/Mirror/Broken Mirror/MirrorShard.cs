@@ -60,8 +60,6 @@ public class MirrorShard : PickableRoomObject
         get { return planarReflection;}
     }
 
-    private float grabAnimationDuration = 1f;
-
     public LetterCoords[] LetterCoords {
         get { return letterCoords;}
     }
@@ -150,7 +148,7 @@ public class MirrorShard : PickableRoomObject
         RenderTexturePlane.OnTextureUpdating -= UpdateTexture;
         Player.OnDie -= ResetShard;
 
-        Outline.enabled = false;
+        // Outline.enabled = false;
         ToggleLetterVisibilty(false);
     }
 
@@ -261,6 +259,9 @@ public class MirrorShard : PickableRoomObject
         base.Grab(connectedRigidBody); 
         AudioHandler.Instance?.Play3DSound(grabSound, transform);
         shineParticle.Stop();
+        Outline.RemoveOutlineMat();
+        // Outline.enabled = false;
+
         transform.parent  = null; // dont set ot the connected rigibdoy or else the update position will get laggy somehow
         if (!hasAlreadyBeenPickedUp) {
             hasAlreadyBeenPickedUp = true;

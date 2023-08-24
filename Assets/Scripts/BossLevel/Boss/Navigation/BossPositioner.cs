@@ -257,7 +257,7 @@ public class BossPositioner : MonoBehaviour
         // }
         bool debreeeSpawned = false;
 
-        while (timePassed < 3f) {
+        while (timePassed < 3f && !AtPosition(.2f)) {
             BodyMovementType = BodyMovementType.freeFloat;
             if (AtPosition(2f)) {
                 InAir = false;
