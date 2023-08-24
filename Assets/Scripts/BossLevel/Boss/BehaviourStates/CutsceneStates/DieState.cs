@@ -17,6 +17,7 @@ namespace Boss {
             base.Start();
             stateName = "Die cutscene";
             DialoguePlayer.Instance.PlayLine(BossLines.Boss_Die);
+            AudioHandler.Instance.PlaySound(SFXFiles.boss_dying);
 
 
             // Positioner.MovementEnabled = false;

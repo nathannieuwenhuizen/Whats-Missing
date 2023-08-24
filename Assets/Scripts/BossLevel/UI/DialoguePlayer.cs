@@ -25,10 +25,10 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
     }
 
     private void OnEnable() {
-        BossVoice.OnLineStart += PlayLine;
+        // BossVoice.OnLineStart += PlayLine;
     }
     private void OnDisable() {
-        BossVoice.OnLineStart -= PlayLine;
+        // BossVoice.OnLineStart -= PlayLine;
     }
     protected override void Awake()
     {
@@ -37,19 +37,23 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
         base.Awake();
     }
 
-    public void PlayLine(Line _line, bool forced = true) {
+    public void PlayLine(Line _line, bool forced = true, string SFX = "") {
         if (!forced && isPlaying) return;
 
         isPlaying = true;
         if (writingCoroutine != null) StopCoroutine(writingCoroutine);
         StartCoroutine(backdrop.FadeCanvasGroup(1, .5f,_line.delay));
-        writingCoroutine = StartCoroutine(PlayingLine(_line));
+        writingCoroutine = StartCoroutine(PlayingLine(_line, SFX));
     }
 
-    private IEnumerator PlayingLine(Line _line) {
+    private IEnumerator PlayingLine(Line _line, string SFX = "") {
         yield return new WaitForSeconds(_line.delay);
+        SFXInstance sfxInstance = null;
+        if (SFX != "") sfxInstance = AudioHandler.Instance.PlaySound(SFX);
+
         player.ShowText(getLineEffectTagStart(_line.lineEffect) + _line.text + getLineEffectTagEnd(_line.lineEffect));
         yield return new WaitForSeconds(_line.duration);
+        if (SFX != "") sfxInstance.Stop();
         // yield return new WaitForSeconds(_line.duration);
         yield return StartCoroutine(DisappearingLine());
     }

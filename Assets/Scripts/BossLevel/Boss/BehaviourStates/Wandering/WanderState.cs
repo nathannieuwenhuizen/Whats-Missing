@@ -64,7 +64,7 @@ public class WanderState : LookingState, IState
     private IEnumerator Talking() {
         while(true) {
             yield return new WaitForSeconds(Random.Range(10, 20)); 
-            if (!Player.INVINCIBLE) DialoguePlayer.Instance.PlayLine(BossLines.Search(), false);
+            if (!Player.INVINCIBLE) DialoguePlayer.Instance.PlayLine(BossLines.Search(), false, SFXFiles.boss_general_talking);
         }
 
     }

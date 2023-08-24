@@ -207,7 +207,7 @@ public class BossAI : MonoBehaviour {
     }
 
     public void OnMirrorHint(BossMirror _mirror) {
-        DialoguePlayer.Instance.PlayLine(BossLines.AskingForHintReaction(), false);
+        DialoguePlayer.Instance.PlayLine(BossLines.AskingForHintReaction(), false, SFXFiles.boss_laughing);
     }
     private void OnEnable() {
         BossMirror.OnMirrorExplode += DoIntro;

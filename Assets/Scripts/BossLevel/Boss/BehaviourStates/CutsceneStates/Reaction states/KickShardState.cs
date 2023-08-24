@@ -38,14 +38,14 @@ namespace Boss {
             //AudioHandler.Instance?.Play3DSound(SFXFiles.boss_shard_kick_noise, Boss.transform);
             yield return new WaitForSeconds(1f);
             OnBossCutsceneTargetUpdate?.Invoke(Boss.Body.KickedShardRenderer.transform, new Vector2(-2, 5f), 2f);
-            DialoguePlayer.Instance.PlayLine(BossLines.GetShardKickLine());
+            DialoguePlayer.Instance.PlayLine(BossLines.GetShardKickLine(), true, SFXFiles.boss_general_talking);
             AttachMirrorShardToBoss();
             yield return new WaitForSeconds(4f);
             OnBossCutsceneTargetUpdate?.Invoke(Boss.Eye.transform, new Vector2(0, 4f), 1f);
             yield return new WaitForSeconds(.5f);
             DetachMirrorShard(); 
             yield return new WaitForSeconds(1f);
-            DialoguePlayer.Instance.PlayLine(BossLines.Laugh);
+            DialoguePlayer.Instance.PlayLine(BossLines.Laugh, true, SFXFiles.boss_laughing);
         }
 
 

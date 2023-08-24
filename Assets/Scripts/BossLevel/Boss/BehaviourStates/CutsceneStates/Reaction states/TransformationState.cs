@@ -11,7 +11,7 @@ namespace Boss {
             base.Start();
             Debug.Log("after start");
             stateName = "Transformation cutscene";
-            DialoguePlayer.Instance.PlayLine(BossLines.Transform, true);
+            DialoguePlayer.Instance.PlayLine(BossLines.Transform, true, SFXFiles.boss_general_talking);
 
         }
 
@@ -36,13 +36,13 @@ namespace Boss {
             AudioHandler.Instance?.Play3DSound(SFXFiles.boss_transformation, bossAI.BossHead.transform);
             bossAI.Boss.BossPositioner.BodyMovementType = BodyMovementType.freeFloat;
             animationCoroutine = bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_TRANSFORM, true, 6f, () => {
-                DialoguePlayer.Instance.PlayLine(BossLines.NowBurn, true);
+                DialoguePlayer.Instance.PlayLine(BossLines.NowBurn, true, SFXFiles.boss_general_talking);
                 bossAI.StartCoroutine(Body.BossAnimator.DoMirrorAttack(() => {
                     AudioHandler.Instance?.Play3DSound(SFXFiles.boss_shockwave, bossAI.BossHead.transform);
                     bossAI.Boss.BossChangesHandler.CreateChange("fire", ChangeType.tooBig);
                 }, () => {
                     OnStateSwitch?.Invoke(bossAI.Behaviours.wanderState);
-                    DialoguePlayer.Instance.PlayLine(BossLines.Hahaha, true);
+                    DialoguePlayer.Instance.PlayLine(BossLines.Hahaha, true, SFXFiles.boss_laughing);
 
                 }));
             }));

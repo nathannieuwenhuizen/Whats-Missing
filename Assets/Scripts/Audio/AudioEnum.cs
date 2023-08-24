@@ -128,6 +128,12 @@ public static class SFXFiles {
     public static string boss_charge_up_attack = "event:/SFX/Boss/Boss/Boss_charge_up_attack";
     public static string boss_grow_sound = "event:/SFX/Boss/Boss/Boss_grow_sound";
 
+    //boss talk
+    public static string boss_chuckle = "event:/SFX/Boss/Voice/Boss_chuckle";
+    public static string boss_general_talking = "event:/SFX/Boss/Voice/Spirit_general_talk";
+    public static string boss_laughing = "event:/SFX/Boss/Voice/Boss_laughing";
+    public static string boss_dying = "event:/SFX/Boss/Voice/Boss_death";
+
 
     //acceptance
     public static string acceptance_cutscene = "event:/SFX/Environment/Acceptance/Cutscene";

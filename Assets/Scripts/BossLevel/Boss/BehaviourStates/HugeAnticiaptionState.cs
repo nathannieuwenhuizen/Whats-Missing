@@ -108,7 +108,7 @@ namespace Boss {
             bossAI.BossChargeParticle.StopEmmission();
             bossAI.BossChargeParticle.ResetEmission();
             // bossAI.BossChargeParticle.gameObject.SetActive(false);
-            DialoguePlayer.Instance.PlayLine(BossLines.TimeHintAfterDying[ammountOfDying % BossLines.TimeHintAfterDying.Count]);
+            DialoguePlayer.Instance.PlayLine(BossLines.TimeHintAfterDying[ammountOfDying % BossLines.TimeHintAfterDying.Count], true, SFXFiles.boss_chuckle);
             ammountOfDying++;
             
             bossAI.TimeStopDebrees.gameObject.SetActive(false);

@@ -9,6 +9,7 @@ public class TimeStopDebrees : MonoBehaviour
 
     private ParticleSystem[] pss;
     [SerializeField] private GameObject basaltWall;
+    [SerializeField] private ForcefieldDemo.Forcefield forceField;
 
     private float timeScale = 2f;
 
@@ -28,11 +29,14 @@ public class TimeStopDebrees : MonoBehaviour
         // // ps.playOnAwake = false;
         // foreach(ParticleSystem ps in pss) ps.Pause();
         basaltWall.SetActive(false);
+        forceField.Break();
         StopTime();
         OnDestroy.Invoke();
     }
     public void OnDisable() {
         basaltWall.SetActive(true);
+        forceField.Restore();
+
     }
 
     private void StopTime() {

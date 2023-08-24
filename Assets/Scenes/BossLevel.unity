@@ -638,19 +638,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 17.024
       objectReference: {fileID: 0}
     - target: {fileID: 149375814476350377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.y
@@ -738,7 +738,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 522270831715267872, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -4.99984
+      value: -4.9998474
       objectReference: {fileID: 0}
     - target: {fileID: 628510674936000140, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.y
@@ -786,19 +786,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.644
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 17.024
       objectReference: {fileID: 0}
     - target: {fileID: 849056848087826656, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.y
@@ -806,7 +806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1073473794945398377, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -4.9998703
+      value: -4.999878
       objectReference: {fileID: 0}
     - target: {fileID: 1077598875751132618, guid: 602fe57d21b625c41a34514b91ec43a0, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2960,6 +2960,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42d45478847a97448dd0a93bffd8268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dontDestroyOnLoad: 0
+  ignoreErrorWhenDuplicatedInstance: 0
 --- !u!225 &647037679
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4079,6 +4081,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 757097802343372423, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.scalar
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 897926822048475197, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
@@ -4187,6 +4193,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6045545769076053757, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: forceField
+      value: 
+      objectReference: {fileID: 1620035872}
     - target: {fileID: 6383481332006421723, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_LocalScale.x
       value: 11.6
@@ -4275,9 +4285,17 @@ PrefabInstance:
       propertyPath: shapeData.BottomRadius
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 6595655514610584248, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6595655514613166232, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_Name
       value: boss room
+      objectReference: {fileID: 0}
+    - target: {fileID: 6595655514613166232, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6595655514613166233, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_RootOrder
@@ -4338,6 +4356,10 @@ PrefabInstance:
     - target: {fileID: 6595655514613166238, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: setPlayerAtDoor
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6595655514932081351, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6595655515048616188, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_Size.y
@@ -4417,7 +4439,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6595655515351997390, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -92.55094
+      value: -92.698296
       objectReference: {fileID: 0}
     - target: {fileID: 6595655515368451551, guid: 4c30ca67406fe3542ba3b1bde8c84270, type: 3}
       propertyPath: m_IsActive
@@ -5172,6 +5194,7 @@ MonoBehaviour:
   player: {fileID: 588112308}
   meshRenderer: {fileID: 1881352970}
   dustParticles: {fileID: 345654861}
+  trailParticles: {fileID: 0}
   dissappEarDurationInSeconds: 0.3
   deathCollider: {fileID: 1620035876}
   sceneCollider: {fileID: 784161101}

@@ -38,13 +38,13 @@ namespace Boss {
 
         public IEnumerator Talking() {
             yield return new WaitForSeconds(2f);
-            DialoguePlayer.Instance.PlayLine(BossLines.Intro_2);
+            DialoguePlayer.Instance.PlayLine(BossLines.Intro_2, true, SFXFiles.boss_general_talking);
             yield return new WaitForSeconds(5f);
-            DialoguePlayer.Instance.PlayLine(BossLines.Intro_3);
+            DialoguePlayer.Instance.PlayLine(BossLines.Intro_3, true, SFXFiles.boss_general_talking);
             yield return new WaitForSeconds(5f);
-            DialoguePlayer.Instance.PlayLine(BossLines.Intro_shield);
+            DialoguePlayer.Instance.PlayLine(BossLines.Intro_shield, true, SFXFiles.boss_general_talking);
             yield return new WaitForSeconds(5f);
-            DialoguePlayer.Instance.PlayLine(BossLines.Intro_shield_2);
+            DialoguePlayer.Instance.PlayLine(BossLines.Intro_shield_2, true, SFXFiles.boss_general_talking);
         }
 
 
