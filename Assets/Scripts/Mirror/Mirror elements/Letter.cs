@@ -205,7 +205,7 @@ public class Letter : MirrorButton, IPointerDownHandler
         if (Selected) {
             PreClickSelected = true;
             mirrorCanvas.RemoveSelectedLetter(mirrorCanvas.SelectedLetters.IndexOf(this));
-            StopAllCoroutines();
+            // StopAllCoroutines();
         } else {
             PreClickSelected = false;
         }

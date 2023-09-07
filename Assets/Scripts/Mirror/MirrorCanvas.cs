@@ -475,9 +475,8 @@ public class MirrorCanvas : MonoBehaviour
         foreach(Letter letter in _answerLetters) {
             letter.GreyedOut = false;
             letter.Interactable = true;
-
+            letter.Animated = false;
         }
-
     }
 
     public void HintToggleClick() {
