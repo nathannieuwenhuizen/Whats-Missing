@@ -43,6 +43,11 @@ public static class SFXFiles {
     public static string evil_spirit = "Evil_spirit";
     public static string lamp_toggle = "event:/SFX/Environment/Planetarium/Lamp_toggle";
     public static string book = "event:/SFX/Environment/Planetarium/Book";
+    public static string teacup_falling = "event:/SFX/Environment/Planetarium/Teacup_falling";
+    public static string cat_statue = "event:/SFX/Environment/Planetarium/Cat_statue";
+    
+    public static string object_burning = "event:/SFX/Environment/Planetarium/Fireplace_burning";
+
 
 
     public static string hidden_room_cutscene = "event:/SFX/Environment/Planetarium/Hidden_room_cutscene";

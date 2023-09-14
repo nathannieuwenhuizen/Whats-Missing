@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 5136326916556550647}
   - component: {fileID: 8928990979998692492}
   - component: {fileID: 2035163541559942167}
-  - component: {fileID: 7984460095874702737}
   - component: {fileID: 6349785067662359295}
   - component: {fileID: 5310751883289915937}
+  - component: {fileID: 6175308820035466998}
   m_Layer: 0
   m_Name: Sugar_Tong
   m_TagString: Untagged
@@ -84,21 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7984460095874702737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4831103336742734758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f835c9b50151d50459cfacc7cc721ed7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  word: Sugar Tong
-  alternateWords: []
-  missingChangeEffect: 1
 --- !u!64 &6349785067662359295
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -129,3 +114,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6175308820035466998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4831103336742734758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fb3f9dc24040824abee6bd1f21ac739, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  word: Sugar Tong
+  alternateWords: []
+  missingChangeEffect: 1
+  flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 0
+  rigidBodyInfo:
+    Drag: 0
+    AngularDrag: 0.05
+    Mass: 1
+    RigidbodyConstraints: 0
+    Holdvelocity: {x: 0, y: 0, z: 0}
+    UseGravity: 1
+    IsKinematic: 1
+    tag: 
+  audioFile: 

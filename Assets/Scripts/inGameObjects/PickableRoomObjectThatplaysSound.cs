@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class PickableRoomObjectThatplaysSound : PickableRoomObject
 {
+    [SerializeField]
+    protected string audioFile = "";
+
     private bool canPlayAudio = false;
     private void OnCollisionEnter(Collision other) {
-        if (rb.velocity.magnitude > 1f && canPlayAudio && AudioFile() != "" && inSpace) {
+        if (rb.velocity.magnitude > .5f && canPlayAudio && AudioFile() != "" && inSpace) {
             AudioHandler.Instance?.Play3DSound(AudioFile(), transform, AudioVolume());
             StartCoroutine(DelayAudioEnabling());
         }
@@ -16,7 +19,7 @@ public class PickableRoomObjectThatplaysSound : PickableRoomObject
         return .4f;
     }
     public virtual string AudioFile() {
-        return "";
+        return audioFile;
     }
 
     protected override void Awake() {

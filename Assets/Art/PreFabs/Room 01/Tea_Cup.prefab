@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8119363446861893270}
   - component: {fileID: 4682347064581758671}
   - component: {fileID: 9063883760156186468}
-  - component: {fileID: 5766965316941563839}
+  - component: {fileID: 4606834215359491098}
   m_Layer: 0
   m_Name: Tea_Cup
   m_TagString: Untagged
@@ -114,7 +114,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7965660181126641760, guid: 9849e47701c313643ba1044da223d9bd, type: 3}
---- !u!114 &5766965316941563839
+--- !u!114 &4606834215359491098
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,12 +123,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 480221821881093155}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27df562d2f5c3da4b8c9db3942e53ddd, type: 3}
+  m_Script: {fileID: 11500000, guid: 2fb3f9dc24040824abee6bd1f21ac739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   word: Cup
   alternateWords: []
   missingChangeEffect: 1
+  flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 0
   rigidBodyInfo:
     Drag: 0
     AngularDrag: 0.05
@@ -136,7 +139,9 @@ MonoBehaviour:
     RigidbodyConstraints: 0
     Holdvelocity: {x: 0, y: 0, z: 0}
     UseGravity: 1
+    IsKinematic: 1
     tag: 
+  audioFile: 
 --- !u!1 &1326416704126292035
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,7 +155,7 @@ GameObject:
   - component: {fileID: 7319163540891826632}
   - component: {fileID: 7113533825696025639}
   - component: {fileID: 105237624183589674}
-  - component: {fileID: 2321314551391924552}
+  - component: {fileID: 3572459160344987130}
   m_Layer: 0
   m_Name: Tea_Dish
   m_TagString: Untagged
@@ -250,7 +255,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2321314551391924552
+--- !u!114 &3572459160344987130
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -259,12 +264,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1326416704126292035}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27df562d2f5c3da4b8c9db3942e53ddd, type: 3}
+  m_Script: {fileID: 11500000, guid: 2fb3f9dc24040824abee6bd1f21ac739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   word: Dish
   alternateWords: []
   missingChangeEffect: 1
+  flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 0
   rigidBodyInfo:
     Drag: 0
     AngularDrag: 0.05
@@ -272,7 +280,9 @@ MonoBehaviour:
     RigidbodyConstraints: 0
     Holdvelocity: {x: 0, y: 0, z: 0}
     UseGravity: 1
+    IsKinematic: 1
     tag: 
+  audioFile: 
 --- !u!1 &7841640442780073099
 GameObject:
   m_ObjectHideFlags: 0

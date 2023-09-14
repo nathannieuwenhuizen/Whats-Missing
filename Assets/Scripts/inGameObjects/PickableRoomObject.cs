@@ -73,7 +73,6 @@ public class PickableRoomObject : InteractabelObject, IPickable
             rb = value;
         }
     }
-
     protected string grabSound = SFXFiles.player_grab;
 
     [Header("pickable info")]
@@ -270,6 +269,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
             }
         }
         ShowDisovleParticles(true);
+        AudioHandler.Instance?.Play3DSound(SFXFiles.object_burning, transform);
         yield return new WaitForSeconds(3f);
         Destroy(gameObject);
 
