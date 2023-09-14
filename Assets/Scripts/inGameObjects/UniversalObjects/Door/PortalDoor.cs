@@ -34,7 +34,10 @@ public class PortalDoor : Door
     public override Transform GetKnob(bool start)
     {
         float delta = Vector3.Distance(Camera.main.transform.position, transform.position);
-        float deltaConnectedDoor = Vector3.Distance(Camera.main.transform.position, connectedDoor.transform.position);
+        
+        float deltaConnectedDoor = Mathf.Infinity;
+        if (connectedDoor != null)  Vector3.Distance(Camera.main.transform.position, connectedDoor.transform.position);
+
         if (delta < deltaConnectedDoor) return base.GetKnob(start);
         else return connectedDoor.GetKnob(start);
     }

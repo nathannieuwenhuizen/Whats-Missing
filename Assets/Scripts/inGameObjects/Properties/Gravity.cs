@@ -6,8 +6,6 @@ using UnityEngine;
 public class Gravity : Property
 {
 
-    [SerializeField]
-    private Room room;
 
     public static OnPropertyToggle onGravityMissing;
 
@@ -35,12 +33,12 @@ public class Gravity : Property
     {
         onGravityMissing?.Invoke();
         base.OnMissingFinish();
-        foreach(Rigidbody rb in room.GetAllObjectsInRoom<Rigidbody>()) {
+        foreach(Rigidbody rb in Room.GetAllObjectsInRoom<Rigidbody>()) {
             rb.AddForce(Extensions.RandomVector(1f));
             rb.angularVelocity = Extensions.RandomVector(2f);
             rb.useGravity = false;
         }
-        if (room.Animated && movePlayerUpwardOnMissing) room.Player.Movement.RB.velocity = Vector3.up * 8f;
+        if (Room.Animated && movePlayerUpwardOnMissing) Room.Player.Movement.RB.velocity = Vector3.up * 8f;
     }
 
 
@@ -71,7 +69,7 @@ public class Gravity : Property
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
-        foreach(Rigidbody rb in room.GetAllObjectsInRoom<Rigidbody>()) {
+        foreach(Rigidbody rb in Room.GetAllObjectsInRoom<Rigidbody>()) {
             rb.useGravity = true;
         }
     }
@@ -87,7 +85,7 @@ public class Gravity : Property
     public override void OnShrinkingFinish()
     {
         base.OnShrinkingFinish();
-        allRigidbodies = room.GetAllObjectsInRoom<Rigidbody>();
+        allRigidbodies = Room.GetAllObjectsInRoom<Rigidbody>();
         foreach(Rigidbody rb in allRigidbodies) rb.useGravity = false;
         gravityScale = .5f;
     }
@@ -100,7 +98,7 @@ public class Gravity : Property
     public override void OnEnlargingFinish()
     {
         base.OnEnlargingFinish();
-        allRigidbodies = room.GetAllObjectsInRoom<Rigidbody>();
+        allRigidbodies = Room.GetAllObjectsInRoom<Rigidbody>();
         foreach(Rigidbody rb in allRigidbodies) rb.useGravity = false;
         gravityScale = 3f;
 
@@ -112,7 +110,7 @@ public class Gravity : Property
     }
 
     public List<Rigidbody> SortedByDistanceRigidBodies() {
-        List<Rigidbody> allRigidbodies = room.GetAllObjectsInRoom<Rigidbody>();
+        List<Rigidbody> allRigidbodies = Room.GetAllObjectsInRoom<Rigidbody>();
         Debug.Log("current change: " + currentChange);
         if (currentChange != null &&  currentChange.mirror != null)
             allRigidbodies.Sort(delegate(Rigidbody a, Rigidbody b) {
@@ -127,17 +125,17 @@ public class Gravity : Property
         base.OnFlipped();
         Physics.gravity *= -1;
         FPMovement.GLOBAL_GRAVITY *= -1;
-        Vector3 flipped = room.Player.transform.eulerAngles;
+        Vector3 flipped = Room.Player.transform.eulerAngles;
         flipped.z += 180f;
-        StartCoroutine(room.Player.transform.AnimatingRotation(Quaternion.Euler(flipped), AnimationCurve.EaseInOut(0,0,1,1), animationDuration ));
+        StartCoroutine(Room.Player.transform.AnimatingRotation(Quaternion.Euler(flipped), AnimationCurve.EaseInOut(0,0,1,1), animationDuration ));
     }
     public override void OnFlippingRevert()
     {
         Physics.gravity *= -1;
         FPMovement.GLOBAL_GRAVITY *= -1;
-        Vector3 flipped = room.Player.transform.eulerAngles;
+        Vector3 flipped = Room.Player.transform.eulerAngles;
         flipped.z += 180f;
-        StartCoroutine(room.Player.transform.AnimatingRotation(Quaternion.Euler(flipped), AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+        StartCoroutine(Room.Player.transform.AnimatingRotation(Quaternion.Euler(flipped), AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
 
         base.OnFlippingRevert();
     }

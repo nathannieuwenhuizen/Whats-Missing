@@ -21,6 +21,8 @@ public class Painting : InteractabelObject
     private bool open = false;
     private bool animating = false;
 
+    private bool wasMissing = false;
+
     private Rigidbody rigidBody;
 
     protected override void Awake() {
@@ -30,13 +32,19 @@ public class Painting : InteractabelObject
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.isKinematic = true;
-        SetPortalsActive(false);
+        if (wasMissing) SetPortalsActive(false);
     }
     public override void OnRoomLeave()
     {
         base.OnRoomLeave();
-        SetPortalsActive(false);
+        if (wasMissing) SetPortalsActive(false);
     }
+    public override void OnRoomEnter()
+    {
+        base.OnRoomEnter();
+        if (wasMissing) SetPortalsActive(true);
+    }
+
     private void OnEnable() {
         Stairs.OnStairsMissing += DetatchFromStairs;
         Gravity.onGravityMissing += DetatchFromStairs;
@@ -86,6 +94,7 @@ public class Painting : InteractabelObject
     {
         base.OnMissing();
         SetPortalsActive(true);
+        wasMissing = true;
     }
     public override void OnMissingFinish()
     {

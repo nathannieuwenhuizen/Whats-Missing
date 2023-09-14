@@ -137,6 +137,7 @@ public class Room : MonoBehaviour
         for (int i = 0; i < allObjects.Count; i++)
         {
             allObjects[i].id = i;
+            allObjects[i].Room = this;
         }
 
         mirrors = GetAllObjectsInRoom<Mirror>().OrderBy( allObjects => allObjects.isQuestion).ToList(); 

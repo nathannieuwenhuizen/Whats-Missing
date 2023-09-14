@@ -23,7 +23,7 @@ public class ResolutionSetting : MonoBehaviour
         }
         resolutionDropDown.AddOptions(list);
         resolutionDropDown.onValueChanged.AddListener(ResolutionSelected);
-
+        CHOSEN_RESOLUTION_INDEX = GetResolutionIndex();
     }
     public static int CHOSEN_RESOLUTION_INDEX 
     {
@@ -48,6 +48,20 @@ public class ResolutionSetting : MonoBehaviour
         CHOSEN_RESOLUTION_INDEX = val;
         CHOSEN_RESOLUTION = resolutionObject.SupportedResolutions[val];
         SetResolution(resolutionObject.SupportedResolutions[val]);
+    }
+
+    public int GetResolutionIndex() {
+        int result = 0;
+        float closestDelta = Mathf.Infinity;
+        int i = 0;
+        foreach(Vector2 v in resolutionObject.SupportedResolutions) {
+            if (Mathf.Abs(v.x - Screen.width) < closestDelta) {
+                result = i;
+                closestDelta = Mathf.Abs(v.x - Screen.width);
+            }
+            i++;
+        }
+        return result;
     }
 
     public void SetResolution( Vector2 resolution) {

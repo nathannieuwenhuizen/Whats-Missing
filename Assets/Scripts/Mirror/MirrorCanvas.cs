@@ -346,6 +346,7 @@ public class MirrorCanvas : MonoBehaviour
                 AddLetterToAnswer(letter);
             }
             else {
+                AudioHandler.Instance?.PlaySound(SFXFiles.letter_click, .2f, .6f);
                 letter.Deselect();
                 letter.PreClickSelected = false;
             }

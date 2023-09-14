@@ -264,6 +264,8 @@ public class RoomObject : RoomEntity
         CurrentScale = normalScale;
     }
     public virtual void OnDestroy() {
+        if (Room != null) Room.allObjects?.Remove(this);
+
         if (InSpace) EventSender.SendMissingEvent();
     }
 

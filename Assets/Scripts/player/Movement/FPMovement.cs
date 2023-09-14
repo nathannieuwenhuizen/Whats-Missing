@@ -327,7 +327,8 @@ public class FPMovement : MonoBehaviour
         if (walkCycleIndex > walkStepDistance){
             walkCycleIndex = 0;
             if (!player.IsMissing) {
-                SFXInstance footSound = AudioHandler.Instance?.Play3DSound(FOOTSTEP_SFXFILE, transform, 1, 1, false, true, 50);
+                float pitch = player.IsShrinked ? 1.5f : (player.IsEnlarged ? .7f : 1);
+                SFXInstance footSound = AudioHandler.Instance?.Play3DSound(FOOTSTEP_SFXFILE, transform, 1, pitch, false, true, 50);
                 footSound.FMODInstance.setParameterByName(FMODParams.GROUNDPARAM, GetGroundMaterial());
                 waterSplash.OnFootStep();
             }

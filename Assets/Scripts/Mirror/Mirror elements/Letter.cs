@@ -232,6 +232,7 @@ public class Letter : MirrorButton, IPointerDownHandler
     private IEnumerator Dragging() {
         MirrorButton.BUTTON_DRAGGED = true;
         Canvas canvas = MirrorCanvas.Canvas;
+        if (movingCoroutine != null)  StopCoroutine(movingCoroutine);
         while(pressed) {
 
             transform.position = Vector3.Lerp(transform.position, canvas.MouseToWorldPosition(), Time.deltaTime * 10f);

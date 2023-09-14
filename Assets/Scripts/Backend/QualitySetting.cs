@@ -22,7 +22,7 @@ public class QualitySetting: MonoBehaviour {
     }
     public static int QUALITY_INDEX 
     {
-        get => PlayerPrefs.GetInt("Quality", -1);
+        get => PlayerPrefs.GetInt("Quality", QualitySettings.GetQualityLevel());
         set => PlayerPrefs.SetInt("Quality", value);
     }
 

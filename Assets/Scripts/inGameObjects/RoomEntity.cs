@@ -49,6 +49,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     public bool IsShrinked { get; set; } = false;
     public bool IsEnlarged { get; set; } = false;
     public bool IsMissing { get; set; } = false;
+    public Room Room { get; set; }
 
     protected IChange currentChange;
     public virtual void AddChange(MirrorChange change)
@@ -205,7 +206,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     public virtual void OnShrinkRevert()
     {
-        if (!IsShrinked || Transform.gameObject == null) return;
+        if (!IsShrinked) return;
 
         IsShrinked = false;
         if (ShrinkCoroutine != null) StopCoroutine(ShrinkCoroutine);
@@ -247,7 +248,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
     public virtual void OnEnlargeRevert()
     {
 
-        if (!IsEnlarged || Transform.gameObject == null) return;
+        if (!IsEnlarged || gameObject == null) return;
 
         IsEnlarged = false;
 

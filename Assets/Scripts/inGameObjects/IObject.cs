@@ -177,6 +177,10 @@ public interface IChangable : IMissable, IShrinkable, IEnlargable, IFlippable
     /// Array of alternate words. Example (color, colour)
     ///</summary>
     string[] AlternativeWords {get; set; }
+    ///<summary>
+    /// The room this entity resides in.
+    ///</summary>
+    Room Room {get; set;}  
 
     int id {get;set;}
     ///<summary>
