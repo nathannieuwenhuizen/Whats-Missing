@@ -44,6 +44,12 @@ public class MirrorCanvas : MonoBehaviour
             return canvas;
         }
     }
+    private CanvasGroup canvasGroup;
+    public CanvasGroup CanvasGroup {
+        get { 
+            return canvasGroup;
+        }
+    }
 
     private string hintText = "";
 
@@ -85,6 +91,7 @@ public class MirrorCanvas : MonoBehaviour
 
     private void Awake() {
         canvas = GetComponent<Canvas>();
+        canvasGroup = GetComponent<CanvasGroup>();
         IsFocused = false;
         headerPos = headerText.transform.localPosition;
     }
@@ -93,7 +100,7 @@ public class MirrorCanvas : MonoBehaviour
     private void UpdateCanvas() {
         bool val = IsInteractable && isFocused;
         GetComponent<GraphicRaycaster>().enabled = true;// val;
-        GetComponent<CanvasGroup>().alpha = val ? 1 : .8f;
+        canvasGroup.alpha = val ? 1 : .8f;
         foreach(Letter letter in Letters) {
             letter.Interactable = val && !letter.GreyedOut;
         }
@@ -468,9 +475,8 @@ public class MirrorCanvas : MonoBehaviour
         foreach(Letter letter in _answerLetters) {
             letter.GreyedOut = false;
             letter.Interactable = true;
-
+            letter.Animated = false;
         }
-
     }
 
     public void HintToggleClick() {

@@ -43,6 +43,8 @@ public class WanderState : LookingState, IState
         Boss.Head.PlayBossVoice();
         MirrorShard.OnPickedUp += ShardHasBeenPickedUp;
 
+        TalkingCoroutine = bossAI.StartCoroutine(Talking());
+
 
         Boss.Head.LookAtPlayer = false;
 
@@ -55,6 +57,16 @@ public class WanderState : LookingState, IState
                 BeginAirWandering();
             }));
         }
+    }
+
+    private Coroutine TalkingCoroutine;
+
+    private IEnumerator Talking() {
+        while(true) {
+            yield return new WaitForSeconds(Random.Range(10, 20)); 
+            if (!Player.INVINCIBLE) DialoguePlayer.Instance.PlayLine(BossLines.Search(), false, SFXFiles.boss_general_talking);
+        }
+
     }
 
 
@@ -81,6 +93,7 @@ public class WanderState : LookingState, IState
         base.Exit();
         bossAI.CurrentWanderingPath.showGizmo = false;
 
+        bossAI.StopCoroutine(TalkingCoroutine);
         Boss.Head.StopBossVoice();
 
         if (wanderingCoroutine != null) bossAI.StopCoroutine(wanderingCoroutine);

@@ -164,7 +164,7 @@ public class FPMovement : MonoBehaviour
 
         if (rb.useGravity == false ) {
             //negative jump at gravity is missing
-            if (rb.velocity.y >= -.1f) rb.velocity = new Vector3(rb.velocity.x, -jumpForce, rb.velocity.z);
+            if (rb.velocity.y >= .1f) rb.velocity = new Vector3(rb.velocity.x, -jumpForce, rb.velocity.z);
             else rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
             return;
         }

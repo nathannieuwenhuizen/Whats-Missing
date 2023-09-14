@@ -17,6 +17,7 @@ namespace Boss {
             base.Start();
             stateName = "Die cutscene";
             DialoguePlayer.Instance.PlayLine(BossLines.Boss_Die);
+            AudioHandler.Instance.PlaySound(SFXFiles.boss_dying);
 
 
             // Positioner.MovementEnabled = false;
@@ -33,7 +34,10 @@ namespace Boss {
 
             // Positioner.SetDestinationPath(bossAI.DiePosition, bossAI.transform.position, false, 0);
             bossAI.StartCoroutine(bossAI.Boss.Body.UpdatingDisolve(11f));
+            bossAI.Boss.AnimationDuration = 11f;
+            bossAI.Boss.ShowDisovleParticles(false);
             // bossAI.StartCoroutine(Extensions.AnimateCallBack(0, 1f, AnimationCurve.EaseInOut))
+            bossAI.StartCoroutine(DissolveParticlesUpdate());
 
             OnBossDieStart?.Invoke();
             bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_DEATH, true, 11f, () => {
@@ -41,6 +45,22 @@ namespace Boss {
                 OnStateSwitch.Invoke(bossAI.Behaviours.idleState);
             }));
         }
+
+        private  IEnumerator DissolveParticlesUpdate(float duration = 6f) {
+            yield return new WaitForSeconds (2f);
+            // bossAI.DissolveParticles.transform.position = bossAI.transform.position + Vector3.down * 5f;
+            bossAI.DissolveParticles.Play();
+            float timePassed = 0f;
+            while (timePassed < duration) {
+
+                timePassed += Time.deltaTime;
+                bossAI.DissolveParticles.emissionRate = (timePassed/duration) * 300;
+               yield return new WaitForEndOfFrame();
+
+           }
+            bossAI.DissolveParticles.emissionRate = 0;
+        }
+
         
     }
 }

@@ -31,6 +31,11 @@ public class EndlessHallway : MonoBehaviour
     private SceneLightSetting hallwayLightning;
     [SerializeField]
     private SceneLightSetting bedroomLightning;
+
+    [SerializeField]
+    private BlackScreenOverlay blackScreenOverlay;
+    [SerializeField]
+    private Color fadeColor;
     
     
     private void SpawnChunks() {
@@ -60,7 +65,8 @@ public class EndlessHallway : MonoBehaviour
     }
     private void Start() {
         door.Locked = false;
-        player.Respawn();
+        // player.Respawn();
+        blackScreenOverlay.FadeFromColor(fadeColor);
         StartCoroutine(PlayingMusic());
         
     }

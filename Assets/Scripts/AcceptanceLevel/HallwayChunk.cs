@@ -11,11 +11,27 @@ public class HallwayChunk : MonoBehaviour
     [SerializeField]
     private GameObject emptyCeiling;
 
+    [Header("painting stuff (can be null)")]
+    [SerializeField]
+    private Material[] paintingMaterials;
+    [SerializeField]
+    private MeshRenderer paintingRenderer;
+    public static int OLDINDEX = 0;
+
+
     public void SetCeiling(bool _offset) {
         roundCeiling.SetActive(_offset);
         emptyCeiling.SetActive(!_offset);
     }
     public void ResetFurniture() {
+
+        if (paintingRenderer != null) {
+            int newIndex = Mathf.FloorToInt(Random.Range(0, paintingMaterials.Length));
+            if (newIndex == OLDINDEX) newIndex = (newIndex + 1) % paintingMaterials.Length;
+
+            OLDINDEX = newIndex;
+            paintingRenderer.material = paintingMaterials[newIndex];
+        }
         foreach(HallwayObject obj in hallwayObjects) {
             obj.RandomnizePosition(Random.value > 0.5f);
         }

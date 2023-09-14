@@ -25,6 +25,11 @@ namespace ForcefieldDemo
         private Coroutine disolveCoroutine;
         [SerializeField]
         private int burstAmmount = 600;
+
+        [SerializeField]
+        private GameObject crackedMesh;
+        [SerializeField]
+        private GameObject defaultMesh;
         
 
         private Coroutine dampenCoroutine;
@@ -59,6 +64,12 @@ namespace ForcefieldDemo
         private MeshRenderer meshRenderer;
         [SerializeField]
         private MeshRenderer mirrorMeshRenderer;
+        [SerializeField]
+        private MeshRenderer crackedMeshRenderer;
+        [SerializeField]
+        private MeshRenderer crackedLineMeshRenderer;
+        // [SerializeField]
+        // private MeshRenderer crackedMirrorMeshRenderer;
         [SerializeField]
         private ParticleSystem burstParticle;
         [SerializeField]
@@ -207,6 +218,8 @@ namespace ForcefieldDemo
             set { 
                 meshRenderer.material.SetFloat("Dissolve", value); 
                 mirrorMeshRenderer.material.SetFloat("Dissolve", value); 
+                crackedMeshRenderer.material.SetFloat("Dissolve", value); 
+                // crackedMirrorMeshRenderer.material.SetFloat("Dissolve", value); 
             }
         }
 
@@ -305,12 +318,15 @@ namespace ForcefieldDemo
         }
 
         private void OnEnable() {
+            Boss.DieState.OnBossDieStart += OnBossdie;
             StartCoroutine(Cooldown()); // prevent apply impact bug
             BaseChaseState.AttemptingToHitShield += ActiavateForceField;
         }
 
         private void OnDisable() {
             BaseChaseState.AttemptingToHitShield -= ActiavateForceField;
+            Boss.DieState.OnBossDieStart -= OnBossdie;
+
             
         }
 
@@ -332,6 +348,17 @@ namespace ForcefieldDemo
             gameObject.SetActive(false);
         }
 
+        public void Break() {
+            crackedMesh.gameObject.SetActive(true);
+            defaultMesh.gameObject.SetActive(false);
+        }
+
+
+        public void Restore() {
+            crackedMesh.gameObject.SetActive(false);
+            defaultMesh.gameObject.SetActive(true);
+        }
+
 
         ///<summary>
         /// Returns the position that lies on the edge of the forcefield directing to the _from parameter.
@@ -344,6 +371,12 @@ namespace ForcefieldDemo
             result = delta.normalized * (meshRenderer.transform.lossyScale.y * .5f + _offset);
 
             return transform.position + result;
+        }
+
+        public void OnBossdie() {
+            StartCoroutine(Dissolving(false));
+            crackedMesh.gameObject.SetActive(false);
+            // crackedLineMeshRenderer.gameObject.SetActive(false);
         }
     }
 }

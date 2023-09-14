@@ -48,7 +48,6 @@ public class Water : RoomObject
             mainLand_water_shrink_altitude.y = transform.localPosition.y;
         }
         mainLand_water.transform.localPosition = mainLand_water_shrink_altitude;
-
         base.OnEnlarge();
         OnWaterBig?.Invoke();
         ToggleMainLandWater(true);

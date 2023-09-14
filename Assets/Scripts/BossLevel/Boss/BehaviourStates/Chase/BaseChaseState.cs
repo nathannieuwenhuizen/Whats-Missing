@@ -31,6 +31,8 @@ namespace Boss {
 
         public override void Start()
         {
+            DialoguePlayer.Instance.PlayLine(BossLines.Chase(), true, SFXFiles.boss_general_talking);
+
             bossAI.BossHead.SteeringEnabled = false;
 
             bossAI.Boss.BossPositioner.CurrentMovementBehaviour.BasePathOffset = 1f;

@@ -130,20 +130,20 @@ public class Outline : MonoBehaviour {
     // RemoveOutlineMat();
     if (!instantiated) {
       instantiated = true;
-    outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
-    outlineFillMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineFill"));
+      outlineMaskMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineMask"));
+      outlineFillMaterial = Instantiate(Resources.Load<Material>(@"Materials/OutlineFill"));
 
-    outlineFillMaterialHeavy = Resources.Load<Material>(@"Materials/OutlineFill_Heavy");
-    outlineFillMaterialLight = Resources.Load<Material>(@"Materials/OutlineFill");
+      outlineFillMaterialHeavy = Resources.Load<Material>(@"Materials/OutlineFill_Heavy");
+      outlineFillMaterialLight = Resources.Load<Material>(@"Materials/OutlineFill");
 
-    outlineColor = disabled ? outlineFillMaterialHeavy.GetColor("_Color") : outlineFillMaterialLight.GetColor("_Color");
-    outlineOuterColor = disabled ? outlineFillMaterialHeavy.GetColor("_ColorR") : outlineFillMaterialLight.GetColor("_ColorR");
+      outlineColor = disabled ? outlineFillMaterialHeavy.GetColor("_Color") : outlineFillMaterialLight.GetColor("_Color");
+      outlineOuterColor = disabled ? outlineFillMaterialHeavy.GetColor("_ColorR") : outlineFillMaterialLight.GetColor("_ColorR");
 
-    outlineFillMaterial.SetColor("_Color", outlineColor);
-    outlineFillMaterial.SetColor("_ColorR", outlineOuterColor);
+      outlineFillMaterial.SetColor("_Color", outlineColor);
+      outlineFillMaterial.SetColor("_ColorR", outlineOuterColor);
 
-    outlineMaskMaterial.name = "OutlineMask";
-    outlineFillMaterial.name = "OutlineFill (please be good)";
+      outlineMaskMaterial.name = "OutlineMask";
+      outlineFillMaterial.name = "OutlineFill (please be good)";
 
       AddOutlineMat();
     }
@@ -181,17 +181,19 @@ public class Outline : MonoBehaviour {
 
   public void RemoveOutlineMat() {
     foreach (var renderer in renderers) {
-      if (renderer != null) continue;
-      // if (renderer.gameObject != null) continue;
-      // if (renderer.gameObject.GetComponent<ParticleSystem>() != null) continue;
+      if (renderer != null) {
+        // if (renderer.gameObject != null) continue;
+        // if (renderer.gameObject.GetComponent<ParticleSystem>() != null) continue;
 
-      // Remove outline shaders
-      var materials = renderer.sharedMaterials.ToList();
+        // Remove outline shaders
+        var materials = renderer.sharedMaterials.ToList();
 
-      materials.Remove(outlineMaskMaterial);
-      materials.Remove(outlineFillMaterial);
+        materials.Remove(outlineMaskMaterial);
+        materials.Remove(outlineFillMaterial);
+        Debug.Log("rmeove outline mats");
 
-      renderer.materials = materials.ToArray();
+        renderer.materials = materials.ToArray();
+      }
     }
   }
   public void AddOutlineMat() {
@@ -203,13 +205,19 @@ public class Outline : MonoBehaviour {
       if (renderer != GetComponent<Renderer>() || true) {
         // Append outline shaders
         var materials = renderer.sharedMaterials.ToList();
-
-        materials.Add(outlineMaskMaterial);
-        materials.Add(outlineFillMaterial);
+        if (!ContainsName(materials, outlineMaskMaterial.name)) materials.Add(outlineMaskMaterial);
+        if (!ContainsName(materials, outlineFillMaterial.name)) materials.Add(outlineFillMaterial);
 
         renderer.materials = materials.ToArray();
       }
     }
+  }
+  private bool ContainsName(List<Material> materials, string name ) {
+    foreach (Material material in materials)
+    {
+      if (material.name == name) return true;
+    }
+    return false;
   }
 
   void OnDestroy() {

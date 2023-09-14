@@ -45,7 +45,7 @@ public class ThirdAreaEndTrigger : AreaTrigger
             text = "ENOUGH!",
             duration = 2f,
             lineEffect = LineEffect.shake
-        });
+        }, true, SFXFiles.boss_general_talking);
         yield return new WaitForSeconds(2.7f);
         ThrowPotionBack();
         yield return new WaitForSeconds(1f);
@@ -55,6 +55,8 @@ public class ThirdAreaEndTrigger : AreaTrigger
         yield return new WaitForSeconds(1f);
         OnEndOfCutscene?.Invoke();
         yield return new WaitForSeconds(1f);
+        BlackScreenOverlay.Instance.FadeToColor(Color.black);
+        yield return new WaitForSeconds(2.5f);
         room.Area.EndOfArea();
     }
 

@@ -99,6 +99,7 @@ namespace Boss {
         public void Setup() {
             endEmmission = ps.emissionRate * 1.3f;
             startEmission = endEmmission * .8f;
+
         }
         public void Reset() {
             ps.emissionRate = startEmission;
@@ -106,6 +107,7 @@ namespace Boss {
 
         public void Interpolate(float i) {
             ps.emissionRate = Mathf.Lerp(startEmission, endEmmission, i);
+            if (ps.GetComponent<ParticleSystemRenderer>() != null)  ps.GetComponent<ParticleSystemRenderer>().trailMaterial.SetFloat("_SimulationSpeed", i);
             // ps.transform.localScale = Vector3.Lerp(Vector3.one * startScale, Vector3.one * endScale, i);
         }
     }

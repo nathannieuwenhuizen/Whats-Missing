@@ -19,7 +19,7 @@ namespace Boss {
             base.Start();
             stateName = "Enlarge cutscene";
             Boss.Body.Arm.Toggle(true); // purely for testing
-            DialoguePlayer.Instance.PlayLine(BossLines.BeforeGrowth);
+            DialoguePlayer.Instance.PlayLine(BossLines.BeforeGrowth, true, SFXFiles.boss_general_talking);
         }
 
         public override Vector3 ReactionPosition() {
@@ -38,7 +38,7 @@ namespace Boss {
                 bossAI.BossHead.LookAtPlayer = true;
                 bossAI.BossHead.SteeringEnabled = true;
                 bossAI.StartCoroutine(AfterGrwonig());
-                DialoguePlayer.Instance.PlayLine(BossLines.AfterGrowth);
+                DialoguePlayer.Instance.PlayLine(BossLines.AfterGrowth, true, SFXFiles.boss_general_talking);
             }));
             bossAI.StartCoroutine(UpdateBody());
             bossAI.StartCoroutine(Enlarging());

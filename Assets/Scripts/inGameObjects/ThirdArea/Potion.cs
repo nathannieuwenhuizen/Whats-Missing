@@ -142,6 +142,14 @@ public class Potion : PickableRoomObject
 
     private void Collide(GameObject other) {
         broken = true;
+        Debug.Log("collide" + other.gameObject.name);
+
+        if (other.GetComponent<DestroyTrigger>() != null || other.GetComponent<DeathTrigger>() != null) {
+            Debug.Log("should break without sounds");
+            Break(false);
+            return;
+        }
+
         IChangable changable = getPotentialIChangable(other.transform);
         if (changable != null) {
             Debug.Log("should be affected");
@@ -232,18 +240,19 @@ public class Potion : PickableRoomObject
         aimHitObject.gameObject.SetActive(false);
     }
 
-    public void Break() {
-        AudioHandler.Instance?.Play3DSound(SFXFiles.potion_break, burstParticle.transform);
+    public void Break(bool withFX = true) {
+        if (withFX) {
+            AudioHandler.Instance?.Play3DSound(SFXFiles.potion_break, burstParticle.transform);
+            burstParticle.transform.parent = smokeParticle.transform.parent = transform.parent;
+            burstParticle.Emit(50);
+        }
 
-        burstParticle.transform.parent = smokeParticle.transform.parent = transform.parent;
-
-        burstParticle.Emit(50);
         smokeParticle.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         OnBreak?.Invoke(this);
         RigidBody.velocity = Vector3.zero;
         Destroy(aimHitObject.gameObject);
         Destroy(burstParticle, 5f);
-        Destroy(smokeParticle, 5f);
+        Destroy(smokeParticle, 20f);
         Destroy(gameObject, 5f);
         FadeOutAimLine();
         Destroy(potionMeshObject);

@@ -52,7 +52,7 @@ public class AudioHandler : Singleton<AudioHandler>
     /// Plays an UI sound that ignores the listener volume.
     ///</summary>
     public SFXInstance PlayUISound(string key, float volume = 1f, float pitch = 1f) {
-        Debug.Log("play ui sound: " + key);
+        // Debug.Log("play ui sound: " + key);
         return am.PlayUISound(key, volume, pitch);
     }
 

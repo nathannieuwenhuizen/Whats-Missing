@@ -72,6 +72,11 @@ public class BossAI : MonoBehaviour {
     public BossChargeParticle BossChargeParticle {
         get { return bossChargeParticle;}
     }
+    [SerializeField]
+    private ParticleSystem dissolveParticles;
+    public ParticleSystem DissolveParticles {
+        get { return dissolveParticles;}
+    }
 
 
     [Header("------")]
@@ -175,7 +180,7 @@ public class BossAI : MonoBehaviour {
             stateMachine.SwitchState(behaviours.transformationState);
             break;
             case 3:
-            // CurrentWanderingPath = paths.fourthShardPath;  
+            CurrentWanderingPath = paths.fourthShardPath;  
             stateMachine.SwitchState(behaviours.kickShardState);
             break;
             case 4:    
@@ -202,7 +207,7 @@ public class BossAI : MonoBehaviour {
     }
 
     public void OnMirrorHint(BossMirror _mirror) {
-        DialoguePlayer.Instance.PlayLine(BossLines.AskingForHintReaction(), false);
+        DialoguePlayer.Instance.PlayLine(BossLines.AskingForHintReaction(), false, SFXFiles.boss_laughing);
     }
     private void OnEnable() {
         BossMirror.OnMirrorExplode += DoIntro;

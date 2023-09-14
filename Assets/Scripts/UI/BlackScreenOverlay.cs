@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BlackScreenOverlay : MonoBehaviour
+public class BlackScreenOverlay : Singleton<BlackScreenOverlay>
 {
     public static Color START_COLOR;
     private CanvasGroup group;
     private Image image;
 
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         group = GetComponent<CanvasGroup>();
         image = GetComponent<Image>();
         group.interactable = false;
@@ -61,6 +62,12 @@ public class BlackScreenOverlay : MonoBehaviour
     public void FadeToColor(Color _color) {
         image.color = _color;
         StartCoroutine(group.FadeCanvasGroup(1, 1.5f, 1f));
+    }
+    public void FadeFromColor(Color _color) {
+        _color.a = 1;
+        image.color = _color;
+        
+        RemoveOverlay(false);
     }
     public void RemoveOverlay(bool withStartColor = true) {
         StopAllCoroutines();
