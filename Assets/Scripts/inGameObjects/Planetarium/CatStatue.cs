@@ -15,4 +15,9 @@ public class CatStatue : PickableRoomObject
         missingChangeEffect = MissingChangeEffect.dissolve;
         flamable = true;
     }
+    public override IEnumerator Burn()
+    {
+        yield return base.Burn();
+        SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.CatKiller);
+    }
 }

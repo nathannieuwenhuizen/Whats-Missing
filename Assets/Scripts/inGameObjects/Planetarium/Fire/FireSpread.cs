@@ -11,6 +11,12 @@ public class FireSpread : MonoBehaviour, ITriggerArea
     private SFXInstance fireSound;
 
     [SerializeField]
+    private bool fromCauldron = false;
+        public bool FromCauldron {
+        get { return fromCauldron;}
+    }
+
+    [SerializeField]
     private bool slowFire = true;
     public bool SlowFire {
         get { return slowFire;}

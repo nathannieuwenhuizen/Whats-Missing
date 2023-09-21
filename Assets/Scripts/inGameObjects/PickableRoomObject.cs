@@ -257,14 +257,20 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     private void OnTriggerEnter(Collider other) {
         //if the object enters a fire spread and is flamable
-        if (other.GetComponent<FireSpread>() != null && flamable)  StartCoroutine(Burn());
+        if (other.GetComponent<FireSpread>() != null && flamable) {
+            StartCoroutine(Burn());
+            if (other.GetComponent<FireSpread>().FromCauldron) {
+                Debug.Log("potion of death");
+                SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.PotionOfDeath);
+            }
+        } 
     }
 
     protected bool isBurning = false;
     ///<summary>
     /// Object burns to crisps and eventually gets destroyed
     ///</summary>
-    public IEnumerator Burn() {
+    public virtual IEnumerator Burn() {
         // OnBlur();
         isBurning = true;
         Outline.enabled = false;

@@ -9,7 +9,7 @@ public class PickableRoomObjectThatplaysSound : PickableRoomObject
 
     private bool canPlayAudio = false;
     private void OnCollisionEnter(Collision other) {
-        if (rb.velocity.magnitude > .5f && canPlayAudio && AudioFile() != "" && inSpace && isBurning) {
+        if (rb.velocity.magnitude > .5f && canPlayAudio && AudioFile() != "" && inSpace && !isBurning) {
             AudioHandler.Instance?.Play3DSound(AudioFile(), transform, AudioVolume());
             StartCoroutine(DelayAudioEnabling());
         }

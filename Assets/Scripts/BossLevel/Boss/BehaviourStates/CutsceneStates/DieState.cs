@@ -43,6 +43,8 @@ namespace Boss {
             bossAI.StartCoroutine(Body.BossAnimator.DoTriggerAnimation(BossAnimatorParam.TRIGGER_DEATH, true, 11f, () => {
                 OnBossDie?.Invoke();
                 OnStateSwitch.Invoke(bossAI.Behaviours.idleState);
+                SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.Anger);
+
             }));
         }
 

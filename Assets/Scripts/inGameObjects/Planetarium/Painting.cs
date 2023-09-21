@@ -86,6 +86,7 @@ public class Painting : InteractabelObject
         open = !open;
 
         if (hiddenRoom != null) {
+            SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.EarlyBirdCatchesTheApple);
             animator.SetBool("open", open);
             SetPortalsActive(true);
             StartCoroutine(WaitBeforeAnimationFinish());

@@ -17,6 +17,8 @@ public class CreditsRoller : MonoBehaviour
 
     private bool rolling = false;
     public void StartRolling() {
+        Debug.Log("start rolling");
+        SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.Acceptance);
         StartCoroutine(Rolling());
     }
     public IEnumerator Rolling() {

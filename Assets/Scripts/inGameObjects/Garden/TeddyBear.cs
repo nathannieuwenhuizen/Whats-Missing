@@ -58,6 +58,7 @@ public class TeddyBear : InteractabelObject
     }
 
     public void ShowGradually() {
+        SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.AgainTheApple);
         midIslandAnimator.SetTrigger("showGradually");
     }
 

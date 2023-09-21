@@ -24,6 +24,7 @@ public class Duck : RoomObject
     private DuckSwimArea bigSwimArea;
     private DuckSwimArea currentSwimArea;
 
+
     public DuckSwimArea SwimArea {
         get { return currentSwimArea;}
     }

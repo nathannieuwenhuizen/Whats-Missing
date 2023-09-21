@@ -76,7 +76,6 @@ public class Area : MonoBehaviour
             UpdateRoomMusic((float)Array.IndexOf(RoomLevels,CurrentRoom.roomLevel));
             currentRoom.OnRoomEnter(player, loadRoomState);
             if(directionalLight != null) directionalLight.RotateToMatchRoon(currentRoom.transform);
-            Debug.LogError("first area = " + areaIndex);
             if (rooms.IndexOf(currentRoom) == 0) {
                 if (areaIndex == 0) OnFirstAreaEnter?.Invoke();
                 else if (areaIndex == 1) OnSecondAreaEnter?.Invoke();
@@ -427,7 +426,11 @@ public class Area : MonoBehaviour
     ///</summary>
     public void EndOfArea() {
         if (isDemo) OnEndOfDemo?.Invoke(areaIndex, false);
-        else OnNextArea?.Invoke(areaIndex, false);
+        else {
+            SteamAchievement achievementID = areaIndex == 0 ? SteamAchievement.Bargaining : (areaIndex == 1 ? SteamAchievement.Denial : SteamAchievement.Depression);
+            SteamAchievementHandler.Instance?.SetAchievement(achievementID);
+            OnNextArea?.Invoke(areaIndex, false);
+        }
     }
 
 }

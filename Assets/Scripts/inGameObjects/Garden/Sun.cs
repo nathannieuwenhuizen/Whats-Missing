@@ -61,6 +61,8 @@ public class Sun : RoomObject
     }
 
     private void DeathBySun() {
+        SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.SunDeath);
+
         room.Animated = false;
         Mirror sunMirror = room.Mirrors.Find((mirror) => mirror.isQuestion == true );
         Debug.Log(sunMirror);
