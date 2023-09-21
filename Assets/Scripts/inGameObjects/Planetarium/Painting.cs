@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Painting : InteractabelObject
 {
+    public delegate void PaintingEvent();
+    public static PaintingEvent OnInteract;
+
     [SerializeField]
     private PaintingButton paintingButton;
 
@@ -43,6 +46,7 @@ public class Painting : InteractabelObject
     {
         base.OnRoomEnter();
         if (wasMissing) SetPortalsActive(true);
+        else SetPortalsActive(false);
     }
 
     private void OnEnable() {
@@ -76,12 +80,16 @@ public class Painting : InteractabelObject
 
     public override void Interact()
     {
+        OnInteract?.Invoke();
         if (animating) return;
         animating = true;
         open = !open;
-        animator.SetBool("open", open);
-        SetPortalsActive(true);
-        StartCoroutine(WaitBeforeAnimationFinish());
+
+        if (hiddenRoom != null) {
+            animator.SetBool("open", open);
+            SetPortalsActive(true);
+            StartCoroutine(WaitBeforeAnimationFinish());
+        }
 
         base.Interact();
     }

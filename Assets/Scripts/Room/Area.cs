@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,6 +40,9 @@ public class Area : MonoBehaviour
 
     [SerializeField]
     private RoomLevel[] roomLevels;
+    public RoomLevel[] RoomLevels  {
+         get { return roomLevels; }
+    }
 
     private List<Room> rooms = new List<Room>();
     public List<Room> Rooms {
@@ -69,10 +73,10 @@ public class Area : MonoBehaviour
             } else {
                 UpdateRoomActiveStates(true);
             }
-            UpdateRoomMusic(rooms.IndexOf(currentRoom));
+            UpdateRoomMusic((float)Array.IndexOf(RoomLevels,CurrentRoom.roomLevel));
             currentRoom.OnRoomEnter(player, loadRoomState);
             if(directionalLight != null) directionalLight.RotateToMatchRoon(currentRoom.transform);
-
+            Debug.LogError("first area = " + areaIndex);
             if (rooms.IndexOf(currentRoom) == 0) {
                 if (areaIndex == 0) OnFirstAreaEnter?.Invoke();
                 else if (areaIndex == 1) OnSecondAreaEnter?.Invoke();
@@ -206,7 +210,7 @@ public class Area : MonoBehaviour
             {
                 // if (index > loadRoomIndex - 3)
                 // {
-                    Debug.Log("roomlevel: " + roomLevel.name + " | " + index + " | loadindex = " + loadRoomIndex);
+                    // Debug.Log("roomlevel: " + roomLevel.name + " | " + index + " | loadindex = " + loadRoomIndex);
                     LoadRoom(roomLevel, completed, index);
                 // }
             }

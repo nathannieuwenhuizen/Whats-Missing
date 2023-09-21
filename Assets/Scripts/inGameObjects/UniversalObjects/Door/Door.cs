@@ -33,13 +33,13 @@ public class Door : InteractabelObject
     public bool PlayerFitsThroughDoor() {
         //door is large
         if (IsEnlarged && Player.IsEnlarged) return true;
-        Debug.Log("large check");
+        // Debug.Log("large check");
         //door is normal
         if (!IsEnlarged && !Player.IsEnlarged && !IsShrinked && !Player.IsShrinked) return true;
-        Debug.Log("normal check");
+        // Debug.Log("normal check");
         //door is small
         if (IsShrinked && Player.IsShrinked) return true;
-        Debug.Log("small check");
+        // Debug.Log("small check");
         return false;
     }
 

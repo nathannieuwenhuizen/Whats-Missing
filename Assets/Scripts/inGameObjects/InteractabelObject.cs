@@ -17,7 +17,7 @@ public class InteractabelObject : RoomObject, IInteractable
         }
         set { outline = value; }
     }
-    private float outlineWidth = .025f;
+    private float outlineWidth = .035f;
     private float outlineDuration = .4f;
     private Coroutine focusedCoroutine;
 
@@ -78,7 +78,9 @@ public class InteractabelObject : RoomObject, IInteractable
     /// When the cursor hovers over the mesh of the object. It makes the outline appear.
     ///</summary>
     protected virtual void OnFocus() {
-        if (!OutlineEnabled || Outline.enabled || focused) return;
+        if (!OutlineEnabled || focused) return;
+
+        if (Outline.enabled) Outline.enabled = false; // maybe remove this?
 
         Outline.enabled = true;
         Outline.OutlineMode = Outline.Mode.OutlineVisible;
@@ -104,6 +106,7 @@ public class InteractabelObject : RoomObject, IInteractable
 
     private IEnumerator AnimateOutline(float val, bool disableAfterAnimating = false) {
         float index = 0;
+
         float start = outline.OutlineWidth;
         while (index < outlineDuration) {
             index += Time.unscaledDeltaTime;

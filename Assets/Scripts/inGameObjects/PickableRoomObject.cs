@@ -126,7 +126,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     public Vector3 HoldingLocalOffset { get {
         if (GetComponent<MeshRenderer>() != null) {
-            Debug.Log("offset = " + (HoldingPosition - GetComponent<MeshRenderer>().bounds.center));
+            // Debug.Log("offset = " + (HoldingPosition - GetComponent<MeshRenderer>().bounds.center));
             return HoldingPosition - GetComponent<MeshRenderer>().bounds.center;
         } else {
             return Vector3.zero;
@@ -136,6 +136,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
     protected override void OnFocus()
     {
         //todo: check if mass isnt too high with what the player can handle.
+        Debug.Log("animate start");
         base.OnFocus();
     }
 

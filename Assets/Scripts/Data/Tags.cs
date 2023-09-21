@@ -25,7 +25,7 @@ public class Scenes {
         string result = Scenes.FIRST_LEVEL_SCENE_NAME;
         switch(_areaIndex) {
             case 0:
-                result = Scenes.SECOND_LEVEL_SCENE_NAME;
+                result = Scenes.FIRST_LEVEL_SCENE_NAME;
                 break;
             case 1:
                 result = Scenes.SECOND_LEVEL_SCENE_NAME;

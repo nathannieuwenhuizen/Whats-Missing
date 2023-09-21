@@ -202,8 +202,11 @@ public class ChangeHandler
     public void OnPlayerDie(Player _player) {
 
         for (int i = roomChanges.Count - 1; i >= 0; i--) {
-            if ((roomChanges[i].roomObject.Word == _player.Word  || roomChanges[i].roomObject.AlternativeWords.Contains(_player.Word)) 
-                && roomChanges[i].changeCausation == ChangeCausation.potion) {
+            // if ((roomChanges[i].roomObject.Word == _player.Word  || roomChanges[i].roomObject.AlternativeWords.Contains(_player.Word)) 
+            //     && roomChanges[i].changeCausation == ChangeCausation.potion) {
+            //     RemovePotionChange(roomChanges[i].changeType);
+            // }
+            if (roomChanges[i].changeCausation == ChangeCausation.potion) {
                 RemovePotionChange(roomChanges[i].changeType);
             }
         }

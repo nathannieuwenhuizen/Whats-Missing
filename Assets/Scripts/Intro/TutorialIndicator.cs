@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 
 [RequireComponent(typeof(Animator))]
-public class TutorialIndicator : Singleton<AudioHandler>
+public class TutorialIndicator : MonoBehaviour
 {
 
     private bool tutorialIsVisible = false;
@@ -37,7 +37,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
     private RectTransform maskChild;
 
 
-    private void OnEnable() {
+    public void OnEnable() {
         MirrorCanvas.OnShowHint += ToggleHint;
         Area.OnFirstAreaEnter += StartWaitingForMove;
         Area.OnSecondAreaEnter += StartWaitingForShift;
@@ -50,7 +50,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
     }
 
 
-    private void OnDisable() {
+    public void OnDisable() {
         MirrorCanvas.OnShowHint -= ToggleHint;
         Area.OnFirstAreaEnter -= StartWaitingForMove;
         Area.OnSecondAreaEnter -= StartWaitingForShift;
@@ -178,7 +178,7 @@ public class TutorialIndicator : Singleton<AudioHandler>
 
 
 
-    private void Update() {
+    public void Update() {
         maskChild.transform.localScale = new Vector3(1,1 / mask.transform.localScale.y,1);
     }
     

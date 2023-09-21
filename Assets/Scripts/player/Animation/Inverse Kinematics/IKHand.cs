@@ -144,8 +144,10 @@ public class IKHand: IKLimb
         doorKnobPos.point = knob.position;
         doorKnobPos.normal = (Camera.main.transform.position - knob.position).normalized;
         yield return StartCoroutine(AnimateHitPosition(doorKnobPos));
+        Weight = 1;
+
         while(Door.IN_WALKING_ANIMATION) {
-            Weight = 1;
+            Weight -= 1f * Time.deltaTime;
             knob = door.GetKnob(atStart);
             currentHit.point = knob.position;
             currentHit.normal = (Camera.main.transform.position - knob.position).normalized;

@@ -33,6 +33,14 @@ public class TeddyBear : InteractabelObject
         Word = "teddybear";
         AlternativeWords = new string[] {"bear", "teddy"};
     }
+
+    private void OnEnable() {
+        Painting.OnInteract += ShowGradually;
+    }
+
+    private void OnDisable() {
+        Painting.OnInteract -= ShowGradually;
+    }
     protected override void Awake() {
         base.Awake();
         rigidBody.isKinematic = true;
@@ -47,6 +55,10 @@ public class TeddyBear : InteractabelObject
         OutlineEnabled = false;
         OnTeddyBearEnlarged?.Invoke();
         base.OnEnlarge();
+    }
+
+    public void ShowGradually() {
+        midIslandAnimator.SetTrigger("showGradually");
     }
 
     public override void OnEnlargingFinish()

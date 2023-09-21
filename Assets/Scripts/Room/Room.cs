@@ -154,7 +154,7 @@ public class Room : MonoBehaviour
     private void Start() {
         endDoor.room = this;
         startDoor.room = this;
-        Debug.Log("door room = " + endDoor.room + startDoor.room);
+        // Debug.Log("door room = " + endDoor.room + startDoor.room);
     }
 
     public void LoadMirrors() {
@@ -498,16 +498,16 @@ public class Room : MonoBehaviour
     ///[DEPRECATED]
     /// Resets the room by deactivation all the changes and returns the room state and activates the changes 
     ///</summary>
-    public void ResetRoom() {
-        Animated = false;
-        changeHandler.DeactivateChanges();
-        foreach (Mirror mirror in mirrors) mirror.IsOn = false;
+    // public void ResetRoom() {
+    //     Animated = false;
+    //     changeHandler.DeactivateChanges();
+    //     foreach (Mirror mirror in mirrors) mirror.IsOn = false;
         
-        roomstateHandler.LoadState(beginState);
-        changeHandler.LoadChanges();
-        changeHandler.ActivateChanges();
-        CheckRoomCompletion();
-        Animated = true;
-    }
+    //     roomstateHandler.LoadState(beginState);
+    //     changeHandler.LoadChanges();
+    //     changeHandler.ActivateChanges();
+    //     CheckRoomCompletion();
+    //     Animated = true;
+    // }
 
 }

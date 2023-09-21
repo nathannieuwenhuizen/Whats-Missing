@@ -95,7 +95,6 @@ public class RoomObject : RoomEntity
     public void ShowDisovleParticles(bool _flamableParticlesEnabled = false) {
         if (PARTICLES_ACTIVE > MAX_PARTICLES) return;
         PARTICLES_ACTIVE++;
-        Debug.Log("show particles" + PARTICLES_ACTIVE);
         foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>()) StartCoroutine(DisolvingParticles(item, _flamableParticlesEnabled));
     }
 
@@ -103,7 +102,6 @@ public class RoomObject : RoomEntity
         List<Material> materials = new List<Material>();
         foreach (MeshRenderer item in GetComponentsInChildren<MeshRenderer>())
         {
-            Debug.Log("add material" + item.name);
             materials.AddRange(item.materials);
         } 
         // if (!materials.Contains(GetComponent<MeshRenderer>().material))
