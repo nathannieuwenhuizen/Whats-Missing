@@ -153,7 +153,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
         // transform.SetParent(connectedRigidBody.transform.parent);        
         grabbed = true;
         gameObject.layer = LayerMask.NameToLayer(grabbedLayer);
-        if (canPlayAudio) {
+        if (canPlayAudio && !isBurning) {
             AudioHandler.Instance?.PlaySound(grabSound); // is this called twice?
             StartCoroutine(ResetGrabAudio());
         }
@@ -259,11 +259,13 @@ public class PickableRoomObject : InteractabelObject, IPickable
         if (other.GetComponent<FireSpread>() != null && flamable)  StartCoroutine(Burn());
     }
 
+    protected bool isBurning = false;
     ///<summary>
     /// Object burns to crisps and eventually gets destroyed
     ///</summary>
     public IEnumerator Burn() {
         // OnBlur();
+        isBurning = true;
         Outline.enabled = false;
         Interactable = false;
         flamable = false;
