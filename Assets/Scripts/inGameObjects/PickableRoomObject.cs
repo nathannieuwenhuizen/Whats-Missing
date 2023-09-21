@@ -153,7 +153,10 @@ public class PickableRoomObject : InteractabelObject, IPickable
         // transform.SetParent(connectedRigidBody.transform.parent);        
         grabbed = true;
         gameObject.layer = LayerMask.NameToLayer(grabbedLayer);
-        AudioHandler.Instance?.PlaySound(grabSound); // is this called twice?
+        if (canPlayAudio) {
+            AudioHandler.Instance?.PlaySound(grabSound); // is this called twice?
+            StartCoroutine(ResetGrabAudio());
+        }
 
         OutlineEnabled = false;
         RigidBodyInfo.Save(rb);
@@ -163,6 +166,12 @@ public class PickableRoomObject : InteractabelObject, IPickable
         rb.isKinematic = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
         gameObject.tag = Tags.Picked;
+    }
+    private bool canPlayAudio = true;
+    private IEnumerator ResetGrabAudio() {
+        canPlayAudio = false;
+        yield return new WaitForSeconds(2f);
+        canPlayAudio = true;
     }
     public void UpdateGrabPhysics() {
 
