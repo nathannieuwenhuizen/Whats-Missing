@@ -216,8 +216,7 @@ public class RoomObject : RoomEntity
 
     public override IEnumerator AnimateShrinking()
     {
-        Debug.Log("shrinking animate");
-        AudioHandler.Instance?.Play3DSound(SFXFiles.object_shrink, transform, 1f);
+        AudioHandler.Instance?.Play3DSound(SFXFiles.object_shrink, transform);
         yield return this.AnimatingRoomObjectScale( shrinkScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnShrinkingFinish();
     }
@@ -230,6 +229,7 @@ public class RoomObject : RoomEntity
 
     public override IEnumerator AnimateShrinkRevert()
     {
+        AudioHandler.Instance?.Play3DSound(SFXFiles.object_enlarge, transform);
         yield return this.AnimatingRoomObjectScale( normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnShrinkingRevertFinish();
     }
@@ -242,6 +242,7 @@ public class RoomObject : RoomEntity
     //enlarging
     public override IEnumerator AnimateEnlarging()
     {
+        AudioHandler.Instance?.Play3DSound(SFXFiles.object_enlarge, transform);
         yield return this.AnimatingRoomObjectScale( largeScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnEnlargingFinish();
     }
@@ -253,6 +254,7 @@ public class RoomObject : RoomEntity
 
     public override IEnumerator AnimateEnlargeRevert()
     {
+        AudioHandler.Instance?.Play3DSound(SFXFiles.object_shrink, transform);
         yield return this.AnimatingRoomObjectScale( normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration);
         OnEnlargeRevertFinish();
     }

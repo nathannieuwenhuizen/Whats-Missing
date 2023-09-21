@@ -55,6 +55,7 @@ public static class SFXFiles {
 
     //room objects
     public static string object_shrink = "event:/SFX/Environment/Object_Shrink";
+    public static string object_enlarge = "event:/SFX/Environment/Object_Enlarge";
     public static string object_disappear = "event:/SFX/Environment/Object_Disappear";
     public static string object_reappear = "event:/SFX/Environment/Object_Reappear";
 
