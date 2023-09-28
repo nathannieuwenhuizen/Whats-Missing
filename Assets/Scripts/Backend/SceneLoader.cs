@@ -41,7 +41,7 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    private void LoadNewScene(string sceneName, bool showMainLoadingScreen) {
+    public void LoadNewScene(string sceneName, bool showMainLoadingScreen) {
         if(showMainLoadingScreen) {
             AudioHandler.Instance.FadeListener(0);
             if (isLoading) return;

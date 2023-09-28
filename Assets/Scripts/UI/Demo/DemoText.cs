@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DemoText : MonoBehaviour
@@ -46,10 +47,11 @@ public class DemoText : MonoBehaviour
             index += Time.deltaTime;
             if (Input.GetKeyDown(KeyCode.Escape) && !clicked) {
                 clicked = true;
-                sceneLoader.LoadNewSceneAnimated(Scenes.MENU_SCENE_NAME);
+                SceneManager.LoadSceneAsync(Scenes.MENU_SCENE_NAME, LoadSceneMode.Single);
             }
             yield return new WaitForEndOfFrame();
         }
-        if (!clicked) sceneLoader.LoadNewSceneAnimated(Scenes.MENU_SCENE_NAME);
+        if (!clicked) SceneManager.LoadSceneAsync(Scenes.MENU_SCENE_NAME, LoadSceneMode.Single);
+
     }
 }

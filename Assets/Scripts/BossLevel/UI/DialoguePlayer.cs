@@ -24,6 +24,8 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
         get { return isPlaying;}
     }
 
+    SFXInstance talkingInstance;
+
     private void OnEnable() {
         // BossVoice.OnLineStart += PlayLine;
     }
@@ -41,19 +43,21 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
         if (!forced && isPlaying) return;
 
         isPlaying = true;
-        if (writingCoroutine != null) StopCoroutine(writingCoroutine);
+        if (writingCoroutine != null)  {
+            StopCoroutine(writingCoroutine);
+            if (talkingInstance != null) talkingInstance.Stop();
+        }
         StartCoroutine(backdrop.FadeCanvasGroup(1, .5f,_line.delay));
         writingCoroutine = StartCoroutine(PlayingLine(_line, SFX));
     }
 
     private IEnumerator PlayingLine(Line _line, string SFX = "") {
         yield return new WaitForSeconds(_line.delay);
-        SFXInstance sfxInstance = null;
-        if (SFX != "") sfxInstance = AudioHandler.Instance.PlaySound(SFX);
+        if (SFX != "") talkingInstance = AudioHandler.Instance.PlaySound(SFX, AudioSetting.SFX);
 
         player.ShowText(getLineEffectTagStart(_line.lineEffect) + _line.text + getLineEffectTagEnd(_line.lineEffect));
         yield return new WaitForSeconds(_line.duration);
-        if (SFX != "") sfxInstance.Stop();
+        if (SFX != "") talkingInstance.Stop();
         // yield return new WaitForSeconds(_line.duration);
         yield return StartCoroutine(DisappearingLine());
     }

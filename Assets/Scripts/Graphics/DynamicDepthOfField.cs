@@ -17,20 +17,26 @@ public class DynamicDepthOfField : MonoBehaviour
 
     private float lerpSpeed = 100f;
 
+    private bool perspectiveMissing = false;
+
     private void Start() {
         volume.profile.TryGet<DepthOfField>(out depthOfField);
         ApplyCameraSettings(Settings.GetSettings());
     }
 
     private void ApplyCameraSettings(Settings settings) {
-        depthOfField.active = settings.cameraSettings.Depth_of_field_enabled;
+        depthOfField.active = settings.cameraSettings.Depth_of_field_enabled && !perspectiveMissing;
     }
     
     private void OnEnable() {
         SettingPanel.OnSave += ApplyCameraSettings;
+        PerspectiveProperty.onPerspectiveMissing += PerspectiveMissing;
+        PerspectiveProperty.onPerspectiveAppearing += PerspectiveAppear;
     }
     private void OnDisable() {
         SettingPanel.OnSave -= ApplyCameraSettings;
+        PerspectiveProperty.onPerspectiveMissing -= PerspectiveMissing;
+        PerspectiveProperty.onPerspectiveAppearing -= PerspectiveAppear;
     }
 
     private void Update() {
@@ -46,6 +52,15 @@ public class DynamicDepthOfField : MonoBehaviour
             }
         }
         SetFocus();
+    }
+
+    private void PerspectiveMissing() {
+        perspectiveMissing = true;
+        ApplyCameraSettings(Settings.GetSettings());
+    }
+    private void PerspectiveAppear() {
+        perspectiveMissing = false;
+        ApplyCameraSettings(Settings.GetSettings());
     }
 
     private void SetFocus() {

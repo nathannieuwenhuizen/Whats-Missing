@@ -84,7 +84,6 @@ public class RoomObject : RoomEntity
             case MissingChangeEffect.dissolve:
                 foreach (Material mat in getMaterials()) StartCoroutine(mat.AnimatingDissolveMaterial(0,1, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
                 ShowDisovleParticles();
-                Debug.Log("disappear");
                 if (currentChange.changeCausation == ChangeCausation.potion)
                     AudioHandler.Instance?.Play3DSound(SFXFiles.object_disappear, transform, 1f);
                 yield return new WaitForSeconds(animationDuration);

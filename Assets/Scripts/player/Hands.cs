@@ -16,7 +16,7 @@ public class Hands : MonoBehaviour
     [SerializeField]
     private Player player;
 
-    private float pickupDistance = 6;
+    private float pickupDistance = 8;
     private float shrinkPickupDistance;
 
     private float massThreshhold = 1f;

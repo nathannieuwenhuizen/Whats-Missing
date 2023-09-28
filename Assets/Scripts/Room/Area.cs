@@ -425,10 +425,12 @@ public class Area : MonoBehaviour
     /// Go to next level. Or ned of demo
     ///</summary>
     public void EndOfArea() {
-        if (isDemo) OnEndOfDemo?.Invoke(areaIndex, false);
+        SteamAchievement achievementID = areaIndex == 0 ? SteamAchievement.Bargaining : (areaIndex == 1 ? SteamAchievement.Denial : SteamAchievement.Depression);
+        SteamAchievementHandler.Instance?.SetAchievement(achievementID);
+        if (isDemo) {
+            OnEndOfDemo?.Invoke(areaIndex, false);
+        }
         else {
-            SteamAchievement achievementID = areaIndex == 0 ? SteamAchievement.Bargaining : (areaIndex == 1 ? SteamAchievement.Denial : SteamAchievement.Depression);
-            SteamAchievementHandler.Instance?.SetAchievement(achievementID);
             OnNextArea?.Invoke(areaIndex, false);
         }
     }

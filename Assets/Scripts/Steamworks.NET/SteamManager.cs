@@ -69,7 +69,7 @@ public class SteamManager : MonoBehaviour {
 		}
 		// Only one instance of SteamManager at a time!
 		if (s_instance != null) {
-			Destroy(gameObject);
+			// Destroy(gameObject);
 			return;
 		}
 		s_instance = this;
@@ -84,7 +84,6 @@ public class SteamManager : MonoBehaviour {
 
 		// We want our SteamManager Instance to persist across scenes.
 		DontDestroyOnLoad(gameObject);
-
 		if (!Packsize.Test()) {
 			Debug.LogError("[Steamworks.NET] Packsize Test returned false, the wrong version of Steamworks.NET is being run in this platform.", this);
 		}
@@ -131,7 +130,6 @@ public class SteamManager : MonoBehaviour {
 
 			return;
 		}
-
 		s_EverInitialized = true;
 	}
 

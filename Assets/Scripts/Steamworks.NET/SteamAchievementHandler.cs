@@ -5,6 +5,28 @@ using UnityEngine;
 
 public class SteamAchievementHandler : Singleton<SteamAchievementHandler>
 {
+
+    Dictionary<SteamAchievement, string> Achievements = new Dictionary<SteamAchievement, string>() {
+        {SteamAchievement.Bargaining, "Bargaining"},
+        {SteamAchievement.Denial, "Denial"},
+        {SteamAchievement.Depression, "Depression"},
+        {SteamAchievement.Anger, "Anger"},
+        {SteamAchievement.Acceptance, "Acceptance"},
+
+        {SteamAchievement.CatKiller, "CatKiller"},
+        {SteamAchievement.EarlyBirdCatchesTheApple, "EarlyBirdCatchesTheApple"},
+        {SteamAchievement.AgainTheApple, "AgainTheApple"},
+        {SteamAchievement.StealMyBreathAway, "StealMyBreathAway"},
+        {SteamAchievement.WhoNeedsAirAnyway, "WhoNeedsAirAnyway"},
+        {SteamAchievement.SunDeath, "SunDeath"},
+        {SteamAchievement.LetItBurn, "LetItBurn"},
+        {SteamAchievement.QUACK, "QUACK"},
+        {SteamAchievement.SeekerOfDeaths, "SeekerOfDeaths"},
+        {SteamAchievement.PotionOfDeath, "PotionOfDeath"},
+        {SteamAchievement.TheLibraryIsClosed, "TheLibraryIsClosed"},
+        {SteamAchievement.Speedrunner, "Speedrunner"},
+    };
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,8 +79,8 @@ public class SteamAchievementHandler : Singleton<SteamAchievementHandler>
         if (!SteamManager.Initialized)
             return;
         m_UserAchievementStored = Callback<UserAchievementStored_t>.Create(OnAchievementStored);
-        SteamUserStats.SetAchievement("ACH_TEST");
-        SteamUserStats.StoreStats();
+        // SteamUserStats.SetAchievement("ACH_TEST");
+        // SteamUserStats.StoreStats();
     }
 
     public void SetAchievement(SteamAchievement _achievement) {
@@ -67,11 +89,11 @@ public class SteamAchievementHandler : Singleton<SteamAchievementHandler>
             return;
         }
         ;SteamUserStats.RequestCurrentStats();
-        string _name = SteamUserStats.GetAchievementName(0);
+        string _name = SteamUserStats.GetAchievementName((uint)_achievement);
         SteamUserStats.RequestCurrentStats();
 
-        Debug.Log("achievement should be granted!");
-        SteamUserStats.SetAchievement(_name);
+        Debug.Log("achievement should be granted!" + Achievements[_achievement]); 
+        SteamUserStats.SetAchievement(Achievements[_achievement]);
         SteamUserStats.StoreStats();
     }
     

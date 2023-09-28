@@ -76,12 +76,15 @@ public class Mirror: MonoBehaviour, IRoomObject
                     canPlayAudio = true;
                     ConfirmationSucceeded();
                 } else {
-                    if (isQuestion)
-                        ConfirmationFailed();
+                    // if (isQuestion) maybe uncomment because of audio?
+                    ConfirmationFailed();
                 }
             }
 
             mirrorData.isOn = value; 
+            if (mirrorData.isOn == false) {
+                ConfirmationFailed();
+            }
             UpdateIndicatorLight();
         }
     }
@@ -152,6 +155,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     }
 
     public void ConfirmationFailed() {
+        Debug.Log("failed audio: " + room.Animated + " | " +  room.ChangeLineAnimated  + " | " +   canPlayAudio);
         if (room.Animated && room.ChangeLineAnimated && canPlayAudio)
         {
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);
