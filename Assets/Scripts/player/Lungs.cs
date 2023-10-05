@@ -32,7 +32,7 @@ public class Lungs : MonoBehaviour
 
     //choke
     private float chokeIndex = 0;
-    private float chokeDuration = 30f;
+    private float chokeDuration = 3f;
     private Coroutine chokeCoroutine; 
     private SFXInstance chokeSFX;
 
@@ -204,6 +204,10 @@ public class Lungs : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         player.Die(true, true);
+        Debug.Log("room: " +player.Room);
+        Debug.Log("area: " +player.Room.Area);
+        if(player.Room.Area.AreaIndex == 0) SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.StealMyBreathAway);
+
         AudioHandler.Instance.PlaySound(SFXFiles.choke_die, .5f, .8f);
         EndChoking();
     }

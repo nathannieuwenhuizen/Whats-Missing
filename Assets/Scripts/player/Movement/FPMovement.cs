@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
 
 ///<summary>
@@ -20,7 +21,6 @@ public class FPMovement : MonoBehaviour
     /// Range of the foot on the ground beofre it consider itself in the air
     ///</summary>
     public static float FOOT_RANGE = 1f;
-    public bool on_grass = false;
     private Vector2 lerpedVelocity;
     public Vector2 LerpedVelocity {
         get { return lerpedVelocity;}
@@ -338,7 +338,13 @@ public class FPMovement : MonoBehaviour
     public float GetGroundMaterial() {
         if (WaterArea.ON_WATER_SURFACE) {
             return 2;
-        } else if (on_grass) return 1;
+        } 
+
+        GameObject floorObject = GetFloorObject();
+        if (floorObject != null) {
+            if (floorObject.tag == Tags.Environment_GRASS) return 1;
+            else if (floorObject.tag == Tags.Environment_STONE) return 3;
+        }
         return 0;
     }
 
@@ -371,6 +377,25 @@ public class FPMovement : MonoBehaviour
             return false;
         }
     }
+    private GameObject GetFloorObject() {
+                RaycastHit[] hit;
+
+        float radius = transform.localScale.x * .5f;
+        float offset = .1f;
+
+        //TODO: add a collider mask so that it can only collide with the floor.
+        hit = Physics.SphereCastAll(transform.position + transform.up * (radius + offset), radius, transform.up * -1, FOOT_RANGE);
+        RaycastHit closest = default(RaycastHit);
+        float _distance = Mathf.Infinity;
+        for (int i = 0; i < hit.Length; i++)
+        {
+            if (hit[i].distance < _distance && hit[i].distance != 0) {
+                _distance = hit[i].distance;
+                closest = hit[i];
+            }
+        }
+        return closest.collider.gameObject;
+    }
 
 
     #region  collision
@@ -381,7 +406,6 @@ public class FPMovement : MonoBehaviour
             if (!player.IsMissing) AudioHandler.Instance?.PlaySound(SFXFiles.player_landing);
             oldPos = transform.position;
         }
-        if (other.gameObject.tag == Tags.Environment_GRASS) on_grass = true;
     }
 
     private void OnCollisionExit(Collision other) {
@@ -390,7 +414,6 @@ public class FPMovement : MonoBehaviour
             StartCoroutine(MakeWindNoices());
 
         }
-        if (other.gameObject.tag == Tags.Environment_GRASS) on_grass = false;
     }
 
     #endregion

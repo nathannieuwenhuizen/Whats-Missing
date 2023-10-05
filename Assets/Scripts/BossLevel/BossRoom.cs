@@ -44,8 +44,7 @@ public class BossRoom : Room
         allObjects.Add(boss);
         
 #if !UNITY_EDITOR
-        Player.transform.position = StartDoor.EndPos();
-        Player.Respawn();
+        setPlayerAtDoor = true;
 #endif
         if (setPlayerAtDoor) {
             Player.transform.position = StartDoor.EndPos();

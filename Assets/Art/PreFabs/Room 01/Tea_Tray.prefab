@@ -95,8 +95,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.014406066, y: 0.019999996, z: 0.00041135584}
-  m_Center: {x: 0.000000011175871, y: 4.656613e-10, z: 0}
+  m_Size: {x: 0.014406065, y: 0.019999996, z: 0.0009875711}
+  m_Center: {x: 0.000000011324882, y: 9.781886e-19, z: -0.00028810743}
 --- !u!54 &8590357063388527902
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -112,7 +112,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &8651314862803204335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,6 +128,9 @@ MonoBehaviour:
   word: Tray
   alternateWords: []
   missingChangeEffect: 1
+  flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 0
   rigidBodyInfo:
     Drag: 0
     AngularDrag: 0.05
@@ -135,4 +138,5 @@ MonoBehaviour:
     RigidbodyConstraints: 0
     Holdvelocity: {x: 0, y: 0, z: 0}
     UseGravity: 1
+    IsKinematic: 1
     tag: 

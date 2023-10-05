@@ -10,7 +10,11 @@ public class HintStopwatch
     private float currentDuration = 0;
     private bool timesUp = false;
 
+    private int wrongAnswerMax = 3;
+    private int currentWrongAnswer = 0;
+
     public bool timerForSecondHint = false;
+    private bool waiting = false;
 
     public HintStopwatch(Room _room) {
         room = _room;
@@ -24,6 +28,7 @@ public class HintStopwatch
         set { duration = Mathf.Max(1f, value); }
     }
     private IEnumerator Waiting() {
+        waiting = true;
         while (currentDuration < duration) {
             yield return new WaitForSeconds(1f);
             currentDuration++;
@@ -50,6 +55,18 @@ public class HintStopwatch
         MirrorCanvas.OnShowHint -= StartTimerSecondHint;
     }
 
+    public void WrongAnswerIncrement() {
+        if (!waiting) return;
+
+        currentWrongAnswer++;
+        if (currentWrongAnswer >= wrongAnswerMax) {
+            currentDuration = duration;
+            TimesUp();
+        }
+    }
+
+
+
     public void StartTimerSecondHint(string hint, float _duration) {
         if (!room.InArea) return;
         if (timerForSecondHint) return;
@@ -62,13 +79,17 @@ public class HintStopwatch
 
     public void Reset() {
         timesUp = false;
+        currentWrongAnswer = 0;
         currentDuration = 0;
         Resume();
     }
 
     private void TimesUp() {
+        waiting = false;
+
         if (timesUp) return;
         timesUp = true;
+
         if (timerForSecondHint) room.ShowMirrorToggleSecondHint();
         else room.ShowMirrorToggleHint();
     }

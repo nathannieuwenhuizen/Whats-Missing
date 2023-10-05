@@ -6,6 +6,7 @@ public class Tags
     public static string Stairs = "Stairs";
     public static string Death = "Death";
     public static string Environment_GRASS = "environment: grass";
+    public static string Environment_STONE = "environment: stone";
     public static string Forcefield = "ForceField";
 }
 

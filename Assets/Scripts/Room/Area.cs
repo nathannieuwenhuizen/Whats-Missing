@@ -20,6 +20,9 @@ public class Area : MonoBehaviour
     private Color startColor = Color.black;
     [SerializeField]
     private int areaIndex = 0;
+    public int AreaIndex {
+         get { return areaIndex; }
+    }
     [SerializeField]
     private bool isDemo = false;
 
@@ -74,6 +77,7 @@ public class Area : MonoBehaviour
                 UpdateRoomActiveStates(true);
             }
             UpdateRoomMusic((float)Array.IndexOf(RoomLevels,CurrentRoom.roomLevel));
+            player.Room = currentRoom;
             currentRoom.OnRoomEnter(player, loadRoomState);
             if(directionalLight != null) directionalLight.RotateToMatchRoon(currentRoom.transform);
             if (rooms.IndexOf(currentRoom) == 0) {

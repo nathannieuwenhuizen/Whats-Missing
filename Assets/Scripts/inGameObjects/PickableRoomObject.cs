@@ -257,7 +257,7 @@ public class PickableRoomObject : InteractabelObject, IPickable
 
     private void OnTriggerEnter(Collider other) {
         //if the object enters a fire spread and is flamable
-        if (other.GetComponent<FireSpread>() != null && flamable) {
+        if (other.GetComponent<FireSpread>() != null && flamable && !isBurning) {
             StartCoroutine(Burn());
             if (other.GetComponent<FireSpread>().FromCauldron) {
                 Debug.Log("potion of death");

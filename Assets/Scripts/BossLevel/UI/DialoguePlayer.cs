@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Febucci.UI;
 using Boss;
+using UnityEditor.Experimental.GraphView;
 
 public class DialoguePlayer : Singleton<DialoguePlayer>
 {
@@ -24,13 +25,16 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
         get { return isPlaying;}
     }
 
-    SFXInstance talkingInstance;
+    List<SFXInstance> talkingInstances = new List<SFXInstance>();
 
-    private void OnEnable() {
+    public void OnEnable() {
         // BossVoice.OnLineStart += PlayLine;
     }
-    private void OnDisable() {
+    public void OnDisable() {
         // BossVoice.OnLineStart -= PlayLine;
+        foreach(SFXInstance _instance in talkingInstances) {
+            _instance.Stop();
+        }
     }
     protected override void Awake()
     {
@@ -45,7 +49,7 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
         isPlaying = true;
         if (writingCoroutine != null)  {
             StopCoroutine(writingCoroutine);
-            if (talkingInstance != null) talkingInstance.Stop();
+            if (talkingInstances.Count > 0) StartCoroutine(FadeLineSFX(talkingInstances[0]));
         }
         StartCoroutine(backdrop.FadeCanvasGroup(1, .5f,_line.delay));
         writingCoroutine = StartCoroutine(PlayingLine(_line, SFX));
@@ -53,14 +57,28 @@ public class DialoguePlayer : Singleton<DialoguePlayer>
 
     private IEnumerator PlayingLine(Line _line, string SFX = "") {
         yield return new WaitForSeconds(_line.delay);
-        if (SFX != "") talkingInstance = AudioHandler.Instance.PlaySound(SFX, AudioSetting.SFX);
+        if (SFX != "") talkingInstances.Add(AudioHandler.Instance.PlaySound(SFX, AudioSetting.SFX * .3f));
 
         player.ShowText(getLineEffectTagStart(_line.lineEffect) + _line.text + getLineEffectTagEnd(_line.lineEffect));
         yield return new WaitForSeconds(_line.duration);
-        if (SFX != "") talkingInstance.Stop();
+        if (SFX != "") StartCoroutine(FadeLineSFX(talkingInstances[0]));
         // yield return new WaitForSeconds(_line.duration);
         yield return StartCoroutine(DisappearingLine());
     }
+
+    private  IEnumerator FadeLineSFX(SFXInstance _instance, float duration = 1) {
+        talkingInstances.Remove(_instance);
+        float start = _instance.Volume;
+        float timePassed = 0f;
+        while (timePassed < duration) {
+           yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            _instance.Volume = Mathf.Lerp(start, 0, timePassed/duration);
+        }
+        _instance.Stop();
+    }
+
+
 
     private string getLineEffectTagStart(LineEffect lineEffect) {
         if (lineEffect == LineEffect.none) return "";

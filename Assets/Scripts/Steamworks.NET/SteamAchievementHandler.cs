@@ -47,29 +47,29 @@ public class SteamAchievementHandler : Singleton<SteamAchievementHandler>
             Debug.Log("something went wrong...");
             return;
         }
-        ;SteamUserStats.RequestCurrentStats();
-        achievementName = SteamUserStats.GetAchievementName(0);
-        SteamUserStats.RequestCurrentStats();
-        Debug.Log("achievement name 0 = " + SteamUserStats.GetAchievementName(0));
-        Debug.Log("achievement name 1 = " + SteamUserStats.GetAchievementName(1));
+        // ;SteamUserStats.RequestCurrentStats();
+        // achievementName = SteamUserStats.GetAchievementName(0);
+        // SteamUserStats.RequestCurrentStats();
+        // Debug.Log("achievement name 0 = " + SteamUserStats.GetAchievementName(0));
+        // Debug.Log("achievement name 1 = " + SteamUserStats.GetAchievementName(1));
 
-        // if (Input.GetKeyDown(KeyCode.Space)) {
-        //     Debug.Log("achievement should be granted!");
-        //     SteamUserStats.SetAchievement("ACH_TEST");
-        //     SteamUserStats.StoreStats();
+        // // if (Input.GetKeyDown(KeyCode.Space)) {
+        // //     Debug.Log("achievement should be granted!");
+        // //     SteamUserStats.SetAchievement("ACH_TEST");
+        // //     SteamUserStats.StoreStats();
+        // // }
+
+        // if (SteamManager.Initialized) {
+        //     string name = SteamFriends.GetPersonaName ();
+        //     Debug.Log (name+" - "+SteamUser.GetSteamID() );
+
+        //     CGameID m_GameID = new CGameID (SteamUtils.GetAppID ());
+        //     Debug.Log ("number of achievements: " + SteamUserStats.GetNumAchievements ());
+        //     Debug.Log ("gameID: " + m_GameID);
+
+        // } else {
+        //     Debug.Log ("Steam not initialized");
         // }
-
-        if (SteamManager.Initialized) {
-            string name = SteamFriends.GetPersonaName ();
-            Debug.Log (name+" - "+SteamUser.GetSteamID() );
-
-            CGameID m_GameID = new CGameID (SteamUtils.GetAppID ());
-            Debug.Log ("number of achievements: " + SteamUserStats.GetNumAchievements ());
-            Debug.Log ("gameID: " + m_GameID);
-
-        } else {
-            Debug.Log ("Steam not initialized");
-        }
     }
 
     protected Callback<UserAchievementStored_t> m_UserAchievementStored;

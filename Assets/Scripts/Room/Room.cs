@@ -286,8 +286,8 @@ public class Room : MonoBehaviour
     /// Checks if a mirror question is correct with the changes that exist inside the room.
     ///</summary>
     public void CheckMirrorQuestion(Mirror selectedMirror) {
-        Debug.Log("check is on: " + selectedMirror.Letters.Length);
         selectedMirror.IsOn = (changeHandler.ContainsWord(selectedMirror) || selectedMirror.Letters.Length == 0);
+        if (!selectedMirror.IsOn && revealChangeAfterCompletion) hintStopwatch.WrongAnswerIncrement(); 
         CheckRoomCompletion();
     }
 

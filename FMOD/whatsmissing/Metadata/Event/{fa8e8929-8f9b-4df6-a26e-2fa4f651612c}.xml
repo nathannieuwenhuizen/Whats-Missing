@@ -105,14 +105,21 @@
 	</object>
 	<object class="MixerBusPanner" id="{8dfe79aa-3f84-4cef-9224-c02999e4aee8}" />
 	<object class="SingleSound" id="{dc4ab18a-995d-466f-b624-6bec2b92bccc}">
+		<property name="isAsync">
+			<value>true</value>
+		</property>
 		<property name="length">
 			<value>23.103990929705216</value>
+		</property>
+		<property name="startOffset">
+			<value>10</value>
 		</property>
 		<property name="volume">
 			<value>-1</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{6cae788b-02a0-494e-82c7-469934ea5035}</destination>
+			<destination>{3c55a5db-49d2-4a47-9ec2-30d445ad796e}</destination>
 		</relationship>
 		<relationship name="fadeInCurve">
 			<destination>{ef14f92b-6447-4313-bbc7-d7223a04d1ea}</destination>
@@ -122,6 +129,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{d07ee0d8-79b5-4713-a235-bcb25123636d}">
+		<property name="volume">
+			<value>-6</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -196,6 +206,14 @@
 		</property>
 		<property name="finalValue">
 			<value>-80</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{3c55a5db-49d2-4a47-9ec2-30d445ad796e}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>100</value>
 		</property>
 	</object>
 	<object class="FadeCurve" id="{ef14f92b-6447-4313-bbc7-d7223a04d1ea}">

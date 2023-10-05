@@ -88,7 +88,10 @@ public class CursorProperty : Property
     {
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
             RectTransform rt = uiGroup.GetComponent<RectTransform>();
-            StartCoroutine(rt.AnimatingLocalScale(Vector3.one * LargeScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+            StartCoroutine(Extensions.AnimateCallBack(uiGroup.GetComponent<CursorUI>().Scale, LargeScale, AnimationCurve.EaseInOut(0,0,1,1), (float v)=> { 
+                uiGroup.GetComponent<CursorUI>().Scale = v;}, animationDuration));
+
+            // StartCoroutine(rt.AnimatingLocalScale(Vector3.one * LargeScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
         }
         yield return new WaitForSeconds(animationDuration);
         yield return base.AnimateEnlarging();
@@ -111,7 +114,9 @@ public class CursorProperty : Property
     {
         foreach(CanvasGroup uiGroup in ingameCanvasElements) {
             RectTransform rt = uiGroup.GetComponent<RectTransform>();
-            StartCoroutine(rt.AnimatingLocalScale(Vector3.one * normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
+            StartCoroutine(Extensions.AnimateCallBack(uiGroup.GetComponent<CursorUI>().Scale, normalScale, AnimationCurve.EaseInOut(0,0,1,1), (float v)=> { 
+                uiGroup.GetComponent<CursorUI>().Scale = v;}, animationDuration));
+            //  StartCoroutine(rt.AnimatingLocalScale(Vector3.one * normalScale, AnimationCurve.EaseInOut(0,0,1,1), animationDuration));
         }
         yield return new WaitForSeconds(animationDuration);
         yield return base.AnimateEnlargeRevert();
