@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using PathCreation;
 public class EndSpirit : MonoBehaviour
 {
     
+    [SerializeField] private PathCreator pathCreator;
     [SerializeField]
     private Transform[] points;
     [SerializeField]
@@ -69,7 +70,11 @@ public class EndSpirit : MonoBehaviour
     private void Start() {
         // skinnedMeshToMesh.StopVFX();
         // StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
-        SpawnGhost();
+        meshRenderer.material.SetInt("Alpha", 0);
+        skinnedMeshToMesh.StopVFX();
+
+        // SpawnGhost();
+
     }
 
     private void UpdateFog() {
@@ -83,13 +88,18 @@ public class EndSpirit : MonoBehaviour
 
     private IEnumerator SpawningGhost () {
         yield return new WaitForSeconds(2f);
+
+        UpdateGhostPosition(false);
+        StartCoroutine(CheckPlayerPosition());
+        yield return StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 0, 1, AnimationCurve.EaseInOut(0,0,1,1), 1));
+        skinnedMeshToMesh.StartVFX();
+
         CurrentIndex = points.Length - 2;
         dustParticles.Play();
         deathCollider.SetActive(false);
         sceneCollider.gameObject.SetActive(true);
-        trailParticles.transform.position = points[currentIndex].position;
+        // trailParticles.transform.position = points[currentIndex].position;
 
-        StartCoroutine(CheckPlayerPosition());
     }
     private void SpawnGhost() {
         StartCoroutine(SpawningGhost());
@@ -97,12 +107,20 @@ public class EndSpirit : MonoBehaviour
 
 
     private IEnumerator FadeToNextPoint() {
-        skinnedMeshToMesh.StopVFX();
-        yield return StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
-        StartCoroutine(MoveTrail(points[currentIndex].position));
-        transform.position = points[currentIndex].position;
-        skinnedMeshToMesh.StartVFX();
-        yield return StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 0, 1, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
+        yield return new WaitForEndOfFrame();
+        // skinnedMeshToMesh.StopVFX();
+        // yield return StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
+        // StartCoroutine(MoveTrail(points[currentIndex].position));
+        // transform.position = points[currentIndex].position;
+        // skinnedMeshToMesh.StartVFX();
+        // yield return StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 0, 1, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
+        // float cT = pathCreator.path.GetClosestTimeOnPath(transform.position);
+        // float t = pathCreator.path.GetClosestTimeOnPath(points[currentIndex + 1].position);
+        // Debug.Log("moving to: " + currentIndex + " | with T = " + t);
+        // yield return StartCoroutine(Extensions.AnimateCallBack(cT, t, AnimationCurve.EaseInOut(0,0,1,1), (float v) => {
+        //     transform.position = pathCreator.path.GetPointAtTime(v);
+        //     transform.rotation = pathCreator.path.GetRotation(v);
+        // }, 2f));
     }
 
     private IEnumerator MoveTrail( Vector3 end) {
@@ -111,17 +129,49 @@ public class EndSpirit : MonoBehaviour
         // trailParticles.GetComponent<TrailRenderer>().enabled = false;
 
     }
+    private bool transporting = false;
 
-
+    private float CurrentTime = 0;
     public IEnumerator CheckPlayerPosition() {
         while (true) {
-            Debug.Log("closest index = " + ClosestIndexToPlayer());
+            if (!transporting) UpdateGhostPosition();
+
+            // transform.rotation = pathCreator.path.GetRotation(CurrentTime);
+
+            // Debug.Log("closest index = " + ClosestIndexToPlayer());
             CurrentIndex = Mathf.Clamp(ClosestIndexToPlayer() + 1, 0, points.Length - 1 );
-            transform.LookAt(player.transform.position, Vector3.up);
+            // transform.LookAt(player.transform.position, Vector3.up);
             UpdateFog();
             yield return new WaitForEndOfFrame();
         }
     }
+    float maxPlayerT = 0;
+
+    public void UpdateGhostPosition(bool withLerp = true) {
+        float pT = Mathf.Max(maxPlayerT, pathCreator.path.GetClosestTimeOnPath(player.transform.position));
+        maxPlayerT = pT;
+        float dist = 0.03f;
+        if (withLerp) CurrentTime =  Mathf.Lerp(CurrentTime, pT + dist, Time.deltaTime * 3f);
+        else CurrentTime = pT + dist;
+
+        transform.position = transform.position = pathCreator.path.GetPointAtTime(CurrentTime);
+        transform.LookAt(pathCreator.path.GetPointAtTime(CurrentTime + 0.01f), Vector3.up);
+
+        if (maxPlayerT > pathCreator.path.GetClosestTimeOnPath(transform.position)) {
+            StartCoroutine(FadeToNextPoint2());
+        }
+    }
+    private IEnumerator FadeToNextPoint2() {
+        transporting = true;
+        yield return new WaitForEndOfFrame();
+        skinnedMeshToMesh.StopVFX();
+        yield return StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), .3f));
+        UpdateGhostPosition(false);
+        skinnedMeshToMesh.StartVFX();
+        transporting = false;
+        yield return StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 0, 1, AnimationCurve.EaseInOut(0,0,1,1), 1f));
+    }
+
 
 
 
