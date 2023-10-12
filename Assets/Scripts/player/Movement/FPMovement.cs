@@ -344,6 +344,7 @@ public class FPMovement : MonoBehaviour
         if (floorObject != null) {
             if (floorObject.tag == Tags.Environment_GRASS) return 1;
             else if (floorObject.tag == Tags.Environment_STONE) return 3;
+            else if (floorObject.tag == Tags.Environment_WOOD) return 4;
         }
         return 0;
     }

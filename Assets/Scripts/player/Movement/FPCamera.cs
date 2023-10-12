@@ -82,6 +82,7 @@ public class FPCamera
 
     public void setMouseDelta(Vector2 delta)
     {
+        Debug.Log("camera vector: " + delta);
         mouseDelta = delta;
     }
 
