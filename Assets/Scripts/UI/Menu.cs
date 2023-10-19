@@ -9,6 +9,7 @@ public class Menu : MonoBehaviour
 {    
     public delegate void MenuAction();
     public static event MenuAction OnSettingsOpen;
+    public static event MenuAction OnBehindThescenesOpen;
     public static event MenuAction OnSettingsClose;
 
     private AnimatedPopup popup;
@@ -101,7 +102,6 @@ public class Menu : MonoBehaviour
                 selectOnDown = quitButton.GetComponent<Button>()
             };
         });
-
     }
 
     public void ContinueGame() {
@@ -114,6 +114,11 @@ public class Menu : MonoBehaviour
         SerializationManager.Save(SaveData.FILE_NAME, SaveData.current);
 
         sceneLoader.LoadNewSceneAnimated(Scenes.GetSceneNameBasedOnAreaIndex(2));
+    }
+
+    public void GoToSlideOverview() {
+        popup.ShowAnimation(false);
+        OnBehindThescenesOpen?.Invoke();
     }
 
     public void OpenNewGameWarning() {
@@ -135,8 +140,10 @@ public class Menu : MonoBehaviour
 
     private void OnEnable() {
         SettingPanel.OnSettingsClose += BackToMenu;
+        SlideMainMenu.OnBehindTheScenesClose += BackToMenu;
     }
     private void OnDisable() {
         SettingPanel.OnSettingsClose -= BackToMenu;
+        SlideMainMenu.OnBehindTheScenesClose -= BackToMenu;
     }
 }
