@@ -40,6 +40,10 @@ public class Menu : MonoBehaviour
     private SaveData saveData;
     [SerializeField]
     private SceneLoader sceneLoader;
+
+    [Header("Behind the scenes UI")]
+    [SerializeField] private AnimatedPopup behindThescenesMessage;
+    [SerializeField] private GameObject behindThescenesButton;
     
 
     private void Awake() {
@@ -55,6 +59,13 @@ public class Menu : MonoBehaviour
 
         popup = GetComponent<AnimatedPopup>();
         StartCoroutine(DelayMenuShow());
+
+        //behind the scenes
+        if (CreditsRoller.FROM_CREDIT_SCREEN == true && Settings.BEHIND_THE_SCENES_UNLOCKED == false) {
+            Settings.BEHIND_THE_SCENES_UNLOCKED = true;
+            behindThescenesMessage.ShowAnimation(true);
+        }
+        behindThescenesButton.SetActive(Settings.BEHIND_THE_SCENES_UNLOCKED);
     }
 
     public void GoToSettings() {

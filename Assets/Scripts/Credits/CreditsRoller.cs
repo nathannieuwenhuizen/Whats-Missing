@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class CreditsRoller : MonoBehaviour
 {
+
+    public static bool FROM_CREDIT_SCREEN {
+         get { return PlayerPrefs.GetInt("FROM_CREDIT_SCREEN", 0) == 1; }
+         set {  PlayerPrefs.SetInt("FROM_CREDIT_SCREEN", value ? 1 : 0); }
+    }
     [SerializeField]
     private RectTransform end;
     [SerializeField]
@@ -17,6 +22,7 @@ public class CreditsRoller : MonoBehaviour
 
     private bool rolling = false;
     public void StartRolling() {
+        FROM_CREDIT_SCREEN = true;
         Debug.Log("start rolling");
         SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.Acceptance);
         StartCoroutine(Rolling());

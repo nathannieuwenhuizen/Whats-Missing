@@ -45,6 +45,12 @@ public struct Settings
         PlayerPrefs.SetInt("Depth_of_field_enabled", cameraSettings.Depth_of_field_enabled ? 1 : 0);
         PlayerPrefs.SetInt("Motion_blur_enabled", cameraSettings.Motion_blur_enabled ? 1 : 0);
     }
+
+    public static bool BEHIND_THE_SCENES_UNLOCKED {
+         get { return PlayerPrefs.GetInt("BEHIND_THE_SCENES_UNLOCKED", 0) == 1; }
+         set {  PlayerPrefs.SetInt("BEHIND_THE_SCENES_UNLOCKED", value ? 1 : 0); }
+    }
+
 }
 
 ///<summary>
