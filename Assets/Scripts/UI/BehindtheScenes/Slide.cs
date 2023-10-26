@@ -25,11 +25,16 @@ public class Slide : AnimatedPopup
     public void Show() {
         ShowAnimation(true);
         if (GetComponentInChildren<VideoPlayer>() != null) {
+            Debug.Log("should now play!");
             GetComponentInChildren<VideoPlayer>().Play();
         }
     }
 
     public void Hide() {
         ShowAnimation(false);
+        if (GetComponentInChildren<VideoPlayer>() != null) {
+            Debug.Log("should now stop!");
+            GetComponentInChildren<VideoPlayer>().Stop();
+        }
     }
 }
