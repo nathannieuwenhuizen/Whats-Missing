@@ -31,13 +31,13 @@ public class BossMusic : MonoBehaviour
 
 
     public IEnumerator StartingMusic() {
-        yield return new WaitForSeconds(4f);
         Debug.Log("boss music should start now");
         AudioHandler.Instance.AudioManager.AudioListenerVolume = 1;
         AudioHandler.Instance.PlayMusic(MusicFiles.boss, 1f, 0f);
         MusicIntensity = 0f;
         BossAlive = true;
         StartCoroutine(UpdateMusicIntesnity());
+        yield return new WaitForSeconds(.1f);
     }
     private float musicIntensity;
     public float MusicIntensity {
