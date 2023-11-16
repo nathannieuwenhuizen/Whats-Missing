@@ -58,6 +58,8 @@ public class BossRoom : Room
         Player.OnDie += ResetPlayer;
         // DieState.OnBossDie += SpawnEndDoor;
         BossMirror.OnMirrorShardAmmountUpdate += StartHintTimer;
+        PauseScreen.OnNextLevel += EndOfArea;
+
     }
 
     private void OnDisable() {
@@ -65,6 +67,8 @@ public class BossRoom : Room
         // DieState.OnBossDie -= SpawnEndDoor;
         BossMirror.OnMirrorShardAmmountUpdate -= StartHintTimer;
         if (Area.AUTO_SAVE_WHEN_DESTROY) SaveProgress();
+        PauseScreen.OnNextLevel -= EndOfArea;
+
     }
     private void OnDestroy() {
         if (Area.AUTO_SAVE_WHEN_DESTROY) SaveProgress();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Boss;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SocialPlatforms.Impl;
 
 ///<summary>
 /// Handles the choking mechanism when the air is missing. And when it is burning.
@@ -32,7 +33,7 @@ public class Lungs : MonoBehaviour
 
     //choke
     private float chokeIndex = 0;
-    private float chokeDuration = 3f;
+    private float chokeDuration = 30f;
     private Coroutine chokeCoroutine; 
     private SFXInstance chokeSFX;
 
@@ -40,7 +41,7 @@ public class Lungs : MonoBehaviour
     private SFXInstance burnSFX;
     private SFXInstance playerVoiceBurnSFX;
     private float burnIndex = 0;
-    private float burnDuration = 15f;
+    private float burnDuration = 3f;
     private Coroutine burnCoroutine; 
     private bool burning = false;
     private List<FireSpread> fireSpreads = new List<FireSpread>();
@@ -150,6 +151,10 @@ public class Lungs : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         if (burnIndex > BurnDuration() ) {
+            if (player.Room.Area.AreaIndex == 1) {
+                Debug.Log("let it burn achievement");
+                SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.LetItBurn);
+            }
             player.Die(true);
             AudioHandler.Instance.PlaySound(SFXFiles.choke_die, .5f, .8f);
         }
@@ -204,8 +209,6 @@ public class Lungs : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         player.Die(true, true);
-        Debug.Log("room: " +player.Room);
-        Debug.Log("area: " +player.Room.Area);
         if(player.Room.Area.AreaIndex == 0) SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.StealMyBreathAway);
 
         AudioHandler.Instance.PlaySound(SFXFiles.choke_die, .5f, .8f);

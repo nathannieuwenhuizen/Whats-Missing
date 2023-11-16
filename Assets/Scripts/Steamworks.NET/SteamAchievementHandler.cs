@@ -17,7 +17,7 @@ public class SteamAchievementHandler : Singleton<SteamAchievementHandler>
         {SteamAchievement.EarlyBirdCatchesTheApple, "EarlyBirdCatchesTheApple"},
         {SteamAchievement.AgainTheApple, "AgainTheApple"},
         {SteamAchievement.StealMyBreathAway, "StealMyBreathAway"},
-        {SteamAchievement.WhoNeedsAirAnyway, "WhoNeedsAirAnyway"},
+        {SteamAchievement.WhoNeedsAirAnyway, "WhoNeeds(Ch)airAnyway"},
         {SteamAchievement.SunDeath, "SunDeath"},
         {SteamAchievement.LetItBurn, "LetItBurn"},
         {SteamAchievement.QUACK, "QUACK"},

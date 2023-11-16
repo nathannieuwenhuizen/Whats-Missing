@@ -15,6 +15,7 @@ public class PauseScreen : MonoBehaviour
     public delegate void PauseAction(); 
     public static event PauseAction OnPause;
     public static event PauseAction OnResume;
+    public static event PauseAction OnNextLevel;
     public static event PauseAction OnQuit;
     public static event PauseAction OnSettingsOpen;
     public static event PauseAction OnSettingsClose;
@@ -25,6 +26,8 @@ public class PauseScreen : MonoBehaviour
     private GameObject resumeButton;
     [SerializeField]
     private Button quitButton;
+    [SerializeField]
+    private Button nextLevelButton;
     [SerializeField]
     private AnimatedPopup subPausePanel;
     [SerializeField] 
@@ -72,6 +75,7 @@ public class PauseScreen : MonoBehaviour
         animator = GetComponent<Animator>();
         resumeButton.GetComponent<Button>().onClick.AddListener(Resume);
         quitButton.onClick.AddListener(Quit);
+        nextLevelButton.onClick.AddListener(NextLevel);
         settingsButton.onClick.AddListener(GoToSettings);
     }
 
@@ -125,6 +129,9 @@ public class PauseScreen : MonoBehaviour
     }
     public void Quit() {
         OnQuit?.Invoke();
+    }
+    public void NextLevel() {
+        OnNextLevel?.Invoke();
     }
     ///<summary>
     /// Toggles the pause screen.

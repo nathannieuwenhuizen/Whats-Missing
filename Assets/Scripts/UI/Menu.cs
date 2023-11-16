@@ -61,11 +61,11 @@ public class Menu : MonoBehaviour
         StartCoroutine(DelayMenuShow());
 
         //behind the scenes
-        if (CreditsRoller.FROM_CREDIT_SCREEN == true && Settings.BEHIND_THE_SCENES_UNLOCKED == false) {
-            Settings.BEHIND_THE_SCENES_UNLOCKED = true;
+        if (CreditsRoller.FROM_CREDIT_SCREEN == true && PlayerData.BEHIND_THE_SCENES_UNLOCKED == false) {
+            PlayerData.BEHIND_THE_SCENES_UNLOCKED = true;
             behindThescenesMessage.ShowAnimation(true);
         }
-        behindThescenesButton.SetActive(Settings.BEHIND_THE_SCENES_UNLOCKED);
+        behindThescenesButton.SetActive(PlayerData.BEHIND_THE_SCENES_UNLOCKED);
     }
 
     public void GoToSettings() {

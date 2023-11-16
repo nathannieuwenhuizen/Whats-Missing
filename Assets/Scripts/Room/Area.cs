@@ -340,6 +340,8 @@ public class Area : MonoBehaviour
         Player.OnDie += ResetPlayer;
         TeddyBear.OnCutsceneEnd += EndOfArea;
         AlchemyItem.OnAlchemyEndScene += EndOfArea;
+        PauseScreen.OnNextLevel += EndOfArea;
+
         InputManager.OnReset += ResetRoom;
     }
 
@@ -352,6 +354,7 @@ public class Area : MonoBehaviour
 
         TeddyBear.OnCutsceneEnd -= EndOfArea;
         AlchemyItem.OnAlchemyEndScene -= EndOfArea;
+        PauseScreen.OnNextLevel -= EndOfArea;
 
         if (AUTO_SAVE_WHEN_DESTROY) SaveProgress();
     }
