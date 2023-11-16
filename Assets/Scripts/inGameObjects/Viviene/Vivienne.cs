@@ -33,6 +33,8 @@ public class Vivienne : AreaTrigger, IRoomObject
         {GhostAnimation.gazebo, "Memory_Gazebo"},
         {GhostAnimation.ducks, "Memory_Ducks"}
     };
+    
+    private GhostPose ghostPose;
 
     private SkinnedMeshToMesh skinnedMeshToMesh;
 
@@ -95,16 +97,19 @@ public class Vivienne : AreaTrigger, IRoomObject
         book.SetActive(false);
         marshmallow.SetActive(false);
 
-        int index = room.Area.Rooms.IndexOf(room);
+        int index = room.LoadIndex;
+        Debug.Log("level index = " + index);
         GhostPose newPose = new List<GhostPose>(ghostPoses).Find(x => x.levelIndex == index);
+
         if (newPose != default(GhostPose)) {
-            transform.position = newPose.transform.position;
-            transform.rotation = newPose.transform.rotation;
-            animator.SetTrigger(animations[newPose.ghosetAnimation]);
-            if (newPose.ghosetAnimation == GhostAnimation.gazebo) {
+            ghostPose = newPose;
+            transform.position = ghostPose.transform.position;
+            transform.rotation = ghostPose.transform.rotation;
+            animator.SetTrigger(animations[ghostPose.ghosetAnimation]);
+            if (ghostPose.ghosetAnimation == GhostAnimation.gazebo) {
                 book.SetActive(true);
             } 
-            if (newPose.ghosetAnimation == GhostAnimation.fireplace) {
+            if (ghostPose.ghosetAnimation == GhostAnimation.fireplace) {
                 marshmallow.SetActive(true);
             } 
         } else {
@@ -133,7 +138,32 @@ public class Vivienne : AreaTrigger, IRoomObject
         StartCoroutine(meshRenderer.material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
         if (book.activeSelf) StartCoroutine(book.GetComponent<MeshRenderer>().material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
         if (marshmallow.activeSelf) StartCoroutine(marshmallow.GetComponent<MeshRenderer>().material.AnimatingNumberPropertyMaterial("Alpha", 1, 0, AnimationCurve.EaseInOut(0,0,1,1), dissappEarDurationInSeconds));
+        StartCoroutine(VanishCheckAchievement());
         Destroy(gameObject, dissappEarDurationInSeconds);
+        
+    }
+    private IEnumerator VanishCheckAchievement() {
+        yield return new WaitForSeconds(dissappEarDurationInSeconds - 1f);
+        switch(ghostPose.ghosetAnimation) {
+            case GhostAnimation.ducks:
+                PlayerData.GARDEN_GHOST_VANISH_0 = true;
+                break;
+            case GhostAnimation.fireplace:
+                PlayerData.GARDEN_GHOST_VANISH_1 = true;
+                break;
+            case GhostAnimation.fountain:
+                PlayerData.GARDEN_GHOST_VANISH_2 = true;
+                break;
+            case GhostAnimation.gazebo:
+                PlayerData.GARDEN_GHOST_VANISH_3 = true;
+                break;
+            case GhostAnimation.swing:
+                PlayerData.GARDEN_GHOST_VANISH_4 = true;
+                break;
+        }
+        Debug.Log("check chasing past");
+        PlayerData.CheckChasingThePastAchievements();
+
     }
 
 

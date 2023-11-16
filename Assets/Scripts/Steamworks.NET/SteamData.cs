@@ -8,7 +8,6 @@ public enum SteamAchievement
     Denial,
     Depression,
     Anger,
-    Acceptance,
 
     CatKiller,
     EarlyBirdCatchesTheApple,
@@ -22,6 +21,9 @@ public enum SteamAchievement
     PotionOfDeath,
     TheLibraryIsClosed,
     Speedrunner,
+    Acceptance,
+    ChasingThePast,
+    GoingInCircles
 }
 
 

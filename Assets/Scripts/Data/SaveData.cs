@@ -29,11 +29,3 @@ public class SaveData
         return newState;
     }
 }
-
-[System.Serializable]
-public struct  TVState
-{
-    public int id;
-    public bool isOn;
-    public string word;
-}

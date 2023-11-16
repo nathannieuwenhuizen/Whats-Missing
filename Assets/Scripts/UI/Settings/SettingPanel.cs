@@ -44,6 +44,8 @@ public class SettingPanel : AnimatedPopup
     [SerializeField]
     private Toggle motionBlur;
     [SerializeField]
+    private Toggle timer;
+    [SerializeField]
     private Toggle enableKeyboardInput;
 
     [Header("Controls")]
@@ -106,6 +108,7 @@ public class SettingPanel : AnimatedPopup
         cameraYInvert.onValueChanged.AddListener(delegate{ settings.controlSettings.Camera_y_invert = cameraYInvert.isOn;});
         depthOfField.onValueChanged.AddListener(delegate{ settings.cameraSettings.Depth_of_field_enabled = depthOfField.isOn;});
         motionBlur.onValueChanged.AddListener(delegate{ settings.cameraSettings.Motion_blur_enabled = motionBlur.isOn;});
+        timer.onValueChanged.AddListener(delegate{ settings.cameraSettings.Timer_Enabled = timer.isOn;});
         enableKeyboardInput.onValueChanged.AddListener(delegate{ settings.controlSettings.Enable_Keyboard_Input = enableKeyboardInput.isOn;});
     }
 
@@ -118,6 +121,7 @@ public class SettingPanel : AnimatedPopup
         cameraYInvert.isOn = settings.controlSettings.Camera_y_invert;
         depthOfField.isOn = settings.cameraSettings.Depth_of_field_enabled;
         motionBlur.isOn = settings.cameraSettings.Motion_blur_enabled;
+        timer.isOn = settings.cameraSettings.Timer_Enabled;
         enableKeyboardInput.isOn = settings.controlSettings.Enable_Keyboard_Input;
     }
     

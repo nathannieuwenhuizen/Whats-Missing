@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EndlessHallway : MonoBehaviour
 {
+    private int ammountOfLoops = 0;
     [SerializeField]
     private GameObject[] chunkPrefabs;
     [SerializeField]
@@ -158,6 +159,7 @@ public class EndlessHallway : MonoBehaviour
         return false;
     }
 
+    private bool checkAchievement = true;
 
     private void SetPlayerBack(float ammountOfSegments) {
         Vector3 moveDelta = new Vector3(-chunkSize,0,0) * ammountOfSegments;
@@ -186,6 +188,13 @@ public class EndlessHallway : MonoBehaviour
             chunk.ResetFurniture();
             chunk.transform.position = chunks[chunks.Count - 1].transform.position + new Vector3(-chunkSize,0, 0);
             chunks.Add(chunk);
+        }
+        if (checkAchievement) {
+            ammountOfLoops += (int)ammountOfSegments;
+            Debug.Log("ammount of loops: " + ammountOfLoops);
+            if (ammountOfLoops > 100) {checkAchievement = false;
+                SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.GoingInCircles);
+            }
         }
     }
 

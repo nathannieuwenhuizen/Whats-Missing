@@ -63,12 +63,11 @@ public class ChangeHandler
     /// Creates a mirror change and returns null if the change doesn't find any objects with the word.
     ///</summary>
     public MirrorChange CreateChange(Mirror selectedMirror) {
-        Debug.Log("create change: " + selectedMirror.Word +  " |  level name: " + room.roomLevel.name);
-
-        if (room.roomLevel.name == "MirrorChangeIntroduction" && selectedMirror.Word == "air") {
-            Debug.Log("set achievement");
-            SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.WhoNeedsAirAnyway);
-        }
+        if (room.roomLevel != null)
+            if (room.roomLevel.name == "MirrorChangeIntroduction" && selectedMirror.Word == "air") {
+                Debug.Log("set achievement");
+                SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.WhoNeedsAirAnyway);
+            }
 
         MirrorChange newChange = new MirrorChange(){
             word = selectedMirror.Word, 

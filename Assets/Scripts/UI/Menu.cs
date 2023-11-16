@@ -146,6 +146,7 @@ public class Menu : MonoBehaviour
     public void NewGameSelected() {
         SaveData newSave = new SaveData();
         SerializationManager.Save(SaveData.FILE_NAME, newSave);
+        PlayerData.TIME_IN_MS = 0;
         Debug.Log("new save");
     }
 

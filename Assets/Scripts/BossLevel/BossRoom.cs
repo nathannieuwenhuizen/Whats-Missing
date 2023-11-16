@@ -105,6 +105,9 @@ public class BossRoom : Room
     /// Fires when the player dies and has to respawn
     ///</summary>
     public void ResetPlayer(bool withAnimation, bool toPreviousLevel) {
+        PlayerData.DIE_AREA_3 = true;
+        PlayerData.CheckSeekerfDeathAchievements();
+
         StartCoroutine(ResettingThePlayer(withAnimation, toPreviousLevel));
     }
 

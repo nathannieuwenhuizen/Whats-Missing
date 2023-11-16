@@ -299,7 +299,20 @@ public class Area : MonoBehaviour
     ///<summary>
     /// Fires when the palyer dies and has to respawn
     ///</summary>
-    public void ResetPlayer(bool withAnimation, bool toPreviousLevel) {
+    private void OnPlayerDie(bool withAnimation, bool toPreviousLevel) {
+        switch(AreaIndex) {
+            case 0:
+                PlayerData.DIE_AREA_0 = true;
+                break;
+            case 1:
+                PlayerData.DIE_AREA_1 = true;
+                break;
+            case 2:
+                PlayerData.DIE_AREA_2 = true;
+                break;
+        }
+        PlayerData.CheckSeekerfDeathAchievements();
+
         currentRoom?.OnPlayerDie();
         StartCoroutine(ResettingThePlayer(withAnimation, toPreviousLevel));
     }
@@ -337,7 +350,7 @@ public class Area : MonoBehaviour
         Door.OnPassingThrough += OnPassingThroughDoor;
         Door.OnDoorOpen += ShowNextRoom;
         InputManager.OnUndo += UndoAction;
-        Player.OnDie += ResetPlayer;
+        Player.OnDie += OnPlayerDie;
         TeddyBear.OnCutsceneEnd += EndOfArea;
         AlchemyItem.OnAlchemyEndScene += EndOfArea;
         PauseScreen.OnNextLevel += EndOfArea;
@@ -349,7 +362,7 @@ public class Area : MonoBehaviour
         Door.OnPassingThrough -= OnPassingThroughDoor;
         Door.OnDoorOpen -= ShowNextRoom;
         InputManager.OnUndo -= UndoAction;
-        Player.OnDie -= ResetPlayer;
+        Player.OnDie -= OnPlayerDie;
         InputManager.OnReset -= ResetRoom;
 
         TeddyBear.OnCutsceneEnd -= EndOfArea;

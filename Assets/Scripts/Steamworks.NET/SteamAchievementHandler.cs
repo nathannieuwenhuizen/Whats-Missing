@@ -25,6 +25,8 @@ public class SteamAchievementHandler : Singleton<SteamAchievementHandler>
         {SteamAchievement.PotionOfDeath, "PotionOfDeath"},
         {SteamAchievement.TheLibraryIsClosed, "TheLibraryIsClosed"},
         {SteamAchievement.Speedrunner, "Speedrunner"},
+        {SteamAchievement.ChasingThePast, "ChasingThePast"},
+        {SteamAchievement.GoingInCircles, "GoingInCircles"},
     };
 
     // Start is called before the first frame update
@@ -91,6 +93,10 @@ public class SteamAchievementHandler : Singleton<SteamAchievementHandler>
         ;SteamUserStats.RequestCurrentStats();
         string _name = SteamUserStats.GetAchievementName((uint)_achievement);
         SteamUserStats.RequestCurrentStats();
+
+        bool alreadyAchieved = true;
+        SteamUserStats.GetAchievement(_name, out alreadyAchieved);
+        if (alreadyAchieved) return;
 
         Debug.Log("achievement should be granted!" + Achievements[_achievement]); 
         SteamUserStats.SetAchievement(Achievements[_achievement]);

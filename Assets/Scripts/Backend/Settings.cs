@@ -30,7 +30,8 @@ public struct Settings
         };
         cameraSettings = new CameraSettings() {
             Depth_of_field_enabled = PlayerPrefs.GetInt("Depth_of_field_enabled", 0) == 1,
-            Motion_blur_enabled = PlayerPrefs.GetInt("Motion_blur_enabled", 0) == 1
+            Motion_blur_enabled = PlayerPrefs.GetInt("Motion_blur_enabled", 0) == 1,
+            Timer_Enabled = PlayerPrefs.GetInt("Timer_enabled", 0) == 1
         };
     }
     ///<summary>
@@ -44,6 +45,7 @@ public struct Settings
 
         PlayerPrefs.SetInt("Depth_of_field_enabled", cameraSettings.Depth_of_field_enabled ? 1 : 0);
         PlayerPrefs.SetInt("Motion_blur_enabled", cameraSettings.Motion_blur_enabled ? 1 : 0);
+        PlayerPrefs.SetInt("Timer_enabled", cameraSettings.Timer_Enabled ? 1 : 0);
     }
 
     public static bool BEHIND_THE_SCENES_UNLOCKED {
@@ -69,4 +71,5 @@ public struct ControlSettings {
 public struct CameraSettings {
     public bool Depth_of_field_enabled;
     public bool Motion_blur_enabled;
+    public bool Timer_Enabled;
 }
