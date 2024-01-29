@@ -102,6 +102,7 @@ public class EndSpirit : MonoBehaviour
 
     }
     private void SpawnGhost() {
+        SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.Anger);
         StartCoroutine(SpawningGhost());
     }
 

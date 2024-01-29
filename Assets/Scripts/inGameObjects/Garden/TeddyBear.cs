@@ -80,6 +80,7 @@ public class TeddyBear : InteractabelObject
         
 
         room.Player.Movement.EnableWalk = false;
+        room.Player.Camera.nearClipPlane = .4f;
         room.Player.Movement.RB.useGravity = false;
         room.Player.Movement.EnableRotation = false;
         room.Player.Movement.enabled = false;

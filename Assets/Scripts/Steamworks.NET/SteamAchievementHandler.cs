@@ -27,6 +27,7 @@ public class SteamAchievementHandler : Singleton<SteamAchievementHandler>
         {SteamAchievement.Speedrunner, "Speedrunner"},
         {SteamAchievement.ChasingThePast, "ChasingThePast"},
         {SteamAchievement.GoingInCircles, "GoingInCircles"},
+        {SteamAchievement.ReachingTheWindmill, "ReachingTheWindmill"},
     };
 
     // Start is called before the first frame update
@@ -39,7 +40,9 @@ public class SteamAchievementHandler : Singleton<SteamAchievementHandler>
 
         // string name = SteamFriends.GetPersonaName();
         // Debug.Log("name: " + name);
+#if UNITY_EDITOR
         SteamUserStats.ResetAllStats(true);
+#endif
     }
 
     public string achievementName;

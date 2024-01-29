@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class ComputeGrass : MonoBehaviour
@@ -52,19 +53,24 @@ public class ComputeGrass : MonoBehaviour
     }
 
     public void UpdateGrassPosition(FloatingIsland _floatingIsland) {
-        if (startPos == null) startPos = transform.position;
 
-        Debug.Log("update position");
-        
-        transform.SetParent(_floatingIsland.Room.transform);
-        transform.localPosition = startPos + new Vector3(14.2f,0,0);
-        transform.localRotation = Quaternion.Euler(0,0,0);
         if (_floatingIsland.IslandType == islandType) {
+            if (startPos == null) startPos = transform.position;
+            transform.SetParent(_floatingIsland.Room.transform);
+            transform.localPosition = startPos + new Vector3(14.2f,0,0);
+            transform.localRotation = Quaternion.Euler(0,0,0);
+
+            Debug.Log("set grass parent: " + _floatingIsland.name);
             transform.SetParent(_floatingIsland.transform);
             // Vector3 delta = _floatingIsland.transform.position - _floatingIsland.Room.transform.position;
             // transform.localPosition = (startPos + new Vector3(14.2f,0,0) - delta) * 0.01f;
             // transform.localRotation = Quaternion.Euler(0,0,0);
-        } else {
+        } 
+        if (islandType == IslandType.main) {
+            if (startPos == null) startPos = transform.position;
+            transform.SetParent(_floatingIsland.Room.transform);
+            transform.localPosition = startPos + new Vector3(14.2f,0,0);
+            transform.localRotation = Quaternion.Euler(0,0,0);
         }
         
     }

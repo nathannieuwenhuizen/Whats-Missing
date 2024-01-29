@@ -35,7 +35,7 @@ public class Painting : InteractabelObject
         animator = GetComponent<Animator>();
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.isKinematic = true;
-        if (wasMissing) SetPortalsActive(false);
+        if (!wasMissing && !open) SetPortalsActive(false);
     }
     public override void OnRoomLeave()
     {
@@ -45,7 +45,7 @@ public class Painting : InteractabelObject
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
-        if (wasMissing) SetPortalsActive(true);
+        if (wasMissing || open) SetPortalsActive(true);
         else SetPortalsActive(false);
     }
 
@@ -68,6 +68,7 @@ public class Painting : InteractabelObject
 
     private void SetPortalsActive(bool val) {
         if (hiddenRoom == null) return;
+        Debug.Log("set portals active: " + val);
         
         hiddenRoom.SetActive(val);
         foreach (Portal portal in portals)
@@ -75,7 +76,7 @@ public class Painting : InteractabelObject
     }
 
     protected override void OnFocus() {
-        Debug.Log("focus!" + OutlineEnabled);
+        // Debug.Log("focus!" + OutlineEnabled);
     }
 
     public override void Interact()
@@ -83,7 +84,7 @@ public class Painting : InteractabelObject
         OnInteract?.Invoke();
         if (animating) return;
         animating = true;
-        open = !open;
+        open = true;
 
         if (hiddenRoom != null) {
             SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.EarlyBirdCatchesTheApple);

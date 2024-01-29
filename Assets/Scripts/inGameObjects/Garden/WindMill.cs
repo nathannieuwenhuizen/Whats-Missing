@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WindMill : RoomObject
+public class WindMill : RoomObject, ITriggerArea
 {
 
     [SerializeField]
     private Transform rotationPivot;
 
     private float speed = 15f;
+
+    public bool InsideArea { get; set; }
 
     public WindMill() {
         shrinkScale = .2f;
@@ -41,4 +43,14 @@ public class WindMill : RoomObject
 
     }
 
+    public void OnAreaEnter(Player player)
+    {
+        Debug.Log("set achievement windmill");
+        SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.ReachingTheWindmill);
+    }
+
+    public void OnAreaExit(Player player)
+    {
+
+    }
 }

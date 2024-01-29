@@ -17,7 +17,6 @@ public class Hands : MonoBehaviour
     private Player player;
 
     private float pickupDistance = 8;
-    private float shrinkPickupDistance;
 
     private float massThreshhold = 1f;
     public float MassThreshhold {
@@ -28,7 +27,7 @@ public class Hands : MonoBehaviour
 
     public float PickupDistance {
         get {
-            return pickupDistance / player.NormalScale * player.CurrentScale;
+            return pickupDistance / player.NormalScale * Mathf.Max(1, player.CurrentScale);
         }
     }
 
@@ -91,7 +90,6 @@ public class Hands : MonoBehaviour
     private void Awake() {
         localPos = transform.localPosition;
         rigidbody = GetComponent<Rigidbody>();
-        shrinkPickupDistance = pickupDistance / 2f;
     }
 
 
@@ -197,7 +195,7 @@ public class Hands : MonoBehaviour
     private IInteractable FocussedObject() {
         RaycastHit hit;
         IInteractable result = default(IInteractable);
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 20f)) {
+        if (Physics.Raycast(transform.position, transform.forward, out hit, PickupDistance)) {
             if (hit.collider.gameObject.GetComponent<IInteractable>() != null) {
                 result =  hit.collider.gameObject.GetComponent<IInteractable>();
             } else if (hit.collider.transform.parent != null) {
@@ -209,7 +207,7 @@ public class Hands : MonoBehaviour
 
         if (result != default(IInteractable)) {
             float distance = Vector3.Distance(transform.position,hit.point);
-            if (distance < result.InteractableDistance) return result;
+            if (distance < PickupDistance) return result;
         } 
         return default(IInteractable);
     }

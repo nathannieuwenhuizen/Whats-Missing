@@ -379,6 +379,9 @@ public class BossMirror : Mirror, ITriggerArea
     {
         base.Confirm();
         CheckOutlineEnabling();
+        if (Word == GetAnswer()  && Word == "water") {
+            MirrorCanvas.IsInteractable = false;
+        }
     }
 
 

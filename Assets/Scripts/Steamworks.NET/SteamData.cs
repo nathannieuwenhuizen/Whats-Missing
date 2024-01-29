@@ -23,7 +23,8 @@ public enum SteamAchievement
     Speedrunner,
     Acceptance,
     ChasingThePast,
-    GoingInCircles
+    GoingInCircles,
+    ReachingTheWindmill
 }
 
 

@@ -69,7 +69,7 @@ public class SteamManager : MonoBehaviour {
 		}
 		// Only one instance of SteamManager at a time!
 		if (s_instance != null) {
-			// Destroy(gameObject);
+			Destroy(gameObject);
 			return;
 		}
 		s_instance = this;
