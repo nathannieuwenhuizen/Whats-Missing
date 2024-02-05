@@ -27,7 +27,7 @@ public class SteamAchievementHandler : Singleton<SteamAchievementHandler>
         {SteamAchievement.Speedrunner, "Speedrunner"},
         {SteamAchievement.ChasingThePast, "ChasingThePast"},
         {SteamAchievement.GoingInCircles, "GoingInCircles"},
-        {SteamAchievement.ReachingTheWindmill, "ReachingTheWindmill"},
+        {SteamAchievement.PowerOfTheWind, "PowerOfTheWind"},
     };
 
     // Start is called before the first frame update

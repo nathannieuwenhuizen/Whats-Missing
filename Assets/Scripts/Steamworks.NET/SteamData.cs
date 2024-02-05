@@ -24,7 +24,7 @@ public enum SteamAchievement
     Acceptance,
     ChasingThePast,
     GoingInCircles,
-    ReachingTheWindmill
+    PowerOfTheWind
 }
 
 

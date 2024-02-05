@@ -46,7 +46,7 @@ public class WindMill : RoomObject, ITriggerArea
     public void OnAreaEnter(Player player)
     {
         Debug.Log("set achievement windmill");
-        SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.ReachingTheWindmill);
+        SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.PowerOfTheWind);
     }
 
     public void OnAreaExit(Player player)
