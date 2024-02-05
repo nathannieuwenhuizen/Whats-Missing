@@ -164,7 +164,7 @@ namespace Boss {
             AudioHandler.Instance?.Play3DSound(SFXFiles.boss_attack, bossAI.BossHead.transform);
 
             yield return bossAI.StartCoroutine(Boss.Body.BossAnimator.DoFailedAttackAnimation());
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
             Positioner.BodyOrientation = oldOrientation;
 
             isAttacking = false;

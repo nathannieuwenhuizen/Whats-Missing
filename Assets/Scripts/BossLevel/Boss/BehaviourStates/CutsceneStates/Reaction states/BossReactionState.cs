@@ -61,8 +61,20 @@ namespace Boss {
             Positioner.SpeedScale = 2f;
             Positioner.SteeringBehaviour.MaxForce *= 5f;
 
-            while(!Positioner.AtPosition(2f)) {
-                yield return new WaitForFixedUpdate();
+            float timeIndex = 0;
+            bool waiting = true;
+
+            while(!Positioner.AtPosition(2f) && waiting) {
+                yield return new WaitForEndOfFrame();
+                timeIndex+= Time.deltaTime;
+                if (timeIndex > 3f) {
+                    Positioner.BodyMovementType = BodyMovementType.freeFloat;
+                    // Positioner.transform.position = ReactionPosition() + Vector3.up * landingOffset;
+                    Positioner.SetDestinationPath(ReactionPosition() + Vector3.up * landingOffset, bossAI.transform.position, true, 5f);
+
+                    yield return new WaitForEndOfFrame();
+                    waiting = false;
+                }
             }
             Positioner.SteeringBehaviour.MaxForce /= 5f;
 
@@ -72,7 +84,6 @@ namespace Boss {
                 if (customMountainShape) Positioner.BossMountain.RestoreShape();
             }
 
-            
             DoReaction();
         }
 
