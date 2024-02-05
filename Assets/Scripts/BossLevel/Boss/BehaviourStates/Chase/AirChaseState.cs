@@ -18,6 +18,7 @@ namespace Boss {
         public override void Start()
         {
             base.Start();
+            DialoguePlayer.Instance.PlayLine(BossLines.Chase(), true, SFXFiles.boss_general_talking);
             Positioner.BodyOrientation = BodyOrientation.toPath;
             Positioner.BodyMovementType = BodyMovementType.freeFloat;
             stateName = "Air Chase Chase";
