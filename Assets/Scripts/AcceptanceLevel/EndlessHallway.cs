@@ -40,7 +40,8 @@ public class EndlessHallway : MonoBehaviour
     
     
     private void SpawnChunks() {
-        
+        // Settings.BEHIND_THE_SCENES_UNLOCKED = false;
+
         Vector3 spawnPos = startChunk.transform.position;
         for(int i = 0; i < ammountOfChunks; i++) {
             

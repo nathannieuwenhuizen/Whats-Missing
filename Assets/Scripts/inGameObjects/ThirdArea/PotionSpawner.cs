@@ -42,7 +42,11 @@ public class PotionSpawner : RoomObject
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
-        if (spawned) return;
+        if (spawned) {
+            foreach(Potion p in Room.GetAllObjectsInRoom<Potion>()) {
+                Destroy(p.gameObject);
+            }
+        }
         spawned = true;
 
         foreach(SpawnPoint point in spawnPoints) {

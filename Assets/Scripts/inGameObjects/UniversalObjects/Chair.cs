@@ -18,6 +18,22 @@ public class Chair : RoomObject
         rb.isKinematic = true;
         base.OnMissingFinish();
     }
+    private void OnEnable() {
+        TimeProperty.onTimeMissing += DeactivateRB;
+        TimeProperty.onTimeAppearing += ActivateRB;
+    }
+
+    private void OnDisable() {
+        TimeProperty.onTimeMissing -= DeactivateRB;
+        TimeProperty.onTimeAppearing -= ActivateRB;
+    }
+
+    private void DeactivateRB() {
+        if (rb != null) rb.isKinematic = true;
+    }
+    private void ActivateRB() {
+       if (rb != null)  rb.isKinematic = false;
+    }
 
     public override void OnAppearing()
     {

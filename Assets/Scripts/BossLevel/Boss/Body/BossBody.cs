@@ -223,7 +223,7 @@ namespace Boss {
                 UpdateBodyShaders();
 
                 //make sythe
-                if (index > 4.8f) {
+                if (index > 5.2f) {
                     Arm.Toggle(true);
                 }
 

@@ -50,7 +50,7 @@ public class PerspectiveProperty : Property
         m_camera.orthographic = true;
         StopAllCoroutines();
         onPerspectiveMissing?.Invoke();
-        room.Player.Movement.EnableHeadTilt = false;
+        room.Player.Movement.EnableHeadBounce = false;
         StartCoroutine(AnimateMissing());
     }
     public override IEnumerator AnimateMissing()
@@ -90,7 +90,7 @@ public class PerspectiveProperty : Property
     public override void OnAppearingFinish()
     {
         base.OnAppearingFinish();
-        room.Player.Movement.EnableHeadTilt = true;
+        room.Player.Movement.EnableHeadBounce = true;
         onPerspectiveAppearing?.Invoke();
         m_camera.orthographic = false;
         m_camera.projectionMatrix = normalPerspective;

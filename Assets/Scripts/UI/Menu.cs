@@ -43,7 +43,8 @@ public class Menu : MonoBehaviour
 
     [Header("Behind the scenes UI")]
     [SerializeField] private AnimatedPopup behindThescenesMessage;
-    [SerializeField] private GameObject behindThescenesButton;
+    [SerializeField] private Button behindThescenesButton;
+    [SerializeField] private Button behindThescenesConfirmButton;
     
 
     private void Awake() {
@@ -61,11 +62,18 @@ public class Menu : MonoBehaviour
         StartCoroutine(DelayMenuShow());
 
         //behind the scenes
-        if (CreditsRoller.FROM_CREDIT_SCREEN == true && PlayerData.BEHIND_THE_SCENES_UNLOCKED == false) {
+        if (CreditsRoller.FROM_CREDIT_SCREEN == true && PlayerData.BEHIND_THE_SCENES_UNLOCKED == false || true) {
             PlayerData.BEHIND_THE_SCENES_UNLOCKED = true;
             behindThescenesMessage.ShowAnimation(true);
+             ControllerCheck.SelectUIGameObject(behindThescenesConfirmButton.gameObject, () => { 
+                EventSystem.current.firstSelectedGameObject = behindThescenesConfirmButton.gameObject;
+             });
+            behindThescenesConfirmButton.onClick.AddListener(() => {
+                behindThescenesMessage.ShowAnimation(false);
+            });
+            
         }
-        behindThescenesButton.SetActive(PlayerData.BEHIND_THE_SCENES_UNLOCKED);
+        behindThescenesButton.gameObject.SetActive(PlayerData.BEHIND_THE_SCENES_UNLOCKED);
     }
 
     public void GoToSettings() {

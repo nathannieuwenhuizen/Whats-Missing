@@ -59,6 +59,10 @@ public class PortalDoor : Door
         SetPortalState(!locked);
         Word = "door";
     }
+    private void Start() {
+        if (!locked) SetPortalState(true);
+        
+    }
 
     public override void SetBezierPoints(Player player)
     {

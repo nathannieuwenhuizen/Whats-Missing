@@ -78,6 +78,7 @@ public class FPMovement : MonoBehaviour
     private float walkCycleIndex = 0;
 
     public bool EnableHeadTilt {get; set; } = true;
+    public bool EnableHeadBounce {get; set; } = true;
     public bool EnableWalk {get; set; } = true;
     public bool EnableRotation {get; set; } = true;
 
@@ -318,7 +319,7 @@ public class FPMovement : MonoBehaviour
         Vector3 moveDelta = new Vector3(transform.position.x - oldPos.x, 0, transform.position.z - oldPos.z);
         walkCycleIndex += moveDelta.magnitude;
 
-        if (!player.IsMissing && !inAir)  FPCamera.UpdateCameraWalkingAnimation(walkCycleIndex, walkStepDistance);
+        if (!player.IsMissing && !inAir && EnableHeadBounce)  FPCamera.UpdateCameraWalkingAnimation(walkCycleIndex, walkStepDistance);
         if (EnableHeadTilt) FPCamera.UpdateCameraTiltAndBounds();
         
         if (inAir) return;

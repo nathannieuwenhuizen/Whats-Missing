@@ -29,7 +29,7 @@ using UnityEngine.UI;
     public static float SFX 
     {
         get {
-            float val = PlayerPrefs.GetFloat("SFX", 1);
+            float val = PlayerPrefs.GetFloat("SFX", .9f);
             return val;
         }
         set {
@@ -39,7 +39,7 @@ using UnityEngine.UI;
     public static float MUSIC 
     {
         get {
-            float val = PlayerPrefs.GetFloat("Music", .5f);
+            float val = PlayerPrefs.GetFloat("Music", .9f);
             return val;
         }
         set {

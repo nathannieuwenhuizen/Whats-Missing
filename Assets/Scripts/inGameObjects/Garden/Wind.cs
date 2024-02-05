@@ -37,7 +37,9 @@ public class Wind : Property
         windParticles.emissionRate = 200f;
 
         if (windAudio == null) windAudio = AudioHandler.Instance.PlaySound(SFXFiles.wind, windVolume, 1f, true);
-        // windAudio.Play();
+        windAudio.Play();
+        windAudio.Volume = windVolume;
+
 
         IsEnlarged = true;
         StartCoroutine(ApplyWindForce());
@@ -47,6 +49,10 @@ public class Wind : Property
     {
         yield return AudioHandler.Instance.FadeVolume(windAudio, 0, windVolume, animationDuration);
         yield return base.AnimateEnlarging();
+    }
+    public override void OnRoomEnter()
+    {
+        base.OnRoomEnter();
     }
 
     public override void OnEnlargeRevert()
@@ -65,8 +71,8 @@ public class Wind : Property
     public override void OnEnlargeRevertFinish()
     {
         Debug.Log("wind revert finish");
-        // windAudio.Volume = 0;
-        windAudio.Stop(true);
+        windAudio.Volume = 0;
+        // windAudio.Stop(true);
         
         // AudioHandler.Instance?.Stop3DSound(windAudio);
         // AudioHandler.Instance?.StopSound(SFXFiles.wind);
@@ -91,6 +97,9 @@ public class Wind : Property
             }
             yield return new WaitForEndOfFrame();
         }
+    }
+    private void Ondestroy() {
+        windAudio.Stop(true);
     }
 
     private void Reset() {

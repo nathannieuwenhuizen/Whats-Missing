@@ -337,7 +337,6 @@ public class MirrorCanvas : MonoBehaviour
                 letter.Deselect(true);
                 letter.PreClickSelected = false;
             } else {
-                Debug.Log("bug happening?");
                 AddLetterToAnswer(letter, passedLetterIndex);
             }
 
