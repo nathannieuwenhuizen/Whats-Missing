@@ -62,7 +62,7 @@ public class Menu : MonoBehaviour
         StartCoroutine(DelayMenuShow());
 
         //behind the scenes
-        if (CreditsRoller.FROM_CREDIT_SCREEN == true && PlayerData.BEHIND_THE_SCENES_UNLOCKED == false || true) {
+        if (CreditsRoller.FROM_CREDIT_SCREEN == true && PlayerData.BEHIND_THE_SCENES_UNLOCKED == false) {
             PlayerData.BEHIND_THE_SCENES_UNLOCKED = true;
             behindThescenesMessage.ShowAnimation(true);
              ControllerCheck.SelectUIGameObject(behindThescenesConfirmButton.gameObject, () => { 

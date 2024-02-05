@@ -16,6 +16,8 @@ public class TutorialIndicator : MonoBehaviour
     [SerializeField]
     private GameObject spacebarUI;
     [SerializeField]
+    private GameObject gravityUI;
+    [SerializeField]
     private GameObject shiftUI;
 
     [SerializeField]
@@ -28,6 +30,7 @@ public class TutorialIndicator : MonoBehaviour
     private bool moved = false;
     private bool hasJumped = false;
     private bool hasShifted = false;
+    private bool hasGravityJumped = false;
 
     private Coroutine fadeCoroutine;
 
@@ -44,6 +47,7 @@ public class TutorialIndicator : MonoBehaviour
         AreaTextMeshFader.onMirrorTutorialShow += StartWaitingMirrorComplete;
         Floor.OnFloorMissing += StartWaitingForJump;
         Letter.OnLetterClickAction += EnableClick;
+        FPMovement.OnFloating += StartWaitingForGravityJump;
         
         Room.OnRoomComplete += HideTutorial;
         Room.OnRoomLeaving += HideTutorial;
@@ -68,9 +72,7 @@ public class TutorialIndicator : MonoBehaviour
     #region move
     private void EnableMove(Vector2 delta) {
         if (delta.magnitude != 0)
-        {
             moved = true;
-        }
     }
     public IEnumerator WaitForMove() {
         // moved = false;
@@ -126,6 +128,27 @@ public class TutorialIndicator : MonoBehaviour
         if (!hasJumped) {
             ShowTutorial(spacebarUI);
             while (!hasJumped) {
+                yield return new WaitForEndOfFrame();
+            }
+            HideTutorial();
+        }
+    }
+    #endregion
+    #region  gravity jump
+    private void EnableGravity() {
+        hasGravityJumped = true;
+    }
+
+    public void StartWaitingForGravityJump() {
+        if (hasGravityJumped) return;
+        FPMovement.OnFloatDownJump += EnableGravity;
+        StartCoroutine(WaitForGravityJump());
+    }
+    public IEnumerator WaitForGravityJump() {
+        yield return new WaitForSeconds(2f);
+        if (!hasGravityJumped) {
+            ShowTutorial(gravityUI);
+            while (!hasGravityJumped) {
                 yield return new WaitForEndOfFrame();
             }
             HideTutorial();

@@ -11,6 +11,13 @@ using UnityEngine;
 public class FPMovement : MonoBehaviour
 {
 
+    public delegate void FloatEvent();
+
+    private bool onFirstFloat = true;
+
+    public static FloatEvent OnFloating;
+    public static FloatEvent OnFloatDownJump;
+
     public FPCamera FPCamera {
         get { 
             return player.FPCamera;
@@ -106,7 +113,7 @@ public class FPMovement : MonoBehaviour
             if (inAir == value) return;
             inAir = value; 
             player.CharacterAnimationPlayer.SetBool("inAir", inAir);
-            if (value) {
+            if (value && rb.useGravity) {
                 if (windCoroutine != null) StopCoroutine(windCoroutine);
                 windCoroutine = StartCoroutine(MakeWindNoices());
             }
@@ -165,7 +172,10 @@ public class FPMovement : MonoBehaviour
 
         if (rb.useGravity == false ) {
             //negative jump at gravity is missing
-            if (rb.velocity.y >= .1f) rb.velocity = new Vector3(rb.velocity.x, -jumpForce, rb.velocity.z);
+            if (rb.velocity.y >= .1f) {
+                rb.velocity = new Vector3(rb.velocity.x, -jumpForce, rb.velocity.z);
+                OnFloatDownJump?.Invoke();
+            }
             else rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
             return;
         }
@@ -176,7 +186,9 @@ public class FPMovement : MonoBehaviour
         AudioHandler.Instance?.PlaySound(SFXFiles.player_jump, .1f);
         if (GLOBAL_GRAVITY < 0) {
             rb.velocity = new Vector3(rb.velocity.x, jumpForce * (WaterArea.IN_WATER ? 1.25f : 1f) , rb.velocity.z);
-        } else rb.velocity = new Vector3(rb.velocity.x, -jumpForce * (WaterArea.IN_WATER ? 1.25f : 1f), rb.velocity.z);
+        } else {
+            rb.velocity = new Vector3(rb.velocity.x, -jumpForce * (WaterArea.IN_WATER ? 1.25f : 1f), rb.velocity.z);
+        } 
 
 
     }
@@ -267,6 +279,11 @@ public class FPMovement : MonoBehaviour
         InAir = !IsOnFloor();
         FPCamera.UpdateRotation();
         oldPos = transform.position;
+
+        if (inAir && !rb.useGravity && player.Room.Area.AreaIndex == 0 && onFirstFloat) {
+            onFirstFloat = false;
+            OnFloating?.Invoke();
+        }
     }
 
     ///<summary>
@@ -413,7 +430,7 @@ public class FPMovement : MonoBehaviour
     private void OnCollisionExit(Collision other) {
         if (IsOnFloor() == false) {
             InAir = true;
-            StartCoroutine(MakeWindNoices());
+            if (rb.useGravity) StartCoroutine(MakeWindNoices());
 
         }
     }
