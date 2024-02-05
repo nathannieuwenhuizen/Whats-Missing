@@ -13,7 +13,7 @@ public class PaintingButton : InteractabelObject
         painting.Interact();
     }
     private void Reset() {
-        Word = "appel";
+        Word = "apple";
     }
 
 }

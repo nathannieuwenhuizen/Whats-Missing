@@ -41,8 +41,8 @@ namespace Boss {
             DialoguePlayer.Instance.PlayLine(BossLines.GetShardKickLine(), true, SFXFiles.boss_general_talking);
             AttachMirrorShardToBoss();
             yield return new WaitForSeconds(4f);
-            OnBossCutsceneTargetUpdate?.Invoke(Boss.Eye.transform, new Vector2(0, 4f), 1f);
             yield return new WaitForSeconds(.5f);
+            OnBossCutsceneTargetUpdate?.Invoke(Boss.Eye.transform, new Vector2(0, 4f), 1f);
             DetachMirrorShard(); 
             yield return new WaitForSeconds(1f);
             DialoguePlayer.Instance.PlayLine(BossLines.Laugh, true, SFXFiles.boss_laughing);

@@ -102,7 +102,7 @@ public class MirrorCanvas : MonoBehaviour
         GetComponent<GraphicRaycaster>().enabled = true;// val;
         canvasGroup.alpha = val ? 1 : .8f;
         foreach(Letter letter in Letters) {
-            letter.Interactable = val && !letter.GreyedOut;
+            letter.Interactable = (val && !letter.GreyedOut) || letter.Dragged();
         }
         foreach(Letter letter in SelectedLetters) {
             letter.Interactable = val;
@@ -248,6 +248,9 @@ public class MirrorCanvas : MonoBehaviour
     /// Calculates in which row and collomn indax the letter should be spawned in
     ///</summary>
     public Vector3 GetLetterSpawnPosBasedOnIndex(int index, int length) {
+        if (length > 8) containerColloms = Mathf.CeilToInt((float)length / 2f);
+        else containerColloms = length;
+
         //last row
         int y = Mathf.FloorToInt((float)index / (float)containerColloms);
 
@@ -258,15 +261,21 @@ public class MirrorCanvas : MonoBehaviour
             //toprows without the need to center
             x = Mathf.FloorToInt((float)index % (float)containerColloms);
         }
-        return GetLetterSpawnPosition(x,y);
+        return GetLetterSpawnPosition(x,y,length);
     }
 
     ///<summary>
     /// Gets the position of the indexes.
     ///</summary>
-    private Vector3 GetLetterSpawnPosition(int xIndex, int yIndex) {
+    private Vector3 GetLetterSpawnPosition(float xIndex, int yIndex, int length) {
 
         Vector3 result = new Vector3(0,0,0);
+        if (yIndex != 0) {
+            xIndex += .5f;
+        }
+        if (length > 8 && length%2 == 0) {
+            xIndex -= .5f;
+        }
 
         float width = letterContainer.rect.width;
         float height = letterContainer.rect.height;
@@ -375,6 +384,13 @@ public class MirrorCanvas : MonoBehaviour
 
         if (passed == false && passedLetterIndex == 0) {
             passedLetterIndex = SelectedLetters.Count;
+        }
+        if (!IsFocused) {
+            LetterClicked(draggedLetter, false);
+            passedLetterIndex = -1;
+            // LetterClicked(draggedLetter, false);
+            MirrorButton.BUTTON_DRAGGED = false;
+            draggedLetter = null;
         }
     }
 

@@ -260,7 +260,7 @@ public class Letter : MirrorButton, IPointerDownHandler
         float angle = 45f;
         delta *= 2f;
         transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler( -Mathf.Clamp( delta.y, -angle, angle), Mathf.Clamp( delta.x, -angle, angle), 0), Time.deltaTime * 10f);
-        Debug.Log("drag delta " + delta);
+        // Debug.Log("drag delta " + delta);
     }
     #endregion
 

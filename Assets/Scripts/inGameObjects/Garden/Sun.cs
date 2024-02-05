@@ -65,12 +65,13 @@ public class Sun : RoomObject
 
         room.Animated = false;
         Mirror sunMirror = room.Mirrors.Find((mirror) => mirror.isQuestion == true );
-        Debug.Log(sunMirror);
         sunMirror.MirrorCanvas.DeselectLetters();
         sunMirror.Confirm();
-        // room.RemoveMirrorChange(sunMirror);
+        StartCoroutine(DelayRoomAnimation());
+    }
+    private IEnumerator DelayRoomAnimation() {
+        yield return new WaitForSeconds(1f);
         room.Animated = true;
-
     }
 
     public override void OnRoomEnter()
