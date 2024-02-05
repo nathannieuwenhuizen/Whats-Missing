@@ -8,28 +8,28 @@ public static class BossLines
 
 
     //intro
-    public static Line Intro_1 = new Line() {
-        text = "I'll make sure myself that you're done for", 
-        lineEffect = LineEffect.none, duration = 2f};
+    //public static Line Intro_1 = new Line() {
+       // text = "I'll make sure myself that you're done for", 
+       // lineEffect = LineEffect.none, duration = 2f};//
 
     public static Line Intro_2 = new Line() {
-        text = "Did you really thought you could prevent all of this? Starting over? ", 
-        lineEffect = LineEffect.none, duration = 3f};
+        text = "Did you really thought you could prevent all of this? ", 
+        lineEffect = LineEffect.none, duration = 3.5f};
     public static Line Intro_3 = new Line() {
-        text = "Now it is time for you to die. Time to join her too, Gregory", 
-        lineEffect = LineEffect.none, duration = 3f};
+        text = "Now it is time for you to join her, Gregory. Die!", 
+        lineEffect = LineEffect.none, duration = 3.5f}; 
     
     public static Line Intro_shield = new Line() {
-        text = "It seems like you're protected", 
+        text = "Hah, so you're protected?", 
         lineEffect = LineEffect.none, duration = 3f};
     
     public static Line Intro_shield_2 = new Line() {
-        text = "No worries, that shield won't hold for long!", 
-        lineEffect = LineEffect.none, duration = 4f};
+        text = "Don't worry, that shield won't hold for long~", 
+        lineEffect = LineEffect.none, duration = 3.5f};
     
     //die
     public static Line Boss_Die = new Line() {
-        text = "AAAAAAAAAAAAAAAAAAAAAAAAAH! THIS CAN'T... THIS CAN'T BE HAPPINING! YOU'RE SUPPOSED TO STAY STUCK WITH ME FOREVER!", 
+        text = "AAAAAAAAAAAAAAAAAAAAAAAAAH! THIS CAN'T... THIS CAN'T BE HAPPINING! YOU'RE SUPPOSED TO STAY WITH ME FOREVER!", 
         lineEffect = LineEffect.shake, duration = 6f};
 
 

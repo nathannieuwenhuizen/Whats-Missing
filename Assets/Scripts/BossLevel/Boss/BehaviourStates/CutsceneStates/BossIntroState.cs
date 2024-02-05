@@ -37,13 +37,13 @@ namespace Boss {
         }
 
         public IEnumerator Talking() {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             DialoguePlayer.Instance.PlayLine(BossLines.Intro_2, true, SFXFiles.boss_general_talking);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(4f);
             DialoguePlayer.Instance.PlayLine(BossLines.Intro_3, true, SFXFiles.boss_general_talking);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(7f);
             DialoguePlayer.Instance.PlayLine(BossLines.Intro_shield, true, SFXFiles.boss_general_talking);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(3f);
             DialoguePlayer.Instance.PlayLine(BossLines.Intro_shield_2, true, SFXFiles.boss_general_talking);
         }
 
@@ -58,7 +58,7 @@ namespace Boss {
             bossAI.StartCoroutine(Exitting());
         }
         public IEnumerator Exitting() {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(6f);
             base.Exit();
         }
     }
