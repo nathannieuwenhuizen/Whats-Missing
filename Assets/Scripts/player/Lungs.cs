@@ -151,10 +151,10 @@ public class Lungs : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         if (burnIndex > BurnDuration() ) {
-            if (player.Room.Area.AreaIndex == 1) {
-                Debug.Log("let it burn achievement");
-                SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.LetItBurn);
-            }
+            // if (player.Room.Area.AreaIndex == 1) {
+            //     Debug.Log("let it burn achievement");
+            // }
+            SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.LetItBurn);
             player.Die(true);
             AudioHandler.Instance.PlaySound(SFXFiles.choke_die, .5f, .8f);
         }

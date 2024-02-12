@@ -8,6 +8,8 @@ public class Gravity : Property
 
 
     public static OnPropertyToggle onGravityMissing;
+    public static OnPropertyToggle onGravityAppearing;
+    public static OnPropertyToggle onGravityMissingInThirdArea;
 
     [SerializeField]
     private bool movePlayerUpwardOnMissing = false;
@@ -32,6 +34,9 @@ public class Gravity : Property
     public override void OnMissingFinish()
     {
         onGravityMissing?.Invoke();
+        if (Room.Area.AreaIndex == 2) {
+            onGravityMissingInThirdArea?.Invoke();
+        }
         base.OnMissingFinish();
         foreach(Rigidbody rb in Room.GetAllObjectsInRoom<Rigidbody>()) {
             rb.AddForce(Extensions.RandomVector(1f));
@@ -68,6 +73,8 @@ public class Gravity : Property
 
     public override void OnAppearingFinish()
     {
+        onGravityAppearing?.Invoke();
+
         base.OnAppearingFinish();
         foreach(Rigidbody rb in Room.GetAllObjectsInRoom<Rigidbody>()) {
             rb.useGravity = true;

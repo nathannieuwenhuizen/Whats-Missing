@@ -48,6 +48,7 @@ public class TutorialIndicator : MonoBehaviour
         Floor.OnFloorMissing += StartWaitingForJump;
         Letter.OnLetterClickAction += EnableClick;
         FPMovement.OnFloating += StartWaitingForGravityJump;
+        Gravity.onGravityMissingInThirdArea += StartWaitingForGravityJump;
         
         Room.OnRoomComplete += HideTutorial;
         Room.OnRoomLeaving += HideTutorial;

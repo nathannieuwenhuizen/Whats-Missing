@@ -12,9 +12,14 @@ public class Rain : RoomObject
 
     [SerializeField]
     private ParticleSystem ps;
+    private ParticleSystem.MainModule psMain;
 
     private float intensity = 0f;
 
+    protected override void Awake() {
+        base.Awake();
+        psMain = ps.main;
+    }
     public override void OnRoomEnter()
     {
         base.OnRoomEnter();
@@ -51,6 +56,28 @@ public class Rain : RoomObject
             }, .5f));
             StartCoroutine(DelayPause());
         }
+    }
+
+    private void OnEnable() {
+        Gravity.onGravityMissing += OnGravityMissing;
+        Gravity.onGravityAppearing += OnGravityAppearing;
+    }
+    private void OnDisable() {
+        Gravity.onGravityMissing -= OnGravityMissing;
+        Gravity.onGravityAppearing += OnGravityAppearing;
+    }
+
+    private void OnGravityMissing() {
+        psMain.simulationSpeed = 0.01f;
+        // ps.Stop();
+        // ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = ps.velocityOverLifetime;
+        // velocityOverLifetime.speedModifier = -.01f;
+    }
+    private void OnGravityAppearing() {
+        // ps.Play();
+        // ParticleSystem.VelocityOverLifetimeModule velocityOverLifetime = ps.velocityOverLifetime;
+        // velocityOverLifetime.speedModifier = 1f;
+
     }
 
     public IEnumerator DelayPause() {

@@ -6,7 +6,7 @@ namespace Boss {
     public class HugeAnticipationState : BaseBossState, IState
     {
         public Coroutine animationCoroutine;
-        public float totalDuration = 30f;
+        public float totalDuration = 1f;
         private bool timeStops = false;
 
         public override void DrawDebug()
@@ -58,6 +58,7 @@ namespace Boss {
         }
 
         public IEnumerator KillPlayer() {
+            Debug.Log("kill player");
             DoAttackAnimation();
             yield return new WaitForSeconds(1f);
             if (!timeStops) bossAI.Boss.Player.Die(false);

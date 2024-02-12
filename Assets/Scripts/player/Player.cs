@@ -111,7 +111,7 @@ public class Player : RoomObject
     }
 
     public Player() {
-        largeScale = 2f;
+        largeScale = 1.75f;
         normalScale = 1f;
         shrinkScale = .15f;
         animationDuration  = 1f;
