@@ -47,6 +47,8 @@ public class SettingPanel : AnimatedPopup
     private Toggle timer;
     [SerializeField]
     private Toggle enableKeyboardInput;
+    [SerializeField]
+    private Toggle fullScreen;
 
     [Header("Controls")]
 
@@ -110,6 +112,9 @@ public class SettingPanel : AnimatedPopup
         motionBlur.onValueChanged.AddListener(delegate{ settings.cameraSettings.Motion_blur_enabled = motionBlur.isOn;});
         timer.onValueChanged.AddListener(delegate{ settings.cameraSettings.Timer_Enabled = timer.isOn;});
         enableKeyboardInput.onValueChanged.AddListener(delegate{ settings.controlSettings.Enable_Keyboard_Input = enableKeyboardInput.isOn;});
+        fullScreen.onValueChanged.AddListener(delegate{
+            Screen.fullScreen = !Screen.fullScreen;
+        });
     }
 
     ///<summary>
@@ -123,6 +128,7 @@ public class SettingPanel : AnimatedPopup
         motionBlur.isOn = settings.cameraSettings.Motion_blur_enabled;
         timer.isOn = settings.cameraSettings.Timer_Enabled;
         enableKeyboardInput.isOn = settings.controlSettings.Enable_Keyboard_Input;
+        fullScreen.isOn = Screen.fullScreen;
     }
     
     public void Save() {

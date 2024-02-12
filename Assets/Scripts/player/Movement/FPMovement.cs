@@ -413,7 +413,9 @@ public class FPMovement : MonoBehaviour
                 closest = hit[i];
             }
         }
-        return closest.collider.gameObject;
+        if (hit.Length > 0)
+            return closest.collider.gameObject;
+        else return null;
     }
 
 

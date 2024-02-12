@@ -45,6 +45,7 @@ public static class SFXFiles {
     public static string book = "event:/SFX/Environment/Planetarium/Book";
     public static string teacup_falling = "event:/SFX/Environment/Planetarium/Teacup_falling";
     public static string cat_statue = "event:/SFX/Environment/Planetarium/Cat_statue";
+    public static string globe = "event:/SFX/Environment/Planetarium/Globe";
     
     public static string object_burning = "event:/SFX/Environment/Planetarium/Fireplace_burning";
 

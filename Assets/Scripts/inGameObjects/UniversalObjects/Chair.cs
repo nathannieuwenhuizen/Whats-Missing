@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent (typeof(Rigidbody))]
-public class Chair : RoomObject
+public class Chair : ParentRoomObject
 {
     private Rigidbody rb;
 
