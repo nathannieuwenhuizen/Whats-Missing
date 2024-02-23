@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="MixerReturn" id="{bf885e36-c888-4c6e-861c-f0abac2e9656}">
+		<property name="name">
+			<value>PitchShift</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{0b8b24bc-4522-41aa-8943-39fd115403d6}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{0ca7f618-748e-48f6-a639-6499b6b33ba9}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{674fbf1a-87b6-4ffa-812e-820a334eb988}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{0b8b24bc-4522-41aa-8943-39fd115403d6}">
+		<relationship name="effects">
+			<destination>{0478363d-4b0f-472d-9cbf-3fdf377c5f0c}</destination>
+			<destination>{6ef43931-562a-45d5-bdfb-070a929588b1}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{0ca7f618-748e-48f6-a639-6499b6b33ba9}" />
+	<object class="PitchShifterEffect" id="{0478363d-4b0f-472d-9cbf-3fdf377c5f0c}">
+		<property name="fftSize">
+			<value>2640</value>
+		</property>
+		<property name="overlap">
+			<value>21.2000008</value>
+		</property>
+		<property name="maxChannels">
+			<value>3.4000001</value>
+		</property>
+	</object>
+	<object class="MixerBusFader" id="{6ef43931-562a-45d5-bdfb-070a929588b1}" />
+</objects>
