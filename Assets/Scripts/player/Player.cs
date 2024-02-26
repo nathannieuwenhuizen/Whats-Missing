@@ -106,6 +106,7 @@ public class Player : RoomObject
     {
         movement = GetComponent<FPMovement>();
         small_collider.enabled = false;
+        colliderAlwaysEnabled = true;
         ApplyCameraSettings(Settings.GetSettings());
         characterAnimationPlayer = new CharacterAnimationPlayer(this, idleAnimator.animator, idleAnimator.cameraView, IKPass);
     }

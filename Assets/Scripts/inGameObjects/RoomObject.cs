@@ -7,6 +7,7 @@ using UnityEngine;
 ///</summary>
 public class RoomObject : RoomEntity
 {
+    protected bool colliderAlwaysEnabled = false;
     public static int PARTICLES_ACTIVE = 0;
     ///<summary>
     /// To make sure the game performance wont suffer because too many objects are animating
@@ -87,7 +88,7 @@ public class RoomObject : RoomEntity
                 if (currentChange.changeCausation == ChangeCausation.potion)
                     AudioHandler.Instance?.Play3DSound(SFXFiles.object_disappear, transform, 1f);
                 yield return new WaitForSeconds(animationDuration * .5f);
-                gameObject.SetAllComponentsActive<Collider>(false, null);
+                if (!colliderAlwaysEnabled) gameObject.SetAllComponentsActive<Collider>(false, null);
                 yield return new WaitForSeconds(animationDuration * .5f);
 
             break;
@@ -266,6 +267,7 @@ public class RoomObject : RoomEntity
         CurrentScale = normalScale;
     }
     public virtual void OnDestroy() {
+        Debug.Log("room: " + Room != null);
         if (Room != null) Room.allObjects?.Remove(this);
 
         if (InSpace) EventSender.SendMissingEvent();

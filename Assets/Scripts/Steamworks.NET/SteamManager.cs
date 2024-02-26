@@ -30,7 +30,8 @@ public class SteamManager : MonoBehaviour {
 	protected static SteamManager Instance {
 		get {
 			if (s_instance == null) {
-				return new GameObject("SteamManager").AddComponent<SteamManager>();
+				GameObject go = new GameObject("SteamManager");
+				return go.AddComponent<SteamManager>();
 			}
 			else {
 				return s_instance;

@@ -446,6 +446,7 @@ public class Area : MonoBehaviour
     ///</summary>
     public void EndOfArea() {
         SteamAchievement achievementID = areaIndex == 0 ? SteamAchievement.Bargaining : (areaIndex == 1 ? SteamAchievement.Denial : SteamAchievement.Depression);
+        Debug.Log("end of area: " + achievementID);
         SteamAchievementHandler.Instance?.SetAchievement(achievementID);
         if (isDemo) {
             OnEndOfDemo?.Invoke(areaIndex, false);

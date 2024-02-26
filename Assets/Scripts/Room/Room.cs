@@ -113,7 +113,7 @@ public class Room : MonoBehaviour
     public bool Animated {
         set { 
             animated = value;
-            foreach (IChangable obj in allObjects) obj.Animated = value;
+            foreach (IChangable obj in allObjects) if (obj != null) obj.Animated = value;
         }
         get => animated;
     }
@@ -203,10 +203,11 @@ public class Room : MonoBehaviour
 
         foreach (IChangable obj in allObjects)
         {
-            if (obj.Word == change.Word || obj.AlternativeWords.Contains(change.Word) && obj.Transform.gameObject != null) {
-                foundObjects.Add(obj);
-                result = true;
-            }
+            if (obj.Transform != null)
+                if (obj.Word == change.Word || obj.AlternativeWords.Contains(change.Word) && obj.Transform.gameObject != null) {
+                    foundObjects.Add(obj);
+                    result = true;
+                }
         }
 
         foreach (IChangable obj in foundObjects)

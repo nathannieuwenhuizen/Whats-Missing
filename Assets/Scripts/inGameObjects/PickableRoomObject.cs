@@ -289,7 +289,9 @@ public class PickableRoomObject : InteractabelObject, IPickable
         ShowDisovleParticles(true);
         AudioHandler.Instance?.Play3DSound(SFXFiles.object_burning, transform);
         yield return new WaitForSeconds(3f);
+        OnDestroy();
         Destroy(gameObject);
+
 
     } 
 
