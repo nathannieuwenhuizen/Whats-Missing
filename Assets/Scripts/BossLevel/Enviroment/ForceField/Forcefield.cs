@@ -111,7 +111,7 @@ namespace ForcefieldDemo
             get { return isOn;}
             set { 
                 isOn = value; 
-                Debug.Log("on deactivating shield" + isOn);
+                // Debug.Log("on deactivating shield" + isOn);
 
                 ToggleColliders(true); // umst be true during animation
                 if (navMeshObstacle) navMeshObstacle.enabled = value;

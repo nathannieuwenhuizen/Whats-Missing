@@ -10,6 +10,7 @@ public class DestroyTrigger : MonoBehaviour, IRoomObject
     private Rigidbody rb;
 
     public bool InSpace { get; set; }
+    private bool playerDied = false;
 
     private void Awake() {
         coll = GetComponent<Collider>();
@@ -34,9 +35,11 @@ public class DestroyTrigger : MonoBehaviour, IRoomObject
         if (changable != null) {
             Player player = changable.Transform.GetComponent<Player>();
             if (player != null) {
-                coll.isTrigger = true;
-                StartCoroutine(DisableTrigger());
-                player.Die(false);
+                if (!playerDied) {
+                    playerDied = true;
+                    StartCoroutine(DisableTrigger());
+                    player.Die(false);
+                }
             } else {
                 Destroy(changable.Transform.gameObject);
             }
@@ -45,6 +48,6 @@ public class DestroyTrigger : MonoBehaviour, IRoomObject
 
     public IEnumerator DisableTrigger() {
         yield return new WaitForSeconds(5f);
-        coll.isTrigger = false;
+        playerDied = false;
     }
 }

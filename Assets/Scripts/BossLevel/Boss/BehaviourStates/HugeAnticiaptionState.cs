@@ -6,7 +6,7 @@ namespace Boss {
     public class HugeAnticipationState : BaseBossState, IState
     {
         public Coroutine animationCoroutine;
-        public float totalDuration = 1f;
+        public float totalDuration = 25f;
         private bool timeStops = false;
 
         public override void DrawDebug()

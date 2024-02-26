@@ -26,7 +26,7 @@ public class Portal : RenderTexturePlane, IPortal
         if (connectedPortal != null) base.LateUpdate();
 
         if (!isActive) return;
-        if (!InView) return;
+        if (!InView && !InsidePortal) return;
         // Debug.Log("portal update" + player != null);
         
         if (InsidePortal && player != null) {

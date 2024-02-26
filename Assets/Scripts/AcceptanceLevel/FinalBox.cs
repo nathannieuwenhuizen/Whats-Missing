@@ -63,7 +63,7 @@ public class FinalBox : InteractabelObject
         }
     }
     private void Start() {
-        InteractableDistance = 4f;
+        InteractableDistance = 2f;
     }
     private void Update() {
         if (Interactable) Focused = true;

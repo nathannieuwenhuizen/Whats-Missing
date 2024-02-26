@@ -72,7 +72,7 @@ public class HintStopwatch
         if (timerForSecondHint) return;
         timerForSecondHint = true;
         Duration = _duration;
-        Debug.Log("timer 2nd start" + duration);
+        // Debug.Log("timer 2nd start" + duration);
         Reset();
 
     }

@@ -8,7 +8,7 @@ using UnityEngine.Rendering.Universal;
 ///</summary>
 public class RenderTexturePlane : MonoBehaviour
 {
-
+    public bool backfaced = false;
     public delegate void OnTextureUpdate(RenderTexturePlane plane);
     public static event OnTextureUpdate OnTextureUpdating;
     // referenses
@@ -164,6 +164,12 @@ public class RenderTexturePlane : MonoBehaviour
             OnValidate();
         }
 
+        Vector3 forward = transform.up;
+        Vector3 toOther = (mainCamera.transform.position - transform.position).normalized;
+        // Debug.Log("dot: " + Vector3.Dot(forward, toOther));
+        if ((backfaced && Vector3.Dot(forward, toOther) > 0) || (!backfaced && Vector3.Dot(forward, toOther) < 0))
+            return false;
+        
         Renderer renderer = reflectionPlane.GetComponent<MeshRenderer>();
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
         if(GeometryUtility.TestPlanesAABB(planes, renderer.bounds)){
@@ -199,6 +205,7 @@ public class RenderTexturePlane : MonoBehaviour
             reflectionCamera.targetTexture = output_texture_high;
         }
     }
+
 
 
 }

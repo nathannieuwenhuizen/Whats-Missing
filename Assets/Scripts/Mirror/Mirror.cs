@@ -155,7 +155,7 @@ public class Mirror: MonoBehaviour, IRoomObject
     }
 
     public void ConfirmationFailed() {
-        Debug.Log("failed audio: " + room.Animated + " | " +  room.ChangeLineAnimated  + " | " +   canPlayAudio);
+        // Debug.Log("failed audio: " + room.Animated + " | " +  room.ChangeLineAnimated  + " | " +   canPlayAudio);
         if (room.Animated && room.ChangeLineAnimated && canPlayAudio)
         {
             AudioHandler.Instance?.PlaySound(SFXFiles.mirror_false);

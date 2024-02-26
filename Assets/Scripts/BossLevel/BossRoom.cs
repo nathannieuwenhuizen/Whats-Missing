@@ -86,7 +86,7 @@ public class BossRoom : Room
     }
 
     public void StartHintTimer(BossMirror b) {
-        Debug.Log(" start hint timer!");
+        // Debug.Log(" start hint timer!");
         hintStopwatch.timerForSecondHint = false;
         hintStopwatch.StartTimerSecondHint("", 5);
     }

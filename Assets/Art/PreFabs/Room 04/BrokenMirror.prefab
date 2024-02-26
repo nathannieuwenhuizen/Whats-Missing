@@ -86,6 +86,8 @@ MonoBehaviour:
   - shards
   missingChangeEffect: 1
   flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 0
   rigidBodyInfo:
     Drag: 0
     AngularDrag: 0.05
@@ -95,6 +97,8 @@ MonoBehaviour:
     UseGravity: 1
     IsKinematic: 1
     tag: 
+  animated: 1
+  invokeBossReaction: 1
   letterCoords:
   - letterValue: m
     letterDelta: {x: 1.83, y: 0, z: -0.5}
@@ -102,9 +106,21 @@ MonoBehaviour:
   - letterValue: e
     letterDelta: {x: 0.79, y: 0, z: -0.5}
     letter: {fileID: 0}
+  positionInfo:
+    fallPosition: {fileID: 0}
+    setAsParent: 0
+    useGravityAfterFall: 1
+    visibleAfterFalling: 1
+  fallCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   meshRenderer: {fileID: 427352512922786872}
   planarReflection: {fileID: 0}
   shineParticle: {fileID: 3038634937109536968}
+  mode: 1
 --- !u!54 &3998669450562667571
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -133,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837b417e463ff854cbd2efeba19fa022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backfaced: 1
   mainCamera: {fileID: 0}
   reflectionCamera: {fileID: 402560583575372060}
   reflectionPlane: {fileID: 644648437116169242}
@@ -190,6 +207,8 @@ MonoBehaviour:
   - shards
   missingChangeEffect: 1
   flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 0
   rigidBodyInfo:
     Drag: 0
     AngularDrag: 0.05
@@ -199,6 +218,8 @@ MonoBehaviour:
     UseGravity: 1
     IsKinematic: 1
     tag: 
+  animated: 1
+  invokeBossReaction: 1
   letterCoords:
   - letterValue: g
     letterDelta: {x: -2.47, y: 0, z: -1.5}
@@ -209,9 +230,21 @@ MonoBehaviour:
   - letterValue: y
     letterDelta: {x: -3.03, y: 0, z: -0.5}
     letter: {fileID: 0}
+  positionInfo:
+    fallPosition: {fileID: 0}
+    setAsParent: 0
+    useGravityAfterFall: 1
+    visibleAfterFalling: 1
+  fallCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   meshRenderer: {fileID: 1470073868437364496}
   planarReflection: {fileID: 0}
   shineParticle: {fileID: 3866475665581252935}
+  mode: 1
 --- !u!54 &6648817728549327064
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -240,6 +273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837b417e463ff854cbd2efeba19fa022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backfaced: 1
   mainCamera: {fileID: 0}
   reflectionCamera: {fileID: 3537595090133075822}
   reflectionPlane: {fileID: 8650266686886177183}
@@ -409,6 +443,8 @@ MonoBehaviour:
   - shards
   missingChangeEffect: 1
   flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 0
   rigidBodyInfo:
     Drag: 0
     AngularDrag: 0.05
@@ -418,10 +454,24 @@ MonoBehaviour:
     UseGravity: 1
     IsKinematic: 1
     tag: 
+  animated: 1
+  invokeBossReaction: 1
   letterCoords: []
+  positionInfo:
+    fallPosition: {fileID: 0}
+    setAsParent: 0
+    useGravityAfterFall: 1
+    visibleAfterFalling: 1
+  fallCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   meshRenderer: {fileID: 8248731949178212575}
   planarReflection: {fileID: 0}
   shineParticle: {fileID: 4470747545433523027}
+  mode: 1
 --- !u!54 &6245329361557225898
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -450,6 +500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837b417e463ff854cbd2efeba19fa022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backfaced: 1
   mainCamera: {fileID: 0}
   reflectionCamera: {fileID: 6902807252008778063}
   reflectionPlane: {fileID: 1371201432005493306}
@@ -839,6 +890,8 @@ MonoBehaviour:
   - shards
   missingChangeEffect: 1
   flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 0
   rigidBodyInfo:
     Drag: 0
     AngularDrag: 0.05
@@ -848,6 +901,8 @@ MonoBehaviour:
     UseGravity: 1
     IsKinematic: 1
     tag: 
+  animated: 1
+  invokeBossReaction: 1
   letterCoords:
   - letterValue: a
     letterDelta: {x: -0.33, y: 0, z: -0.5}
@@ -864,9 +919,21 @@ MonoBehaviour:
   - letterValue: t
     letterDelta: {x: -1.36, y: 0, z: -1.5}
     letter: {fileID: 0}
+  positionInfo:
+    fallPosition: {fileID: 0}
+    setAsParent: 0
+    useGravityAfterFall: 1
+    visibleAfterFalling: 1
+  fallCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   meshRenderer: {fileID: 3539031087244594643}
   planarReflection: {fileID: 0}
   shineParticle: {fileID: 6098217863436795037}
+  mode: 1
 --- !u!54 &7254002727468427477
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -895,6 +962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837b417e463ff854cbd2efeba19fa022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backfaced: 1
   mainCamera: {fileID: 0}
   reflectionCamera: {fileID: 4467316094920107501}
   reflectionPlane: {fileID: 8643274907043624786}
@@ -1607,6 +1675,8 @@ MonoBehaviour:
   - shards
   missingChangeEffect: 1
   flippingAxis: 2
+  affectedByPotions: 1
+  flamable: 0
   rigidBodyInfo:
     Drag: 0
     AngularDrag: 0.05
@@ -1616,6 +1686,8 @@ MonoBehaviour:
     UseGravity: 1
     IsKinematic: 1
     tag: 
+  animated: 1
+  invokeBossReaction: 1
   letterCoords:
   - letterValue: s
     letterDelta: {x: 3.29, y: 0, z: -0.5}
@@ -1626,9 +1698,21 @@ MonoBehaviour:
   - letterValue: i
     letterDelta: {x: 2.51, y: 0, z: -2}
     letter: {fileID: 0}
+  positionInfo:
+    fallPosition: {fileID: 0}
+    setAsParent: 0
+    useGravityAfterFall: 1
+    visibleAfterFalling: 1
+  fallCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   meshRenderer: {fileID: 728927704677725319}
   planarReflection: {fileID: 0}
   shineParticle: {fileID: 7721297413986329561}
+  mode: 1
 --- !u!54 &8771919164397584163
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1657,6 +1741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 837b417e463ff854cbd2efeba19fa022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backfaced: 1
   mainCamera: {fileID: 0}
   reflectionCamera: {fileID: 8179978111983954903}
   reflectionPlane: {fileID: 6431316667874793673}

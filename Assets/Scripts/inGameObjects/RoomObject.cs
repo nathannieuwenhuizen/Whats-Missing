@@ -86,7 +86,10 @@ public class RoomObject : RoomEntity
                 ShowDisovleParticles();
                 if (currentChange.changeCausation == ChangeCausation.potion)
                     AudioHandler.Instance?.Play3DSound(SFXFiles.object_disappear, transform, 1f);
-                yield return new WaitForSeconds(animationDuration);
+                yield return new WaitForSeconds(animationDuration * .5f);
+                gameObject.SetAllComponentsActive<Collider>(false, null);
+                yield return new WaitForSeconds(animationDuration * .5f);
+
             break;
         }
         OnMissingFinish();
@@ -331,8 +334,8 @@ public class RoomObject : RoomEntity
         gameObject.SetAllComponentsActive<Rigidbody>(_active, null);
         gameObject.SetAllComponentsActive<ParticleSystem>(_active, null);
         gameObject.SetAllComponentsActive<Light>(_active, null);
-        
     }
+
 
     public Renderer GetObjectHeight() {
         if (GetComponent<Renderer>() != null) {

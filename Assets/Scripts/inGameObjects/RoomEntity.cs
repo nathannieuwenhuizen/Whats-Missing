@@ -87,6 +87,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
         }    
     }
     public void RemoveChange(IChange change) {
+        if (this == null) return;
         switch (change.ChangeType) {
             case ChangeType.missing:
                 OnAppearing();

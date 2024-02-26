@@ -107,7 +107,9 @@ namespace Boss {
 
         public void Interpolate(float i) {
             ps.emissionRate = Mathf.Lerp(startEmission, endEmmission, i);
-            if (ps.GetComponent<ParticleSystemRenderer>() != null)  ps.GetComponent<ParticleSystemRenderer>().trailMaterial.SetFloat("_SimulationSpeed", i);
+            if (ps.GetComponent<ParticleSystemRenderer>() != null)  
+                if (ps.GetComponent<ParticleSystemRenderer>().trailMaterial != null)  
+                    ps.GetComponent<ParticleSystemRenderer>().trailMaterial.SetFloat("_SimulationSpeed", i);
             // ps.transform.localScale = Vector3.Lerp(Vector3.one * startScale, Vector3.one * endScale, i);
         }
     }

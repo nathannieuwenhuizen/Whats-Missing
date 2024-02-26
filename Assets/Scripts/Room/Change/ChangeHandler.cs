@@ -200,7 +200,8 @@ public class ChangeHandler
         int index = roomChanges.FindIndex(x => x.changeCausation == ChangeCausation.potion && x.changeType == _changeType);
         Debug.Log("index = " + index + " | length = " + roomChanges.Count);
         if (index != -1) {
-            roomChanges[index].roomObject.RemoveChange(roomChanges[index]);
+            if (roomChanges[index].roomObject != null) 
+                roomChanges[index].roomObject.RemoveChange(roomChanges[index]);
             roomChanges.RemoveAt(index);
         }
     }

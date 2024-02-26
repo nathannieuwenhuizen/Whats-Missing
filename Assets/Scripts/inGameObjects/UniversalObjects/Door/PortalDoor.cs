@@ -63,6 +63,10 @@ public class PortalDoor : Door
         if (!locked) SetPortalState(true);
         
     }
+    public override void Interact() {
+        if (portal.InView) base.Interact();
+    }
+    
 
     public override void SetBezierPoints(Player player)
     {
