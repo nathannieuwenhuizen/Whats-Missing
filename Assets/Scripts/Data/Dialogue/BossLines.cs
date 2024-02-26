@@ -13,10 +13,10 @@ public static class BossLines
        // lineEffect = LineEffect.none, duration = 2f};//
 
     public static Line Intro_2 = new Line() {
-        text = "Did you really thought you could prevent all of this? ", 
+        text = "Did you really think you could prevent all of this?", 
         lineEffect = LineEffect.none, duration = 3.5f};
     public static Line Intro_3 = new Line() {
-        text = "Now it is time for you to join her, Gregory. Die!", 
+        text = "Now it's time for you to join her, Gregory. Die!", 
         lineEffect = LineEffect.none, duration = 3.5f}; 
     
     public static Line Intro_shield = new Line() {
@@ -24,12 +24,12 @@ public static class BossLines
         lineEffect = LineEffect.none, duration = 3f};
     
     public static Line Intro_shield_2 = new Line() {
-        text = "Don't worry, that shield won't hold for long~", 
+        text = "Don't worry, that shield won’t last for long~", 
         lineEffect = LineEffect.none, duration = 3.5f};
     
     //die
     public static Line Boss_Die = new Line() {
-        text = "AAAAAAAAAAAAAAAAAAAAAAAAAH! THIS CAN'T... THIS CAN'T BE HAPPINING! YOU'RE SUPPOSED TO STAY WITH ME FOREVER!", 
+        text = "AAAAAAAAAAAAAAAAAAAAAAAAAH! THIS CAN'T... THIS CAN'T BE HAPPENING! YOU'RE SUPPOSED TO STAY WITH ME FOREVER!", 
         lineEffect = LineEffect.shake, duration = 6f};
 
 
@@ -82,14 +82,14 @@ public static class BossLines
     public static Line Transforming = new Line() {text = "I'll squash you like a bug!", lineEffect = LineEffect.shake, duration = 2f};
     
     public static Line BeforeGrowth = new Line() {text = "ENOUGH!", lineEffect = LineEffect.shake, duration = 2f, delay = 1f};
-    public static Line AfterGrowth = new Line() {text = "Now I am strong enough to get you inside that stupid shield", 
+    public static Line AfterGrowth = new Line() {text = "Now I'm strong enough to get you inside that stupid shield", 
     lineEffect = LineEffect.none, duration = 4f};
 
     public static Line GetShardKickLine() {
         List<Line> Lines = new List<Line>() {
             new Line() {text = "Looking for this?", lineEffect = LineEffect.shake, duration = 2f},
             new Line() {text = "Try to get this one!", lineEffect = LineEffect.shake, duration = 2f},
-            new Line() {text = "Look what I have found!", lineEffect = LineEffect.shake, duration = 2f}
+            new Line() {text = "Look what I found!", lineEffect = LineEffect.shake, duration = 2f}
         };
         return Lines[Mathf.FloorToInt(Random.Range(0, Lines.Count))];
     }
@@ -115,6 +115,6 @@ public static class BossLines
 
     public static List<Line> TimeHintAfterDying  = new List<Line>() {
         new Line() {text = "You’re running out of time!", lineEffect = LineEffect.none, duration = 3f, delay = 4f},
-        new Line() {text = "Poor gregory),If only you had more time.", lineEffect = LineEffect.none, duration = 4f, delay = 4f},
+        new Line() {text = "Poor gregory, If only you had more time.", lineEffect = LineEffect.none, duration = 4f, delay = 4f},
     };
 }
