@@ -16,6 +16,8 @@ public class CreditsRoller : MonoBehaviour
     [SerializeField]
     private BlackScreenOverlay blackScreenOverlay;
 
+    [SerializeField] private GameObject creditsAnimator;
+
     public delegate void CreditsFinishEvent();
     public static CreditsFinishEvent OnCreditsStart;
     public static CreditsFinishEvent OnCreditsFinish;
@@ -30,7 +32,9 @@ public class CreditsRoller : MonoBehaviour
     public IEnumerator Rolling() {
         OnCreditsStart?.Invoke();
         rolling = true;
-        yield return StartCoroutine(rect.AnimateLocalPosition(new Vector3(0,- end.localPosition.y,0), 55f, 0));
+        creditsAnimator.SetActive(true);
+        yield return new WaitForSeconds(44f);
+        // yield return StartCoroutine(rect.AnimateLocalPosition(new Vector3(0,- end.localPosition.y,0), 55f, 0));
         EndOfCredits();
     }
     private void EndOfCredits() {

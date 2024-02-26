@@ -145,6 +145,17 @@ public class Door : InteractabelObject
         StartCoroutine(Walking(1.5f, Player));
 
     }
+    public override void OnMissing()
+    {
+        base.OnMissing();
+        inAnimation = true;
+    }
+    public override void OnMissingFinish()
+    {
+        inAnimation = false;
+        base.OnMissingFinish();
+
+    }
 
     public override void Interact()
     {
