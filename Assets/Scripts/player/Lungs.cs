@@ -253,6 +253,9 @@ public class Lungs : MonoBehaviour
         if (coolDown) return;
         coolDown = true;
 
+        AudioHandler.Instance?.PlaySound(SFXFiles.player_grunt);
+
+
         Health -= _val;
         if (health <= 0) player.Die(true);
         else if (health < 1) {

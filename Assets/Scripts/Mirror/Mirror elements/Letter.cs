@@ -49,6 +49,8 @@ public class Letter : MirrorButton, IPointerDownHandler
     }
     [SerializeField]
     private ParticleSystem clickParticle;
+    [SerializeField]
+    private ParticleSystem trailParticle;
 
     private Coroutine hoverCoroutine;
     private Vector3 hoverScale = new Vector3(1.3f,1.3f,1.3f);
@@ -235,7 +237,6 @@ public class Letter : MirrorButton, IPointerDownHandler
         Canvas canvas = MirrorCanvas.Canvas;
         if (movingCoroutine != null)  StopCoroutine(movingCoroutine);
         while(pressed) {
-
             transform.position = Vector3.Lerp(transform.position, canvas.MouseToWorldPosition(), Time.deltaTime * 10f);
             Zdistance = -10;
             mirrorCanvas.UpdateLetterDrag(this);
@@ -251,12 +252,21 @@ public class Letter : MirrorButton, IPointerDownHandler
             yield return new WaitForEndOfFrame();
         }
         transform.localRotation = Quaternion.Euler(0,0,0);
+
         StartCoroutine(PlaceAnimationRotation());
         MirrorButton.BUTTON_DRAGGED = false;
 
     }
+    private float particleCount = 0;
     private void UpdateDragRotation() {
         Vector3 delta = Position - oldDragPos;
+        particleCount += delta.magnitude * .03f;
+        if (particleCount > 1) {
+            trailParticle.Emit(Mathf.FloorToInt(particleCount));
+            particleCount -= Mathf.FloorToInt(particleCount);
+        }
+
+        Debug.Log("delta = " + delta);
         float angle = 45f;
         delta *= 2f;
         transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler( -Mathf.Clamp( delta.y, -angle, angle), Mathf.Clamp( delta.x, -angle, angle), 0), Time.deltaTime * 10f);
