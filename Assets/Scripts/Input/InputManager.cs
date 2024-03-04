@@ -108,7 +108,6 @@ public class InputManager : MonoBehaviour
         // }
 
         if (controls != null) {
-                    Debug.Log("input update");
             MovementVector = Vector2.Lerp(movementVector, controls.Player.Movement.ReadValue<Vector2>(), Time.deltaTime * movementGravity);
             OnMove?.Invoke(MovementVector);
             cameraVector = controls.Player.Camera.ReadValue<Vector2>();
@@ -117,7 +116,6 @@ public class InputManager : MonoBehaviour
     }
 
     public void Jump(InputAction.CallbackContext context) {
-                Debug.Log("input jump");
         OnJump?.Invoke();
     }
     public void RunStart(InputAction.CallbackContext context) {

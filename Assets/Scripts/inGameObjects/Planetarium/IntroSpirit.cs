@@ -6,12 +6,15 @@ public class IntroSpirit : MonoBehaviour
 {
     [SerializeField] private GameObject spirit1;
     [SerializeField] private GameObject spirit2;
+    [SerializeField] private Transform rippleParticle;
     private bool spirit1Enabled = false;
     private bool spirit2Enabled = false;
 
     private void Awake() {
         spirit1.SetActive(false);
         spirit2.SetActive(false);
+        // rippleParticle.gameObject.SetActive(false);
+
     }
 
     public void Spirit1Animation() {
@@ -30,6 +33,7 @@ public class IntroSpirit : MonoBehaviour
         spirit2Enabled = true;
 
         StartCoroutine(SpiritSFX(.2f, 1f));
+        StartCoroutine(CheckRippleParticle());
         if (spirit1 != null) spirit1.SetActive(false);
         spirit2.SetActive(true);
         Destroy(spirit2, 8f);
@@ -53,5 +57,21 @@ public class IntroSpirit : MonoBehaviour
             timePassed += Time.deltaTime;
        }
        instance.Stop();
+    }
+
+    private  IEnumerator CheckRippleParticle(float duration = 7f) {
+    bool emitted = false;
+       float timePassed = 0f;
+        while (timePassed < duration && !emitted) {
+           yield return new WaitForEndOfFrame();
+            timePassed += Time.deltaTime;
+            if (spirit2 != null)
+            Debug.Log("distance = " + Vector3.Distance(spirit2.transform.position, rippleParticle.position));
+            if (Vector3.Distance(spirit2.transform.position, rippleParticle.position) < 3.5f) {
+                emitted = true;
+                rippleParticle.gameObject.SetActive(true);
+            }
+
+       }
     }
 }
