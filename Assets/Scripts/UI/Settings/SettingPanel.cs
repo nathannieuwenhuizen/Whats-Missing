@@ -113,7 +113,8 @@ public class SettingPanel : AnimatedPopup
         timer.onValueChanged.AddListener(delegate{ settings.cameraSettings.Timer_Enabled = timer.isOn;});
         enableKeyboardInput.onValueChanged.AddListener(delegate{ settings.controlSettings.Enable_Keyboard_Input = enableKeyboardInput.isOn;});
         fullScreen.onValueChanged.AddListener(delegate{
-            Screen.fullScreen = !Screen.fullScreen;
+            settings.cameraSettings.FullScreen = fullScreen.isOn;
+            Screen.fullScreen = settings.cameraSettings.FullScreen;
         });
     }
 
@@ -128,7 +129,7 @@ public class SettingPanel : AnimatedPopup
         motionBlur.isOn = settings.cameraSettings.Motion_blur_enabled;
         timer.isOn = settings.cameraSettings.Timer_Enabled;
         enableKeyboardInput.isOn = settings.controlSettings.Enable_Keyboard_Input;
-        fullScreen.isOn = Screen.fullScreen;
+        fullScreen.isOn = settings.cameraSettings.FullScreen;
     }
     
     public void Save() {

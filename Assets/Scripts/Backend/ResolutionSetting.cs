@@ -65,7 +65,7 @@ public class ResolutionSetting : MonoBehaviour
     }
 
     public void SetResolution( Vector2 resolution) {
-        Screen.SetResolution( (int)resolution.x, (int)resolution.y, true);
+        Screen.SetResolution( (int)resolution.x, (int)resolution.y,Screen.fullScreen);
     }
 
 }

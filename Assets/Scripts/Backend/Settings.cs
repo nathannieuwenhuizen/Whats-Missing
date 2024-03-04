@@ -30,6 +30,7 @@ public struct Settings
         };
         cameraSettings = new CameraSettings() {
             Depth_of_field_enabled = PlayerPrefs.GetInt("Depth_of_field_enabled", 0) == 1,
+            FullScreen = PlayerPrefs.GetInt("FullScreen", 1) == 1,
             Motion_blur_enabled = PlayerPrefs.GetInt("Motion_blur_enabled", 0) == 1,
             Timer_Enabled = PlayerPrefs.GetInt("Timer_enabled", 0) == 1
         };
@@ -44,6 +45,7 @@ public struct Settings
         PlayerPrefs.SetInt("Enable_Keyboard_Input", controlSettings.Enable_Keyboard_Input ? 1 : 0);
 
         PlayerPrefs.SetInt("Depth_of_field_enabled", cameraSettings.Depth_of_field_enabled ? 1 : 0);
+        PlayerPrefs.SetInt("FullScreen", cameraSettings.FullScreen ? 1 : 0);
         PlayerPrefs.SetInt("Motion_blur_enabled", cameraSettings.Motion_blur_enabled ? 1 : 0);
         PlayerPrefs.SetInt("Timer_enabled", cameraSettings.Timer_Enabled ? 1 : 0);
     }
@@ -64,6 +66,7 @@ public struct ControlSettings {
 ///</summary>
 public struct CameraSettings {
     public bool Depth_of_field_enabled;
+    public bool FullScreen;
     public bool Motion_blur_enabled;
     public bool Timer_Enabled;
 }
