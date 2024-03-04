@@ -61,19 +61,38 @@ public class Menu : MonoBehaviour
         popup = GetComponent<AnimatedPopup>();
         StartCoroutine(DelayMenuShow());
 
+        // PlayerData.BEHIND_THE_SCENES_UNLOCKED = false;
         //behind the scenes
         if (CreditsRoller.FROM_CREDIT_SCREEN == true && PlayerData.BEHIND_THE_SCENES_UNLOCKED == false) {
+            CreditsRoller.FROM_CREDIT_SCREEN = false;
             PlayerData.BEHIND_THE_SCENES_UNLOCKED = true;
             behindThescenesMessage.ShowAnimation(true);
              ControllerCheck.SelectUIGameObject(behindThescenesConfirmButton.gameObject, () => { 
                 EventSystem.current.firstSelectedGameObject = behindThescenesConfirmButton.gameObject;
              });
             behindThescenesConfirmButton.onClick.AddListener(() => {
+                ControllerCheck.SelectUIGameObject(behindThescenesButton.gameObject);
                 behindThescenesMessage.ShowAnimation(false);
             });
             
         }
+
         behindThescenesButton.gameObject.SetActive(PlayerData.BEHIND_THE_SCENES_UNLOCKED);
+        if (PlayerData.BEHIND_THE_SCENES_UNLOCKED) {
+            behindThescenesButton.navigation = new Navigation(){ 
+                mode = Navigation.Mode.Explicit,  
+                selectOnUp = settingsButton,
+                selectOnDown = quitButton.GetComponent<Button>()
+            };
+
+            Navigation settingsNav = settingsButton.navigation;
+            settingsNav.selectOnDown = behindThescenesButton;
+            settingsButton.navigation = settingsNav;
+
+            Navigation quitNav = quitButton.GetComponent<Button>().navigation;
+            quitNav.selectOnUp = behindThescenesButton;
+            quitButton.GetComponent<Button>().navigation = quitNav;
+        }
     }
 
     public void GoToSettings() {

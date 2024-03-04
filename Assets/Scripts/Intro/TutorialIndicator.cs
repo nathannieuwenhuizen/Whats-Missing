@@ -207,17 +207,18 @@ public class TutorialIndicator : MonoBehaviour
     }
     
 
-    private void ShowTutorial(GameObject gameObject) {
+    private void ShowTutorial(GameObject selectedUI) {
         tutorialIsVisible = true;
         animator.SetBool("Show", true);
 
         mouseUI.SetActive(false);
         spacebarUI.SetActive(false);
         keyboardUI.SetActive(false);
+        gravityUI.SetActive(false);
         if(shiftUI != null) shiftUI.SetActive(false);
         hintText.gameObject.SetActive(false);
 
-        gameObject.SetActive(true);
+        selectedUI.SetActive(true);
     }
 
     private void HideTutorial() {

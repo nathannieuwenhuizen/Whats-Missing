@@ -54,7 +54,7 @@ public class CustomInputModule : StandaloneInputModule
 
     }
     public void ShowMouse() {
-        if (ControllerCheck.AnyControllerConnected() == false || true) {
+        if (ControllerCheck.AnyControllerConnected() == false) {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }

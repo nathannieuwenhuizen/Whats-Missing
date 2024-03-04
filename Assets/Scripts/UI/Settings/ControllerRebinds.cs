@@ -172,11 +172,12 @@ public class ControllerRebinds : MonoBehaviour
             rebindKeys[index].EditButton.Button.navigation = new UnityEngine.UI.Navigation() {
                 mode = Navigation.Mode.Explicit,  
                 selectOnUp = index > 0 ? rebindKeys[index - 1].EditButton.Button : resetButton,
-                selectOnDown = index < rebindKeys.Count - 1 ? rebindKeys[index + 1].EditButton.Button : controlButton
+                selectOnDown = index < rebindKeys.Count - 1 ? rebindKeys[index + 1].EditButton.Button : null,
+                selectOnLeft = controlButton
             };
         }
         Navigation nav = controlButton.navigation;
-        nav.selectOnUp = rebindKeys[rebindKeys.Count - 1].EditButton.Button;
+        nav.selectOnRight = rebindKeys[0].EditButton.Button;
         controlButton.navigation = nav;
         
         nav = resetButton.navigation;

@@ -10,6 +10,7 @@ public class SlideMainMenu : AnimatedPopup
 
     [SerializeField] private Button closeButton;
     [SerializeField] private SlideControls slideControls;
+    [SerializeField] private Button selectedButtonForController;
 
     public void BackToMenu() {
         ShowAnimation(false);
@@ -28,6 +29,7 @@ public class SlideMainMenu : AnimatedPopup
 
     public void Show() {
         ShowAnimation(true);
+        ControllerCheck.SelectUIGameObject(selectedButtonForController.gameObject);
     }
 
     public void GoToSlideList(SlideList _list) {

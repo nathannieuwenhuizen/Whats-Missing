@@ -91,6 +91,8 @@ public class Painting : InteractabelObject
         open = true;
 
         animator.SetBool("open", open);
+        AudioHandler.Instance?.Play3DSound(SFXFiles.player_grab, transform);
+
         if (hiddenRoom != null) {
             SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.EarlyBirdCatchesTheApple);
             animator.SetBool("slide", open);

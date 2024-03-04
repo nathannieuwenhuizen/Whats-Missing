@@ -27,6 +27,7 @@ public class SlideControls : AnimatedPopup
     }
 
     public void OpenList(SlideList _list) {
+        ControllerCheck.SelectUIGameObject(nextButton.gameObject);
         currentSlideList = _list;
         currentSlideList.OpenList();
         UpdateListCount();
@@ -80,7 +81,12 @@ public class SlideControls : AnimatedPopup
     public void UpdateListCount() {
         slideCount.text = (currentSlideList.slideIndex + 1) + " / " + currentSlideList.ammountofSlides;
         subText.text = currentSlideList.CurrentSlide.SubText;
-        nextButton.gameObject.SetActive(currentSlideList.slideIndex < currentSlideList.ammountofSlides - 1);
-        previousButton.gameObject.SetActive(currentSlideList.slideIndex > 0);
+        Color nextA =nextButton.GetComponent<Image>().color;
+        nextA.a = (currentSlideList.slideIndex < currentSlideList.ammountofSlides - 1) ? 1 : .5f;
+        nextButton.GetComponent<Image>().color = nextA;
+
+        Color previousA =previousButton.GetComponent<Image>().color;
+        previousA.a = (currentSlideList.slideIndex > 0) ? 1 : .5f;
+        previousButton.GetComponent<Image>().color = previousA;
     }
 }

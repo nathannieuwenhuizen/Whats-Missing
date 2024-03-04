@@ -22,6 +22,7 @@ namespace Boss {
         {
             TimeProperty.onTimeMissing += OnTimeMissing;
             BossRoom.OnRespawn += ResetState;
+            // bossAI.Boss.Body.Metamorphose();
 
 
             stateName = "Huge Anticipation";
@@ -78,6 +79,7 @@ namespace Boss {
 
         public void DoHugeAttackWhileTImeStops() {
             timeStops = true;
+            bossAI.Boss.Body.Speed = 0f;
             DoAttackAnimation();
         }
         
@@ -108,6 +110,7 @@ namespace Boss {
 
             bossAI.BossChargeParticle.StopEmmission();
             bossAI.BossChargeParticle.ResetEmission();
+            bossAI.Boss.Body.Speed = 1f;
             // bossAI.BossChargeParticle.gameObject.SetActive(false);
             DialoguePlayer.Instance.PlayLine(BossLines.TimeHintAfterDying[ammountOfDying % BossLines.TimeHintAfterDying.Count], true, SFXFiles.boss_chuckle);
             ammountOfDying++;
@@ -124,6 +127,7 @@ namespace Boss {
             BossRoom.OnRespawn -= ResetState;
             if (bossAI.TimeStopDebrees.isActiveAndEnabled) bossAI.TimeStopDebrees.TimeScale = 2f;
             bossAI.BossChargeParticle.TimeScale = 4f;
+            bossAI.Boss.Body.Speed = 1f;
             bossAI.BossChargeParticle.StopEmmission();
 
             bossAI.BossTimeStopCollider.SetActive(false);

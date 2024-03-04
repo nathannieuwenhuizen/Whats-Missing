@@ -17,6 +17,7 @@ namespace Boss {
 
         //shader keys
         private readonly string growKey = "_grow";
+        private readonly string SpeedKey = "_scroll_speed";
         public static readonly string shineKey = "_shine_power";
         private readonly string glowKey = "_glow_power";
         private readonly string armDissolveKey = "ArmDissolve";
@@ -130,8 +131,8 @@ namespace Boss {
         /// Time to transform!
         ///</summary>
         public void Metamorphose() {
-            if (hasMetamorphosed) return;
-            hasMetamorphosed = true;
+            // if (hasMetamorphosed) return;
+            // hasMetamorphosed = true;
             StartCoroutine(Matemorphosing());
         }
 
@@ -153,6 +154,16 @@ namespace Boss {
                 foreach(SkinnedMeshToMesh spore in spores) {
                     if (value < .5f) spore.StopVFX();
                     else  spore.StartVFX();
+                }
+            }
+        }
+        private float speed;
+        public float Speed {
+            get { return speed;}
+            set { 
+                speed = value; 
+                foreach(Renderer tentacle in tentacleRenderers) {
+                    tentacle.material.SetVector(SpeedKey, new Vector2(0.9f, -2f) * value);
                 }
             }
         }
