@@ -26,6 +26,10 @@ public class Painting : InteractabelObject
 
     private bool wasMissing = false;
 
+    [SerializeField]
+    private bool canSlide = false;
+
+
     private Rigidbody rigidBody;
 
     protected override void Awake() {
@@ -86,9 +90,10 @@ public class Painting : InteractabelObject
         animating = true;
         open = true;
 
+        animator.SetBool("open", open);
         if (hiddenRoom != null) {
             SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.EarlyBirdCatchesTheApple);
-            animator.SetBool("open", open);
+            animator.SetBool("slide", open);
             SetPortalsActive(true);
             StartCoroutine(WaitBeforeAnimationFinish());
         }

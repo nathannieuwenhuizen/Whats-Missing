@@ -376,7 +376,6 @@ public class MirrorShard : PickableRoomObject
         AlwaysShowOutline = true;
         while(!grabbed)
         {
-            Debug.Log("idle animation!");
             transform.Rotate(new Vector3(0, 20f * Time.deltaTime, 20f * Time.deltaTime));
             yield return new WaitForEndOfFrame();
         }

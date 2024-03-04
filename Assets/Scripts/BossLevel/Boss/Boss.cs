@@ -128,10 +128,10 @@ namespace Boss {
             }
         }
         private void OnEnable() {
-            Water.OnWaterBig += RemoveMirrorAttack;
+            Water.OnWaterBigStart += RemoveMirrorAttack;
         }
         private void OnDisable() {
-            Water.OnWaterBig -= RemoveMirrorAttack;
+            Water.OnWaterBigStart -= RemoveMirrorAttack;
         }
         private void  RemoveMirrorAttack() {
             bossChangeHandler.RemoveText();

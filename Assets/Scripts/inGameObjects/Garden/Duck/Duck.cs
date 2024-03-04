@@ -89,14 +89,14 @@ public class Duck : RoomObject
     private void OnEnable() {
         TimeProperty.onTimeMissing += UpdateTrailLifeTime;
         TimeProperty.onTimeAppearing += UpdateTrailLifeTime;
-        Water.OnWaterBig += SetBigSwimArea;
+        Water.OnWaterBigStart += SetBigSwimArea;
         Water.OnWaterNormal += SetNormalSwimArea;
     }
 
     private void OnDisable() {
         TimeProperty.onTimeMissing += UpdateTrailLifeTime;
         TimeProperty.onTimeAppearing += UpdateTrailLifeTime;
-        Water.OnWaterBig -= SetBigSwimArea;
+        Water.OnWaterBigStart -= SetBigSwimArea;
         Water.OnWaterNormal -= SetNormalSwimArea;
     }
 

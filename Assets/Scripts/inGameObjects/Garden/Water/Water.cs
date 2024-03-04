@@ -7,7 +7,7 @@ public class Water : RoomObject
 {
 
     public delegate void WaterEvent();
-    public static WaterEvent OnWaterBig;
+    public static WaterEvent OnWaterBigStart;
     public static WaterEvent OnWaterBigEnd;
     public static WaterEvent OnWaterNormal;
 
@@ -17,11 +17,13 @@ public class Water : RoomObject
     private Vector3 mainLand_water_large_altitude;
     private Vector3 mainLand_water_shrink_altitude;
     private MeshRenderer meshRenderer;
+    [SerializeField] private float waterAnimationDuration = 3f;
 
     private void Awake() {
         base.Awake();
         meshRenderer = GetComponent<MeshRenderer>();
         watermaterial = meshRenderer.material;
+        animationDuration = waterAnimationDuration; 
     }
 
     private void OnEnable() {
@@ -49,7 +51,7 @@ public class Water : RoomObject
         }
         mainLand_water.transform.localPosition = mainLand_water_shrink_altitude;
         base.OnEnlarge();
-        OnWaterBig?.Invoke();
+        OnWaterBigStart?.Invoke();
         ToggleMainLandWater(true);
 }
 

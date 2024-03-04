@@ -40,7 +40,6 @@ public class Fire : RoomObject
         TimeProperty.onTimeMissing += UpdateTimeScale;
         TimeProperty.onTimeAppearing += UpdateTimeScale;
         WarmthProperty.OnWarmthMissing += SetFireOff;
-        Water.OnWaterBig += SetFireOff;
         WarmthProperty.OnWarmthAppearing += SetFireOn;
         AirProperty.OnAirMissing += SetFireOff;
         AirProperty.OnAirAppearing += SetFireOn;
@@ -50,7 +49,6 @@ public class Fire : RoomObject
     private void OnDisable() {
         TimeProperty.onTimeMissing -= UpdateTimeScale;
         TimeProperty.onTimeAppearing -= UpdateTimeScale;
-        Water.OnWaterBig -= SetFireOff;
         WarmthProperty.OnWarmthMissing -= SetFireOff;
         WarmthProperty.OnWarmthAppearing -= SetFireOn;
         AirProperty.OnAirMissing -= SetFireOff;

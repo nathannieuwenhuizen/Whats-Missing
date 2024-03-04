@@ -21,6 +21,7 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
 
     protected bool inSpace = false;
     public bool InSpace { get => inSpace; set => inSpace = value; }
+    public bool InAnimation {get; set; } = false;
 
     public Transform Transform => transform;
 
@@ -84,7 +85,8 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
             case ChangeType.flipped:
                 OnFlipped();
                 break;
-        }    
+        }   
+        if(Animated) StartCoroutine(InAnimationCoroutine());
     }
     public void RemoveChange(IChange change) {
         if (this == null) return;
@@ -101,8 +103,13 @@ public abstract class RoomEntity :  MonoBehaviour, IChangable, IRoomObject
             case ChangeType.flipped:
                 OnFlippingRevert();
                 break;
-
         }
+        if(Animated) StartCoroutine(InAnimationCoroutine());
+    }
+    private IEnumerator InAnimationCoroutine() {
+        InAnimation = true;
+        yield return new WaitForSeconds(animationDuration);
+        InAnimation = false;
     }
 
     #region  missing changes

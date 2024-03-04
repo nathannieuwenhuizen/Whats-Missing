@@ -9,11 +9,19 @@ public class DemoText : MonoBehaviour
     [SerializeField]
     private SceneLoader sceneLoader;
     private CanvasGroup group;
+    [SerializeField]
+    private Area area;
 
     private void Awake() {
         group = GetComponent<CanvasGroup>();
         group.interactable = false;
         group.blocksRaycasts = false;
+        if (area == null) {
+            Destroy(gameObject);
+            return;
+        }
+
+        if (area.isActiveAndEnabled == false) Destroy(gameObject);
     }
     private void OnEnable() {
         Area.OnEndOfDemo += ShowDemoText;

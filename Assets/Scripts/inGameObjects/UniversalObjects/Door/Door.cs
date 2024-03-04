@@ -160,6 +160,7 @@ public class Door : InteractabelObject
     public override void Interact()
     {
         if (inAnimation || IN_WALKING_ANIMATION) return;
+        if (Player.InAnimation) return;
 
         if (locked || !PlayerFitsThroughDoor()) {
             DoorAnimator.SetTrigger("shake");
