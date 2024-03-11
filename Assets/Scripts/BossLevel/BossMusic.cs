@@ -87,11 +87,12 @@ public class BossMusic : MonoBehaviour
     private void OnEnable() {
         BossMirror.OnMirrorShake += StartMusic;
         Boss.DieState.OnBossDieStart += BossIsDead;
+        TimeProperty.onTimeMissing += BossIsDead;
     }
 
     private void OnDisable() {
         BossMirror.OnMirrorShake -= StartMusic;
         Boss.DieState.OnBossDieStart -= BossIsDead;
-        
+        TimeProperty.onTimeMissing -= BossIsDead;
     }
 }

@@ -33,7 +33,7 @@ public class CreditsRoller : MonoBehaviour
         OnCreditsStart?.Invoke();
         rolling = true;
         creditsAnimator.SetActive(true);
-        yield return new WaitForSeconds(44f);
+        yield return new WaitForSeconds(56f);
         // yield return StartCoroutine(rect.AnimateLocalPosition(new Vector3(0,- end.localPosition.y,0), 55f, 0));
         EndOfCredits();
     }
