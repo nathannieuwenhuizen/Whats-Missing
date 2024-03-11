@@ -78,9 +78,9 @@ public class BossMusic : MonoBehaviour
         }
     }
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.L))  {
-            BossAlive = false;
-        }
+        // if (Input.GetKeyDown(KeyCode.L))  {
+        //     BossAlive = false;
+        // }
     }
 
 

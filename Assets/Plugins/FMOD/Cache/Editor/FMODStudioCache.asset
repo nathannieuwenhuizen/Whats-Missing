@@ -81,6 +81,32 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 753
+--- !u!114 &-8970336349947139370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Environment5/CutsceneTrigger
+  m_EditorClassIdentifier: 
+  Name: CutsceneTrigger
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 1
+  ID:
+    data1: 1023066985
+    data2: 3858345585
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - true
+  - false
+  Exists: 1
 --- !u!114 &-8919566248230715626
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,6 +134,32 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 7778
+--- !u!114 &-8917480373125093684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Environment5/InBedroom
+  m_EditorClassIdentifier: 
+  Name: InBedroom
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 1
+  ID:
+    data1: 2150480172
+    data2: 603950228
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - true
+  - false
+  Exists: 1
 --- !u!114 &-8733679903185072867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,10 +636,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638451661887659824
+  lastModified: 638457569898444582
   FileSizes:
   - Name: Desktop
-    Value: 1372288
+    Value: 1372448
   Exists: 1
 --- !u!114 &-7397844677580216705
 MonoBehaviour:
@@ -1075,11 +1127,13 @@ MonoBehaviour:
   - {fileID: -3605774338970352051}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
-  Parameters: []
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -8970336349947139370}
+  - {fileID: -8917480373125093684}
   MinDistance: 1
   MaxDistance: 20
-  Length: 90122
+  Length: 138127
 --- !u!114 &-6253513621293858745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1200,8 +1254,8 @@ MonoBehaviour:
     Data3: 1463216575
     Data4: -186312373
   Banks:
-  - {fileID: -7498958269896294016}
   - {fileID: -3605774338970352051}
+  - {fileID: -7498958269896294016}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -1837,10 +1891,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638451662018530870
+  lastModified: 638457569914950129
   FileSizes:
   - Name: Desktop
-    Value: 77898464
+    Value: 79668096
   Exists: 1
 --- !u!114 &-3358020510019508158
 MonoBehaviour:
@@ -2439,6 +2493,33 @@ MonoBehaviour:
   - Stone
   - Wood
   Exists: 1
+--- !u!114 &-1544607062021163011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SFX/Player/Pain_grunt
+  m_EditorClassIdentifier: 
+  Path: event:/SFX/Player/Pain_grunt
+  Guid:
+    Data1: -1258909027
+    Data2: 1223984064
+    Data3: 1860929428
+    Data4: -767694815
+  Banks:
+  - {fileID: -47329121353074721}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-1388135589206336296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2935,10 +3016,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/InGame.bank
   Name: InGame
   StudioPath: bank:/InGame
-  lastModified: 638451661886962787
+  lastModified: 638457604080195409
   FileSizes:
   - Name: Desktop
-    Value: 9159456
+    Value: 9160992
   Exists: 1
 --- !u!114 &-8770805897249302
 MonoBehaviour:
@@ -3081,15 +3162,17 @@ MonoBehaviour:
   - {fileID: 972935743780341020}
   - {fileID: -3854447317101561098}
   - {fileID: -2878411908321477808}
+  - {fileID: -1544607062021163011}
   EditorParameters:
   - {fileID: 4737161194635359687}
   - {fileID: 1268962678914831712}
   - {fileID: -5519714198580068586}
+  - {fileID: 8919286720573423953}
   MasterBanks:
   - {fileID: -7498958269896294016}
   StringsBanks:
   - {fileID: 5799998874606644445}
-  cacheTime: 638451662018530870
+  cacheTime: 638457604080195409
   cacheVersion: 10
 --- !u!114 &262490416951803820
 MonoBehaviour:
@@ -4851,10 +4934,10 @@ MonoBehaviour:
   Path: FMOD/whatsmissing/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638451661887681408
+  lastModified: 638457569898464496
   FileSizes:
   - Name: Desktop
-    Value: 6208
+    Value: 6394
   Exists: 1
 --- !u!114 &5873259317674280153
 MonoBehaviour:
@@ -5550,6 +5633,32 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 2847
+--- !u!114 &8919286720573423953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/InBedroom
+  m_EditorClassIdentifier: 
+  Name: InBedroom
+  StudioPath: parameter:/InBedroom
+  Min: 0
+  Max: 1
+  Default: 1
+  ID:
+    data1: 2150480172
+    data2: 603950228
+  Type: 2
+  IsGlobal: 1
+  Labels:
+  - true
+  - false
+  Exists: 1
 --- !u!114 &9029852559141176227
 MonoBehaviour:
   m_ObjectHideFlags: 0

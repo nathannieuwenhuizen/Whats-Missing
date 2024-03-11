@@ -377,11 +377,21 @@ public class Area : MonoBehaviour
     }
     
     public void UpdateRoomMusic(float _roomIndex) {
-        if (areaIndex == 1){
-            _roomIndex = (float)_roomIndex / (float)rooms.Count * 26f;
-            if (AudioHandler.Instance?.AudioManager.Music != null) 
-                AudioHandler.Instance?.AudioManager.Music.FMODInstance.setParameterByName(FMODParams.LEVEL2_MUSIC, _roomIndex, true);
-        }
+        if (AudioHandler.Instance?.AudioManager.Music == null) return;
+
+        Debug.Log("room index = " + (float)roomLevels.Length);
+        switch(areaIndex)
+        {
+            case 1:
+            _roomIndex = (float)_roomIndex / (float)roomLevels.Length * 26f;
+            AudioHandler.Instance?.AudioManager.Music.FMODInstance.setParameterByName(FMODParams.LEVEL2_MUSIC, _roomIndex, true);
+            break;
+            case 2:
+            _roomIndex = (float)_roomIndex / (float)roomLevels.Length;
+            AudioHandler.Instance?.AudioManager.Music.FMODInstance.setParameterByName(FMODParams.LEVEL3_MUSIC, _roomIndex, true);
+            break;
+        };
+
     }
 
     public void SaveProgress() {

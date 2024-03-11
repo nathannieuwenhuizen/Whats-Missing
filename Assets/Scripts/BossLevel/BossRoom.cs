@@ -49,7 +49,7 @@ public class BossRoom : Room
         if (setPlayerAtDoor) {
             Player.transform.position = StartDoor.EndPos();
             Player.Respawn();
-            blackScreenOverlay.FadeFromColor(Color.black);
+            blackScreenOverlay?.FadeFromColor(Color.black);
         }
         EndDoor.gameObject.SetActive(false);
     }

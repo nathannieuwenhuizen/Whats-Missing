@@ -23,6 +23,9 @@ public class FinalBox : InteractabelObject
         base.Interact();
         Interactable = false;
         Focused = false;
+
+        AudioHandler.Instance?.AudioManager.Music.FMODInstance.setParameterByNameWithLabel(FMODParams.LEVEL5_TRIGGER, "true");
+
         StartCoroutine(EndCutscene());
     }
     private bool moveCamera = false;
