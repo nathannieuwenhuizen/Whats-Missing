@@ -29,7 +29,7 @@ public class ControllerRebinds : MonoBehaviour
     [SerializeField]
     private GameObject rebindPopup;
 
-    List<RebindKey> rebindKeys = new List<RebindKey>();
+    public List<RebindKey> rebindKeys = new List<RebindKey>();
 
     private void Start() {
         ControllerRebinds.controls = LoadRebinds();

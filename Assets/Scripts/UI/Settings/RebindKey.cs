@@ -15,7 +15,7 @@ public class RebindKey : MonoBehaviour
     [SerializeField]
     private TMP_Text valueText;
     [SerializeField]
-    private BaseButton editButton;
+    public BaseButton editButton;
 
     public BaseButton EditButton {
         get { return editButton;}

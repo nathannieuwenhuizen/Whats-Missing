@@ -50,6 +50,9 @@ public class SettingPanel : AnimatedPopup
     [SerializeField]
     private Toggle fullScreen;
 
+    [SerializeField]
+    private GameObject musicSlider;
+
     [Header("Controls")]
 
     [SerializeField]
@@ -74,19 +77,20 @@ public class SettingPanel : AnimatedPopup
         // controlButton.interactable = true;
         settingsText.text = "General";
         Debug.Log("should be general by now");
-        ControllerCheck.SelectUIGameObject(generalButton.gameObject);
+        ControllerCheck.SelectUIGameObject(musicSlider.gameObject);
     }
 
     public void ToggleGameplay() {
 
         generalList.SetActive(false);
         gameplayList.SetActive(true);
+        
         // generalButton.interactable = true;
         // gameplayButton.interactable = false;
         controlList.Hide();
         // controlButton.interactable = true;
         settingsText.text = "Gameplay";
-        ControllerCheck.SelectUIGameObject(gameplayButton.gameObject);
+        ControllerCheck.SelectUIGameObject(gameplayList.gameObject);
     }
     public void ToggleControls() {
 
@@ -97,7 +101,7 @@ public class SettingPanel : AnimatedPopup
         controlList.Show();
         // controlButton.interactable = false;
         settingsText.text = "Controls";
-        ControllerCheck.SelectUIGameObject(controlButton.gameObject);
+        ControllerCheck.SelectUIGameObject(controlList.rebindKeys[0].editButton.gameObject);
     }
     
     void Start()
@@ -140,6 +144,8 @@ public class SettingPanel : AnimatedPopup
     public void Open() {
         ShowAnimation(true);
         ToggleGeneral();
+        ControllerCheck.SelectUIGameObject(generalButton.gameObject);
+
     }
     public void Close() {
         Save();
@@ -150,11 +156,16 @@ public class SettingPanel : AnimatedPopup
         OnSettingsClose?.Invoke();
     }
 
+    public void Back() {
+
+    }
+
     private void OnEnable() {
         PauseScreen.OnSettingsOpen += Open;
         PauseScreen.OnSettingsClose += Close;
         Menu.OnSettingsOpen += Open;
         Menu.OnSettingsClose += Close;
+        InputManager.OnBack += Back;
     }
 
     private void OnDisable() {
@@ -162,6 +173,7 @@ public class SettingPanel : AnimatedPopup
         PauseScreen.OnSettingsClose -= Close;
         Menu.OnSettingsOpen -= Open;
         Menu.OnSettingsClose -= Close;
+        InputManager.OnBack -= Back;
 
     }
 

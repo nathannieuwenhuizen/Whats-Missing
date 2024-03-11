@@ -33,6 +33,7 @@ public class InputManager : MonoBehaviour
     public static event ClickAction OnClickUp;
     public static event ClickAction OnJump;
     public static event ClickAction OnCancel;
+    public static event ClickAction OnBack;
     public static event ClickAction OnUndo;
     public static event ClickAction OnReset;
     public static event ClickAction OnStartRunning;
@@ -59,6 +60,8 @@ public class InputManager : MonoBehaviour
             controls.Player.Click.started -= ClickStart;
             controls.Player.Click.canceled -= ClickEnd;
             controls.Player.Cancel.started -= Cancel;
+            controls.Player.Back.started += Back;
+
         }
         controls = _controls;
         controls.Player.Jump.started += Jump;
@@ -67,6 +70,8 @@ public class InputManager : MonoBehaviour
         controls.Player.Click.started += ClickStart;
         controls.Player.Click.canceled += ClickEnd;
         controls.Player.Cancel.started += Cancel;
+        controls.Player.Back.started += Back;
+
     } 
 
     private void OnDisable() {
@@ -77,6 +82,7 @@ public class InputManager : MonoBehaviour
             controls.Player.Click.started -= ClickStart;
             controls.Player.Click.canceled -= ClickEnd;
             controls.Player.Cancel.started -= Cancel;
+            controls.Player.Back.started -= Back;
         }
         SettingPanel.OnSave -= UpdateSettings;
         ControllerRebinds.OnRebindChanged -=  UpdateControllerRebind;
@@ -140,6 +146,9 @@ public class InputManager : MonoBehaviour
     }
     public void Cancel(InputAction.CallbackContext context) {
         OnCancel?.Invoke();
+    }
+    public void Back(InputAction.CallbackContext context) {
+        OnBack?.Invoke();
     }
 
 
