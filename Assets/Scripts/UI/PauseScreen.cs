@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 ///<summary>
@@ -142,12 +143,19 @@ public class PauseScreen : MonoBehaviour
         else Pause();
     }
 
+    public void Back() {
+        if (subPausePanel.alpha == 1) {
+            Resume();
+        }
+    }
+
     private void OnEnable()
     {
         InputManager.OnCancel += TogglePause;
         CharacterAnimationPlayer.OnCutsceneStart += DisablePause;
         CharacterAnimationPlayer.OnCutsceneEnd += EnablePause;
         SettingPanel.OnSettingsClose += OpenPausePanel;
+        InputManager.OnBack += Back;
     }
     private void OnDisable()
     {
@@ -155,6 +163,7 @@ public class PauseScreen : MonoBehaviour
         CharacterAnimationPlayer.OnCutsceneStart -= DisablePause;
         CharacterAnimationPlayer.OnCutsceneEnd -= EnablePause;
         SettingPanel.OnSettingsClose -= OpenPausePanel;
+        InputManager.OnBack -= Back;
     }
 
     public void SelectResumeButton() {

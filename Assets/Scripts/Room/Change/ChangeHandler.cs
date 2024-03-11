@@ -202,7 +202,7 @@ public class ChangeHandler
         if (index != -1) {
             if (roomChanges[index].roomObject != null) 
                 roomChanges[index].roomObject.RemoveChange(roomChanges[index]);
-            roomChanges.RemoveAt(index);
+            if (index <= roomChanges.Count - 1) roomChanges.RemoveAt(index);
         }
     }
 

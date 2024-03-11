@@ -8,7 +8,7 @@ public class TutorialIndicator : MonoBehaviour
 {
 
     private bool tutorialIsVisible = false;
-
+    [Header("Keyboard")]
     [SerializeField]
     private GameObject mouseUI;
     [SerializeField]
@@ -19,6 +19,18 @@ public class TutorialIndicator : MonoBehaviour
     private GameObject gravityUI;
     [SerializeField]
     private GameObject shiftUI;
+    [Header("Controller")]
+    [SerializeField]
+    private GameObject mouseControllerUI;
+    [SerializeField]
+    private GameObject keyboardControllerUI;
+    [SerializeField]
+    private GameObject spacebarControllerUI;
+    [SerializeField]
+    private GameObject gravityControllerUI;
+    [SerializeField]
+    private GameObject shiftControllerUI;
+    [Header("Other")]
 
     [SerializeField]
     private TMP_Text hintText;
@@ -79,7 +91,7 @@ public class TutorialIndicator : MonoBehaviour
         // moved = false;
         yield return new WaitForSeconds(7);
         if (!moved) {
-            ShowTutorial(keyboardUI);
+            ShowTutorial(ControllerCheck.AnyControllerConnected() ? keyboardControllerUI: keyboardUI);
             while (!moved) {
                 yield return new WaitForEndOfFrame();
             }
@@ -105,7 +117,7 @@ public class TutorialIndicator : MonoBehaviour
         mirrorComplete = false;
         yield return new WaitForSeconds(3);
         if (!mirrorComplete) {
-            ShowTutorial(mouseUI);
+            ShowTutorial(ControllerCheck.AnyControllerConnected() ? mouseControllerUI : mouseUI);
             while (!mirrorComplete) {
                 yield return new WaitForEndOfFrame();
             }
@@ -127,7 +139,7 @@ public class TutorialIndicator : MonoBehaviour
     public IEnumerator WaitForJump() {
         yield return new WaitForSeconds(5);
         if (!hasJumped) {
-            ShowTutorial(spacebarUI);
+            ShowTutorial(ControllerCheck.AnyControllerConnected() ? spacebarControllerUI : spacebarUI);
             while (!hasJumped) {
                 yield return new WaitForEndOfFrame();
             }
@@ -148,7 +160,7 @@ public class TutorialIndicator : MonoBehaviour
     public IEnumerator WaitForGravityJump() {
         yield return new WaitForSeconds(2f);
         if (!hasGravityJumped) {
-            ShowTutorial(gravityUI);
+            ShowTutorial(ControllerCheck.AnyControllerConnected() ? gravityControllerUI : gravityUI);
             while (!hasGravityJumped) {
                 yield return new WaitForEndOfFrame();
             }
@@ -170,7 +182,7 @@ public class TutorialIndicator : MonoBehaviour
     public IEnumerator WaitForShift() {
         yield return new WaitForSeconds(10);
         if (!hasShifted) {
-            ShowTutorial(shiftUI);
+            ShowTutorial(ControllerCheck.AnyControllerConnected() ? shiftControllerUI : shiftUI);
             while (!hasShifted) {
                 yield return new WaitForEndOfFrame();
             }
@@ -214,8 +226,17 @@ public class TutorialIndicator : MonoBehaviour
         mouseUI.SetActive(false);
         spacebarUI.SetActive(false);
         keyboardUI.SetActive(false);
+        shiftUI.SetActive(false);
         gravityUI.SetActive(false);
+
+        mouseControllerUI.SetActive(false);
+        spacebarControllerUI.SetActive(false);
+        keyboardControllerUI.SetActive(false);
+        shiftControllerUI.SetActive(false);
+        gravityControllerUI.SetActive(false);
+
         if(shiftUI != null) shiftUI.SetActive(false);
+        if(shiftControllerUI != null) shiftControllerUI.SetActive(false);
         hintText.gameObject.SetActive(false);
 
         selectedUI.SetActive(true);

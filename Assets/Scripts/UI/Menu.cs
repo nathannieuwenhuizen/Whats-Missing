@@ -54,7 +54,8 @@ public class Menu : MonoBehaviour
     }
 
     private void Start() {
-        SetupPlayButtons();
+        
+        SetupPlayButtons(true);
         settingsButton.onClick.AddListener(GoToSettings);
         AudioHandler.Instance.PlayMusic(MusicFiles.menu, .3f);
 
@@ -105,7 +106,7 @@ public class Menu : MonoBehaviour
         popup.ShowAnimation(true);
     }
 
-    private void SetupPlayButtons() {
+    private void SetupPlayButtons(bool _withNavigation) {
         object data = SerializationManager.Load(SerializationManager.filePath + "/" + SaveData.FILE_NAME +".save");
         Debug.Log((data as SaveData));
 
@@ -118,11 +119,12 @@ public class Menu : MonoBehaviour
                 startButton.SetActive(false);
                 ControllerCheck.SelectUIGameObject(continueButton, () => {
                     EventSystem.current.firstSelectedGameObject = continueButton;
-                    settingsButton.navigation = new Navigation(){ 
-                        mode = Navigation.Mode.Explicit, 
-                        selectOnUp = newGameButton.GetComponent<Button>(),
-                        selectOnDown = quitButton.GetComponent<Button>()
-                    };
+                    if (_withNavigation)
+                        settingsButton.navigation = new Navigation(){ 
+                            mode = Navigation.Mode.Explicit, 
+                            selectOnUp = newGameButton.GetComponent<Button>(),
+                            selectOnDown = quitButton.GetComponent<Button>()
+                        };
                 });
                 return;
             }
@@ -134,11 +136,12 @@ public class Menu : MonoBehaviour
         startButton.SetActive(true);
         ControllerCheck.SelectUIGameObject(startButton, () => {
             EventSystem.current.firstSelectedGameObject = startButton;
-            settingsButton.navigation = new Navigation(){ 
-                mode = Navigation.Mode.Explicit,  
-                selectOnUp = startButton.GetComponent<Button>(),
-                selectOnDown = quitButton.GetComponent<Button>()
-            };
+            if (_withNavigation)
+                settingsButton.navigation = new Navigation(){ 
+                    mode = Navigation.Mode.Explicit,  
+                    selectOnUp = startButton.GetComponent<Button>(),
+                    selectOnDown = quitButton.GetComponent<Button>()
+                };
         });
     }
 
@@ -165,7 +168,8 @@ public class Menu : MonoBehaviour
         ControllerCheck.SelectUIGameObject(newGameWarningNoButton);
     }
     public void BackToMenu() {
-        SetupPlayButtons();
+        SetupPlayButtons(false);
+        newGameWarning.ShowAnimation(false);
         popup.ShowAnimation(true);
         OnSettingsClose?.Invoke();
     }

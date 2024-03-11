@@ -51,4 +51,6 @@ public class SlideList : MonoBehaviour
         StartCoroutine(ShowSlide());
     }
 
+
+
 }

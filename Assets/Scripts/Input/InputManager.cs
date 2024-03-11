@@ -70,7 +70,7 @@ public class InputManager : MonoBehaviour
         controls.Player.Click.started += ClickStart;
         controls.Player.Click.canceled += ClickEnd;
         controls.Player.Cancel.started += Cancel;
-        controls.Player.Back.started += Back;
+        controls.Player.Back.canceled += Back;
 
     } 
 
@@ -82,7 +82,7 @@ public class InputManager : MonoBehaviour
             controls.Player.Click.started -= ClickStart;
             controls.Player.Click.canceled -= ClickEnd;
             controls.Player.Cancel.started -= Cancel;
-            controls.Player.Back.started -= Back;
+            controls.Player.Back.canceled -= Back;
         }
         SettingPanel.OnSave -= UpdateSettings;
         ControllerRebinds.OnRebindChanged -=  UpdateControllerRebind;

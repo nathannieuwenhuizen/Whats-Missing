@@ -33,6 +33,7 @@ public static class SFXFiles {
 
     
     //planetarium
+    public static string intro_spirit_ripple = "event:/SFX/Boss/Boss/Movement/Mirror_impact_spirit";
     public static string letter_click = "event:/SFX/Mirror/Letter_click";
     public static string mirror_true = "event:/SFX/Mirror/Mirror_turning_on";
     public static string mirror_false = "event:/SFX/Mirror/Mirror_turning_off";

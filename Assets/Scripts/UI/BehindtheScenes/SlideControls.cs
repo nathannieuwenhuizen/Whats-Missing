@@ -37,9 +37,13 @@ public class SlideControls : AnimatedPopup
 
     private void OnEnable() {
         InputManager.OnMove += OnMove;
+        InputManager.OnBack += Back;
+
     }
     private void OnDisable() {
         InputManager.OnMove -= OnMove;
+        InputManager.OnBack -= Back;
+
     }
     private bool clicked = true;
 
@@ -89,4 +93,8 @@ public class SlideControls : AnimatedPopup
         previousA.a = (currentSlideList.slideIndex > 0) ? 1 : .5f;
         previousButton.GetComponent<Image>().color = previousA;
     }
+    public void Back() {
+        if (isInView) BackToOverview();
+    }
+
 }

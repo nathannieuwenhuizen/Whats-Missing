@@ -90,7 +90,7 @@ public class SettingPanel : AnimatedPopup
         controlList.Hide();
         // controlButton.interactable = true;
         settingsText.text = "Gameplay";
-        ControllerCheck.SelectUIGameObject(gameplayList.gameObject);
+        ControllerCheck.SelectUIGameObject(cameraXInvert.gameObject);
     }
     public void ToggleControls() {
 
@@ -157,7 +157,23 @@ public class SettingPanel : AnimatedPopup
     }
 
     public void Back() {
+        if (canvasGroup == null) return;
+        if (canvasGroup.alpha != 1) return;
+        Debug.Log("back" + (EventSystem.current.currentSelectedGameObject == generalButton.gameObject));
+        Debug.Log("back" + (EventSystem.current.currentSelectedGameObject.gameObject == controlButton.gameObject));
+        Debug.Log("back" + (EventSystem.current.currentSelectedGameObject.gameObject == gameplayButton.gameObject));
+        Debug.Log(EventSystem.current.currentSelectedGameObject.name);
+        
+        if (EventSystem.current.currentSelectedGameObject.gameObject == generalButton.gameObject ||
+            EventSystem.current.currentSelectedGameObject.gameObject == controlButton.gameObject ||
+            EventSystem.current.currentSelectedGameObject.gameObject == gameplayButton.gameObject) {
+            CloseSettings();
+        } else {
+            if (gameplayList.active) ControllerCheck.SelectUIGameObject(gameplayButton.gameObject);
+            if (controlList.gameObject.active) ControllerCheck.SelectUIGameObject(controlButton.gameObject);
+            if (generalList.active) ControllerCheck.SelectUIGameObject(generalButton.gameObject);
 
+        }
     }
 
     private void OnEnable() {

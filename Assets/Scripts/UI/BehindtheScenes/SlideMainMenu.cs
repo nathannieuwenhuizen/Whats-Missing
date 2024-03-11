@@ -20,11 +20,15 @@ public class SlideMainMenu : AnimatedPopup
     private void OnEnable() {
         Menu.OnBehindThescenesOpen += Show;
         SlideControls.OnSlidesClose += Show;
+        InputManager.OnBack += Back;
+
     }
 
     private void OnDisable() {
         Menu.OnBehindThescenesOpen -= Show;
         SlideControls.OnSlidesClose -= Show;
+        InputManager.OnBack -= Back;
+
     }
 
     public void Show() {
@@ -40,5 +44,12 @@ public class SlideMainMenu : AnimatedPopup
     public void Awake() {
         closeButton.onClick.AddListener(BackToMenu);
     }
+    public void Back() {
+        if(alpha == 1) {
+            BackToMenu();
+        }
+
+    }
+
 
 }

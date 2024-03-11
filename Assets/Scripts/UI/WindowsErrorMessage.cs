@@ -13,10 +13,16 @@ public class WindowsErrorMessage : AnimatedPopup
 
     private void OnEnable() {
         TextureProperty.OnTextureMissing += DelayPopup;
+        InputManager.OnBack += Close;
+        InputManager.OnClickDown += Close;
+        InputManager.OnCancel += Close;
+
     }
     private void OnDisable() {
         TextureProperty.OnTextureMissing -= DelayPopup;
-        
+        InputManager.OnBack -= Close;
+        InputManager.OnClickDown -= Close;
+        InputManager.OnCancel -= Close;
     }
     private void DelayPopup() {
         if (hasBeenShown) return;
