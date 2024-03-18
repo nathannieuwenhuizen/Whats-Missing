@@ -121,11 +121,17 @@ public class Mirror: MonoBehaviour, IRoomObject
     ///<summary>
     /// Sets up the canvas so it can be used to display all the letters
     ///</summary>
-    public void SetupCanvas()
+    public void SetupCanvas(RoomLevel _roomLevel)
     {
         mirrorCanvas.IsInteractable = mirrorData.isInteractable;
         mirrorCanvas.InitializeLetters(mirrorData.huzzleWords, Letters, preAnswer);
-        mirrorCanvas.SetupText( ChangeType);
+        string _word = "";
+        if (_roomLevel != null) 
+        if (_roomLevel?.roomInfo != null) 
+        if (_roomLevel?.roomInfo?.loadedChanges.Length != 0) 
+        _word = _roomLevel?.roomInfo?.loadedChanges[0]?.word;
+        
+        mirrorCanvas.SetupText( ChangeType, _word);
     }
 
 

@@ -26,11 +26,11 @@ public class HallwayChunk : MonoBehaviour
     public void ResetFurniture() {
 
         if (paintingRenderer != null) {
-            int newIndex = Mathf.FloorToInt(Random.Range(0, paintingMaterials.Length));
-            if (newIndex == OLDINDEX) newIndex = (newIndex + 1) % paintingMaterials.Length;
+            int newIndex = OLDINDEX + 1;
+            // if (newIndex == OLDINDEX) newIndex = (newIndex + 1) % paintingMaterials.Length;
 
             OLDINDEX = newIndex;
-            paintingRenderer.material = paintingMaterials[newIndex];
+            paintingRenderer.material = paintingMaterials[newIndex % paintingMaterials.Length];
         }
         foreach(HallwayObject obj in hallwayObjects) {
             obj.RandomnizePosition(Random.value > 0.5f);

@@ -56,13 +56,18 @@ public class ShockwaveController : MonoBehaviour {
     public void StartShockwave(Transform origin) {
         StopAllCoroutines();
         startRadius = 0f;
+        Speed = 1f;
+        Magnitude = 0.05f;
+
         StartCoroutine(AnimatingShockwave(origin));
     }
 
     public void StartSmallShockwave(Transform origin) {
         StopAllCoroutines();
-        startRadius = .3f / Speed;
-        StartCoroutine(AnimatingShockwave(origin, true));
+        startRadius = 0;
+        Speed = .3f;
+        Magnitude = 0.1f;
+        StartCoroutine(AnimatingShockwave(origin, false));
     }
 
     private Vector2 ShockwaveScreenPos {

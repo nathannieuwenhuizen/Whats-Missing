@@ -1,3 +1,5 @@
+using TMPro;
+
 public interface IChange {
     public string Word {get; set; }
     public ChangeType ChangeType {get; set; }
@@ -33,22 +35,25 @@ public class Change : IChange {
     string IChange.Word { get => word; set => word = value; }
     ChangeType IChange.ChangeType { get => changeType; set => changeType = value; }
 
-    public static string GetChangeTypeText(ChangeType changeType) {
+    public static string GetChangeTypeText(ChangeType changeType, string word) {
         string result = "";
         switch (changeType) {
             case ChangeType.missing:
-                result = "missing";
+                if (word == "time") result = "stopped";
+                else result = "missing";
                 break;
             case ChangeType.flipped:
                 result = "flipped";
                 break;
             case ChangeType.tooBig:
                 // result = "altered";
-                result = "too big";
+                if (word == "time") result = "too fast";
+                else result = "too big";
                 break;
             case ChangeType.tooSmall:
                 // result = "altered";
-                result = "too small";
+                if (word == "time") result = "too slow";
+                else result = "too small";
                 break;
         }
         return result;

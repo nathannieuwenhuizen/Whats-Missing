@@ -162,7 +162,7 @@ public class Room : MonoBehaviour
         hintStopwatch.Duration = roomLevel.roomInfo.durationBeforeHint;
         for (int i = 0; i < mirrors.Count; i++)
         {
-            mirrors[i].SetupCanvas();
+            mirrors[i].SetupCanvas(roomLevel);
             mirrors[i].UpdateIndicatorLight();
         }
     }

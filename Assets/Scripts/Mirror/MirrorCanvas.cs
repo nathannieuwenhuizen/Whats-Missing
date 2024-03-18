@@ -149,13 +149,13 @@ public class MirrorCanvas : MonoBehaviour
     ///<summary>
     /// Sets up the type of text in the header and sets the font type depending if the mirror is a question mirror or not.
     ///</summary>
-    public void SetupText(ChangeType changeType) {
-        string header = Change.GetChangeTypeText(changeType);
+    public void SetupText(ChangeType changeType, string word) {
+        string header = Change.GetChangeTypeText(changeType, word);
         if (mirror.isQuestion) {
             HeaderText.Text.text = "What's <b>" + header + "</b>" + "?";
             Font = questionFont;
         } else {
-            Font = sentenceFont;
+            Font = questionFont;
             
             HeaderText.Text.text = "What SHOULD be <b>" + header + "</b>" + "?";
 

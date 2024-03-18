@@ -36,7 +36,7 @@ public static class UIExtensions
          while (index < duration) {
              yield return new WaitForEndOfFrame();
              index += Time.unscaledDeltaTime;
-             rect.localRotation = Quaternion.SlerpUnclamped(begin, end, index / duration);
+             rect.localRotation = Quaternion.SlerpUnclamped(begin, end, AnimationCurve.EaseInOut(0,0,1,1).Evaluate(index / duration));
          }
         rect.localRotation = end;
     }
@@ -47,7 +47,7 @@ public static class UIExtensions
          while (index < duration) {
              yield return new WaitForEndOfFrame();
              index += Time.unscaledDeltaTime;
-             rect.localPosition = Vector3.LerpUnclamped(begin, end, index / duration);
+             rect.localPosition = Vector3.LerpUnclamped(begin, end, AnimationCurve.EaseInOut(0,0,1,1).Evaluate(index / duration));
          }
         rect.localPosition = end;
     }
@@ -58,7 +58,7 @@ public static class UIExtensions
          while (index < duration) {
              yield return new WaitForEndOfFrame();
              index += Time.unscaledDeltaTime;
-             rect.localScale = Vector3.LerpUnclamped(begin, end, index / duration);
+             rect.localScale = Vector3.LerpUnclamped(begin, end, AnimationCurve.EaseInOut(0,0,1,1).Evaluate(index / duration));
          }
         rect.localScale = end;
     }
@@ -68,7 +68,7 @@ public static class UIExtensions
         while (index < duration) {
             yield return new WaitForEndOfFrame();
             index += Time.deltaTime;
-            rect.rotation = Quaternion.Euler( Vector3.LerpUnclamped(beginrotation, endrotation , curve.Evaluate(index / duration)));
+            rect.rotation = Quaternion.Euler( Vector3.LerpUnclamped(beginrotation, endrotation , AnimationCurve.EaseInOut(0,0,1,1).Evaluate(index / duration)));
         }
         rect.rotation = Quaternion.Euler(endrotation);
     }

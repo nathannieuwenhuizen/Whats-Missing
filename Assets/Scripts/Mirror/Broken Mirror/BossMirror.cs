@@ -81,7 +81,7 @@ public class BossMirror : Mirror, ITriggerArea
             shards[i].BossMirror = this;
         }
         MirrorData = GetShardMirrorData();
-        SetupCanvas();
+        SetupCanvas(null);
         
         MirrorCanvas.IsInteractable = false;
 
@@ -235,7 +235,7 @@ public class BossMirror : Mirror, ITriggerArea
             // OnlyShowLettersOfWord("spirit");
             break;
         }
-        MirrorCanvas.SetupText(MirrorData.changeType);
+        MirrorCanvas.SetupText(MirrorData.changeType, GetAnswer());
     }
     private IEnumerator HighlightSpirit() {
         MirrorCanvas.DeselectLetters();
