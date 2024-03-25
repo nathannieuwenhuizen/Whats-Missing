@@ -376,7 +376,7 @@ public class FPMovement : MonoBehaviour
         RaycastHit[] hit;
 
         float radius = transform.localScale.x * .5f;
-        float offset = .1f;
+        float offset = .1f * player.CurrentScale;
 
         //TODO: add a collider mask so that it can only collide with the floor.
         hit = Physics.SphereCastAll(transform.position + transform.up * (radius + offset), radius, transform.up * -1, FOOT_RANGE);

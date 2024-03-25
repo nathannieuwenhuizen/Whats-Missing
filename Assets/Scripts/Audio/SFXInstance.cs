@@ -70,7 +70,7 @@ public class SFXInstance
             FMODInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             // if (withDestroy) FMODInstance.release();
         } else {
-            AudioSource.Stop();
+            if (AudioSource != null) AudioSource.Stop();
         }
 
     }
