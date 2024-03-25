@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Boss;
 
 public class MirrorShardUI : MonoBehaviour
 {
@@ -33,6 +34,11 @@ public class MirrorShardUI : MonoBehaviour
             StopCoroutine(wordCoroutine);
         wordCoroutine = StartCoroutine(TransitionWord(_ammountOfShards.ToString(), _totalAmmountOfShards.ToString()));
     }
+    private void OnBossDead() {
+        Destroy(gameObject, 2f);
+        group = GetComponent<CanvasGroup>();
+        group.alpha = 0;
+    }
 
     private IEnumerator TransitionWord(string _value, string _total) {
         if (group.alpha > .5f) {
@@ -43,6 +49,7 @@ public class MirrorShardUI : MonoBehaviour
     }
 
     private void OnEnable() {
+        DieState.OnBossDieStart += OnBossDead;
         // PauseScreen.OnPause += HidePanel;
         // PauseScreen.OnResume += ShowPanel;
         // CharacterAnimationPlayer.OnCutsceneStart += HidePanel;
@@ -50,6 +57,7 @@ public class MirrorShardUI : MonoBehaviour
         BossMirror.OnMirrorShardAmmountUpdate += UpdateUI;
     }
     private void OnDisable() {
+        DieState.OnBossDieStart += OnBossDead;
         // PauseScreen.OnPause -= HidePanel;
         // PauseScreen.OnResume -= ShowPanel;
         // CharacterAnimationPlayer.OnCutsceneStart -= HidePanel;

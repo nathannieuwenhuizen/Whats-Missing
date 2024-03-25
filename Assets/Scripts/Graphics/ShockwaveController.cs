@@ -106,23 +106,32 @@ public class ShockwaveController : MonoBehaviour {
     public float startMagnitute = .1f;
 
 
+    private bool Backfaced(Transform _origin) {
+        Vector3 forward = Camera.main.transform.forward;
+        Vector3 toOther = (Camera.main.transform.position - _origin.position).normalized;
+        return Vector3.Dot(forward, toOther) > 0;
+    }
+
     private IEnumerator AnimatingShockwave(Transform origin, bool decreasingMagnitude = false) {
-        if(TryGetFeature(out var feature)) 
-            feature.SetActive(true);
+        if (!Backfaced(origin)) {
+            if(TryGetFeature(out var feature)) 
+                feature.SetActive(true);
 
-        Radius = startRadius;
-        Magnitude = startMagnitute;
+            Radius = startRadius;
+            Magnitude = startMagnitute;
 
-        while(Radius * Speed < 1) {
-            yield return new WaitForEndOfFrame();
-            Radius += Time.deltaTime;
-            Vector2 screenPos = Camera.main.WorldToViewportPoint(origin.position);
-            ShockwaveScreenPos = screenPos;
+            while(Radius * Speed < 1) {
+                yield return new WaitForEndOfFrame();
+                Radius += Time.deltaTime;
+                Vector2 screenPos = Camera.main.WorldToViewportPoint(origin.position);
+                ShockwaveScreenPos = screenPos;
 
-            if (decreasingMagnitude) {
-                Magnitude = Mathf.Max(0, Magnitude - Time.deltaTime * 2f);
-            } 
+                if (decreasingMagnitude) {
+                    Magnitude = Mathf.Max(0, Magnitude - Time.deltaTime * 2f);
+                } 
+            }
+            EndShockwave();
         }
-        EndShockwave();
+
     }
 }

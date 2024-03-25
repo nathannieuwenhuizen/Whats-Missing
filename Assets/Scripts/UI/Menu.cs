@@ -61,7 +61,7 @@ public class Menu : MonoBehaviour
 
         popup = GetComponent<AnimatedPopup>();
         StartCoroutine(DelayMenuShow());
-
+        // Debug.Log("behind the scenes " + PlayerData.BEHIND_THE_SCENES_UNLOCKED);
         // PlayerData.BEHIND_THE_SCENES_UNLOCKED = false;
         //behind the scenes
         if (CreditsRoller.FROM_CREDIT_SCREEN == true && PlayerData.BEHIND_THE_SCENES_UNLOCKED == false) {

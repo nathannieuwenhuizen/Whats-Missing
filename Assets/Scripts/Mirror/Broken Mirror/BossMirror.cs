@@ -322,13 +322,15 @@ public class BossMirror : Mirror, ITriggerArea
         yield return new WaitForEndOfFrame();
     }
 
-    private void OnEnable() {
+    protected override void OnEnable() {
+        base.OnEnable();
         MirrorShard.OnPickedUp += MirrorShardRecolectReaction;
         MirrorCanvas.OnShowHint += HintToggleClick;
         Boss.DieState.OnBossDie += OnBossDie;
     }
 
-    private void OnDisable() {
+    protected override void OnDisable() {
+        base.OnDisable();
         MirrorShard.OnPickedUp -= MirrorShardRecolectReaction;
         MirrorCanvas.OnShowHint -= HintToggleClick;
         Boss.DieState.OnBossDie -= OnBossDie;

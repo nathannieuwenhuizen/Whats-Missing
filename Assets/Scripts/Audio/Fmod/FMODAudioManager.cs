@@ -4,6 +4,8 @@ using UnityEngine;
 using FMODUnity;
 public class FMODAudioManager : MonoBehaviour, IAudioManager
 {
+
+    public Dictionary<MusicFiles, SFXInstance> Musics = new Dictionary<MusicFiles, SFXInstance>();
     public float MusicVolume { 
        get => Music.Volume;
        set => Music.Volume = value;
@@ -31,7 +33,12 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
     {
         float end = 0;
         float begin = Music.Volume;
-        SFXInstance newMusic = PlaySound(GetKey(newMusicFile), end);
+        SFXInstance newMusic;
+        if (Musics.ContainsKey(newMusicFile)) {
+            newMusic = Musics[newMusicFile];
+        }
+        else newMusic = PlaySound(GetKey(newMusicFile), end);
+        
         float index = 0;
         while (index < duration)
         {
@@ -42,7 +49,6 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
         }
 
         Music.Volume = end;
-        Music.Stop();
         newMusic.Volume = begin;
         Music = newMusic;
     }
@@ -101,6 +107,7 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
     public void PlayMusic(MusicFiles music, float volume = 1)
     {
         Music = PlaySound(GetKey(music), volume);
+        if (!Musics.ContainsKey(music)) Musics.Add(music, Music);
     }
 
     private string GetKey(MusicFiles music) {

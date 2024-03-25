@@ -170,8 +170,8 @@ public class SettingPanel : AnimatedPopup
             CloseSettings();
         } else {
             if (gameplayList.active) ControllerCheck.SelectUIGameObject(gameplayButton.gameObject);
-            if (controlList.gameObject.active) ControllerCheck.SelectUIGameObject(controlButton.gameObject);
-            if (generalList.active) ControllerCheck.SelectUIGameObject(generalButton.gameObject);
+            else if (generalList.active) ControllerCheck.SelectUIGameObject(generalButton.gameObject);
+            else if (controlList.gameObject.active) ControllerCheck.SelectUIGameObject(controlButton.gameObject);
 
         }
     }

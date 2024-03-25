@@ -191,10 +191,10 @@ public class MirrorCanvas : MonoBehaviour
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.Backspace)) {
-            AudioHandler.Instance?.PlaySound(SFXFiles.letter_click);
-            RemoveSelectedLetter(SelectedLetters.Count - 1);
-        }
+        // if (Input.GetKeyDown(KeyCode.Backspace)) {
+        //     AudioHandler.Instance?.PlaySound(SFXFiles.letter_click);
+        //     RemoveSelectedLetter(SelectedLetters.Count - 1);
+        // }
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)) {
             mirror.Confirm();
         }

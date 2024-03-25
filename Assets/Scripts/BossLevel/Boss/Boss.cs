@@ -17,7 +17,6 @@ namespace Boss {
         public delegate void BossEvent();
         public static BossEvent OnBossIntroStart;
 
-        
         //sizes
         public const float BOSS_SIZE = 8f;
         public const float BOSS_HEIGHT = 17f * .7f;

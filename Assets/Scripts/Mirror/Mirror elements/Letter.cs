@@ -248,8 +248,10 @@ public class Letter : MirrorButton, IPointerDownHandler
             //out of mirror view or click out
             if (mirrorCanvas.IsFocused == false || !Extensions.IsPressed(ControllerRebinds.controls.Player.Click)) {
                 LetterIsClicked();
+                pressed = false; 
             }
             yield return new WaitForEndOfFrame();
+            
         }
         transform.localRotation = Quaternion.Euler(0,0,0);
 

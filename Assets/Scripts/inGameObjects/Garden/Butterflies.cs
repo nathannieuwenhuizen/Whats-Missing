@@ -87,7 +87,7 @@ public class Butterflies : RoomObject
 
     private void Reset() {
         Word = "butterflies";
-        AlternativeWords = new string[] { "butterfly", "insect", "life", "animal", "animals" };
+        AlternativeWords = new string[] { "butterfly", "insect", "life", "animal", "animals", "insects" };
     }
 
 }

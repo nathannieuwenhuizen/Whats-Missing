@@ -67,7 +67,7 @@ public class IntroSpirit : MonoBehaviour
             timePassed += Time.deltaTime;
             if (spirit2 != null)
             Debug.Log("distance = " + Vector3.Distance(spirit2.transform.position, rippleParticle.position));
-            if (Vector3.Distance(spirit2.transform.position, rippleParticle.position) < 3.5f) {
+            if (Vector3.Distance(spirit2.transform.position, rippleParticle.position) < 5f) {
                 emitted = true;
                 rippleParticle.gameObject.SetActive(true);
                 AudioHandler.Instance.Play3DSound(SFXFiles.intro_spirit_ripple, rippleParticle, 1f, 1f, false, false, 50);

@@ -171,6 +171,18 @@ public class Mirror: MonoBehaviour, IRoomObject
 
         // mirrorCanvas.DeselectLetters();
     }
+    protected virtual void OnEnable() {
+        InputManager.OnBack += OnBack;
+    }
+
+    protected virtual void OnDisable() {
+        InputManager.OnBack -= OnBack;
+    }
+
+    public void OnBack() {
+        if (InSpace && mirrorCanvas.IsFocused) mirrorCanvas.DeselectFrontLetter();
+    }
+
 
     public void OnRoomEnter()
     {

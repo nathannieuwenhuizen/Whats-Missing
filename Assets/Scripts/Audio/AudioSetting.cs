@@ -29,7 +29,7 @@ using UnityEngine.UI;
     public static float SFX 
     {
         get {
-            float val = PlayerPrefs.GetFloat("SFX", .9f);
+            float val = PlayerPrefs.GetFloat("SFX", .33f);
             return val;
         }
         set {

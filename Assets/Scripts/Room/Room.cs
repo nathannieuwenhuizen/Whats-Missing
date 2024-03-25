@@ -466,7 +466,6 @@ public class Room : MonoBehaviour
         Potion.OnChanging -= AddPotionChange;
         if (hintStopwatch != null) hintStopwatch.OnDisable();
         RoomObject.PARTICLES_ACTIVE = 0;
-
     }
 
     ///<summary>
