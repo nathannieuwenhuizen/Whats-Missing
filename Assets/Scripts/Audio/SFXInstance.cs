@@ -75,6 +75,7 @@ public class SFXInstance
 
     }
 
+
     public bool Mute {
         set {
             if (isFMOD) {

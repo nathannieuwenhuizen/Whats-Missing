@@ -8,7 +8,6 @@ public class Cauldron : RoomObject
     SFXInstance boilingSound;
     public override void OnRoomEnter()
     {
-        Debug.Log("boiling sound play");
         base.OnRoomEnter();
 
         PlaySound();
@@ -23,7 +22,6 @@ public class Cauldron : RoomObject
         if (boilingSound == null) {
             boilingSound =  AudioHandler.Instance.Play3DSound(SFXFiles.cauldron, audioPoint, .1f, 1f, true, true, 7f);
         }
-        Debug.Log("boiling sound play");
         boilingSound.Play();
     }
 

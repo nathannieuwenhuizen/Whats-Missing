@@ -17,7 +17,8 @@ public class CatStatue : PickableRoomObject
     }
     public override IEnumerator Burn()
     {
-        yield return base.Burn();
+        Room.allObjects.Remove(this);
         SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.CatKiller);
+        yield return base.Burn();
     }
 }

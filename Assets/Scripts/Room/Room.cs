@@ -203,6 +203,7 @@ public class Room : MonoBehaviour
 
         foreach (IChangable obj in allObjects)
         {
+            if (obj != null)
             if (obj.Transform != null)
                 if (obj.Word == change.Word || obj.AlternativeWords.Contains(change.Word) && obj.Transform.gameObject != null) {
                     foundObjects.Add(obj);
@@ -237,6 +238,7 @@ public class Room : MonoBehaviour
     /// Checks and apply the change to the room 
     ///</summary>
     public void AddMirrorChange(Mirror selectedMirror) {
+        // Debug.Log("add mirror change");
         MirrorChange newChange = changeHandler.CreateChange(selectedMirror);
 
         if (newChange != null) {
@@ -474,7 +476,7 @@ public class Room : MonoBehaviour
     public void UpdateRoomObjectChanges(RoomObject _roomObject, ChangeType _changeType, bool _enabled) {
         if (!InArea) return;
         changeHandler.UpdateRoomObjectChanges(_roomObject, _changeType, _enabled);
-        Debug.Log(" room object " + _roomObject.Word +  " is now " + _changeType + "  | " + _enabled);
+        // Debug.Log(" room object " + _roomObject.Word +  " is now " + _changeType + "  | " + _enabled);
         UpdateMirrorStates();
         CheckRoomCompletion();
     }

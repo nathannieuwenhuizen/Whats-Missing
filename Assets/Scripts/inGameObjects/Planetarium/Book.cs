@@ -5,6 +5,7 @@ using UnityEngine;
 public class Book : PickableRoomObjectThatplaysSound
 {
     public static int ammountOfBooksBurned = 0;
+    public static bool checAmmountOfBooksBurned = true;
     public override string AudioFile()
     {
         return SFXFiles.book;
@@ -27,22 +28,22 @@ public class Book : PickableRoomObjectThatplaysSound
         Word = "Book";
         AlternativeWords = new string[] { "books", "paper" };
     }
+    public override IEnumerator Burn()
+    {
+        Room.allObjects.Remove(this);
+        yield return base.Burn();
+    }
     private void OnDestroy() {
-        if (isBurning) {
-
+        if (isBurning && checAmmountOfBooksBurned) {
             ammountOfBooksBurned++;
-
-            // int ammountOfBooks = 0;
-            // Debug.Log("check other books");
-            // foreach(Book book in Room.FindObjectsOfType<Book>()) {
-            //     if (book != this) ammountOfBooks++;
-            // }
             Debug.Log("ammount of books remaining: " + ammountOfBooksBurned);
-            if (ammountOfBooksBurned >= 20) {
+            if (ammountOfBooksBurned >= 15) { 
+                checAmmountOfBooksBurned = false;
                 SteamAchievementHandler.Instance?.SetAchievement(SteamAchievement.TheLibraryIsClosed);
                 foreach(Book book in Room.FindObjectsOfType<Book>()) {
-                    if (book != this) {
-                        Destroy(book.gameObject); 
+                    if (book != this && book.inSpace) {
+                        Room.allObjects.Remove(book);
+                        Destroy(book.gameObject);
                     }
                 }
             }

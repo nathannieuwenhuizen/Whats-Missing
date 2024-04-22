@@ -32,7 +32,7 @@ public class FPMovement : MonoBehaviour
     public Vector2 LerpedVelocity {
         get { return lerpedVelocity;}
     }
-
+    [SerializeField]
     private Player player;
 
     public Player Player {
@@ -55,7 +55,7 @@ public class FPMovement : MonoBehaviour
     public ControlSettings ControlSettings {
         get { return controlSettings;}
     }
-
+    [SerializeField]
     private Rigidbody rb;
     public Rigidbody RB {
         get { return rb;}
@@ -135,8 +135,6 @@ public class FPMovement : MonoBehaviour
 
      private void Awake() {
         waterSplash = new WaterSplash(waveEmitter);
-        player = GetComponent<Player>();
-        rb = GetComponent<Rigidbody>();
         ApplyMovementSettings(Settings.GetSettings());
     }
 
@@ -391,7 +389,7 @@ public class FPMovement : MonoBehaviour
         }
         if (_distance != Mathf.Infinity) {
             distanceToFloor = _distance;
-            if (player != null) player.CharacterAnimationPlayer.SetInWater(closest.collider == WaterArea.WATER_COLLIDER);
+            if (player != null) player.CharacterAnimationPlayer?.SetInWater(closest.collider == WaterArea.WATER_COLLIDER);
             return true;
         } else {
             distanceToFloor = 0;

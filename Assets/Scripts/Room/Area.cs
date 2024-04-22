@@ -103,6 +103,7 @@ public class Area : MonoBehaviour
         SetupPlayerPos();
 
         if(directionalLight != null) directionalLight.animating = false;
+        if (loadRoomIndex > 0) CurrentRoom = FindRoomBasedOnLoadIndex(loadRoomIndex-1);
         CurrentRoom = FindRoomBasedOnLoadIndex(loadRoomIndex);
         if(directionalLight != null) directionalLight.animating = true;
 
@@ -250,10 +251,24 @@ public class Area : MonoBehaviour
                     MirrorData _mirrorData = roomLevel.roomInfo.questionMirror[mirrorIndex].Clone;
                     mirror.MirrorData = _mirrorData;
                     mirror.isQuestion = mirror.MirrorData.isQuestion;
-
-                    if (completed && roomLevel.roomInfo.loadedChanges.Length > 0) {
-                        mirror.PreAnswer = roomLevel.roomInfo.loadedChanges[0].word;
+                    
+                    if (completed && roomLevel.roomInfo.correctAnswer != "") {
+                        // Debug.Log("correct answer = " + roomLevel.roomInfo.correctAnswer);
+                        mirror.PreAnswer = roomLevel.roomInfo.correctAnswer;
                         mirror.IsOn = true;
+                        mirror.Letters = "";
+                    }
+                    else if (completed && roomLevel.roomInfo.loadedChanges.Length > 0) {
+                    
+                        if (roomLevel.roomInfo.questionMirror.Length > 0) {
+                            if (roomLevel.roomInfo.questionMirror[0].isQuestion == true) {
+                                mirror.PreAnswer = roomLevel.roomInfo.loadedChanges[0].word;
+                                mirror.IsOn = true;
+                            }
+                        } else {
+                            mirror.PreAnswer = roomLevel.roomInfo.loadedChanges[0].word;
+                            mirror.IsOn = true;
+                        }
                     }  else {
                         if(mirror.IsOn) {
                             mirror.PreAnswer = mirror.MirrorData.letters;
@@ -339,7 +354,6 @@ public class Area : MonoBehaviour
             CurrentRoom = rooms[index - 1];
             CurrentRoom = rooms[index];
             player.transform.position = CurrentRoom.StartDoor.EndPos();
-            Debug.Log("rotation = " + CurrentRoom.StartDoor.transform.eulerAngles.y);
             player.transform.rotation = Quaternion.Euler(new Vector3(0,CurrentRoom.StartDoor.transform.eulerAngles.y - 180f,0));
         }
          
@@ -379,7 +393,7 @@ public class Area : MonoBehaviour
     public void UpdateRoomMusic(float _roomIndex) {
         if (AudioHandler.Instance?.AudioManager.Music == null) return;
 
-        Debug.Log("room index = " + (float)roomLevels.Length);
+        // Debug.Log("room index = " + (float)roomLevels.Length);
         switch(areaIndex)
         {
             case 1:

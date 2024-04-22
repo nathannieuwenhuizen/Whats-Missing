@@ -29,6 +29,8 @@ public class TeddyBear : InteractabelObject
     public TeddyBear() {
         largeScale = 13f;
     }
+    private bool hasBeenEnlarged = false;
+
     private void Reset() {
         Word = "teddybear";
         AlternativeWords = new string[] {"bear", "teddy"};
@@ -49,12 +51,20 @@ public class TeddyBear : InteractabelObject
 
     public override void OnEnlarge()
     {
+        hasBeenEnlarged = true;
         midIslandAnimator.SetTrigger("show");
         rigidBody.isKinematic = true;
         Interactable = false;
         OutlineEnabled = false;
         OnTeddyBearEnlarged?.Invoke();
         base.OnEnlarge();
+    }
+    public override void OnRoomEnter()
+    {
+        base.OnRoomEnter();
+        if (hasBeenEnlarged) {
+            midIslandAnimator.SetTrigger("show");
+        }
     }
 
     public void ShowGradually() {

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.UI;
@@ -16,6 +17,9 @@ public class Menu : MonoBehaviour
 
     [SerializeField]
     private GameObject continueButton;
+
+    [SerializeField]
+    private TMP_Text versionText;
 
     [SerializeField]
     private Button testButton;
@@ -48,6 +52,7 @@ public class Menu : MonoBehaviour
     
 
     private void Awake() {
+        versionText.text = "v" +Application.version;
         Cursor.visible = true;
         Cursor.lockState =CursorLockMode.None;
         testButton.onClick.AddListener(TestGame);

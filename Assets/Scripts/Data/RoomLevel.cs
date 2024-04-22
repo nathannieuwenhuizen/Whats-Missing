@@ -25,6 +25,7 @@ public class RoomData {
     [Header("Hints")]
     public float durationBeforeHint = 60f;
     public string hintText;
+    public string correctAnswer;
     public bool highLightAnswerLetter = true;
     public float durationBeforeHighlighting = 120f;
     public bool EventSenderActive = false;

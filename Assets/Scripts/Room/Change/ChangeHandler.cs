@@ -91,18 +91,18 @@ public class ChangeHandler
     /// Activate the existing changes in the room.
     ///</summary>
     public void ActivateChanges(){
-        // Debug.Log("activate changes!");
+        // Debug.Log("activate changes!  " + room._roomLevel.name);
+        for (int i = changes.Count - 1; i >= 0; i--)
+        {
+            room.AddChangeInRoomObjects(changes[i]);
+            changes[i].Active = true;
+        }
         for (int i = mirrorChanges.Count - 1; i >= 0; i--)
         {
             if (mirrorChanges[i].active == false) {
                 room.AddChangeInRoomObjects(mirrorChanges[i]);
                 mirrorChanges[i].active = true;
             }
-        }
-        for (int i = changes.Count - 1; i >= 0; i--)
-        {
-            room.AddChangeInRoomObjects(changes[i]);
-            changes[i].Active = true;
         }
     }
 
@@ -117,7 +117,7 @@ public class ChangeHandler
     public void DeactivateChanges(bool force = true){
         for (int i = mirrorChanges.Count - 1; i >= 0; i--)
         {
-            Debug.Log("change: " + mirrorChanges[i].word + " | " + mirrorChanges[i].active);
+            // Debug.Log("change: " + mirrorChanges[i].word + " | " + mirrorChanges[i].active);
             if (mirrorChanges[i].active) {
                 room.RemoveChangeInRoomObjects(mirrorChanges[i]);
                 mirrorChanges[i].active = false;

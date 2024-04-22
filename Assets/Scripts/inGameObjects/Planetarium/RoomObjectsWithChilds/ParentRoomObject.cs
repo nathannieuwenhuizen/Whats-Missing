@@ -12,6 +12,7 @@ public class DeskObject {
         oldRotation = transform.transform.rotation;
     }
     public void BackToOldPos() {
+        if (transform == null) return;
         transform.position = oldPos;
         transform.rotation = oldRotation;
         Rigidbody rb = transform.GetComponent<Rigidbody>();
@@ -59,7 +60,7 @@ public class ParentRoomObject : RoomObject
         base.OnAppearingFinish();
         if (deskObjects.Count == 0) return;
         foreach(DeskObject deskObj in deskObjects) {
-            deskObj.BackToOldPos();
+            deskObj?.BackToOldPos();
         } 
     }
 
@@ -85,19 +86,21 @@ public class ParentRoomObject : RoomObject
     /// Animates all the child objects back to the position they started with when the parent disappeared.
     ///</summary>
     public IEnumerator AnimateBackToOldPos(DeskObject deskObj, float delay, float duration) {
-        Rigidbody rb = deskObj.transform.GetComponent<Rigidbody>();
-        if (rb != null) {
-            rb.isKinematic = true;
-            rb.useGravity = false;
-            rb.velocity = Vector3.zero;
+        if (deskObj.transform != null) {
+            Rigidbody rb = deskObj.transform.GetComponent<Rigidbody>();
+            if (rb != null) {
+                rb.isKinematic = true;
+                rb.useGravity = false;
+                rb.velocity = Vector3.zero;
+            }
+            yield return new WaitForSeconds(delay);
+            Vector3 begin = transform.position;
+            Vector3 end = deskObj.oldPos;
+            Vector3 mid = begin + (end - begin) * .5f;
+            mid.y += 5f;
+            StartCoroutine(deskObj.transform.AnimatingPosBezierCurve(end, mid, AnimationCurve.EaseInOut(0,0,1,1), duration));
+            yield return StartCoroutine(deskObj.transform.AnimatingRotation(deskObj.oldRotation, AnimationCurve.EaseInOut(0,0,1,1), duration));
         }
-        yield return new WaitForSeconds(delay);
-        Vector3 begin = transform.position;
-        Vector3 end = deskObj.oldPos;
-        Vector3 mid = begin + (end - begin) * .5f;
-        mid.y += 5f;
-        StartCoroutine(deskObj.transform.AnimatingPosBezierCurve(end, mid, AnimationCurve.EaseInOut(0,0,1,1), duration));
-        yield return StartCoroutine(deskObj.transform.AnimatingRotation(deskObj.oldRotation, AnimationCurve.EaseInOut(0,0,1,1), duration));
     }
 
 }

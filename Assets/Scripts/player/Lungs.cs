@@ -120,13 +120,14 @@ public class Lungs : MonoBehaviour
 
         if (!fireSpreads.Contains(spread)) fireSpreads.Add(spread);
         if (burning) return;
+        burning = true;
         slowFire = spread.SlowFire;
 
-        burning = true;
 
         player.CharacterAnimationPlayer.SetTorsoAnimation(true, "choke");
-        burnSFX = AudioHandler.Instance.Play3DSound(SFXFiles.fire_spread_burning, transform, 1f, 1f, true, false, 100f, false);
-        playerVoiceBurnSFX = AudioHandler.Instance.Play3DSound(SFXFiles.player_cough, transform, 1f, 1f, true, false, 100f, false);
+
+        if (burnSFX == null) burnSFX = AudioHandler.Instance.Play3DSound(SFXFiles.fire_spread_burning, transform, 1f, 1f, true, false, 100f, false);
+        if (playerVoiceBurnSFX == null) playerVoiceBurnSFX = AudioHandler.Instance.Play3DSound(SFXFiles.player_cough, transform, 1f, 1f, true, false, 100f, false);
 
         if (burnIndex <= 0 || burnIndex >= burnDuration) {
             burnCoroutine = StartCoroutine(Burning());
@@ -168,8 +169,14 @@ public class Lungs : MonoBehaviour
 
     private void EndBurning() {
         burnIndex = 0;
-        if (burnSFX != null) burnSFX.Stop();
-        if (playerVoiceBurnSFX != null) playerVoiceBurnSFX.Stop();
+        if (burnSFX != null) {
+            burnSFX.Stop();
+            burnSFX = null;
+        } 
+        if (playerVoiceBurnSFX != null) {
+            playerVoiceBurnSFX.Stop();
+            playerVoiceBurnSFX = null;
+        }
         if (burnCoroutine != null) {
             StopCoroutine(burnCoroutine);
         }
@@ -221,9 +228,9 @@ public class Lungs : MonoBehaviour
     private void EndChoking() {
         player.Movement.FPCamera.CameraZRotationTilt = false;
         player.CharacterAnimationPlayer.SetTorsoAnimation(false);
+        Debug.Log("end choking? " + (chokeSFX != null));
 
-
-        if (chokeSFX != null) chokeSFX.Stop();
+        if (chokeSFX != null) chokeSFX.Stop(true);
         if (chokeCoroutine != null) {
             StopCoroutine(chokeCoroutine);
         }

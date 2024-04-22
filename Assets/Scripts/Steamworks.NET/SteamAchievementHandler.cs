@@ -66,6 +66,8 @@ public class SteamAchievementHandler : Singleton<SteamAchievementHandler>
     }
 
     public void SetAchievement(SteamAchievement _achievement) {
+        Debug.Log("achievement start!"); 
+
         if (!SteamManager.Initialized) {
             Debug.Log("something went wrong...");
             return;

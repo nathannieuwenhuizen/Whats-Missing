@@ -139,7 +139,7 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
 
     public SFXInstance Play3DSound(string key, Transform parent, float volume = 1, float pitch = 1, bool loop = false, bool asInstance = true, float soundMaxDistance = 100, bool ignoreListenerVolume = false)
     {
-        SFXInstance instance = PlaySound(key, volume, pitch, loop, ignoreListenerVolume);
+        SFXInstance instance = PlaySound(key, volume * AudioSetting.SFX, pitch, loop, ignoreListenerVolume);
         FMODUnity.RuntimeManager.AttachInstanceToGameObject(instance.FMODInstance, parent); 
         instance.FMODInstance.start();
         instance.FMODInstance.release();       
@@ -153,7 +153,7 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
         float test = 1f;
         instance.setParameterByName("test", test);
         if (pitch != 1) instance.setPitch(pitch);
-        if (volume != 1) instance.setVolume(volume);
+        instance.setVolume(volume * AudioSetting.SFX);
         instance.start();
         instance.release();
         return new SFXInstance() {FMODInstance = instance, isFMOD = true};
@@ -170,7 +170,6 @@ public class FMODAudioManager : MonoBehaviour, IAudioManager
         if (Music != null) {
             Music.FMODInstance.setPaused(false);
         }
-
     }
 
     public void Stop3DSound(SFXInstance instance, bool destroy = true)
